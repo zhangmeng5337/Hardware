@@ -2476,15 +2476,6 @@
         <file>
             <name>$PROJ_DIR$\..\source\driver\platform\common.c</name>
         </file>
-        <file>
-            <name>$PROJ_DIR$\..\source\driver\src\delay.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\source\driver\platform\system.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\source\driver\services\time_server.c</name>
-        </file>
     </group>
     <group>
         <name>user</name>

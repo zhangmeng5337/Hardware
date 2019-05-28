@@ -14,6 +14,8 @@ F:\projects\git\Hardware\rf433\code\HC32F005C6PA\EWARM\..\source\driver\inc
 -I
 F:\projects\git\Hardware\rf433\code\HC32F005C6PA\EWARM\..\source\driver\platform
 -I
+F:\projects\git\Hardware\rf433\code\HC32F005C6PA\EWARM\..\source\driver\Hardware
+-I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Include
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc
@@ -31,6 +33,8 @@ F:\projects\git\Hardware\rf433\code\HC32F005C6PA\source
 F:\projects\git\Hardware\rf433\code\HC32F005C6PA\source\driver\inc
 -I
 F:\projects\git\Hardware\rf433\code\HC32F005C6PA\source\driver\platform
+-I
+F:\projects\git\Hardware\rf433\code\HC32F005C6PA\source\driver\Hardware
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Include
 -D__CHAR_BITS__=8

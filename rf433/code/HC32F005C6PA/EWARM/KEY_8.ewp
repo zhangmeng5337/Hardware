@@ -342,6 +342,7 @@
                     <state>$PROJ_DIR$\..\source</state>
                     <state>$PROJ_DIR$\..\source\driver\inc</state>
                     <state>$PROJ_DIR$\..\source\driver\platform</state>
+                    <state>$PROJ_DIR$\..\source\driver\Hardware</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2140,15 +2141,6 @@
         <name>System</name>
         <file>
             <name>$PROJ_DIR$\..\source\driver\platform\common.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\source\driver\src\delay.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\source\driver\platform\system.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\source\driver\services\time_server.c</name>
         </file>
     </group>
     <group>
