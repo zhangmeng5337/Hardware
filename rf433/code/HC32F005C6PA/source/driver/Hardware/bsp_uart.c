@@ -17,7 +17,7 @@ void UART_Config(void)
 {
   uint16_t timer=0;
   uint32_t pclk=0;
-  
+
   stc_uart_config_t  stcConfig;
   stc_uart_irq_cb_t stcUartIrqCb;
   stc_uart_multimode_t stcMulti;

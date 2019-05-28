@@ -2443,6 +2443,9 @@
         <file>
             <name>$PROJ_DIR$\..\source\driver\src\command.c</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\source\driver\platform\uartParse.c</name>
+        </file>
     </group>
     <group>
         <name>Hardware</name>

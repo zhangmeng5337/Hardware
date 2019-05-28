@@ -1,6 +1,6 @@
 #include "key.h"
 #include "main.h"
-#include "eeprom.h"
+#include "uartParse.h"
 void Gpio_IRQHandler(uint8_t u8Param)
 {
   *((uint32_t *)((uint32_t)&M0P_GPIO->P3ICLR + u8Param * 0x40)) = 0;
@@ -82,7 +82,7 @@ void key_intterupt_config( en_gpio_irqtype_t EXTI_Trigger)
 }
 void KEY_Init()
 {
-  params_typedef *params;
+  params_typedef params;
   en_gpio_irqtype_t EXTI_Trigger;
   //初始化外部IO P33
   Gpio_InitIOExt(KEY_UP_PORT,KEY_UP_PIN, GpioDirIn, TRUE, FALSE, FALSE, 0);//up
@@ -102,8 +102,8 @@ void KEY_Init()
 #define INHIBITION			0X03//相互拟制
 #define NOINHIBITION		0X04//非拟制
   */
-  params = system_params_get();
-  switch(params->keyfunc)
+  //params = system_params_get();
+  switch(params.KEY_H8 )
   {
   case INCH:			EXTI_Trigger = GpioIrqLow; break;
   case SELFLOCK:		EXTI_Trigger = GpioIrqRising; break;

@@ -4,6 +4,8 @@
 #include "flash.h"
 #include "main.h"
 #include "eeprom.h"
+#include "uartParse.h"
+
 /******************************************************************************
 * Include files
 ******************************************************************************/
@@ -12,32 +14,36 @@
 
 
 
-params_typedef params;
-params_typedef *system_params_get()
-{
-  return &params;
-}
+
 unsigned char FLASH_ReadByte(uint32_t readadd)
 {
   return *((volatile uint32_t*)readadd);
 }
-void eeprom_data_read()
+params_typedef * eeprom_data_read()
 {
+  params_typedef params;
+  
   uint32_t  add;
   add =   0x3ff0;  
   if(*((volatile uint32_t*)add)==0x5a)
   {
-    params.keyfunc= FLASH_ReadByte(add++);
-    params.freq= FLASH_ReadByte(add++)<<8+FLASH_ReadByte(add++);
-    params.channel= FLASH_ReadByte(add++);
-    params.sn= FLASH_ReadByte(add++);				
+    params.KEY_H8= FLASH_ReadByte(add++);
+    params.KEY_L8= FLASH_ReadByte(add++);
+    params.inhibition= FLASH_ReadByte(add++);
+    for(unsigned char i=0;i<SN_LEN;i++)
+      params.sn[i]=FLASH_ReadByte(add++);
+    params.freq=FLASH_ReadByte(add++);				
   }
   else
   {
-    params.keyfunc= KEYFUNC_DEFAULT;
-    params.freq= FREQ_DEFAULT;
-    params.channel= CHANNEL_DEFAULT;
-    params.sn= SN_DEFAULT ;
+    
+    params.KEY_H8= KEYFUNC_DEFAULT;
+    params.KEY_L8= KEYFUNC_DEFAULT;
+    params.inhibition= FLASH_ReadByte(add++);
+    for(unsigned char i=0;i<SN_LEN;i++)
+      params.sn[i]=SN_DEFAULT;
+    params.freq= CHANNEL_DEFAULT ;
+    return &params;
   }
   
 }
@@ -61,7 +67,7 @@ void FlashInt(void)
   
 }
 
-en_result_t eeprom_write(void)
+en_result_t eeprom_write(params_typedef params)
 {
   en_result_t       enResult = Error;
   uint32_t          u32Addr  = 0x3ff0;
@@ -73,16 +79,15 @@ en_result_t eeprom_write(void)
   Flash_SectorErase(u32Addr);
   
   enResult = Flash_WriteByte(u32Addr++, 0x5a);
-  enResult = Flash_WriteByte(u32Addr++,  params.keyfunc);
-  enResult = Flash_WriteByte(u32Addr++, (volatile uint8_t)(params.freq>>8));
-  enResult = Flash_WriteByte(u32Addr++, (volatile uint8_t)params.freq);
-  enResult = Flash_WriteByte(u32Addr++, params.channel);
-  enResult = Flash_WriteByte(u32Addr++,  params.sn);
+  enResult = Flash_WriteByte(u32Addr++,  params.KEY_H8);
+  enResult = Flash_WriteByte(u32Addr++,  params.KEY_L8);
+  enResult = Flash_WriteByte(u32Addr++,  params.inhibition);
+  for(unsigned char i=0;i<SN_LEN;i++)
+    enResult = Flash_WriteByte(u32Addr++,  params.sn[i]);
+  enResult = Flash_WriteByte(u32Addr++,  params.freq);	
+  
   return   enResult;
 }
-
-
-
 
 
 

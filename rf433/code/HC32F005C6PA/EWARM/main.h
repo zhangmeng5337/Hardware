@@ -43,13 +43,6 @@
 #define ON	0x01
 #define OFF	0x00
 
-typedef struct {
-unsigned char keyfunc;
-unsigned int freq;
-unsigned char channel;
-unsigned char sn;
-unsigned char len;
-}params_typedef;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
