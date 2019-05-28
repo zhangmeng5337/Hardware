@@ -1,23 +1,23 @@
 #ifndef __CMT2300drive_H
 #define __CMT2300drive_H
 
-#include "stm8l15x.h"	
-#include "spi.h"
-#include "Delay.h"
+//#include "stm8l15x.h"	
+#include "bsp_spi.h"
+//#include "Delay.h"
 #include "BSP_cmt2300a.h"
 
-#define GPO3In()    GPIO_Init(INT_PORT, (GPIO_Pin_TypeDef)INT2, GPIO_Mode_In_FL_No_IT)
-#define GPO3_H() 	(GPIO_ReadInputDataBit(INT_PORT,INT2) ? 1 : 0)
-#define GPO3_L()    (GPIO_ReadInputDataBit(INT_PORT,INT2) ? 0 : 1 )
+#define GPO3In()    Gpio_InitIOExt(INT_PORT,INT2, GpioDirIn, TRUE, FALSE, FALSE, 0)
+#define GPO3_H() 	(Gpio_GetIO(INT_PORT,INT2) ? 1 : 0)
+#define GPO3_L()    (Gpio_GetIO(INT_PORT,INT2) ? 0 : 1 )
 
-#define GPO2In()    GPIO_Init(INT_PORT, (GPIO_Pin_TypeDef)INT2, GPIO_Mode_In_FL_No_IT)
-#define GPO2_H() 	(GPIO_ReadInputDataBit(INT_PORT,INT2) ? 1 : 0)
-#define GPO2_L()    (GPIO_ReadInputDataBit(INT_PORT,INT2) ? 0 : 1 )
+#define GPO2In()    Gpio_InitIOExt(INT_PORT,INT2, GpioDirIn, TRUE, FALSE, FALSE, 0)
+#define GPO2_H() 	(Gpio_GetIO(INT_PORT,INT2) ? 1 : 0)
+#define GPO2_L()    (Gpio_GetIO(INT_PORT,INT2) ? 0 : 1 )
 
 
-#define GPO1In()    GPIO_Init(INT_PORT, (GPIO_Pin_TypeDef)INT1, GPIO_Mode_In_FL_No_IT)
-#define GPO1_H() 	(GPIO_ReadInputDataBit(INT_PORT,INT1) ? 1 : 0)
-#define GPO1_L()    (GPIO_ReadInputDataBit(INT_PORT,INT1) ? 0 : 1 )
+#define GPO1In()    Gpio_InitIOExt(INT_PORT, INT1, GpioDirIn, TRUE, FALSE, FALSE, 0)
+#define GPO1_H() 	(Gpio_GetIO(INT_PORT,INT1) ? 1 : 0)
+#define GPO1_L()    (Gpio_GetIO(INT_PORT,INT1) ? 0 : 1 )
 
 #define CMT23_DUTY_CTL			0x0D
 #define	DUTY_MASK			0xE0
@@ -308,13 +308,13 @@
 
 
 //State Ctrl
-bool bGoTx(void);
-bool bGoRx(void);
-bool bGoSleep(void);	
-bool bGoStandby(void);		
+boolean_t bGoTx(void);
+boolean_t bGoRx(void);
+boolean_t bGoSleep(void);	
+boolean_t bGoStandby(void);		
 void vSoftReset(void);
 byte bReadStatus(void);
-byte bReadRssi(bool unit_dbm);
+byte bReadRssi(boolean_t unit_dbm);
 
 //GPIO & Interrupt CFG
 void vGpioFuncCfg(byte io_cfg);
@@ -336,7 +336,7 @@ void vCfgBank(word cfg[], byte length);
 
 byte bGetMessage(byte msg[]);
 byte bGetMessageByFlag(byte msg[]);
-bool bSendMessage(byte msg[], byte length);
+boolean_t bSendMessage(byte msg[], byte length);
 
 
 

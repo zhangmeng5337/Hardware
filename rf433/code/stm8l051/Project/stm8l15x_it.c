@@ -405,18 +405,18 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler,28)
        it is recommended to set a breakpoint on the following instruction.
     */
 
-    if(USART_GetFlagStatus(USART1, USART_FLAG_IDLE) != RESET)
-    {
-        UsartReceiveFlag ++;
-        USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
-    }
-
-    UsartReceiveData[j] = USART_ReceiveData8(USART1);
-    j++;
-    if(UsartReceiveFlag) {
-        usart_i = j + 1;
-        j = 0;
-    }
+//    if(USART_GetFlagStatus(USART1, USART_FLAG_IDLE) != RESET)
+//    {
+//        UsartReceiveFlag ++;
+//        USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
+//    }
+//
+//    UsartReceiveData[j] = USART_ReceiveData8(USART1);
+//    j++;
+//    if(UsartReceiveFlag) {
+//        usart_i = j + 1;
+//        j = 0;
+//    }
   
 }
 

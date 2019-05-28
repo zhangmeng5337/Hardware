@@ -17,7 +17,7 @@
         <debug>1</debug>
         <option>
           <name>GenDeviceSelectMenu</name>
-          <state>STM8L152C6	STM8L152C6</state>
+          <state>STM8L051F3	STM8L051F3</state>
         </option>
         <option>
           <name>GenCodeModel</name>
@@ -118,7 +118,7 @@
         </option>
         <option>
           <name>GenMathFunctionDescription</name>
-          <state></state>
+          <state>Default variants of cos, sin, tan, log, log10, pow, and exp.</state>
         </option>
       </data>
     </settings>

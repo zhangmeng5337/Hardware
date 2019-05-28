@@ -4,7 +4,7 @@
 **********************************************************/
 
 #include "bsp_spi.h"
-//#include "BSP_cmt2300a.h"
+#include "BSP_cmt2300a.h"
 
 /**********************************************************
 **Name: 	vSpi3Init
@@ -13,11 +13,15 @@
 **********************************************************/
 void vSpi3Init(void)
 {
-	GPIO_Init(SPI_PORT, (GPIO_Pin_TypeDef)GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);	//SPI-3 for output	
-	SetCSB();
-	SetFCSB();
-	SetSDIO();
-	ClrSDCK();
+  Gpio_InitIOExt(SPI_PORT,CSB_PIN, GpioDirOut, TRUE, FALSE, FALSE, 0);//cs
+  Gpio_InitIOExt(SPI_PORT,SCLK_PIN, GpioDirOut, TRUE, FALSE, FALSE, 0);//SCLK
+  Gpio_InitIOExt(SPI_PORT,SDIO_PIN, GpioDirOut, TRUE, FALSE, FALSE, 0);//SDIO 
+  Gpio_InitIOExt(SPI_PORT,FCSB_PIN, GpioDirOut, TRUE, FALSE, FALSE, 0);//FCSB 
+  
+  SetCSB();
+  SetFCSB();
+  SetSDIO();
+  ClrSDCK();
 }
 
 /**********************************************************
@@ -28,32 +32,32 @@ void vSpi3Init(void)
 **********************************************************/
 void vSpi3WriteByte(byte dat)
 {
-
- 	byte bitcnt;	
- 
-	SetFCSB();				//FCSB = 1;
- 
- 	OutputSDIO();			//SDA output mode
- 	OutputSDIO();			//SDA output mode
- 	SetSDIO();				//    output 1
- 
- 	ClrSDCK();				
- 	ClrCSB();
-
- 	for(bitcnt=8; bitcnt!=0; bitcnt--)
- 		{
-		ClrSDCK();	
-		Delay_us(SPI3_SPEED);
- 		if(dat&0x80)
- 			SetSDIO();
- 		else
- 			ClrSDIO();
-		SetSDCK();
- 		dat <<= 1; 		
- 		Delay_us(SPI3_SPEED);
- 		}
- 	ClrSDCK();		
- 	SetSDIO();
+  
+  byte bitcnt;	
+  
+  SetFCSB();				//FCSB = 1;
+  
+  OutputSDIO();			//SDA output mode
+  OutputSDIO();			//SDA output mode
+  SetSDIO();				//    output 1
+  
+  ClrSDCK();				
+  ClrCSB();
+  
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+  {
+    ClrSDCK();	
+    delay1us(SPI3_SPEED);
+    if(dat&0x80)
+      SetSDIO();
+    else
+      ClrSDIO();
+    SetSDCK();
+    dat <<= 1; 		
+    delay1us(SPI3_SPEED);
+  }
+  ClrSDCK();		
+  SetSDIO();
 }
 
 /**********************************************************
@@ -64,30 +68,30 @@ void vSpi3WriteByte(byte dat)
 **********************************************************/
 byte bSpi3ReadByte(void)
 {
-	byte RdPara = 0;
- 	byte bitcnt;
+  byte RdPara = 0;
+  byte bitcnt;
   
- 	ClrCSB(); 
- 	InputSDIO();			
-  	InputSDIO();		
- 	for(bitcnt=8; bitcnt!=0; bitcnt--)
- 		{
- 		ClrSDCK();
- 		RdPara <<= 1;
- 		Delay_us(SPI3_SPEED);
- 		SetSDCK();
- 		Delay_us(SPI3_SPEED);
- 		if(SDIO_H())
- 			RdPara |= 0x01;
- 		else
- 			RdPara |= 0x00;
- 		} 
- 	ClrSDCK();
- 	OutputSDIO();
-	OutputSDIO();
- 	SetSDIO();
- 	SetCSB();			
- 	return(RdPara);	
+  ClrCSB(); 
+  InputSDIO();			
+  InputSDIO();		
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+  {
+    ClrSDCK();
+    RdPara <<= 1;
+    delay1us(SPI3_SPEED);
+    SetSDCK();
+    delay1us(SPI3_SPEED);
+    if(SDIO_H())
+      RdPara |= 0x01;
+    else
+      RdPara |= 0x00;
+  } 
+  ClrSDCK();
+  OutputSDIO();
+  OutputSDIO();
+  SetSDIO();
+  SetCSB();			
+  return(RdPara);	
 }
 
 /**********************************************************
@@ -98,9 +102,9 @@ byte bSpi3ReadByte(void)
 **********************************************************/
 void vSpi3Write(word dat)
 {
- 	vSpi3WriteByte((byte)(dat>>8)&0x7F);
- 	vSpi3WriteByte((byte)dat);
- 	SetCSB();
+  vSpi3WriteByte((byte)(dat>>8)&0x7F);
+  vSpi3WriteByte((byte)dat);
+  SetCSB();
 }
 
 /**********************************************************
@@ -111,8 +115,8 @@ void vSpi3Write(word dat)
 **********************************************************/
 byte bSpi3Read(byte addr)
 {
-  	vSpi3WriteByte(addr|0x80);
- 	return(bSpi3ReadByte());
+  vSpi3WriteByte(addr|0x80);
+  return(bSpi3ReadByte());
 }
 
 /**********************************************************
@@ -123,32 +127,32 @@ byte bSpi3Read(byte addr)
 **********************************************************/
 void vSpi3WriteFIFO(byte dat)
 {
- 	byte bitcnt;	
- 
- 	SetCSB();	
-	OutputSDIO();	
-	ClrSDCK();
- 	ClrFCSB();			//FCSB = 0
-	for(bitcnt=8; bitcnt!=0; bitcnt--)
- 		{
- 		ClrSDCK();
- 		
- 		if(dat&0x80)
-			SetSDIO();		
-		else
-			ClrSDIO();
-		Delay_us(SPI3_SPEED);
-		SetSDCK();
-		Delay_us(SPI3_SPEED);
- 		dat <<= 1;
- 		}
- 	ClrSDCK();	
- 	Delay_us(SPI3_SPEED);		//Time-Critical
- 	Delay_us(SPI3_SPEED);		//Time-Critical
- 	SetFCSB();
-	SetSDIO();
- 	Delay_us(SPI3_SPEED);		//Time-Critical
- 	Delay_us(SPI3_SPEED);		//Time-Critical
+  byte bitcnt;	
+  
+  SetCSB();	
+  OutputSDIO();	
+  ClrSDCK();
+  ClrFCSB();			//FCSB = 0
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+  {
+    ClrSDCK();
+    
+    if(dat&0x80)
+      SetSDIO();		
+    else
+      ClrSDIO();
+    delay1us(SPI3_SPEED);
+    SetSDCK();
+    delay1us(SPI3_SPEED);
+    dat <<= 1;
+  }
+  ClrSDCK();	
+  delay1us(SPI3_SPEED);		//Time-Critical
+  delay1us(SPI3_SPEED);		//Time-Critical
+  SetFCSB();
+  SetSDIO();
+  delay1us(SPI3_SPEED);		//Time-Critical
+  delay1us(SPI3_SPEED);		//Time-Critical
 }
 
 /**********************************************************
@@ -159,36 +163,36 @@ void vSpi3WriteFIFO(byte dat)
 **********************************************************/
 byte bSpi3ReadFIFO(void)
 {
-	byte RdPara;
- 	byte bitcnt;	
- 	
- 	SetCSB();
-	InputSDIO();
- 	ClrSDCK();
-	ClrFCSB();
-		
- 	for(bitcnt=8; bitcnt!=0; bitcnt--)
- 		{
- 		ClrSDCK();
- 		RdPara <<= 1;
- 		Delay_us(SPI3_SPEED);
-		SetSDCK();
-		Delay_us(SPI3_SPEED);
- 		if(SDIO_H())
- 			RdPara |= 0x01;		//NRZ MSB
- 		else
- 		 	RdPara |= 0x00;		//NRZ MSB
- 		}
- 	
- 	ClrSDCK();
- 	Delay_us(SPI3_SPEED);		//Time-Critical
- 	Delay_us(SPI3_SPEED);		//Time-Critical
- 	SetFCSB();
-	OutputSDIO();
-	SetSDIO();
- 	Delay_us(SPI3_SPEED);		//Time-Critical
- 	Delay_us(SPI3_SPEED);		//Time-Critical
- 	return(RdPara);
+  byte RdPara;
+  byte bitcnt;	
+  
+  SetCSB();
+  InputSDIO();
+  ClrSDCK();
+  ClrFCSB();
+  
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+  {
+    ClrSDCK();
+    RdPara <<= 1;
+    delay1us(SPI3_SPEED);
+    SetSDCK();
+    delay1us(SPI3_SPEED);
+    if(SDIO_H())
+      RdPara |= 0x01;		//NRZ MSB
+    else
+      RdPara |= 0x00;		//NRZ MSB
+  }
+  
+  ClrSDCK();
+  delay1us(SPI3_SPEED);		//Time-Critical
+  delay1us(SPI3_SPEED);		//Time-Critical
+  SetFCSB();
+  OutputSDIO();
+  SetSDIO();
+  delay1us(SPI3_SPEED);		//Time-Critical
+  delay1us(SPI3_SPEED);		//Time-Critical
+  return(RdPara);
 }
 
 /**********************************************************
@@ -199,13 +203,13 @@ byte bSpi3ReadFIFO(void)
 **********************************************************/
 void vSpi3BurstWriteFIFO(byte ptr[], byte length)
 {
- 	byte i;
- 	if(length!=0x00)
-	 	{
- 		for(i=0;i<length;i++)
- 			vSpi3WriteFIFO(ptr[i]);
- 		}
- 	return;
+  byte i;
+  if(length!=0x00)
+  {
+    for(i=0;i<length;i++)
+      vSpi3WriteFIFO(ptr[i]);
+  }
+  return;
 }
 
 /**********************************************************
@@ -216,18 +220,18 @@ void vSpi3BurstWriteFIFO(byte ptr[], byte length)
 **********************************************************/
 void vSpi3BurstReadFIFO(byte ptr[], byte length)
 {
-	byte i;
- 	if(length!=0)
- 		{
- 		for(i=0;i<length;i++)
- 			ptr[i] = bSpi3ReadFIFO();
- 		}	
- 	return;
+  byte i;
+  if(length!=0)
+  {
+    for(i=0;i<length;i++)
+      ptr[i] = bSpi3ReadFIFO();
+  }	
+  return;
 }
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 

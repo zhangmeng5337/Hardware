@@ -1,9 +1,10 @@
 #include "led.h"
-#include "delay.h"
+#include "ddl.h"
 #include "main.h"
 void LED_Init(void)
 {
- GPIO_Init(LED_PORT,LED_PIN1|LED_PIN1, GPIO_Mode_Out_PP_High_Slow);
+  Gpio_InitIOExt(LED_PORT1,LED_PIN1, GpioDirOut, TRUE, FALSE, FALSE, 0);//led1
+  Gpio_InitIOExt(LED_PORT2,LED_PIN2, GpioDirOut, TRUE, FALSE, FALSE, 0);//led2
 }
 void LED_blink(unsigned char led_sel)
 {
@@ -11,46 +12,46 @@ void LED_blink(unsigned char led_sel)
   {
   case LED_RED:
     {
-    	GPIO_ToggleBits(LED_PORT, LED_PIN1);
-	Delay_ms(200);		
+      Gpio_SetIO(LED_PORT1, LED_PIN1, !Gpio_GetIO(LED_PORT1, LED_PIN1));        
+      delay1ms(200);		
     }break;
   case LED_GREEN:
-     {
-    	GPIO_ToggleBits(LED_PORT, LED_PIN2);
-	Delay_ms(200);		
+    {
+      Gpio_SetIO(LED_PORT2, LED_PIN2, !Gpio_GetIO(LED_PORT2, LED_PIN2));  
+      delay1ms(200);			
     }break; 	
   default :
-  {
-    	GPIO_ToggleBits(LED_PORT, LED_PIN1);
-	Delay_ms(200);		
+    {
+      Gpio_SetIO(LED_PORT1, LED_PIN1, !Gpio_GetIO(LED_PORT1, LED_PIN1)); 
+      delay1ms(200);		
     }break;
   }
 }
 
-void LED_ctrl(unsigned char led_sel,bool status)
+void LED_ctrl(unsigned char led_sel,boolean_t status)
 {
   switch(led_sel)
   {
   case LED_RED:
     { 
-	if(status == ON)
-    	GPIO_SetBits(LED_PORT, LED_PIN1);
-       else
-    	GPIO_ResetBits(LED_PORT, LED_PIN1);	   	
+      if(status == ON)
+    	Gpio_SetIO(LED_PORT1, LED_PIN1, 1); 
+      else
+    	Gpio_SetIO(LED_PORT1, LED_PIN1, 0); 	   	
     }break;
   case LED_GREEN:
     { 
-	if(status == ON)
-    	GPIO_SetBits(LED_PORT, LED_PIN2);
-       else
-    	GPIO_ResetBits(LED_PORT, LED_PIN2);	   	
+      if(status == ON)
+        Gpio_SetIO(LED_PORT2, LED_PIN2, 1);
+      else
+        Gpio_SetIO(LED_PORT2, LED_PIN2, 0);	   	
     }break;	
   default :
     { 
-	if(status == ON)
-    	GPIO_SetBits(LED_PORT, LED_PIN1);
-       else
-    	GPIO_ResetBits(LED_PORT, LED_PIN1);	   	
+      if(status == ON)
+    	Gpio_SetIO(LED_PORT1, LED_PIN1, 1); 
+      else
+    	Gpio_SetIO(LED_PORT1, LED_PIN1, 0); 	   	
     }break;
   }
 }

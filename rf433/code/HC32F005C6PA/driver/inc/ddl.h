@@ -189,7 +189,7 @@ uint32_t Log2(uint32_t u32Val);
 extern void DDL_WAIT_LOOP_HOOK(void);
 
 void Debug_UartInit(void);
-
+void delay1us(uint32_t u32Cnt);
 void delay1ms(uint32_t u32Cnt);
 void delay100us(uint32_t u32Cnt);
 #ifdef __cplusplus

@@ -294,7 +294,20 @@ void delay100us(uint32_t u32Cnt)
         }
     }
 }
+void delay1us(uint32_t u32Cnt)
+{
+    uint32_t u32end;
+    while(u32Cnt-- > 0)
+    {
+        SysTick->VAL = 0;
 
+        u32end = 0x1000000 - SystemCoreClock/1000000;
+        while(SysTick->VAL > u32end)
+        {
+            ;
+        }
+    }
+}
 //@} // DDL Functions
 
 /******************************************************************************

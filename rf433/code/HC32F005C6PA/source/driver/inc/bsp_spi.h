@@ -3,9 +3,9 @@
 
 #define SPI3_SPEED 20
 
-
+#include "ddl.h"
 //#include "BSP_cmt2300a.h"
-#include "Delay.h"
+//#include "Delay.h"
 
 #ifndef	byte
 typedef unsigned char byte;
@@ -37,23 +37,23 @@ typedef unsigned int  word;
 //          
 //          
 //          
-#define	SetCSB()	GPIO_SetBits(SPI_PORT, CSB_PIN)
-#define	ClrCSB()	GPIO_ResetBits(SPI_PORT, CSB_PIN)
+#define	SetCSB()	Gpio_SetIO(SPI_PORT, CSB_PIN, 1)
+#define	ClrCSB()	Gpio_SetIO(SPI_PORT, CSB_PIN, 0)
 
-#define	SetFCSB()	GPIO_SetBits(SPI_PORT, FCSB_PIN)
-#define	ClrFCSB()	GPIO_ResetBits(SPI_PORT, FCSB_PIN)
+#define	SetFCSB()	Gpio_SetIO(SPI_PORT, FCSB_PIN, 1)
+#define	ClrFCSB()	Gpio_SetIO(SPI_PORT, FCSB_PIN, 0)
 
-#define	SetSDCK()	GPIO_SetBits(SPI_PORT, SCLK_PIN)
-#define	ClrSDCK()	GPIO_ResetBits(SPI_PORT, SCLK_PIN);
+#define	SetSDCK()	Gpio_SetIO(SPI_PORT, SCLK_PIN, 1)
+#define	ClrSDCK()	Gpio_SetIO(SPI_PORT, SCLK_PIN, 0)
 
-#define	SetSDIO()	GPIO_SetBits(SPI_PORT, SDIO_PIN)
-#define	ClrSDIO()	GPIO_ResetBits(SPI_PORT, SDIO_PIN)
+#define	SetSDIO()	Gpio_SetIO(SPI_PORT, SDIO_PIN, 1)
+#define	ClrSDIO()	Gpio_SetIO(SPI_PORT, SDIO_PIN, 0)
 
-#define   InputSDIO()		GPIO_Init(SPI_PORT,SDIO_PIN, GPIO_Mode_In_PU_No_IT)
-#define	OutputSDIO()	GPIO_Init(SPI_PORT,SDIO_PIN, GPIO_Mode_Out_PP_High_Slow)  
+#define   InputSDIO()	Gpio_InitIOExt(SPI_PORT,SDIO_PIN, GpioDirIn, TRUE, FALSE, FALSE, 0)//SDIO 
+#define	OutputSDIO()	Gpio_InitIOExt(SPI_PORT,SDIO_PIN, GpioDirOut, TRUE, FALSE, FALSE, 0)//SDIO   
 
-#define	SDIO_H()	 GPIO_ReadInputDataBit(SPI_PORT, SDIO_PIN) 
-#define	SDIO_L()	 GPIO_ReadInputDataBit(SPI_PORT, SDIO_PIN)  
+#define	SDIO_H()	 Gpio_GetIO(SPI_PORT, SDIO_PIN) 
+#define	SDIO_L()	 Gpio_GetIO(SPI_PORT, SDIO_PIN)  
 
 
   void vSpi3Init(void);				/** initialize software SPI-3 **/	
