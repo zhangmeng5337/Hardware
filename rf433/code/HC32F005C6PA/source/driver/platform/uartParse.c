@@ -8,9 +8,12 @@ unsigned char uartReceiveLen;
 extern unsigned char uartReceiveriteIndex;
 unsigned char uartReadIndex;
 
-params_typedef system_params_get()
+params_typedef *system_params_get()
 {
-  return params;
+	params_typedef *params1;
+	params1 = &params;
+
+  return params1;
 }
 
 boolean_t anlyz_uart_data(CommandInfo_typedef *CommandInfo)

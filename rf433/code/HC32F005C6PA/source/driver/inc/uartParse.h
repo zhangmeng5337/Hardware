@@ -38,7 +38,8 @@ unsigned char KEY_H8;
 unsigned char KEY_L8;
 unsigned char inhibition; 
 unsigned char sn[SN_LEN];
-unsigned char len;
+unsigned int  CommandStatusToggleFlag;
+
 }params_typedef;
 
 
@@ -50,5 +51,7 @@ unsigned char tag;
 
 
 }CommandInfo_typedef;
+params_typedef *system_params_get(void);
+
 #endif
 

@@ -76,8 +76,7 @@ boolean_t command_process()
 	if(InhibitonStatus(KEY_UP_DOWN_INCH_BIT))
 	{
 		if(*tKeyStatus&KEY_UP_BIT)
-		{
-		   
+		{	   
 			CommandTx(KEY_UP_BIT);
 			*tKeyStatus=*tKeyStatus&(~KEY_UP_BIT);		
 		}

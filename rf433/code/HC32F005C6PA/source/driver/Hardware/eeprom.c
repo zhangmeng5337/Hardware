@@ -32,7 +32,8 @@ params_typedef * eeprom_data_read()
     params.inhibition= FLASH_ReadByte(add++);
     for(unsigned char i=0;i<SN_LEN;i++)
       params.sn[i]=FLASH_ReadByte(add++);
-    params.freq=FLASH_ReadByte(add++);				
+    params.freq=FLASH_ReadByte(add++);	
+    params.CommandStatusToggleFlag =FLASH_ReadByte(add++);	
   }
   else
   {
@@ -43,6 +44,7 @@ params_typedef * eeprom_data_read()
     for(unsigned char i=0;i<SN_LEN;i++)
       params.sn[i]=SN_DEFAULT;
     params.freq= CHANNEL_DEFAULT ;
+    params.CommandStatusToggleFlag =0;		
     return &params;
   }
   
@@ -84,8 +86,9 @@ en_result_t eeprom_write(params_typedef params)
   enResult = Flash_WriteByte(u32Addr++,  params.inhibition);
   for(unsigned char i=0;i<SN_LEN;i++)
     enResult = Flash_WriteByte(u32Addr++,  params.sn[i]);
-  enResult = Flash_WriteByte(u32Addr++,  params.freq);	
-  
+  enResult = Flash_WriteByte(u32Addr++,  params.freq);
+  enResult = Flash_WriteByte(u32Addr++,  (uint8_t)params.CommandStatusToggleFlag>>8);   
+  enResult = Flash_WriteByte(u32Addr++,  (uint8_t)params.CommandStatusToggleFlag);   
   return   enResult;
 }
 
