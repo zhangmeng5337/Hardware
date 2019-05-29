@@ -36,26 +36,26 @@
 #define KEY_BREAK_PIN       1
 
 
-#define KEY_UP_BIT           0x8000
-#define KEY_DOWN_BIT         0x4000
-#define KEY_EAST_BIT         0x2000
-#define KEY_WEST_BIT         0x1000
-#define KEY_SOUTH_BIT        0x0800
-#define KEY_NORTH_BIT        0x0400
-#define KEY_START_BIT        0x0200
-#define KEY_STOP_BIT         0x0100
+#define KEY_UP_BIT               	0x8000
+#define KEY_DOWN_BIT         	0x4000
+#define KEY_EAST_BIT           	0x2000
+#define KEY_WEST_BIT          	0x1000
+#define KEY_SOUTH_BIT        	0x0800
+#define KEY_NORTH_BIT        	0x0400
+#define KEY_START_BIT         	0x0200
+#define KEY_STOP_BIT           	0x0100
 
-#define KEY_OUT1_BIT         0x80
-#define KEY_OUT2_BIT         0x40
-#define KEY_OUT3_BIT         0x20
-#define KEY_OUT4_BIT         0x10
-#define KEY_BREAK_BIT        0x08
+#define KEY_OUT1_BIT         	0x80
+#define KEY_OUT2_BIT         	0x40
+#define KEY_OUT3_BIT         	0x20
+#define KEY_OUT4_BIT         	0x10
+#define KEY_BREAK_BIT        	0x08
 
-#define KEY_UP_DOWN_INCH_BIT           0x80
-#define KEY_EAST_WEST_INCH_BIT         0x40
-#define KEY_SOUTH_NORTH_INCH_BIT       0x20
-#define KEY_OUT1_OUT2_INCH_BIT         0x10
-#define KEY_OUT3_OUT4_INCH_BIT         0x08
+#define KEY_UP_DOWN_INCH_BIT           		0x80
+#define KEY_EAST_WEST_INCH_BIT         	0x40
+#define KEY_SOUTH_NORTH_INCH_BIT       	0x20
+#define KEY_OUT1_OUT2_INCH_BIT         	0x10
+#define KEY_OUT3_OUT4_INCH_BIT         	0x08
 
 
 
@@ -68,4 +68,5 @@
 #define NOINHIBITION		0X04//·ÇÄâÖÆ
 uint16_t *KeyStaus(void);//return key status 
 void KEY_Init(void);
+boolean_t key_interrupt_trigger(uint16_t inch_status,uint16_t key_num);
 #endif

@@ -1,0 +1,3 @@
+---- anlyz_uart_data Matches (2 in 1 files) ----
+uartParse.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\platform):boolean_t anlyz_uart_data(CommandInfo_typedef *CommandInfo)
+uartParse.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\platform):				unsigned char res= anlyz_uart_data(&CommandInfo);

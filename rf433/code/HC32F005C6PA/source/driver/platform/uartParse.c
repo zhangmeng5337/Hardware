@@ -13,7 +13,7 @@ params_typedef *system_params_get()
 	params_typedef *params1;
 	params1 = &params;
 
-  return params1;
+  return &params;
 }
 
 boolean_t anlyz_uart_data(CommandInfo_typedef *CommandInfo)
