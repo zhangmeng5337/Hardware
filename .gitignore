@@ -19,6 +19,12 @@ History/
 ._
 .dep
 .ewd
+Debug/
+*.dep
+*.ewd
+*.ewt
+*.ewp
+settings/
 .edp
 .ewt
 /settings/
