@@ -70,9 +70,5 @@ typedef unsigned int  word;
   
 
 
-
-#else
-#warning "spi.h have been defined!"
-
 #endif 
 

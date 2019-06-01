@@ -27,17 +27,17 @@
 /* Private define ------------------------------------------------------------*/
 /* Evalboard I/Os configuration */
 
-#define GPIO_PORT_C  (GPIOC)
-
-
-#define GPIO_PINS (GPIO_PIN_3 | GPIO_PIN_5  |GPIO_PIN_6  | GPIO_PIN_2)
-
-#define GPIO_PINS_CSB  (GPIO_PIN_3)
-#define GPIO_PINS_SDIO  (GPIO_PIN_2)
-#define GPIO_PINS_FCSB  (GPIO_PIN_6)
-#define GPIO_PINS_SDCK  (GPIO_PIN_5)
-
-#define GPIO1    (GPIO_PIN_1)      
+//#define GPIO_PORT_C  (GPIOC)
+//
+//
+//#define GPIO_PINS (GPIO_PIN_3 | GPIO_PIN_5  |GPIO_PIN_6  | GPIO_PIN_2)
+//
+//#define GPIO_PINS_CSB  (GPIO_PIN_3)
+//#define GPIO_PINS_SDIO  (GPIO_PIN_2)
+//#define GPIO_PINS_FCSB  (GPIO_PIN_6)
+//#define GPIO_PINS_SDCK  (GPIO_PIN_5)
+//
+//#define GPIO1    (GPIO_PIN_1)      
 
 
 #define ON	0x01
@@ -48,7 +48,9 @@
 /* Private functions ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
-
+void setup_Tx(void);
+void CMT2300_Init(void);
+void loop_Tx(unsigned char *str,unsigned char len);
 #endif /* __MAIN_H__ */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
