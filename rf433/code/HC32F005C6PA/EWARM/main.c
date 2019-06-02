@@ -20,12 +20,12 @@ void setup_Tx(void);
 void setup_Rx(void);
 void CMT2300_Init();
 //void loop_Tx(void);
-void loop_Rx(void);
+//void loop_Rx(void);
 
 #define LEN 21
 
 unsigned char str[LEN] = {'H','o','p','e','R','F',' ','R','F','M',' ','C','O','B','R','F','M','3','0','0','A'};
-byte getstr[LEN+1];
+//byte getstr[LEN+1];
 
 
 
@@ -263,9 +263,10 @@ void loop_Tx(unsigned char *str,unsigned char len)
   delay1ms(200);
 }
 
-void loop_Rx()
+unsigned char loop_Rx(byte *getstr)
 {
   byte tmp;
+   tmp = 0;
   if(GPO2_H())
   {
     bGoStandby();
@@ -273,5 +274,6 @@ void loop_Rx()
     bIntSrcFlagClr();
     vClearFIFO(); 
     bGoRx();
-  }	
+  }
+  return tmp;
 }

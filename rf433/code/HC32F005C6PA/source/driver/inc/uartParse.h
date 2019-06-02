@@ -21,6 +21,8 @@
 #define WAKEUP_CMD				0x57
 #define FORMAT_CMD				0x56
 #define SETTING_CMD				0x12
+#define SNACK_CMD				0x58
+
 typedef struct {
 
 unsigned char KEY_H8;
@@ -29,17 +31,21 @@ unsigned char inhibition;
 unsigned char sn[SN_LEN];
 unsigned int  freq;
 unsigned int  CommandStatusToggleFlag;
-
 }params_typedef;
+typedef struct {
 
+unsigned char head;
+unsigned char func;
+unsigned char sn[SN_LEN];
+unsigned int  freq;
+unsigned int  crc;
+}rfparams_typedef;
 
 typedef struct{
 unsigned char head;
 unsigned char funcode[11];//功能2byte，sn码4byte,频点2byte，按键2byte,拟制关系1byte，预留1byte
 unsigned int crc;
 unsigned char tag;
-
-
 }CommandInfo_typedef;
 params_typedef *system_params_get(void);
 void uartPrase(void);

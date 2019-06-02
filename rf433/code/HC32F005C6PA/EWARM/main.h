@@ -51,6 +51,8 @@
 void setup_Tx(void);
 void CMT2300_Init(void);
 void loop_Tx(unsigned char *str,unsigned char len);
+unsigned char loop_Rx(unsigned char *getstr);
+void setup_Rx(void);
 #endif /* __MAIN_H__ */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

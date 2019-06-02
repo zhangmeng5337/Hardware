@@ -61,12 +61,12 @@ void uartPrase()
       else if(CommandInfo.funcode[FUNC_INDEX]==WAKEUP_CMD&&
               CommandInfo.funcode[FUNC_INDEX+1]==0x0d)//串口参数
       {
-        ack_response(WAKEUP_CMD);
+        uart_ack_response(WAKEUP_CMD);
       }
       else if(CommandInfo.funcode[FUNC_INDEX]==FORMAT_CMD&&
               CommandInfo.funcode[FUNC_INDEX+1]==0x0d)//格式化参数
       {
-        ack_response(FORMAT_CMD);
+        uart_ack_response(FORMAT_CMD);
       }	 
     }
     uartReceiveLen = 0;

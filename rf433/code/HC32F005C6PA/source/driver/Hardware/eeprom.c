@@ -21,7 +21,7 @@ unsigned char FLASH_ReadByte(uint32_t readadd)
 }
 params_typedef *eeprom_data_read()
 {
-  params_typedef params2;
+  static params_typedef params2;
   
   uint32_t  add;
   add =   0x3ff0;  
@@ -90,7 +90,7 @@ en_result_t eeprom_write(params_typedef params)
   enResult = Flash_WriteByte(u32Addr++,  (uint8_t)params.freq);
   enResult = Flash_WriteByte(u32Addr++,  (uint8_t)params.CommandStatusToggleFlag>>8);   
   enResult = Flash_WriteByte(u32Addr++,  (uint8_t)params.CommandStatusToggleFlag);  
-  uint8_t *pReadBuf;
+  uint8_t *pReadBuf=NULL;
   if(ee_ReadBytes(pReadBuf, 0, 1)==1)
   {   
     if(pReadBuf[0]!=0x5a)
@@ -98,13 +98,13 @@ en_result_t eeprom_write(params_typedef params)
      pReadBuf[0]= 0x5a;
       memcpy(&pReadBuf[1],&params,12);
       if (ee_WriteBytes( pReadBuf, 0, 12) == 1)
-        return 0;
+        enResult=Ok;
       else 
-        return 1;
+        enResult= Error;
     }
   }
   
-  //  return   enResult;
+   return   enResult;
 }
 
 
