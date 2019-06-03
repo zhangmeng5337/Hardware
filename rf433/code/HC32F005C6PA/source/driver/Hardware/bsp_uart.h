@@ -6,7 +6,7 @@
 
 #include "stdio.h"
 #include <stdarg.h>
-
+#include "ddl.h"
 
 #define BUFFERSIZE	32
 
@@ -26,7 +26,7 @@
 #endif /* _RAISONANCE_ */
 
 
-
+void UART1_SendBytes(uint8_t *data,uint8_t len);
 void USART_SendStr(unsigned char *Str); 
  void UART_Config(void);
  

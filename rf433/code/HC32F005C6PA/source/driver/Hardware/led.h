@@ -10,6 +10,6 @@
 #define LED_RED           0X00
 #define LED_GREEN         0X01
 void LED_ctrl(unsigned char led_sel,boolean_t status);
-void LED_blink(unsigned char led_sel);
+void LED_blink(unsigned char led_sel,uint16_t DelayCount);
  void LED_Init(void);
 #endif

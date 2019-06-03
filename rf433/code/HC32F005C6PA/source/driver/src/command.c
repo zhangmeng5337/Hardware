@@ -2,34 +2,194 @@
 #include "base_types.h"
 #include "key.h"
 #include "uartParse.h"
+#include "command.h"
+#include "main.h"
+#include "crc.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "bsp_uart.h"
+#include "bsp_i2c_ee.h"
+#include "led.h"
 uint16_t CommandStatusToggleFlag=0;
-#define KEY_UP_BIT               	0x8000
-#define KEY_DOWN_BIT         	0x4000
-#define KEY_EAST_BIT           	0x2000
-#define KEY_WEST_BIT          	0x1000
-#define KEY_SOUTH_BIT        	0x0800
-#define KEY_NORTH_BIT        	0x0400
-#define KEY_START_BIT         	0x0200
-#define KEY_STOP_BIT           	0x0100
-
-#define KEY_OUT1_BIT         	0x80
-#define KEY_OUT2_BIT         	0x40
-#define KEY_OUT3_BIT         	0x20
-#define KEY_OUT4_BIT         	0x10
-#define KEY_BREAK_BIT        	0x08
-void  CommandTx(uint16_t key_num,boolean_t toggle_flag)
+void uart_ack_response(unsigned char  cmd_type)
 {
-
+  uint8_t *pbuffer = malloc(9);
+  
+  switch(cmd_type)
+  {
+  case WAKEUP_CMD:
+    {
+      pbuffer[0] = WAKE_HEAD;
+      pbuffer[1] = WAKE_HEAD;
+      pbuffer[2] = WAKE_HEAD;
+      pbuffer[3] = WAKE_HEAD;
+      pbuffer[4] = WAKEUP_CMD;
+      pbuffer[5] = 0x0d;
+      params_typedef *tmp=system_params_get();
+      memcpy(&pbuffer[6],tmp,9);
+      unsigned int crc=CRC16_Get8(&pbuffer[4],11);
+      pbuffer[15] =(unsigned char)( crc>>8);	
+      pbuffer[16] = (unsigned char)crc;	
+      pbuffer[17] = WAKE_TAG;	
+      
+      UART_Config();
+      UART1_SendBytes(pbuffer,18);
+      free(pbuffer);
+      pbuffer = NULL;
+      
+    }break;
+  case FORMAT_CMD:
+    {
+      pbuffer[0] = WAKE_HEAD;
+      pbuffer[1] = WAKE_HEAD;
+      pbuffer[2] = WAKE_HEAD;
+      pbuffer[3] = WAKE_HEAD;
+      pbuffer[4] = FORMAT_CMD;
+      pbuffer[5] = 0x0d;
+      params_typedef *tmp=system_params_get();
+      memcpy(&pbuffer[6],tmp,9);
+      unsigned int crc=CRC16_Get8(&pbuffer[4],11);
+      pbuffer[15] =(unsigned char)( crc>>8);	
+      pbuffer[16] = (unsigned char)crc;	
+      pbuffer[17] = WAKE_TAG;	
+      
+      UART_Config();
+      UART1_SendBytes(pbuffer,18);
+      free(pbuffer);
+      pbuffer = NULL;
+    }break;	
+    
+  }
 }
-/********************************************************************
-å‡½æ•°åï¼šboolean_t InhibitonStatus(uint16_t keyInhibitonNum)
-å‡½æ•°åŠŸèƒ½ï¼šæ‹Ÿåˆ¶å…³ç³»åˆ¤æ–­
-å‚æ•°ï¼škeyInhibitonNum
-KEY_UP_DOWN_INCH_BITï¼šupï¼Œdownæ‹Ÿåˆ¶ç¼–å·
-è¿”å›žå€¼ï¼š
-1:éžæ‹Ÿåˆ¶å…³ç³»
-0ï¼šæ‹Ÿåˆ¶å…³ç³»
-
+void rf_ack_response(unsigned char  cmd_type)
+{
+  uint8_t *pbuffer = malloc(9);
+  
+  switch(cmd_type)
+  {
+  case SNACK_CMD:
+    {
+      pbuffer[0] = WAKE_HEAD;
+      pbuffer[1] = WAKE_HEAD;
+      pbuffer[2] = WAKE_HEAD;
+      pbuffer[3] = WAKE_HEAD;
+      pbuffer[4] = WAKEUP_CMD;
+      pbuffer[5] = 0x0d;
+      params_typedef *tmp=system_params_get();
+      memcpy(&pbuffer[6],tmp,9);
+      unsigned int crc=CRC16_Get8(&pbuffer[4],11);
+      pbuffer[15] =(unsigned char)( crc>>8);	
+      pbuffer[16] = (unsigned char)crc;	
+      pbuffer[17] = WAKE_TAG;	
+      
+      UART_Config();
+      UART1_SendBytes(pbuffer,18);
+      free(pbuffer);
+      pbuffer = NULL;
+      
+    }break;
+  }
+  
+}
+/******************************************************************
+º¯ÊýÃû:  CommandTx(uint16_t key_num,uint8_t mode,boolean_t toggle_flag)
+²ÎÊý:
+key_num:±»°´ÏÂµÄ°´¼ü
+mode:ÃüÁîÄ£Ê½
+0:¿ØÖÆÄ£Ê½
+1:ÅäÖÃÄ£Ê½
+toggle_flag:¼ÌµçÆ÷¶¯×÷
+0:¼ÌµçÆ÷ÎüºÏ
+1:¼ÌµçÆ÷¶Ï¿ª
+*******************************************************************/
+void  CommandTx(uint16_t key_num,uint8_t mode,boolean_t toggle_flag,uint8_t TxCount)
+{
+  uint8_t *pbuffer = malloc(9);
+  uint16_t crc_tmp;
+  uint8_t len_tmp;
+  
+  if(mode == COMMAND_FUNC_SN_CONFIG)
+  {
+    *pbuffer++ = WAKE_HEAD;
+    *pbuffer++ = mode;
+    params_typedef *tmp=system_params_get();
+    *pbuffer++ = tmp->sn[0];
+    *pbuffer++ = tmp->sn[1];
+    *pbuffer++ = tmp->sn[2];	
+    *pbuffer++ = tmp->sn[3];
+    *pbuffer++ =(uint8_t)( tmp->freq>>8);
+    *pbuffer++ =(uint8_t)( tmp->freq);	
+    len_tmp = COMMAND_FUNC_SN_CONFIG_LEN;
+    crc_tmp = CRC16_Get8(pbuffer, len_tmp);
+  }
+  else
+    *pbuffer++ = mode;	
+  
+  //¿ØÖÆÄ£Ê½
+  if(mode == COMMAND_FUNC_CTRL)
+  {
+    //°´¼ü±àºÅ
+    *pbuffer++ = (uint8_t)(key_num>>8);	
+    *pbuffer++ = (uint8_t)(key_num);
+    //¼ÌµçÆ÷¶¯×÷
+    if(toggle_flag == 1)
+    {
+      *pbuffer++ = (uint8_t)(key_num>>8);	
+      *pbuffer++ = (uint8_t)(key_num);		
+    }
+    else
+    {
+      *pbuffer++ = (uint8_t)(~key_num>>8);	
+      *pbuffer++ = (uint8_t)(~key_num);
+    }
+    len_tmp = COMMAND_CTRL_LEN;
+    crc_tmp = CRC16_Get8(pbuffer, len_tmp);
+  }
+  //ÅäÖÃÄ£Ê½
+  if(mode == COMMAND_FUNC_CONFIG)
+  {
+    params_typedef *tmp=system_params_get();
+    *pbuffer++ = tmp->sn[0];
+    *pbuffer++ = tmp->sn[1];
+    *pbuffer++ = tmp->sn[2];	
+    *pbuffer++ = tmp->sn[3];
+    *pbuffer++ =(uint8_t)( tmp->freq>>8);
+    *pbuffer++ =(uint8_t)( tmp->freq);	
+    len_tmp = COMMAND_CONFIG_LEN;
+    crc_tmp = CRC16_Get8(pbuffer, len_tmp);			
+  }
+  
+  
+  *pbuffer++ =(uint8_t)(crc_tmp>>8);
+  *pbuffer++ =(uint8_t)(crc_tmp);
+  *pbuffer++ =WAKE_TAG;
+  
+  CMT2300_Init();
+  setup_Tx();
+  unsigned char i;
+  i=0;
+  while(i<TxCount)
+  {
+    i++;
+    loop_Tx(pbuffer,len_tmp);
+  }
+  free(pbuffer);
+  pbuffer = NULL;
+   setup_Rx();
+  KEY_Init();
+}
+/******************************************************************
+º¯ÊýÃû:  boolean_t InhibitonStatus(uint16_t keyInhibitonNum)
+²ÎÊý:
+keyInhibitonNum:ÄâÖÆ¹ØÏµ×´Ì¬
+bit7:upºÍdown°´¼üÄâÖÆ¹ØÏµ
+bit6:KEY_EAST_WEST
+bit5:KEY_SOUTH_NORTH
+bit4:KEY_OUT1_OUT2 
+bit4:KEY_OUT3_OUT4
+bit×´Ì¬:
+0:ÄâÖÆ
+1:²»ÄâÖÆ
 *******************************************************************/
 boolean_t InhibitonStatus(uint16_t keyInhibitonNum)
 {
@@ -77,7 +237,12 @@ boolean_t InhibitonStatus(uint16_t keyInhibitonNum)
   }	
   return tstatus;
 }
+/******************************************************************
+º¯ÊýÃû: command_key_anlyz()
+º¯Êý¹¦ÄÜ:ÅÐ¶Ï°´¼üÊÇ·ñ±»°´ÏÂ£¬Èç¹û±»°´ÏÂ¸ù¾ÝÄâ
+ÖÆ¹ØÏµÒÔ¼°°´¼ü×´Ì¬Í¨¹ýrf·¢ËÍÃüÁî
 
+*******************************************************************/
 void command_key_anlyz()
 {
   uint16_t *tKeyStatus;
@@ -98,12 +263,12 @@ void command_key_anlyz()
         {	   
           if((tmp->CommandStatusToggleFlag|KEY_UP_BIT)==0)
           {
-            CommandTx(KEY_UP_BIT,0);
+            CommandTx(KEY_UP_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_UP_BIT;
           }
           else
           {
-            CommandTx(KEY_UP_BIT,1);
+            CommandTx(KEY_UP_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_UP_BIT);					
           }   
           *tKeyStatus=*tKeyStatus&(~KEY_UP_BIT);	
@@ -115,12 +280,12 @@ void command_key_anlyz()
         {	   
           if((tmp->CommandStatusToggleFlag|KEY_DOWN_BIT)==0)
           {
-            CommandTx(KEY_DOWN_BIT,0);
+            CommandTx(KEY_DOWN_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_DOWN_BIT;
           }
           else
           {
-            CommandTx(KEY_DOWN_BIT,1);
+            CommandTx(KEY_DOWN_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_DOWN_BIT);					
           }
           
@@ -133,14 +298,14 @@ void command_key_anlyz()
     {
       if((*tKeyStatus&KEY_UP_BIT)&&(*tKeyStatus&KEY_DOWN_BIT))
       {
-        CommandTx(KEY_UP_BIT);
+        CommandTx(KEY_UP_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
         *tKeyStatus=*tKeyStatus&(~KEY_UP_BIT);
       }
       else
         ;
     }
-     /*******************************************************************/
-     /*******************************************************************/	 
+    /*******************************************************************/
+    /*******************************************************************/	 
     //EAST WEST inch 
     if(InhibitonStatus(KEY_EAST_WEST_INCH_BIT))
     {
@@ -150,12 +315,12 @@ void command_key_anlyz()
         {	   
           if((tmp->CommandStatusToggleFlag|KEY_EAST_BIT)==0)
           {
-            CommandTx(KEY_EAST_BIT,0);
+            CommandTx(KEY_EAST_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_EAST_BIT;
           }
           else
           {
-            CommandTx(KEY_EAST_BIT,1);
+            CommandTx(KEY_EAST_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_EAST_BIT);					
           }
           
@@ -168,12 +333,12 @@ void command_key_anlyz()
         {	   
           if((tmp->CommandStatusToggleFlag|KEY_WEST_BIT)==0)
           {
-            CommandTx(KEY_WEST_BIT,0);
+            CommandTx(KEY_WEST_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_WEST_BIT;
           }
           else
           {
-            CommandTx(KEY_WEST_BIT,1);
+            CommandTx(KEY_WEST_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_WEST_BIT);					
           }
           
@@ -190,14 +355,14 @@ void command_key_anlyz()
     {
       if((*tKeyStatus&KEY_EAST_BIT)&&(*tKeyStatus&KEY_WEST_BIT))
       {
-        CommandTx(KEY_WEST_BIT);
+        CommandTx(KEY_WEST_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
         *tKeyStatus=*tKeyStatus&(~KEY_WEST_BIT);
       }
       else
         ;
     }
-     /*******************************************************************/
-     /*******************************************************************/	 
+    /*******************************************************************/
+    /*******************************************************************/	 
     //SOUTH NORTH inch
     if(InhibitonStatus(KEY_SOUTH_NORTH_INCH_BIT)) 
     {
@@ -207,12 +372,12 @@ void command_key_anlyz()
         {	   
           if((tmp->CommandStatusToggleFlag|KEY_SOUTH_BIT)==0)
           {
-            CommandTx(KEY_SOUTH_BIT,0);
+            CommandTx(KEY_SOUTH_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_SOUTH_BIT;
           }
           else
           {
-            CommandTx(KEY_SOUTH_BIT,1);
+            CommandTx(KEY_SOUTH_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_SOUTH_BIT);					
           }
           
@@ -225,12 +390,12 @@ void command_key_anlyz()
         {	   
           if((tmp->CommandStatusToggleFlag|KEY_NORTH_BIT)==0)
           {
-            CommandTx(KEY_NORTH_BIT,0);
+            CommandTx(KEY_NORTH_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_NORTH_BIT;
           }
           else
           {
-            CommandTx(KEY_NORTH_BIT,1);
+            CommandTx(KEY_NORTH_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
             tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_NORTH_BIT);					
           }
           
@@ -247,14 +412,14 @@ void command_key_anlyz()
     {
       if((*tKeyStatus&KEY_SOUTH_BIT)&&(*tKeyStatus&KEY_NORTH_BIT))
       {
-        CommandTx(KEY_NORTH_BIT);
+        CommandTx(KEY_NORTH_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
         *tKeyStatus=*tKeyStatus&(~KEY_NORTH_BIT);
       }
       else
         ;
     }
-     /*******************************************************************/
-     /*******************************************************************/	     
+    /*******************************************************************/
+    /*******************************************************************/	     
     //OUT1 OUT2 NORTH inch 
     if(InhibitonStatus(KEY_OUT1_OUT2_INCH_BIT))
     {
@@ -262,12 +427,12 @@ void command_key_anlyz()
       {	   
         if((tmp->CommandStatusToggleFlag|KEY_OUT1_BIT)==0)
         {
-          CommandTx(KEY_OUT1_BIT,0);
+          CommandTx(KEY_OUT1_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_OUT1_BIT;
         }
         else
         {
-          CommandTx(KEY_OUT1_BIT,1);
+          CommandTx(KEY_OUT1_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_OUT1_BIT);					
         }
         
@@ -277,12 +442,12 @@ void command_key_anlyz()
       {	   
         if((tmp->CommandStatusToggleFlag|KEY_OUT2_BIT)==0)
         {
-          CommandTx(KEY_OUT2_BIT,0);
+          CommandTx(KEY_OUT2_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_OUT2_BIT;
         }
         else
         {
-          CommandTx(KEY_OUT2_BIT,1);
+          CommandTx(KEY_OUT2_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_OUT2_BIT);					
         }
         
@@ -298,14 +463,14 @@ void command_key_anlyz()
     {
       if((*tKeyStatus&KEY_OUT1_BIT)&&(*tKeyStatus&KEY_OUT2_BIT))
       {
-        CommandTx(KEY_OUT1_BIT);
+        CommandTx(KEY_OUT1_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
         *tKeyStatus=*tKeyStatus&(~KEY_OUT1_BIT);
       }
       else
         ;
     }
-     /*******************************************************************/
-     /*******************************************************************/	     
+    /*******************************************************************/
+    /*******************************************************************/	     
     //OUT3 OUT4 NORTH inch
     if(InhibitonStatus(KEY_OUT3_OUT4_INCH_BIT)) 
     {
@@ -313,12 +478,12 @@ void command_key_anlyz()
       {	   
         if((tmp->CommandStatusToggleFlag|KEY_OUT3_BIT)==0)
         {
-          CommandTx(KEY_OUT3_BIT,0);
+          CommandTx(KEY_OUT3_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_OUT3_BIT;
         }
         else
         {
-          CommandTx(KEY_OUT3_BIT,1);
+          CommandTx(KEY_OUT3_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_OUT3_BIT);					
         }
         
@@ -328,12 +493,12 @@ void command_key_anlyz()
       {	   
         if((tmp->CommandStatusToggleFlag|KEY_OUT4_BIT)==0)
         {
-          CommandTx(KEY_OUT4_BIT,0);
+          CommandTx(KEY_OUT4_BIT,COMMAND_FUNC_CTRL,0,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag|KEY_OUT4_BIT;
         }
         else
         {
-          CommandTx(KEY_OUT4_BIT,1);
+          CommandTx(KEY_OUT4_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
           tmp->CommandStatusToggleFlag = tmp->CommandStatusToggleFlag&&(~KEY_OUT4_BIT);					
         }
         
@@ -345,7 +510,7 @@ void command_key_anlyz()
     {
       if((*tKeyStatus&KEY_OUT3_BIT)&&(*tKeyStatus&KEY_OUT4_BIT))
       {
-        CommandTx(KEY_OUT3_BIT);
+        CommandTx(KEY_OUT3_BIT,COMMAND_FUNC_CTRL,1,MAX_COUNT);
         *tKeyStatus=*tKeyStatus&(~KEY_OUT3_BIT);
       }
       else
@@ -353,15 +518,140 @@ void command_key_anlyz()
     }	
   }
 }
-  /********************************************************************
-  å‡½æ•°åï¼šcommand_process
-  å‡½æ•°åŠŸèƒ½ï¼šå‘½ä»¤å¤„ç†
-  å‚æ•°ï¼škeyInhibitonNum
-  
-  *******************************************************************/
-  boolean_t command_process()
+uint16_t  WorkModeStatus;
+unsigned char  WorkMode()
+{
+  KEY_Init();
+  uint16_t *keystatus_flag=KeyStaus();
+  switch(*keystatus_flag&0xffff)
   {
-    command_key_anlyz();
-    
-    ;
+  case KEY_STOP_BIT://Í£Ö¹°´¼ü
+    {
+      if(WorkModeStatus&STARTWORK)
+        WorkModeStatus = STOPWORK;//Í£Ö¹Ä£Ê½
+      else if((WorkModeStatus&BREAKWORK)==0&&(WorkModeStatus&STARTWORK==0))
+        WorkModeStatus = CONFIGSN;//¶ÔÂëÄ£Ê½
+      *keystatus_flag=*keystatus_flag&(~KEY_STOP_BIT);					
+    }break;
+  case KEY_START_BIT://Æô¶¯°´¼ü
+    {
+      if(WorkModeStatus&BREAKWORK)
+        WorkModeStatus = STARTWORK;//¿ª»úÄ£Ê½
+      *keystatus_flag=*keystatus_flag&(~KEY_START_BIT);	
+    }break;	
+  case KEY_BREAK_BIT://¸É»É¹Ü
+    {
+      if(WorkModeStatus&BREAKWORK)
+        WorkModeStatus = STOPWORK;//Í£Ö¹Ä£Ê½
+      else if(WorkModeStatus&BREAKWORK==0)
+        WorkModeStatus = BREAKWORK;//Ò»¼¶Æô¶¯
+      *keystatus_flag=*keystatus_flag&(~KEY_BREAK_BIT);		
+    }break;
   }
+  
+  return WorkModeStatus;
+}
+boolean_t rfPrase(uint8_t *pbuffer,uint8_t len)
+{
+  rfparams_typedef *RfparamsInfo=0;
+  //tmpuartReceiveriteIndex = uartReceiveLen;
+  
+  memcpy(RfparamsInfo,pbuffer,len);
+  unsigned int crc=CRC16_Get8(&pbuffer[1],len-1);
+  if(crc==RfparamsInfo->crc)
+    //Ð£ÑéÕýÈ·£¬½âÎöÖ¸Áî
+  {
+    params_typedef *tmp=system_params_get();
+    if(RfparamsInfo->sn == tmp->sn&&RfparamsInfo->freq==tmp->freq)//ÉèÖÃ²ÎÊý
+      return 0;
+    else 
+      return 1;
+  }
+  else
+    return 1;
+}
+/********************************************************************
+º¯ÊýÃûcommand_process
+
+
+*******************************************************************/
+boolean_t command_process()
+{
+  boolean_t rfAck_Flag=0;
+  command_key_anlyz();
+  if( WorkMode()==STARTWORK)//Õý³£¹¤×÷Ä£Ê½
+  {
+    if(ee_CheckOk()==0)//ÎÞ¿¨Æ¬
+    {
+      UART_Config();
+      uartPrase();  
+      //command_process();
+    }
+    else//ÓÐ¿¨Æ¬
+    {
+      //uint8_t *pReadBuf= malloc(12);
+      uint8_t *pReadBuf=0;
+      boolean_t readEEPROM_flag=0;
+      params_typedef *params=system_params_get();
+      if(ee_ReadBytes(pReadBuf, 0, 12)==1&&readEEPROM_flag==0)
+      {   
+        if(pReadBuf[0]==0x5a)//·Ç¿Õ¿¨
+        { 
+          
+          if(readEEPROM_flag == 0)
+          {
+            memcpy(&params,&pReadBuf[1],11);
+            readEEPROM_flag = 1;
+          }
+          
+          //params->KEY_H8 = pReadBuf[1];
+          //params->KEY_L8 =  pReadBuf[2];
+          //params->inhibition =  pReadBuf[3];
+          //params->sn[0] = pReadBuf[4];
+          //params->sn[1] = pReadBuf[5];
+          //params->sn[2] = pReadBuf[6];
+          //params->sn[3] = pReadBuf[7];
+          //params->freq =  pReadBuf[8]<<8 + pReadBuf[9];
+        }
+        else
+        {
+          pReadBuf[0] =0x5a;
+          memcpy(&pReadBuf[1],&params,11);
+          ee_WriteBytes(pReadBuf, 0, 12);
+        }
+        UART_Config();
+        uartPrase();  
+        //command_process();
+      }//ÓÐ¿¨Æ¬
+      
+    //  CMT2300_Init();
+     // setup_Rx();
+      // loop_Rx();
+    }
+  }
+  else if(WorkMode()==STOPWORK)//Í£»úÄ£Ê½
+  {
+    uint16_t *keystatus_flag=KeyStaus();
+    keystatus_flag = 0;
+  }
+  else if(WorkMode()==CONFIGSN)//ÅäÂëÄ£Ê½
+  {
+    if(rfAck_Flag == 0)
+    { 
+      CommandTx(0,COMMAND_FUNC_SN_CONFIG,0,1);
+      setup_Rx();
+    }
+    unsigned char len;
+    unsigned char *getstr=0;
+    len = loop_Rx(getstr);
+    if(len!=0)
+    {
+      if(rfPrase(getstr, len)==0)
+      {
+        rfAck_Flag = 1;
+        WorkModeStatus = 0;
+      } 
+    }
+  }
+  return 1;
+}

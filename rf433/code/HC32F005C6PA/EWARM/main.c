@@ -1,6 +1,11 @@
 #include "bsp_uart.h"
 #include "bsp_spi.h"
+#include "main.h"
+#include "eeprom.h"
 #include <CMT2300drive.h>
+#include "uartParse.h"
+#include "bsp_i2c_ee.h"
+#include "command.h"
 static boolean_t statetx = TRUE;  //  false为RX  true为TX
 /**/	extern boolean_t  FixedPktLength;						//false: for contain packet length in Tx message, the same mean with variable lenth
 //true : for doesn't include packet length in Tx message, the same mean with fixed length
@@ -14,13 +19,13 @@ void CLK_Init(void);
 void setup_Tx(void);
 void setup_Rx(void);
 void CMT2300_Init();
-void loop_Tx(void);
-void loop_Rx(void);
+//void loop_Tx(void);
+//void loop_Rx(void);
 
 #define LEN 21
 
-byte str[LEN] = {'H','o','p','e','R','F',' ','R','F','M',' ','C','O','B','R','F','M','3','0','0','A'};
-byte getstr[LEN+1];
+unsigned char str[LEN] = {'H','o','p','e','R','F',' ','R','F','M',' ','C','O','B','R','F','M','3','0','0','A'};
+//byte getstr[LEN+1];
 
 
 
@@ -158,35 +163,37 @@ word TXBank[11] = {
   0x5F7F															
 };			
 
-
+;
 void main(void)
 {
   //SystemClock_Init();
   //CLK_Init();
   delay1ms(200);
   //CFG->GCR |= CFG_GCR_SWD;
-  UART_Config();
-  CMT2300_Init();
-  if(FALSE == statetx )
-  {
-    setup_Rx();
-    while(1)
-    {
-      loop_Rx();
-    }
-  }
-  else
-  {
-    
-    setup_Tx(); 
-    while (1)
-    {
-      loop_Tx();
-    }
-  }
+ 
+ // ee_Test();
+ command_process();
   
-}
+//    if(FALSE == statetx )
+//    {
+//      
+//      while(1)
+//      {
+//        
+//      }
+//    }
+//    else
+//    {
+//      
+//      setup_Tx(); 
+//      while (1)
+//      {
+//        loop_Tx(str,LEN);
+//      }
+//    }
+    
 
+}
 
 
 /**
@@ -247,18 +254,19 @@ void setup_Rx(void)
 }
 
 
-void loop_Tx()
+void loop_Tx(unsigned char *str,unsigned char len)
 {
-  bSendMessage(str, LEN);
+  bSendMessage(str, len);
   while(GPO2_L());   // 判断GPIO中断 为低等 为高运行下面代码
   bIntSrcFlagClr();
   vClearFIFO(); 
   delay1ms(200);
 }
 
-void loop_Rx()
+unsigned char loop_Rx(byte *getstr)
 {
   byte tmp;
+   tmp = 0;
   if(GPO2_H())
   {
     bGoStandby();
@@ -266,5 +274,6 @@ void loop_Rx()
     bIntSrcFlagClr();
     vClearFIFO(); 
     bGoRx();
-  }	
+  }
+  return tmp;
 }

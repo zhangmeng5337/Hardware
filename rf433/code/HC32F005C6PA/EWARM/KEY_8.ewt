@@ -2441,6 +2441,9 @@
     <group>
         <name>HAL</name>
         <file>
+            <name>$PROJ_DIR$\..\source\driver\src\at24c02.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\source\driver\src\command.c</name>
         </file>
         <file>
@@ -2451,6 +2454,9 @@
         <name>Hardware</name>
         <file>
             <name>$PROJ_DIR$\..\source\driver\Hardware\bsp_adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\source\driver\Hardware\Bsp_i2c_gpio.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\source\driver\Hardware\bsp_uart.c</name>

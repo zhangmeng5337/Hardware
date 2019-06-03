@@ -1,3 +1,9 @@
----- anlyz_uart_data Matches (2 in 1 files) ----
-uartParse.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\platform):boolean_t anlyz_uart_data(CommandInfo_typedef *CommandInfo)
-uartParse.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\platform):				unsigned char res= anlyz_uart_data(&CommandInfo);
+---- system_params_get Matches (10 in 4 files) ----
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):    params_typedef *tmp=system_params_get();
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):  params_typedef *tmp=system_params_get();	  
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):  tmp=system_params_get();
+Key.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\hardware):  tInchStatus=system_params_get()->KEY_H8<<8+system_params_get()->KEY_L8;
+Key.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\hardware):   inch_status=system_params_get()->KEY_H8<<8+system_params_get()->KEY_L8;
+Key.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\hardware):  params=system_params_get();
+uartParse.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\platform):params_typedef *system_params_get()
+uartParse.h (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\inc):params_typedef *system_params_get(void);

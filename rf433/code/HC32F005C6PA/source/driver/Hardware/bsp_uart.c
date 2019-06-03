@@ -12,7 +12,7 @@
 void RxIntCallback(void);
 void ErrIntCallback(void);
 unsigned char UsartReceiveData[BUFFERSIZE];
-unsigned char UsartReceiveFlag,usart_i,j;
+unsigned char UsartReceiveFlag,usart_i,uartReceivewriteIndex;
 void UART_Config(void)
 {
   uint16_t timer=0;
@@ -95,6 +95,14 @@ void UART1_SendByte(uint8_t data)
   Uart_SendData(UARTCH1, data);
   ;
 }
+void UART1_SendBytes(uint8_t *data,uint8_t len)
+{  	
+  unsigned char i;
+  i=0;
+  while(len--)
+  Uart_SendData(UARTCH1, data[i++]);
+  ;
+}
 /*******************************************************************************
 * 名称: fputc
 * 功能: 重定向c库函数printf到UART1
@@ -139,10 +147,10 @@ void RxIntCallback(void)
   {
     UsartReceiveFlag =1;
     Uart_ClrStatus(UARTCH1,UartRxFull);//清除中断标志
-    UsartReceiveData[j] = Uart_ReceiveData(UARTCH1);
-    j++;
-    if(j>=BUFFERSIZE)
-      j=0;
+    UsartReceiveData[uartReceivewriteIndex] = Uart_ReceiveData(UARTCH1);
+    uartReceivewriteIndex++;
+    if(uartReceivewriteIndex>=BUFFERSIZE)
+      uartReceivewriteIndex=0;
   }
 }
 void ErrIntCallback(void)
