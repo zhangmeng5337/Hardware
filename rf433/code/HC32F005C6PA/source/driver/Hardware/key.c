@@ -18,169 +18,80 @@ void Gpio_IRQHandler(uint8_t u8Param)//key inttrupt call back function
   {
   case 0:
     {         
-      
-      if( key_interrupt_trigger(tInchStatus,KEY_DOWN_BIT)==0)//DOWN key down
+      if(Gpio_GetIrqStat(KEY_DOWN_PORT, KEY_DOWN_PIN))
       {
-        
-        UpdateKeyStatus = UpdateKeyStatus |KEY_DOWN_BIT;	
-        
-      }
-      else 
-      {
-        if(Gpio_GetIO(KEY_DOWN_PORT, KEY_DOWN_PIN)==0)//key down 
+        if( key_interrupt_trigger(tInchStatus,KEY_DOWN_BIT)==0)//DOWN key down
         {
-          while(Gpio_GetIO(KEY_DOWN_PORT, KEY_DOWN_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_DOWN_BIT;
+          
+          UpdateKeyStatus = UpdateKeyStatus |KEY_DOWN_BIT;	
+          
         }
-        
       }
       
-      if( key_interrupt_trigger(tInchStatus,KEY_BREAK_BIT)==0)//BREAK key down
+      if(Gpio_GetIrqStat(KEY_BREAK_PORT, KEY_BREAK_PIN))
       {
-        
-        UpdateKeyStatus = UpdateKeyStatus |KEY_BREAK_BIT;					
-      }
-      else 
-      {
-        if(Gpio_GetIO(KEY_BREAK_PORT, KEY_BREAK_PIN)==0)//key down 
+        if( key_interrupt_trigger(tInchStatus,KEY_BREAK_BIT)==0)//BREAK key down
         {
-          while(Gpio_GetIO(KEY_BREAK_PORT, KEY_BREAK_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_BREAK_BIT;
-        }
-        
+          
+          UpdateKeyStatus = UpdateKeyStatus |KEY_BREAK_BIT;					
+        }      	
       }
+      
       *((uint32_t *)((uint32_t)&M0P_GPIO->P0ICLR + u8Param * 0x40)) = 0;	
       
     }break;
     
   case 1:
-    {       
-      if( key_interrupt_trigger(tInchStatus,KEY_STOP_BIT)==0)//STOP down
+    { 
+      if(Gpio_GetIrqStat(KEY_STOP_PORT, KEY_STOP_PIN))
       {
-        
         UpdateKeyStatus = UpdateKeyStatus |KEY_STOP_BIT;					
-      }
-      else 
-      {
-        if(Gpio_GetIO(KEY_STOP_PORT_IRQ, KEY_STOP_PIN)==0)//STOP key down 
-        {
-          while(Gpio_GetIO(KEY_STOP_PORT_IRQ, KEY_STOP_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_STOP_BIT;
-        }
         
       }
+      
       *((uint32_t *)((uint32_t)&M0P_GPIO->P1ICLR + u8Param * 0x40)) = 0;	
       
     }break;
   case 3:
     {		
       //NORTH key down
-      if( key_interrupt_trigger(tInchStatus,KEY_NORTH_BIT)==0)
+      if(Gpio_GetIrqStat(KEY_NORTH_PORT, KEY_NORTH_PIN))
       {
-        
-        UpdateKeyStatus = UpdateKeyStatus |KEY_NORTH_BIT;					
+      	UpdateKeyStatus = UpdateKeyStatus |KEY_NORTH_BIT;		
       }
-      else 
+      //UP key down   
+      if(Gpio_GetIrqStat(KEY_UP_PORT, KEY_UP_PIN))
       {
-        if(Gpio_GetIO(KEY_NORTH_PORT_IRQ, KEY_NORTH_PIN)==0)//key down 
-        {
-          while(Gpio_GetIO(KEY_NORTH_PORT_IRQ, KEY_NORTH_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_NORTH_BIT;
-        }
-        
-      }
-      
-      
-      //UP key down
-      if( key_interrupt_trigger(tInchStatus,KEY_UP_BIT)==0)
-      {
-        
-        UpdateKeyStatus = UpdateKeyStatus |KEY_UP_BIT;					
-      }
-      else 
-      {
-        if(Gpio_GetIO(KEY_UP_PORT_IRQ, KEY_UP_PIN)==0)//key down 
-        {
-          while(Gpio_GetIO(KEY_UP_PORT_IRQ, KEY_UP_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_UP_BIT;
-        }
-        
-      }
-      
+        UpdateKeyStatus = UpdateKeyStatus |KEY_UP_BIT;		
+      }    
       
       //SOUTH key down
-      if( key_interrupt_trigger(tInchStatus,KEY_SOUTH_BIT)==0)
+      if(Gpio_GetIrqStat(KEY_SOUTH_PORT, KEY_SOUTH_PIN))
       {
-        
-        UpdateKeyStatus = UpdateKeyStatus |KEY_SOUTH_BIT;					
-      }
-      else 
-      {
-        if(Gpio_GetIO(KEY_SOUTH_PORT_IRQ, KEY_SOUTH_PIN)==0)//key down 
-        {
-          while(Gpio_GetIO(KEY_SOUTH_PORT_IRQ, KEY_SOUTH_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_SOUTH_BIT;
-        }
-        
-      }
+        UpdateKeyStatus = UpdateKeyStatus |KEY_SOUTH_BIT;		
+      }  
       
       
       //WEST key down
-      if( key_interrupt_trigger(tInchStatus,KEY_WEST_BIT)==0)
+      if(Gpio_GetIrqStat(KEY_WEST_PORT, KEY_WEST_PIN))
       {
-        
-        UpdateKeyStatus = UpdateKeyStatus |KEY_WEST_BIT;					
-      }
-      else 
-      {
-        if(Gpio_GetIO(KEY_SOUTH_PORT_IRQ, KEY_WEST_PIN)==0)//key down 
-        {
-          while(Gpio_GetIO(KEY_WEST_PORT_IRQ, KEY_WEST_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_WEST_BIT;
-        }
-        
-      }
+        UpdateKeyStatus = UpdateKeyStatus |KEY_WEST_BIT;		
+      }  
+      
       
       //EAST key down
-      if( key_interrupt_trigger(tInchStatus,KEY_EAST_BIT)==0)
+      if(Gpio_GetIrqStat(KEY_EAST_PORT, KEY_EAST_PIN))
       {
-        
-        UpdateKeyStatus = UpdateKeyStatus |KEY_EAST_BIT;					
-      }
-      else 
-      {
-        if(Gpio_GetIO(KEY_EAST_PORT_IRQ, KEY_EAST_PIN)==0)//key down 
-        {
-          while(Gpio_GetIO(KEY_EAST_PORT_IRQ, KEY_EAST_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_EAST_BIT;
-        }
-        
-      }
+        UpdateKeyStatus = UpdateKeyStatus |KEY_EAST_BIT;		
+      }  
       
       //START key down
-      if( key_interrupt_trigger(tInchStatus,KEY_START_BIT)==0)
+      if(Gpio_GetIrqStat(KEY_START_PORT, KEY_START_PIN))
       {
         
         UpdateKeyStatus = UpdateKeyStatus |KEY_START_BIT;					
       }
-      else 
-      {
-        if(Gpio_GetIO(KEY_START_PORT_IRQ, KEY_START_PIN)==0)//key down 
-        {
-          while(Gpio_GetIO(KEY_START_PORT_IRQ, KEY_START_PIN))//wait button up
-            ;
-          UpdateKeyStatus = UpdateKeyStatus |KEY_START_BIT;
-        }
-        
-      }
+      
       *((uint32_t *)((uint32_t)&M0P_GPIO->P3ICLR + u8Param * 0x40)) = 0;	
     }break;
     
@@ -227,7 +138,7 @@ en_gpio_irqtype_t key_intterupt_triggerConfig(uint16_t inch_status,uint16_t key_
   en_gpio_irqtype_t EXTI_Trigger;
   
   if(inch_status&key_num)
-    EXTI_Trigger = GpioIrqFalling;
+    EXTI_Trigger = GpioIrqRising;
   else 
     EXTI_Trigger = GpioIrqLow; 
   return EXTI_Trigger;
@@ -235,7 +146,7 @@ en_gpio_irqtype_t key_intterupt_triggerConfig(uint16_t inch_status,uint16_t key_
 void key_intterupt_config( uint16_t inch_status)
 {
   en_gpio_irqtype_t EXTI_Trigger;
-   inch_status=system_params_get()->KEY_H8<<8+system_params_get()->KEY_L8;
+  inch_status=system_params_get()->KEY_H8<<8+system_params_get()->KEY_L8;
   EXTI_Trigger=key_intterupt_triggerConfig(inch_status,KEY_UP_BIT); 	 	
   //初始化外部IO P33
   Gpio_InitIOExt(KEY_UP_PORT,KEY_UP_PIN, GpioDirIn, TRUE, FALSE, FALSE, 0);//up
