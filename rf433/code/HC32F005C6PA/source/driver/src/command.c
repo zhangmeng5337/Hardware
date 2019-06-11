@@ -613,7 +613,7 @@ boolean_t command_process()
           //params->sn[3] = pReadBuf[7];
           //params->freq =  pReadBuf[8]<<8 + pReadBuf[9];
         }
-        else
+        else//¿Õ¿¨
         {
           pReadBuf[0] =0x5a;
           memcpy(&pReadBuf[1],&params,11);
