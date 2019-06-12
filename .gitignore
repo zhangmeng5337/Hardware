@@ -19,7 +19,7 @@ History/
 ._
 .dep
 .ewd
-Debug/
+/Debug
 *.dep
 *.ewd
 *.ewt
@@ -29,3 +29,4 @@ settings/
 .ewt
 /settings/
 ~
+*.out
