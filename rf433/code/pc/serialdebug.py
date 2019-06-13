@@ -206,12 +206,11 @@ frameCOMX.grid_propagate(0)
 #****************************应用逻辑**********************************************
 #打开关闭串口
 def SerialOnOFF(event):
-  data2=[]
   if COMOFF['text'] == '关闭串口':
      COMOFF['text'] = '打开串口'
      print(COMOFF['text'])
      print(cmbChosenCOMX.get())     
-     print(str(cmbChosenCOMX[0]))
+     print((GetSerialList(0,0)))
 ##     for i in range(0,len(cmbChosenCOMX["values"])) :
 ##       print(cmbChosenCOMX[i]) 
 ##       if (str(cmbChosenCOMX.get()) == cmbChosenCOMX[i]) :
@@ -219,7 +218,15 @@ def SerialOnOFF(event):
   elif COMOFF['text'] == '打开串口':
      COMOFF['text'] = '关闭串口'
      print(COMOFF['text'])
+data2=[]
+def GetSerialList(event1,event2):
+    if event2 ==1 
+       data2 = event1
+       print("GetSerialList",data2)
+    else :
+       return data2
 #刷新选择串口
+
 def SerialList():
     data=[]
     plist = list(serial.tools.list_ports.comports())
@@ -231,9 +238,12 @@ def SerialList():
        port_list_0= list(plist[i])
        ser = serial.Serial(port_list_0[0],9600,timeout = 60)
        data[i]=port_list_0[0]
-      cmbChosenCOMX["values"] = data
-      print("Serial List************************",cmbChosenCOMX["values"])
-    return cmbChosenCOMX
+      cmbChosenCOMX['values'] = data
+      GetSerialList(data,1)
+      print(data)
+      print("Serial List************************",cmbChosenCOMX['values'])
+    return data
+
 def SerialSelect(self):
     SerialList()
     cmbChosenCOMX.current(0)
