@@ -3,6 +3,9 @@ from tkinter import ttk
 from tkinter import *
 import serial
 from  serial.tools import list_ports
+import threading
+from time import ctime,sleep
+import time
 FrameHeight     = 80
 FrameWidth      = 290
 FrameHeightLarge = 170
@@ -181,7 +184,7 @@ cmbChosenCOMX.grid(column = 1, row = 0,padx = OpadxSpace,pady =OpadySpace)
 
 
 
-COMOFF = tk.Button(frameCOMX,height =2,width = BoxWidthLong,text="关闭串口")
+COMOFF = tk.Button(frameCOMX,height =2,width = BoxWidthLong,text="打开串口")
 COMOFF.grid(column = 12, row = 0,sticky=W)
 COMOFF.place(relx=0,rely=0,x=110,y=1)
 WAKECOM = tk.Button(frameCOMX,height = 2,width = BoxWidthLong,text="唤醒串口")
@@ -204,56 +207,105 @@ frameFORMAT.grid_propagate(0)
 frameCOMX.grid_propagate(0)
 
 #****************************应用逻辑**********************************************
+def NoSerialDiage():
+    top = Toplevel()
+    top.title('Python')
+    w = tk.Label(top, text="串口不存在或者被占用，请重新选择", font=("华文行楷", 20), fg="red").grid(sticky = W,column=0,row=1,padx = OpadxSpace,pady =OpadySpaceStr)
+    #SerialDiag = Button(top, text='确定',height =2,width = BoxWidthLong).grid(column=0,row=2,padx = OpadxSpace,pady =OpadySpaceStr)
+    print("No Serial" )
 #打开关闭串口
 def SerialOnOFF(event):
-  if COMOFF['text'] == '关闭串口':
-     COMOFF['text'] = '打开串口'
-     print(COMOFF['text'])
-     print(cmbChosenCOMX.get())     
-     print((GetSerialList(0,0)))
-##     for i in range(0,len(cmbChosenCOMX["values"])) :
-##       print(cmbChosenCOMX[i]) 
-##       if (str(cmbChosenCOMX.get()) == cmbChosenCOMX[i]) :
-##          break
-  elif COMOFF['text'] == '打开串口':
+  if COMOFF['text'] == '打开串口':
      COMOFF['text'] = '关闭串口'
      print(COMOFF['text'])
-data2=[]
-def GetSerialList(event1,event2):
-    if event2 ==1 
-       data2 = event1
-       print("GetSerialList",data2)
-    else :
-       return data2
-#刷新选择串口
+##     print(cmbChosenCOMX.get())
+##     print("open serial",cmbChosenCOMX.get())
+##     print ("open serial %s" %ctime())
+     if SerialListCheck(cmbChosenCOMX.get()) == None: 
+       NoSerialDiage()
+     else :
+        print("no nono")
+  elif COMOFF['text'] == '关闭串口':
+     COMOFF['text'] = '打开串口'
+     print(COMOFF['text'])
 
+#刷新选择串口
+def SerialListCheck(event):
+             data=[]
+             
+             plist = list(serial.tools.list_ports.comports())
+             if len(plist) <= 0:
+               serialExistFlag = 0
+               print("No Serial In SerialListCheck************************")
+             else :
+              data = [0 for i in range(len(plist))]
+              for i in range(0,len(plist)) :
+                    port_list_0= list(plist[i])
+                    ser = serial.Serial(port_list_0[0],9600,timeout = 60)
+                    data[i]=port_list_0[0]
+                    if event == data[i]:
+                        serialExistFlag = 1
+                        print("Serial No Exist SerialListCheck************************",data[i])
+                        return  serialExistFlag                  
+              print("Check  No Serial SerialListCheck************************")
+              serialExistFlag = 0   
+             # cmbChosenCOMX['values'] = data
+              return  serialExistFlag 
 def SerialList():
-    data=[]
-    plist = list(serial.tools.list_ports.comports())
-    if len(plist) <= 0:
-      print ("no serial")
-    else :
-      data = [0 for i in range(len(plist))]
-      for i in range(0,len(plist)) :
-       port_list_0= list(plist[i])
-       ser = serial.Serial(port_list_0[0],9600,timeout = 60)
-       data[i]=port_list_0[0]
-      cmbChosenCOMX['values'] = data
-      GetSerialList(data,1)
-      print(data)
-      print("Serial List************************",cmbChosenCOMX['values'])
-    return data
+             data=[]
+             plist = list(serial.tools.list_ports.comports())
+             if len(plist) <= 0:
+               #print ("no serial")
+               cmbChosenCOMX['values'] = ''
+             else :
+              data = [0 for i in range(len(plist))]
+              for i in range(0,len(plist)) :
+                port_list_0= list(plist[i])
+                ser = serial.Serial(port_list_0[0],9600,timeout = 60)
+                data[i]=port_list_0[0]
+                #print("data Serial List************************",data[i])
+              cmbChosenCOMX['values'] = data
+              
+              print("Serial List************************",cmbChosenCOMX['values'])
+             # time.sleep(1)
+            # return data 
 
 def SerialSelect(self):
     SerialList()
-    cmbChosenCOMX.current(0)
+    #cmbChosenCOMX.current(0)
     
 cmbChosenCOMX.bind("<Button-1>",SerialSelect)
-
+ser = serial.Serial()
+ 
+def port_open():
+    ser.port = 'COM21'           #设置端口号
+    ser.baudrate = 9600     #设置波特率
+    ser.bytesize = 8        #设置数据位
+    ser.stopbits = 1        #设置停止位
+    ser.parity = "N"        #设置校验位
+    ser.open()              #打开串口,要找到对的串口号才会成功
+    if(ser.isOpen()):
+        print("打开成功")
+    else:
+        print("打开失败")
+ 
+def port_close():
+    ser.close()
+    if (ser.isOpen()):
+        print("关闭失败")
+    else:
+        print("关闭成功")
+ 
+def send(send_data):
+    if (ser.isOpen()):
+        ser.write(send_data.encode('utf-8'))  #utf-8 编码发送
+        #ser.write(binascii.a2b_hex(send_data))  #Hex发送
+        print("发送成功",send_data)
+    else:
+        print("发送失败")
 def DownLoadParams(event):
     #up down状态
     print("up down************************")  
-    print(cmbChosenCOMX.get())
     print(cmbChosenUp.get())
     print(cmbChosenDown.get())
     print(cmbChosenUpDown.get())
@@ -285,7 +337,14 @@ def DownLoadParams(event):
     print("SN_CH************************") 
     print(entrySN.get())
     print(entryCH.get())
+print(cmbChosenCOMX.get())
 WriteParams.bind("<Button-1>",DownLoadParams)
 #COMOFF.bind("<Button-1>",SerialOnOFF)SerialSelect
 COMOFF.bind("<Button-1>",SerialOnOFF)
+#def printHello():  
+   # print("start" )
+   
+##timer = threading.Timer(2,SerialList)
+##timer.start()
+##  
 win.mainloop()

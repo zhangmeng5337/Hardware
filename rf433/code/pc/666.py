@@ -1,26 +1,40 @@
+
 import serial
-from time import sleep
-
-def recv(serial):
+import binascii
+ 
+ser = serial.Serial()
+ 
+def port_open():
+    ser.port = 'COM21'           #设置端口号
+    ser.baudrate = 9600     #设置波特率
+    ser.bytesize = 8        #设置数据位
+    ser.stopbits = 1        #设置停止位
+    ser.parity = "N"        #设置校验位
+    ser.open()              #打开串口,要找到对的串口号才会成功
+    if(ser.isOpen()):
+        print("打开成功")
+    else:
+        print("打开失败")
+ 
+def port_close():
+    ser.close()
+    if (ser.isOpen()):
+        print("关闭失败")
+    else:
+        print("关闭成功")
+ 
+def send(send_data):
+    if (ser.isOpen()):
+        ser.write(send_data.encode('utf-8'))  #utf-8 编码发送
+        #ser.write(binascii.a2b_hex(send_data))  #Hex发送
+        print("发送成功",send_data)
+    else:
+        print("发送失败")
+ 
+ 
+if __name__ == "__main__":
+    port_open()
+    #port_close()
     while True:
-        data = serial.read_all()
-        if data == '':
-            continue
-        else:
-            break
-        sleep(0.02)
-    return data
-
-if __name__ == '__main__':
-    serial = serial.Serial('COM5', 9600, timeout=0.5)  #/dev/ttyUSB0
-    if serial.isOpen() :
-        print("open success")
-    else :
-        print("open failed")
-
-    while True:
-        data =recv(serial)
-        if data != b'' :
-            print("receive : ",data)
-            serial.write(data) #数据写回
+        send("Hello World!")
 
