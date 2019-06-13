@@ -10,7 +10,7 @@
 *.PS
 *.WK3
 *.o
-/Obj
+Obj/
 /Project/Debug/
 *.DS_Store
 History/
@@ -19,7 +19,7 @@ History/
 ._
 .dep
 .ewd
-/Debug
+Debug/
 *.dep
 *.ewd
 *.ewt
