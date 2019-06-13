@@ -209,22 +209,18 @@ def SerialOnOFF(event):
   data2=[]
   if COMOFF['text'] == '关闭串口':
      COMOFF['text'] = '打开串口'
-##     print(COMOFF['text'])
-##     plist = list(serial.tools.list_ports.comports())
-##     if len(plist) <= 0:
-##      print ("no serial")
-##     else :
-##      data2 = [0 for i in range(len(plist))]
-##      for i in range(0,len(plist)) :
-##       port_list_0= list(plist[i])
-##       ser = serial.Serial(port_list_0[0],9600,timeout = 60)
-##       data2[i]=port_list_0[0]
-##      cmbChosenCOMX["values"] = data2
+     print(COMOFF['text'])
+     print(cmbChosenCOMX.get())     
+     print(str(cmbChosenCOMX[0]))
+##     for i in range(0,len(cmbChosenCOMX["values"])) :
+##       print(cmbChosenCOMX[i]) 
+##       if (str(cmbChosenCOMX.get()) == cmbChosenCOMX[i]) :
+##          break
   elif COMOFF['text'] == '打开串口':
      COMOFF['text'] = '关闭串口'
      print(COMOFF['text'])
 #刷新选择串口
-def SerialList(event):
+def SerialList():
     data=[]
     plist = list(serial.tools.list_ports.comports())
     if len(plist) <= 0:
@@ -236,11 +232,12 @@ def SerialList(event):
        ser = serial.Serial(port_list_0[0],9600,timeout = 60)
        data[i]=port_list_0[0]
       cmbChosenCOMX["values"] = data
+      print("Serial List************************",cmbChosenCOMX["values"])
     return cmbChosenCOMX
-def SerialSelect(event):
+def SerialSelect(self):
     SerialList()
     cmbChosenCOMX.current(0)
-    print("EAST_WEST************************",len(cmbChosenCOMX["values"]))
+    
 cmbChosenCOMX.bind("<Button-1>",SerialSelect)
 
 def DownLoadParams(event):
@@ -280,5 +277,5 @@ def DownLoadParams(event):
     print(entryCH.get())
 WriteParams.bind("<Button-1>",DownLoadParams)
 #COMOFF.bind("<Button-1>",SerialOnOFF)SerialSelect
-COMOFF.bind("<Button-1>",SerialSelect)
+COMOFF.bind("<Button-1>",SerialOnOFF)
 win.mainloop()
