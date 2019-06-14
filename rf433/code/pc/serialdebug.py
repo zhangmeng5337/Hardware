@@ -6,6 +6,7 @@ from  serial.tools import list_ports
 import threading
 from time import ctime,sleep
 import time
+import binascii
 FrameHeight     = 80
 FrameWidth      = 290
 FrameHeightLarge = 170
@@ -206,7 +207,56 @@ frameSN_CH.grid_propagate(0)
 frameFORMAT.grid_propagate(0)
 frameCOMX.grid_propagate(0)
 
+
 #****************************应用逻辑**********************************************
+serialOpenFlag=0
+def port_open():
+    global serialOpenFlag
+    serialOpenFlag = 0
+    ser.port = cmbChosenCOMX.get()           #设置端口号
+    ser.baudrate = 9600     #设置波特率
+    ser.bytesize = 8        #设置数据位
+    ser.stopbits = 1        #设置停止位
+    ser.parity = "N"        #设置校验位
+    ser.open()              #打开串口,要找到对的串口号才会成功
+    if(ser.isOpen()):
+        serialOpenFlag = 1
+        print("打开成功")
+    else:
+        print("打开失败")
+        
+def port_close():
+    ser.close()
+    if (ser.isOpen()):
+        print("关闭失败")
+    else:
+        print("关闭成功")
+        serialOpenFlag = 0
+def send(send_data):
+    if (ser.isOpen()):
+        #ser.write(send_data.encode("gbk"))  #utf-8 编码发送
+        ser.write(send_data.encode("utf-8"))  #Hex发送
+        print("发送成功",send_data)
+    else:
+        print("发送失败")
+recvBuffer = [0]*1024
+i=0
+def recv():
+    #global serialOpenFlag
+    global recvBuffer
+    global i
+    while True:
+        if (serialOpenFlag == 1 and (ser.isOpen())):
+            recvBuffer[i] = ser.read()
+            i=i+1
+            #b=hexlify(ser.message)
+            if(recvBuffer[0] == b'\x01'):
+               print("hex",recvBuffer[0],i)
+            #print(recvBuffer[0])  
+        else :
+            print("no port open")
+        print(serialOpenFlag)
+        
 def NoSerialDiage():
     top = Toplevel()
     top.title('Python')
@@ -224,9 +274,11 @@ def SerialOnOFF(event):
      if SerialListCheck(cmbChosenCOMX.get()) == None: 
        NoSerialDiage()
      else :
-        print("no nono")
+        port_open()
+        send(chr(0x06))
   elif COMOFF['text'] == '关闭串口':
      COMOFF['text'] = '打开串口'
+     port_close()
      print(COMOFF['text'])
 
 #刷新选择串口
@@ -261,7 +313,7 @@ def SerialList():
               data = [0 for i in range(len(plist))]
               for i in range(0,len(plist)) :
                 port_list_0= list(plist[i])
-                ser = serial.Serial(port_list_0[0],9600,timeout = 60)
+               # ser = serial.Serial(port_list_0[0],9600,timeout = 0.5)
                 data[i]=port_list_0[0]
                 #print("data Serial List************************",data[i])
               cmbChosenCOMX['values'] = data
@@ -277,32 +329,7 @@ def SerialSelect(self):
 cmbChosenCOMX.bind("<Button-1>",SerialSelect)
 ser = serial.Serial()
  
-def port_open():
-    ser.port = 'COM21'           #设置端口号
-    ser.baudrate = 9600     #设置波特率
-    ser.bytesize = 8        #设置数据位
-    ser.stopbits = 1        #设置停止位
-    ser.parity = "N"        #设置校验位
-    ser.open()              #打开串口,要找到对的串口号才会成功
-    if(ser.isOpen()):
-        print("打开成功")
-    else:
-        print("打开失败")
- 
-def port_close():
-    ser.close()
-    if (ser.isOpen()):
-        print("关闭失败")
-    else:
-        print("关闭成功")
- 
-def send(send_data):
-    if (ser.isOpen()):
-        ser.write(send_data.encode('utf-8'))  #utf-8 编码发送
-        #ser.write(binascii.a2b_hex(send_data))  #Hex发送
-        print("发送成功",send_data)
-    else:
-        print("发送失败")
+
 def DownLoadParams(event):
     #up down状态
     print("up down************************")  
@@ -343,8 +370,8 @@ WriteParams.bind("<Button-1>",DownLoadParams)
 COMOFF.bind("<Button-1>",SerialOnOFF)
 #def printHello():  
    # print("start" )
-   
-##timer = threading.Timer(2,SerialList)
-##timer.start()
+if __name__=='__main__':  
+ t1 = threading.Thread(target=recv)
+ t1.start()
 ##  
 win.mainloop()
