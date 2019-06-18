@@ -4,6 +4,7 @@ from tkinter import *
 import serial
 from  serial.tools import list_ports
 import threading
+from threading import Event
 from time import ctime,sleep
 import time
 import binascii
@@ -20,7 +21,16 @@ IpadxSpace      = 10
 IpadySpace      = 5
 BoxWidth        = 6
 BoxWidthLong    = 7
-
+serialOpenFlag=0
+recvBuffer = bytearray()
+txBuffer = bytearray(32)
+keystatusH = 0
+keystatusL = 0
+keyInhibitonNum = 0
+recv_count=0
+j=0
+n = 0
+recvCount = 0
 #创建主窗口
 win=tk.Tk()
 win.title("串口配置工具")
@@ -209,29 +219,40 @@ frameCOMX.grid_propagate(0)
 
 
 #****************************应用逻辑**********************************************
-serialOpenFlag=0
+
+
+#打开串口
 def port_open():
     global serialOpenFlag
+    global recv_count
     serialOpenFlag = 0
     ser.port = cmbChosenCOMX.get()           #设置端口号
     ser.baudrate = 9600     #设置波特率
     ser.bytesize = 8        #设置数据位
     ser.stopbits = 1        #设置停止位
     ser.parity = "N"        #设置校验位
+    #port_close()
     ser.open()              #打开串口,要找到对的串口号才会成功
     if(ser.isOpen()):
         serialOpenFlag = 1
+        recv_count = 0
         print("打开成功")
+        #print(serialOpenFlag)
+        #print(ser.isOpen())  
     else:
+        NoSerialDiage()
         print("打开失败")
-        
+   #关闭串口     
 def port_close():
+    global recv_count
     ser.close()
     if (ser.isOpen()):
         print("关闭失败")
     else:
         print("关闭成功")
+        recv_count = 0
         serialOpenFlag = 0
+#串口发送数据
 def send(send_data):
     if (ser.isOpen()):
         #ser.write(send_data.encode("gbk"))  #utf-8 编码发送
@@ -239,24 +260,60 @@ def send(send_data):
         print("发送成功",send_data)
     else:
         print("发送失败")
-recvBuffer = [0]*1024
-i=0
+def uart_tx(pbuffer,length):
+      for i in range(0,length):
+          send(chr(pbuffer[i]))
+#警示
+def SerialShuntDiage():
+    top = Toplevel()
+    top.title('Python')
+    w = tk.Label(top, text="串口已拔出，请重插入，再次打开串口", font=("华文行楷", 20), fg="red").grid(sticky = W,column=0,row=1,padx = OpadxSpace,pady =OpadySpaceStr)
+    #SerialDiag = Button(top, text='确定',height =2,width = BoxWidthLong).grid(column=0,row=2,padx = OpadxSpace,pady =OpadySpaceStr)
+    print("No Serial" )
+    #串口接收数据
 def recv():
-    #global serialOpenFlag
+    global serialOpenFlag
     global recvBuffer
-    global i
-    while True:
-        if (serialOpenFlag == 1 and (ser.isOpen())):
-            recvBuffer[i] = ser.read()
-            i=i+1
-            #b=hexlify(ser.message)
-            if(recvBuffer[0] == b'\x01'):
-               print("hex",recvBuffer[0],i)
-            #print(recvBuffer[0])  
-        else :
-            print("no port open")
-        print(serialOpenFlag)
-        
+    global recv_count
+    global n
+
+
+ 
+    while True:      
+        if (serialOpenFlag == 1 and (ser.isOpen()== True)):
+            #print(serialOpenFlag)
+            #print(ser.isOpen())
+            n = ser.inWaiting()
+            if n > 0 :
+              j = ser.read(n)
+
+              recvBuffer = recvBuffer+j            
+              recv_count=recv_count+1
+              
+
+        if  serialOpenFlag ==1 and (ser.isOpen() == False):
+                 #SerialShuntDiage()
+                 serialOpenFlag = 0
+                # print(serialOpenFlag)
+                 #print(ser.isOpen())
+    time.sleep(0.1) 
+def uart_data_analy():
+      while 1:
+          global recvCount
+          global recvBuffer
+          global recvThreadFlag
+          i = 0
+          while i < len(recvBuffer) :
+                  for i in range(0,len(recvBuffer)):
+                      i = i +1
+                    
+                      recvCount = recvCount +1
+                      print("recv data",hex(recvBuffer[i-1]))
+                      print("recv count",recvCount)
+                  recvBuffer[0:i] = b''
+                  print("recv sum",recvCount)
+                  #i = 0
+          time.sleep(0.1)
 def NoSerialDiage():
     top = Toplevel()
     top.title('Python')
@@ -265,26 +322,43 @@ def NoSerialDiage():
     print("No Serial" )
 #打开关闭串口
 def SerialOnOFF(event):
+  a =8
+  global recvThreadFlag
   if COMOFF['text'] == '打开串口':
      COMOFF['text'] = '关闭串口'
      print(COMOFF['text'])
-##     print(cmbChosenCOMX.get())
-##     print("open serial",cmbChosenCOMX.get())
-##     print ("open serial %s" %ctime())
      if SerialListCheck(cmbChosenCOMX.get()) == None: 
        NoSerialDiage()
      else :
         port_open()
-        send(chr(0x06))
+        if ( type(a)== int):
+            send(chr(a))
+            #print(type(a))
+        else :
+          uart_tx(a,1)
+        #
   elif COMOFF['text'] == '关闭串口':
      COMOFF['text'] = '打开串口'
      port_close()
      print(COMOFF['text'])
+def SerialOnSuperv():
+  global serialOpenFlag
+  global recvThreadFlag
+  while 1:
+    # ser.open()              #打开串口,要找到对的串口号才会成功
+     if   (ser.isOpen() == False and serialOpenFlag == 1 ):
+       NoSerialDiage()
+
+       print("SerialOnSuperv serialOpenFlag",serialOpenFlag)
+       print("SerialOnSuperv ser.isOpen",ser.isOpen)
+       time.sleep(0.5)
+##     else :
+##        SerialShuntDiage()
 
 #刷新选择串口
 def SerialListCheck(event):
              data=[]
-             
+
              plist = list(serial.tools.list_ports.comports())
              if len(plist) <= 0:
                serialExistFlag = 0
@@ -293,7 +367,7 @@ def SerialListCheck(event):
               data = [0 for i in range(len(plist))]
               for i in range(0,len(plist)) :
                     port_list_0= list(plist[i])
-                    ser = serial.Serial(port_list_0[0],9600,timeout = 60)
+                    #ser = serial.Serial(port_list_0[0],9600,timeout = 60)
                     data[i]=port_list_0[0]
                     if event == data[i]:
                         serialExistFlag = 1
@@ -304,7 +378,10 @@ def SerialListCheck(event):
              # cmbChosenCOMX['values'] = data
               return  serialExistFlag 
 def SerialList():
+             global serialOpenFlag
              data=[]
+##             if (serialOpenFlag == 1 and (ser.isOpen()== True)):
+##                 event.set()
              plist = list(serial.tools.list_ports.comports())
              if len(plist) <= 0:
                #print ("no serial")
@@ -313,13 +390,11 @@ def SerialList():
               data = [0 for i in range(len(plist))]
               for i in range(0,len(plist)) :
                 port_list_0= list(plist[i])
-               # ser = serial.Serial(port_list_0[0],9600,timeout = 0.5)
                 data[i]=port_list_0[0]
-                #print("data Serial List************************",data[i])
               cmbChosenCOMX['values'] = data
               
               print("Serial List************************",cmbChosenCOMX['values'])
-             # time.sleep(1)
+            # time.sleep(0.1)
             # return data 
 
 def SerialSelect(self):
@@ -331,6 +406,9 @@ ser = serial.Serial()
  
 
 def DownLoadParams(event):
+    global txBuffer
+    global keystatusH, keystatusL
+    global keyInhibitonNum 
     #up down状态
     print("up down************************")  
     print(cmbChosenUp.get())
@@ -364,14 +442,150 @@ def DownLoadParams(event):
     print("SN_CH************************") 
     print(entrySN.get())
     print(entryCH.get())
+#cmbChosenUp******************************************
+    if cmbChosenUp.get() == '点动':
+        keystatusH =  keystatusH & 0x7f
+    else :
+         keystatusH =  keystatusH or 0x80
+ #cmbChosenDown******************************************        
+    if cmbChosenDown.get() == '点动':
+        keystatusH =  keystatusH & 0xbf
+    else :
+         keystatusH =  keystatusH or 0x40
+ #cmbChosenEAST******************************************            
+    if cmbChosenEAST.get() == '点动':
+        keystatusH =  keystatusH & 0xdf
+    else :
+         keystatusH =  keystatusH or 0x20
+ #cmbChosenWEST******************************************        
+    if cmbChosenWEST.get() == '点动':
+        keystatusH =  keystatusH & 0xef
+    else :
+         keystatusH =  keystatusH or 0x10
+ #cmbChosenSOUTH******************************************              
+    if cmbChosenSOUTH.get() == '点动':
+        keystatusH =  keystatusH & 0xf7
+    else :
+         keystatusH =  keystatusH or 0x08
+ #cmbChosenNORTH******************************************            
+    if cmbChosenNORTH.get() == '点动':
+        keystatusH =  keystatusH & 0xfb
+    else :
+         keystatusH =  keystatusH or 0x04
+ #cmbChosenSTART******************************************          
+    if cmbChosenSTART.get() == '备用点动':
+        keystatusH =  keystatusH & 0xfd
+    else :
+         keystatusH =  keystatusH or 0x02
+ #cmbChosenSTOP******************************************          
+    if cmbChosenSTOP.get() == '关机':
+        keystatusH =  keystatusH & 0xfe
+        print('keystatusH',keystatusH)
+    else :
+         keystatusH =  keystatusH or 0x01        
+         print('keystatusH',keystatusH)
+
+#cmbChosenOUT1******************************************
+    if cmbChosenOUT1.get() == '点动':
+        keystatusL =  keystatusL & 0x7f
+    else :
+         keystatusL =  keystatusL or 0x80
+ #cmbChosenOUT2******************************************        
+    if cmbChosenOUT2.get() == '点动':
+        keystatusL =  keystatusL & 0xbf
+    else :
+         keystatusL =  keystatusL or 0x40
+ #cmbChosenOUT3******************************************            
+    if cmbChosenOUT3.get() == '点动':
+        keystatusL =  keystatusL & 0xdf
+    else :
+         keystatusL =  keystatusL or 0x20
+ #cmbChosenOUT4******************************************        
+    if cmbChosenOUT4.get() == '点动':
+        keystatusL =  keystatusL & 0xef
+    else :
+         keystatusL =  keystatusL or 0x10       
+    print('keystatusL',keystatusL)
+
+ #cmbChosenUpDown******************************************        
+    if cmbChosenUpDown.get() == '相互拟制':
+        keyInhibitonNum =  keyInhibitonNum & 0x7f
+    else :
+         keyInhibitonNum =  keyInhibitonNum or 0x80       
+
+ #cmbChosenEAST_WEST******************************************        
+    if cmbChosenEAST_WEST.get() == '相互拟制':
+        keyInhibitonNum =  keyInhibitonNum & 0xbf
+    else :
+         keyInhibitonNum =  keyInhibitonNum or 0x40       
+    #print('keystatusL',keystatusL)
+
+
+ #cmbChosenSOUTH_NORTH******************************************        
+    if cmbChosenSOUTH_NORTH.get() == '相互拟制':
+        keyInhibitonNum =  keyInhibitonNum & 0xdf
+    else :
+         keyInhibitonNum =  keyInhibitonNum or 0x20       
+    #print('keystatusL',keystatusL)
+ #cmbChosenOUT1_OUT2******************************************        
+    if cmbChosenOUT1_OUT2.get() == '相互拟制':
+        keyInhibitonNum =  keyInhibitonNum & 0xef
+    else :
+         keyInhibitonNum =  keyInhibitonNum or 0x10       
+    #print('keystatusL',keystatusL)
+ #cmbChosenOUT3_OUT4******************************************        
+    if cmbChosenOUT3_OUT4.get() == '相互拟制':
+        keyInhibitonNum =  keyInhibitonNum & 0xf7
+    else :
+         keyInhibitonNum =  keyInhibitonNum or 0x08       
+    print('keyInhibitonNum',keyInhibitonNum)
+    print(type(keyInhibitonNum))
+
+
+
+
+
+
+        
+    #send(chr(keystatusH))  #Hex发送
+    print('keystatusL is',str(hex(keystatusL)[2:]))
+    print('keystatusH is',type(bytes.fromhex('ff')))
+    print(bytes.fromhex('ff'))
+    #txBuffer = (hex(keystatusH))
+    txBuffer = bytes.fromhex('ff')
+    txBuffer = txBuffer+bytes.fromhex('ff')
+    txBuffer = txBuffer+bytes.fromhex('ff')
+    txBuffer = txBuffer+bytes.fromhex('ff')
+    txBuffer = txBuffer+bytes.fromhex('12')
+    txBuffer = txBuffer+bytes.fromhex('0d')
+    txBuffer= txBuffer+bytes(hex(keystatusH), encoding = "utf8")
+    txBuffer= txBuffer+bytes(hex(keystatusL), encoding = "utf8") 
+    print(txBuffer)
+    ser.write(txBuffer)  #Hex发送
 print(cmbChosenCOMX.get())
 WriteParams.bind("<Button-1>",DownLoadParams)
 #COMOFF.bind("<Button-1>",SerialOnOFF)SerialSelect
 COMOFF.bind("<Button-1>",SerialOnOFF)
 #def printHello():  
    # print("start" )
-if __name__=='__main__':  
- t1 = threading.Thread(target=recv)
- t1.start()
+#event=Event()
+
+t1 = threading.Thread(target=recv)
+t2 = threading.Thread(target=uart_data_analy)
+t3 = threading.Thread(target=SerialList)
+#t4 = threading.Thread(target=SerialOnSuperv)
+t1.start()
+
+#if __name__=='__main__':
+ 
+#t1 = threading.Thread(target=recv)
+
+#t2 = threading.Thread(target=uart_data_analy)
+t2.start()
+t3.start()
+#t4.start()
+ #t2.pause()
+
+ #uart_data_analy()
 ##  
 win.mainloop()
