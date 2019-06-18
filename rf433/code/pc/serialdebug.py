@@ -8,6 +8,7 @@ from threading import Event
 from time import ctime,sleep
 import time
 import binascii
+import struct
 FrameHeight     = 80
 FrameWidth      = 290
 FrameHeightLarge = 170
@@ -548,8 +549,8 @@ def DownLoadParams(event):
 
         
     #send(chr(keystatusH))  #Hex发送
-    print('keystatusL is',str(hex(keystatusL)[2:]))
-    print('keystatusH is',type(bytes.fromhex('ff')))
+    print('keystatusL is',(hex(keystatusL)))
+
     print(bytes.fromhex('ff'))
     #txBuffer = (hex(keystatusH))
     txBuffer = bytes.fromhex('ff')
@@ -558,8 +559,14 @@ def DownLoadParams(event):
     txBuffer = txBuffer+bytes.fromhex('ff')
     txBuffer = txBuffer+bytes.fromhex('12')
     txBuffer = txBuffer+bytes.fromhex('0d')
-    txBuffer= txBuffer+bytes(hex(keystatusH), encoding = "utf8")
-    txBuffer= txBuffer+bytes(hex(keystatusL), encoding = "utf8") 
+    print('keystatusH is1',keystatusH)
+    print('keystatusH is2',keystatusH)
+    #print('keystatusH is3',len(keystatusH))   
+    keystatusH = struct.pack('B',keystatusH)
+    keystatusL = struct.pack('B',keystatusL)
+    print('keystatusH is4',keystatusH)      
+    txBuffer= txBuffer+keystatusH
+    txBuffer= txBuffer+keystatusL
     print(txBuffer)
     ser.write(txBuffer)  #Hex发送
 print(cmbChosenCOMX.get())
