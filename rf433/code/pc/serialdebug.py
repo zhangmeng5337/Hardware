@@ -1,14 +1,17 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import *
 import serial
-from  serial.tools import list_ports
 import threading
-from threading import Event
-from time import ctime,sleep
 import time
 import binascii
 import struct
+
+from binascii import a2b_hex
+from threading import Event
+from time import ctime,sleep
+from  serial.tools import list_ports
+from tkinter import ttk
+from tkinter import *
+from tkinter import messagebox
 FrameHeight     = 80
 FrameWidth      = 290
 FrameHeightLarge = 170
@@ -238,10 +241,12 @@ def port_open():
         serialOpenFlag = 1
         recv_count = 0
         print("打开成功")
+        COMOFF['text'] = '关闭串口'
         #print(serialOpenFlag)
         #print(ser.isOpen())  
     else:
         NoSerialDiage()
+        COMOFF['text'] = '打开串口'
         print("打开失败")
    #关闭串口     
 def port_close():
@@ -249,8 +254,10 @@ def port_close():
     ser.close()
     if (ser.isOpen()):
         print("关闭失败")
+
     else:
         print("关闭成功")
+
         recv_count = 0
         serialOpenFlag = 0
 #串口发送数据
@@ -326,7 +333,7 @@ def SerialOnOFF(event):
   a =8
   global recvThreadFlag
   if COMOFF['text'] == '打开串口':
-     COMOFF['text'] = '关闭串口'
+     COMOFF['text'] == '关闭串口'
      print(COMOFF['text'])
      if SerialListCheck(cmbChosenCOMX.get()) == None: 
        NoSerialDiage()
@@ -339,7 +346,7 @@ def SerialOnOFF(event):
           uart_tx(a,1)
         #
   elif COMOFF['text'] == '关闭串口':
-     COMOFF['text'] = '打开串口'
+     COMOFF['text'] == '打开串口'     
      port_close()
      print(COMOFF['text'])
 def SerialOnSuperv():
@@ -405,120 +412,156 @@ def SerialSelect(self):
 cmbChosenCOMX.bind("<Button-1>",SerialSelect)
 ser = serial.Serial()
  
-
+def com(event1,event2):
+    try:
+        if event1 != "" and event2 != "":
+            if len(event1) != 8 or len(event2) != 2:
+                error_flag = 1
+                messagebox.showwarning('警告','输入数据长度不合法')
+            else :
+                error_flag = 0
+                params1 = a2b_hex(event1)
+                params2 = a2b_hex(event2)
+                print('sn len',len(event1))
+                print('ch len',len(event2))
+                print('try1',params1)
+                return params1,params2
+        else :
+            #print('try2',params)
+            messagebox.showwarning('警告','请输入16进制数字')
+    except TypeError   as e:
+        info = sys.exc_info()
+        print('info',info[0],":",info[1])
+        if error_flag == 0 :
+            error_flag = 0
+            messagebox.showwarning('警告','请输入16进制数字')
+    except binascii.Error as e:
+        info = sys.exc_info()
+        print('info',info[0],":",info[1])
+        if error_flag == 0 :
+          error_flag = 0
+          messagebox.showwarning('警告','请输入16进制数字')        
+def UpLoadParams():
+    ff = 0
 def DownLoadParams(event):
     global txBuffer
     global keystatusH, keystatusL
     global keyInhibitonNum 
-    #up down状态
-    print("up down************************")  
-    print(cmbChosenUp.get())
-    print(cmbChosenDown.get())
-    print(cmbChosenUpDown.get())
-    #East West状态
-    print("EAST_WEST************************")  
-    print(cmbChosenEAST.get())
-    print(cmbChosenWEST.get())
-    print(cmbChosenEAST_WEST.get())
-    #South North状态
-    print("SOUTH_NORTH************************") 
-    print(cmbChosenSOUTH.get())
-    print(cmbChosenNORTH.get())
-    print(cmbChosenSOUTH_NORTH.get())
-    #START STOP状态
-    print("START_STOP************************") 
-    print(cmbChosenSTART.get())
-    print(cmbChosenSTOP.get())
-
-    #OUT1 OUT2状态
-    print("OUT1_OUT2************************") 
-    print(cmbChosenOUT1.get())
-    print(cmbChosenOUT2.get())
-    print(cmbChosenOUT1_OUT2.get())
-    #OUT3 OUT4状态
-    print("OUT3_OUT4************************") 
-    print(cmbChosenOUT3.get())
-    print(cmbChosenOUT4.get())
-    print(cmbChosenOUT3_OUT4.get())
-    print("SN_CH************************") 
-    print(entrySN.get())
-    print(entryCH.get())
+##    #up down状态
+##    print("up down************************")  
+##    print(cmbChosenUp.get())
+##    print(cmbChosenDown.get())
+##    print(cmbChosenUpDown.get())
+##    #East West状态
+##    print("EAST_WEST************************")  
+##    print(cmbChosenEAST.get())
+##    print(cmbChosenWEST.get())
+##    print(cmbChosenEAST_WEST.get())
+##    #South North状态
+##    print("SOUTH_NORTH************************") 
+##    print(cmbChosenSOUTH.get())
+##    print(cmbChosenNORTH.get())
+##    print(cmbChosenSOUTH_NORTH.get())
+##    #START STOP状态
+##    print("START_STOP************************") 
+##    print(cmbChosenSTART.get())
+##    print(cmbChosenSTOP.get())
+##
+##    #OUT1 OUT2状态
+##    print("OUT1_OUT2************************") 
+##    print(cmbChosenOUT1.get())
+##    print(cmbChosenOUT2.get())
+##    print(cmbChosenOUT1_OUT2.get())
+##    #OUT3 OUT4状态
+##    print("OUT3_OUT4************************") 
+##    print(cmbChosenOUT3.get())
+##    print(cmbChosenOUT4.get())
+##    print(cmbChosenOUT3_OUT4.get())
+##    print("SN_CH************************") 
+##    print(entrySN.get())
+##    print(entryCH.get())
 #cmbChosenUp******************************************
+    print("p1",type(keystatusH))
+    print("p2",type(0x7f)) 
     if cmbChosenUp.get() == '点动':
         keystatusH =  keystatusH & 0x7f
+        print('cmbChosenUp点动',keystatusH)
     else :
-         keystatusH =  keystatusH or 0x80
+         keystatusH =  keystatusH | 0x80
+         print('cmbChosenUp',keystatusH)
  #cmbChosenDown******************************************        
     if cmbChosenDown.get() == '点动':
         keystatusH =  keystatusH & 0xbf
+        print('cmbChosenDown点动',keystatusH)
     else :
-         keystatusH =  keystatusH or 0x40
+         keystatusH =  keystatusH | 0x40
+         print('cmbChosenDown',keystatusH)
  #cmbChosenEAST******************************************            
     if cmbChosenEAST.get() == '点动':
         keystatusH =  keystatusH & 0xdf
     else :
-         keystatusH =  keystatusH or 0x20
+         keystatusH =  keystatusH | 0x20
  #cmbChosenWEST******************************************        
     if cmbChosenWEST.get() == '点动':
         keystatusH =  keystatusH & 0xef
     else :
-         keystatusH =  keystatusH or 0x10
+         keystatusH =  keystatusH | 0x10
  #cmbChosenSOUTH******************************************              
     if cmbChosenSOUTH.get() == '点动':
         keystatusH =  keystatusH & 0xf7
     else :
-         keystatusH =  keystatusH or 0x08
+         keystatusH =  keystatusH | 0x08
  #cmbChosenNORTH******************************************            
     if cmbChosenNORTH.get() == '点动':
         keystatusH =  keystatusH & 0xfb
     else :
-         keystatusH =  keystatusH or 0x04
+         keystatusH =  keystatusH | 0x04
  #cmbChosenSTART******************************************          
     if cmbChosenSTART.get() == '备用点动':
         keystatusH =  keystatusH & 0xfd
     else :
-         keystatusH =  keystatusH or 0x02
+         keystatusH =  keystatusH | 0x02
  #cmbChosenSTOP******************************************          
     if cmbChosenSTOP.get() == '关机':
         keystatusH =  keystatusH & 0xfe
         print('keystatusH',keystatusH)
     else :
-         keystatusH =  keystatusH or 0x01        
+         keystatusH =  keystatusH | 0x01        
          print('keystatusH',keystatusH)
 
 #cmbChosenOUT1******************************************
     if cmbChosenOUT1.get() == '点动':
         keystatusL =  keystatusL & 0x7f
     else :
-         keystatusL =  keystatusL or 0x80
+         keystatusL =  keystatusL | 0x80
  #cmbChosenOUT2******************************************        
     if cmbChosenOUT2.get() == '点动':
         keystatusL =  keystatusL & 0xbf
     else :
-         keystatusL =  keystatusL or 0x40
+         keystatusL =  keystatusL | 0x40
  #cmbChosenOUT3******************************************            
     if cmbChosenOUT3.get() == '点动':
         keystatusL =  keystatusL & 0xdf
     else :
-         keystatusL =  keystatusL or 0x20
+         keystatusL =  keystatusL | 0x20
  #cmbChosenOUT4******************************************        
     if cmbChosenOUT4.get() == '点动':
         keystatusL =  keystatusL & 0xef
     else :
-         keystatusL =  keystatusL or 0x10       
+         keystatusL =  keystatusL | 0x10       
     print('keystatusL',keystatusL)
 
  #cmbChosenUpDown******************************************        
     if cmbChosenUpDown.get() == '相互拟制':
         keyInhibitonNum =  keyInhibitonNum & 0x7f
     else :
-         keyInhibitonNum =  keyInhibitonNum or 0x80       
+         keyInhibitonNum =  keyInhibitonNum | 0x80       
 
  #cmbChosenEAST_WEST******************************************        
     if cmbChosenEAST_WEST.get() == '相互拟制':
         keyInhibitonNum =  keyInhibitonNum & 0xbf
     else :
-         keyInhibitonNum =  keyInhibitonNum or 0x40       
+         keyInhibitonNum =  keyInhibitonNum | 0x40       
     #print('keystatusL',keystatusL)
 
 
@@ -526,56 +569,49 @@ def DownLoadParams(event):
     if cmbChosenSOUTH_NORTH.get() == '相互拟制':
         keyInhibitonNum =  keyInhibitonNum & 0xdf
     else :
-         keyInhibitonNum =  keyInhibitonNum or 0x20       
+         keyInhibitonNum =  keyInhibitonNum | 0x20       
     #print('keystatusL',keystatusL)
  #cmbChosenOUT1_OUT2******************************************        
     if cmbChosenOUT1_OUT2.get() == '相互拟制':
         keyInhibitonNum =  keyInhibitonNum & 0xef
     else :
-         keyInhibitonNum =  keyInhibitonNum or 0x10       
+         keyInhibitonNum =  keyInhibitonNum | 0x10       
     #print('keystatusL',keystatusL)
  #cmbChosenOUT3_OUT4******************************************        
     if cmbChosenOUT3_OUT4.get() == '相互拟制':
         keyInhibitonNum =  keyInhibitonNum & 0xf7
     else :
-         keyInhibitonNum =  keyInhibitonNum or 0x08       
-    print('keyInhibitonNum',keyInhibitonNum)
-    print(type(keyInhibitonNum))
-
-
-
-
-
-
-        
-    #send(chr(keystatusH))  #Hex发送
-    print('keystatusL is',(hex(keystatusL)))
-
-    print(bytes.fromhex('ff'))
-    #txBuffer = (hex(keystatusH))
+         keyInhibitonNum =  keyInhibitonNum | 0x08       
+   
     txBuffer = bytes.fromhex('ff')
     txBuffer = txBuffer+bytes.fromhex('ff')
     txBuffer = txBuffer+bytes.fromhex('ff')
     txBuffer = txBuffer+bytes.fromhex('ff')
     txBuffer = txBuffer+bytes.fromhex('12')
     txBuffer = txBuffer+bytes.fromhex('0d')
-    print('keystatusH is1',keystatusH)
-    print('keystatusH is2',keystatusH)
-    #print('keystatusH is3',len(keystatusH))   
-    keystatusH = struct.pack('B',keystatusH)
-    keystatusL = struct.pack('B',keystatusL)
-    print('keystatusH is4',keystatusH)      
-    txBuffer= txBuffer+keystatusH
-    txBuffer= txBuffer+keystatusL
-    print(txBuffer)
-    ser.write(txBuffer)  #Hex发送
-print(cmbChosenCOMX.get())
+   
+    keystatusHt = struct.pack('B',keystatusH)
+    keystatusLt = struct.pack('B',keystatusL)
+    if COMOFF['text'] == '关闭串口':
+        try:
+            SNt,CHt = com(entrySN.get(),entryCH.get())
+        except TypeError as e:
+            messagebox.showwarning('警告','请输入16进制数字')
+        keyInhibitonNumt = struct.pack('B',keyInhibitonNum)
+        print('keystatusH is4',keystatusH)      
+        txBuffer= txBuffer+keystatusHt
+        txBuffer= txBuffer+keystatusLt
+        txBuffer= txBuffer+keyInhibitonNumt
+        txBuffer= txBuffer+SNt
+        txBuffer= txBuffer+CHt 
+        print(txBuffer)
+        ser.write(txBuffer)  #Hex发送5aa55aa5  254
+    else:
+         messagebox.showwarning('警告','串口未打开')
+WriteParams.bind("<Button-1>",UpLoadParams)    
 WriteParams.bind("<Button-1>",DownLoadParams)
-#COMOFF.bind("<Button-1>",SerialOnOFF)SerialSelect
 COMOFF.bind("<Button-1>",SerialOnOFF)
-#def printHello():  
-   # print("start" )
-#event=Event()
+
 
 t1 = threading.Thread(target=recv)
 t2 = threading.Thread(target=uart_data_analy)
