@@ -41,8 +41,10 @@ win.title("串口配置工具")
 win.geometry("700x500+500+200")#窗口大小800x800，显示器位置500，500
 
 #增加frame******************上下
-frameUpDown = ttk.LabelFrame(win,height = FrameHeight,width = FrameWidth,text = "上下键功能设定")
-frameUpDown.grid(column = 0, row = 0,ipadx = IpadxSpace,ipady =IpadySpace,padx = OpadxSpace,pady =OpadySpace)
+frameUpDown = LabelFrame(win, text="上下键功能设定", width=FrameWidth, height=FrameHeight)
+frameUpDown.grid(row=0, column=0, sticky=S)
+##frameUpDown = ttk.LabelFrame(win,height = FrameHeight,width = FrameWidth,text = "上下键功能设定")
+##frameUpDown.grid(column = 0, row = 0,ipadx = IpadxSpace,ipady =IpadySpace,padx = OpadxSpace,pady =OpadySpace)
 frameUpDown.place(relx=0,rely=0,x=15,y=20)
 ttk.Label(frameUpDown,text="上下关系").grid(column=50,row=0,padx = OpadxSpace,pady =0)#增加标签
 ttk.Label(frameUpDown,text="上UP").grid(sticky = W,column=0,row=0,padx = OpadxSpaceSmall,pady =OpadySpaceStr)#增加up标签
@@ -616,17 +618,17 @@ COMOFF.bind("<Button-1>",SerialOnOFF)
 t1 = threading.Thread(target=recv)
 t2 = threading.Thread(target=uart_data_analy)
 t3 = threading.Thread(target=SerialList)
-#t4 = threading.Thread(target=SerialOnSuperv)
+t4 = threading.Thread(target=SerialOnSuperv)
 t1.start()
 
 #if __name__=='__main__':
  
-#t1 = threading.Thread(target=recv)
+t1 = threading.Thread(target=recv)
 
-#t2 = threading.Thread(target=uart_data_analy)
+t2 = threading.Thread(target=uart_data_analy)
 t2.start()
 t3.start()
-#t4.start()
+t4.start()
  #t2.pause()
 
  #uart_data_analy()

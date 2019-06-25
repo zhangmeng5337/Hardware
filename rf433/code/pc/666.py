@@ -20,7 +20,7 @@ frame1.grid(row=0, column=0, sticky=W, padx=10)
  
 frame = Frame(root, width=600, height=450)
 frame.grid(row=1, column=0, sticky=W, padx=10)
- 
+## 
 frame2 = LabelFrame(frame, text="接收区", width=600, height=450)
 frame2.grid(row=0, column=0, sticky=W)
  
