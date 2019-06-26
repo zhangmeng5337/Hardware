@@ -452,106 +452,7 @@ def Update_DeviceParams():
     global keyInhibitonNum
     global res_data
      
-    ##    if cmbChosenUp.get() == '点动':
-##        keystatusH =  keystatusH & 0x7f
-####        print('cmbChosenUp点动',keystatusH)
-##    else :
-##         keystatusH =  keystatusH | 0x80
-####         print('cmbChosenUp',keystatusH)
-## #cmbChosenDown******************************************        
-##    if cmbChosenDown.get() == '点动':
-##        keystatusH =  keystatusH & 0xbf
-####        print('cmbChosenDown点动',keystatusH)
-##    else :
-##         keystatusH =  keystatusH | 0x40
-####         print('cmbChosenDown',keystatusH)
-## #cmbChosenEAST******************************************            
-##    if cmbChosenEAST.get() == '点动':
-##        keystatusH =  keystatusH & 0xdf
-##    else :
-##         keystatusH =  keystatusH | 0x20
-## #cmbChosenWEST******************************************        
-##    if cmbChosenWEST.get() == '点动':
-##        keystatusH =  keystatusH & 0xef
-##    else :
-##         keystatusH =  keystatusH | 0x10
-## #cmbChosenSOUTH******************************************              
-##    if cmbChosenSOUTH.get() == '点动':
-##        keystatusH =  keystatusH & 0xf7
-##    else :
-##         keystatusH =  keystatusH | 0x08
-## #cmbChosenNORTH******************************************            
-##    if cmbChosenNORTH.get() == '点动':
-##        keystatusH =  keystatusH & 0xfb
-##    else :
-##         keystatusH =  keystatusH | 0x04
-## #cmbChosenSTART******************************************          
-##    if cmbChosenSTART.get() == '备用点动':
-##        keystatusH =  keystatusH & 0xfd
-##    else :
-##         keystatusH =  keystatusH | 0x02
-## #cmbChosenSTOP******************************************          
-##    if cmbChosenSTOP.get() == '关机':
-##        keystatusH =  keystatusH & 0xfe
-##        #print('keystatusH',keystatusH)
-##        #print('keystatusH',cmbChosenSTOP.get())
-##    else :
-##         keystatusH =  keystatusH | 0x01        
-##         print('keystatusH',keystatusH)
-##
-###cmbChosenOUT1******************************************
-##    if cmbChosenOUT1.get() == '点动':
-##        keystatusL =  keystatusL & 0x7f
-##    else :
-##         keystatusL =  keystatusL | 0x80
-## #cmbChosenOUT2******************************************        
-##    if cmbChosenOUT2.get() == '点动':
-##        keystatusL =  keystatusL & 0xbf
-##    else :
-##         keystatusL =  keystatusL | 0x40
-## #cmbChosenOUT3******************************************            
-##    if cmbChosenOUT3.get() == '点动':
-##        keystatusL =  keystatusL & 0xdf
-##    else :
-##         keystatusL =  keystatusL | 0x20
-## #cmbChosenOUT4******************************************        
-##    if cmbChosenOUT4.get() == '点动':
-##        keystatusL =  keystatusL & 0xef
-##    else :
-##         keystatusL =  keystatusL | 0x10       
-####    print('keystatusL',keystatusL)
-##
-## #cmbChosenUpDown******************************************        
-##    if cmbChosenUpDown.get() == '相互拟制':
-##        keyInhibitonNum =  keyInhibitonNum & 0x7f
-##    else :
-##         keyInhibitonNum =  keyInhibitonNum | 0x80       
-##
-## #cmbChosenEAST_WEST******************************************        
-##    if cmbChosenEAST_WEST.get() == '相互拟制':
-##        keyInhibitonNum =  keyInhibitonNum & 0xbf
-##    else :
-##         keyInhibitonNum =  keyInhibitonNum | 0x40       
-##    #print('keystatusL',keystatusL)
-##
-##
-## #cmbChosenSOUTH_NORTH******************************************        
-##    if cmbChosenSOUTH_NORTH.get() == '相互拟制':
-##        keyInhibitonNum =  keyInhibitonNum & 0xdf
-##    else :
-##         keyInhibitonNum =  keyInhibitonNum | 0x20       
-##    #print('keystatusL',keystatusL)
-## #cmbChosenOUT1_OUT2******************************************        
-##    if cmbChosenOUT1_OUT2.get() == '相互拟制':
-##        keyInhibitonNum =  keyInhibitonNum & 0xef
-##    else :
-##         keyInhibitonNum =  keyInhibitonNum | 0x10       
-##    #print('keystatusL',keystatusL)
-## #cmbChosenOUT3_OUT4******************************************        
-##    if cmbChosenOUT3_OUT4.get() == '相互拟制':
-##        keyInhibitonNum =  keyInhibitonNum & 0xf7
-##    else :
-##         keyInhibitonNum =  keyInhibitonNum | 0x08  
+
 def Get_DeviceParams():
     global keystatusH, keystatusL
     global keyInhibitonNum
@@ -570,11 +471,99 @@ def Get_DeviceParams():
               print('keyInhibitonNum',res_data[8])
               print('SN',(res_data[9:13]))
               print('ch',(res_data[15]))
+              keystatusH=res_data[6]
+              keystatusL=res_data[7]
+              keyInhibitonNum=res_data[8]
               tt = res_data[9:13]
-              print('tt',tt)
               sntext.set(binascii.hexlify(tt))
               tt = res_data[13:14]
               chtext.set(binascii.hexlify(tt))
+              if  (keystatusH & 0x80==0):
+                cmbChosenUp.set('点动')
+              else :
+                 cmbChosenUp.set('自锁')
+         #cmbChosenDown******************************************        
+              if  (keystatusH & 0x40==0):
+                cmbChosenDown.set('点动')
+              else :    
+                 cmbChosenDown.set('自锁')
+         #cmbChosenEAST******************************************
+              if  (keystatusH & 0x20==0):
+                cmbChosenEAST.set('点动')
+              else :
+                 cmbChosenEAST.set('自锁')
+         #cmbChosenWEST******************************************        
+              if  (keystatusH & 0x10==0):
+                cmbChosenWEST.set('点动')
+              else :
+                 cmbChosenWEST.set('自锁')
+         #cmbChosenSOUTH******************************************              
+              if  (keystatusH & 0x08==0):
+                cmbChosenSOUTH.set('点动')
+              else :
+                 cmbChosenSOUTH.set('自锁')
+         #cmbChosenNORTH******************************************            
+              if  (keystatusH & 0x04==0):
+                cmbChosenNORTH.set('点动')
+              else :
+                 cmbChosenNORTH.set('自锁')
+         #cmbChosenSTART******************************************
+              if  (keystatusH & 0x02==0):
+                cmbChosenSTART.set('点动')
+              else :
+                 cmbChosenSTART.set('自锁')
+         #cmbChosenSTOP******************************************          
+              if  (keystatusH & 0x01==0):
+                cmbChosenSTOP.set('点动')
+              else :
+                 cmbChosenSTOP.set('自锁')
+        #cmbChosenOUT1******************************************
+              if  (keystatusL & 0x80==0):
+                cmbChosenOUT1.set('点动')
+              else :
+                 cmbChosenOUT1.set('自锁')
+         #cmbChosenOUT2******************************************        
+              if  (keystatusL & 0x40==0):
+                cmbChosenOUT2.set('点动')
+              else :
+                 cmbChosenOUT2.set('自锁')
+         #cmbChosenOUT3******************************************            
+              if  (keystatusL & 0x20==0):
+                cmbChosenOUT3.set('点动')
+              else :
+                 cmbChosenOUT3.set('自锁')
+         #cmbChosenOUT4******************************************        
+              if  (keystatusL & 0x10==0):
+                cmbChosenOUT4.set('点动')
+              else :
+                 cmbChosenOUT4.set('自锁')
+         #cmbChosenUpDown******************************************            
+              if  (keyInhibitonNum & 0x80==0):
+                cmbChosenUpDown.set('相互拟制')
+              else :
+                 cmbChosenUpDown.set('不拟制')
+         #cmbChosenEAST_WEST******************************************             
+              if  (keyInhibitonNum & 0x40==0):
+                cmbChosenEAST_WEST.set('相互拟制')
+              else :
+                 cmbChosenEAST_WEST.set('不拟制')
+
+
+         #cmbChosenSOUTH_NORTH******************************************             
+              if  (keyInhibitonNum & 0x20==0):
+                cmbChosenSOUTH_NORTH.set('相互拟制')
+              else :
+                 cmbChosenSOUTH_NORTH.set('不拟制')
+         #cmbChosenOUT1_OUT2******************************************        
+              if  (keyInhibitonNum & 0x10==0):
+                cmbChosenOUT1_OUT2.set('相互拟制')
+              else :
+                 cmbChosenOUT1_OUT2.set('不拟制')
+         #cmbChosenOUT3_OUT4******************************************        
+              if  (keyInhibitonNum & 0x08==0):
+                cmbChosenOUT3_OUT4.set('相互拟制')
+              else :
+                 cmbChosenOUT3_OUT4.set('不拟制')
 #chtext = StringVar()
 def crc_cal(event):
     crc16_xmodem = crcmod.mkCrcFun(0x11021,rev=False,initCrc = 0x0000,xorOut = 0x0000)
