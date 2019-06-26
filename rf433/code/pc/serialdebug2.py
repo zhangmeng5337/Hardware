@@ -166,14 +166,12 @@ frameFORMAT.place(relx=0,rely=0,x=328,y=100)
 #Entry控件布局
 ttk.Label(frameSN_CH,text="SN:").grid(column=1,row=1,padx = 30,pady =20)
 ttk.Label(frameSN_CH,text="CH:").grid(column=1,row=5,padx = 30,pady =40)
-entrySN=Entry(frameSN_CH,width = 10,state = 'normal')#sn码
-entryCH=Entry(frameSN_CH,width = 10,state = 'normal')#ch码
+sntext = StringVar()
+chtext = StringVar()
+entrySN=Entry(frameSN_CH,width = 10,state = 'normal',textvariable = sntext)#sn码
+entryCH=Entry(frameSN_CH,width = 10,state = 'normal',textvariable = chtext)#ch码
 entrySN.place(relx=0,rely=0,x=70,y=20)
 entryCH.place(relx=0,rely=0,x=70,y=100)
-
-
-
-
 
 frameCOMX = tk.LabelFrame(win,height = 80,width = 300,text = "通讯参数")
 frameCOMX.grid(column = 81, row = 0)
@@ -186,11 +184,6 @@ cmbChosenCOMX.place(relx=0,rely=0,x=10,y=12)
 COMOFF =  ttk.Button(frameCOMX,width = 8,text="打开串口", textvariable=Open)
 COMOFF.grid(column = 12, row = 0,sticky=W)
 COMOFF.place(relx=0,rely=0,x=110,y=10)
-
-
-
-
-
 
 frameUpDown.grid_propagate(0)
 frameEW.grid_propagate(0)
@@ -244,12 +237,6 @@ def OpenPort(self):
             ReadParams.bind("<Button-1>")
             WriteParams.config(state = 'able')
             WriteParams.bind("<Button-1>")
-##WAKECOM =  ttk.Button(frameCOMX,width = 8,text="唤醒串口",command=WakeUpPort)
-##
-##FORMAT = ttk.Button(frameFORMAT,width = 36,text="数据卡格式化",command=FormatCard)
-##ReadParams = ttk.Button(frameSN_CH,width = 8,text="读参数",command=Read_paramsStatus)
-##WriteParams = ttk.Button(frameSN_CH,width = 8,text="下载参数",command=SendData)
-
             if mySerial.isOpen():
                 PortOpenFlag = 1
                 t = threading.Thread(target=ReceiveData)
@@ -263,8 +250,6 @@ def OpenPort(self):
     else:
         mySerial.close()
         PortOpenFlag = 0
-##        COMOFF.config(state = 'disabled')
-##        COMOFF.unbind("<Button-1>")
         WAKECOM.config(state = 'disabled')
         WAKECOM.unbind("<Button-1>")
         FORMAT.config(state = 'disabled')
@@ -273,9 +258,6 @@ def OpenPort(self):
         ReadParams.unbind("<Button-1>")
         WriteParams.config(state = 'disabled')
         WriteParams.unbind("<Button-1>")        
-
-
-        
         Open.set('打开串口')
 Open.set('打开串口')
 
@@ -289,6 +271,8 @@ def com(event1,event2):
                 error_flag = 0
                 params1 = a2b_hex(event1)
                 params2 = a2b_hex(event2)
+                print('sn type',type(event1))
+                print('ch type',type(event2))
                 print('sn len',len(event1))
                 print('ch len',len(event2))
                 print('try1',params1)
@@ -462,12 +446,13 @@ def Get_paramsStatus():
     txBuffer= txBuffer+crc_cal(txBuffer)
     txBuffer = txBuffer+bytes.fromhex('fe')
     print('Get_paramsStatus  end tag',txBuffer)
-def Get_DeviceParams():
+def Update_DeviceParams():
     global txBuffer
     global keystatusH, keystatusL
     global keyInhibitonNum
     global res_data
-##    if cmbChosenUp.get() == '点动':
+     
+    ##    if cmbChosenUp.get() == '点动':
 ##        keystatusH =  keystatusH & 0x7f
 ####        print('cmbChosenUp点动',keystatusH)
 ##    else :
@@ -566,29 +551,12 @@ def Get_DeviceParams():
 ##    if cmbChosenOUT3_OUT4.get() == '相互拟制':
 ##        keyInhibitonNum =  keyInhibitonNum & 0xf7
 ##    else :
-##         keyInhibitonNum =  keyInhibitonNum | 0x08       
-##   
-##    txBuffer = bytes.fromhex('ff')
-##    txBuffer = txBuffer+bytes.fromhex('ff')
-##    txBuffer = txBuffer+bytes.fromhex('ff')
-##    txBuffer = txBuffer+bytes.fromhex('ff')
-##    txBuffer = txBuffer+bytes.fromhex('12')
-##    txBuffer = txBuffer+bytes.fromhex('0d')
-##   
-##    keystatusHt = struct.pack('B',keystatusH)
-##    keystatusLt = struct.pack('B',keystatusL)
-##    keyInhibitonNumt = struct.pack('B',keyInhibitonNum)
-##    SNt,CHt = com(entrySN.get(),entryCH.get())
-##    print('keystatusH',keystatusH)
-##    print('keystatusL',keystatusL)
-##    print('keyInhibitonNum',keyInhibitonNum)
-##    txBuffer= txBuffer+keystatusHt
-##    txBuffer= txBuffer+keystatusLt
-##    txBuffer= txBuffer+keyInhibitonNumt
-##    txBuffer= txBuffer+SNt
-##    txBuffer= txBuffer+CHt
-
-    #print(txBuffer
+##         keyInhibitonNum =  keyInhibitonNum | 0x08  
+def Get_DeviceParams():
+    global keystatusH, keystatusL
+    global keyInhibitonNum
+    global res_data
+     
 
     if(len(res_data)>=17):
       if(res_data[0] == 0xff and res_data[1] == 0xff and res_data[2] == 0xff and
@@ -597,6 +565,17 @@ def Get_DeviceParams():
           if(crc16_xmodemt == res_data[(len(res_data)-3):(len(res_data)-1)]):
               print('Get_DeviceParams CRC',crc16_xmodemt)
               print('Get_DeviceParams CRC ok')
+              print('keystatusH',res_data[6])
+              print('keystatusL',res_data[7])
+              print('keyInhibitonNum',res_data[8])
+              print('SN',(res_data[9:13]))
+              print('ch',(res_data[15]))
+              tt = res_data[9:13]
+              print('tt',tt)
+              sntext.set(binascii.hexlify(tt))
+              tt = res_data[13:14]
+              chtext.set(binascii.hexlify(tt))
+#chtext = StringVar()
 def crc_cal(event):
     crc16_xmodem = crcmod.mkCrcFun(0x11021,rev=False,initCrc = 0x0000,xorOut = 0x0000)
     crc16_xmodemt = struct.pack('H',crc16_xmodem(event))
