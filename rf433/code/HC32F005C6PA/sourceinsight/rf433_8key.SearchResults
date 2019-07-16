@@ -1,9 +1,4 @@
----- system_params_get Matches (10 in 4 files) ----
-Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):    params_typedef *tmp=system_params_get();
-Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):  params_typedef *tmp=system_params_get();	  
-Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):  tmp=system_params_get();
-Key.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\hardware):  tInchStatus=system_params_get()->KEY_H8<<8+system_params_get()->KEY_L8;
-Key.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\hardware):   inch_status=system_params_get()->KEY_H8<<8+system_params_get()->KEY_L8;
-Key.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\hardware):  params=system_params_get();
-uartParse.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\platform):params_typedef *system_params_get()
-uartParse.h (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\inc):params_typedef *system_params_get(void);
+---- rfAck_Flag Matches (3 in 1 files) ----
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):  boolean_t rfAck_Flag=0;
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):    if(rfAck_Flag == 0)
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):        rfAck_Flag = 1;

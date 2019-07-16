@@ -19,14 +19,14 @@ keystatusL = 0
 keyInhibitonNum = 0
 PortOpenFlag = 0
 win = Tk()
-win.geometry("700x500+1200+200")
+win.geometry("700x500+500+200")
 win.title("串口配置工具")
 mySerial = serial.Serial()
 Open = StringVar()
 Send = StringVar()
 data = ''
 #*****************************UI*********************************************
-frameUpDown = LabelFrame(win, text="上下键功能设定", width=300, height=80)
+frameUpDown = LabelFrame(win, text="上下键功能设定",fg='blue', width=300, height=80)
 frameUpDown.grid(row=0, column=0, sticky=W,padx=10,pady=7)
 ttk.Label(frameUpDown,text="上下关系").grid(column=50,row=0)#增加标签
 ttk.Label(frameUpDown,text="上UP").grid(sticky = W,column=0,row=0)#增加up标签
@@ -173,7 +173,7 @@ entryCH=Entry(frameSN_CH,width = 10,state = 'normal',textvariable = chtext)#ch�
 entrySN.place(relx=0,rely=0,x=70,y=20)
 entryCH.place(relx=0,rely=0,x=70,y=100)
 
-frameCOMX = tk.LabelFrame(win,height = 80,width = 300,text = "通讯参数")
+frameCOMX = tk.LabelFrame(win,height = 80,width = 300,text = "通讯参数",fg='blue')
 frameCOMX.grid(column = 81, row = 0)
 frameCOMX.place(relx=0,rely=0,x=328,y=5)
 COMX= tk.StringVar(frameCOMX,'COM1')#增加COM下拉菜单
@@ -246,7 +246,7 @@ def OpenPort(self):
             PortOpenFlag = 0
             info = sys.exc_info()
             print('info',info[0],":",info[1])
-            messagebox.showinfo('错误提示', '出错啦，请检查！')
+            messagebox.showinfo('错误提示', '串口不存在或者被占用，请检查！',fg="red")
     else:
         mySerial.close()
         PortOpenFlag = 0

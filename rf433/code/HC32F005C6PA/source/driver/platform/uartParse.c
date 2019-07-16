@@ -67,7 +67,12 @@ void uartPrase()
               CommandInfo.funcode[FUNC_INDEX+1]==0x0d)//格式化参数
       {
         uart_ack_response(FORMAT_CMD);
-      }	 
+      }
+      else if(CommandInfo.funcode[FUNC_INDEX]==READ_CMD&&
+              CommandInfo.funcode[FUNC_INDEX+1]==0x0d)//格式化参数
+      {
+        uart_ack_response(READ_CMD);
+      } 
     }
     uartReceiveLen = 0;
   }

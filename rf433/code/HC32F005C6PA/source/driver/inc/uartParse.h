@@ -22,7 +22,7 @@
 #define FORMAT_CMD				0x56
 #define SETTING_CMD				0x12
 #define SNACK_CMD				0x58
-
+#define READ_CMD				0x13
 typedef struct {
 
 unsigned char KEY_H8;

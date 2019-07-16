@@ -58,7 +58,26 @@ void uart_ack_response(unsigned char  cmd_type)
       free(pbuffer);
       pbuffer = NULL;
     }break;	
-    
+  case READ_CMD:
+    {
+      pbuffer[0] = WAKE_HEAD;
+      pbuffer[1] = WAKE_HEAD;
+      pbuffer[2] = WAKE_HEAD;
+      pbuffer[3] = WAKE_HEAD;
+      pbuffer[4] = READ_CMD;
+      pbuffer[5] = 0x0d;
+      params_typedef *tmp=system_params_get();
+      memcpy(&pbuffer[6],tmp,9);
+      unsigned int crc=CRC16_Get8(&pbuffer[4],11);
+      pbuffer[15] =(unsigned char)( crc>>8);	
+      pbuffer[16] = (unsigned char)crc;	
+      pbuffer[17] = WAKE_TAG;	
+      
+      UART_Config();
+      UART1_SendBytes(pbuffer,18);
+      free(pbuffer);
+      pbuffer = NULL;
+    }break;    
   }
 }
 void rf_ack_response(unsigned char  cmd_type)
@@ -603,32 +622,23 @@ boolean_t command_process()
             memcpy(&params,&pReadBuf[1],11);
             readEEPROM_flag = 1;
           }
-          
-          //params->KEY_H8 = pReadBuf[1];
-          //params->KEY_L8 =  pReadBuf[2];
-          //params->inhibition =  pReadBuf[3];
-          //params->sn[0] = pReadBuf[4];
-          //params->sn[1] = pReadBuf[5];
-          //params->sn[2] = pReadBuf[6];
-          //params->sn[3] = pReadBuf[7];
-          //params->freq =  pReadBuf[8]<<8 + pReadBuf[9];
-        }
+        }//非空卡
         else//空卡
         {
           pReadBuf[0] =0x5a;
           memcpy(&pReadBuf[1],&params,11);
           ee_WriteBytes(pReadBuf, 0, 12);
-        }
+        }//空卡
         UART_Config();
         uartPrase();  
         //command_process();
-      }//有卡片
+      }
       
     //  CMT2300_Init();
      // setup_Rx();
       // loop_Rx();
-    }
-  }
+    }//有卡片
+  }//正常工作模式
   else if(WorkMode()==STOPWORK)//停机模式
   {
     uint16_t *keystatus_flag=KeyStaus();
@@ -639,6 +649,7 @@ boolean_t command_process()
     if(rfAck_Flag == 0)
     { 
       CommandTx(0,COMMAND_FUNC_SN_CONFIG,0,1);
+      CMT2300_Init();
       setup_Rx();
     }
     unsigned char len;
@@ -652,6 +663,7 @@ boolean_t command_process()
         WorkModeStatus = 0;
       } 
     }
+	
   }
   return 1;
 }

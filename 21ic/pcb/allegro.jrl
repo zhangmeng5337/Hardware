@@ -1,0 +1,22 @@
+\t (00:00:07) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:00:07)     Journal start - Sat Jul 13 13:51:26 2019
+\t (00:00:07)         Host=LAPTOP-U0A85BUA User=zhang Pid=11372 CPUs=8
+\t (00:00:07) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:00:07) 
+   (00:00:07) Loading axlcore.cxt 
+\t (00:00:09) Starting new design...
+\i (00:00:09) trapsize 837
+\i (00:00:09) trapsize 817
+\i (00:00:09) trapsize 840
+\i (00:00:10) trapsize 861
+\i (00:00:11) trapsize 716
+\i (00:00:11) trapsize 1448
+\i (00:00:12) placementedit 
+\i (00:00:13) open 
+\e (00:00:14) Do you want to save the changes you made to unnamed.brd?
+\i (00:00:15) fillin no 
+\i (00:00:29) fillin "F:\projects\18\hmc5883\pcb\hmc5883.brd"
+\i (00:00:29) cd "F:\projects\18\hmc5883\pcb"
+\t (00:00:29) Opening existing design...
+\i (00:00:29) trapsize 56106
+\t (00:00:29)     Journal end - Sat Jul 13 13:51:48 2019

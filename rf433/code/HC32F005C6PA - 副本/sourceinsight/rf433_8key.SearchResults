@@ -1,0 +1,4 @@
+---- rfAck_Flag Matches (3 in 1 files) ----
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):  boolean_t rfAck_Flag=0;
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):    if(rfAck_Flag == 0)
+Command.c (f:\projects\git\hardware\rf433\code\hc32f005c6pa\source\driver\src):        rfAck_Flag = 1;

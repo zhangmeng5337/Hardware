@@ -1,0 +1,37 @@
+(ExpressProject ""
+  (ProjectVersion "19981106")
+  (ProjectType "PCB")
+  (Folder "Design Resources"
+    (Folder "Library")
+    (File ".\21ic.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (NoModify))
+  (Folder "Outputs")
+  (Folder "Referenced Projects")
+  (PartMRUSelector)
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" ".\21ic.dsn")
+      (Path "Design Resources" ".\21ic.dsn" "SCHEMATIC1")
+      (Path "Design Resources" ".\21ic.dsn" "Design Cache")
+      (Select "Design Resources" ".\21ic.dsn"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -31 0 200 0 283"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 52 1382 52 374")
+        (Scroll "0 89")
+        (Zoom "42")
+        (Occurrence "/"))
+      (Path "F:\PROJECTS\GIT\HARDWARE\21IC\PCB\21IC.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "MCU")))
+  (MPSSessionName "zhang"))

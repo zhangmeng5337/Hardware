@@ -1,5 +1,6 @@
 #include "bsp_uart.h"
 #include "bsp_spi.h"
+#include "key.h"
 #include "main.h"
 #include "eeprom.h"
 #include <CMT2300drive.h>
@@ -168,19 +169,21 @@ void main(void)
 {
   //SystemClock_Init();
   //CLK_Init();
-  delay1ms(200);
+
+   delay1ms(200);
+   KEY_Init();
   //CFG->GCR |= CFG_GCR_SWD;
  
  // ee_Test();
- command_process();
+
   
 //    if(FALSE == statetx )
 //    {
 //      
-//      while(1)
-//      {
-//        
-//      }
+      while(1)
+      {
+         command_process();
+      }
 //    }
 //    else
 //    {
