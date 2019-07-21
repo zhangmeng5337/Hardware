@@ -1,0 +1,91 @@
+(ExpressProject ""
+  (ProjectVersion "19981106")
+  (Folder "Design Resources"
+    (Folder "Library")
+    (File ".\library1.olb"
+      (Type "Schematic Library"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (NoModify)
+    (Board_sim_option "VHDL_flow"))
+  (Folder "Outputs")
+  (Folder "Referenced Projects")
+  (ISPCBBASICLICENSE "false")
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" ".\library1.olb")
+      (Select "Design Resources" ".\library1.olb"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 0 200 0 666"))
+      (Tab 0))
+    (Doc
+      (Type "COrPartDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 78 1404 78 396")
+        (PackageScroll "0 0")
+        (PackageZoom "1")
+        (PartPackage "Part")
+        (Scroll "396 0")
+        (Zoom "156"))
+      (Path "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (Package "CP2012"))
+    (Doc
+      (Type "COrPartDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 104 1434 104 426")
+        (PackageScroll "0 0")
+        (PackageZoom "1")
+        (PartPackage "Part")
+        (Scroll "366 33")
+        (Zoom "159"))
+      (Path "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (Package "sipex3232ee"))
+    (Doc
+      (Type "COrPartDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 26 1063 26 348")
+        (PackageScroll "0 0")
+        (PackageZoom "1")
+        (PartPackage "Part")
+        (Scroll "85 50")
+        (Zoom "117"))
+      (Path "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (Package "E32-TTL-100"))
+    (Doc
+      (Type "COrPartDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 52 1089 52 374")
+        (PackageScroll "0 0")
+        (PackageZoom "1")
+        (PartPackage "Part")
+        (Scroll "337 121")
+        (Zoom "158"))
+      (Path "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (Package "APC340"))
+    (Doc
+      (Type "COrPartDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 104 1141 104 426")
+        (PackageScroll "0 0")
+        (PackageZoom "1")
+        (PartPackage "Part")
+        (Scroll "1075 203")
+        (Zoom "318"))
+      (Path "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (Package "XC6234H331VR"))
+    (Doc
+      (Type "COrPartDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 130 1167 130 452")
+        (PackageScroll "0 0")
+        (PackageZoom "1")
+        (PartPackage "Part")
+        (Scroll "1008 178")
+        (Zoom "318"))
+      (Path "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (Package "DB9")))
+  (MPSSessionName "zhang"))

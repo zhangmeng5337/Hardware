@@ -14,13 +14,25 @@
   (GlobalState
     (FileView
       (Path "Design Resources")
-      (Select "Design Resources" ".\manetic.dsn"))
+      (Path "Design Resources" ".\manetic.dsn")
+      (Path "Design Resources" ".\manetic.dsn" "SCHEMATIC1")
+      (Select "Design Resources" ".\manetic.dsn" "SCHEMATIC1" "RM3100"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
         (Placement "44 2 3 -1 -1 -8 -31 0 200 0 283"))
-      (Tab 0)))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 52 1382 52 374")
+        (Scroll "0 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path "F:\PROJECTS\GIT\HARDWARE\ตุดล\PCB\RECEIVER\MANETIC.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "RM3100")))
   (PartMRUSelector
     (CON8
       (FullPartName "CON8.Normal")

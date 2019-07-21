@@ -1,0 +1,78 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Dump Library Log                                                 )
+(                                                                     )
+(    Software Version : 16.6-2015S108                                 )
+(    Date/Time        : Mon Nov 12 21:17:58 2018                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+*** file: C:/Users/zhang/Desktop/allegro/lora.brd ***
+
+
+
+  *** Creating padstacks. ***
+
+  SMD_0402 being dumped.
+
+  SMD_0603 being dumped.
+
+  SMD1_4X1_2 being dumped.
+
+  SMD0_5X0_3 being dumped.
+
+  SMD1_8X1_0 being dumped.
+
+  SMD1_5X0_8 being dumped.
+
+  SMD4_8X4_8 being dumped.
+
+  SMD0_55X0_3 being dumped.
+
+  SMD0_75X0_3 being dumped.
+
+  TP0_5 being dumped.
+
+  HOLE1_5X0_9 being dumped.
+
+
+  *** Creating package symbols (.dra and .psm) ***
+
+  led0603 being dumped.
+
+  qfn28_nolead being dumped.
+
+  cry_3225 being dumped.
+
+  tp1 being dumped.
+
+  ant_hole being dumped.
+
+  ipx being dumped.
+
+  e32-ttl-100 being dumped.
+
+  c0402 being dumped.
+
+  c0603 being dumped.
+
+  con4 being dumped.
+
+  r0402 being dumped.
+
+  sc-70 being dumped.
+
+  qfn28_lead being dumped.
+
+
+
+*********************** Summary *********************
+ERRORs reported:                           0
+
+Number of padstacks dumped:               11
+Number of package symbols dumped:         13
+
+Total number of symbols dumped:           13
+*****************************************************
+

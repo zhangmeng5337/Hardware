@@ -16,14 +16,128 @@
       (Path "Design Resources")
       (Path "Design Resources" ".\receiver.dsn")
       (Path "Design Resources" ".\receiver.dsn" "SCHEMATIC1")
-      (Select "Design Resources" ".\receiver.dsn" "SCHEMATIC1" "POWER"))
+      (Select "Design Resources" ".\receiver.dsn" "SCHEMATIC1" "RS232"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
         (Placement "44 0 1 -1 -1 -8 -31 0 200 0 283"))
-      (Tab 0)))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 104 1434 104 426")
+        (Scroll "-314 0")
+        (Zoom "43")
+        (Occurrence "/"))
+      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "CPU"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 130 1167 130 452")
+        (Scroll "892 415")
+        (Zoom "134")
+        (Occurrence "/"))
+      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "COM_TTL"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -31 26 1063 26 348")
+        (Scroll "-5 118")
+        (Zoom "116")
+        (Occurrence "/"))
+      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "RS232"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 78 1115 78 400")
+        (Scroll "0 320")
+        (Zoom "116")
+        (Occurrence "/"))
+      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "LORA")))
   (PartMRUSelector
+    (INDUCTOR
+      (FullPartName "INDUCTOR.Normal")
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    (STM32L412T8T6
+      (FullPartName "STM32L412T8T6.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
+    (CON9
+      (FullPartName "CON9.Normal")
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (DB9
+      (FullPartName "DB9.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
+    (X6206P25
+      (FullPartName "X6206P25.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
+    (XC6234H331VR
+      (FullPartName "XC6234H331VR.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
+    ("CONN ASY DSUB P/P 9"
+      (FullPartName "CONN ASY DSUB P/P 9A.Normal")
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (OFFPAGELEFT-L
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (APC340
+      (FullPartName "APC340.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
+    (E32-TTL-100
+      (FullPartName "E32-TTL-100.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
+    ("CAP POL"
+      (FullPartName "CAP POL.Normal")
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    ("CAP NP"
+      (FullPartName "CAP NP.Normal")
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    (sipex3232ee
+      (FullPartName "sipex3232ee.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
+    (R
+      (FullPartName "R.Normal")
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    (VCC_BAR
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (GND
+      (LibraryName
+         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (CP2012
+      (FullPartName "CP2012.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
     (CON8
       (FullPartName "CON8.Normal")
       (LibraryName
@@ -33,36 +147,9 @@
       (FullPartName "tp_3.Normal")
       (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
       (DeviceIndex "0"))
-    (OFFPAGELEFT-L
-      (LibraryName
-         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
     (OFFPAGELEFT-R
       (LibraryName
          "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
-    (R
-      (FullPartName "R.Normal")
-      (LibraryName
-         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
-      (DeviceIndex "0"))
-    (INDUCTOR
-      (FullPartName "INDUCTOR.Normal")
-      (LibraryName
-         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
-      (DeviceIndex "0"))
-    (GND
-      (LibraryName
-         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
-    (VCC_BAR
-      (LibraryName
-         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
-    ("CAP NP"
-      (FullPartName "CAP NP.Normal")
-      (LibraryName
-         "C:\CADENCE\CADENCE\CADENCE_SPB_16.6\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
       (DeviceIndex "0"))
     (13156
       (FullPartName "13156.Normal")

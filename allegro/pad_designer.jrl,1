@@ -1,0 +1,111 @@
+\t (00:00:00) pad_designer 16.6-2015 S069 (v16-6-112FN) Windows 32
+\t (00:00:00)     Journal start - Sat Jul 20 16:22:26 2019
+\t (00:00:00)         Host=LAPTOP-U0A85BUA User=zhang Pid=7144 CPUs=8
+\t (00:00:00) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\pad_designer.exe
+\t (00:00:00) 
+\i (00:00:04) setwindow form.padedit
+\i (00:00:04) pse_open 
+\i (00:00:12) fillin "smd2_9x2_9.pad"
+\i (00:00:13) FORM padedit layers  
+\i (00:00:15) FORM padedit grid row begin_layer 
+\i (00:00:17) FORM padedit crossbox YES 
+\i (00:00:21) FORM padedit parameters  
+\i (04:30:27) pse_new 
+\i (04:30:36) fillin "menu_cancel"
+\i (04:30:38) pse_open 
+\i (04:30:41) fillin "hole1_7x1_0.pad"
+\i (04:30:45) pse_new 
+\i (04:31:03) fillin "hole1_69x1_09.pad"
+\i (04:31:05) FORM padedit units Millimeter 
+\i (04:31:06) fillin yes 
+\w (04:31:06) WARNING(SPMHUT-48): Scaled value has been rounded off.
+\i (04:31:07) FORM padedit layers  
+\i (04:31:09) FORM padedit parameters  
+\i (04:31:13) FORM padedit layers  
+\i (04:31:14) FORM padedit grid row begin_layer 
+\i (04:31:17) FORM padedit geometry Circle 
+\i (04:31:21) FORM padedit width 1.69 
+\i (04:31:24) FORM padedit grid row default_internal 
+\i (04:31:26) FORM padedit geometry Circle 
+\i (04:31:30) FORM padedit width 1.69 
+\i (04:31:30) FORM padedit grid row end_layer 
+\i (04:31:32) FORM padedit geometry Circle 
+\i (04:31:35) FORM padedit width .69 
+\i (04:31:35) FORM padedit grid row soldermask_bottom 
+\i (04:31:37) FORM padedit parameters  
+\i (04:31:46) FORM padedit hole_size_x 1.09 
+\i (04:31:48) FORM padedit layers  
+\i (04:31:51) FORM padedit grid row soldermask_top 
+\i (04:31:54) FORM padedit geometry Circle 
+\i (04:31:57) FORM padedit width 1.69 
+\i (04:32:00) FORM padedit grid row soldermask_bottom 
+\i (04:32:02) FORM padedit geometry Circle 
+\i (04:32:05) FORM padedit width 1.69 
+\i (04:32:05) FORM padedit grid row pastemask_top 
+\i (04:32:11) FORM padedit geometry Circle 
+\i (04:32:13) FORM padedit width 1.69 
+\i (04:32:13) FORM padedit grid row pastemask_bottom 
+\i (04:32:16) FORM padedit geometry Circle 
+\i (04:32:19) FORM padedit width 1.69 
+\i (04:32:19) FORM padedit grid row default_internal 
+\i (04:32:21) FORM padedit parameters  
+\i (04:32:25) pse_save 
+\i (04:32:40) setwindow text
+\i (04:32:40) close 
+\i (04:32:44) fillin no 
+\i (04:32:53) setwindow form.padedit
+\i (04:32:53) FORM padedit layers  
+\i (04:32:55) FORM padedit parameters  
+\i (04:33:01) FORM padedit drill_fig Circle 
+\i (04:33:03) FORM padedit drill_width 0.3 
+\i (04:33:05) FORM padedit drill_height 0.3 
+\i (04:33:06) FORM padedit layers  
+\i (04:33:11) pse_save 
+\i (04:33:19) setwindow text
+\i (04:33:19) close 
+\i (04:33:21) fillin no 
+\i (04:33:28) setwindow form.padedit
+\i (04:33:28) FORM padedit grid row end_layer 
+\i (04:33:31) FORM padedit width 1.69 
+\i (04:33:33) pse_save 
+\i (04:33:44) pse_new 
+\i (04:34:14) fillin "hole4_76x3_26.pad"
+\i (04:34:15) FORM padedit parameters  
+\i (04:34:17) FORM padedit units Millimeter 
+\i (04:34:18) fillin yes 
+\w (04:34:18) WARNING(SPMHUT-48): Scaled value has been rounded off.
+\i (04:34:19) FORM padedit layers  
+\i (04:34:21) FORM padedit grid row begin_layer 
+\i (04:34:23) FORM padedit geometry Circle 
+\i (04:34:26) FORM padedit width 4.76 
+\i (04:34:26) FORM padedit grid row default_internal 
+\i (04:34:28) FORM padedit geometry Circle 
+\i (04:34:31) FORM padedit width 4.76 
+\i (04:34:31) FORM padedit grid row end_layer 
+\i (04:34:33) FORM padedit geometry Circle 
+\i (04:34:37) FORM padedit width 4.76 
+\i (04:34:37) FORM padedit grid row soldermask_bottom 
+\i (04:34:38) FORM padedit grid row soldermask_top 
+\i (04:34:39) FORM padedit geometry Circle 
+\i (04:34:42) FORM padedit width 4.76 
+\i (04:34:42) FORM padedit grid row soldermask_bottom 
+\i (04:34:44) FORM padedit geometry Circle 
+\i (04:34:46) FORM padedit width 4.76 
+\i (04:34:46) FORM padedit grid row default_internal 
+\i (04:34:47) FORM padedit grid row pastemask_top 
+\i (04:34:49) FORM padedit geometry Circle 
+\i (04:34:51) FORM padedit width 4.76 
+\i (04:34:51) FORM padedit grid row pastemask_bottom 
+\i (04:34:53) FORM padedit geometry Circle 
+\i (04:34:56) FORM padedit width 4.76 
+\i (04:34:56) FORM padedit grid row soldermask_top 
+\i (04:34:57) FORM padedit parameters  
+\i (04:35:02) FORM padedit hole_size_x 3.26 
+\i (04:35:02) FORM padedit layers  
+\i (04:35:03) FORM padedit parameters  
+\i (04:35:07) FORM padedit drill_fig Circle 
+\i (04:35:13) FORM padedit drill_width 0.75 
+\i (04:35:15) FORM padedit drill_height 0.75 
+\i (04:35:18) pse_save 
+\i (04:35:39) pse_exit
+\t (04:35:39)     Journal end - Sat Jul 20 20:58:05 2019

@@ -1,0 +1,25 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    CREATE SYMBOL                                                    )
+(                                                                     )
+(    Drawing          : LQFP-32.dra                                   )
+(    Software Version : 16.6-2015S108                                 )
+(    Date/Time        : Sat Nov 10 14:45:55 2018                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Create Symbol of type: PACKAGE
+    Directory = F:/footprint/allegro
+    Name      = lqfp-32.psm
+    User      = zhang
+    Machine   = LAPTOP-U0A85BUA
+
+
+Create symbol started.
+ 
+ ERROR(SPMHCS-1): Symbol is missing a refdes. 
+ ERROR(SPMHCS-1): Symbol is missing a refdes. 
+
+ERROR(SPMHA1-291): Create symbol has been aborted.
+

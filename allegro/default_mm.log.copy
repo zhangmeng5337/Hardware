@@ -1,0 +1,28 @@
+<HTML><HEAD><STYLE TYPE="text/css">.errorMessage { color:darkred; font-weight:bold; font-style:italic; text-decoration:underline; }</STYLE></HEAD><BODY><PRE>
+(---------------------------------------------------------------------)
+(                                                                     )
+(    CREATE SYMBOL                                                    )
+(                                                                     )
+(    Drawing          : default_mm.dra                                )
+(    Software Version : 16.6-2015S108                                 )
+(    Date/Time        : Sat Sep 08 11:13:18 2018                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Create Symbol of type: PACKAGE
+    Directory = F:/footprint/allegro
+    Name      = default_mm.psm
+    User      = zhang
+    Machine   = LAPTOP-U0A85BUA
+
+
+Create symbol started.
+ 
+ <b><i><font color="darkred">ERROR(SPMHCS-1)</i></b></font>: Symbol is missing a refdes. 
+ <b><i><font color="darkred">ERROR(SPMHCS-1)</i></b></font>: Symbol is missing a refdes. 
+
+<b><i><font color="darkred">ERROR(SPMHA1-291)</i></b></font>: Create symbol has been aborted.
+
+</PRE>
+</BODY></HTML>

@@ -1,0 +1,96 @@
+\t (00:00:00) pad_designer 16.6-2015 S069 (v16-6-112FN) Windows 32
+\t (00:00:00)     Journal start - Sun Jul 21 08:55:04 2019
+\t (00:00:00)         Host=LAPTOP-U0A85BUA User=zhang Pid=12968 CPUs=8
+\t (00:00:00) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\pad_designer.exe
+\t (00:00:00) 
+\i (00:00:21) setwindow form.padedit
+\i (00:00:21) pse_new 
+\i (00:00:41) fillin "hole0_4x1_5.pad"
+\i (00:00:43) FORM padedit units Millimeter 
+\i (00:00:45) fillin yes 
+\w (00:00:45) WARNING(SPMHUT-48): Scaled value has been rounded off.
+\i (00:00:46) FORM padedit layers  
+\i (00:00:47) FORM padedit single YES 
+\i (00:00:48) FORM padedit grid row begin_layer 
+\i (00:00:50) FORM padedit geometry Rectangle 
+\i (00:00:53) FORM padedit width 0.4 
+\i (00:00:55) FORM padedit height 1.5 
+\i (00:00:55) FORM padedit crossbox YES 
+\i (00:00:56) FORM padedit grid row soldermask_top 
+\i (00:00:58) FORM padedit geometry Rectangle 
+\i (00:01:01) FORM padedit width 0.4 
+\i (00:01:03) FORM padedit height 1.5 
+\i (00:01:03) FORM padedit grid row pastemask_top 
+\i (00:01:06) FORM padedit geometry Rectangle 
+\i (00:01:09) FORM padedit width 0.4 
+\i (00:01:11) FORM padedit height 1.5 
+\i (00:01:11) FORM padedit grid row pastemask_bottom 
+\i (00:01:14) pse_save 
+\i (00:01:32) pse_new 
+\i (00:01:44) fillin "menu_cancel"
+\i (00:01:46) pse_open 
+\i (00:01:48) fillin "hole0_7x0_7.pad"
+\i (00:01:48) FORM padedit grid row soldermask_top 
+\i (00:01:52) pse_new 
+\i (00:02:03) fillin "hole0_7x0_7c.pad"
+\i (00:02:05) FORM padedit parameters  
+\i (00:02:08) FORM padedit units Millimeter 
+\i (00:02:09) fillin yes 
+\w (00:02:09) WARNING(SPMHUT-48): Scaled value has been rounded off.
+\i (00:02:17) FORM padedit hole_size_x 0.7 
+\i (00:02:18) FORM padedit drill_fig Circle 
+\i (00:02:31) FORM padedit drill_width 0.2 
+\i (00:02:32) FORM padedit layers  
+\i (00:02:34) FORM padedit grid row begin_layer 
+\i (00:02:36) FORM padedit geometry Circle 
+\i (00:02:40) FORM padedit width 1.1 
+\i (00:02:43) FORM padedit grid row default_internal 
+\i (00:02:44) FORM padedit geometry Circle 
+\i (00:02:47) FORM padedit width 1.1 
+\i (00:02:47) FORM padedit grid row end_layer 
+\i (00:02:50) FORM padedit geometry Square 
+\i (00:02:51) FORM padedit geometry Circle 
+\i (00:02:54) FORM padedit width 1.1 
+\i (00:02:54) FORM padedit grid row soldermask_bottom 
+\i (00:02:55) FORM padedit grid row soldermask_top 
+\i (00:02:57) FORM padedit geometry Circle 
+\i (00:03:00) FORM padedit width 1.1 
+\i (00:03:00) FORM padedit grid row soldermask_bottom 
+\i (00:03:02) FORM padedit geometry Circle 
+\i (00:03:06) FORM padedit width 1.1 
+\i (00:03:06) FORM padedit grid row pastemask_top 
+\i (00:03:08) FORM padedit geometry Circle 
+\i (00:03:11) FORM padedit width 1.1 
+\i (00:03:11) FORM padedit grid row pastemask_bottom 
+\i (00:03:14) FORM padedit geometry Circle 
+\i (00:03:16) FORM padedit width 1.1 
+\i (00:03:18) FORM padedit grid row soldermask_top 
+\i (00:03:23) pse_save 
+\i (00:03:29) pse_new 
+\i (00:03:46) fillin "hole1_1x0_7.pad"
+\i (00:03:47) FORM padedit parameters  
+\i (00:03:49) FORM padedit units Millimeter 
+\i (00:03:50) fillin yes 
+\w (00:03:50) WARNING(SPMHUT-48): Scaled value has been rounded off.
+\i (00:03:51) FORM padedit layers  
+\i (00:03:58) FORM padedit parameters  
+\i (00:04:01) FORM padedit hole_type Oval Slot 
+\i (00:04:08) FORM padedit hole_size_x 0.7 
+\i (00:04:10) FORM padedit hole_size_y 1.1 
+\i (00:04:14) FORM padedit layers  
+\i (00:04:20) FORM padedit geometry Oblong 
+\i (00:04:28) FORM padedit width 1.1 
+\i (00:04:37) FORM padedit height 1.5 
+\i (00:04:39) FORM padedit grid row default_internal 
+\i (00:04:46) FORM padedit geometry Oblong 
+\i (00:04:48) FORM padedit width 1.1 
+\i (00:04:50) FORM padedit height 1.5 
+\i (00:04:50) FORM padedit grid row end_layer 
+\i (00:04:53) FORM padedit geometry Oblong 
+\i (00:04:55) FORM padedit width 1.1 
+\i (00:04:58) FORM padedit height 1.5 
+\i (00:04:58) FORM padedit grid row soldermask_top 
+\i (00:05:00) FORM padedit geometry Rectangle 
+\i (00:05:02) FORM padedit width 1.1 
+\i (00:05:04) FORM padedit height 1.5 
+\i (00:05:0
