@@ -1,0 +1,8 @@
+{ Using PSTWRITER 16.6.0 d001Jul-22-2019 at 21:05:20 }
+
+#1 ERROR(ORCAP-36032): Duplicate Reference Designator C12: SCHEMATIC1, POWER (3.95, 1.88).
+#2 ERROR(ORCAP-36032): Duplicate Reference Designator U6: SCHEMATIC1, POWER (4.80, 2.66).
+#3 ERROR(ORCAP-36032): Duplicate Reference Designator C9: SCHEMATIC1, POWER (4.69, 1.86).
+#4 ERROR(ORCAP-36032): Duplicate Reference Designator C10: SCHEMATIC1, POWER (5.38, 1.92).
+#5 ERROR(ORCAP-36032): Duplicate Reference Designator C11: SCHEMATIC1, POWER (3.26, 1.82).
+#6 ERROR(ORCAP-36018): Aborting Netlisting... Please correct the above errors and retry.

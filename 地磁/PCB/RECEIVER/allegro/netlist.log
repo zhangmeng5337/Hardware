@@ -1,0 +1,4 @@
+{ Using PSTWRITER 16.6.0 d001Jul-22-2019 at 21:03:16 }
+
+#1 ERROR(ORCAP-36033): Net named "NC" found on the design. Please rename the net.
+#2 ERROR(ORCAP-36018): Aborting Netlisting... Please correct the above errors and retry.
