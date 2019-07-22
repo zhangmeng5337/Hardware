@@ -14,7 +14,9 @@
   (GlobalState
     (FileView
       (Path "Design Resources")
-      (Select "Design Resources" ".\manetic.dsn"))
+      (Path "Design Resources" ".\manetic.dsn")
+      (Path "Design Resources" ".\manetic.dsn" "SCHEMATIC1")
+      (Select "Design Resources" ".\manetic.dsn" "SCHEMATIC1" "LORA"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
@@ -24,43 +26,13 @@
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 52 1382 52 374")
-        (Scroll "-78 72")
-        (Zoom "116")
-        (Occurrence "/"))
-      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\MANETIC.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "Block"))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
         (Placement "44 0 1 -1 -1 -8 -31 78 1408 78 400")
-        (Scroll "0 79")
-        (Zoom "86")
-        (Occurrence "/"))
-      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\MANETIC.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "RM3100"))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 26 1063 26 348")
-        (Scroll "-9 0")
+        (Scroll "-156 0")
         (Zoom "100")
         (Occurrence "/"))
-      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\MANETIC.DSN")
+      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\NODE\MANETIC.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "LORA"))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 52 1089 52 374")
-        (Scroll "-9 0")
-        (Zoom "100")
-        (Occurrence "/"))
-      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\MANETIC.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "POWER")))
+      (Page "LORA")))
   (PartMRUSelector
     (CON8
       (FullPartName "CON8.Normal")
@@ -106,4 +78,5 @@
       (FullPartName "13156.Normal")
       (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
       (DeviceIndex "0")))
-  (LastUsedLibraryBrowseDirectory "F:\footprint\allegro"))
+  (LastUsedLibraryBrowseDirectory "F:\footprint\allegro")
+  (MPSSessionName "zhang"))

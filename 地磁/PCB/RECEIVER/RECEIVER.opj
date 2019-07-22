@@ -16,54 +16,38 @@
       (Path "Design Resources")
       (Path "Design Resources" ".\receiver.dsn")
       (Path "Design Resources" ".\receiver.dsn" "SCHEMATIC1")
-      (Select "Design Resources" ".\receiver.dsn" "SCHEMATIC1" "RS232"))
+      (Select "Design Resources" ".\receiver.dsn" "SCHEMATIC1" "CPU"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 0 200 0 283"))
+        (Placement "44 2 3 -1 -1 -8 -31 0 200 0 283"))
       (Tab 0))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 104 1434 104 426")
-        (Scroll "-314 0")
-        (Zoom "43")
+        (Placement "44 0 1 -1 -1 -8 -31 52 1089 52 374")
+        (Scroll "1520 886")
+        (Zoom "84")
         (Occurrence "/"))
       (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "CPU"))
+      (Page "LORA"))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 130 1167 130 452")
-        (Scroll "892 415")
-        (Zoom "134")
+        (Placement "44 0 1 -1 -1 -8 -31 104 1141 104 426")
+        (Scroll "162 0")
+        (Zoom "86")
         (Occurrence "/"))
       (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "COM_TTL"))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 2 3 -1 -1 -8 -31 26 1063 26 348")
-        (Scroll "-5 118")
-        (Zoom "116")
-        (Occurrence "/"))
-      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "RS232"))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 78 1115 78 400")
-        (Scroll "0 320")
-        (Zoom "116")
-        (Occurrence "/"))
-      (Path "F:\PROJECTS\GIT\HARDWARE\地磁\PCB\RECEIVER\RECEIVER.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "LORA")))
+      (Page "CPU")))
   (PartMRUSelector
+    (STM32L431rct6
+      (FullPartName "STM32L431rct6.Normal")
+      (LibraryName "F:\FOOTPRINT\ALLEGRO\LIBRARY1.OLB")
+      (DeviceIndex "0"))
     (INDUCTOR
       (FullPartName "INDUCTOR.Normal")
       (LibraryName
