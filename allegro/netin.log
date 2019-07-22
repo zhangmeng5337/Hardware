@@ -1,0 +1,164 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Allegro NETLIST IN Log File                                      )
+(                                                                     )
+(    Drawing          : PositionDecion_ZM_V1.brd                      )
+(    Software Version : 16.6-2015S102                                 )
+(    Date/Time        : Fri Apr 12 16:05:56 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Fri Apr 12 16:05:56 2019				Page     1
+
+
+
+
+Netlist File: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence\PositionDecion_ZM_V1~
+.TXT'      Physical Design File: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence\P~
+ositionDecion_ZM_V1.brd'
+
+===========================================================
+
+$PACKAGES
+LED_2_54 ! 'QT523C-EE1' ! '.10' ; Q4
+LED_2_54 ! 'IR928-6C-F' ! '.10' ; Q3
+M4 ! 'M4' ; Q5
+M4 ! 'M4' ; Q6
+LED_2_54 ! 'IR928-6C-F' ! '.10' ; Q1
+LED_2_54 ! 'QT523C-EE1' ! '.10' ; Q2
+XH_2_54_4P ! 'CON4' ; J1
+$NETS
+'$$$12107' ; Q3.1 Q1.2
+'LED_K3' ; J1.4 Q1.1
+'LED_K1' ; J1.1 Q4.1
+'LED_K2' ; J1.2 Q2.1
+'GND' ; Q3.2 Q4.2 J1.3 Q2.2
+$END
+
+===========================================================
+End of NETLIST IN Syntax/Logic Check
+===========================================================
+
+Total Netlist Warnings =  0.
+Total Netlist Errors   =  0.
+Fri Apr 12 16:05:56 2019				Page     1
+
+Parsing device file: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/dev0.txt'.
+
+
+(DEVICE DESCRIPTION FILE: QT523C-EE1)
+PACKAGE LED_2_54
+PINCOUNT 2
+CLASS DISCRETE
+
+PINORDER 'QT523C-EE1' 1 2 
+
+FUNCTION F1 'QT523C-EE1' 1 2 
+
+END
+Fri Apr 12 16:05:56 2019				Page     2
+
+Parsing device file: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ir9286cf.txt'.
+
+
+(DEVICE DESCRIPTION FILE: IR928-6C-F)
+PACKAGE LED_2_54
+PINCOUNT 2
+CLASS DISCRETE
+
+PINORDER 'IR928-6C-F' 1 2 
+
+FUNCTION F1 'IR928-6C-F' 1 2 
+
+END
+Fri Apr 12 16:05:56 2019				Page     3
+
+Parsing device file: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/m4.txt'.
+
+
+(DEVICE DESCRIPTION FILE: M4)
+PACKAGE M4
+PINCOUNT 1
+CLASS IC
+
+PINORDER 'M4' 0 
+
+FUNCTION F1 'M4' 0 
+
+END
+Fri Apr 12 16:05:56 2019				Page     4
+
+Parsing device file: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/m4.txt'.
+
+
+(DEVICE DESCRIPTION FILE: M4)
+PACKAGE M4
+PINCOUNT 1
+CLASS IC
+
+PINORDER 'M4' 0 
+
+FUNCTION F1 'M4' 0 
+
+END
+Fri Apr 12 16:05:56 2019				Page     5
+
+Parsing device file: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ir9286cf.txt'.
+
+
+(DEVICE DESCRIPTION FILE: IR928-6C-F)
+PACKAGE LED_2_54
+PINCOUNT 2
+CLASS DISCRETE
+
+PINORDER 'IR928-6C-F' 1 2 
+
+FUNCTION F1 'IR928-6C-F' 1 2 
+
+END
+Fri Apr 12 16:05:56 2019				Page     6
+
+Parsing device file: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/dev0.txt'.
+
+
+(DEVICE DESCRIPTION FILE: QT523C-EE1)
+PACKAGE LED_2_54
+PINCOUNT 2
+CLASS DISCRETE
+
+PINORDER 'QT523C-EE1' 1 2 
+
+FUNCTION F1 'QT523C-EE1' 1 2 
+
+END
+Fri Apr 12 16:05:56 2019				Page     7
+
+Parsing device file: 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/con4.txt'.
+
+
+(DEVICE DESCRIPTION FILE: CON4)
+PACKAGE XH_2_54_4P
+PINCOUNT 4
+CLASS IC
+
+PINORDER 'CON4' 1 2 3 4 
+
+FUNCTION F1 'CON4' 1 2 3 4 
+
+END
+
+
+===========================================================
+
+Total Device File Warnings =  0.
+Total Device File Errors   =  0.
+
+===========================================================
+
+Total Combined Netlist and Device File Warnings =  0.
+Total Combined Netlist and Device File Errors   =  0.
+
+===========================================================
+End of Allegro NETLIST IN Log
+===========================================================

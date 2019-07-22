@@ -2,37 +2,39 @@
 (                                                                     )
 (    Refresh Padstack                                                 )
 (                                                                     )
-(    Drawing          : MICROUSB-5P.dra                               )
+(    Drawing          : ac108_qfn48.dra                               )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Sat Nov 10 20:19:20 2018                      )
+(    Date/Time        : Mon Jun 03 11:16:14 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
 
-Sat Nov 10 20:19:20 2018				Page     1
+Mon Jun 03 11:16:14 2019				Page     1
 
 
 ------ Pad Stack Refresh Options ------
 
-Input design  = 'MICROUSB-5P.dra'
+Input design  = 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ac108_qfn48.dra'
 Output design = ''
 Reset symbol text and size locations   = 'NO'
 
 
 ------ Library Paths ------
-PSMPATH =  F:/footprint/allegro/ 
+PSMPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ 
 
-PADPATH =  F:/footprint/allegro/ 
+PADPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ 
 
 
 ------ Pad Stack Refresh Messages ------
 
-'HOLE0_5X0_5'  pad stack refresh starting.
+'PAD71'  pad stack refresh starting.
 
-     'HOLE0_5X0_5'  pad stack refreshed successfully.
+     'PAD71'  pad stack refreshed successfully.
      
-'SMD1_5X0_4'  pad stack refresh starting.
+WARNING(SPMHNI-253): Unable to find pad stack, 'PAD70', in directory search path.
 
-     'SMD1_5X0_4'  pad stack refreshed successfully.
+'PAD72'  pad stack refresh starting.
+
+     'PAD72'  pad stack refreshed successfully.
      
-Completed refreshing all pad stacks successfully.
+WARNING(SPMHNI-286): Completed refreshing all pad stacks successfully. Warnings detected.

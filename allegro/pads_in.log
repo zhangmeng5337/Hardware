@@ -1,0 +1,78 @@
+Translating F:/work/ZM/Frogs/Design/M3/pcb/PARK v2/LOCK/PositionDetection/PositionDecion_ZM_V1.0_20180801.asc.
+Using translator version @(#)$CDS:  pads_in.exe v16-6-112HN 10/23/2017 Copyr 2017 CADENCE DESIGN SYSTEMS.
+Reading PADS ASCII file header.
+ Version = PowerPCB4.0
+ Route Layers = 2
+ Units = METRIC
+ Hatch mode = Vertical / Horizontal
+ Hatch grid = 0.254000, angle = 0.000000, anti-pad spacing = 0.000008
+ *MISC*
+Warning: Design contains non ascii character(s).
+ *MISC*
+ *MISC*
+ *MISC*
+ *MISC*
+Initializing new database.
+ Creating layers.
+Reading PADS ASCII file body.
+ *REUSE*
+ *TEXT*
+ *LINES*
+ *VIA*
+ *PARTDECAL*
+ *PARTTYPE*
+ *PART*
+ *ROUTE*
+ Writing routes.
+ *MISC*
+ *MISC*
+Information: CSet 1_2_3 renamed to DEFAULT
+
+Warning: Allegro doesn't support default electrical CSets.
+	Please assign electrical cset DEFAULT to the objects manually.
+ *MISC*
+ *MISC*
+ *MISC*
+ *END*
+
+===============================================================================
+ PADS layer usage summary:
+  Layers 1 to 2 are route layers.
+  LINES:
+     1           ETCH - TOP
+     2           ETCH - BOTTOM
+  COPPER:
+  TEXT:
+     2           ETCH - BOTTOM
+    26 BOARD GEOMETRY - SILKSCREEN_TOP
+  DECALS:
+    26 PACKAGE GEOMETRY - SILKSCREEN_TOP
+  PADS:
+     0           ETCH - internal_pad_def
+     1           ETCH - TOP
+     2           ETCH - BOTTOM
+  VIAS:
+     0      VIA CLASS - internal_pad_def
+     1      VIA CLASS - TOP
+     2      VIA CLASS - BOTTOM
+===============================================================================
+
+Creating F:/work/ZM/Frogs/Design/FOOTPRINT/candence\PositionDecion_ZM_V1.brd.
+Loading netlist:
+F:/work/ZM/Frogs/Design/FOOTPRINT/candence\PositionDecion_ZM_V1.TXT
+
+Total Combined Netlist and Device File Warnings =  0.
+Total Combined Netlist and Device File Errors   =  0.
+See netin.log for details
+
+Writing database.
+
+ Creating padstack definitions.
+ Creating symbols.
+ Creating independent data.
+
+Closing database.
+Loading constraints...
+Loading constraints complete. See techfile.log for details.
+Translation complete.
+Finished reading input file with no errors.

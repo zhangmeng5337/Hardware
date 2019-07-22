@@ -2,37 +2,33 @@
 (                                                                     )
 (    Refresh Padstack                                                 )
 (                                                                     )
-(    Drawing          : R0603.dra                                     )
+(    Drawing          : m3_8_4_3.dra                                  )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Sat Nov 10 15:56:06 2018                      )
+(    Date/Time        : Tue Apr 16 11:25:08 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
 
-Sat Nov 10 15:56:06 2018				Page     1
+Tue Apr 16 11:25:08 2019				Page     1
 
 
 ------ Pad Stack Refresh Options ------
 
-Input design  = 'F:/footprint/allegro/R0603.dra'
+Input design  = 'F:/work/ZM/Frogs/Design/FOOTPRINT/candence/m3_8_4_3.dra'
 Output design = ''
 Reset symbol text and size locations   = 'NO'
 
 
 ------ Library Paths ------
-PSMPATH =  F:/footprint/allegro/ 
+PSMPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ 
 
-PADPATH =  F:/footprint/allegro/ 
+PADPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ 
 
 
 ------ Pad Stack Refresh Messages ------
 
-'SMD_0603'  pad stack refresh starting.
+'PAD23'  pad stack refresh starting.
 
-     'SMD_0603'  pad stack refreshed successfully.
-     
-'SMD_0402'  pad stack refresh starting.
-
-     'SMD_0402'  pad stack refreshed successfully.
+     'PAD23'  pad stack refreshed successfully.
      
 Completed refreshing all pad stacks successfully.

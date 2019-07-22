@@ -3,23 +3,119 @@
 (    Dump Library Log                                                 )
 (                                                                     )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Wed Sep 19 16:30:59 2018                      )
+(    Date/Time        : Wed Apr 03 10:47:25 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
 
-*** file: C:/Cadence/16.6/Cadence/SPB_Data/unnamed.brd ***
+*** file: F:/work/ZM/Frogs/Design/M3/pcb/PARK v2/GateWay/RF/allegro/LockBase_ZM.brd ***
 
 
 
   *** Creating all device files (see create_devices.log) ***
 
 
+  *** Creating padstacks. ***
+
+  PAD1 being dumped.
+
+  PAD4 being dumped.
+
+  PAD5 being dumped.
+
+  PAD6 being dumped.
+
+  PAD7 being dumped.
+
+  PAD8 being dumped.
+
+  PAD9 being dumped.
+
+  PAD11 being dumped.
+
+  PAD20 being dumped.
+
+  PAD12 being dumped.
+
+  PAD21 being dumped.
+
+  PAD13 being dumped.
+
+  PAD22 being dumped.
+
+  PAD14 being dumped.
+
+  PAD23 being dumped.
+
+  PAD24 being dumped.
+
+  PAD15 being dumped.
+
+  PAD16 being dumped.
+
+  PAD25 being dumped.
+
+  PAD17 being dumped.
+
+  PAD18 being dumped.
+
+  PAD19 being dumped.
+
+
+  *** Creating package symbols (.dra and .psm) ***
+
+  kf128-6p being dumped.
+
+  sot-23-5 being dumped.
+
+  led_0603 being dumped.
+
+  m2 being dumped.
+
+  m4 being dumped.
+
+  cqfp50p920x920x127-49m being dumped.
+
+  led_2_54 being dumped.
+
+  m3_8_4_3 being dumped.
+
+  sma being dumped.
+
+  c0603 being dumped.
+
+  c1206 being dumped.
+
+  xh_2_0_4p being dumped.
+
+  r2010 being dumped.
+
+  pad60 being dumped.
+
+  xh_2_54_2p being dumped.
+
+  sot23 being dumped.
+
+  er0603 being dumped.
+
+  con7p_lora being dumped.
+
+  sw3x6 being dumped.
+
+  sod123 being dumped.
+
+  con_2_54_4p being dumped.
+
+  rz7889 being dumped.
+
+
 
 *********************** Summary *********************
 ERRORs reported:                           0
 
+Number of padstacks dumped:               22
+Number of package symbols dumped:         22
 
-Total number of symbols dumped:            0
+Total number of symbols dumped:           22
 *****************************************************
 

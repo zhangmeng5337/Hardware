@@ -1,1 +1,1 @@
-MICROUSB.dra
+QFN48_5X5.dra
