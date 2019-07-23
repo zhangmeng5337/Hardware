@@ -21,6 +21,11 @@ History/
 .ewd
 Debug/
 *.dep
+*.jrl
+*.DBK
+*.opj
+*.DRC
+
 *.ewd
 *.ewt
 *.ewp
@@ -30,3 +35,4 @@ settings/
 /settings/
 ~
 *.out
+*.log
