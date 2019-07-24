@@ -1,5 +1,5 @@
 FILE_TYPE = EXPANDEDPARTLIST;
-{ Using PSTWRITER 16.6.0 d001Jul-24-2019 at 09:59:19 }
+{ Using PSTWRITER 16.6.0 d001Jul-24-2019 at 10:28:02 }
 DIRECTIVES
  PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
  ROOT_DRAWING='MANETIC';
@@ -454,16 +454,6 @@ SECTION_NUMBER 1
  '@MANETIC.SCHEMATIC1(SCH_1):INS3435@CONNECTOR.CON8.NORMAL(CHIPS)':
  C_PATH='@manetic.schematic1(sch_1):ins3435@connector.\con8.normal\(chips)',
  P_PATH='@manetic.schematic1(sch_1):page5_ins3435@connector.\con8.normal\(chips)',
- PRIM_FILE='.\pstchip.dat',
- SECTION='';
-
-PART_NAME
- J2 'CON1_ANT_HOLE_CON1':;
-
-SECTION_NUMBER 1
- '@MANETIC.SCHEMATIC1(SCH_1):INS36908@CONNECTOR.CON1.NORMAL(CHIPS)':
- C_PATH='@manetic.schematic1(sch_1):ins36908@connector.\con1.normal\(chips)',
- P_PATH='@manetic.schematic1(sch_1):page3_ins36908@connector.\con1.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 
