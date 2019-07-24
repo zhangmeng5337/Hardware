@@ -1,5 +1,14 @@
 #include "filter.h"
-manetic_str manetic;
+magnetic_str magnetic;
+
+unsigned char getIndex()
+{
+  if(magnetic.index == 0)
+  	return BUFFERSIZE - 1:
+  else
+  	return magnetic.index;
+}
+
 /************************************************************
  name :  short int Sum(unsigned char dir,index)
  params:
@@ -19,23 +28,23 @@ return:
 	switch(dir)
 	{
 		case X_DIR:{
-			for(i = indexs;i<=indexe;i++ )
+			for(i = indexs;i<indexe;i++ )
 			{
-				sum = manetic.M[X_DIR][i] + sum;
+				sum = magnetic.M[X_DIR][i] + sum;
 			}
-			sum = sum /(manetic.index + 1);
+			sum = sum /(magnetic.index + 1);
 		}break;
 		case Y_DIR:{
-			for(i = indexs;i<=indexe;i++ )
+			for(i = indexs;i<indexe;i++ )
 			{
-				sum = manetic.M[Y_DIR][i] + sum;
+				sum = magnetic.M[Y_DIR][i] + sum;
 			}
-			sum = sum /(manetic.index + 1);
+			sum = sum /(magnetic.index + 1);
 		}break;
 		case Z_DIR:{
-			for(i = indexs;i<=indexe;i++ )
+			for(i = indexs;i<indexe;i++ )
 			{
-				sum = manetic.M[Z_DIR][i] + sum;
+				sum = magnetic.M[Z_DIR][i] + sum;
 			}
 			sum = sum /(i);
 		}break;
@@ -46,9 +55,10 @@ void MagneticGet(short int *pbuffer)
 {
         unsigned char i;
 	i = 0;
-	manetic.M[X_DIR][manetic.index] =      pbuffer[0];
-	manetic.M[Y_DIR][manetic.index] =      pbuffer[1];
-	manetic.M[Z_DIR][manetic.index] =      pbuffer[2];
+	magnetic.M[X_DIR][magnetic.index] =      pbuffer[0];
+	magnetic.M[Y_DIR][magnetic.index] =      pbuffer[1];
+	magnetic.M[Z_DIR][magnetic.index] =      pbuffer[2];
+	magnetic.index++;
 
 }
 void void SmoothFilterInit()
@@ -57,127 +67,134 @@ void void SmoothFilterInit()
 }
 void SmoothFilter()
 {
-	if(manetic.index >= N)
+	if(magnetic.index >= N)
 	{
-		manetic.A[X_DIR][manetic.index] = Sum(X_DIR,manetic.index+1-N,manetic.index);
-		manetic.A[Y_DIR][manetic.index] = Sum(Y_DIR,manetic.index+1-N,manetic.index);
-		manetic.A[Z_DIR][manetic.index] = Sum(Z_DIR,manetic.index+1-N,manetic.index);
+		magnetic.F[X_DIR][magnetic.index] = Sum(X_DIR,magnetic.index+1-N,magnetic.index);
+		magnetic.F[Y_DIR][magnetic.index] = Sum(Y_DIR,magnetic.index+1-N,magnetic.index);
+		magnetic.F[Z_DIR][magnetic.index] = Sum(Z_DIR,magnetic.index+1-N,magnetic.index);
 	}
 	else
 	{
-		manetic.A[X_DIR][manetic.index] = Sum(X_DIR,0,manetic.index);
-		manetic.A[Y_DIR][manetic.index] = Sum(Y_DIR,0,manetic.index);
-		manetic.A[Z_DIR][manetic.index] = Sum(Z_DIR,0,manetic.index);		
+		magnetic.F[X_DIR][magnetic.index] = Sum(X_DIR,0,magnetic.index);
+		magnetic.F[Y_DIR][magnetic.index] = Sum(Y_DIR,0,magnetic.index);
+		magnetic.F[Z_DIR][magnetic.index] = Sum(Z_DIR,0,magnetic.index);		
 	}
-	manetic.index++;
-	if(manetic.index >= BUFFERSIZE)
-		manetic.index = 0;
+	//magnetic.index++;
+	if(magnetic.index >= BUFFERSIZE)
+		magnetic.index = 0;
 }
 void BaseLineTrace()
 {
 
-        if(manetic.index == 0)//update Tk start
-        {
-		manetic.T[X_DIR][manetic.index] = (1+BETA)*manetic.B[X_DIR][BUFFERSIZE-1];
-		manetic.T[Y_DIR][manetic.index] = (1+BETA)*manetic.B[Y_DIR][BUFFERSIZE-1];
-		manetic.T[Z_DIR][manetic.index] = (1+BETA)*manetic.B[Z_DIR][BUFFERSIZE-1];
-	}	
-	else
-	{
-		manetic.T[X_DIR][manetic.index] = (1+BETA)*manetic.B[X_DIR][manetic.index-1];
-		manetic.T[Y_DIR][manetic.index] = (1+BETA)*manetic.B[Y_DIR][manetic.index-1];
-		manetic.T[Z_DIR][manetic.index] = (1+BETA)*manetic.B[Z_DIR][manetic.index-1];
-	}//update Tk end
+	  unsigned char index_tmp;
+	  index_tmp = getIndex();
 
-	if(manetic.A[X_DIR][manetic.index] >=manetic.T[X_DIR][manetic.index])//x direction trance start
+	if(magnetic.Car_Flag == 1)//x direction trance start
 	{
-	        if(manetic.index == 0)
-	        {
-			manetic.B[X_DIR][manetic.index] = manetic.B[X_DIR][BUFFERSIZE-1];
-		}
-			
-		else
-		{
-			manetic.B[X_DIR][manetic.index] = manetic.B[X_DIR][manetic.index-1];
-		}
-		manetic.F[X_DIR][manetic.index] = 1;
 
+		magnetic.B[X_DIR][magnetic.index] = magnetic.B[X_DIR][index_tmp-1];
+		magnetic.B[Y_DIR][magnetic.index] = magnetic.B[Y_DIR][index_tmp-1];
+		magnetic.B[Z_DIR][magnetic.index] = magnetic.B[Z_DIR][index_tmp-1];
 	}
 	else
 	{
-	        if(manetic.index == 0)
-	        {
-			manetic.B[X_DIR][manetic.index] = manetic.B[X_DIR][BUFFERSIZE-1]*(1-ALPHA)+
-				                                                manetic.A[X_DIR][BUFFERSIZE-1]*(ALPHA);
-		}
-			
-		else
-		{
-			manetic.B[X_DIR][manetic.index] = manetic.B[X_DIR][manetic.index-1]*(1-ALPHA)+
-				                                                manetic.A[X_DIR][manetic.index-1]*(ALPHA);
-		}
-		manetic.F[X_DIR][manetic.index] = 0;
+		  magnetic.B[X_DIR][magnetic.index] = magnetic.B[X_DIR][BUFFERSIZE-1]*(1-ALPHA)+
+				                                                magnetic.M[X_DIR][index_tmp-1]*(ALPHA);
+		  magnetic.B[Y_DIR][magnetic.index] = magnetic.B[Y_DIR][BUFFERSIZE-1]*(1-ALPHA)+
+				                                                magnetic.M[Y_DIR][index_tmp-1]*(ALPHA);
+		  magnetic.B[Z_DIR][magnetic.index] = magnetic.B[Z_DIR][BUFFERSIZE-1]*(1-ALPHA)+
+				                                                magnetic.M[Z_DIR][index_tmp-1]*(ALPHA);
+
+
 	}//x direction trance END
-
-	if(manetic.A[Y_DIR][manetic.index] >=manetic.T[Y_DIR][manetic.index])//Y direction trance start
-	{
-	        if(manetic.index == 0)
-	        {
-			manetic.B[Y_DIR][manetic.index] = manetic.B[Y_DIR][BUFFERSIZE-1];
-		}
-			
-		else
-		{
-			manetic.B[Y_DIR][manetic.index] = manetic.B[Y_DIR][manetic.index-1];
-		}
-		manetic.F[Y_DIR][manetic.index] = 1;
-
-	}
+}
+vehicle_detect()
+{
+    short int ztmp,ytmp,xtmp,sumtmp;
+	unsigned char index_tmp;
+	if(magnetic.M[Z_DIR][magnetic.index] > THRES)
+		magnetic.Cnt_arr = magnetic.Cnt_arr + 1;
 	else
 	{
-	        if(manetic.index == 0)
-	        {
-			manetic.B[Y_DIR][manetic.index] = manetic.B[Y_DIR][BUFFERSIZE-1]*(1-ALPHA)+
-				                                                manetic.A[Y_DIR][BUFFERSIZE-1]*(ALPHA);
-		}
-			
-		else
+	    index_tmp = getIndex();
+	    xtmp = magnetic.M[X_DIR][magnetic.index]-magnetic.M[X_DIR][index_tmp-1];
+	    ytmp = magnetic.M[Y_DIR][magnetic.index]-magnetic.M[Y_DIR][index_tmp-1];
+	    ztmp = magnetic.M[Z_DIR][magnetic.index]-magnetic.M[Z_DIR][index_tmp-1];
+		sumtmp = xtmp + ytmp + ztmp;
+		if(sumtmp < THRES)
 		{
-			manetic.B[Y_DIR][manetic.index] = manetic.B[Y_DIR][manetic.index-1]*(1-ALPHA)+
-				                                                manetic.A[Y_DIR][manetic.index-1]*(ALPHA);
+			if(TimingStart(NO_VEHICLE_TIME) == 1)
+			{
+				TimingStop();
+				magnetic.Car_Flag = 0;
+			}
+
 		}
-		manetic.F[Y_DIR][manetic.index] = 0;
-	
-	}//Y direction trance END
-	if(manetic.A[Z_DIR][manetic.index] >=manetic.T[Z_DIR][manetic.index])//Y direction trance start
+
+		else
+			TimingStop();
+		
+		magnetic.Cnt_arr = 0;
+	}
+	if(magnetic.Cnt_arr >= SAMPLE_COUNT)
 	{
-	        if(manetic.index == 0)
-	        {
-			manetic.B[Z_DIR][manetic.index] = manetic.B[Z_DIR][BUFFERSIZE-1];
-		}
-			
-		else
-		{
-			manetic.B[Z_DIR][manetic.index] = manetic.B[Z_DIR][manetic.index-1];
-		}
-		manetic.F[Z_DIR][manetic.index] = 1;
+		magnetic.Car_Flag = 1;
+        magnetic.Cnt_arr = 0;
+	}
+
+}
+void AdaptiveBaseLine()
+{
+  short int MinY,MinZ,MaxY,MaxZ;
+  short int sumtmp;
+  static unsigned char adaptive_count;
+  if(magnetic.index==SAMPLE_COUNT)
+  {
+	for(i = magnetic.index +1 -SAMPLE_COUNT;i++;i<(magnetic.index-1)	
+	{
+		if(magnetic.M[Y_DIR][i]>magnetic.M[Y_DIR][i+1])
+			MinY = magnetic.M[Y_DIR][i+1];
+		if(magnetic.M[Y_DIR][i]<=magnetic.M[Y_DIR][i+1])
+			MaxY = magnetic.M[Y_DIR][i+1];
+		
+		if(magnetic.M[Z_DIR][i]>magnetic.M[Z_DIR][i+1])
+			MinZ = magnetic.M[Z_DIR][i+1];
+		if(magnetic.M[Z_DIR][i]<=magnetic.M[Z_DIR][i+1])
+			MaxZ = magnetic.M[Z_DIR][i+1];
 
 	}
-	else
+	sumtmp = MaxZ + MaxY +MinY + MinZ;
+	if(sumtmp >4*THRES)
 	{
-	        if(manetic.index == 0)
-	        {
-			manetic.B[Z_DIR][manetic.index] = manetic.B[Z_DIR][BUFFERSIZE-1]*(1-ALPHA)+
-				                                                manetic.A[Z_DIR][BUFFERSIZE-1]*(ALPHA);
-		}
+		if(magnetic.Car_Flag == 0)
+			magnetic.Car_Flag = 1;
 			
-		else
+	}
+	sumtmp = MaxZ + MaxY -MinY - MinZ;
+
+	if(sumtmp >2*THRES)
+	{
+	    adaptive_count = adaptive_count +1;
+		if(adaptive_count >= 3)
 		{
-			manetic.B[Z_DIR][manetic.index] = manetic.B[Z_DIR][manetic.index-1]*(1-ALPHA)+
-				                                                manetic.A[Z_DIR][manetic.index-1]*(ALPHA);
+			BaseLineTrace();
 		}
-		manetic.F[Z_DIR][manetic.index] = 0;
-	
-	}//Y direction trance END	
-	
+		if(magnetic.Car_Flag == 0)
+			adaptive_count = 0;
+			
+	}
+	else
+		adaptive_count = 0;
+  }
+}
+void vehicle_process()
+{
+	MagneticGet();//get magnetic data
+	vehicle_detect();	
+	AdaptiveBaseLine();
+	BaseLineTrace();
+	if(magnetic.Car_Flag == 1)
+	{
+		;
+	}
 }
