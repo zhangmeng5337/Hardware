@@ -33,6 +33,10 @@ settings/
 .edp
 .ewt
 /settings/
-~
 *.out
 *.log
+*.cnv
+*.lck
+*.dml
+*.tag
+*.drc
