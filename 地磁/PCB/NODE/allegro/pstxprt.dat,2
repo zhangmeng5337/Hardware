@@ -1,5 +1,5 @@
 FILE_TYPE = EXPANDEDPARTLIST;
-{ Using PSTWRITER 16.6.0 d001Jul-24-2019 at 11:08:42 }
+{ Using PSTWRITER 16.6.0 d001Jul-24-2019 at 10:16:37 }
 DIRECTIVES
  PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
  ROOT_DRAWING='MANETIC';
@@ -44,6 +44,16 @@ SECTION_NUMBER 1
  '@MANETIC.SCHEMATIC1(SCH_1):INS40099@DISCRETE.CAP NP.NORMAL(CHIPS)':
  C_PATH='@manetic.schematic1(sch_1):ins40099@discrete.\cap np.normal\(chips)',
  P_PATH='@manetic.schematic1(sch_1):page2_ins40099@discrete.\cap np.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C16 'CAP POL_C0603_10UF/10V':;
+
+SECTION_NUMBER 1
+ '@MANETIC.SCHEMATIC1(SCH_1):INS38042@DISCRETE.CAP POL.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins38042@discrete.\cap pol.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page3_ins38042@discrete.\cap pol.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 
@@ -94,6 +104,16 @@ SECTION_NUMBER 1
  '@MANETIC.SCHEMATIC1(SCH_1):INS35948@DISCRETE.CAP NP.NORMAL(CHIPS)':
  C_PATH='@manetic.schematic1(sch_1):ins35948@discrete.\cap np.normal\(chips)',
  P_PATH='@manetic.schematic1(sch_1):page3_ins35948@discrete.\cap np.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C26 'CAP NP_C0402_NC':;
+
+SECTION_NUMBER 1
+ '@MANETIC.SCHEMATIC1(SCH_1):INS36120@DISCRETE.CAP NP.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins36120@discrete.\cap np.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page3_ins36120@discrete.\cap np.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 
@@ -328,6 +348,16 @@ SECTION_NUMBER 1
  SECTION='';
 
 PART_NAME
+ C49 'CAP NP_C0603_10UF':;
+
+SECTION_NUMBER 1
+ '@MANETIC.SCHEMATIC1(SCH_1):INS37768@DISCRETE.CAP NP.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins37768@discrete.\cap np.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page3_ins37768@discrete.\cap np.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
  C50 'CAP NP_C0402_0.1UF':;
 
 SECTION_NUMBER 1
@@ -424,6 +454,16 @@ SECTION_NUMBER 1
  '@MANETIC.SCHEMATIC1(SCH_1):INS3435@CONNECTOR.CON8.NORMAL(CHIPS)':
  C_PATH='@manetic.schematic1(sch_1):ins3435@connector.\con8.normal\(chips)',
  P_PATH='@manetic.schematic1(sch_1):page5_ins3435@connector.\con8.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J2 'CON1_ANT_HOLE_CON1':;
+
+SECTION_NUMBER 1
+ '@MANETIC.SCHEMATIC1(SCH_1):INS36908@CONNECTOR.CON1.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins36908@connector.\con1.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page3_ins36908@connector.\con1.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 
@@ -574,6 +614,26 @@ SECTION_NUMBER 1
  '@MANETIC.SCHEMATIC1(SCH_1):INS1418@DISCRETE.R.NORMAL(CHIPS)':
  C_PATH='@manetic.schematic1(sch_1):ins1418@discrete.\r.normal\(chips)',
  P_PATH='@manetic.schematic1(sch_1):page5_ins1418@discrete.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R10 'RESISTOR_R0402_10K/NC':;
+
+SECTION_NUMBER 1
+ '@MANETIC.SCHEMATIC1(SCH_1):INS37898@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins37898@discrete.\resistor.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page3_ins37898@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R11 'RESISTOR_R0402_10K/NC':;
+
+SECTION_NUMBER 1
+ '@MANETIC.SCHEMATIC1(SCH_1):INS37928@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins37928@discrete.\resistor.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page3_ins37928@discrete.\resistor.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 

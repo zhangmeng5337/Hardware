@@ -4,7 +4,7 @@
 (                                                                     )
 (    Drawing          : Receiver.brd                                  )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Tue Jul 23 10:51:12 2019                      )
+(    Date/Time        : Tue Jul 23 11:49:50 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
@@ -20,7 +20,7 @@
  ========= check standalone text              0:00:00
  ========= check standalone rectangles        0:00:00
 
- ..... Total number of DRC errors  0
+ ..... Total number of DRC errors  3
 
  ..... DRC update completed, total CPU time   0:00:00
  *************************************************************************

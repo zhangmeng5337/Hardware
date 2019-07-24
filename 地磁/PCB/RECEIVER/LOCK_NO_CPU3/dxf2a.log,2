@@ -1,0 +1,38 @@
+Reading Layer Conversion File 
+Reading DXF file...
+ERROR: 3D data has been found in this dxf file.
+  Most 3D data is not supported by dxf2a.
+  For the special case of DXF code 230 = -1.0, ARC, CIRCLE 
+  and SOLID entities will be mirrored about the Y axis.
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3400
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3434
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3676
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 3706
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3746
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 3776
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 3806
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 3836
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3872
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3908
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3944
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3980
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4016
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4052
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4088
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4124
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4160
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 4190
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 4226
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 4262
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4302
+done.
+NOTE: Ignoring unsupported element VIEWPORT on line 1846.
+Layer conversion file: F:/PCB/ตุดล/PCB/RECEIVER/Drawing1_l.cnv
+DXF file: F:/PCB/ตุดล/PCB/RECEIVER/Drawing1.dxf
+BRD file: F:/PCB/ตุดล/PCB/RECEIVER/#Taaaaab03472.tmp
+Update existing design?: YES
+Use default text?: YES
+DXF units: MILLIMETERS
+Design units: MILLIMETERS
+Design precision: 4
+dxf2a complete.

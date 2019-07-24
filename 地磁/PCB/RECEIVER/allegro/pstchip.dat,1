@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 10:42:58}
+{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:02:22}
 primitive 'CAP NP_C0603_4.7UF/10V';
   pin
     '1':
@@ -816,7 +816,7 @@ primitive 'SX1278_QFN28_LEAD_SX1278';
     VALUE='SX1278';
   end_body;
 end_primitive;
-primitive 'CP2012_5_QFN28_LEAD_CP2102';
+primitive 'CP2012_5_CP2102_CP2102';
   pin
     'DCD':
       PIN_NUMBER='(1)';
@@ -908,7 +908,7 @@ primitive 'CP2012_5_QFN28_LEAD_CP2102';
   end_pin;
   body
     PART_NAME='CP2012_5';
-    JEDEC_TYPE='QFN28_LEAD';
+    JEDEC_TYPE='CP2102';
     VALUE='CP2102';
   end_body;
 end_primitive;

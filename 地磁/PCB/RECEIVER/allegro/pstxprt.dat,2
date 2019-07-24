@@ -1,5 +1,5 @@
 FILE_TYPE = EXPANDEDPARTLIST;
-{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:02:22 }
+{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:19:41 }
 DIRECTIVES
  PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
  ROOT_DRAWING='RECEIVER';
@@ -828,6 +828,16 @@ SECTION_NUMBER 1
  SECTION='';
 
 PART_NAME
+ U11 'STM8L151G6U6_QFN28-NOLEAD_STM8L':;
+
+SECTION_NUMBER 1
+ '@RECEIVER.SCHEMATIC1(SCH_1):INS52876@LIBRARY1.STM8L151G6U6.NORMAL(CHIPS)':
+ C_PATH='@receiver.schematic1(sch_1):ins52876@library1.\stm8l151g6u6.normal\(chips)',
+ P_PATH='@receiver.schematic1(sch_1):page1_ins52876@library1.\stm8l151g6u6.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
  U2 'SX1278_QFN28_LEAD_SX1278':;
 
 SECTION_NUMBER 1
@@ -884,16 +894,6 @@ SECTION_NUMBER 1
  '@RECEIVER.SCHEMATIC1(SCH_1):INS7675@RECEIVER.DB9_1.NORMAL(CHIPS)':
  C_PATH='@receiver.schematic1(sch_1):ins7675@receiver.\db9_1.normal\(chips)',
  P_PATH='@receiver.schematic1(sch_1):page1_ins7675@receiver.\db9_1.normal\(chips)',
- PRIM_FILE='.\pstchip.dat',
- SECTION='';
-
-PART_NAME
- U9 'STM8L151G6U6_QFN28_NOLEAD_STM8L':;
-
-SECTION_NUMBER 1
- '@RECEIVER.SCHEMATIC1(SCH_1):INS32430@LIBRARY1.STM8L151G6U6.NORMAL(CHIPS)':
- C_PATH='@receiver.schematic1(sch_1):ins32430@library1.\stm8l151g6u6.normal\(chips)',
- P_PATH='@receiver.schematic1(sch_1):page1_ins32430@library1.\stm8l151g6u6.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 

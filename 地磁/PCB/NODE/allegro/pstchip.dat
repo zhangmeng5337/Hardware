@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 13:01:43}
+{ Using PSTWRITER 16.6.0 d001Jul-24-2019 at 11:08:42}
 primitive 'CAP NP_C0603_0.1UF/10V';
   pin
     '1':
@@ -60,21 +60,6 @@ primitive 'CAP NP_C0603_10UF/10V';
     VALUE='10uF/10V';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0402_NC';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CAP NP';
-    JEDEC_TYPE='C0402';
-    VALUE='NC';
-  end_body;
-end_primitive;
 primitive 'CAP NP_C0402_47P';
   pin
     '1':
@@ -120,6 +105,21 @@ primitive 'CAP NP_C0402_2.7P';
     VALUE='2.7p';
   end_body;
 end_primitive;
+primitive 'CAP NP_C0402_NC';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='CAP NP';
+    JEDEC_TYPE='C0402';
+    VALUE='NC';
+  end_body;
+end_primitive;
 primitive 'CAP NP_C0402_15P';
   pin
     '1':
@@ -150,7 +150,7 @@ primitive 'CAP NP_C0402_12P';
     VALUE='12p';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0603_0.1UF';
+primitive 'CAP NP_C0402_0.1UF';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -161,7 +161,7 @@ primitive 'CAP NP_C0603_0.1UF';
   end_pin;
   body
     PART_NAME='CAP NP';
-    JEDEC_TYPE='C0603';
+    JEDEC_TYPE='C0402';
     VALUE='0.1uF';
   end_body;
 end_primitive;
@@ -226,18 +226,6 @@ primitive 'CON8_CON_2_54_8P_CON8';
     PART_NAME='CON8';
     JEDEC_TYPE='CON_2_54_8P';
     VALUE='CON8';
-  end_body;
-end_primitive;
-primitive 'CON1_ANT_HOLE_CON1';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CON1';
-    JEDEC_TYPE='ANT_HOLE';
-    VALUE='CON1';
   end_body;
 end_primitive;
 primitive 'CON4_CON4_CON4';
@@ -369,6 +357,21 @@ primitive 'INDUCTOR_R0603_12NH';
     VALUE='12nH';
   end_body;
 end_primitive;
+primitive 'INDUCTOR_R0402_0';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='INDUCTOR';
+    JEDEC_TYPE='R0402';
+    VALUE='0';
+  end_body;
+end_primitive;
 primitive 'INDUCTOR_R0603_47NH';
   pin
     '1':
@@ -412,21 +415,6 @@ primitive 'R_R0603_120/1%';
     PART_NAME='R';
     JEDEC_TYPE='r0603';
     VALUE='120/1%';
-  end_body;
-end_primitive;
-primitive 'RESISTOR_R0603_10K/NC';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='RESISTOR';
-    JEDEC_TYPE='R0603';
-    VALUE='10K/NC';
   end_body;
 end_primitive;
 primitive 'RESISTOR_R0603_100K';
@@ -504,7 +492,7 @@ primitive 'RESISTOR_R0603_1K';
     VALUE='1K';
   end_body;
 end_primitive;
-primitive 'RESISTOR_R0603_10K';
+primitive 'RESISTOR_R0402_10K';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -515,7 +503,7 @@ primitive 'RESISTOR_R0603_10K';
   end_pin;
   body
     PART_NAME='RESISTOR';
-    JEDEC_TYPE='R0603';
+    JEDEC_TYPE='R0402';
     VALUE='10K';
   end_body;
 end_primitive;

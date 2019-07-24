@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:19:41}
+{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:21:49}
 primitive 'CAP NP_C0603_4.7UF/10V';
   pin
     '1':
@@ -720,7 +720,7 @@ primitive 'STM32L431RCT6_0_LQFP-64_STM32L4';
     VALUE='STM32L431rct6';
   end_body;
 end_primitive;
-primitive 'STM8L151G6U6_QFN28-NOLEAD_STM8L';
+primitive 'STM8L151G6U6_QFN28_NOLEAD_0_5_S';
   pin
     'NRST':
       PIN_NUMBER='(1)';
@@ -809,7 +809,7 @@ primitive 'STM8L151G6U6_QFN28-NOLEAD_STM8L';
   end_pin;
   body
     PART_NAME='STM8L151G6U6';
-    JEDEC_TYPE='QFN28-NOLEAD';
+    JEDEC_TYPE='QFN28_NOLEAD_0_5';
     VALUE='STM8L151G6U6';
   end_body;
 end_primitive;
