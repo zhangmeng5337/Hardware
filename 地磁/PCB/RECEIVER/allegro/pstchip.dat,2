@@ -1,20 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:19:41}
-primitive 'CAP NP_C0603_4.7UF/10V';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CAP NP';
-    JEDEC_TYPE='C0603';
-    VALUE='4.7uF/10V';
-  end_body;
-end_primitive;
+{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 17:35:52}
 primitive 'CAP NP_C0603_0.1UF/10V';
   pin
     '1':
@@ -195,42 +180,6 @@ primitive 'F5F1_LED0603_F5F1';
     VALUE='F5F1';
   end_body;
 end_primitive;
-primitive 'CON9_MICROUSB_CON9';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-    '3':
-      PIN_NUMBER='(3)';
-      PINUSE='UNSPEC';
-    '4':
-      PIN_NUMBER='(4)';
-      PINUSE='UNSPEC';
-    '5':
-      PIN_NUMBER='(5)';
-      PINUSE='UNSPEC';
-    '6':
-      PIN_NUMBER='(6)';
-      PINUSE='UNSPEC';
-    '7':
-      PIN_NUMBER='(7)';
-      PINUSE='UNSPEC';
-    '8':
-      PIN_NUMBER='(8)';
-      PINUSE='UNSPEC';
-    '9':
-      PIN_NUMBER='(9)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CON9';
-    JEDEC_TYPE='MICROUSB';
-    VALUE='CON9';
-  end_body;
-end_primitive;
 primitive 'CON1_ANT_HOLE_CON1';
   pin
     '1':
@@ -387,21 +336,6 @@ primitive 'INDUCTOR_R0603_33NH';
     VALUE='33nH';
   end_body;
 end_primitive;
-primitive 'R_R0603_10K';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='R';
-    JEDEC_TYPE='R0603';
-    VALUE='10K';
-  end_body;
-end_primitive;
 primitive 'RESISTOR_R0603_10K/NC';
   pin
     '1':
@@ -417,21 +351,6 @@ primitive 'RESISTOR_R0603_10K/NC';
     VALUE='10K/NC';
   end_body;
 end_primitive;
-primitive 'R_R0603_0';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='R';
-    JEDEC_TYPE='R0603';
-    VALUE='0';
-  end_body;
-end_primitive;
 primitive 'RESISTOR_R0603_1K';
   pin
     '1':
@@ -445,21 +364,6 @@ primitive 'RESISTOR_R0603_1K';
     PART_NAME='RESISTOR';
     JEDEC_TYPE='R0603';
     VALUE='1K';
-  end_body;
-end_primitive;
-primitive 'R_R0603_49.9';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='R';
-    JEDEC_TYPE='R0603';
-    VALUE='49.9';
   end_body;
 end_primitive;
 primitive 'R_R0603_100K';
@@ -720,7 +624,7 @@ primitive 'STM32L431RCT6_0_LQFP-64_STM32L4';
     VALUE='STM32L431rct6';
   end_body;
 end_primitive;
-primitive 'STM8L151G6U6_QFN28-NOLEAD_STM8L';
+primitive 'STM8L151G6U6_QFN28_NOLEAD_0_5_S';
   pin
     'NRST':
       PIN_NUMBER='(1)';
@@ -809,7 +713,7 @@ primitive 'STM8L151G6U6_QFN28-NOLEAD_STM8L';
   end_pin;
   body
     PART_NAME='STM8L151G6U6';
-    JEDEC_TYPE='QFN28-NOLEAD';
+    JEDEC_TYPE='QFN28_NOLEAD_0_5';
     VALUE='STM8L151G6U6';
   end_body;
 end_primitive;
@@ -909,160 +813,7 @@ primitive 'SX1278_QFN28_LEAD_SX1278';
     VALUE='SX1278';
   end_body;
 end_primitive;
-primitive 'CP2012_5_CP2102_CP2102';
-  pin
-    'DCD':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    'RI':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-    'GND#3':
-      PIN_NUMBER='(3)';
-      PINUSE='POWER';
-    'D+':
-      PIN_NUMBER='(4)';
-      PINUSE='POWER';
-    'D-':
-      PIN_NUMBER='(5)';
-      PINUSE='POWER';
-    'VDD':
-      PIN_NUMBER='(6)';
-      PINUSE='POWER';
-    'REGIN':
-      PIN_NUMBER='(7)';
-      PINUSE='POWER';
-    'VBUS':
-      PIN_NUMBER='(8)';
-      PINUSE='POWER';
-    'RST':
-      PIN_NUMBER='(9)';
-      PINUSE='POWER';
-    'NC11':
-      PIN_NUMBER='(10)';
-      PINUSE='POWER';
-    '\S\U\S\P\E\N\D\':
-      PIN_NUMBER='(11)';
-      PINUSE='UNSPEC';
-    'SUSPEND':
-      PIN_NUMBER='(12)';
-      PINUSE='UNSPEC';
-    'NC10':
-      PIN_NUMBER='(13)';
-      PINUSE='POWER';
-    'NC9':
-      PIN_NUMBER='(14)';
-      PINUSE='POWER';
-    'NC8':
-      PIN_NUMBER='(15)';
-      PINUSE='POWER';
-    'NC7':
-      PIN_NUMBER='(16)';
-      PINUSE='POWER';
-    'NC6':
-      PIN_NUMBER='(17)';
-      PINUSE='POWER';
-    'NC5':
-      PIN_NUMBER='(18)';
-      PINUSE='POWER';
-    'NC4':
-      PIN_NUMBER='(19)';
-      PINUSE='POWER';
-    'NC3':
-      PIN_NUMBER='(20)';
-      PINUSE='POWER';
-    'NC2':
-      PIN_NUMBER='(21)';
-      PINUSE='POWER';
-    'NC1':
-      PIN_NUMBER='(22)';
-      PINUSE='POWER';
-    'CTS':
-      PIN_NUMBER='(23)';
-      PINUSE='UNSPEC';
-    'RTS':
-      PIN_NUMBER='(24)';
-      PINUSE='UNSPEC';
-    'RXD':
-      PIN_NUMBER='(25)';
-      PINUSE='POWER';
-    'TXD':
-      PIN_NUMBER='(26)';
-      PINUSE='POWER';
-    'DSR':
-      PIN_NUMBER='(27)';
-      PINUSE='UNSPEC';
-    'DTR':
-      PIN_NUMBER='(28)';
-      PINUSE='UNSPEC';
-    'GND#29':
-      PIN_NUMBER='(29)';
-      PINUSE='POWER';
-  end_pin;
-  body
-    PART_NAME='CP2012_5';
-    JEDEC_TYPE='CP2102';
-    VALUE='CP2102';
-  end_body;
-end_primitive;
-primitive 'SIPEX3232EE_SIPEX3232EE_SIPEX32';
-  pin
-    'C1+':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    'V1+':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-    'C1-':
-      PIN_NUMBER='(3)';
-      PINUSE='UNSPEC';
-    'C2+':
-      PIN_NUMBER='(4)';
-      PINUSE='UNSPEC';
-    'C2-':
-      PIN_NUMBER='(5)';
-      PINUSE='UNSPEC';
-    'V-':
-      PIN_NUMBER='(6)';
-      PINUSE='UNSPEC';
-    'T2OUT':
-      PIN_NUMBER='(7)';
-      PINUSE='UNSPEC';
-    'R2IN':
-      PIN_NUMBER='(8)';
-      PINUSE='UNSPEC';
-    'R2OUT':
-      PIN_NUMBER='(9)';
-      PINUSE='UNSPEC';
-    'T2IN':
-      PIN_NUMBER='(10)';
-      PINUSE='UNSPEC';
-    'T1IN':
-      PIN_NUMBER='(11)';
-      PINUSE='UNSPEC';
-    'R1OUT':
-      PIN_NUMBER='(12)';
-      PINUSE='UNSPEC';
-    'R1IN':
-      PIN_NUMBER='(13)';
-      PINUSE='UNSPEC';
-    'T1OUT':
-      PIN_NUMBER='(14)';
-      PINUSE='UNSPEC';
-    'GND':
-      PIN_NUMBER='(15)';
-      PINUSE='UNSPEC';
-    'VCC':
-      PIN_NUMBER='(16)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='sipex3232ee';
-    JEDEC_TYPE='sipex3232ee';
-    VALUE='sipex3232ee';
-  end_body;
-end_primitive;
-primitive 'APC340_APC340_APC340';
+primitive 'APC340_0_APC340_APC340';
   pin
     'GND#1':
       PIN_NUMBER='(1)';
@@ -1084,7 +835,7 @@ primitive 'APC340_APC340_APC340';
       PINUSE='UNSPEC';
     'SET_B':
       PIN_NUMBER='(7)';
-      PINUSE='POWER';
+      PINUSE='UNSPEC';
     'GND#8':
       PIN_NUMBER='(8)';
       PINUSE='POWER';
@@ -1093,12 +844,12 @@ primitive 'APC340_APC340_APC340';
       PINUSE='POWER';
   end_pin;
   body
-    PART_NAME='APC340';
+    PART_NAME='APC340_0';
     JEDEC_TYPE='APC340';
     VALUE='APC340';
   end_body;
 end_primitive;
-primitive 'XC6234H331VR_1_SOT-23-5_XC6234H';
+primitive 'XC6234H331VR_2_SOT-23-5_XC6234H';
   pin
     'VIN':
       PIN_NUMBER='(1)';
@@ -1111,57 +862,15 @@ primitive 'XC6234H331VR_1_SOT-23-5_XC6234H';
       PINUSE='UNSPEC';
     'NC1':
       PIN_NUMBER='(4)';
-      PINUSE='POWER';
+      PINUSE='UNSPEC';
     'VOUT':
       PIN_NUMBER='(5)';
       PINUSE='UNSPEC';
   end_pin;
   body
-    PART_NAME='XC6234H331VR_1';
+    PART_NAME='XC6234H331VR_2';
     JEDEC_TYPE='sot-23-5';
     VALUE='XC6234H331VR-G/TPS780330200DDCT';
-  end_body;
-end_primitive;
-primitive 'DB9_1_DB9_DB9';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    'TXD':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-    'RXD':
-      PIN_NUMBER='(3)';
-      PINUSE='UNSPEC';
-    '4':
-      PIN_NUMBER='(4)';
-      PINUSE='UNSPEC';
-    'GND':
-      PIN_NUMBER='(5)';
-      PINUSE='UNSPEC';
-    '6':
-      PIN_NUMBER='(6)';
-      PINUSE='UNSPEC';
-    '7':
-      PIN_NUMBER='(7)';
-      PINUSE='UNSPEC';
-    '8':
-      PIN_NUMBER='(8)';
-      PINUSE='UNSPEC';
-    '9':
-      PIN_NUMBER='(9)';
-      PINUSE='UNSPEC';
-    '11':
-      PIN_NUMBER='(11)';
-      PINUSE='POWER';
-    '10':
-      PIN_NUMBER='(10)';
-      PINUSE='POWER';
-  end_pin;
-  body
-    PART_NAME='DB9_1';
-    JEDEC_TYPE='DB9';
-    VALUE='DB9';
   end_body;
 end_primitive;
 primitive 'CRY_0_CRY_3225_FTR5092-A2-32MHZ';

@@ -2,42 +2,149 @@
 |                                 ECO   REPORT                                 |
 |                                                                    Page   1  |
 |------------------------------------------------------------------------------|
-|  F:/PCB/地磁/PCB/RECEIVER/Receiver.brd                                       |
-|                                                    Tue Jul 23 11:22:21 2019  |
+|  F:/projects/git/Hardware/地磁/PCB/RECEIVER/Receiver.brd                     |
+|                                                    Thu Jul 25 20:38:21 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  DIO0         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.27                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO1         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.26                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO2         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.25                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO3         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.24                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO4         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.23                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO5         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.22                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  GND          pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.6                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LORA_RST     pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.12                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N55086       pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.13                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N55145       pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.3                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N55149       pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.2                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N55171       pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.14                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N55206       pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.15                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  RST          pins ADDED TO this existing net (pins not previously on any net)
+                                 R9.1                           
+                                 U13.1                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  RXEN         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.4                          
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   2  |
+|------------------------------------------------------------------------------|
+|  F:/projects/git/Hardware/地磁/PCB/RECEIVER/Receiver.brd                     |
+|                                                    Thu Jul 25 20:38:21 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  SPI_MISO     pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.19                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPI_MOSI     pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.18                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPI_NSS      pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.16                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPI_SCK      pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.17                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SWIM         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.28                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  TXEN         pins ADDED TO this existing net (pins not previously on any net)
+                                 U13.5                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VCC_3.3V     pins ADDED TO this existing net (pins not previously on any net)
+                                 R9.2                           
+                                 U13.7                          
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
+|------------------------------------------------------------------------------|
+|  F:/projects/git/Hardware/地磁/PCB/RECEIVER/Receiver.brd                     |
+|                                                    Thu Jul 25 20:38:21 2019  |
 |------------------------------------------------------------------------------|
 | COMPONENT DEFINITION added to design                                         |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
 |    device type                                                               |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
- STM8L151G6U6_QFN28_NOLEAD_0_5_S
+ RESISTOR_R0402_10K
 |------------------------------------------------------------------------------|
 |                                 ECO   REPORT                                 |
-|                                                                    Page   2  |
+|                                                                    Page   4  |
 |------------------------------------------------------------------------------|
-|  F:/PCB/地磁/PCB/RECEIVER/Receiver.brd                                       |
-|                                                    Tue Jul 23 11:22:21 2019  |
+|  F:/projects/git/Hardware/地磁/PCB/RECEIVER/Receiver.brd                     |
+|                                                    Thu Jul 25 20:38:21 2019  |
 |------------------------------------------------------------------------------|
-| COMPONENTS CHANGED from one device type to another in design                 |
+| COMPONENTS DELETED from design                                               |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
-|    ref des        | new device type     |   x   |   y   |  old  device type  |
+|    ref des        |    device type      |   x   |   y                        |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
- U11                 STM8L151G6U6_QFN28_NOLEAD_0_5_S                 STM8L151G6U6_QFN28-NOLEAD_STM8L
+ D1                  F5F1_LED0603_F5F1      5.5761 52.8255
+ R7                  RESISTOR_R0603_1K      6.5511 55.0287
+ R8                  RESISTOR_R0603_10K    23.7553 55.0287
+ U11                 STM8L151G6U6_QFN28_NOLEAD_0_5_S 23.5530 -26.306
 |------------------------------------------------------------------------------|
 |                                 ECO   REPORT                                 |
-|                                                                    Page   3  |
+|                                                                    Page   5  |
 |------------------------------------------------------------------------------|
-|  F:/PCB/地磁/PCB/RECEIVER/Receiver.brd                                       |
-|                                                    Tue Jul 23 11:22:21 2019  |
+|  F:/projects/git/Hardware/地磁/PCB/RECEIVER/Receiver.brd                     |
+|                                                    Thu Jul 25 20:38:21 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ R9                  RESISTOR_R0402_10K    
+ U13                 STM8L151G6U6_QFN28_NOLEAD_0_5_S 
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   6  |
+|------------------------------------------------------------------------------|
+|  F:/projects/git/Hardware/地磁/PCB/RECEIVER/Receiver.brd                     |
+|                                                    Thu Jul 25 20:38:21 2019  |
 |------------------------------------------------------------------------------|
 | SLOT PROPERTIES added to design                                              |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
 |   slot_id    |   x   |   y   |   property   |             value              |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
- U11.6                          PRIM_FILE      .\pstchip.dat
+ R9.2                           PRIM_FILE      .\pstchip.dat
+ U13.6                          PRIM_FILE      .\pstchip.dat
 |------------------------------------------------------------------------------|
+|       Nets changed          :      24                                        |
 |       Comp definitions added:       1                                        |
-|       Components changed    :       1                                        |
-|       Slot property added   :       1                                        |
+|       Components added      :       2                                        |
+|       Components deleted    :       4                                        |
+|       Slot property added   :       2                                        |
 |                                                                              |
-|   Total ECO changes reported:       3                                        |
+|   Total ECO changes reported:      33                                        |
 |------------------------------------------------------------------------------|

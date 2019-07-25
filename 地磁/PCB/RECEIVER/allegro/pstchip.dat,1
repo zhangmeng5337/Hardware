@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:02:22}
+{ Using PSTWRITER 16.6.0 d001Jul-23-2019 at 11:21:49}
 primitive 'CAP NP_C0603_4.7UF/10V';
   pin
     '1':
@@ -720,6 +720,99 @@ primitive 'STM32L431RCT6_0_LQFP-64_STM32L4';
     VALUE='STM32L431rct6';
   end_body;
 end_primitive;
+primitive 'STM8L151G6U6_QFN28_NOLEAD_0_5_S';
+  pin
+    'NRST':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    'PA2/UART1_TXD':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+    'PA3/UART1_RXD':
+      PIN_NUMBER='(3)';
+      PINUSE='UNSPEC';
+    'PA4':
+      PIN_NUMBER='(4)';
+      PINUSE='UNSPEC';
+    'PA5':
+      PIN_NUMBER='(5)';
+      PINUSE='UNSPEC';
+    'VSS1':
+      PIN_NUMBER='(6)';
+      PINUSE='POWER';
+    'VDD1':
+      PIN_NUMBER='(7)';
+      PINUSE='POWER';
+    'PD0':
+      PIN_NUMBER='(8)';
+      PINUSE='UNSPEC';
+    'PD1':
+      PIN_NUMBER='(9)';
+      PINUSE='UNSPEC';
+    'PD2':
+      PIN_NUMBER='(10)';
+      PINUSE='UNSPEC';
+    'PD3':
+      PIN_NUMBER='(11)';
+      PINUSE='UNSPEC';
+    'PB0':
+      PIN_NUMBER='(12)';
+      PINUSE='UNSPEC';
+    'PB1':
+      PIN_NUMBER='(13)';
+      PINUSE='UNSPEC';
+    'PB2':
+      PIN_NUMBER='(14)';
+      PINUSE='UNSPEC';
+    'PC0':
+      PIN_NUMBER='(21)';
+      PINUSE='UNSPEC';
+    'PD4':
+      PIN_NUMBER='(20)';
+      PINUSE='UNSPEC';
+    'PB7/SPI_MISO':
+      PIN_NUMBER='(19)';
+      PINUSE='UNSPEC';
+    'PB6/SPI_MOSI':
+      PIN_NUMBER='(18)';
+      PINUSE='UNSPEC';
+    'PB5/SPI_SCK':
+      PIN_NUMBER='(17)';
+      PINUSE='UNSPEC';
+    'PB4/SPI_NSS':
+      PIN_NUMBER='(16)';
+      PINUSE='UNSPEC';
+    'PB3':
+      PIN_NUMBER='(15)';
+      PINUSE='UNSPEC';
+    'PA0':
+      PIN_NUMBER='(28)';
+      PINUSE='UNSPEC';
+    'PC6':
+      PIN_NUMBER='(27)';
+      PINUSE='UNSPEC';
+    'PC5':
+      PIN_NUMBER='(26)';
+      PINUSE='UNSPEC';
+    'PC4':
+      PIN_NUMBER='(25)';
+      PINUSE='UNSPEC';
+    'PC3':
+      PIN_NUMBER='(24)';
+      PINUSE='UNSPEC';
+    'PC2':
+      PIN_NUMBER='(23)';
+      PINUSE='UNSPEC';
+    'PC1':
+      PIN_NUMBER='(22)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='STM8L151G6U6';
+    JEDEC_TYPE='QFN28_NOLEAD_0_5';
+    VALUE='STM8L151G6U6';
+  end_body;
+end_primitive;
 primitive 'SX1278_QFN28_LEAD_SX1278';
   pin
     'GROUND':
@@ -1069,99 +1162,6 @@ primitive 'DB9_1_DB9_DB9';
     PART_NAME='DB9_1';
     JEDEC_TYPE='DB9';
     VALUE='DB9';
-  end_body;
-end_primitive;
-primitive 'STM8L151G6U6_QFN28_NOLEAD_STM8L';
-  pin
-    'NRST':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    'PA2/UART1_TXD':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-    'PA3/UART1_RXD':
-      PIN_NUMBER='(3)';
-      PINUSE='UNSPEC';
-    'PA4':
-      PIN_NUMBER='(4)';
-      PINUSE='UNSPEC';
-    'PA5':
-      PIN_NUMBER='(5)';
-      PINUSE='UNSPEC';
-    'VSS1':
-      PIN_NUMBER='(6)';
-      PINUSE='POWER';
-    'VDD1':
-      PIN_NUMBER='(7)';
-      PINUSE='POWER';
-    'PD0':
-      PIN_NUMBER='(8)';
-      PINUSE='UNSPEC';
-    'PD1':
-      PIN_NUMBER='(9)';
-      PINUSE='UNSPEC';
-    'PD2':
-      PIN_NUMBER='(10)';
-      PINUSE='UNSPEC';
-    'PD3':
-      PIN_NUMBER='(11)';
-      PINUSE='UNSPEC';
-    'PB0':
-      PIN_NUMBER='(12)';
-      PINUSE='UNSPEC';
-    'PB1':
-      PIN_NUMBER='(13)';
-      PINUSE='UNSPEC';
-    'PB2':
-      PIN_NUMBER='(14)';
-      PINUSE='UNSPEC';
-    'PC0':
-      PIN_NUMBER='(21)';
-      PINUSE='UNSPEC';
-    'PD4':
-      PIN_NUMBER='(20)';
-      PINUSE='UNSPEC';
-    'PB7/SPI_MISO':
-      PIN_NUMBER='(19)';
-      PINUSE='UNSPEC';
-    'PB6/SPI_MOSI':
-      PIN_NUMBER='(18)';
-      PINUSE='UNSPEC';
-    'PB5/SPI_SCK':
-      PIN_NUMBER='(17)';
-      PINUSE='UNSPEC';
-    'PB4/SPI_NSS':
-      PIN_NUMBER='(16)';
-      PINUSE='UNSPEC';
-    'PB3':
-      PIN_NUMBER='(15)';
-      PINUSE='UNSPEC';
-    'PA0':
-      PIN_NUMBER='(28)';
-      PINUSE='UNSPEC';
-    'PC6':
-      PIN_NUMBER='(27)';
-      PINUSE='UNSPEC';
-    'PC5':
-      PIN_NUMBER='(26)';
-      PINUSE='UNSPEC';
-    'PC4':
-      PIN_NUMBER='(25)';
-      PINUSE='UNSPEC';
-    'PC3':
-      PIN_NUMBER='(24)';
-      PINUSE='UNSPEC';
-    'PC2':
-      PIN_NUMBER='(23)';
-      PINUSE='UNSPEC';
-    'PC1':
-      PIN_NUMBER='(22)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='STM8L151G6U6';
-    JEDEC_TYPE='QFN28_NOLEAD';
-    VALUE='STM8L151G6U6';
   end_body;
 end_primitive;
 primitive 'CRY_0_CRY_3225_FTR5092-A2-32MHZ';

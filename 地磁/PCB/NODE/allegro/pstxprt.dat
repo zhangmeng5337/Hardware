@@ -1,5 +1,5 @@
 FILE_TYPE = EXPANDEDPARTLIST;
-{ Using PSTWRITER 16.6.0 d001Jul-25-2019 at 14:50:40 }
+{ Using PSTWRITER 16.6.0 d001Jul-25-2019 at 18:58:55 }
 DIRECTIVES
  PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
  ROOT_DRAWING='MANETIC';
@@ -391,9 +391,9 @@ PART_NAME
  D1 'F5F1_LED0603_F5F1':;
 
 SECTION_NUMBER 1
- '@MANETIC.SCHEMATIC1(SCH_1):INS38887@DISCRETE.F5F1.NORMAL(CHIPS)':
- C_PATH='@manetic.schematic1(sch_1):ins38887@discrete.\f5f1.normal\(chips)',
- P_PATH='@manetic.schematic1(sch_1):page2_ins38887@discrete.\f5f1.normal\(chips)',
+ '@MANETIC.SCHEMATIC1(SCH_1):INS69896@DISCRETE.F5F1.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins69896@discrete.\f5f1.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page2_ins69896@discrete.\f5f1.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 
@@ -651,9 +651,9 @@ PART_NAME
  R8 'RESISTOR_R0603_1K':;
 
 SECTION_NUMBER 1
- '@MANETIC.SCHEMATIC1(SCH_1):INS38903@DISCRETE.RESISTOR.NORMAL(CHIPS)':
- C_PATH='@manetic.schematic1(sch_1):ins38903@discrete.\resistor.normal\(chips)',
- P_PATH='@manetic.schematic1(sch_1):page2_ins38903@discrete.\resistor.normal\(chips)',
+ '@MANETIC.SCHEMATIC1(SCH_1):INS69916@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@manetic.schematic1(sch_1):ins69916@discrete.\resistor.normal\(chips)',
+ P_PATH='@manetic.schematic1(sch_1):page2_ins69916@discrete.\resistor.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 
