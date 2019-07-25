@@ -32,6 +32,7 @@ ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2950
 ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2986
 ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3078
 ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 3108
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 3144
 done.
 NOTE: Ignoring unsupported element VIEWPORT on line 1846.
 NOTE: Ignoring unsupported element POINT on line 2552.
@@ -40,11 +41,11 @@ NOTE: Ignoring unsupported element POINT on line 2608.
 NOTE: Ignoring unsupported element POINT on line 2708.
 NOTE: Ignoring unsupported element POINT on line 2988.
 NOTE: Ignoring unsupported element POINT on line 3016.
-Layer conversion file: F:/PCB/ตุดล/PCB/NODE/Drawing2_l.cnv
-DXF file: F:/PCB/ตุดล/PCB/NODE/Drawing2.dxf
-BRD file: F:/PCB/ตุดล/PCB/NODE/#Taaaaaa04224.tmp
+Layer conversion file: F:/PCB/NODE/Node_l.cnv
+DXF file: F:/PCB/NODE/Node.dxf
+BRD file: F:/PCB/NODE/#Taaaaad03296.tmp
 Update existing design?: YES
-Use default text?: NO
+Use default text?: YES
 DXF units: MILLIMETERS
 Design units: MILLIMETERS
 Design precision: 4

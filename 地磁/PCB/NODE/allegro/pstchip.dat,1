@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-24-2019 at 10:28:02}
+{ Using PSTWRITER 16.6.0 d001Jul-25-2019 at 09:38:45}
 primitive 'CAP NP_C0603_0.1UF/10V';
   pin
     '1':
@@ -60,7 +60,7 @@ primitive 'CAP NP_C0603_10UF/10V';
     VALUE='10uF/10V';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0402_NC';
+primitive 'CAP NP_C0402_8.2P';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -72,7 +72,7 @@ primitive 'CAP NP_C0402_NC';
   body
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0402';
-    VALUE='NC';
+    VALUE='8.2P';
   end_body;
 end_primitive;
 primitive 'CAP NP_C0402_47P';
@@ -87,22 +87,7 @@ primitive 'CAP NP_C0402_47P';
   body
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0402';
-    VALUE='47P';
-  end_body;
-end_primitive;
-primitive 'CAP NP_C0402_8.2P';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CAP NP';
-    JEDEC_TYPE='C0402';
-    VALUE='8.2P';
+    VALUE='47p';
   end_body;
 end_primitive;
 primitive 'CAP NP_C0402_2.7P';
@@ -120,21 +105,6 @@ primitive 'CAP NP_C0402_2.7P';
     VALUE='2.7p';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0402_15P';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CAP NP';
-    JEDEC_TYPE='C0402';
-    VALUE='15p';
-  end_body;
-end_primitive;
 primitive 'CAP NP_C0402_12P';
   pin
     '1':
@@ -148,6 +118,36 @@ primitive 'CAP NP_C0402_12P';
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0402';
     VALUE='12p';
+  end_body;
+end_primitive;
+primitive 'CAP NP_C0402_NC';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='CAP NP';
+    JEDEC_TYPE='C0402';
+    VALUE='NC';
+  end_body;
+end_primitive;
+primitive 'CAP NP_C0402_15P';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='CAP NP';
+    JEDEC_TYPE='C0402';
+    VALUE='15P';
   end_body;
 end_primitive;
 primitive 'CAP NP_C0402_0.1UF';
@@ -327,21 +327,6 @@ primitive 'INDUCTOR_R0603_0';
     VALUE='0';
   end_body;
 end_primitive;
-primitive 'INDUCTOR_R0603_22NH';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='INDUCTOR';
-    JEDEC_TYPE='R0603';
-    VALUE='22nH';
-  end_body;
-end_primitive;
 primitive 'INDUCTOR_R0603_12NH';
   pin
     '1':
@@ -355,21 +340,6 @@ primitive 'INDUCTOR_R0603_12NH';
     PART_NAME='INDUCTOR';
     JEDEC_TYPE='R0603';
     VALUE='12nH';
-  end_body;
-end_primitive;
-primitive 'INDUCTOR_R0402_0';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='INDUCTOR';
-    JEDEC_TYPE='R0402';
-    VALUE='0';
   end_body;
 end_primitive;
 primitive 'INDUCTOR_R0603_47NH';
@@ -415,21 +385,6 @@ primitive 'R_R0603_120/1%';
     PART_NAME='R';
     JEDEC_TYPE='r0603';
     VALUE='120/1%';
-  end_body;
-end_primitive;
-primitive 'RESISTOR_R0402_10K/NC';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='RESISTOR';
-    JEDEC_TYPE='R0402';
-    VALUE='10K/NC';
   end_body;
 end_primitive;
 primitive 'RESISTOR_R0603_100K';
@@ -568,6 +523,18 @@ primitive 'TP_3_TP3_TP_3';
     PART_NAME='tp_3';
     JEDEC_TYPE='tp3';
     VALUE='tp_3';
+  end_body;
+end_primitive;
+primitive 'TEST_HOLE4_4X4_0_TEST';
+  pin
+    'TP':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='TEST';
+    JEDEC_TYPE='HOLE4_4x4_0';
+    VALUE='TEST';
   end_body;
 end_primitive;
 primitive '13156_0_13156_13156';
