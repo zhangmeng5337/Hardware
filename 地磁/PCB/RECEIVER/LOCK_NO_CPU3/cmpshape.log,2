@@ -1,20 +1,14 @@
 (---------------------------------------------------------------------)
 (                                                                     )
-(    QUICKPLACE LOG                                                   )
+(    Compose Shapes                                                   )
 (                                                                     )
 (    Drawing          : Receiver.brd                                  )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Tue Jul 23 11:22:25 2019                      )
+(    Date/Time        : Fri Jul 26 13:31:32 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
 
-State: Placing on layer TOP
-
-         Placed symbol:  U11 / STM8L151G6U6_QFN28_NOLEAD_0_5_S / QFN28_NOLEAD_0_5 at (2.5147 91.5573)
-
-
-Placed 1 of 1 applicable (1 total) symbols.
-
------------------------------------------------------------------------
-
+current class name(BOARD GEOMETRY)
+Find smallest gap failed. Be cautious, this may not be an error
+A total of 1 shapes were created.

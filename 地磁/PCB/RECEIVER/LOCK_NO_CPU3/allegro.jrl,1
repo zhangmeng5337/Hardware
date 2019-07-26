@@ -1,0 +1,45 @@
+\t (04:59:06) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (04:59:06)     Journal start - Fri Jul 26 14:07:53 2019
+\t (04:59:06)         Host=ZM-DELL User=Administrator Pid=1236 CPUs=4
+\t (04:59:06) CmdLine= C:\Cadence\16.6\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (04:59:06) 
+\d (04:59:06) Design opened: F:/PCB/RECEIVER/Receiver.brd
+\i (04:59:06) etchedit 
+\i (04:59:07) zoom out 1 
+\i (04:59:07) setwindow pcb
+\i (04:59:07) zoom out 1514.040 -867.674
+\i (04:59:07) trapsize 4551
+\i (04:59:07) zoom out 1 
+\i (04:59:07) setwindow pcb
+\i (04:59:07) zoom out 1504.937 -882.236
+\i (04:59:07) trapsize 9102
+\i (04:59:11) refresh symbol 
+\i (04:59:13) setwindow form.upd_element
+\i (04:59:13) FORM upd_element tree 'MULTISEL YES' LQFP-64 'Package symbols' 
+\i (04:59:13) FORM upd_element tree  LQFP-64 'Package symbols' 
+\i (04:59:15) FORM upd_element padstacks YES 
+\i (04:59:17) FORM upd_element refresh  
+\t (04:59:17) Starting Refresh Symbol...
+\t (04:59:20) Opening existing design...
+\i (04:59:20) setwindow pcb
+\i (04:59:20) trapsize 9102
+\i (04:59:24) setwindow form.upd_element
+\i (04:59:24) FORM upd_element close  
+\i (04:59:24) setwindow pcb
+\i (04:59:24) etchedit 
+\i (04:59:25) zoom in 1 
+\i (04:59:25) setwindow pcb
+\i (04:59:25) zoom in 1495.836 -714.766
+\i (04:59:25) trapsize 4551
+\i (04:59:30) open 
+\e (04:59:30) Do you want to save the changes you made to F:/PCB/RECEIVER/Receiver.brd?
+\i (04:59:32) fillin no 
+\i (04:59:49) fillin "F:\work\ZM\Frogs\Design\FOOTPRINT\candence\LQFP-64.dra"
+\i (04:59:49) cd "F:\work\ZM\Frogs\Design\FOOTPRINT\candence"
+\t (04:59:49) Opening existing design...
+\i (04:59:49) trapsize 1118
+\i (04:59:49) trapsize 1090
+\i (04:59:50) trapsize 1111
+\i (04:59:50) trapsize 988
+\i (04:59:50) trapsize 988
+\t (04:59:50)     Journal end - Fri Jul 26 14:08:37 2019

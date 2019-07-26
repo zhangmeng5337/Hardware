@@ -2,9 +2,9 @@
 (                                                                     )
 (    DRC Update                                                       )
 (                                                                     )
-(    Drawing          : Receiver.brd                                  )
+(    Drawing          : Node.brd                                      )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Fri Jul 26 14:09:15 2019                      )
+(    Date/Time        : Fri Jul 26 15:08:41 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
@@ -20,10 +20,10 @@
  ========= check standalone text              0:00:00
  ========= check standalone rectangles        0:00:00
 
- ..... Total number of DRC errors  0
+ ..... Total number of DRC errors  1
 
 
-WARNING: 2 dynamic shape(s) out of date; checking skipped on these elements.
+WARNING: 1 dynamic shape(s) out of date; checking skipped on these elements.
 
  ..... DRC update completed, total CPU time   0:00:00
  *************************************************************************

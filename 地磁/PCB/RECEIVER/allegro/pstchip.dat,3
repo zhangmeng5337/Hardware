@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-25-2019 at 20:18:35}
+{ Using PSTWRITER 16.6.0 d001Jul-26-2019 at 12:41:47}
 primitive 'CAP NP_C0603_4.7UF/10V';
   pin
     '1':
@@ -178,21 +178,6 @@ primitive 'CAP NP_C0603_10UF';
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0603';
     VALUE='10uF';
-  end_body;
-end_primitive;
-primitive 'CAP NP_C0603_0.1UF';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CAP NP';
-    JEDEC_TYPE='C0603';
-    VALUE='0.1uF';
   end_body;
 end_primitive;
 primitive 'F5F1_LED0603_F5F1';
@@ -435,7 +420,7 @@ primitive 'R_R0603_100K';
     VALUE='100K';
   end_body;
 end_primitive;
-primitive 'RESISTOR_R0603_10K';
+primitive 'RESISTOR_R0402_10K';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -446,7 +431,7 @@ primitive 'RESISTOR_R0603_10K';
   end_pin;
   body
     PART_NAME='RESISTOR';
-    JEDEC_TYPE='R0603';
+    JEDEC_TYPE='R0402';
     VALUE='10K';
   end_body;
 end_primitive;
@@ -651,6 +636,33 @@ primitive 'STM32L431RCT6_0_LQFP-64_STM32L4';
     VALUE='STM32L431rct6';
   end_body;
 end_primitive;
+primitive 'PE4259_SC-70_PE4259';
+  pin
+    'RF1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    'GND':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+    'RF2':
+      PIN_NUMBER='(3)';
+      PINUSE='UNSPEC';
+    'VDD':
+      PIN_NUMBER='(6)';
+      PINUSE='UNSPEC';
+    'RFC':
+      PIN_NUMBER='(5)';
+      PINUSE='UNSPEC';
+    'CTRL':
+      PIN_NUMBER='(4)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='PE4259';
+    JEDEC_TYPE='sc-70';
+    VALUE='PE4259';
+  end_body;
+end_primitive;
 primitive 'STM8L151G6U6_QFN28_NOLEAD_0_5_S';
   pin
     'NRST':
@@ -742,33 +754,6 @@ primitive 'STM8L151G6U6_QFN28_NOLEAD_0_5_S';
     PART_NAME='STM8L151G6U6';
     JEDEC_TYPE='QFN28_NOLEAD_0_5';
     VALUE='STM8L151G6U6';
-  end_body;
-end_primitive;
-primitive 'PE4259_SC-70_PE4259';
-  pin
-    'RF1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    'GND':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-    'RF2':
-      PIN_NUMBER='(3)';
-      PINUSE='UNSPEC';
-    'VDD':
-      PIN_NUMBER='(6)';
-      PINUSE='UNSPEC';
-    'RFC':
-      PIN_NUMBER='(5)';
-      PINUSE='UNSPEC';
-    'CTRL':
-      PIN_NUMBER='(4)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='PE4259';
-    JEDEC_TYPE='sc-70';
-    VALUE='PE4259';
   end_body;
 end_primitive;
 primitive 'SX1278_QFN28_LEAD_SX1278';

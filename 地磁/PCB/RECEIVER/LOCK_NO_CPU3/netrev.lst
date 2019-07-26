@@ -4,7 +4,7 @@
 (                                                                     )
 (    Drawing          : Receiver.brd                                  )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Tue Jul 23 11:22:21 2019                      )
+(    Date/Time        : Fri Jul 26 14:14:50 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
@@ -17,21 +17,21 @@ Ripup retain bondwire:       No
 Ripup symbols:               Always
 Missing symbol has error:    No
 DRC update:                  Yes
-Schematic directory:         'F:/PCB/地磁/PCB/RECEIVER/allegro'
-Design Directory:            'F:/PCB/地磁/PCB/RECEIVER'
-Old design name:             'F:/PCB/地磁/PCB/RECEIVER/Receiver.brd'
-New design name:             'F:/PCB/地磁/PCB/RECEIVER/Receiver.brd'
+Schematic directory:         'F:/PCB/RECEIVER/allegro'
+Design Directory:            'F:/PCB/RECEIVER'
+Old design name:             'F:/PCB/RECEIVER/Receiver.brd'
+New design name:             'F:/PCB/RECEIVER/Receiver.brd'
 
-CmdLine: netrev -$ -i F:/PCB/地磁/PCB/RECEIVER/allegro -y 1 -q netrev_constraint_report.xml F:/PCB/地磁/PCB/RECEIVER/#Taaaabp05156.tmp
+CmdLine: netrev -$ -i F:/PCB/RECEIVER/allegro -y 1 -q netrev_constraint_report.xml F:/PCB/RECEIVER/#Taaaaax01236.tmp
 
 ------ Preparing to read pst files ------
 
-Starting to read F:/PCB/地磁/PCB/RECEIVER/allegro/pstchip.dat 
-   Finished reading F:/PCB/地磁/PCB/RECEIVER/allegro/pstchip.dat (00:00:00.06)
-Starting to read F:/PCB/地磁/PCB/RECEIVER/allegro/pstxprt.dat 
-   Finished reading F:/PCB/地磁/PCB/RECEIVER/allegro/pstxprt.dat (00:00:00.00)
-Starting to read F:/PCB/地磁/PCB/RECEIVER/allegro/pstxnet.dat 
-   Finished reading F:/PCB/地磁/PCB/RECEIVER/allegro/pstxnet.dat (00:00:00.00)
+Starting to read F:/PCB/RECEIVER/allegro/pstchip.dat 
+   Finished reading F:/PCB/RECEIVER/allegro/pstchip.dat (00:00:00.06)
+Starting to read F:/PCB/RECEIVER/allegro/pstxprt.dat 
+   Finished reading F:/PCB/RECEIVER/allegro/pstxprt.dat (00:00:00.00)
+Starting to read F:/PCB/RECEIVER/allegro/pstxnet.dat 
+   Finished reading F:/PCB/RECEIVER/allegro/pstxnet.dat (00:00:00.00)
 
 ------ Oversights/Warnings/Errors ------
 
@@ -47,7 +47,7 @@ PADPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/
 ------ Summary Statistics ------
 
 
-netrev run on Jul 23 11:22:21 2019
+netrev run on Jul 26 14:14:50 2019
    DESIGN NAME : 'RECEIVER'
    PACKAGING ON Feb 15 2016 19:53:59
 
@@ -73,5 +73,5 @@ netrev run on Jul 23 11:22:21 2019
  No warning detected
 
 cpu time      0:01:27
-elapsed time  0:00:00
+elapsed time  0:00:01
 

@@ -1,9 +1,9 @@
-Fri Jul 26 14:09:06 2019				Page     1
+Fri Jul 26 14:09:14 2019				Page     1
 
 
  
 Update Symbols/Modules Logfile
-	Fri Jul 26 14:09:06 2019
+	Fri Jul 26 14:09:14 2019
 
 ------ Module Refresh Messages ------
 
@@ -19,12 +19,12 @@ SUMMARY:    Updated 0 out of 0 modules
 (                                                                     )
 (    Drawing          : Receiver.brd                                  )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Fri Jul 26 14:09:07 2019                      )
+(    Date/Time        : Fri Jul 26 14:09:15 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
 
-Fri Jul 26 14:09:07 2019				Page     1
+Fri Jul 26 14:09:15 2019				Page     1
 
 
 ------ Symbol Refresh Directives ------
@@ -39,10 +39,10 @@ Update shape/flash symbols             = 'NO'
 Update symbol padstacks                = 'YES'
 Preserve padstacks replaced on pins    = 'NO'
 Reset symbol text and size locations   = 'YES'
-Reset Pin Escapes (fanouts)            = 'NO'
-Ripup Etch                             = 'NO'
-Reset custom drill data                = 'NO'
-Symbol list file                       = 'C:/Users/ADMINI~1/AppData/Local/Temp/#Taaaaal01236.tmp'
+Reset Pin Escapes (fanouts)            = 'YES'
+Ripup Etch                             = 'YES'
+Reset custom drill data                = 'YES'
+Symbol list file                       = 'C:/Users/ADMINI~1/AppData/Local/Temp/#Taaaaap01236.tmp'
 
 
 ------ Library Paths ------

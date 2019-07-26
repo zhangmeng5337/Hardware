@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-25-2019 at 20:38:12}
+{ Using PSTWRITER 16.6.0 d001Jul-26-2019 at 14:14:44}
 primitive 'CAP NP_C0603_4.7UF/10V';
   pin
     '1':
@@ -178,21 +178,6 @@ primitive 'CAP NP_C0603_10UF';
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0603';
     VALUE='10uF';
-  end_body;
-end_primitive;
-primitive 'CAP NP_C0603_0.1UF';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CAP NP';
-    JEDEC_TYPE='C0603';
-    VALUE='0.1uF';
   end_body;
 end_primitive;
 primitive 'F5F1_LED0603_F5F1';

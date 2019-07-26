@@ -1,9 +1,9 @@
-Tue Jul 23 11:10:24 2019				Page     1
+Fri Jul 26 14:08:04 2019				Page     1
 
 
  
 Update Symbols/Modules Logfile
-	Tue Jul 23 11:10:24 2019
+	Fri Jul 26 14:08:04 2019
 
 ------ Module Refresh Messages ------
 
@@ -19,30 +19,30 @@ SUMMARY:    Updated 0 out of 0 modules
 (                                                                     )
 (    Drawing          : Receiver.brd                                  )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Tue Jul 23 11:10:24 2019                      )
+(    Date/Time        : Fri Jul 26 14:08:05 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
 
-Tue Jul 23 11:10:24 2019				Page     1
+Fri Jul 26 14:08:05 2019				Page     1
 
 
 ------ Symbol Refresh Directives ------
 
-Input design  = 'F:/PCB/ตุดล/PCB/RECEIVER/Receiver.brd'
+Input design  = 'F:/PCB/RECEIVER/Receiver.brd'
 Output design = ''
 
 Update mechanical symbols              = 'NO'
 Update format symbols                  = 'NO'
 Update package symbols                 = 'NO'
 Update shape/flash symbols             = 'NO'
-Update symbol padstacks                = 'NO'
+Update symbol padstacks                = 'YES'
 Preserve padstacks replaced on pins    = 'NO'
 Reset symbol text and size locations   = 'NO'
 Reset Pin Escapes (fanouts)            = 'NO'
 Ripup Etch                             = 'NO'
 Reset custom drill data                = 'NO'
-Symbol list file                       = 'C:/Users/ADMINI~1/AppData/Local/Temp/#Taaaabe05156.tmp'
+Symbol list file                       = 'C:/Users/ADMINI~1/AppData/Local/Temp/#Taaaaah01236.tmp'
 
 
 ------ Library Paths ------
@@ -53,15 +53,16 @@ PADPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/
 
 ------ Symbol Refresh Messages ------
 
+'LQFP-64'  symbol refreshed successfully.
 
-'APC340'  symbol starting to refresh:
-     ERROR(SPMHNI-254): Unable to load symbol, 'APC340': 'ERROR(SPMHDB-243): Cannot modify element; the object or a parent has the~
-      FIXED property. [help]'.
-     
+
+------ Pad Stack Refresh Messages ------
+
+'S1X0_27'  pad stack refreshed successfully.
 
 
 ----- Symbol Update Summary ----
 
-Refresh symbol errors; due to these errors this design is NOT updated.
-       1  errors detected.
-       0  warnings detected.
+Updated symbols: 1 out 1
+    Design updated.
+

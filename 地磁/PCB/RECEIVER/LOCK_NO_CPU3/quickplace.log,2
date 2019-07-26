@@ -4,18 +4,35 @@
 (                                                                     )
 (    Drawing          : Receiver.brd                                  )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Tue Jul 23 11:13:56 2019                      )
+(    Date/Time        : Tue Jul 23 11:20:44 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
 
 State: Placing on layer TOP
 
-         Placed symbol:  U3 / CP2012_5_CP2102_CP2102 / CP2102 at (3.0480 58.9152)
-         Placed symbol:  U5 / APC340_APC340_APC340 / APC340 at (22.8709 86.8764)
+ERROR:   Could not find symbol:  U11 / STM8L151G6U6_QFN28-NOLEAD_STM8L / QFN28-NOLEAD
 
 
-Placed 2 of 2 applicable (2 total) symbols.
+Placed 0 of 1 applicable (1 total) symbols.
+
+-----------------------------------------------------------------------
+
+State: Placing on layer TOP
+
+ERROR:   Could not find symbol:  U11 / STM8L151G6U6_QFN28-NOLEAD_STM8L / QFN28-NOLEAD
+
+
+Placed 0 of 1 applicable (1 total) symbols.
+
+-----------------------------------------------------------------------
+
+State: Placing on layer TOP
+
+ERROR:   Could not find symbol:  U11 / STM8L151G6U6_QFN28-NOLEAD_STM8L / QFN28-NOLEAD
+
+
+Placed 0 of 1 applicable (1 total) symbols.
 
 -----------------------------------------------------------------------
 
