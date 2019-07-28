@@ -1,4 +1,4 @@
-{ Using PSTWRITER 16.6.0 d001Jul-25-2019 at 18:58:51 }
+{ Using PSTWRITER 16.6.0 d001Jul-28-2019 at 15:53:20 }
 
 #1 WARNING(ORCAP-36042): Pin "G" is renamed to "G#2" as visible power pin of same name already exists in Package IPX , J4: SCHEMATIC1, LORA (29.30, 3.67).
 #2 WARNING(ORCAP-36042): Pin "G" is renamed to "G#3" as visible power pin of same name already exists in Package IPX , J4: SCHEMATIC1, LORA (29.30, 3.67).

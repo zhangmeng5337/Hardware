@@ -1,0 +1,15 @@
+FILE_TYPE=LIBRARY_PARTS;
+{ Using PSTWRITER 16.6.0 d001Jul-27-2019 at 20:17:26}
+primitive 'TEST_TP_3X3_TEST';
+  pin
+    'TP':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='TEST';
+    JEDEC_TYPE='tp_3x3';
+    VALUE='TEST';
+  end_body;
+end_primitive;
+END.

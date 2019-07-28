@@ -3,19 +3,100 @@
 |                                                                    Page   1  |
 |------------------------------------------------------------------------------|
 |  F:/projects/git/Hardware/地磁/PCB/NODE/Node.brd                             |
-|                                                    Thu Jul 25 18:58:56 2019  |
+|                                                    Sun Jul 28 15:53:37 2019  |
 |------------------------------------------------------------------------------|
 | NET CHANGES                                                                  |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
 |   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
-  RM_POWER     pins DELETED FROM this net (pin now not on any net)
-                                 U11.30          -69.960 390.236
-                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-               pins ADDED TO this existing net (pins not previously on any net)
-                                 U11.23          -213.66 494.567
+  GND          pins ADDED TO this existing net (pins not previously on any net)
+                                 J9.3                           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VCC_3.3V     pins ADDED TO this existing net (pins not previously on any net)
+                                 J9.1                           
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   2  |
+|------------------------------------------------------------------------------|
+|  F:/projects/git/Hardware/地磁/PCB/NODE/Node.brd                             |
+|                                                    Sun Jul 28 15:53:37 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENT DEFINITION added to design                                         |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    device type                                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ CAP NP_C0402_12P
+ CAP NP_C0402_12PF
+ CAP NP_C0402_16PF
+ CAP NP_C0402_18P
+ CAP NP_C0402_22P
+ CAP NP_C0402_47P
+ CAP NP_C0402_51PF
+ CAP NP_C0402_9P
+ INDUCTOR_R0603_15NH
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
+|------------------------------------------------------------------------------|
+|  F:/projects/git/Hardware/地磁/PCB/NODE/Node.brd                             |
+|                                                    Sun Jul 28 15:53:37 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ J9                  CON4_CON4_CON4        
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   4  |
+|------------------------------------------------------------------------------|
+|  F:/projects/git/Hardware/地磁/PCB/NODE/Node.brd                             |
+|                                                    Sun Jul 28 15:53:37 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS CHANGED from one device type to another in design                 |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        | new device type     |   x   |   y   |  old  device type  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C18                 CAP NP_C0402_12P      -4.1457 -8.1853 CAP NP_C0402_4.7P
+ C28                 CAP NP_C0402_18P       0.9440 -11.019 CAP NP_C0402_8.2P
+ C29                 CAP NP_C0402_22P       0.9470 -9.7960 CAP NP_C0402_47P
+ C30                 CAP NP_C0402_9P        3.2840 -7.8010 CAP NP_C0402_2.7P
+ C33                 CAP NP_C0402_18P       0.0480 -5.9970 CAP NP_C0402_12P
+ C35                 CAP NP_C0402_16PF     -6.3052 -5.3928 CAP NP_C0402_47P
+ C36                 CAP NP_C0402_51PF     -7.2027 -10.670 CAP NP_C0402_NC
+ C37                 CAP NP_C0402_12PF     -7.2066 -6.4577 CAP NP_C0402_NC
+ C48                 CAP NP_C0402_47P      -4.6202 -28.990 CAP NP_C0402_47P
+ L2                  INDUCTOR_R0603_15NH   -6.3052 -9.4662 INDUCTOR_R0603_0
+ L5                  INDUCTOR_R0603_15NH   -1.6523 -6.9035 INDUCTOR_R0603_0
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   5  |
+|------------------------------------------------------------------------------|
+|  F:/projects/git/Hardware/地磁/PCB/NODE/Node.brd                             |
+|                                                    Sun Jul 28 15:53:37 2019  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C18.2          -4.1457 -8.1853 PRIM_FILE      .\pstchip.dat
+ C28.2           0.9440 -11.019 PRIM_FILE      .\pstchip.dat
+ C29.2           0.9470 -9.7960 PRIM_FILE      .\pstchip.dat
+ C30.2           3.2840 -7.8010 PRIM_FILE      .\pstchip.dat
+ C33.2           0.0480 -5.9970 PRIM_FILE      .\pstchip.dat
+ C35.2          -6.3052 -5.3928 PRIM_FILE      .\pstchip.dat
+ C36.2          -7.2027 -10.670 PRIM_FILE      .\pstchip.dat
+ C37.2          -7.2066 -6.4577 PRIM_FILE      .\pstchip.dat
+ C48.2          -4.6202 -28.990 PRIM_FILE      .\pstchip.dat
+ J9.4                           PRIM_FILE      .\pstchip.dat
+ L2.2           -6.3052 -9.4662 PRIM_FILE      .\pstchip.dat
+ L5.2           -1.6523 -6.9035 PRIM_FILE      .\pstchip.dat
 |------------------------------------------------------------------------------|
 |       Nets changed          :       2                                        |
+|       Comp definitions added:       9                                        |
+|       Components added      :       1                                        |
+|       Components changed    :      11                                        |
+|       Slot property added   :      12                                        |
 |                                                                              |
-|   Total ECO changes reported:       2                                        |
+|   Total ECO changes reported:      35                                        |
 |------------------------------------------------------------------------------|

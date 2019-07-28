@@ -1,0 +1,46 @@
+Reading Layer Conversion File 
+Reading DXF file...
+ERROR: 3D data has been found in this dxf file.
+  Most 3D data is not supported by dxf2a.
+  For the special case of DXF code 230 = -1.0, ARC, CIRCLE 
+  and SOLID entities will be mirrored about the Y axis.
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 1994
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2028
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2064
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2098
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2134
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2170
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2206
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2242
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2278
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2314
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2350
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2386
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2420
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2456
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2492
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2528
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2564
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2598
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2634
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2670
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2706
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2742
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2778
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2814
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2848
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2884
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2918
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2954
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2990
+done.
+NOTE: Ignoring unsupported element VIEWPORT on line 1846.
+Layer conversion file: F:/projects/git/Hardware/ตุดล/PCB/ANT/ant_mid_l.cnv
+DXF file: F:/projects/git/Hardware/ตุดล/PCB/ANT/ant_mid.dxf
+BRD file: F:/projects/git/Hardware/ตุดล/PCB/ANT/#Taaaaao19108.tmp
+Update existing design?: YES
+Use default text?: NO
+DXF units: MILLIMETERS
+Design units: MILLIMETERS
+Design precision: 4
+dxf2a complete.

@@ -1,0 +1,29 @@
+G04 ================== begin FILE IDENTIFICATION RECORD ==================*
+G04 Layout Name:  F:/projects/git/Hardware/ตุดล/PCB/NODE/Node.brd*
+G04 Film Name:    PasteMaskBottom*
+G04 File Format:  Gerber RS274X*
+G04 File Origin:  Cadence Allegro 16.6-2015-S108*
+G04 Origin Date:  Sun Jul 28 18:28:48 2019*
+G04 *
+G04 Layer:  VIA CLASS/PASTEMASK_BOTTOM*
+G04 Layer:  PIN/PASTEMASK_BOTTOM*
+G04 Layer:  PACKAGE GEOMETRY/PASTEMASK_BOTTOM*
+G04 Layer:  BOARD GEOMETRY/OUTLINE*
+G04 *
+G04 Offset:    (0.000 0.000)*
+G04 Mirror:    No*
+G04 Mode:      Positive*
+G04 Rotation:  0*
+G04 FullContactRelief:  No*
+G04 UndefLineWidth:     0.000*
+G04 ================== end FILE IDENTIFICATION RECORD ====================*
+%FSLAX35Y35*MOIN*%
+%IR0*IPPOS*OFA0.00000B0.00000*MIA0B0*SFA1.00000B1.00000*%
+%ADD10C,.173228*%
+%LPD*%
+G75*
+G54D10*
+X-99201Y-97500D03*
+X-480Y138539D03*
+X97449Y-98035D03*
+M02*
