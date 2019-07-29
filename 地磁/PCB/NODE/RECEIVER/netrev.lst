@@ -4,7 +4,7 @@
 (                                                                     )
 (    Drawing          : Node.brd                                      )
 (    Software Version : 16.6-2015S108                                 )
-(    Date/Time        : Thu Jul 25 18:58:56 2019                      )
+(    Date/Time        : Mon Jul 29 15:29:39 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
@@ -17,38 +17,37 @@ Ripup retain bondwire:       No
 Ripup symbols:               Always
 Missing symbol has error:    No
 DRC update:                  Yes
-Schematic directory:         'F:/projects/git/Hardware/地磁/PCB/NODE/allegro'
-Design Directory:            'F:/projects/git/Hardware/地磁/PCB/NODE'
-Old design name:             'F:/projects/git/Hardware/地磁/PCB/NODE/Node.brd'
-New design name:             'F:/projects/git/Hardware/地磁/PCB/NODE/Node.brd'
+Schematic directory:         'F:/PCB/NODE/allegro'
+Design Directory:            'F:/PCB/NODE'
+Old design name:             'F:/PCB/NODE/Node.brd'
+New design name:             'F:/PCB/NODE/Node.brd'
 
-CmdLine: netrev -$ -i F:/projects/git/Hardware/地磁/PCB/NODE/allegro -y 1 -q netrev_constraint_report.xml F:/projects/git/Hardware/地磁/PCB/NODE/#Taaaaed15588.tmp
+CmdLine: netrev -$ -i F:/PCB/NODE/allegro -y 1 -q netrev_constraint_report.xml F:/PCB/NODE/#Taaaaad50092.tmp
 
 ------ Preparing to read pst files ------
 
-Starting to read F:/projects/git/Hardware/地磁/PCB/NODE/allegro/pstchip.dat 
-   Finished reading F:/projects/git/Hardware/地磁/PCB/NODE/allegro/pstchip.dat (00:00:00.13)
-Starting to read F:/projects/git/Hardware/地磁/PCB/NODE/allegro/pstxprt.dat 
-   Finished reading F:/projects/git/Hardware/地磁/PCB/NODE/allegro/pstxprt.dat (00:00:00.00)
-Starting to read F:/projects/git/Hardware/地磁/PCB/NODE/allegro/pstxnet.dat 
-   Finished reading F:/projects/git/Hardware/地磁/PCB/NODE/allegro/pstxnet.dat (00:00:00.00)
+Starting to read F:/PCB/NODE/allegro/pstchip.dat 
+   Finished reading F:/PCB/NODE/allegro/pstchip.dat (00:00:00.06)
+Starting to read F:/PCB/NODE/allegro/pstxprt.dat 
+   Finished reading F:/PCB/NODE/allegro/pstxprt.dat (00:00:00.00)
+Starting to read F:/PCB/NODE/allegro/pstxnet.dat 
+   Finished reading F:/PCB/NODE/allegro/pstxnet.dat (00:00:00.00)
 
 ------ Oversights/Warnings/Errors ------
 
 
 ------ Library Paths ------
-MODULEPATH =  . 
-           C:/Cadence/Cadence/Cadence_SPB_16.6/share/local/pcb/modules 
+MODULEPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ 
 
-PSMPATH =  F:/footprint/allegro/ 
+PSMPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ 
 
-PADPATH =  F:/footprint/allegro/ 
+PADPATH =  F:/work/ZM/Frogs/Design/FOOTPRINT/candence/ 
 
 
 ------ Summary Statistics ------
 
 
-netrev run on Jul 25 18:58:56 2019
+netrev run on Jul 29 15:29:39 2019
    DESIGN NAME : 'MANETIC'
    PACKAGING ON Feb 15 2016 19:53:59
 
@@ -73,6 +72,6 @@ netrev run on Jul 25 18:58:56 2019
  No oversight detected
  No warning detected
 
-cpu time      0:02:14
-elapsed time  0:00:01
+cpu time      0:01:38
+elapsed time  0:00:00
 

@@ -1,4 +1,4 @@
-{ Using PSTWRITER 16.6.0 d001Jul-28-2019 at 15:53:20 }
+{ Using PSTWRITER 16.6.0 d001Jul-29-2019 at 15:28:41 }
 
 #1 WARNING(ORCAP-36042): Pin "G" is renamed to "G#2" as visible power pin of same name already exists in Package IPX , J4: SCHEMATIC1, LORA (29.30, 3.67).
 #2 WARNING(ORCAP-36042): Pin "G" is renamed to "G#3" as visible power pin of same name already exists in Package IPX , J4: SCHEMATIC1, LORA (29.30, 3.67).
@@ -31,11 +31,11 @@
 #29 WARNING(ORCAP-36042): Pin "G" is renamed to "G#4" as visible power pin of same name already exists in Package CRY_0 , Y2: SCHEMATIC1, LORA (12.63, 2.23).
 INFO(ORCAP-36080): Scanning netlist files ...
 
-Loading... F:\PROJECTS\GIT\HARDWARE\地磁\PCB\NODE\ALLEGRO/pstchip.dat
+Loading... F:\PCB\NODE\allegro/pstchip.dat
 
-Loading... F:\PROJECTS\GIT\HARDWARE\地磁\PCB\NODE\ALLEGRO/pstchip.dat
+Loading... F:\PCB\NODE\allegro/pstchip.dat
 
-Loading... F:\PROJECTS\GIT\HARDWARE\地磁\PCB\NODE\ALLEGRO/pstxprt.dat
+Loading... F:\PCB\NODE\allegro/pstxprt.dat
 
-Loading... F:\PROJECTS\GIT\HARDWARE\地磁\PCB\NODE\ALLEGRO/pstxnet.dat
+Loading... F:\PCB\NODE\allegro/pstxnet.dat
 packaging the design view...
