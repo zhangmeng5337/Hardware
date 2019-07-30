@@ -3,9 +3,178 @@
 |                                                                    Page   1  |
 |------------------------------------------------------------------------------|
 |  F:/PCB/RECEIVER/Receiver.brd                                                |
-|                                                    Fri Jul 26 14:14:50 2019  |
+|                                                    Mon Jul 29 15:41:30 2019  |
 |------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  GND          pins ADDED TO this existing net (pins not previously on any net)
+                                 U14.2                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73179       pins MOVED FROM this net (to net name listed on right)
+                                 C36.2           572.087 -407.75
+                                                                         N78646
+                                 L2.1            572.008 -353.93
+                                                                         N78646
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73187       net RENAMED (to net name listed on right)           N78654       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73191       net RENAMED (to net name listed on right)           N78658       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73277       net RENAMED (to net name listed on right)           N78752       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73413       net RENAMED (to net name listed on right)           N78904       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73417       net RENAMED (to net name listed on right)           N78924       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73449       pins MOVED FROM this net (to net name listed on right)
+                                 C18.2           695.197 -322.28
+                                                                         N78940
+                                 L5.2            695.158 -241.45
+                                                                         N78940
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73461       net RENAMED (to net name listed on right)           N78952       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73521       net RENAMED (to net name listed on right)           N79012       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73525       net RENAMED (to net name listed on right)           N79016       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73677       net RENAMED (to net name listed on right)           N79184       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73697       net RENAMED (to net name listed on right)           N79188       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73737       net RENAMED (to net name listed on right)           N79232       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73825       net RENAMED (to net name listed on right)           N79316       
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N73873       pins MOVED FROM this net (to net name listed on right)
+                                 C57.1           695.748 -495.31
+                                                                         N79364
+                                 L11.2           695.394 -551.85
+                                                                         N79364
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   2  |
 |------------------------------------------------------------------------------|
+|  F:/PCB/RECEIVER/Receiver.brd                                                |
+|                                                    Mon Jul 29 15:41:30 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  N78646       pins ADDED TO this new net
+                                 U14.5                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N78940       pins ADDED TO this new net
+                                 U14.3                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N79364       pins ADDED TO this new net
+                                 U14.1                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  RXEN         pins ADDED TO this existing net (pins not previously on any net)
+                                 U14.4                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  TXEN         pins ADDED TO this existing net (pins not previously on any net)
+                                 U14.6                          
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/RECEIVER/Receiver.brd                                                |
+|                                                    Mon Jul 29 15:41:30 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENT DEFINITION added to design                                         |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    device type                                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ CAP NP_C0402_12P
+ CAP NP_C0402_12PF
+ CAP NP_C0402_16PF
+ CAP NP_C0402_18P
+ CAP NP_C0402_22P
+ CAP NP_C0402_47P
+ CAP NP_C0402_51PF
+ CAP NP_C0402_9P
+ INDUCTOR_R0603_15NH
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   4  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/RECEIVER/Receiver.brd                                                |
+|                                                    Mon Jul 29 15:41:30 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS DELETED from design                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type      |   x   |   y                        |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ U12                 PE4259_SC-70_PE4259   695.394 -433.46
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   5  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/RECEIVER/Receiver.brd                                                |
+|                                                    Mon Jul 29 15:41:30 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ U14                 PE4259_SC-70_PE4259   
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   6  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/RECEIVER/Receiver.brd                                                |
+|                                                    Mon Jul 29 15:41:30 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS CHANGED from one device type to another in design                 |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        | new device type     |   x   |   y   |  old  device type  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C18                 CAP NP_C0402_12P      659.764 -322.28 CAP NP_C0402_4.7P
+ C28                 CAP NP_C0402_18P      862.244 -399.29 CAP NP_C0402_8.2P
+ C29                 CAP NP_C0402_22P      862.402 -351.89 CAP NP_C0402_47P
+ C30                 CAP NP_C0402_9P       954.291 -277.71 CAP NP_C0402_2.7P
+ C33                 CAP NP_C0402_18P      829.173 -206.29 CAP NP_C0402_12P
+ C35                 CAP NP_C0402_16PF     572.047 -197.28 CAP NP_C0402_47P
+ C36                 CAP NP_C0402_51PF     536.654 -407.75 CAP NP_C0402_NC
+ C37                 CAP NP_C0402_12PF     536.220 -241.37 CAP NP_C0402_NC
+ C48                 CAP NP_C0402_47P      639.764 -1043.8 CAP NP_C0402_47P
+ L2                  INDUCTOR_R0603_15NH   572.008 -353.93 INDUCTOR_R0603_0
+ L5                  INDUCTOR_R0603_15NH   758.150 -241.45 INDUCTOR_R0603_0
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   7  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/RECEIVER/Receiver.brd                                                |
+|                                                    Mon Jul 29 15:41:30 2019  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C18.2          659.764 -322.28 PRIM_FILE      .\pstchip.dat
+ C28.2          862.244 -399.29 PRIM_FILE      .\pstchip.dat
+ C29.2          862.402 -351.89 PRIM_FILE      .\pstchip.dat
+ C30.2          954.291 -277.71 PRIM_FILE      .\pstchip.dat
+ C33.2          829.173 -206.29 PRIM_FILE      .\pstchip.dat
+ C35.2          572.047 -197.28 PRIM_FILE      .\pstchip.dat
+ C36.2          536.654 -407.75 PRIM_FILE      .\pstchip.dat
+ C37.2          536.220 -241.37 PRIM_FILE      .\pstchip.dat
+ C48.2          639.764 -1043.8 PRIM_FILE      .\pstchip.dat
+ L2.2           572.008 -353.93 PRIM_FILE      .\pstchip.dat
+ L5.2           758.150 -241.45 PRIM_FILE      .\pstchip.dat
+ U14.6                          PRIM_FILE      .\pstchip.dat
+|------------------------------------------------------------------------------|
+|       Nets changed          :      24                                        |
+|       Comp definitions added:       9                                        |
+|       Components added      :       1                                        |
+|       Components deleted    :       1                                        |
+|       Components changed    :      11                                        |
+|       Slot property added   :      12                                        |
 |                                                                              |
-|   Total ECO changes reported:       0                                        |
+|   Total ECO changes reported:      58                                        |
 |------------------------------------------------------------------------------|

@@ -1,5 +1,5 @@
 FILE_TYPE=LIBRARY_PARTS;
-{ Using PSTWRITER 16.6.0 d001Jul-26-2019 at 14:14:44}
+{ Using PSTWRITER 16.6.0 d001Jul-29-2019 at 15:41:18}
 primitive 'CAP NP_C0603_4.7UF/10V';
   pin
     '1':
@@ -45,7 +45,7 @@ primitive 'CAP POL_C0603_10UF/10V';
     VALUE='10uF/10V';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0402_4.7P';
+primitive 'CAP NP_C0402_12P';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -57,7 +57,52 @@ primitive 'CAP NP_C0402_4.7P';
   body
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0402';
-    VALUE='4.7p';
+    VALUE='12p';
+  end_body;
+end_primitive;
+primitive 'CAP NP_C0402_18P';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='CAP NP';
+    JEDEC_TYPE='C0402';
+    VALUE='18P';
+  end_body;
+end_primitive;
+primitive 'CAP NP_C0402_22P';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='CAP NP';
+    JEDEC_TYPE='C0402';
+    VALUE='22p';
+  end_body;
+end_primitive;
+primitive 'CAP NP_C0402_9P';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='CAP NP';
+    JEDEC_TYPE='C0402';
+    VALUE='9p';
   end_body;
 end_primitive;
 primitive 'CAP NP_C0402_8.2P';
@@ -75,7 +120,7 @@ primitive 'CAP NP_C0402_8.2P';
     VALUE='8.2P';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0402_47P';
+primitive 'CAP NP_C0402_16PF';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -87,10 +132,10 @@ primitive 'CAP NP_C0402_47P';
   body
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0402';
-    VALUE='47p';
+    VALUE='16pF';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0402_2.7P';
+primitive 'CAP NP_C0402_51PF';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -102,10 +147,10 @@ primitive 'CAP NP_C0402_2.7P';
   body
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0402';
-    VALUE='2.7p';
+    VALUE='51pF';
   end_body;
 end_primitive;
-primitive 'CAP NP_C0402_12P';
+primitive 'CAP NP_C0402_12PF';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -117,22 +162,7 @@ primitive 'CAP NP_C0402_12P';
   body
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0402';
-    VALUE='12p';
-  end_body;
-end_primitive;
-primitive 'CAP NP_C0402_NC';
-  pin
-    '1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    '2':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='CAP NP';
-    JEDEC_TYPE='C0402';
-    VALUE='NC';
+    VALUE='12pF';
   end_body;
 end_primitive;
 primitive 'CAP NP_C0402_15P';
@@ -178,6 +208,21 @@ primitive 'CAP NP_C0603_10UF';
     PART_NAME='CAP NP';
     JEDEC_TYPE='C0603';
     VALUE='10uF';
+  end_body;
+end_primitive;
+primitive 'CAP NP_C0402_47P';
+  pin
+    '1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    '2':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='CAP NP';
+    JEDEC_TYPE='C0402';
+    VALUE='47P';
   end_body;
 end_primitive;
 primitive 'F5F1_LED0603_F5F1';
@@ -285,7 +330,7 @@ primitive 'INDUCTOR_R0603_18NH';
     VALUE='18nH';
   end_body;
 end_primitive;
-primitive 'INDUCTOR_R0603_0';
+primitive 'INDUCTOR_R0603_15NH';
   pin
     '1':
       PIN_NUMBER='(1)';
@@ -297,7 +342,7 @@ primitive 'INDUCTOR_R0603_0';
   body
     PART_NAME='INDUCTOR';
     JEDEC_TYPE='R0603';
-    VALUE='0';
+    VALUE='15nH';
   end_body;
 end_primitive;
 primitive 'INDUCTOR_R0603_12NH';
@@ -636,33 +681,6 @@ primitive 'STM32L431RCT6_0_LQFP-64_STM32L4';
     VALUE='STM32L431rct6';
   end_body;
 end_primitive;
-primitive 'PE4259_SC-70_PE4259';
-  pin
-    'RF1':
-      PIN_NUMBER='(1)';
-      PINUSE='UNSPEC';
-    'GND':
-      PIN_NUMBER='(2)';
-      PINUSE='UNSPEC';
-    'RF2':
-      PIN_NUMBER='(3)';
-      PINUSE='UNSPEC';
-    'VDD':
-      PIN_NUMBER='(6)';
-      PINUSE='UNSPEC';
-    'RFC':
-      PIN_NUMBER='(5)';
-      PINUSE='UNSPEC';
-    'CTRL':
-      PIN_NUMBER='(4)';
-      PINUSE='UNSPEC';
-  end_pin;
-  body
-    PART_NAME='PE4259';
-    JEDEC_TYPE='sc-70';
-    VALUE='PE4259';
-  end_body;
-end_primitive;
 primitive 'STM8L151G6U6_QFN28_NOLEAD_0_5_S';
   pin
     'NRST':
@@ -754,6 +772,33 @@ primitive 'STM8L151G6U6_QFN28_NOLEAD_0_5_S';
     PART_NAME='STM8L151G6U6';
     JEDEC_TYPE='QFN28_NOLEAD_0_5';
     VALUE='STM8L151G6U6';
+  end_body;
+end_primitive;
+primitive 'PE4259_SC-70_PE4259';
+  pin
+    'RF1':
+      PIN_NUMBER='(1)';
+      PINUSE='UNSPEC';
+    'GND':
+      PIN_NUMBER='(2)';
+      PINUSE='UNSPEC';
+    'RF2':
+      PIN_NUMBER='(3)';
+      PINUSE='UNSPEC';
+    'VDD':
+      PIN_NUMBER='(6)';
+      PINUSE='UNSPEC';
+    'RFC':
+      PIN_NUMBER='(5)';
+      PINUSE='UNSPEC';
+    'CTRL':
+      PIN_NUMBER='(4)';
+      PINUSE='UNSPEC';
+  end_pin;
+  body
+    PART_NAME='PE4259';
+    JEDEC_TYPE='SC-70';
+    VALUE='PE4259';
   end_body;
 end_primitive;
 primitive 'SX1278_QFN28_LEAD_SX1278';
