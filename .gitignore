@@ -42,3 +42,4 @@ settings/
 *.drc
 signoise.run/
 *.txt,1
+*.d
