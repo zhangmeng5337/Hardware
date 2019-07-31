@@ -171,7 +171,7 @@ void main(void)
   //CLK_Init();
 
    delay1ms(200);
-   KEY_Init();
+   //KEY_Init();
   //CFG->GCR |= CFG_GCR_SWD;
  
  // ee_Test();

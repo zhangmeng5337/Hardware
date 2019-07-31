@@ -186,13 +186,18 @@ void AdaptiveBaseLine()
 	else
 		adaptive_count = 0;
   }
+  else
+  {
+	BaseLineTrace();
+
+  }
 }
 void vehicle_process()
 {
 	MagneticGet();//get magnetic data
 	vehicle_detect();	
 	AdaptiveBaseLine();
-	BaseLineTrace();
+
 	if(magnetic.Car_Flag == 1)
 	{
 		;
