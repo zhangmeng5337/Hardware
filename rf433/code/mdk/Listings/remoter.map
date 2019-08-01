@@ -1663,8 +1663,8 @@ Image Symbol Table
     _sys_exit                                0x000003ad   Thumb Code     4  ddl.o(i._sys_exit)
     delay1ms                                 0x000003b1   Thumb Code    50  ddl.o(i.delay1ms)
     main                                     0x000003ed   Thumb Code    10  main.o(i.main)
-    Region$$Table$$Base                      0x000003f8   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00000418   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Base                      0x000003fc   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0000041c   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_hc32f005.o(.data)
     __libspace_start                         0x20000004   Data          96  libspace.o(.bss)
     __temporary_stack_top$libspace           0x20000064   Data           0  libspace.o(.bss)
@@ -1677,9 +1677,9 @@ Memory Map of the image
 
   Image Entry point : 0x000000c1
 
-  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x0000041c, Max: 0x00008000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00000420, Max: 0x00008000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x00000418, Max: 0x00008000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x0000041c, Max: 0x00008000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1745,9 +1745,8 @@ Memory Map of the image
     0x00000394   0x00000018   Code   RO         3096    i.SystemInit        system_hc32f005.o
     0x000003ac   0x00000004   Code   RO          978    i._sys_exit         ddl.o
     0x000003b0   0x0000003c   Code   RO          982    i.delay1ms          ddl.o
-    0x000003ec   0x0000000a   Code   RO         3039    i.main              main.o
-    0x000003f6   0x00000002   PAD
-    0x000003f8   0x00000020   Data   RO         3466    Region$$Table       anon$$obj.o
+    0x000003ec   0x00000010   Code   RO         3039    i.main              main.o
+    0x000003fc   0x00000020   Data   RO         3466    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00000168, Max: 0x00001000, ABSOLUTE)
@@ -1771,14 +1770,14 @@ Image component sizes
          0          0          0          0          0       4540   adc.o
         64         10          0          0          0        899   ddl.o
         16          0          0          0          0        476   interrupts_hc32f005.o
-        10          0          0          0          0        399   main.o
+        16          6          0          0          0        399   main.o
         84         36        192          0        256        648   startup_hc32f005.o
         40         16          0          4          0       1139   system_hc32f005.o
 
     ----------------------------------------------------------------------
-       218         62        224          4        256       8101   Object Totals
+       222         68        224          4        256       8101   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         4          0          0          0          0          0   (incl. Padding)
+         2          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -1825,15 +1824,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-       824         74        224          4        356       8465   Grand Totals
-       824         74        224          4        356       8465   ELF Image Totals
-       824         74        224          4          0          0   ROM Totals
+       828         80        224          4        356       8465   Grand Totals
+       828         80        224          4        356       8465   ELF Image Totals
+       828         80        224          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 1048 (   1.02kB)
+    Total RO  Size (Code + RO Data)                 1052 (   1.03kB)
     Total RW  Size (RW Data + ZI Data)               360 (   0.35kB)
-    Total ROM Size (Code + RO Data + RW Data)       1052 (   1.03kB)
+    Total ROM Size (Code + RO Data + RW Data)       1056 (   1.03kB)
 
 ==============================================================================
 
