@@ -1,0 +1,79 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.23.0.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: zm Windows, HP Inc., LIC=X1EY8-38C73-IMK9B-2D9Z4-73GTT-HGM3Y
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.23
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 4 (build 422)
+Assembler:       Armasm.exe V5.06 update 4 (build 422)
+Linker/Locator:  ArmLink.exe V5.06 update 4 (build 422)
+Library Manager: ArmAr.exe V5.06 update 4 (build 422)
+Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
+CPU DLL:         SARMCM3.DLL V5.23
+Dialog DLL:      DARMCM1.DLL V1.17.0.0
+Target DLL:      CMSIS_AGDI.dll V1.27.5.0
+Dialog DLL:      TARMCM1.DLL V1.12.0.0
+ 
+<h2>Project:</h2>
+F:\projects\git\Hardware\rf433\code\mdk\remoter.uvprojx
+Project File Date:  07/30/2019
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Target 1'
+compiling main.c...
+.\source\inc\BSP_cmt2300a.h(15): warning:  #1-D: last line of file ends without a newline
+  #endif
+.\source\inc\CMT2300drive.h(349): warning:  #1-D: last line of file ends without a newline
+  #endif
+source\src\application\main.c(22): warning:  #1295-D: Deprecated declaration CMT2300_Init - give arg types
+  void CMT2300_Init();
+source\src\application\main.c(168): warning:  #951-D: return type of function "main" must be "int"
+  void main(void)
+source\src\application\main.c(10): warning:  #177-D: variable "statetx"  was declared but never referenced
+  static boolean_t statetx = TRUE;  //  falseÎªRX  trueÎªTX
+source\src\application\main.c: 5 warnings, 0 errors
+linking...
+Program Size: Code=824 RO-data=224 RW-data=4 ZI-data=356  
+".\Objects\remoter.axf" - 0 Error(s), 5 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.3.0.pack
+                ARM::CMSIS:CORE:5.1.1
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.1.1
+
+Package Vendor: HDSC
+                https://raw.githubusercontent.com/hdscmcu/pack/master/HDSC.HC32F005.1.0.0.pack
+                HDSC::Device:Startup:1.0.0
+                HC32F005 ARM Cortex-M0+ Device Family Pack
+   * Component: Startup Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\Device\HC32F005C6PA
+  .\RTE\_Target_1
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\HDSC\HC32F005\1.0.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.1.1
+
+   * Component: HDSC::Device:Startup:1.0.0
+      Source file:   Device\Source\ARM\startup_hc32f005.s
+      Source file:   Device\Source\system_hc32f005.c
+      Include file:  Device\Include\system_hc32f005.h
+      Source file:   Device\Source\main.c
+      Include file:  Device\Include\HC32F005.h
+Build Time Elapsed:  00:00:03
+</pre>
+</body>
+</html>
