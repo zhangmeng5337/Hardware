@@ -67,6 +67,8 @@ void void SmoothFilterInit()
 }
 void SmoothFilter()
 {
+	  unsigned char index_tmp;
+        index_tmp = getIndex();
 	if(magnetic.index >= N)
 	{
 		magnetic.F[X_DIR][magnetic.index] = Sum(X_DIR,magnetic.index+1-N,magnetic.index);
@@ -80,8 +82,7 @@ void SmoothFilter()
 		magnetic.F[Z_DIR][magnetic.index] = Sum(Z_DIR,0,magnetic.index);		
 	}
 	//magnetic.index++;
-	if(magnetic.index >= BUFFERSIZE)
-		magnetic.index = 0;
+
 }
 void BaseLineTrace()
 {
@@ -112,8 +113,8 @@ vehicle_detect()
 {
     short int ztmp,ytmp,xtmp,sumtmp;
 	unsigned char index_tmp;
-	if(magnetic.M[Z_DIR][magnetic.index] > THRES)
-		magnetic.Cnt_arr = magnetic.Cnt_arr + 1;
+	if(magnetic.M[Z_DIR][magnetic.index] > MAX_THRES)//z above thres
+		magnetic.Cnt_arr = magnetic.Cnt_arr + 1;//car detect count start
 	else
 	{
 	    index_tmp = getIndex();
@@ -121,25 +122,28 @@ vehicle_detect()
 	    ytmp = magnetic.M[Y_DIR][magnetic.index]-magnetic.M[Y_DIR][index_tmp-1];
 	    ztmp = magnetic.M[Z_DIR][magnetic.index]-magnetic.M[Z_DIR][index_tmp-1];
 		sumtmp = xtmp + ytmp + ztmp;
-		if(sumtmp < THRES)
+		if(sumtmp < MIN_THRES)
 		{
 			if(TimingStart(NO_VEHICLE_TIME) == 1)
 			{
-				TimingStop();
+				TimingStop();// 100ms end
 				magnetic.Car_Flag = 0;
 			}
 
 		}
-
 		else
+		{
 			TimingStop();
-		
+			//magnetic.Cnt_arr = 0;
+		}
 		magnetic.Cnt_arr = 0;
 	}
+
+	
 	if(magnetic.Cnt_arr >= SAMPLE_COUNT)
 	{
 		magnetic.Car_Flag = 1;
-        magnetic.Cnt_arr = 0;
+              magnetic.Cnt_arr = 0;
 	}
 
 }
@@ -195,9 +199,11 @@ void AdaptiveBaseLine()
 void vehicle_process()
 {
 	MagneticGet();//get magnetic data
+	SmoothFilter();
 	vehicle_detect();	
 	AdaptiveBaseLine();
-
+	if(magnetic.index >= BUFFERSIZE)
+		magnetic.index = 0;
 	if(magnetic.Car_Flag == 1)
 	{
 		;

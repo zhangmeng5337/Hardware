@@ -170,7 +170,7 @@ void main(void)
   //SystemClock_Init();
   //CLK_Init();
 
-   delay1ms(200);
+   delay1ms(5000);
    //KEY_Init();
   //CFG->GCR |= CFG_GCR_SWD;
  
