@@ -43,3 +43,6 @@ settings/
 signoise.run/
 *.txt,1
 *.d
+*.pbi
+*.cout
+/Obj/
