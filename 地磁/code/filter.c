@@ -77,9 +77,12 @@ void SmoothFilter()
 	}
 	else
 	{
-		magnetic.F[X_DIR][magnetic.index] = Sum(X_DIR,0,magnetic.index);
-		magnetic.F[Y_DIR][magnetic.index] = Sum(Y_DIR,0,magnetic.index);
-		magnetic.F[Z_DIR][magnetic.index] = Sum(Z_DIR,0,magnetic.index);		
+		magnetic.F[X_DIR][magnetic.index] = Sum(X_DIR,0,magnetic.index)+
+			                                                    Sum(X_DIR,BUFFERSIZE-N+magnetic.index,BUFFERSIZE);
+		magnetic.F[Y_DIR][magnetic.index] = Sum(Y_DIR,0,magnetic.index)+
+			                                                    Sum(Y_DIR,BUFFERSIZE-N+magnetic.index,BUFFERSIZE);
+		magnetic.F[Z_DIR][magnetic.index] = Sum(Z_DIR,0,magnetic.index)+
+			                                                    Sum(Z_DIR,BUFFERSIZE-N+magnetic.index,BUFFERSIZE);		
 	}
 	//magnetic.index++;
 

@@ -1,0 +1,24 @@
+\t (00:00:06) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:00:06)     Journal start - Mon Aug 05 19:41:27 2019
+\t (00:00:06)         Host=LAPTOP-U0A85BUA User=zhang Pid=14656 CPUs=8
+\t (00:00:06) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:00:06) 
+   (00:00:07) Loading axlcore.cxt 
+\t (00:00:08) Opening existing design...
+\d (00:00:08) Design opened: F:/projects/git/Hardware/ตุดล/PCB/ANT/bottom.brd
+\i (00:00:08) trapsize 6763
+\i (00:00:08) trapsize 6605
+\i (00:00:09) trapsize 6790
+\i (00:00:10) trapsize 5790
+\i (00:00:10) trapsize 7051
+\i (00:00:11) etchedit 
+\i (00:00:11) zoom out 1 
+\i (00:00:11) setwindow pcb
+\i (00:00:11) zoom out -8.2588 6.4000
+\i (00:00:11) trapsize 14102
+\i (00:00:13) open 
+\i (00:00:22) fillin "C:\Users\zhang\Desktop\CAM3\ESP323.brd"
+\i (00:00:22) cd "C:\Users\zhang\Desktop\CAM3"
+\t (00:00:22) Opening existing design...
+\i (00:00:22) trapsize 11166
+\t (00:00:22)     Journal end - Mon Aug 05 19:41:43 2019

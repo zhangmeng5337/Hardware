@@ -61,15 +61,6 @@ unsigned char TimingStart(unsigned char select,uint32_t tCount1,uint32_t tCount2
 				}	
 		}	break;
 	}
-
-	
-	
-
-	
-	
-
-	
-	
 	return 0;
 }
 

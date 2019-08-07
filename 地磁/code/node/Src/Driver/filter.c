@@ -107,6 +107,8 @@ void BaseLineTrace()
 
 
 	}//x direction trance END
+	MAX_THRES = magnetic.B[Z_DIR][magnetic.index]*GAMMA;
+	MIN_THRES = magnetic.B[Z_DIR][magnetic.index]*(GAMMA-1);	
 }
 void vehicle_detect()
 {
