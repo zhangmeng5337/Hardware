@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L433xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32L4xx_HAL_Driver/Inc; ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32L4xx/Include; ../Drivers/CMSIS/Include; ..\Inc\Hardware; ..\Inc\Driver</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\Inc\Hardware;..\Inc\Driver</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -560,6 +560,16 @@
               <FileName>sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\Driver\sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Driver\filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>systme.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Driver\systme.c</FilePath>
             </File>
           </Files>
         </Group>

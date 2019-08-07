@@ -826,6 +826,36 @@ Section Cross References
     sensor.o(i.sensor_process) refers to rm3100.o(i.requestSingleMeasurement) for requestSingleMeasurement
     sensor.o(i.sensor_process) refers to rm3100.o(i.getDataReadyStatus) for getDataReadyStatus
     sensor.o(i.sensor_process) refers to rm3100.o(i.ReadRM3100Raw) for ReadRM3100Raw
+    sensor.o(i.sensor_process) refers to sensor.o(.data) for ManeticBuffer
+    filter.o(i.AdaptiveBaseLine) refers to filter.o(i.BaseLineTrace) for BaseLineTrace
+    filter.o(i.AdaptiveBaseLine) refers to filter.o(.bss) for magnetic
+    filter.o(i.AdaptiveBaseLine) refers to filter.o(.data) for adaptive_count
+    filter.o(i.BaseLineTrace) refers to filter.o(i.getIndex) for getIndex
+    filter.o(i.BaseLineTrace) refers to dflti.o(.text) for __aeabi_i2d
+    filter.o(i.BaseLineTrace) refers to dmul.o(.text) for __aeabi_dmul
+    filter.o(i.BaseLineTrace) refers to dadd.o(.text) for __aeabi_dadd
+    filter.o(i.BaseLineTrace) refers to dfixi.o(.text) for __aeabi_d2iz
+    filter.o(i.BaseLineTrace) refers to filter.o(.bss) for magnetic
+    filter.o(i.MagneticGet) refers to sensor.o(.data) for ManeticBuffer
+    filter.o(i.MagneticGet) refers to filter.o(.bss) for magnetic
+    filter.o(i.SmoothFilter) refers to filter.o(i.Sum) for Sum
+    filter.o(i.SmoothFilter) refers to filter.o(.bss) for magnetic
+    filter.o(i.Sum) refers to filter.o(.bss) for magnetic
+    filter.o(i.getIndex) refers to filter.o(.bss) for magnetic
+    filter.o(i.vehicle_detect) refers to filter.o(i.getIndex) for getIndex
+    filter.o(i.vehicle_detect) refers to systme.o(i.TimingStart) for TimingStart
+    filter.o(i.vehicle_detect) refers to systme.o(i.TimingStop) for TimingStop
+    filter.o(i.vehicle_detect) refers to filter.o(.bss) for magnetic
+    filter.o(i.vehicle_process) refers to systme.o(i.TimingStart) for TimingStart
+    filter.o(i.vehicle_process) refers to filter.o(i.MagneticGet) for MagneticGet
+    filter.o(i.vehicle_process) refers to filter.o(i.SmoothFilter) for SmoothFilter
+    filter.o(i.vehicle_process) refers to filter.o(i.vehicle_detect) for vehicle_detect
+    filter.o(i.vehicle_process) refers to filter.o(i.AdaptiveBaseLine) for AdaptiveBaseLine
+    filter.o(i.vehicle_process) refers to filter.o(.bss) for magnetic
+    systme.o(i.TimingStart) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
+    systme.o(i.TimingStart) refers to systme.o(.data) for start_flag
+    systme.o(i.TimingStart) refers to systme.o(.bss) for TimingCount
+    systme.o(i.TimingStop) refers to systme.o(.data) for start_flag
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry10a.o(.ARM.Collect$$$$0000000D) for __rt_final_cpp
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry11a.o(.ARM.Collect$$$$0000000F) for __rt_final_exit
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry7b.o(.ARM.Collect$$$$00000008) for _main_clock
@@ -1077,6 +1107,10 @@ Section Cross References
     dadd.o(.text) refers to depilogue.o(.text) for _double_epilogue
     dmul.o(.text) refers (Special) to iusefp.o(.text) for __I$use$fp
     dmul.o(.text) refers to depilogue.o(.text) for _double_epilogue
+    dflti.o(.text) refers (Special) to iusefp.o(.text) for __I$use$fp
+    dflti.o(.text) refers to depilogue.o(.text) for _double_epilogue
+    dfixi.o(.text) refers (Special) to iusefp.o(.text) for __I$use$fp
+    dfixi.o(.text) refers to llushr.o(.text) for __aeabi_llsr
     f2d.o(.text) refers (Special) to iusefp.o(.text) for __I$use$fp
     d2f.o(.text) refers (Special) to iusefp.o(.text) for __I$use$fp
     d2f.o(.text) refers to fepilogue.o(.text) for _float_round
@@ -1659,10 +1693,30 @@ Removing Unused input sections from the image.
     Removing sensor.o(.rrx_text), (6 bytes).
     Removing sensor.o(i.get_time), (68 bytes).
     Removing sensor.o(i.reset_timer), (28 bytes).
-    Removing sensor.o(i.sensor_process), (116 bytes).
-    Removing sensor.o(.data), (12 bytes).
+    Removing sensor.o(i.sensor_process), (192 bytes).
+    Removing sensor.o(.data), (18 bytes).
+    Removing filter.o(i.AdaptiveBaseLine), (244 bytes).
+    Removing filter.o(i.BaseLineTrace), (404 bytes).
+    Removing filter.o(i.MagneticGet), (72 bytes).
+    Removing filter.o(i.SmoothFilter), (212 bytes).
+    Removing filter.o(i.SmoothFilterInit), (2 bytes).
+    Removing filter.o(i.Sum), (140 bytes).
+    Removing filter.o(i.getIndex), (24 bytes).
+    Removing filter.o(i.vehicle_detect), (212 bytes).
+    Removing filter.o(i.vehicle_process), (60 bytes).
+    Removing filter.o(.bss), (976 bytes).
+    Removing filter.o(.data), (1 bytes).
+    Removing systme.o(.rev16_text), (4 bytes).
+    Removing systme.o(.revsh_text), (4 bytes).
+    Removing systme.o(.rrx_text), (6 bytes).
+    Removing systme.o(i.TimingStart), (236 bytes).
+    Removing systme.o(i.TimingStop), (12 bytes).
+    Removing systme.o(.bss), (12 bytes).
+    Removing systme.o(.data), (3 bytes).
     Removing dadd.o(.text), (350 bytes).
     Removing dmul.o(.text), (234 bytes).
+    Removing dflti.o(.text), (34 bytes).
+    Removing dfixi.o(.text), (62 bytes).
     Removing f2d.o(.text), (38 bytes).
     Removing d2f.o(.text), (56 bytes).
     Removing fepilogue.o(.text), (110 bytes).
@@ -1671,7 +1725,7 @@ Removing Unused input sections from the image.
     Removing dfixul.o(.text), (48 bytes).
     Removing cdrcmple.o(.text), (48 bytes).
 
-571 unused section(s) (total 50504 bytes) removed from the image.
+591 unused section(s) (total 53306 bytes) removed from the image.
 
 ==============================================================================
 
@@ -1709,32 +1763,32 @@ Image Symbol Table
     ../Src/system_stm32l4xx.c                0x00000000   Number         0  system_stm32l4xx.o ABSOLUTE
     ../clib/microlib/division.c              0x00000000   Number         0  uidiv.o ABSOLUTE
     ../clib/microlib/division.c              0x00000000   Number         0  uldiv.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llushr.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llshl.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llsshr.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf8.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf1.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf7.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfb.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf6.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf0.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf5.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfa.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf4.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf3.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf5.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf6.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf7.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf4.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf8.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfb.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf0.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf1.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf2.o ABSOLUTE
     ../clib/microlib/string/memset.c         0x00000000   Number         0  memseta.o ABSOLUTE
     ../clib/microlib/stubs.s                 0x00000000   Number         0  useno.o ABSOLUTE
@@ -1745,7 +1799,9 @@ Image Symbol Table
     ../fplib/microlib/fpdiv.c                0x00000000   Number         0  ddiv.o ABSOLUTE
     ../fplib/microlib/fpepilogue.c           0x00000000   Number         0  fepilogue.o ABSOLUTE
     ../fplib/microlib/fpepilogue.c           0x00000000   Number         0  depilogue.o ABSOLUTE
+    ../fplib/microlib/fpfix.c                0x00000000   Number         0  dfixi.o ABSOLUTE
     ../fplib/microlib/fpfix.c                0x00000000   Number         0  dfixul.o ABSOLUTE
+    ../fplib/microlib/fpflt.c                0x00000000   Number         0  dflti.o ABSOLUTE
     ../fplib/microlib/fpmul.c                0x00000000   Number         0  dmul.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal.c 0x00000000   Number         0  stm32l4xx_hal.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_adc.c 0x00000000   Number         0  stm32l4xx_hal_adc.o ABSOLUTE
@@ -1769,7 +1825,9 @@ Image Symbol Table
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_tim_ex.c 0x00000000   Number         0  stm32l4xx_hal_tim_ex.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_uart.c 0x00000000   Number         0  stm32l4xx_hal_uart.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_uart_ex.c 0x00000000   Number         0  stm32l4xx_hal_uart_ex.o ABSOLUTE
+    ..\Src\Driver\filter.c                   0x00000000   Number         0  filter.o ABSOLUTE
     ..\Src\Driver\sensor.c                   0x00000000   Number         0  sensor.o ABSOLUTE
+    ..\Src\Driver\systme.c                   0x00000000   Number         0  systme.o ABSOLUTE
     ..\Src\Hardare\bsp.c                     0x00000000   Number         0  bsp.o ABSOLUTE
     ..\Src\Hardare\i2c.c                     0x00000000   Number         0  i2c.o ABSOLUTE
     ..\Src\Hardare\rm3100.c                  0x00000000   Number         0  rm3100.o ABSOLUTE
@@ -1778,6 +1836,7 @@ Image Symbol Table
     ..\Src\stm32l4xx_it.c                    0x00000000   Number         0  stm32l4xx_it.o ABSOLUTE
     ..\Src\system_stm32l4xx.c                0x00000000   Number         0  system_stm32l4xx.o ABSOLUTE
     ..\\Src\\Driver\\sensor.c                0x00000000   Number         0  sensor.o ABSOLUTE
+    ..\\Src\\Driver\\systme.c                0x00000000   Number         0  systme.o ABSOLUTE
     ..\\Src\\Hardare\\bsp.c                  0x00000000   Number         0  bsp.o ABSOLUTE
     ..\\Src\\Hardare\\i2c.c                  0x00000000   Number         0  i2c.o ABSOLUTE
     ..\\Src\\Hardare\\rm3100.c               0x00000000   Number         0  rm3100.o ABSOLUTE
@@ -2112,22 +2171,22 @@ Memory Map of the image
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x0000018c   Data   RO            3    RESET               startup_stm32l433xx.o
-    0x0800018c   0x0800018c   0x00000000   Code   RO         3874  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x0800018c   0x0800018c   0x00000004   Code   RO         4149    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x08000190   0x08000190   0x00000004   Code   RO         4152    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000194   0x08000194   0x00000000   Code   RO         4154    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000194   0x08000194   0x00000000   Code   RO         4156    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000194   0x08000194   0x00000008   Code   RO         4157    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x0800019c   0x0800019c   0x00000000   Code   RO         4159    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x0800019c   0x0800019c   0x00000000   Code   RO         4161    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x0800019c   0x0800019c   0x00000004   Code   RO         4150    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x0800018c   0x0800018c   0x00000000   Code   RO         3979  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x0800018c   0x0800018c   0x00000004   Code   RO         4258    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x08000190   0x08000190   0x00000004   Code   RO         4261    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000194   0x08000194   0x00000000   Code   RO         4263    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000194   0x08000194   0x00000000   Code   RO         4265    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000194   0x08000194   0x00000008   Code   RO         4266    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x0800019c   0x0800019c   0x00000000   Code   RO         4268    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x0800019c   0x0800019c   0x00000000   Code   RO         4270    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x0800019c   0x0800019c   0x00000004   Code   RO         4259    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x080001a0   0x080001a0   0x00000024   Code   RO            4    .text               startup_stm32l433xx.o
-    0x080001c4   0x080001c4   0x00000068   Code   RO         3877    .text               mc_w.l(uldiv.o)
-    0x0800022c   0x0800022c   0x00000024   Code   RO         3879    .text               mc_w.l(memseta.o)
-    0x08000250   0x08000250   0x0000001e   Code   RO         4165    .text               mc_w.l(llshl.o)
-    0x0800026e   0x0800026e   0x00000020   Code   RO         4167    .text               mc_w.l(llushr.o)
+    0x080001c4   0x080001c4   0x00000068   Code   RO         3982    .text               mc_w.l(uldiv.o)
+    0x0800022c   0x0800022c   0x00000024   Code   RO         3984    .text               mc_w.l(memseta.o)
+    0x08000250   0x08000250   0x0000001e   Code   RO         4274    .text               mc_w.l(llshl.o)
+    0x0800026e   0x0800026e   0x00000020   Code   RO         4276    .text               mc_w.l(llushr.o)
     0x0800028e   0x0800028e   0x00000002   PAD
-    0x08000290   0x08000290   0x00000024   Code   RO         4182    .text               mc_w.l(init.o)
+    0x08000290   0x08000290   0x00000024   Code   RO         4291    .text               mc_w.l(init.o)
     0x080002b4   0x080002b4   0x00000004   Code   RO          214    i.BusFault_Handler  stm32l4xx_it.o
     0x080002b8   0x080002b8   0x00000010   Code   RO          215    i.DMA1_Channel5_IRQHandler  stm32l4xx_it.o
     0x080002c8   0x080002c8   0x00000010   Code   RO          216    i.DMA1_Channel6_IRQHandler  stm32l4xx_it.o
@@ -2213,14 +2272,14 @@ Memory Map of the image
     0x08002f9c   0x08002f9c   0x00000010   Code   RO          224    i.USART1_IRQHandler  stm32l4xx_it.o
     0x08002fac   0x08002fac   0x00000010   Code   RO          225    i.USART2_IRQHandler  stm32l4xx_it.o
     0x08002fbc   0x08002fbc   0x00000004   Code   RO          226    i.UsageFault_Handler  stm32l4xx_it.o
-    0x08002fc0   0x08002fc0   0x0000000e   Code   RO         4186    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08002fce   0x08002fce   0x00000002   Code   RO         4187    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08002fd0   0x08002fd0   0x0000000e   Code   RO         4188    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08002fc0   0x08002fc0   0x0000000e   Code   RO         4295    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08002fce   0x08002fce   0x00000002   Code   RO         4296    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08002fd0   0x08002fd0   0x0000000e   Code   RO         4297    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x08002fde   0x08002fde   0x00000002   PAD
     0x08002fe0   0x08002fe0   0x000000f8   Code   RO         3697    i.bsp_InitI2C       bsp.o
     0x080030d8   0x080030d8   0x00000028   Code   RO           23    i.main              main.o
     0x08003100   0x08003100   0x00000048   Data   RO         3546    .constdata          system_stm32l4xx.o
-    0x08003148   0x08003148   0x00000020   Data   RO         4184    Region$$Table       anon$$obj.o
+    0x08003148   0x08003148   0x00000020   Data   RO         4293    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08003168, Size: 0x00000668, Max: 0x00010000, ABSOLUTE)
