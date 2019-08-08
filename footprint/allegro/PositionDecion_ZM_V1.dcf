@@ -1,0 +1,214 @@
+( ConstraintFile "PositionDecion_ZM_V1"
+    ( constraintHeader
+        ( objectKey
+            ( physical )
+        )
+        ( version
+            ( 16.6 )
+        )
+        ( revisionNumber
+            ( logicalViewRevNum 0 )
+            ( physicalViewRevNum 0 )
+            ( otherViewRevNum 0 )
+        )
+        ( contents
+            ( worksheetCustomizations )
+            ( electricalConstraints )
+            ( physicalConstraints )
+            ( spacingConstraints )
+            ( sameNetSpacingConstraints )
+            ( netClasses )
+        )
+        ( precision
+            ( units mm )
+            ( numberOfDecimalPlaces 4 )
+        )
+    )
+    ( designConstraints
+        ( ruleChanges
+            ( allRules )
+            ( design "PositionDecion_ZM_V1"
+                ( physicalCSetRef "DEFAULT" )
+                ( spacingCSetRef "DEFAULT" )
+                ( sameNetSpacingCSetRef "DEFAULT" )
+            )
+            ( electricalCSet "DEFAULT"
+                ( attribute "STUB_LENGTH" "0.0000"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "1270.0000"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.0000"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_PARALLEL" "0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,25.4000,5.0800"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "IMPEDANCE_RULE" "100.0000 ohm"
+                    ( Units "uResistance" "ohm" 1.000000)
+                    ( Origin gBackEnd )
+                )
+                ( attribute "IMPEDANCE_RULE_TOL" "50.0000 ohm"
+                    ( Units "uResistanceTolerance" "ohm" 1.000000)
+                    ( Origin gBackEnd )
+                )
+                ( attribute "PROPAGATION_DELAY_MAX" "10.0000 ns"
+                    ( Units "uMaxMinProp" "ns" 1.000000)
+                    ( Origin gBackEnd )
+                )
+                ( attribute "PROPAGATION_DELAY_MIN" "0.0000 ns"
+                    ( Units "uMaxMinProp" "ns" 1.000000)
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "DEFAULT"
+                ( attribute "DIFFP_PRIMARY_GAP" "0.0000,0.0000"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "5.0800,5.0800"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( spacingCSet "DEFAULT"
+                ( attribute "LINE_TO_LINE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_THRUPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_LINE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_LINE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_SHAPE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_THRUPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SMDPIN_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_THRUPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_THRUPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SMDPIN_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_SHAPE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUVIA_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_BBV_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_BBV_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_MVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_LINE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_VIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_PIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_SHAPE_SPACING" "0.0000,0.0000"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_HOLE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_SHAPE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_SHAPE_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_SHAPE_SPACING" "0.0000,0.0000"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( sameNetSpacingCSet "DEFAULT"
+                ( attribute "SN_SMDPIN_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_SMDPIN_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_THRUVIA_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_THRUVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_BBV_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_BBV_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_MVIA_SPACING" "0.1524,0.1524"
+                    ( Origin gBackEnd )
+                )
+            )
+        )
+    )
+)
