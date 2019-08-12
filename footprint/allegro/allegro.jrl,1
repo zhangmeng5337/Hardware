@@ -1,0 +1,277 @@
+\t (01:16:55) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (01:16:55)     Journal start - Mon Jun 17 10:35:50 2019
+\t (01:16:55)         Host=ZM-DELL User=Administrator Pid=588 CPUs=4
+\t (01:16:55) CmdLine= C:\Cadence\16.6\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (01:16:55) 
+\d (01:16:55) Design opened: F:/work/ZM/Frogs/Design/FOOTPRINT/candence/R0805.dra
+\i (01:16:56) etchedit 
+\i (01:16:56) zoom out 1 
+\i (01:16:56) setwindow pcb
+\i (01:16:56) zoom out -0.417 0.202
+\i (01:16:56) trapsize 26
+\i (01:16:56) zoom out 1 
+\i (01:16:56) setwindow pcb
+\i (01:16:56) zoom out 1.099 0.488
+\i (01:16:56) trapsize 26
+\i (01:16:56) zoom out 1 
+\i (01:16:56) setwindow pcb
+\i (01:16:56) zoom out 1.036 0.499
+\i (01:16:56) trapsize 26
+\i (01:17:05) save_as 
+\i (01:17:13) fillin "LED0805.dra"
+\t (01:17:15) Symbol 'led0805.psm' created.
+\i (01:17:15) etchedit 
+\i (01:17:17) zoom in 1 
+\i (01:17:17) setwindow pcb
+\i (01:17:17) zoom in 0.857 -0.081
+\i (01:17:17) trapsize 13
+\i (01:17:22) add text 
+\t (01:17:23) Pick text location.
+\i (01:17:29) setwindow form.mini
+\i (01:17:29) FORM mini class PACKAGE GEOMETRY 
+\i (01:17:31) FORM mini subclass SILKSCREEN_TOP 
+\i (01:17:32) setwindow pcb
+\i (01:17:32) zoom out 1 
+\i (01:17:32) setwindow pcb
+\i (01:17:32) zoom out 2.534 0.820
+\i (01:17:32) trapsize 26
+\i (01:17:33) zoom in 1 
+\i (01:17:33) setwindow pcb
+\i (01:17:33) zoom in -0.981 0.293
+\i (01:17:33) trapsize 13
+\i (01:17:34) zoom out 1 
+\i (01:17:34) setwindow pcb
+\i (01:17:34) zoom out -0.862 0.555
+\i (01:17:34) trapsize 26
+\i (01:17:35) zoom in 1 
+\i (01:17:35) setwindow pcb
+\i (01:17:35) zoom in 3.006 -0.054
+\i (01:17:35) trapsize 13
+\i (01:17:36) pick grid 2.782 0.381
+\t (01:17:36) last pick:  2.782 0.381
+\t (01:17:36) Enter text string.
+\i (01:17:43) setwindow form.mini
+\i (01:17:43) FORM mini angle 90.000 
+\i (01:17:45) setwindow pcb
+\i (01:17:45) pick 2.782 0.381
+\t (01:17:45) Enter text string.
+\i (01:17:48) setwindow pcb
+\i (01:17:48) prepopup 3.234 0.101
+\i (01:17:48) done 
+\i (01:17:48) setwindow pcb
+\i (01:17:48) pick 2.782 -0.406
+\i (01:17:49) setwindow pcb
+\i (01:17:49) etchedit 
+\i (01:17:50) drag_start grid 2.813 0.804
+\i (01:17:50) drag_stop 3.443 0.438
+\i (01:17:52) undo 
+\i (01:17:52) trapsize 13
+\i (01:17:52) etchedit 
+\i (01:17:56) text edit 
+\i (01:17:59) setwindow form.mini
+\i (01:17:59) FORM mini class PACKAGE GEOMETRY 
+\i (01:18:02) FORM mini subclass SILKSCREEN_TOP 
+\i (01:18:03) setwindow pcb
+\i (01:18:03) pick grid 2.995 0.391
+\t (01:18:03) last pick:  2.995 0.391
+\e (01:18:03) ERROR(SPMHA1-441): Text not found.
+\i (01:18:06) setwindow pcb
+\i (01:18:06) add text 
+\t (01:18:06) Pick text location.
+\i (01:18:13) pick grid 2.866 -0.267
+\t (01:18:13) last pick:  2.866 -0.267
+\t (01:18:13) Enter text string.
+\i (01:18:16) setwindow pcb
+\i (01:18:16) prepopup 2.866 -0.267
+\i (01:18:18) done 
+\i (01:18:18) setwindow pcb
+\i (01:18:18) pick 2.866 -0.267
+\i (01:18:18) setwindow pcb
+\i (01:18:18) etchedit 
+\i (01:18:19) zoom in 1 
+\i (01:18:19) setwindow pcb
+\i (01:18:19) zoom in 2.700 -0.138
+\i (01:18:19) trapsize 7
+\i (01:18:19) zoom in 1 
+\i (01:18:19) setwindow pcb
+\i (01:18:19) zoom in 2.700 -0.138
+\i (01:18:19) trapsize 3
+\i (01:18:22) move 
+\t (01:18:22) Select element(s) to move.
+\i (01:18:24) pick grid 2.657 -0.124
+\t (01:18:24) last pick:  2.657 -0.124
+\t (01:18:24) last pick:  2.866 -0.267
+\t (01:18:24) Pick new location for the element(s).
+\i (01:18:25) zoom out 1 
+\i (01:18:25) setwindow pcb
+\i (01:18:25) zoom out 2.718 -0.135
+\i (01:18:25) trapsize 7
+\i (01:18:25) zoom out 1 
+\i (01:18:25) setwindow pcb
+\i (01:18:25) zoom out 2.717 -0.134
+\i (01:18:25) trapsize 13
+\i (01:18:25) zoom out 1 
+\i (01:18:25) setwindow pcb
+\i (01:18:25) zoom out 2.717 -0.135
+\i (01:18:25) trapsize 26
+\i (01:18:26) zoom in 1 
+\i (01:18:26) setwindow pcb
+\i (01:18:26) zoom in 2.763 -0.270
+\i (01:18:26) trapsize 13
+\i (01:18:28) pick grid 2.992 -0.233
+\t (01:18:28) last pick:  2.992 -0.233
+\i (01:18:32) prepopup 1.763 1.473
+\i (01:18:33) done 
+\i (01:18:33) etchedit 
+\i (01:18:35) pick grid 2.774 -0.072
+\t (01:18:35) last pick:  2.774 -0.072
+\i (01:18:37) prepopup 2.732 0.199
+\i (01:18:37) pick grid 2.826 0.441
+\t (01:18:37) last pick:  2.826 0.441
+\i (01:18:38) undo 
+\i (01:18:38) trapsize 3
+\i (01:18:38) etchedit 
+\i (01:18:39) undo 
+\i (01:18:39) trapsize 13
+\i (01:18:39) etchedit 
+\i (01:18:42) add line 
+\i (01:18:44) zoom in 1 
+\i (01:18:44) setwindow pcb
+\i (01:18:44) zoom in 3.182 -0.099
+\i (01:18:44) trapsize 7
+\i (01:18:44) zoom in 1 
+\i (01:18:44) setwindow pcb
+\i (01:18:44) zoom in 3.182 -0.099
+\i (01:18:44) trapsize 3
+\i (01:18:45) zoom out 1 
+\i (01:18:45) setwindow pcb
+\i (01:18:45) zoom out 3.015 0.028
+\i (01:18:45) trapsize 7
+\i (01:18:45) zoom out 1 
+\i (01:18:45) setwindow pcb
+\i (01:18:45) zoom out 3.013 0.033
+\i (01:18:45) trapsize 13
+\i (01:18:46) pick grid 2.807 0.410
+\t (01:18:46) last pick:  2.807 0.410
+\i (01:18:50) pick grid 2.799 -0.340
+\t (01:18:50) last pick:  2.799 -0.340
+\i (01:18:50) prepopup 2.799 -0.340
+\i (01:18:50) done 
+\i (01:18:51) etchedit 
+\i (01:18:53) save 
+\i (01:18:54) fillin yes 
+\t (01:18:55) Symbol 'led0805.psm' created.
+\i (01:18:55) etchedit 
+\i (01:18:57) pick grid 2.857 0.455
+\t (01:18:57) last pick:  2.857 0.455
+\i (01:18:57) prepopup 2.833 0.447
+\i (01:18:58) pick grid 2.738 0.518
+\t (01:18:58) last pick:  2.738 0.518
+\i (01:19:07) delete 
+\i (01:19:08) pick grid 2.838 -0.146
+\t (01:19:08) last pick:  2.838 -0.146
+\t (01:19:08) Line "Package Geometry/Silkscreen_Top"
+\i (01:19:08) pick grid dbl 2.838 -0.146
+\t (01:19:08) last pick:  2.838 -0.146
+\i (01:19:10) add line 
+\i (01:19:12) zoom in 1 
+\i (01:19:12) setwindow pcb
+\i (01:19:12) zoom in 2.965 0.252
+\i (01:19:12) trapsize 7
+\i (01:19:14) pick grid 2.802 0.401
+\t (01:19:14) last pick:  2.802 0.401
+\i (01:19:17) pick grid 2.800 -0.021
+\t (01:19:17) last pick:  2.800 -0.021
+\i (01:19:20) pick grid 2.799 -0.393
+\t (01:19:20) last pick:  2.799 -0.393
+\i (01:19:20) prepopup 2.799 -0.393
+\i (01:19:21) done 
+\i (01:19:21) etchedit 
+\i (01:19:22) save 
+\i (01:19:24) fillin yes 
+\t (01:19:24) Symbol 'led0805.psm' created.
+\i (01:19:24) etchedit 
+\e (01:19:34) Command not found: xdehilite
+\i (01:19:34) xname_flush 
+\i (01:19:34) done 
+\e (01:19:34) Command not found: xhilite
+\i (01:19:34) xname_flush 
+\e (01:19:34) No command active
+\i (01:19:34) done 
+\e (01:19:34) No command active
+\i (01:19:34) etchedit 
+\e (01:19:40) Command not found: xdehilite
+\i (01:19:40) xname_flush 
+\i (01:19:40) done 
+\e (01:19:40) Command not found: xhilite
+\i (01:19:40) xname_flush 
+\e (01:19:40) No command active
+\i (01:19:40) done 
+\e (01:19:40) No command active
+\i (01:19:40) etchedit 
+\e (01:19:46) Command not found: xdehilite
+\i (01:19:46) xname_flush 
+\i (01:19:46) done 
+\e (01:19:46) Command not found: xhilite
+\i (01:19:46) xname_flush 
+\e (01:19:46) No command active
+\i (01:19:46) done 
+\e (01:19:46) No command active
+\i (01:19:46) etchedit 
+\e (01:19:53) Command not found: xdehilite
+\i (01:19:53) xname_flush 
+\i (01:19:53) done 
+\e (01:19:53) Command not found: xhilite
+\i (01:19:53) xname_flush 
+\e (01:19:53) No command active
+\i (01:19:53) done 
+\e (01:19:53) No command active
+\i (01:19:53) etchedit 
+\e (01:19:58) Command not found: xdehilite
+\i (01:19:58) xname_flush 
+\i (01:19:58) done 
+\e (01:19:58) Command not found: xhilite
+\i (01:19:58) xname_flush 
+\e (01:19:58) No command active
+\i (01:19:58) done 
+\e (01:19:58) No command active
+\i (01:19:58) etchedit 
+\e (01:20:03) Command not found: xdehilite
+\i (01:20:03) xname_flush 
+\i (01:20:03) done 
+\e (01:20:03) Command not found: xhilite
+\i (01:20:03) xname_flush 
+\e (01:20:03) No command active
+\i (01:20:03) done 
+\e (01:20:03) No command active
+\i (01:20:03) etchedit 
+\e (01:20:07) Command not found: xdehilite
+\i (01:20:07) xname_flush 
+\i (01:20:07) done 
+\e (01:20:07) Command not found: xhilite
+\i (01:20:07) xname_flush 
+\e (01:20:07) No command active
+\i (01:20:07) done 
+\e (01:20:07) No command active
+\i (01:20:07) etchedit 
+\i (01:34:32) zoom out 1 
+\i (01:34:32) setwindow pcb
+\i (01:34:32) zoom out 2.173 0.327
+\i (01:34:32) trapsize 13
+\i (01:34:32) zoom out 1 
+\i (01:34:32) setwindow pcb
+\i (01:34:32) zoom out 2.174 0.328
+\i (01:34:32) trapsize 26
+\i (01:34:32) zoom out 1 
+\i (01:34:32) setwindow pcb
+\i (01:34:32) zoom out 0.926 1.673
+\i (01:34:32) trapsize 26
+\i (01:34:37) opencd 'F:/work/ZM/Frogs/Design/M3/pcb/PARK v2/esp32/cam/ESP32.brd' 
+\t (01:34:37) Opening existing design...
+\i (01:34:37) trapsize 208
+\i (01:34:37) trapsize 205
+\i (01:34:38) trapsize 208
+\i (01:34:38) trapsize 210
+\i (01:34:38) trapsize 255
+\i (01:34:39) trapsize 255
+\t (01:34:39)     Journal end - Mon Jun 17 10:53:34 2019
