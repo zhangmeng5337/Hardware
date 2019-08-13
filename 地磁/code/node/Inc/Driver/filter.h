@@ -7,12 +7,13 @@
 #define Z_DIR			2
 #define ALPHA			0.05
 #define BETA		    0.05
-#define MAX_THRES		    80
-#define MIN_THRES		    60
+#define GAMMA			1.25
+short int MAX_THRES=80;
+short int  MIN_THRES=60;
 #define NO_VEHICLE_TIME 100
-#define SAMPLE_TIME     10
+#define SAMPLE_TIME     50
 #define SAMPLE_COUNT    40
-
+#define MIN_CAR_CYCLE    50
 typedef struct{
  short int M[3][BUFFERSIZE];//original data
  short int F[3][BUFFERSIZE];//filter data
@@ -22,6 +23,10 @@ unsigned char index;
 unsigned int Flu_arr;
 unsigned int Cnt_arr;
 unsigned char Car_Flag;
+short int sTime;
+short int eTime;
+short int elapseTime;
+short int count;
 }magnetic_str;
 #endif
 

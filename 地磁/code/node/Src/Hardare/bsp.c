@@ -1,6 +1,12 @@
 #include "main.h"
 #include "bsp.h"
 
+extern DMA_HandleTypeDef hdma_usart1_rx;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
+uart_stru uart1;
+uart_stru uart2;
 /*
 *********************************************************************************************************
 *	?? ?? ??: bsp_InitI2C
@@ -91,8 +97,104 @@ void I2C1_SDA_OUT()
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
 }		/* PB9???ó???? */
+void led_ctrl(unsigned char flag)
+{
+	switch(flag)
+	{
+		case ON:HAL_GPIO_WritePin(GPIOE, LED_Pin, GPIO_PIN_RESET);break;
+		case OFF:HAL_GPIO_WritePin(GPIOE, LED_Pin, GPIO_PIN_SET);break;
+		case BLINK:HAL_GPIO_TogglePin(GPIOE, LED_Pin);break;
+	}
+}
+
+void Get_Battery_Gas_adc(unsigned char count)
+
+{
+	uint32_t adc_value_tmp;
+	unsigned char i,j;
+        uint32_t tmp;
+
+	for(j=0; j<count; j++)
+	{
+		for(i=0; i<2; i++)
+		{
+
+			/*##-3- Start the conversion process ######*/
+			if(HAL_ADC_Start(&hadc1) != HAL_OK)
+			{ Error_Handler(); }
+			/*##-4- Wait for the end of conversion ######*/
+			HAL_ADC_PollForConversion(&hadc1, 10);
+			if(i==0)
+				tmp=HAL_ADC_GetValue(&hadc1)+tmp1;
+		}
+
+
+	}
+	 tmp=tmp/count;
+	 tmp=tmp/4096*33;
+	 adc_value_tmp=(uint32_t) tmp;
+	HAL_ADC_Stop(&hadc1);
+	return adc_value_tmp;
+}
+
+//串口接收空闲中断
+void UsartReceive_IDLE(unsigned char uart_num)
+{
+	uint32_t temp;
+	if(uart_num==1)
+	{
+		temp=__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE);
+		if((temp!=RESET))
+		{
+			__HAL_UART_CLEAR_IDLEFLAG(&huart1);
+
+			//HAL_UART_DMAStop(&huart2);
+			temp=huart1.Instance->SR;
+			temp=huart1.Instance->DR;
+			//HAL_UART_DMAResume(&huart2);
+			HAL_UART_DMAPause(&huart1);
+			temp=hdma_usart1_rx.Instance->NDTR;
+			uart1.receive_len=uart1.receive_len+BUFFERSIZE-temp;
+			uart1.receive_flag=1;
+			uart1.index=uart1.index+BUFFERSIZE-temp;
+			if(uart1.index>=BUFFERSIZE)
+				uart1.index=uart1.index-BUFFERSIZE;
+			HAL_UART_DMAPause(&huart1);
+			HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,BUFFERSIZE);
+		}
+	}
+	if(uart_num==2)
+	{
+		temp=__HAL_UART_GET_FLAG(&huart2,UART_FLAG_IDLE);
+		if((temp!=RESET))
+		{
+			__HAL_UART_CLEAR_IDLEFLAG(&huart2);
+
+			//HAL_UART_DMAStop(&huart2);
+			temp=huart2.Instance->SR;
+			temp=huart2.Instance->DR;
+			//HAL_UART_DMAResume(&huart2);
+			HAL_UART_DMAPause(&huart2);
+			temp=hdma_usart2_rx.Instance->NDTR;
+			uart2.receive_len=uart2.receive_len+BUFFERSIZE-temp;
+			uart2.receive_flag=1;
+			uart2.index=uart2.index+BUFFERSIZE-temp;
+			if(uart2.index>=BUFFERSIZE)
+				uart2.index=uart2.index-BUFFERSIZE;
+			HAL_UART_DMAPause(&huart2);
+			HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,BUFFERSIZE);
+		}
+	}
+	
+}
 
 void Hardware_Init()
 {
 	bsp_InitI2C();                // PIC configurations + i2c,spi,uart,timers,interruptions inicializations
+}
+void Hardware_test()
+{
+	led_ctrl(BLINK);
+	HAL_Delay(2000);
+	printf("uart1 test\n");
 }

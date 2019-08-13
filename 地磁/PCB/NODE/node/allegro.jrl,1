@@ -1,0 +1,107 @@
+\t (00:00:26) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:00:26)     Journal start - Mon Aug 12 19:59:33 2019
+\t (00:00:26)         Host=LAPTOP-U0A85BUA User=zhang Pid=26608 CPUs=8
+\t (00:00:26) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:00:26) 
+\d (00:00:26) Design opened: F:/projects/git/Hardware/ตุดล/PCB/NODE/Node.brd
+\i (00:00:26) etchedit 
+\i (00:00:27) zoom in 1 
+\i (00:00:27) setwindow pcb
+\i (00:00:27) zoom in 45.986 278.213
+\i (00:00:27) trapsize 31439
+\i (00:00:28) zoom in 1 
+\i (00:00:28) setwindow pcb
+\i (00:00:28) zoom in 45.986 278.213
+\i (00:00:28) trapsize 15720
+\i (00:00:29) zoom in 1 
+\i (00:00:29) setwindow pcb
+\i (00:00:29) zoom in 951.431 787.526
+\i (00:00:29) trapsize 7860
+\i (00:00:30) zoom out 1 
+\i (00:00:30) setwindow pcb
+\i (00:00:30) zoom out 809.955 760.803
+\i (00:00:30) trapsize 15720
+\i (00:00:31) zoom out 1 
+\i (00:00:31) setwindow pcb
+\i (00:00:31) zoom out 809.955 763.948
+\i (00:00:31) trapsize 31439
+\i (00:00:32) zoom in 1 
+\i (00:00:32) setwindow pcb
+\i (00:00:32) zoom in 67.993 1229.246
+\i (00:00:32) trapsize 15720
+\i (00:00:32) zoom in 1 
+\i (00:00:32) setwindow pcb
+\i (00:00:32) zoom in 67.993 1229.246
+\i (00:00:32) trapsize 7860
+\i (00:00:33) zoom in 1 
+\i (00:00:33) setwindow pcb
+\i (00:00:33) zoom in 179.602 1317.275
+\i (00:00:33) trapsize 3930
+\i (00:08:13) zoom out 1 
+\i (00:08:13) setwindow pcb
+\i (00:08:13) zoom out -42.829 1168.726
+\i (00:08:13) trapsize 7860
+\i (00:08:14) zoom out 1 
+\i (00:08:14) setwindow pcb
+\i (00:08:14) zoom out -42.830 1168.727
+\i (00:08:14) trapsize 15720
+\i (00:08:15) zoom in 1 
+\i (00:08:15) setwindow pcb
+\i (00:08:15) zoom in -341.502 697.139
+\i (00:08:15) trapsize 7860
+\i (00:08:15) zoom in 1 
+\i (00:08:15) setwindow pcb
+\i (00:08:15) zoom in -357.221 709.715
+\i (00:08:15) trapsize 3930
+\i (00:08:16) zoom in 1 
+\i (00:08:16) setwindow pcb
+\i (00:08:16) zoom in -385.516 727.793
+\i (00:08:16) trapsize 1965
+\i (00:08:16) zoom in 1 
+\i (00:08:16) setwindow pcb
+\i (00:08:16) zoom in -385.516 727.793
+\i (00:08:16) trapsize 982
+\i (00:08:17) zoom out 1 
+\i (00:08:17) setwindow pcb
+\i (00:08:17) zoom out -374.315 735.850
+\i (00:08:17) trapsize 1965
+\i (00:08:19) zoom in 1 
+\i (00:08:19) setwindow pcb
+\i (00:08:19) zoom in -217.513 733.492
+\i (00:08:19) trapsize 982
+\i (00:08:19) zoom in 1 
+\i (00:08:19) setwindow pcb
+\i (00:08:19) zoom in -214.762 734.867
+\i (00:08:19) trapsize 491
+\i (00:08:21) zoom out 1 
+\i (00:08:21) setwindow pcb
+\i (00:08:21) zoom out -220.558 736.341
+\i (00:08:21) trapsize 982
+\i (00:08:21) zoom out 1 
+\i (00:08:21) setwindow pcb
+\i (00:08:21) zoom out -220.558 736.341
+\i (00:08:21) trapsize 1965
+\i (00:09:16) xhilite 
+\i (00:09:16) xrefdes C52 
+\i (00:09:16) xname_flush 
+\i (00:09:16) trapsize 3024
+\t (00:09:17) Symbol "C52" highlighted.
+\i (00:09:17) done 
+\i (00:09:17) etchedit 
+\i (00:09:19) xdehilite 
+\i (00:09:19) xrefdes C52 
+\i (00:09:19) xname_flush 
+\t (00:09:19) Symbol "C52" dehighlighted.
+\i (00:09:19) done 
+\i (00:09:19) etchedit 
+\i (00:09:21) xhilite 
+\i (00:09:21) xrefdes C52 
+\i (00:09:21) xname_flush 
+\i (00:09:21) trapsize 3024
+\t (00:09:21) Symbol "C52" highlighted.
+\i (00:09:21) done 
+\i (00:09:21) etchedit 
+\i (00:11:13) exit 
+\e (00:11:13) Do you want to save the changes you made to Node.brd?
+\i (00:11:14) fillin no 
+\t (00:11:15)     Journal end - Mon Aug 12 20:10:21 2019

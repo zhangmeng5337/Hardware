@@ -1,7 +1,7 @@
 #include "main.h"
 #include "bsp.h"
 #include "rm3100.h"
-
+#include "sensor.h"
 		static BOOL flag;
 unsigned int temptime;
 float elapsed_time;
