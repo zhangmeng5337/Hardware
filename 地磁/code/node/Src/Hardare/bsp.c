@@ -1,6 +1,6 @@
 #include "main.h"
 #include "bsp.h"
-
+extern ADC_HandleTypeDef hadc1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart2_rx;
 extern UART_HandleTypeDef huart1;
@@ -107,7 +107,7 @@ void led_ctrl(unsigned char flag)
 	}
 }
 
-void Get_Battery_Gas_adc(unsigned char count)
+uint32_t Get_Battery_Gas_adc(unsigned char count)
 
 {
 	uint32_t adc_value_tmp;
@@ -125,7 +125,7 @@ void Get_Battery_Gas_adc(unsigned char count)
 			/*##-4- Wait for the end of conversion ######*/
 			HAL_ADC_PollForConversion(&hadc1, 10);
 			if(i==0)
-				tmp=HAL_ADC_GetValue(&hadc1)+tmp1;
+				tmp=HAL_ADC_GetValue(&hadc1)+tmp;
 		}
 
 
@@ -136,6 +136,7 @@ void Get_Battery_Gas_adc(unsigned char count)
 	HAL_ADC_Stop(&hadc1);
 	return adc_value_tmp;
 }
+
 
 //串口接收空闲中断
 void UsartReceive_IDLE(unsigned char uart_num)
@@ -149,11 +150,11 @@ void UsartReceive_IDLE(unsigned char uart_num)
 			__HAL_UART_CLEAR_IDLEFLAG(&huart1);
 
 			//HAL_UART_DMAStop(&huart2);
-			temp=huart1.Instance->SR;
-			temp=huart1.Instance->DR;
+			temp=huart1.Instance->ISR;
+			temp=huart1.Instance->RDR;
 			//HAL_UART_DMAResume(&huart2);
 			HAL_UART_DMAPause(&huart1);
-			temp=hdma_usart1_rx.Instance->NDTR;
+			temp=hdma_usart1_rx.Instance->CNDTR;
 			uart1.receive_len=uart1.receive_len+BUFFERSIZE-temp;
 			uart1.receive_flag=1;
 			uart1.index=uart1.index+BUFFERSIZE-temp;
@@ -171,11 +172,11 @@ void UsartReceive_IDLE(unsigned char uart_num)
 			__HAL_UART_CLEAR_IDLEFLAG(&huart2);
 
 			//HAL_UART_DMAStop(&huart2);
-			temp=huart2.Instance->SR;
-			temp=huart2.Instance->DR;
+			temp=huart2.Instance->ISR;
+			temp=huart2.Instance->RDR;
 			//HAL_UART_DMAResume(&huart2);
 			HAL_UART_DMAPause(&huart2);
-			temp=hdma_usart2_rx.Instance->NDTR;
+			temp=hdma_usart2_rx.Instance->CNDTR;
 			uart2.receive_len=uart2.receive_len+BUFFERSIZE-temp;
 			uart2.receive_flag=1;
 			uart2.index=uart2.index+BUFFERSIZE-temp;

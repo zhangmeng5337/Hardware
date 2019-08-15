@@ -116,24 +116,15 @@ static void i2c_Delay(void)
 */
 void StartI2C1()
 {
-	/* ??SCL???????SDA???????????????I2C?????????? */
-	//switch(_TermNumber)
-	{
-	//	case 1:
+
+			I2C1_SCL_1();
 			I2C1_SDA_OUT();
 			I2C1_SDA_1();
-			I2C1_SCL_1();
 			i2c_Delay();
 			I2C1_SDA_0();
 			i2c_Delay();
 			I2C1_SCL_0();
 			i2c_Delay();
-	//		break;
-		
-		//default:
-		//	printf("No Such Terminal,Please Check Again,Start Err\r\n");
-		//	break;	
-	}
 }
 
 /*
@@ -146,21 +137,11 @@ void StartI2C1()
 */
 void StopI2C1()
 {
-	/* ??SCL???????SDA???????????????I2C????????? */
-	//switch(_TermNumber)
-	{
-	//	case 1:
+			I2C1_SCL_1();
 			I2C1_SDA_OUT();
 			I2C1_SDA_0();
-			I2C1_SCL_1();
 			i2c_Delay();
 			I2C1_SDA_1();
-		//	break;
-		//default:
-		//	printf("No Such Terminal,Please Check Again,Stop Err\r\n");
-		//	break;
-			
-	}
 }
 /*
 *********************************************************************************************************
@@ -173,10 +154,6 @@ void StopI2C1()
 uint8_t I2CAcknowledgeByte()
 {
 	uint8_t re;
-	
-	//switch(_TermNumber)
-	{
-		//case 1:
 			I2C1_SDA_1();	/* CPU???SDA???? */
 			i2c_Delay();
 			I2C1_SCL_1();	/* CPU????SCL = 1, ???????????ACK??? */
@@ -192,88 +169,14 @@ uint8_t I2CAcknowledgeByte()
 			}
 			I2C1_SCL_0();
 			i2c_Delay();
-			//break;
-		
-		//default:
-		//	printf("No Such Terminal,Please Check Again,WaitACK Err\r\n");
-		//	break;
-	}
 	return re;
 }
 
-/*
-*********************************************************************************************************
-*	?? ?? ??: i2c_Ack
-*	???????: CPU???????ACK???
-*	??    ??:  TermNumber:I2C?????
-*	?? ?? ?: ??
-*********************************************************************************************************
-*/
-void i2c_Ack(uint8_t _TermNumber)
-{
-	
-	switch(_TermNumber)
-	{
-		case 1:
-			I2C1_SDA_OUT();
-			I2C1_SDA_0();	/* CPU????SDA = 0 */
-			i2c_Delay();
-			I2C1_SCL_1();	/* CPU????1????? */
-			i2c_Delay();
-			I2C1_SCL_0();
-			i2c_Delay();
-			I2C1_SDA_1();	/* CPU???SDA???? */
-		break;
-		default:
-			printf("No Such Terminal,Please Check Again,ACK Err\r\n");
-			break;
-	}
-}
 
-/*
-*********************************************************************************************************
-*	?? ?? ??: i2c_NAck
-*	???????: CPU????1??NACK???
-*	??    ??:  TermNumber:I2C?????
-*	?? ?? ?: ??
-*********************************************************************************************************
-*/
-void i2c_NAck()
-{
-	//switch(_TermNumber)
-	{
-	//	case 1:
-			I2C1_SDA_OUT();
-			I2C1_SDA_1();	/* CPU????SDA = 1 */
-			i2c_Delay();
-			I2C1_SCL_1();	/* CPU????1????? */
-			i2c_Delay();
-			I2C1_SCL_0();
-			i2c_Delay();
-		//break;
-		//default:
-		//	printf("No Such Terminal,Please Check Again,NACK Err\r\n");
-		//	break;
-	}
-}
-void IdleI2C1()
-{
 
-}
-/*
-*********************************************************************************************************
-*	?? ?? ??: i2c_SendByte
-*	???????: CPU??I2C?????υτ????8bit????
-*	??    ??:  TermNumber:I2C????? _ucByte ?? ???????????
-*	?? ?? ?: ??
-*********************************************************************************************************
-*/
-uint8_t MasterWriteI2C1(uint8_t _ucByte)
+void MasterWriteI2C1(uint8_t _ucByte)
 {
-	uint8_t i;
-	//switch( _TermNumber )
-	{
-	//	case 1:
+	    uint8_t i;
 			I2C1_SDA_OUT();
 		/* ??????????¦Λbit7 */
 			for (i = 0; i < 8; i++)
@@ -297,34 +200,14 @@ uint8_t MasterWriteI2C1(uint8_t _ucByte)
 				_ucByte <<= 1;	/* ???????bit */
 				i2c_Delay();
 			}
-		//break;
-		return I2CAcknowledgeByte();
-		
-	//	default:
-		//	printf("No Such Terminal,Please Check Again\r\n");
-		//	break;
-			
-	}
 }
 
-/*
-*********************************************************************************************************
-*	?? ?? ??: i2c_ReadByte
-*	???????: CPU??I2C?????υτ???8bit????
-*	??    ??:  TermNumber:I2C?????
-*	?? ?? ?: ??????????
-*********************************************************************************************************
-*/
+
 uint8_t MasterReadI2C1()
 {
 	uint8_t i;
 	uint8_t value;
-
-	/* ??????1??bit??????bit7 */
 	value = 0;
-//	switch(_TermNumber)
-	{
-		//case 1:
 			I2C1_SDA_IN();
 			for (i = 0; i < 8; i++)
 			{
@@ -338,113 +221,7 @@ uint8_t MasterReadI2C1()
 				I2C1_SCL_0();
 				i2c_Delay();
 			}
-			//break;
-		
-		//default:
-		//	printf("No Such Terminal,Please Check Again,ReadByte Err\r\n");
-		//	break;		
-	}
 	return value;
-}
-
-
-/*
-*********************************************************************************************************
-*	?? ?? ??: i2c_CheckDevice
-*	???????: ???I2C?????υτ??CPU?????υτ???????????υτ??????§Ψ???υτ??????
-*	??    ??: TermNumber:I2C????? _Address???υτ??I2C??????
-*	?? ?? ?: ????? 0 ???????? ????1???¦Δ???
-*********************************************************************************************************
-*/
-//uint8_t i2c_CheckDevice(uint8_t _TermNumber , uint8_t _Address)
-//{
-//	uint8_t ucAck;
-//	
-//	switch(_TermNumber)
-//	{
-//		case 1:
-//			I2C1_SDA_IN();
-//			I2C1_SCL_IN();
-//			if (I2C1_SDA_READ() && I2C1_SCL_READ())
-//			{
-//				I2C1_SDA_OUT();
-//				I2C1_SCL_OUT();
-//				i2c_Start();		/* ?????????? */
-
-//				/* ?????υτ???+??§Υ????bit??0 = w?? 1 = r) bit7 ??? */
-//				i2c_SendByte(1 , _Address | I2C_WR);
-//				ucAck = i2c_WaitAck(1);	/* ????υτ??ACK??? */
-
-//				i2c_Stop(1);			/* ????????? */
-
-//				return ucAck;
-//			}
-//			I2C1_SDA_OUT();
-//			I2C1_SCL_OUT();
-//			break;
-//		
-//		default:
-//			printf("No Such Terminal,Please Check Again,CheckDevice Err\r\n");
-//			break;
-//		}
-//	return 1;	/* I2C?????? */
-//}
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-void i2c_init(BYTE address) {
-//	//enabling i2c module doesnt need changing port
-//	//direction/value etc, and is not a pin muxed peripheral
-//	I2CConfigure ( i2cnum, I2C_ENABLE_SLAVE_CLOCK_STRETCHING);
-//	I2CSetFrequency ( i2cnum, GetPeripheralClock(), BRG);
-
-//	if(mode == SLAVE)
-//	{
-//		//address mask is set to 0
-//		I2CSetSlaveAddress ( i2cnum, address&0x7f, 0, I2C_USE_7BIT_ADDRESS );
-//	}
-
-//	I2CEnable(i2cnum, TRUE);
 }
 
 /**
@@ -460,21 +237,22 @@ int i2c_write(unsigned char slave_addr, unsigned char reg_addr, unsigned char le
 	BYTE i;
 
 	StartI2C1();								//Send the Start Bit
-	IdleI2C1();									//Wait to complete
-        if (MasterWriteI2C1(((slave_addr<<1)|(0x00))))
-            return 1;
-	IdleI2C1();
-        if (MasterWriteI2C1(reg_addr))
-            return 1;
-	IdleI2C1();
+    MasterWriteI2C1((slave_addr<<1)|(0x00));
+	while(I2CAcknowledgeByte()==1)
+		 return 1;
+    MasterWriteI2C1(reg_addr);
+	while(I2CAcknowledgeByte()==1)
+		 return 1;
+
 
 	for(i=0;i<length;i++){
-            if (MasterWriteI2C1(data[i]))
-                return 1;
+           MasterWriteI2C1(data[i]);
+		   while(I2CAcknowledgeByte()==1)
+			    return 1;
+
+               
 	}
         StopI2C1();								//Send the Stop condition
-        IdleI2C1();								//Wait to complete
-
 	return 0;
 }
 
@@ -491,33 +269,37 @@ int i2c_read(unsigned char slave_addr, unsigned char reg_addr, unsigned char len
 	BYTE i=2;
 
 	StartI2C1();								//Send the Start Bit
-	IdleI2C1();
-        if (MasterWriteI2C1(((slave_addr<<1)|(0x00))))
-            return 1;
-	IdleI2C1();
-        if (MasterWriteI2C1(reg_addr))
-            return 1;
-	IdleI2C1();
-        StartI2C1();                        //Send the Start Bit
-        IdleI2C1();                         //Wait to complete
-        if (MasterWriteI2C1(((slave_addr<<1)|(0x01))))
-            return 1;
-	IdleI2C1();
-	//I2CReceiverEnable ( I2C1, TRUE);
+	MasterWriteI2C1((slave_addr<<1)|(0x00));
+	while(I2CAcknowledgeByte()==1)
+		return 1;
+	MasterWriteI2C1(reg_addr);
+	while(I2CAcknowledgeByte()==1)
+		return 1;
+	StopI2C1();    
 
+	StartI2C1();                        //Send the Start Bit
+	MasterWriteI2C1((slave_addr<<1)|(0x01));
+	while(I2CAcknowledgeByte()==1)
+		return 1;
 	for(i=0;i<length;i++) {
-            data[i] = MasterReadI2C1();
+		data[i] = MasterReadI2C1();
 		if(i<(length-1)) {
-                    I2CAcknowledgeByte();
-                    IdleI2C1();
+		while(I2CAcknowledgeByte()==1)
+		return 1;
+
 		}
 		else {
-                    I2CAcknowledgeByte();
-                    IdleI2C1();
+		while(I2CAcknowledgeByte()==0)
+		return 1;
+
 		}
 	}
-        StopI2C1();								//Send the Stop condition
-        IdleI2C1();								//Wait to complete
+	StopI2C1();								//Send the Stop condition
 
 	return 0;
 }
+
+
+
+
+
