@@ -117,9 +117,9 @@ static void i2c_Delay(void)
 void StartI2C1()
 {
 
-			I2C1_SCL_1();
 			I2C1_SDA_OUT();
 			I2C1_SDA_1();
+			I2C1_SCL_1();
 			i2c_Delay();
 			I2C1_SDA_0();
 			i2c_Delay();
@@ -137,9 +137,9 @@ void StartI2C1()
 */
 void StopI2C1()
 {
-			I2C1_SCL_1();
 			I2C1_SDA_OUT();
 			I2C1_SDA_0();
+			I2C1_SCL_1();
 			i2c_Delay();
 			I2C1_SDA_1();
 }
@@ -275,7 +275,7 @@ int i2c_read(unsigned char slave_addr, unsigned char reg_addr, unsigned char len
 	MasterWriteI2C1(reg_addr);
 	while(I2CAcknowledgeByte()==1)
 		return 1;
-	StopI2C1();    
+	//StopI2C1();    
 
 	StartI2C1();                        //Send the Start Bit
 	MasterWriteI2C1((slave_addr<<1)|(0x01));
@@ -290,7 +290,7 @@ int i2c_read(unsigned char slave_addr, unsigned char reg_addr, unsigned char len
 		}
 		else {
 		while(I2CAcknowledgeByte()==0)
-		return 1;
+		return 0;
 
 		}
 	}
