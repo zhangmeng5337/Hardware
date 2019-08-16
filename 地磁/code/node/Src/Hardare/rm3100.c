@@ -96,7 +96,7 @@ unsigned int getRM3100CycleCount (void){ return rm.cycle_count; }
 BOOL setCycleCount ( unsigned int value ) {
 
     BYTE to_reg[6];
-
+    unsigned char data[1];
     if (value > 65535 || value<0)
         return TRUE;
     else{
@@ -123,6 +123,7 @@ BOOL setCycleCount ( unsigned int value ) {
             rm.max_data_rate = 1 / x;
         }
     }
+		i2c_read(RM3100_ADDRESS_00, CCX_MSB_REG, 1, data);
     return FALSE;
 }
 /**

@@ -20,6 +20,7 @@
 #ifndef RM3100_H
 #define	RM3100_H
 
+#define IIC		0
 /** @details Registers of the Ev Board ASIC by PNI */
 #define POLL_REG        0x00 /** POLLS A SINGLE MEASUREMENT */
 #define CMM_REG         0x01 /** CONTINUOUS MEASUREMENT MODE REGISTER */
