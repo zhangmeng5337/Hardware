@@ -11,7 +11,7 @@
 #include "stm8l15x_flash.h"
 #include "RF.h"
 
-
+RfParams_stru RfParams; 
 POWER_MODE_Stru POWER_MODE;
 uint32_t rx_length;  //payload count in debug mode
 INT8U recv_buffer[128]={ 0 }; //receive data buffer
@@ -28,9 +28,13 @@ void RF_Initial( )
   POWER_MODE.wake_up_period = 384;
   
   SX1276_Init(MODE_LORA);         //SX127X 模块复位并初始化为LoRa模式
-  SX1276_LoRa_SetDataRate(2);
-  SX1276_SetFreq(0);				//配置信道为23，即433Hz
-  SX1276_SetPower(15, 1);         //配置RFO PIN输出，功率20dBm
+
+  RfParams.datarate = 2;
+  RfParams.freq = 0;
+  RfParams.power = 15;
+  SX1276_LoRa_SetDataRate( RfParams.datarate);
+  SX1276_SetFreq(RfParams.freq);				//配置信道为23，即433Hz
+  SX1276_SetPower(RfParams.power, 1);         //配置RFO PIN输出，功率20dBm
   SX1276_SetPreambleSize(65530);
   SX1276_SetRxMode(); 
 }

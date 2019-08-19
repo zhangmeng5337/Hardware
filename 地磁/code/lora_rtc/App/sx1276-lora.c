@@ -1,11 +1,10 @@
-
+#include "RF.h"
 #include "sx1276-LoRa.h"
 #include "stm8l15x_tim3.h"
 #include "stm8l15x_it.h"
-
+extern RfParams_stru RfParams; 
 #define RF_MAX_PACKET_SIZE     128      // 发送数据每包最大长度
-#define AddrLow1 00
-#define AddrLow2 01
+
 #define AddrHigh1 02
 #define AddrHigh2 03
 /*
@@ -455,7 +454,9 @@ INT8U SX1276_LoRa_RxProcess( void )
         {
             SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_PAYLOADCRCERROR );
             result = 0;
+	    
         } else {
+        
             result = 1;
         }
         SX1276_WriteReg(REG_LR_IRQFLAGS, 0xff);
@@ -484,7 +485,7 @@ INT8U SX1276_LoRa_GetRxPacket( INT8U *buffer )
 {
     INT8U size, i;
     size = SX1276_ReadReg( REG_LR_NBRXBYTES );
-    if(size <= 4)
+    if(size <= 2)
         return 0;
     if( size > RF_MAX_PACKET_SIZE )
     {
@@ -496,11 +497,11 @@ INT8U SX1276_LoRa_GetRxPacket( INT8U *buffer )
     }
     SX1276_WriteReg( REG_LR_FIFOADDRPTR, SX1276_ReadReg( REG_LR_FIFORXCURRENTADDR ) );
     /*地址判断*/
-   // if((AddrLow1 == SX1276_ReadFifo()) && (AddrLow2 == SX1276_ReadFifo()) && (AddrHigh1 == SX1276_ReadFifo()) && (AddrHigh2 == SX1276_ReadFifo()))
+    if((RfParams.AddrH== SX1276_ReadFifo()) && (RfParams.AddrL == SX1276_ReadFifo()) )
     {
        
         //sleep_time_count = 0;
-	size = size -4;
+	size = size -2;
         for( i = 0; i < size; i++ )
 	{
 		*buffer ++ = SX1276_ReadFifo( );

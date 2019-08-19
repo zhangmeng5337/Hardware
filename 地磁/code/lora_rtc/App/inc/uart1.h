@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "stm8l15x.h"
+#include "stdio.h"
 #include "stm8l15x_syscfg.h"
 /* Private define ------------------------------------------------------------*/
 #ifdef _RAISONANCE_

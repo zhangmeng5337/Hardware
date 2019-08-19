@@ -149,7 +149,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-	// Hardware_Init();
+	// Hardware_Init();	
+	HAL_GPIO_WritePin(RM_POWER_GPIO_Port, RM_POWER_Pin, GPIO_PIN_SET);
+	
 		HAL_GPIO_WritePin(I2C_MODE_GPIO_Port, I2C_MODE_Pin, GPIO_PIN_RESET);
   ThreeD3100_magic_init();
  // ;

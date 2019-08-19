@@ -1,5 +1,0 @@
----- UsartReceiveFlag Matches (4 in 2 files) ----
-stm8l15x_it.c (App) line 28 : unsigned char UsartReceiveData[128] = {0}, usart_i = 0, UsartReceiveFlag = 0;
-INTERRUPT_HANDLER in stm8l15x_it.c (App) :         UsartReceiveFlag ++;
-INTERRUPT_HANDLER in stm8l15x_it.c (App) :     if(UsartReceiveFlag) {
-stm8l15x_it.h (App\inc) line 28 : extern unsigned char UsartReceiveData[128], usart_i, UsartReceiveFlag, RtcWakeUp, CadDoneFlag, sleep_time_count;
