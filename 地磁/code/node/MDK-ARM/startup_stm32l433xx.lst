@@ -644,7 +644,7 @@ Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=node\startup_stm32l433xx.d -onode\startup_stm32l433xx.o -I.\RTE
 \_node -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include -IC:\Keil_v5\ARM\PAC
 K\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include --predefin
-e="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 523" --predefine="_RT
+e="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 525" --predefine="_RT
 E_ SETA 1" --predefine="STM32L433xx SETA 1" --list=startup_stm32l433xx.lst star
 tup_stm32l433xx.s
 

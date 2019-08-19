@@ -51,7 +51,6 @@ extern "C" {
 #include "stm32l4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
-#include "stdio.h"
 /* USER CODE BEGIN Includes */
 typedef unsigned char BYTE;
 typedef _Bool BOOL;

@@ -25,14 +25,15 @@
 "node\stm32l4xx_hal_pwr.o"
 "node\stm32l4xx_hal_pwr_ex.o"
 "node\stm32l4xx_hal_cortex.o"
+"node\stm32l4xx_hal_exti.o"
 "node\system_stm32l4xx.o"
-"node\rm3100.o"
 "node\bsp.o"
 "node\i2c.o"
+"node\mag3d3100.o"
 "node\sensor.o"
 "node\filter.o"
 "node\systme.o"
 --library_type=microlib --strict --scatter "node\node.sct"
---summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "node.map" -o node\node.axf

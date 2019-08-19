@@ -89,7 +89,7 @@
 *	?? ?? ?: ??
 *********************************************************************************************************
 */
-static void i2c_Delay(void)
+static void i2c_Delay(uint32_t count)
 {
 	uint8_t i;
 
@@ -103,7 +103,7 @@ static void i2c_Delay(void)
 
 		?????????400KHz????????????
 	*/
-	for (i = 0; i < 30; i++);
+	while (count--);
 }
 
 /*
@@ -120,11 +120,12 @@ void StartI2C1()
 			I2C1_SDA_OUT();
 			I2C1_SDA_1();
 			I2C1_SCL_1();
-			i2c_Delay();
+			
+			i2c_Delay(5);
 			I2C1_SDA_0();
-			i2c_Delay();
+			
+			i2c_Delay(5);
 			I2C1_SCL_0();
-			i2c_Delay();
 }
 
 /*
@@ -139,9 +140,14 @@ void StopI2C1()
 {
 			I2C1_SDA_OUT();
 			I2C1_SDA_0();
-			I2C1_SCL_1();
-			i2c_Delay();
+			I2C1_SCL_0();
+			
+			i2c_Delay(5);
 			I2C1_SDA_1();
+			I2C1_SCL_1();
+			
+			i2c_Delay(5);
+
 }
 /*
 *********************************************************************************************************
@@ -153,31 +159,62 @@ void StopI2C1()
 */
 uint8_t I2CAcknowledgeByte()
 {
-	uint8_t re;
+	uint8_t re,ucErrTime;
+	        I2C1_SDA_IN();
 			I2C1_SDA_1();	/* CPU???SDA???? */
-			i2c_Delay();
-			I2C1_SCL_1();	/* CPU????SCL = 1, ???????????ACK??? */
-			i2c_Delay();
-			I2C1_SDA_IN();
-			if (I2C1_SDA_READ())	/* CPU???SDA?????? */
-			{
-				re = 1;
-			}
-			else
-			{
-				re = 0;
-			}
 			I2C1_SCL_0();
-			i2c_Delay();
-	return re;
+			i2c_Delay(5);
+			I2C1_SCL_1();
+			//I2C1_SCL_1();	/* CPU????SCL = 1, ???????????ACK??? */
+			//i2c_Delay();
+			
+			while(I2C1_SDA_READ())
+			{
+				ucErrTime++;
+				if(ucErrTime>50)
+				{
+					StopI2C1();
+					return 1;
+				}
+				i2c_Delay(5);
+			}  
+			I2C1_SCL_1();
+			i2c_Delay(5); 
+			I2C1_SCL_0();//Ê±ï¿½ï¿½ï¿½ï¿½ï¿½0	
+			
+	return 0;
 }
 
+void IIC_Ack(void)
+{
+	I2C1_SCL_0();
+	I2C1_SDA_OUT();
+	I2C1_SDA_0();
+		i2c_Delay(5);
+	I2C1_SCL_1();
+		i2c_Delay(5);
+	I2C1_SCL_0();
+}
+void IIC_NAck(void)
+{
+	I2C1_SCL_0();
+	I2C1_SDA_OUT();
+	I2C1_SDA_1();
+
+
+	i2c_Delay(5);
+	I2C1_SCL_1();
+	i2c_Delay(5);
+	I2C1_SCL_0();
+
+}
 
 
 void MasterWriteI2C1(uint8_t _ucByte)
 {
 	    uint8_t i;
 			I2C1_SDA_OUT();
+			I2C1_SCL_0();
 		/* ??????????¦Ëbit7 */
 			for (i = 0; i < 8; i++)
 			{
@@ -189,21 +226,18 @@ void MasterWriteI2C1(uint8_t _ucByte)
 				{
 				I2C1_SDA_0();
 				}
-				i2c_Delay();
-				I2C1_SCL_1();
-				i2c_Delay();
-				I2C1_SCL_0();
-				if (i == 7)
-				{
-					I2C1_SDA_1(); // ???????
-				}
-				_ucByte <<= 1;	/* ???????bit */
-				i2c_Delay();
+			i2c_Delay(2);
+			I2C1_SCL_1();
+			i2c_Delay(5);
+			I2C1_SCL_0();
+			i2c_Delay(3);
+			_ucByte <<= 1;	/* ???????bit */
+
 			}
 }
 
 
-uint8_t MasterReadI2C1()
+uint8_t MasterReadI2C1(unsigned char ack)
 {
 	uint8_t i;
 	uint8_t value;
@@ -211,16 +245,22 @@ uint8_t MasterReadI2C1()
 			I2C1_SDA_IN();
 			for (i = 0; i < 8; i++)
 			{
+			   I2C1_SCL_0();
+			   i2c_Delay(5);
+			    I2C1_SCL_1();
 				value <<= 1;
-				I2C1_SCL_1();
-				i2c_Delay();
+
 				if (I2C1_SDA_READ())
 				{
 					value++;
 				}
-				I2C1_SCL_0();
-				i2c_Delay();
+				i2c_Delay(5);
 			}
+			if(ack)
+				IIC_Ack();
+			else
+				IIC_NAck();
+				
 	return value;
 }
 
@@ -238,18 +278,12 @@ int i2c_write(unsigned char slave_addr, unsigned char reg_addr, unsigned char le
 
 	StartI2C1();								//Send the Start Bit
     MasterWriteI2C1((slave_addr<<1)|(0x00));
-	while(I2CAcknowledgeByte()==1)
-		 return 1;
+	I2CAcknowledgeByte();
     MasterWriteI2C1(reg_addr);
-	while(I2CAcknowledgeByte()==1)
-		 return 1;
-
-
+	I2CAcknowledgeByte();
 	for(i=0;i<length;i++){
            MasterWriteI2C1(data[i]);
-		   while(I2CAcknowledgeByte()==1)
-			    return 1;
-
+		   I2CAcknowledgeByte();
                
 	}
         StopI2C1();								//Send the Stop condition
@@ -270,27 +304,22 @@ int i2c_read(unsigned char slave_addr, unsigned char reg_addr, unsigned char len
 
 	StartI2C1();								//Send the Start Bit
 	MasterWriteI2C1((slave_addr<<1)|(0x00));
-	while(I2CAcknowledgeByte()==1)
-		return 1;
+	I2CAcknowledgeByte();
 	MasterWriteI2C1(reg_addr);
-	while(I2CAcknowledgeByte()==1)
-		return 1;
-	//StopI2C1();    
+	I2CAcknowledgeByte();
+    //StopI2C1();    
 
 	StartI2C1();                        //Send the Start Bit
 	MasterWriteI2C1((slave_addr<<1)|(0x01));
-	while(I2CAcknowledgeByte()==1)
-		return 1;
+	I2CAcknowledgeByte();
 	for(i=0;i<length;i++) {
-		data[i] = MasterReadI2C1();
+		data[i] = MasterReadI2C1(1);
 		if(i<(length-1)) {
-		while(I2CAcknowledgeByte()==1)
-		return 1;
+		I2CAcknowledgeByte();
 
 		}
 		else {
-		while(I2CAcknowledgeByte()==0)
-		return 0;
+		MasterReadI2C1(0);
 
 		}
 	}

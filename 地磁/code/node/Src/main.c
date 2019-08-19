@@ -45,6 +45,8 @@
 /* USER CODE BEGIN Includes */
 #include "bsp.h"
 #include "sensor.h"
+#include "mag3D3100.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,7 +110,7 @@ static void MX_ADC1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+MagData_t dataMd;
 /* USER CODE END 0 */
 
 /**
@@ -120,6 +122,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
+  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -138,6 +141,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+	Hardware_Init();
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_SPI1_Init();
@@ -145,7 +149,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-   Hardware_Init();
+	// Hardware_Init();
+		HAL_GPIO_WritePin(I2C_MODE_GPIO_Port, I2C_MODE_Pin, GPIO_PIN_RESET);
+  ThreeD3100_magic_init();
+ // ;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -153,11 +160,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-  
+
     /* USER CODE BEGIN 3 */
 	led_ctrl(BLINK);
 	HAL_Delay(1000);
-	 sensor_process();
+	// sensor_process();
+
+
+		ThreeD3100_magic_GetData(&dataMd);
   }
   /* USER CODE END 3 */
 }
@@ -172,7 +182,7 @@ void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
@@ -183,7 +193,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -202,7 +212,7 @@ void SystemClock_Config(void)
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   PeriphClkInit.AdcClockSelection = RCC_ADCCLKSOURCE_PLLSAI1;
   PeriphClkInit.PLLSAI1.PLLSAI1Source = RCC_PLLSOURCE_MSI;
-  PeriphClkInit.PLLSAI1.PLLSAI1M = 1;
+  PeriphClkInit.PLLSAI1.PLLSAI1M = 3;
   PeriphClkInit.PLLSAI1.PLLSAI1N = 8;
   PeriphClkInit.PLLSAI1.PLLSAI1P = RCC_PLLP_DIV7;
   PeriphClkInit.PLLSAI1.PLLSAI1Q = RCC_PLLQ_DIV2;
@@ -212,7 +222,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Configure the main internal regulator output voltage 
+  /** Configure the main internal regulator output voltage 
   */
   if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
   {
@@ -237,7 +247,7 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 1 */
 
   /* USER CODE END ADC1_Init 1 */
-  /**Common config 
+  /** Common config 
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV16;
@@ -258,7 +268,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /**Configure Regular Channel 
+  /** Configure Regular Channel 
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -298,8 +308,8 @@ static void MX_SPI1_Init(void)
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -391,6 +401,7 @@ static void MX_USART2_UART_Init(void)
   */
 static void MX_DMA_Init(void) 
 {
+
   /* DMA controller clock enable */
   __HAL_RCC_DMA1_CLK_ENABLE();
 
@@ -420,7 +431,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RM_POWER_GPIO_Port, RM_POWER_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RM_POWER_Pin|RM_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(RM3100_MODE_EN_GPIO_Port, RM3100_MODE_EN_Pin, GPIO_PIN_RESET);
@@ -431,17 +442,17 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, LORA_B_Pin|LED_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : RM_POWER_Pin */
-  GPIO_InitStruct.Pin = RM_POWER_Pin;
+  /*Configure GPIO pins : RM_POWER_Pin RM_CS_Pin */
+  GPIO_InitStruct.Pin = RM_POWER_Pin|RM_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(RM_POWER_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : RM_DRY_Pin */
   GPIO_InitStruct.Pin = RM_DRY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(RM_DRY_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : RM3100_MODE_EN_Pin */
