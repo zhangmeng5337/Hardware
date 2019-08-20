@@ -112,7 +112,7 @@ u8 SPI_Write_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *datain,u8 lenth)
 		temp=*(datain+bytecount);
 		SPI_WriteByte(SPIx,temp);
 	}
-	CS_H;
+	CS_H;HAL_Delay(10);
 	return 0;
 }
 
@@ -122,7 +122,7 @@ u8 SPI_Read_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *dataout,u8 lenth)
 	u8 temp=0;	
 	
 	CS_L;
-	
+	HAL_Delay(10);
 	temp=0x80+(reg_addr&0x3f); //MSB=1 rw=1-->addr auto increase
 	SPI_WriteByte(SPIx,temp);
 
@@ -131,7 +131,7 @@ u8 SPI_Read_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *dataout,u8 lenth)
 		temp=SPI_WriteByte(SPIx,0);
 		*(dataout+bytecount) = temp;
 	}
-	CS_H ;
+	CS_H ;HAL_Delay(10);
 	return 0;	
 }
 /**
@@ -378,7 +378,7 @@ u8 cycle_count_read_back[6]={0};
 SPI2_Init();
 HAL_Delay(100);
 
-continuousModeConfig(CMM_ALL_AXIS_ON|DRDY_WHEN_ALL_AXIS_MEASURED|CM_START); 			//设置测试轴,drdy 开启连续模式
+continuousModeConfig(CMM_ALL_AXIS_ON|DRDY_WHEN_ANY_AXIS_MEASURED|CM_START); 			//设置测试轴,drdy 开启连续模式
 setCycleCount(200);												//设置CCR寄存器200
 setCMMdatarate(12);
 HAL_Delay(100);	

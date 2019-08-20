@@ -3,7 +3,7 @@
 <title>Static Call Graph - [node\node.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image node\node.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Aug 16 16:51:19 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Aug 20 15:08:39 2019
 <BR><P>
 <H3>Maximum Stack Usage =        288 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -477,6 +477,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ThreeD3100_magic_init
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Write_M3D3100
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Read_M3D3100
 </UL>
 
 <P><STRONG><a name="[69]"></a>HAL_GPIO_Init</STRONG> (Thumb, 428 bytes, Stack size 20 bytes, stm32l4xx_hal_gpio.o(i.HAL_GPIO_Init))
@@ -770,10 +771,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ThreeD3100_magic_init
 </UL>
 
-<P><STRONG><a name="[9e]"></a>SPI_Read_M3D3100</STRONG> (Thumb, 90 bytes, Stack size 32 bytes, mag3d3100.o(i.SPI_Read_M3D3100))
+<P><STRONG><a name="[9e]"></a>SPI_Read_M3D3100</STRONG> (Thumb, 102 bytes, Stack size 32 bytes, mag3d3100.o(i.SPI_Read_M3D3100))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = SPI_Read_M3D3100 &rArr; SPI_WriteByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WriteByte
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ThreeD3100_magic_init
@@ -789,7 +791,7 @@ Global Symbols
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Read_M3D3100
 </UL>
 
-<P><STRONG><a name="[a0]"></a>SPI_Write_M3D3100</STRONG> (Thumb, 88 bytes, Stack size 32 bytes, mag3d3100.o(i.SPI_Write_M3D3100))
+<P><STRONG><a name="[a0]"></a>SPI_Write_M3D3100</STRONG> (Thumb, 94 bytes, Stack size 32 bytes, mag3d3100.o(i.SPI_Write_M3D3100))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = SPI_Write_M3D3100 &rArr; SPI_WriteByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin

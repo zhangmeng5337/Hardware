@@ -25,7 +25,7 @@
 #include "sx1276-Lora.h"
 #include "stm8l15x_rtc.h"
 #include "RF.h"
-unsigned char UsartReceiveData[128] = {0}, usart_i = 0, UsartReceiveFlag = 0;
+unsigned char UsartReceiveData[BUFFERSIZE] = {0}, usart_i = 0, UsartReceiveFlag = 0;
 unsigned char sleep_time_count = 0,j = 0;
 #define SleepTime 2  //2±Ì æ500ms
   extern  POWER_MODE_Stru POWER_MODE;
