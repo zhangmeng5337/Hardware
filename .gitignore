@@ -17,10 +17,7 @@ History/
 *.PcbDocPreview
 *.SchDocPreview
 ._
-.dep
-.ewd
 Debug/
-*.dep
 *.jrl
 *.DBK
 *.opj
