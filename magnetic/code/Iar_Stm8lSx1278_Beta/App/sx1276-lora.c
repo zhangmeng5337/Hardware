@@ -499,7 +499,8 @@ INT8U SX1276_LoRa_GetRxPacket( INT8U *buffer )
         return 0;
     }
     SX1276_WriteReg( REG_LR_FIFOADDRPTR, SX1276_ReadReg( REG_LR_FIFORXCURRENTADDR ) );
-    if(GetModuleParams()->TranMode) {
+    if(GetModuleParams()->TranMode)
+    {
         /*µØÖ·ÅÐ¶Ï*/
         if((GetModuleParams()->ADDH == SX1276_ReadFifo()) && (GetModuleParams()->ADDL == SX1276_ReadFifo()))
         {

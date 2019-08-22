@@ -27,14 +27,14 @@
 #define PORT_SX127X_RX_CTRL        GPIOA
 #define PIN_SX127X_RX_CTRL         GPIO_Pin_4
 
-#define PORT_SX127X_DIO0     	   GPIOD
-#define PIN_SX127X_DIO0            GPIO_Pin_1
+#define PORT_SX127X_DIO0     	   GPIOC
+#define PIN_SX127X_DIO0            GPIO_Pin_6
 
-#define PORT_SX127X_DIO1     	   GPIOD
-#define PIN_SX127X_DIO1            GPIO_Pin_2
+#define PORT_SX127X_DIO1     	   GPIOC
+#define PIN_SX127X_DIO1            GPIO_Pin_5
 
-#define PORT_SX127X_DIO2     	   GPIOD
-#define PIN_SX127X_DIO2            GPIO_Pin_3
+#define PORT_SX127X_DIO2     	   GPIOC
+#define PIN_SX127X_DIO2            GPIO_Pin_4
 
 #define PORT_SX127X_DIO3     	   GPIOC
 #define PIN_SX127X_DIO3            GPIO_Pin_3
@@ -46,13 +46,13 @@
 #define PIN_SX127X_DIO5            GPIO_Pin_1
 
 #define PORT_SX127X_M0             GPIOB
-#define PIN_SX127X_M0              GPIO_Pin_2
+#define PIN_SX127X_M0              GPIO_Pin_1
 
 #define PORT_SX127X_M1             GPIOB
-#define PIN_SX127X_M1              GPIO_Pin_1
+#define PIN_SX127X_M1              GPIO_Pin_3
 
 #define PORT_SX127X_AUX            GPIOB
-#define PIN_SX127X_AUX             GPIO_Pin_0
+#define PIN_SX127X_AUX             GPIO_Pin_2
 
 
 #define SX1276_NSS_LOW( )          GPIO_ResetBits( PORT_SX127X_CSN, PIN_SX127X_CSN )

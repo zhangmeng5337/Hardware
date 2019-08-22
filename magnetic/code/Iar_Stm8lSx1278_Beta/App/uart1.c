@@ -1,6 +1,10 @@
 #include "uart1.h"
 #include "stm8l15x.h"
 #include "stm8l15x_usart.h"
+#include "RF.h"
+
+extern Module_Params_stru Module_Params;
+
 void Uart1_Init(u32 boundrate, u8 check)
 {
         CLK_PeripheralClockConfig(CLK_Peripheral_USART1,ENABLE);
@@ -11,6 +15,35 @@ void Uart1_Init(u32 boundrate, u8 check)
 	GPIO_Init(GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast);//TXD
   	GPIO_Init(GPIOA, GPIO_Pin_3, GPIO_Mode_In_PU_No_IT);//RXD
   	USART_DeInit(USART1);		//复位UART1 
+    if(boundrate<0x08)
+    	{
+		switch( Module_Params.SerialRate)
+		  {
+		   case 0x00:  boundrate=1200;break;//0.3kbps,
+		   case 0x01:  boundrate=2400;break;//1.2kbps
+		   case 0x02:  boundrate=4800;break;//2.4kbps
+		   case 0x03:  boundrate=9600;break;//4.8kbps
+		   case 0x04:  boundrate=19200;break;//9.6kbps
+		   case 0x05:  boundrate=38400;break;//19.2kbps
+		   case 0x06:  boundrate=57600;break;//9.6kbps
+		   case 0x07:  boundrate=115200;break;//19.2kbps
+		   default:  boundrate=115200;break;//4.8kbps
+		}
+
+	}
+    if(check<0x06)
+    	{
+		switch( Module_Params.CheckBit)
+		  {
+		   case 0x00:  check=0;break;//0.3kbps,
+		   case 0x04:  check=4;break;//1.2kbps
+		   case 0x06:  check=5;break;//2.4kbps
+		   default:  check=0;break;//4.8kbps
+		}
+
+	}
+
+
 	/*
 	 * 将UART1配置为：
 	 * 波特率 = 115200

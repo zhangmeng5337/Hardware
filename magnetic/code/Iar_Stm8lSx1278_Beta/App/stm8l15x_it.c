@@ -186,9 +186,9 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler, 9)
      it is recommended to set a breakpoint on the following instruction.
   */
     //LoraM1Flag = 1;
-    ExitInterFlag = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_1);
+   // ExitInterFlag = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_1);
 
-    EXTI_ClearITPendingBit(EXTI_IT_Pin1);
+    //EXTI_ClearITPendingBit(EXTI_IT_Pin1);
 }
 
 /**
@@ -268,6 +268,9 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+      ExitInterFlag = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_6);
+
+      EXTI_ClearITPendingBit(EXTI_IT_Pin6);
 }
 
 /**

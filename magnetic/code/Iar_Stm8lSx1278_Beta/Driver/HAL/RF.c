@@ -43,21 +43,20 @@ Module_mode_stru *GetModuleMode()
 void ModuleInit()
 {
   Module_mode.AUX = 0;
-  Module_mode.CheckBit = 0;
+
   Module_mode.ConfigureDone = 0;
   Module_mode.CurrentMode = 0;
   Module_mode.LastMode = 0;
   Module_mode.LoraM0Flag = 0;
   Module_mode.LoraM1Flag = 0;
-  
+  Module_Params.CheckBit = 0;  
   Module_Params.ADDH = 0;
   Module_Params.ADDL = 0;
   Module_Params.AirRate = 2;
   Module_Params.Channel =0x17;
   //Module_Params.Flash_Data[] =
   Module_Params.Flash_Write_Done = 1;
-  Module_Params.SerialRate = 9600;
-  Module_Params.TranMode = 0x01;
+  Module_Params.SerialRate = 0x02;
   Module_Params.WakeupTime = 250;
   
   
@@ -68,41 +67,43 @@ void RF_Initial( )
   
   FLASH_SetProgrammingTime(FLASH_ProgramTime_TProg);  //Flash 初始化
   
-  if(FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 5)) == 1)  //判断Flash中是否有数据
+  if(FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 9)) == 1)  //判断Flash中是否有数据
   {
-    Module_Params.Flash_Data[0] = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS);
-    Module_Params.Flash_Data[1] = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 1));
-    Module_Params.Flash_Data[2] = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 2));
-    Module_Params.Flash_Data[3] = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 3));
-    Module_Params.Flash_Data[4] = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 4));
-    Module_Params.ADDH = Module_Params.Flash_Data[0];
-    
-    Module_Params.ADDL = Module_Params.Flash_Data[1];
-    
-    if (Module_Params.Flash_Data[2] >> 6 == 0x01)
-      Module_mode.CheckBit = 0x06;
-    else if (Module_Params.Flash_Data[2] >> 6 == 0x02)
-      Module_mode.CheckBit = 0x04;
-    else Module_mode.CheckBit = 0x00;
-    if (((Module_Params.Flash_Data[2]>>3) & 0x7) < 6)
-      Module_Params.SerialRate = 1200 * (unsigned int)(pow(2, ((Module_Params.Flash_Data[2]>>3) & 0x7)));
-    else if (((Module_Params.Flash_Data[2]>>3) & 0x7) == 6)
-      Module_Params.SerialRate = 57600;
-    else Module_Params.SerialRate = 115200;
-    
-    Module_Params.AirRate = Module_Params.Flash_Data[2]& 0x7;
-    
-    Module_Params.Channel =  Module_Params.Flash_Data[3]&0x1F;
-    
-    Module_Params.TranMode = Module_Params.Flash_Data[4]>>7;
-    Module_Params.WakeupTime = 250*(((Module_Params.Flash_Data[4]>>3) & 0x7) + 1);
-  }  
   
+    Module_Params.Channel = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS);
+    Module_Params.AirRate = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 1));
+    Module_Params.power = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 2));
+    Module_Params.SerialRate = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 3));
+    Module_Params.CheckBit = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 4));
+    Module_Params.WakeupTime = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 5));	
+	Module_Params.ADDH = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 6));	
+    Module_Params.ADDL = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 7));	
+    Module_Params.TranMode = FLASH_ReadByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 8));	
+  }  
+ 
   SX1276_Init(MODE_LORA);         //SX127X 模块复位并初始化为LoRa模式
-  SX1276_LoRa_SetDataRate(Module_Params.AirRate);
-  SX1276_SetFreq(Module_Params.Channel);				//配置信道为23，即433Hz
-  SX1276_SetPower(15, 1);         //配置RFO PIN输出，功率20dBm
-  SX1276_SetRxMode();  
+  switch( Module_Params.AirRate)
+  	{
+	 case 0x00:  SX1276_LoRa_SetDataRate(Module_Params.AirRate);break;//0.3kbps,
+	 case 0x01:  SX1276_LoRa_SetDataRate(Module_Params.AirRate);break;//1.2kbps
+	 case 0x02:  SX1276_LoRa_SetDataRate(Module_Params.AirRate);break;//2.4kbps
+	 case 0x03:  SX1276_LoRa_SetDataRate(Module_Params.AirRate);break;//4.8kbps
+	 case 0x04:  SX1276_LoRa_SetDataRate(Module_Params.AirRate);break;//9.6kbps
+	 case 0x05:  SX1276_LoRa_SetDataRate(Module_Params.AirRate);break;//19.2kbps
+	 default:  SX1276_LoRa_SetDataRate(0x03);break;//4.8kbps
+  }
+
+  if(Module_Params.Channel<32)
+  	SX1276_SetFreq(Module_Params.Channel);				//配置信道为23，即433Hz
+  else
+  	SX1276_SetFreq(23);				//配置信道为23，即433Hz 
+  if( Module_Params.power*2<=14)
+  	{
+	  SX1276_SetPower(Module_Params.power*2, 1);		  //配置RFO PIN输出，功率20dBm
+    }
+  else
+  	SX1276_SetPower(15, 1);         //配置RFO PIN输出，功率20dBm
+    SX1276_SetRxMode();  
 }
 
 
@@ -169,7 +170,7 @@ void lora_process()
   case NormalMode:
     if(GetModuleMode()->ConfigureDone) {
       SX1276_SetRxMode();
-      if( UsartReceiveFlag == 1 )
+     // if( UsartReceiveFlag == 1 )
       {
         //??????????	??????????鷢??????????ó????????飬??????????????????鷢???????????????????飬?????????
         SX1276_SetPreambleSize(8);								//?????????????????????Щ
@@ -188,7 +189,7 @@ void lora_process()
         LED_TOG();
         UsartReceiveFlag = 0;
       }
-      AUX_CONFIGURED();
+      //AUX_CONFIGURED();
       if( ExitInterFlag) {
         ExitInterFlag = 0;
         length = SX1276_ReceivePacket(recv_buffer); 			// ?????????????????
@@ -207,7 +208,7 @@ void lora_process()
       }
     } else {
       AUX_CONFIGURING();
-      Uart1_Init(GetModuleParams()->SerialRate, GetModuleMode()->CheckBit);							//????????????
+      Uart1_Init(GetModuleParams()->SerialRate, GetModuleParams()->CheckBit);							//????????????
       USART_SendStr("???+???????????\r\n");
       SX1276_SetPreambleSize(65530);
       GetModuleMode()->ConfigureDone = 1;
@@ -253,7 +254,7 @@ void lora_process()
       }
     } else {
       AUX_CONFIGURING();
-      Uart1_Init(GetModuleParams()->SerialRate, GetModuleMode()->CheckBit);							//????????????
+      Uart1_Init(GetModuleParams()->SerialRate, GetModuleParams()->CheckBit);							//????????????
       USART_SendStr("???+???????????\r\n");
       SX1276_SetPreambleSize((pream_long[GetModuleParams()->AirRate]*(GetModuleParams()->WakeupTime/250)));	//??????972 BW 500kHZ SF?7 ????д??????250ms
       GetModuleMode()->ConfigureDone = 1;
@@ -299,12 +300,12 @@ void lora_process()
 	
         SystemClock_Init(); 	// ?????????
         GPIO_Initial(); 		// ?????GPIO
-        Uart1_Init(GetModuleParams()->SerialRate, GetModuleMode()->CheckBit);							//????????????
+        Uart1_Init(GetModuleParams()->SerialRate, GetModuleParams()->CheckBit);							//????????????
         SPI_Initial();			//SPI?????
       }
     } else {
       AUX_CONFIGURING();
-      Uart1_Init(GetModuleParams()->SerialRate, GetModuleMode()->CheckBit); //????????????
+      Uart1_Init(GetModuleParams()->SerialRate, GetModuleParams()->CheckBit); //????????????
       USART_SendStr("???+???????????\r\n");
       /*SX1276??????????ж?
       DIO3???CADDone??????ж?
@@ -332,52 +333,71 @@ void lora_process()
         AUX_CONFIGURED();
       } else if(InitFlag == 1) {
           switch (uartParase()) {
-          case LORA_WRITE:
-            FLASH_Unlock(FLASH_MemType_Data);
-            
+          case LORA_WRITE://频率，空中速率，发射功率，串口速率，串口效验，唤醒时间	   
+            INT32U freq_tmp;
+		    freq_tmp = UsartReceiveData[INDEX_FREQ]<<16+ UsartReceiveData[INDEX_FREQ+1]<<8+
+		                UsartReceiveData[INDEX_FREQ+2];
+		    GetModuleParams()->Channel =	freq_tmp%433;		    
+			GetModuleParams()->AirRate = UsartReceiveData[INDEX_AIRATE];  
+			GetModuleParams()->power =   UsartReceiveData[INDEX_POWER]; 
+		    GetModuleParams()->SerialRate = UsartReceiveData[INDEX_BURDRATE];
+		    GetModuleParams()->CheckBit = UsartReceiveData[INDEX_CHECK];
+            GetModuleParams()->WakeupTime = UsartReceiveData[INDEX_WAKETIME];
+		    GetModuleParams()->ADDH = UsartReceiveData[INDEX_ADDH];
+		    GetModuleParams()->ADDL = UsartReceiveData[INDEX_ADDL];    
+		    GetModuleParams()->TranMode = UsartReceiveData[INDEX_MODE]; 
+
+            GetModuleParams()->Flash_Write_Done = 1;
+
+            FLASH_Unlock(FLASH_MemType_Data);      
             FLASH_EraseByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS);
-            FLASH_ProgramByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS, UsartReceiveData[INDEX_ADDH]);
+            FLASH_ProgramByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS, GetModuleParams()->Channel);
             FLASH_WaitForLastOperation(FLASH_MemType_Data);
-            GetModuleParams()->ADDH = UsartReceiveData[INDEX_ADDH];
+         
             
             FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 1));
-            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 1), UsartReceiveData[INDEX_ADDL]);
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 1), GetModuleParams()->AirRate);
             FLASH_WaitForLastOperation(FLASH_MemType_Data);
-            GetModuleParams()->ADDL = UsartReceiveData[INDEX_ADDL];
+
             
             FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 2));
-            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 2), UsartReceiveData[INDEX_CHECK]);
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 2), GetModuleParams()->power);
             FLASH_WaitForLastOperation(FLASH_MemType_Data);
-            if (UsartReceiveData[INDEX_CHECK] >> 6 == 0x01)
-              GetModuleMode()->CheckBit = 0x06;
-            else if (UsartReceiveData[INDEX_CHECK] >> 6 == 0x02)
-              GetModuleMode()->CheckBit = 0x04;
-            else GetModuleMode()->CheckBit = 0x00;
-            if (((UsartReceiveData[INDEX_CHECK]>>3) & 0x7) < 6)
-              GetModuleParams()->SerialRate = 1200 * (unsigned int)(pow(2, ((UsartReceiveData[INDEX_CHECK]>>3) & 0x7)));
-            else if (((UsartReceiveData[INDEX_CHECK]>>3) & 0x7) == 6)
-              GetModuleParams()->SerialRate = 57600;
-            else GetModuleParams()->SerialRate = 115200;
-            
-            GetModuleParams()->AirRate = UsartReceiveData[INDEX_CHECK]& 0x7;
+
             
             FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+3));
-            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 3), UsartReceiveData[INDEX_FREQ]);
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 3), GetModuleParams()->SerialRate);
             FLASH_WaitForLastOperation(FLASH_MemType_Data);
-            GetModuleParams()->Channel =  UsartReceiveData[INDEX_FREQ]&0x1F;
+
             
             FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+4));
-            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 4), UsartReceiveData[5]);
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 4), GetModuleParams()->CheckBit);
             FLASH_WaitForLastOperation(FLASH_MemType_Data);
-            GetModuleParams()->TranMode = UsartReceiveData[INDEX_WAKETIME]>>7;
-            GetModuleParams()->WakeupTime = 250*(((UsartReceiveData[INDEX_WAKETIME]>>3) & 0x7) + 1);
-            
-            GetModuleParams()->Flash_Write_Done = 1;
+
+
             FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+5));
-            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 5), GetModuleParams()->Flash_Write_Done);
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 5), GetModuleParams()->WakeupTime);
+            FLASH_WaitForLastOperation(FLASH_MemType_Data);
+
+            FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+6));
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 6), GetModuleParams()->ADDH);
+            FLASH_WaitForLastOperation(FLASH_MemType_Data);
+
+
+            FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+7));
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 7), GetModuleParams()->ADDL);
+            FLASH_WaitForLastOperation(FLASH_MemType_Data);
+
+
+            FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+8));
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 8), GetModuleParams()->TranMode);
             FLASH_WaitForLastOperation(FLASH_MemType_Data);
             FLASH_Lock(FLASH_MemType_Data);
-            
+
+            FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+9));
+            FLASH_ProgramByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + 9), GetModuleParams()->Flash_Write_Done);
+            FLASH_WaitForLastOperation(FLASH_MemType_Data);
+            FLASH_Lock(FLASH_MemType_Data);            
             LED_TOG();
             break;
           case LORA_READ: //
@@ -386,9 +406,9 @@ void lora_process()
             USART_SendData8(USART1,  GetModuleParams()->ADDL);
             while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
             
-            if(GetModuleMode()->CheckBit == 0x00)
+            if(GetModuleParams()->CheckBit == 0x00)
               tmp_76 = 0x00;
-            else if (GetModuleMode()->CheckBit == 0x06)
+            else if (GetModuleParams()->CheckBit == 0x06)
               tmp_76 = 0x01;
             else tmp_76 = 0x02;
             tmp_543 = (unsigned char) (ceil(log2(GetModuleParams()->SerialRate/1200)));
@@ -398,8 +418,8 @@ void lora_process()
             USART_SendData8(USART1,  GetModuleParams()->Channel);
             while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
             
-            USART_SendData8(USART1, (( GetModuleParams()->TranMode<<7) | (( GetModuleParams()->WakeupTime/250-1)<<3)));
-            while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
+           // USART_SendData8(USART1, (( GetModuleParams()->TranMode<<7) | (( GetModuleParams()->WakeupTime/250-1)<<3)));
+           // while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
             LED_TOG();
             break;
           case 0xC3:

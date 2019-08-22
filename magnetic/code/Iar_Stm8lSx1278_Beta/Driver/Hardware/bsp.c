@@ -29,19 +29,20 @@ void GPIO_Initial(void)
     
     /*PB2 PB1 分别代表M0 M1*/
     GPIO_Init(PORT_SX127X_M0, PIN_SX127X_M0, GPIO_Mode_In_PU_No_IT);//GPIO_Mode_In_PU_IT
-    EXTI_SetPinSensitivity(EXTI_Pin_2, EXTI_Trigger_Rising_Falling);
-    GPIO_Init(PORT_SX127X_M1, PIN_SX127X_M1, GPIO_Mode_In_PU_No_IT);
     EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Rising_Falling);
+    GPIO_Init(PORT_SX127X_M1, PIN_SX127X_M1, GPIO_Mode_In_PU_No_IT);
+    EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising_Falling);
+
 
     /*PB0 AUX*/
     GPIO_Init(PORT_SX127X_AUX, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
     GPIO_ResetBits(PORT_SX127X_AUX, PIN_SX127X_AUX);
     /*SX1276数据接收外部中断*/
-    GPIO_Init(GPIOD, GPIO_Pin_1, GPIO_Mode_In_FL_IT);                //dio0
-    EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Rising);
+    GPIO_Init(PORT_SX127X_DIO0, PIN_SX127X_DIO0, GPIO_Mode_In_FL_IT);                //dio0
+    EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Rising);
 
     /*SX1276数据接收外部中断*/
-    GPIO_Init(GPIOC, GPIO_Pin_3, GPIO_Mode_In_FL_IT);                //dio3
+    GPIO_Init(PORT_SX127X_DIO3, PIN_SX127X_DIO3, GPIO_Mode_In_FL_IT);                //dio3
     EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising);
     //EXTI_SetHalfPortSelection(EXTI_HalfPort_D_LSB, ENABLE);
 }
