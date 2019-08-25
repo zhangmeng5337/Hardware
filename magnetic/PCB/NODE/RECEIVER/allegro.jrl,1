@@ -1,0 +1,17 @@
+\t (00:27:59) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:27:59)     Journal start - Mon Jul 29 15:56:44 2019
+\t (00:27:59)         Host=ZM-DELL User=Administrator Pid=50092 CPUs=4
+\t (00:27:59) CmdLine= C:\Cadence\16.6\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:27:59) 
+\d (00:27:59) Design opened: F:/PCB/NODE/Node1.brd
+\i (00:27:59) etchedit 
+\i (00:28:00) zoom out 1 
+\i (00:28:00) setwindow pcb
+\i (00:28:00) zoom out 1.342 -175.875
+\i (00:28:00) trapsize 19085
+\i (00:28:41) open 
+\i (00:28:46) fillin "F:\PCB\ANT\top.brd"
+\i (00:28:46) cd "F:\PCB\ANT"
+\t (00:28:46) Opening existing design...
+\i (00:28:46) trapsize 3568
+\t (00:28:47)     Journal end - Mon Jul 29 15:57:31 2019
