@@ -1,6 +1,6 @@
 Dependencies for Project 'node', Target 'node': (DO NOT MODIFY !)
 F (startup_stm32l433xx.s)(0x5D4428F1)(--cpu Cortex-M4.fp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include--pd "__UVISION_VERSION SETA 523" --pd "_RTE_ SETA 1" --pd "STM32L433xx SETA 1"--list startup_stm32l433xx.lst --xref -o node\startup_stm32l433xx.o --depend node\startup_stm32l433xx.d)
-F (../Src/main.c)(0x5D56A690)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\main.o --omf_browse node\main.crf --depend node\main.d)
+F (../Src/main.c)(0x5D65116F)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\main.o --omf_browse node\main.crf --depend node\main.d)
 I (../Inc/main.h)(0x5D56A5F3)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h)(0x5D56A5F2)
 I (../Inc/stm32l4xx_hal_conf.h)(0x5D56A5F3)
@@ -40,7 +40,7 @@ I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h)(0x5D56A5F2)
 I (..\Inc\Hardware\bsp.h)(0x5D554764)
 I (..\Inc\Driver\sensor.h)(0x5D515512)
-I (..\Inc\Hardware\mag3D3100.h)(0x5D56A5F3)
+I (..\Inc\Hardware\mag3D3100.h)(0x5D63D107)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 F (../Src/stm32l4xx_it.c)(0x5D516179)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\stm32l4xx_it.o --omf_browse node\stm32l4xx_it.crf --depend node\stm32l4xx_it.d)
 I (../Inc/main.h)(0x5D56A5F3)
@@ -1008,7 +1008,7 @@ I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h)(0x5D56A5F2)
-F (..\Src\Hardare\bsp.c)(0x5D56A5F3)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\bsp.o --omf_browse node\bsp.crf --depend node\bsp.d)
+F (..\Src\Hardare\bsp.c)(0x5D63C9D1)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\bsp.o --omf_browse node\bsp.crf --depend node\bsp.d)
 I (../Inc/main.h)(0x5D56A5F3)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h)(0x5D56A5F2)
 I (../Inc/stm32l4xx_hal_conf.h)(0x5D56A5F3)
@@ -1087,7 +1087,7 @@ I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h)(0x5D56A5F2)
 I (..\Inc\Hardware\bsp.h)(0x5D554764)
-F (..\Src\Hardare\mag3D3100.c)(0x5D56A5F3)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\mag3d3100.o --omf_browse node\mag3d3100.crf --depend node\mag3d3100.d)
+F (..\Src\Hardare\mag3D3100.c)(0x5D65116F)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\mag3d3100.o --omf_browse node\mag3d3100.crf --depend node\mag3d3100.d)
 I (../Inc/main.h)(0x5D56A5F3)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h)(0x5D56A5F2)
 I (../Inc/stm32l4xx_hal_conf.h)(0x5D56A5F3)
@@ -1125,7 +1125,7 @@ I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h)(0x5D56A5F2)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h)(0x5D56A5F2)
-I (..\Inc\Hardware\mag3d3100.h)(0x5D56A5F3)
+I (..\Inc\Hardware\mag3d3100.h)(0x5D63D107)
 F (..\Src\Driver\sensor.c)(0x5D56A5F3)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc -I ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I ../Drivers/CMSIS/Include -I ..\Inc\Hardware -I ..\Inc\Driver-I.\RTE\_node-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32L433xx -DUSE_HAL_DRIVER -DSTM32L433xx-o node\sensor.o --omf_browse node\sensor.crf --depend node\sensor.d)
 I (../Inc/main.h)(0x5D56A5F3)
 I (../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h)(0x5D56A5F2)

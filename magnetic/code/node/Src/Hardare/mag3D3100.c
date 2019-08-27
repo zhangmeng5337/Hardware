@@ -378,8 +378,11 @@ u8 cycle_count_read_back[6]={0};
 SPI2_Init();
 HAL_Delay(100);
 
-continuousModeConfig(CMM_ALL_AXIS_ON|DRDY_WHEN_ANY_AXIS_MEASURED|CM_START); 			//设置测试轴,drdy 开启连续模式
-setCycleCount(200);												//设置CCR寄存器200
+setCycleCount(200);	
+continuousModeConfig ( CMM_ALL_AXIS_ON | CMM_OFF );
+
+//continuousModeConfig(CMM_ALL_AXIS_ON|DRDY_WHEN_ANY_AXIS_MEASURED|CM_START); 			//设置测试轴,drdy 开启连续模式
+											//设置CCR寄存器200
 setCMMdatarate(12);
 HAL_Delay(100);	
 

@@ -25,11 +25,11 @@ void bsp_InitI2C(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
 
 	  /*Configure GPIO pin : SCL_ADDR Pin */
-  GPIO_InitStruct.Pin = I2C_ADD1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(I2C_ADD1_GPIO_Port, &GPIO_InitStruct);
+//  GPIO_InitStruct.Pin = I2C_ADD1_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//  HAL_GPIO_Init(I2C_ADD1_GPIO_Port, &GPIO_InitStruct);
   
   GPIO_InitStruct.Pin = RM_POWER_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -37,12 +37,12 @@ void bsp_InitI2C(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(RM_POWER_GPIO_Port, &GPIO_InitStruct);
   
-  GPIO_InitStruct.Pin = I2C_ADD0_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(I2C_ADD0_GPIO_Port, &GPIO_InitStruct);	
-	  /*Configure GPIO pin : I2C_MODE_Pin */	
+//  GPIO_InitStruct.Pin = I2C_ADD0_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//  HAL_GPIO_Init(I2C_ADD0_GPIO_Port, &GPIO_InitStruct);	
+//	  /*Configure GPIO pin : I2C_MODE_Pin */	
   GPIO_InitStruct.Pin = I2C_MODE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -50,26 +50,26 @@ void bsp_InitI2C(void)
   HAL_GPIO_Init(I2C_MODE_GPIO_Port, &GPIO_InitStruct);	
 	
 
-  /*Configure GPIO pin : SCL_Pin */
-  GPIO_InitStruct.Pin = SCL_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SCL_GPIO_Port, &GPIO_InitStruct);
+//  /*Configure GPIO pin : SCL_Pin */
+//  GPIO_InitStruct.Pin = SCL_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+//  GPIO_InitStruct.Pull = GPIO_PULLUP;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//  HAL_GPIO_Init(SCL_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : SDA_Pin */
-  GPIO_InitStruct.Pin = SDA_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
+//  /*Configure GPIO pin : SDA_Pin */
+//  GPIO_InitStruct.Pin = SDA_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+//  GPIO_InitStruct.Pull = GPIO_PULLUP;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//  HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
 
-	HAL_GPIO_WritePin(I2C_ADD0_GPIO_Port, I2C_ADD0_Pin, GPIO_PIN_RESET);	
-	HAL_GPIO_WritePin(I2C_ADD1_GPIO_Port, I2C_ADD1_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(I2C_MODE_GPIO_Port, I2C_MODE_Pin, GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(I2C_ADD0_GPIO_Port, I2C_ADD0_Pin, GPIO_PIN_RESET);	
+//	HAL_GPIO_WritePin(I2C_ADD1_GPIO_Port, I2C_ADD1_Pin, GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(I2C_MODE_GPIO_Port, I2C_MODE_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(RM_POWER_GPIO_Port, RM_POWER_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(SDA_GPIO_Port, SDA_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(SDA_GPIO_Port, SDA_Pin, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
 
 	/* ??????????, ??¦ΛI2C????????????υτ???????? */
 	
