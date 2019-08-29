@@ -112,7 +112,7 @@ u8 SPI_Write_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *datain,u8 lenth)
 		temp=*(datain+bytecount);
 		SPI_WriteByte(SPIx,temp);
 	}
-	CS_H;HAL_Delay(10);
+	CS_H;
 	return 0;
 }
 
@@ -122,7 +122,7 @@ u8 SPI_Read_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *dataout,u8 lenth)
 	u8 temp=0;	
 	
 	CS_L;
-	HAL_Delay(10);
+	
 	temp=0x80+(reg_addr&0x3f); //MSB=1 rw=1-->addr auto increase
 	SPI_WriteByte(SPIx,temp);
 
@@ -131,7 +131,7 @@ u8 SPI_Read_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *dataout,u8 lenth)
 		temp=SPI_WriteByte(SPIx,0);
 		*(dataout+bytecount) = temp;
 	}
-	CS_H ;HAL_Delay(10);
+	CS_H ;
 	return 0;	
 }
 /**
@@ -378,7 +378,7 @@ u8 cycle_count_read_back[6]={0};
 SPI2_Init();
 HAL_Delay(100);
 
-continuousModeConfig(CMM_ALL_AXIS_ON|DRDY_WHEN_ANY_AXIS_MEASURED|CM_START); 			//设置测试轴,drdy 开启连续模式
+continuousModeConfig(CMM_ALL_AXIS_ON|DRDY_WHEN_ALL_AXIS_MEASURED|CM_START); 			//设置测试轴,drdy 开启连续模式
 setCycleCount(200);												//设置CCR寄存器200
 setCMMdatarate(12);
 HAL_Delay(100);	
@@ -402,9 +402,9 @@ void ThreeD3100_magic_GetData(MagData_t* buff)
  char err[5]={0xaa,0x00,0xa1,0xa2,0xa3};
 // Spi2_Init(0);
 // Delay(1000);
-
-while(M3D_DRDY==0);
-
+	extern unsigned char data_ready;
+while(data_ready==0);
+data_ready =0 ;
  CS_H ;
  SPI_Read_M3D3100(SPI2,0x24,temp,9);
  Mag_Data[0]=temp[0]<<16 | temp[1]<<8 | temp[2];			//ned坐标系--前提是所有焊接都是标记位焊接到N
@@ -418,7 +418,7 @@ while(M3D_DRDY==0);
  }
  
  buff->MAG_X=Mag_Data[0]/75;
- buff->MAG_Y=Mag_Data[1]/7;
+ buff->MAG_Y=Mag_Data[1]/75;
  buff->MAG_Z=Mag_Data[2]/75; 
 }
 

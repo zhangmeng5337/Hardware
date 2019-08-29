@@ -114,6 +114,7 @@ void Error_Handler(void);
 #define RM_MOSI_GPIO_Port GPIOA
 #define RM_DRY_Pin GPIO_PIN_4
 #define RM_DRY_GPIO_Port GPIOC
+#define RM_DRY_EXTI_IRQn EXTI4_IRQn
 #define RM3100_MODE_EN_Pin GPIO_PIN_5
 #define RM3100_MODE_EN_GPIO_Port GPIOC
 #define LORA_A_Pin GPIO_PIN_0
