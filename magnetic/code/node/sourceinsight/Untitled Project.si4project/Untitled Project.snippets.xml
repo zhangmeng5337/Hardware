@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <SourceInsightCodeSnippets
 	AppVer="4.00.0084"
@@ -5,3 +6,12 @@
 	>
 	<SnippetList/>
 </SourceInsightCodeSnippets>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<SourceInsightCodeSnippets
+	AppVer="4.00.0084"
+	AppVerMinReader="4.00.0019"
+	>
+	<SnippetList/>
+</SourceInsightCodeSnippets>
+>>>>>>> 0412c084d7e932f9ba6d46840b55bd337352a798

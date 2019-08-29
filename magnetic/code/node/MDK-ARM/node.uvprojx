@@ -10,8 +10,12 @@
       <TargetName>node</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+<<<<<<< HEAD
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
+=======
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+>>>>>>> 0412c084d7e932f9ba6d46840b55bd337352a798
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32L433VCTx</Device>
