@@ -165,13 +165,13 @@ void UsartReceive_IDLE(unsigned char uart_num)
 			//HAL_UART_DMAResume(&huart2);
 			HAL_UART_DMAPause(&huart1);
 			temp=hdma_usart1_rx.Instance->CNDTR;
-			uart1.receive_len=uart1.receive_len+BUFFERSIZE-temp;
+			uart1.receive_len=uart1.receive_len+UARTBUFFERSIZE-temp;
 			uart1.receive_flag=1;
-			uart1.index=uart1.index+BUFFERSIZE-temp;
-			if(uart1.index>=BUFFERSIZE)
-				uart1.index=uart1.index-BUFFERSIZE;
+			uart1.index=uart1.index+UARTBUFFERSIZE-temp;
+			if(uart1.index>=UARTBUFFERSIZE)
+				uart1.index=uart1.index-UARTBUFFERSIZE;
 			HAL_UART_DMAPause(&huart1);
-			HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,BUFFERSIZE);
+			HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,UARTBUFFERSIZE);
 		}
 	}
 	if(uart_num==2)
@@ -187,13 +187,13 @@ void UsartReceive_IDLE(unsigned char uart_num)
 			//HAL_UART_DMAResume(&huart2);
 			HAL_UART_DMAPause(&huart2);
 			temp=hdma_usart2_rx.Instance->CNDTR;
-			uart2.receive_len=uart2.receive_len+BUFFERSIZE-temp;
+			uart2.receive_len=uart2.receive_len+UARTBUFFERSIZE-temp;
 			uart2.receive_flag=1;
-			uart2.index=uart2.index+BUFFERSIZE-temp;
-			if(uart2.index>=BUFFERSIZE)
-				uart2.index=uart2.index-BUFFERSIZE;
+			uart2.index=uart2.index+UARTBUFFERSIZE-temp;
+			if(uart2.index>=UARTBUFFERSIZE)
+				uart2.index=uart2.index-UARTBUFFERSIZE;
 			HAL_UART_DMAPause(&huart2);
-			HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,BUFFERSIZE);
+			HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
 		}
 	}
 	

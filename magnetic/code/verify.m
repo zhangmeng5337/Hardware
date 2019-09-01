@@ -1,7 +1,8 @@
 clear all;
 X=load('C:\Users\zhang\Desktop\log.txt');
+time_step = 0.05;
 len = size(X);
-t= 0:0.02:(len(1)-1)*0.02;
+t= 0:time_step:(len(1)-1)*time_step;
 % subplot(2,2,1);
 % plot(t,X(:,1));
 % xlabel('time/sec')
@@ -22,9 +23,10 @@ sumX =0;
 sumY =0;
 sumZ =0;
 N = 20;
-Mk = X;
-Bk = zeros(len(1),3);
-Fk = zeros(len(1),3);
+Mk = X;%original data
+Bk = zeros(len(1),3);%base line data
+Fk = zeros(len(1),3);%filtered data
+%filter start
 for i = 1:1:len(1)
    if i<N
         for j=1:1: i
@@ -66,13 +68,9 @@ Bk=Fk;
 MAX_THRES = 0;
 Cnt_arr = 0;
 gamma = 1.2;
+%trace base line
 for i = 1:1:len(1)
-   if Mk(i,3)> MAX_THRES
-       Cnt_arr = Cnt_arr +1;
-       if Cnt_arr >= 1
-           car_flag(i,1) = 1;
-       end
-   end
+
    if car_flag == 1
      if i == 1
         Bk(i,1) = Bk(len(1),1);
@@ -117,26 +115,43 @@ end
 % plot(t,X(:,1),'b',t,Fk(:,1),'r','linewidth',3);
 % plot(t,X(:,1),'b',t,Fk(:,1),'r','linewidth',3);
 % plot(t,X(:,1),'b',t,Fk(:,1),'r','linewidth',3);
-subplot(2,2,1);
+subplot(2,3,1);
 plot(t,Mk(:,1),'b',t,Fk(:,1),'r',t,Bk(:,1),'g','linewidth',3);
 legend('原始数据','滤波后','基线');
 xlabel('time/sec')
 ylabel('Manetic/gauss')
 title('X axis gauss')
-subplot(2,2,2);
+subplot(2,3,2);
 plot(t,Mk(:,2),'b',t,Fk(:,2),'r',t,Bk(:,2),'g','linewidth',3);
 legend('原始数据','滤波后','基线');
 xlabel('time/sec')
 title('Y axis gauss')
 ylabel('Manetic/gauss')
-subplot(2,2,3);
-plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g',t,tmp_reg(:,1),'r',t,tmp_reg(:,2),'y','linewidth',3);
-legend('z轴原始数据','z轴滤波后数据','z轴基线','z轴阈值上限','z轴阈值下限');
+subplot(2,3,3);
+plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g','linewidth',3);
+legend('z轴原始数据','z轴滤波后数据','z轴基线');
 xlabel('time/sec')
 ylabel('Manetic/gauss')
 title('Z axis gauss')
-subplot(2,2,4);
-plot(t,car_flag(:,1),'b','linewidth',3);
+subplot(2,3,4);
+plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g','linewidth',3);
+legend('z轴原始数据','z轴滤波后数据','z轴基线');
 xlabel('time/sec')
 ylabel('Manetic/gauss')
 title('Z axis gauss')
+len_base=size(Bk); j=1
+for i=1:1:len_base(1)-N
+    z_tmp = Bk(i:N+i-1,:);
+   ;
+sd_x(j,:) = var(z_tmp(:,:),1);
+j=j+1;
+end
+len_sd=size(sd_x);
+subplot(2,3,5);
+t=0:time_step:time_step*(len_sd(1)-1);
+%plot(t,sd_x(:,1),'b','linewidth',3);
+plot(t,sd_x(:,1),'b',t,sd_x(:,2),'y',t,sd_x(:,3),'r','linewidth',3);
+legend('x轴方差','y轴方差','z轴方差');;
+xlabel('time/sec')
+ylabel('均方差')
+title('均方差')

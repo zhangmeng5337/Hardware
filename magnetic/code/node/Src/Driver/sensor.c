@@ -2,8 +2,10 @@
 #include "bsp.h"
 #include "rm3100.h"
 #include "sensor.h"
+
 		static BOOL flag;
 unsigned int temptime;
+
 float elapsed_time;
 
 /** Temporization functions */
@@ -31,6 +33,8 @@ void reset_timer (void)
   short int ManeticBuffer[3];
 int sensor_process(void)
 {
+	//ThreeD3100_magic_GetData(&dataMd);
+
 //   unsigned char i;
 //    i = getRM3100Status ();
 //    RM3100_init_SM_Operation ();

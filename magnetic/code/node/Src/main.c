@@ -111,6 +111,7 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 MagData_t dataMd;
+uint32_t current_tick,led_tick;
 /* USER CODE END 0 */
 
 /**
@@ -151,6 +152,9 @@ int main(void)
 	// Hardware_Init();
 		HAL_GPIO_WritePin(I2C_MODE_GPIO_Port, I2C_MODE_Pin, GPIO_PIN_RESET);
   ThreeD3100_magic_init();
+  MagneticInit();
+	current_tick = HAL_GetTick();
+				led_tick = HAL_GetTick();
  // ;
   /* USER CODE END 2 */
 
@@ -161,12 +165,25 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	led_ctrl(BLINK);
-	HAL_Delay(1000);
-	// sensor_process();
+	
+	//HAL_Delay(1000);
+//	 sensor_process();
+		if((HAL_GetTick()-led_tick)>=1000)
+		{
+			led_tick = HAL_GetTick();
+      led_ctrl(BLINK);	
+		}   
+//		if((HAL_GetTick()-current_tick)>=50)
+//		{
+//			current_tick = HAL_GetTick();
+//			
+//      printf("  Manetic X:  %d",dataMd.MAG_X);
+//      printf("  Manetic Y:  %d",dataMd.MAG_Y);
+//      printf("  Manetic Z:  %d\n",dataMd.MAG_Z);		
+//		}
+		vehicle_process();
 
 
-		ThreeD3100_magic_GetData(&dataMd);
   }
   /* USER CODE END 3 */
 }

@@ -43,3 +43,4 @@ signoise.run/
 *.pbi
 *.cout
 /Obj/
+*.TMP

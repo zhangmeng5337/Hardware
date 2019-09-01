@@ -256,21 +256,21 @@
 /**
   \brief  Union type to access the Application Program Status Register (APSR).
  */
-typedef union
-{
-  struct
-  {
-    uint32_t _reserved0:16;              /*!< bit:  0..15  Reserved */
-    uint32_t GE:4;                       /*!< bit: 16..19  Greater than or Equal flags */
-    uint32_t _reserved1:7;               /*!< bit: 20..26  Reserved */
-    uint32_t Q:1;                        /*!< bit:     27  Saturation condition flag */
-    uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag */
-    uint32_t C:1;                        /*!< bit:     29  Carry condition code flag */
-    uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag */
-    uint32_t N:1;                        /*!< bit:     31  Negative condition code flag */
-  } b;                                   /*!< Structure used for bit  access */
-  uint32_t w;                            /*!< Type      used for word access */
-} APSR_Type;
+//typedef union
+//{
+//  struct
+//  {
+//    uint32_t _reserved0:16;              /*!< bit:  0..15  Reserved */
+//    uint32_t GE:4;                       /*!< bit: 16..19  Greater than or Equal flags */
+//    uint32_t _reserved1:7;               /*!< bit: 20..26  Reserved */
+//    uint32_t Q:1;                        /*!< bit:     27  Saturation condition flag */
+//    uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag */
+//    uint32_t C:1;                        /*!< bit:     29  Carry condition code flag */
+//    uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag */
+//    uint32_t N:1;                        /*!< bit:     31  Negative condition code flag */
+//  } b;                                   /*!< Structure used for bit  access */
+//  uint32_t w;                            /*!< Type      used for word access */
+//} APSR_Type;
 
 /* APSR Register Definitions */
 #define APSR_N_Pos                         31U                                            /*!< APSR: N Position */
@@ -313,25 +313,25 @@ typedef union
 /**
   \brief  Union type to access the Special-Purpose Program Status Registers (xPSR).
  */
-typedef union
-{
-  struct
-  {
-    uint32_t ISR:9;                      /*!< bit:  0.. 8  Exception number */
-    uint32_t _reserved0:1;               /*!< bit:      9  Reserved */
-    uint32_t ICI_IT_1:6;                 /*!< bit: 10..15  ICI/IT part 1 */
-    uint32_t GE:4;                       /*!< bit: 16..19  Greater than or Equal flags */
-    uint32_t _reserved1:4;               /*!< bit: 20..23  Reserved */
-    uint32_t T:1;                        /*!< bit:     24  Thumb bit */
-    uint32_t ICI_IT_2:2;                 /*!< bit: 25..26  ICI/IT part 2 */
-    uint32_t Q:1;                        /*!< bit:     27  Saturation condition flag */
-    uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag */
-    uint32_t C:1;                        /*!< bit:     29  Carry condition code flag */
-    uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag */
-    uint32_t N:1;                        /*!< bit:     31  Negative condition code flag */
-  } b;                                   /*!< Structure used for bit  access */
-  uint32_t w;                            /*!< Type      used for word access */
-} xPSR_Type;
+//typedef union
+//{
+//  struct
+//  {
+//    uint32_t ISR:9;                      /*!< bit:  0.. 8  Exception number */
+//    uint32_t _reserved0:1;               /*!< bit:      9  Reserved */
+//    uint32_t ICI_IT_1:6;                 /*!< bit: 10..15  ICI/IT part 1 */
+//    uint32_t GE:4;                       /*!< bit: 16..19  Greater than or Equal flags */
+//    uint32_t _reserved1:4;               /*!< bit: 20..23  Reserved */
+//    uint32_t T:1;                        /*!< bit:     24  Thumb bit */
+//    uint32_t ICI_IT_2:2;                 /*!< bit: 25..26  ICI/IT part 2 */
+//    uint32_t Q:1;                        /*!< bit:     27  Saturation condition flag */
+//    uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag */
+//    uint32_t C:1;                        /*!< bit:     29  Carry condition code flag */
+//    uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag */
+//    uint32_t N:1;                        /*!< bit:     31  Negative condition code flag */
+//  } b;                                   /*!< Structure used for bit  access */
+//  uint32_t w;                            /*!< Type      used for word access */
+//} xPSR_Type;
 
 /* xPSR Register Definitions */
 #define xPSR_N_Pos                         31U                                            /*!< xPSR: N Position */
