@@ -95,9 +95,9 @@ typedef __I uint8_t vuc8;   /*!< Read Only */
 #define BP_11    0x03
 
 typedef struct {
-  s32 MAG_X;
-  s32 MAG_Y;
-  s32 MAG_Z;
+  float MAG_X;
+  float MAG_Y;
+  float MAG_Z;
 } MagData_t;
 
 #define SM_ALL_AXIS    0x70 /** Single measument mode */

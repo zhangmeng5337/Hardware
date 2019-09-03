@@ -420,9 +420,9 @@ data_ready =0 ;
  //buff->MAG_Y=Mag_Data[1];
  //buff->MAG_Z=Mag_Data[2];
  
- buff->MAG_X=Mag_Data[0]/75;
- buff->MAG_Y=Mag_Data[1]/75;
- buff->MAG_Z=Mag_Data[2]/75; 
+ buff->MAG_X=Mag_Data[0]/75.0;
+ buff->MAG_Y=Mag_Data[1]/75.0;
+ buff->MAG_Z=Mag_Data[2]/75.0; 
 }
 
 

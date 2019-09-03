@@ -133,17 +133,19 @@ legend('z轴原始数据','z轴滤波后数据','z轴基线');
 xlabel('time/sec')
 ylabel('Manetic/gauss')
 title('Z axis gauss')
-subplot(2,3,4);
-plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g','linewidth',3);
-legend('z轴原始数据','z轴滤波后数据','z轴基线');
-xlabel('time/sec')
-ylabel('Manetic/gauss')
-title('Z axis gauss')
+% subplot(2,3,4);
+% plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g','linewidth',3);
+% legend('z轴原始数据','z轴滤波后数据','z轴基线');
+% xlabel('time/sec')
+% ylabel('Manetic/gauss')
+% title('Z axis gauss')
 len_base=size(Bk); j=1
 for i=1:1:len_base(1)-N
-    z_tmp = Bk(i:N+i-1,:);
-   ;
+    z_tmp = Mk(i:N+i-1,:);
+    zz_tmp = Bk(i:N+i-1,:);
 sd_x(j,:) = var(z_tmp(:,:),1);
+sd_xx(j,:) = var(zz_tmp(:,:),1);
+
 j=j+1;
 end
 len_sd=size(sd_x);
@@ -152,6 +154,18 @@ t=0:time_step:time_step*(len_sd(1)-1);
 %plot(t,sd_x(:,1),'b','linewidth',3);
 plot(t,sd_x(:,1),'b',t,sd_x(:,2),'y',t,sd_x(:,3),'r','linewidth',3);
 legend('x轴方差','y轴方差','z轴方差');;
+xlabel('time/sec')
+ylabel('均方差')
+title('均方差')
+
+
+subplot(2,3,4);
+t=0:time_step:time_step*(len_sd(1)-1);
+%plot(t,sd_x(:,1),'b','linewidth',3);
+plot(t,Mk(1:len_sd(1),8),'g',t,sd_x(:,3),'b','linewidth',3);
+%legend('st Z轴基线方差','st Z轴方差','Z轴基线计算方差','Z轴计算方差');
+% plot(t,Mk(1:len_sd(1),7),'y',t,Mk(1:len_sd(1),8),'g',t,sd_xx(:,3),'r',t,sd_x(:,3),'b','linewidth',3);
+% legend('st Z轴基线方差','st Z轴方差','Z轴基线计算方差','Z轴计算方差');
 xlabel('time/sec')
 ylabel('均方差')
 title('均方差')

@@ -10,18 +10,18 @@
 #define BETA		    0.05
 #define GAMMA			1.25
 #define MIN_PERIOD		200
-short int MAX_THRES=80;
-short int  MIN_THRES=60;
+float MAX_THRES=80;
+float  MIN_THRES=60;
 #define NO_VEHICLE_TIME 100
 #define SAMPLE_TIME     50
 #define SAMPLE_COUNT    40
 #define MIN_CAR_CYCLE    50
 typedef struct{
- s32 M[3][BUFFERSIZE];//original data
- s32 F[3][BUFFERSIZE];//filter data
- s32 B[3][BUFFERSIZE];//base line data
- s32 VehicleVari;
- s32 BaseLineVari;
+ float M[3][BUFFERSIZE];//original data
+ float F[3][BUFFERSIZE];//filter data
+ float B[3][BUFFERSIZE];//base line data
+ float VehicleVari;
+ float BaseLineVari;
 unsigned char index;
 unsigned char Car_Flag;
 short int sTime;
@@ -31,6 +31,8 @@ unsigned char noupdate;
 short int count;
 }magnetic_str;
 void MagneticInit(void);
+void vehicle_process(void);
+
 
 #endif
 
