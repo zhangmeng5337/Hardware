@@ -16,15 +16,15 @@ void module_process(unsigned char mode)
 	      if(uart_read_index<usart_i)
 		{
 		       count = usart_i-uart_read_index;
-			memcopy(pb+2,&UsartReceiveData[uart_read_index],count);
+			memcpy(pb+2,&UsartReceiveData[uart_read_index],count);
 		        uart_read_index = usart_i;
 				
 		  } 	
 		else
 		{     
 		       count = BUFFERSIZE-uart_read_index;
-			memcopy(pb+2,&UsartReceiveData[uart_read_index],count);
-			memcopy(pb+2+BUFFERSIZE-uart_read_index,UsartReceiveData,usart_i);
+			memcpy(pb+2,&UsartReceiveData[uart_read_index],count);
+			memcpy(pb+2+BUFFERSIZE-uart_read_index,UsartReceiveData,usart_i);
 			count = usart_i+count;
 		        uart_read_index = usart_i;
 		  } 

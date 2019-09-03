@@ -23,11 +23,11 @@ Debug/
 *.opj
 *.DRC
 
-*.ewd
-*.ewt
-*.ewp
+#*.ewd
+#*.ewt
+#*.ewp
 settings/
-.edp
+#.edp
 .ewt
 /settings/
 *.out
@@ -44,5 +44,5 @@ signoise.run/
 *.cout
 /Obj/
 *.TMP
-/sourceinsight/
+sourceinsight/
 !/sourceinsight/*.siproj

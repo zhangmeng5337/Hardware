@@ -56,24 +56,34 @@ return:
 	}
 	return sum;
  }
- void Statistic(s32 a[],int n,s32 *aver,s32 *vari,s32 *stdDev){
+ void Statistic(s32 a[],s32 q[],int n,s32 *vari1,s32 *vari2){
  //对长度为n的数组a进行统计，统计其平均值aver、方差vari、标准差stdDev
  int i;
- s32 p[N];
- s32 aver2,sum,stdDev_tmp,vari_tmp,aver_tmp;
- sum=0;
+// s32 p[N];
+ s32 averIns,averBase,sumIns,sumBase,variIns,variBase;
+ 
+ sumBase=0;
+ sumIns=0;
  for(i=0;i<n;i++){
-  sum+=a[i];//累加各元素
+  sumIns+=a[i];//累加各元素
+  sumBase+=q[i];//累加各元素 
   //aver2+=(a[i])*(a[i]);//累加各元素的平方
  }
- aver_tmp=sum/n;//求平均值
- aver3 =aver_tmp*aver_tmp;
- aver2/=n;//求平方的平均值
- vari_tmp=aver2-(aver3);//计算方差
- stdDev_tmp=sqrt(vari_tmp);//计算标准差
- aver = &aver_tmp;
- vari = &vari_tmp;
- stdDev = &stdDev_tmp;
+ averIns=sumIns/n;//求平均值
+ averBase=sumBase/n;//求平均值
+ 
+  for(i=0;i<n;i++){
+  sumIns+=(a[i]-averIns)*(a[i]-averIns);//累加各元素
+  sumBase+=(q[i]-averBase)*(q[i]-averBase);//累加各元素 
+  //aver2+=(a[i])*(a[i]);//累加各元素的平方
+ }
+ variIns =sumIns/n;
+ variBase =sumBase/n;
+ *vari1 = variIns;
+  *vari2 = variBase;
+// vari = &variIns;
+ printf("  variIns:  %d",variIns);
+ printf("  variBase:  %d",variIns); 
  
 }
 void MagneticGet()
@@ -98,6 +108,7 @@ void SmoothFilterInit()
 {
 
 }
+//婊戣啘婊ゆ尝
 void SmoothFilter()
 {
 
@@ -149,7 +160,7 @@ void BaseLineTrace()
 unsigned char vehicle_detect()
 {
 
-    if(fabs(magnetic.VehicleVari- magnetic.BaseLineVari) >= MAX_THRES){
+    if(abs(magnetic.VehicleVari- magnetic.BaseLineVari) >= MAX_THRES){
 	    magnetic.eTime = HAL_GetTick();	
 	    magnetic.elapseTime = magnetic.eTime - magnetic.sTime;
 	    if(magnetic.elapseTime>= MIN_PERIOD){//检测有车时间超过最小周期，避免同一辆车未离开情况
@@ -170,35 +181,56 @@ unsigned char vehicle_detect()
 {
  		MagneticGet();//get magnetic data
 		SmoothFilter();
-		s32 p[N];
-		s32 *aver;
-		s32 *Vari;
+		s32 p[N],q[N];
+//		s32 *aver;
+		s32 *VariIns,*VariBase;
 		unsigned char i,j;
 	  //double *VehicleVari;
 	  //double *BaseLineVari;
-	  s32 *stdDev;
-	j=0;
-		if(magnetic.index>=N)
-		//memcpy(p,&magnetic.M[Z_DIR][N-magnetic.index],N);
-					for(i=(magnetic.index-N);i<magnetic.index;i++)
-						p[j++]=magnetic.M[Z_DIR][i];
+//	    s32 *stdDev;
+	    j=0;
+		if(magnetic.index>=N){
+			for(i=(magnetic.index-N);i<magnetic.index;i++)
+			{
+			    if(i==0)
+					q[j]=magnetic.B[Z_DIR][getIndex()];
+                else
+				   q[j]=magnetic.B[Z_DIR][i-1];
+			
+				p[j++]=magnetic.M[Z_DIR][i];
+			
+			}
+
+		}
+
 		else{
 
 			//memcpy(p,&magnetic.M[Z_DIR][0],magnetic.index+1);
 			for(i=0;i<magnetic.index+1;i++)
+			{	
+			    if(i==0)
+					q[i]=magnetic.B[Z_DIR][getIndex()];
+				else 
+					q[i]=magnetic.B[Z_DIR][i-1];					
 				p[i]=magnetic.M[Z_DIR][i];
+
+			}
 			
-			for(i=0;i<(N-magnetic.index);i++)
-				p[i+magnetic.index+1]=magnetic.M[Z_DIR][BUFFERSIZE+magnetic.index-N+i];			
+			for(i=0;i<(N-magnetic.index);i++){
+				q[i+magnetic.index+1]=magnetic.B[Z_DIR][BUFFERSIZE+magnetic.index-N+i];
+				p[i+magnetic.index+1]=magnetic.M[Z_DIR][BUFFERSIZE+magnetic.index-N+i];
+
+				}
+
+			
 			//memcpy(p+1+magnetic.index,&magnetic.M[Z_DIR][BUFFERSIZE+magnetic.index-N],N-magnetic.index-1);
 		}
-		 printf("  M X:  %d",p[0]);
-		 printf("  M X:  %d",magnetic.M[Z_DIR][N-magnetic.index]);
-		Statistic(p ,N,aver,Vari,stdDev);
-		if(vehicle_detect()==1)
-			magnetic.VehicleVari = *Vari;
-		else 
-			magnetic.BaseLineVari = *Vari;
+		printf("  M X:  %d",*VariIns);
+		printf("  M X:  %d",*VariBase);
+		Statistic(p ,q,N,VariIns,VariBase);
+		vehicle_detect();
+		magnetic.VehicleVari = *VariIns; 
+		magnetic.BaseLineVari = *VariBase;
 		
 		BaseLineTrace();
 		
