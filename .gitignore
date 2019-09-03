@@ -44,3 +44,5 @@ signoise.run/
 *.cout
 /Obj/
 *.TMP
+/sourceinsight/
+!/sourceinsight/*.siproj
