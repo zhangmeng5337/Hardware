@@ -574,6 +574,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\Driver\systme.c</FilePath>
             </File>
+            <File>
+              <FileName>Node_Protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Driver\Node_Protocol.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

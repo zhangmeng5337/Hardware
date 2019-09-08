@@ -43,6 +43,7 @@ Module_Params_stru *GetModuleParams()
 Module_mode_stru *GetModuleMode()
 {
   Module_mode_stru *s;
+  s = &Module_mode;
   return s;
 }
 void flash_operation(uint32_t addr,unsigned char *p,unsigned char size)
@@ -79,7 +80,7 @@ void ModuleInit()
   Module_Params.Flash_Write_Done = 1;  
   Module_Params.AirRate = 2;
   Module_Params.Channel =0x17;
-  Module_Params.SerialRate = 0x02;
+  Module_Params.SerialRate = 0x07;
   Module_Params.WakeupTime = 250;
   
   
@@ -187,25 +188,27 @@ void moduleNormalOperation()
   char i = 0;
   
   if(GetModuleMode()->ConfigureDone) {
-    SX1276_SetRxMode();
-    // if( UsartReceiveFlag == 1 )
+    //SX1276_SetPreambleSize(8);
+   // SX1276_SetRxMode();
+     if( UsartReceiveFlag == 1 )
     {
       //??????????	??????????ú€??????????¨®????????ï…??????????????????ú€???????????????????ï…?????????
-      SX1276_SetPreambleSize(8);								//?????????????????????§»
-      SX1276_SetRxMode();
+      								//?????????????????????§»
+     // SX1276_SetRxMode();
       AUX_CONFIGURING();
       SX1276_SendPacket(UsartReceiveData, (usart_i-1));
       //USART_SendData8(USART1, (usart_i-1));
       //while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
-      for(i = 0; i < (usart_i-1); i++) {
-        USART_SendData8(USART1, UsartReceiveData[i]);
-        while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
-      }
+     // for(i = 0; i < (usart_i-1); i++) {
+     //   USART_SendData8(USART1, UsartReceiveData[i]);
+     //   while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
+    //  }
       AUX_CONFIGURED();
       SX1276_SetPreambleSize(65530);							//???????????????????????????????????????????
       usart_i = 0;
       LED_TOG();
       UsartReceiveFlag = 0;
+	  SX1276_SetRxMode();
     }
     //AUX_CONFIGURED();
     if( ExitInterFlag) {

@@ -29,6 +29,7 @@ unsigned char UsartReceiveData[BUFFERSIZE] = {0}, usart_i = 0, UsartReceiveFlag 
 unsigned char  RtcWakeUp = 0, CadDoneFlag = 0, SleepModeFlag = 0, ExitInterFlag = 0;
 unsigned char sleep_time_count = 0,j = 0;
 unsigned char Tim3_Flag = 0;
+uint32_t count_recv;
 #define SleepTime 2  //2±Ì æ500ms
 //#include "bsp.h"
 
@@ -269,7 +270,7 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
      it is recommended to set a breakpoint on the following instruction.
   */
       ExitInterFlag = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_6);
-
+      count_recv++;
       EXTI_ClearITPendingBit(EXTI_IT_Pin6);
 }
 

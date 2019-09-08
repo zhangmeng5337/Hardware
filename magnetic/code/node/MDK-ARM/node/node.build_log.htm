@@ -22,39 +22,25 @@ Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node.uvprojx
-Project File Date:  09/03/2019
+Project File Date:  09/07/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'node'
-compiling filter.c...
-..\Src\Driver\filter.c(155): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				                                                (magnetic.F[
-_DIR][index_tmp-1])*(
-LPHA);
-..\Src\Driver\filter.c(157): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				                                                magnetic.F[
-_DIR][index_tmp-1]*(
-LPHA);
-..\Src\Driver\filter.c(159): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				                                                (magnetic.F[
-_DIR][index_tmp-1])*(
-LPHA);
-..\Src\Driver\filter.c(163): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	MAX_THRES = (magnetic.B[
-_DIR][magnetic.index])*
-AMMA;
-..\Src\Driver\filter.c(169): warning:  #223-D: function "abs" declared implicitly
-      if(abs(magnetic.VehicleVari- magnetic.BaseLineVari) >= MAX_THRES){
-..\Src\Driver\filter.c(185): warning:  #940-D: missing return statement at end of non-void function "vehicle_detect" 
+compiling Node_Protocol.c...
+..\Src\Driver\Node_Protocol.c(27): warning:  #940-D: missing return statement at end of non-void function "HeaderIdentify" 
   }
-..\Src\Driver\filter.c(245): warning:  #223-D: function "printf" declared implicitly
-  		printf("  MX:  %f",magnetic.M[X_DIR][magnetic.index]);
-..\Src\Driver\filter.c: 7 warnings, 0 errors
+..\Src\Driver\Node_Protocol.c(38): warning:  #940-D: missing return statement at end of non-void function "uartparase" 
+  }
+..\Src\Driver\Node_Protocol.c(70): warning:  #223-D: function "memset" declared implicitly
+  	memset(pbuffer, 0, sizeof(pbuffer));
+..\Src\Driver\Node_Protocol.c(73): warning:  #223-D: function "memcpy" declared implicitly
+  	memcpy(pbuffer,&DataPack.id[0] ,3);
+..\Src\Driver\Node_Protocol.c: 4 warnings, 0 errors
 linking...
-Program Size: Code=22188 RO-data=500 RW-data=84 ZI-data=3844  
+Program Size: Code=24240 RO-data=500 RW-data=108 ZI-data=3884  
 FromELF: creating hex file...
-"node\node.axf" - 0 Error(s), 7 Warning(s).
+"node\node.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -72,7 +58,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.1
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

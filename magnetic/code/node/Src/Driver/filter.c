@@ -1,9 +1,13 @@
 #include "filter.h"
 #include "usystem.h"
 #include "mag3D3100.h"
+#include "Node_Protocol.h"
 //#include "stm32l4xx_hal.h"
 //#include "stm32l4xx_hal.h"
 magnetic_str magnetic;
+uint32_t MIN_PERIOD=500;
+float MAX_THRES=120;
+float  MIN_THRES=60;
  extern  short int ManeticBuffer[3];
  extern MagData_t dataMd;
 unsigned char getIndex()
@@ -160,18 +164,25 @@ void BaseLineTrace()
 
 
 	}//x direction trance END
-	MAX_THRES = (magnetic.B[Z_DIR][magnetic.index])*GAMMA;
-	MIN_THRES = magnetic.B[Z_DIR][magnetic.index]*(GAMMA-1);	
+	//MAX_THRES = (magnetic.B[Z_DIR][magnetic.index])*GAMMA;
+	//MIN_THRES = magnetic.B[Z_DIR][magnetic.index]*(GAMMA-1);	
 }
+float error_tmp;
+
 unsigned char vehicle_detect()
 {
+  if(magnetic.VehicleVari> magnetic.BaseLineVari)
+	error_tmp =  magnetic.VehicleVari- magnetic.BaseLineVari;
+	else
+	error_tmp =   magnetic.BaseLineVari-magnetic.VehicleVari;		
 
-    if(abs(magnetic.VehicleVari- magnetic.BaseLineVari) >= MAX_THRES){
+    if( error_tmp>= MAX_THRES){
 	    magnetic.eTime = HAL_GetTick();	
 	    magnetic.elapseTime = magnetic.eTime - magnetic.sTime;
 	    if(magnetic.elapseTime>= MIN_PERIOD){//检测有车时间超过最小周期，避免同一辆车未离开情况
 						magnetic.Car_Flag = 1;
             magnetic.count = magnetic.count + 1;
+		    magnetic.sTime = HAL_GetTick();
 	    	}
 			else{ 
 				magnetic.noupdate = 1;//同一辆车未离开
@@ -236,7 +247,7 @@ unsigned char vehicle_detect()
 		//printf("  M X:  %f",VariIns);
 		//printf("  M X:  %f",VariBase);
 
-	//	vehicle_detect();
+		vehicle_detect();
 		magnetic.VehicleVari = VariIns; 
 		magnetic.BaseLineVari = VariBase;
 		
@@ -246,16 +257,17 @@ unsigned char vehicle_detect()
 		printf("  MY:  %f",magnetic.M[Y_DIR][magnetic.index]);
 		printf("  MZ:  %f",magnetic.M[Z_DIR][magnetic.index]);
 		
-		//printf("  FX:  %f",magnetic.F[X_DIR][magnetic.index]);
-		//printf("  FY:  %f",magnetic.F[Y_DIR][magnetic.index]);
-		//printf("  FZ:  %f",magnetic.F[Z_DIR][magnetic.index]);
+		printf("  FX:  %f",magnetic.F[X_DIR][magnetic.index]);
+		printf("  FY:  %f",magnetic.F[Y_DIR][magnetic.index]);
+		printf("  FZ:  %f",magnetic.F[Z_DIR][magnetic.index]);
 
 		printf("  BX:  %f",magnetic.B[X_DIR][magnetic.index]);
 		printf("  BY:  %f",magnetic.B[Y_DIR][magnetic.index]);
 		printf("  BZ:  %f",magnetic.B[Z_DIR][magnetic.index]);
 		
 		printf("  BaseLineVari:  %f",magnetic.BaseLineVari);
-		printf("  VehicleVari:  %f\n",magnetic.VehicleVari);
+		printf("  VehicleVari:  %f",magnetic.VehicleVari);
+		printf("  err:  %f\n",error_tmp);
 	//	printf("  Car_Flag:  %d",magnetic.Car_Flag);
 	//	printf("  elapseTime:  %d",magnetic.elapseTime);
 	//	printf("  noupdate:  %d\n",magnetic.noupdate);
@@ -277,6 +289,7 @@ void vehicle_process()
 
 	if(magnetic.Car_Flag == 1)
 	{
-		;
+		magnetic.Car_Flag=0;
+		Transmmit(DYNAMIC_MODE);
 	}
 }

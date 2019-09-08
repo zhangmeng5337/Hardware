@@ -32,5 +32,6 @@ void I2C1_SDA_OUT(void);
 void bsp_InitI2C(void);
 void Hardware_Init(void);
 void UsartReceive_IDLE(unsigned char uart_num);
+uint32_t Get_Battery_Gas_adc(unsigned char count);
 
 #endif

@@ -16,7 +16,7 @@
 #define PIN_SX127X_CSN             GPIO_Pin_4
 
 #define PORT_SX127X_RST            GPIOB
-#define PIN_SX127X_RST             GPIO_Pin_3
+#define PIN_SX127X_RST             GPIO_Pin_0
 
 //#define PORT_SX127X_OSEN           GPIOA
 //#define PIN_SX127X_OSEN            GPIO_Pin_2

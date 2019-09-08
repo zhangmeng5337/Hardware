@@ -112,6 +112,7 @@ static void MX_ADC1_Init(void);
 /* USER CODE BEGIN 0 */
 MagData_t dataMd;
 uint32_t current_tick,led_tick;
+unsigned char uart2_tx_buff[16]={0x00,0x01,0x02,0x03,0x04};
 /* USER CODE END 0 */
 
 /**
@@ -182,7 +183,7 @@ int main(void)
 //      printf("  Manetic Z:  %d\n",dataMd.MAG_Z);		
 //		}
 		vehicle_process();
-
+    
 
   }
   /* USER CODE END 3 */

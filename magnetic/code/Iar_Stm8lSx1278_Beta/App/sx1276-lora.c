@@ -8,6 +8,7 @@
 //#define AddrHigh1 02
 //#define AddrHigh2 03
 
+extern unsigned char  ExitInterFlag ;
 
 unsigned long temp_test = 0, temp_test_1;
 unsigned char temp_test_2[1000] = {0};
@@ -397,7 +398,8 @@ void SX1276_LoRa_SendPacket( INT8U *buffer, INT8U size )
     SX1276_SetSwitchTx(  );
     SX1276_LoRa_SetMode( LORA_MODE_TX );
 
-    while( ! SX1276_READ_DIO0( ) ); //TxDone
+    while( ExitInterFlag==0 ); //TxDone
+    ExitInterFlag= 0 ;
     SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_TXDONE );
     SX1276_LoRa_SetMode( LORA_MODE_STDBY );
 }

@@ -84,7 +84,7 @@ void delay_ms(u16 num)//不是很精确
 
 
 
-
+extern unsigned char  ExitInterFlag ;
 int error_temp = 0;
 void main(void)
 {
@@ -93,10 +93,13 @@ void main(void)
   RF_Initial( );
   while(1)
   {
-    SX1276_SendPacket(UsartReceiveData, 3);
-    SX1276_SetPreambleSize((pream_long[GetModuleParams()->AirRate]*(GetModuleParams()->WakeupTime/250)));   //前导码为972 BW 500kHZ SF为7 则空中传输时间250ms
-    SX1276_SetRxMode();      
-    moduleconfig();
-    lora_process();
+   // if(ExitInterFlag == 0)
+    //{SX1276_SendPacket(UsartReceiveData, 3);
+   // SX1276_SetPreambleSize((pream_long[GetModuleParams()->AirRate]*(GetModuleParams()->WakeupTime/250)));   //前导码为972 BW 500kHZ SF为7 则空中传输时间250ms
+   // SX1276_SetRxMode();      
+   moduleconfig();
+   lora_process();
+   // }
+    //SX1276_SetRxMode(); 
   }
 }

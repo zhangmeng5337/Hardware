@@ -33,6 +33,7 @@
 "node\sensor.o"
 "node\filter.o"
 "node\systme.o"
+"node\node_protocol.o"
 --library_type=microlib --strict --scatter "node\node.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
