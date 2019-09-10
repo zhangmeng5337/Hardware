@@ -20,11 +20,19 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x_it.h"
+#include "stm8l15x_tim3.h"
+#include "sx1276-Lora.h"
 #include "stm8l15x_rtc.h"
-#include "GSM.h"
+#include "RF.h"
+#include "uart1.h"
+unsigned char UsartReceiveData[BUFFERSIZE] = {0}, usart_i = 0, UsartReceiveFlag = 0;
+unsigned char  RtcWakeUp = 0, CadDoneFlag = 0, SleepModeFlag = 0, ExitInterFlag = 0;
+unsigned char sleep_time_count = 0,j = 0;
+unsigned char Tim3_Flag = 0;
+uint32_t count_recv;
+#define SleepTime 2  //2表示500ms
 //#include "bsp.h"
-Uart_Types uart_str;
-unsigned char j=0;
+
 /** @addtogroup STM8L15x_StdPeriph_Examples
   * @{
   */
@@ -38,7 +46,7 @@ unsigned char j=0;
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-
+extern void TimingDelay_Decrement(void);
 
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -116,8 +124,8 @@ INTERRUPT_HANDLER(RTC_CSSLSE_IRQHandler, 4)
      it is recommended to set a breakpoint on the following instruction.
   */
     //RTC_WakeUpCmd(DISABLE);
-  //  RtcWakeUp = 1;
-    //RTC_ClearITPendingBit(RTC_IT_WUT);
+    RtcWakeUp = 1;
+    RTC_ClearITPendingBit(RTC_IT_WUT);
 }
 /**
   * @brief External IT PORTE/F and PVD Interrupt routine.
@@ -209,7 +217,22 @@ INTERRUPT_HANDLER(EXTI3_IRQHandler, 11)
      it is recommended to set a breakpoint on the following instruction.
   */
     
-   // EXTI_ClearITPendingBit(EXTI_IT_Pin3);
+    SX1276_LoRa_SetMode( LORA_MODE_RXC );//CAD检测完成切换成接收模式
+    if( ( SX1276_ReadReg( REG_LR_IRQFLAGS ) & RFLR_IRQFLAGS_CADDETECTED ) == RFLR_IRQFLAGS_CADDETECTED )
+    {
+        sleep_time_count = 0;
+        // Clear Irq
+        //SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_CADDETECTED | RFLR_IRQFLAGS_CADDONE );
+        SX1276_WriteReg( REG_LR_IRQFLAGS, 0xff );
+        CadDoneFlag = 1;
+    } else {
+        //SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_CADDONE );
+        SX1276_WriteReg( REG_LR_IRQFLAGS, 0xff );
+        CadDoneFlag = 0;
+        //SX1276_LoRa_SetMode( LORA_MODE_SLEEP );
+    }
+    SleepModeFlag = 1;
+    EXTI_ClearITPendingBit(EXTI_IT_Pin3);
 }
 
 /**
@@ -246,7 +269,9 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-
+      ExitInterFlag = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_6);
+      count_recv++;
+      EXTI_ClearITPendingBit(EXTI_IT_Pin6);
 }
 
 /**
@@ -330,7 +355,16 @@ INTERRUPT_HANDLER(TIM3_UPD_OVF_TRG_BRK_USART3_TX_IRQHandler, 21)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-
+    TIM3_ClearITPendingBit(TIM3_IT_Update);
+    /*
+    sleep_time_count++;
+    if(sleep_time_count >= SleepTime)
+    {
+        sleep_time_count = 0;
+        ExitInterFlag = 1;
+    }
+    */
+    Tim3_Flag = 1;
 }
 /**
   * @brief Timer3 Capture/Compare /USART3 RX Interrupt routine.
@@ -413,18 +447,15 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
   */
     if(USART_GetFlagStatus(USART1, USART_FLAG_IDLE) != RESET)
     {
-        //uart_str.receive_flag ++;
-		uart_str.receive_flag = 1;
+        UsartReceiveFlag ++;
         USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
     }
-    //UsartReceiveData[0] = GetModuleParams()->ADDH;
-    //UsartReceiveData[1] =  GetModuleParams()->ADDL;
-   uart_str.UsartReceiveData[j] = USART_ReceiveData8(USART1);
+    UsartReceiveData[0] = GetModuleParams()->ADDH;
+    UsartReceiveData[1] =  GetModuleParams()->ADDL;
+    UsartReceiveData[j+2] = USART_ReceiveData8(USART1);
     j++;
-    if(uart_str.receive_flag) {
-     // uart_str.
-      //  usart_i = j ;
-		uart_str.real_index = uart_str.real_index + j;
+    if(UsartReceiveFlag) {
+        usart_i = j + 2;
         j = 0;
     }
 }

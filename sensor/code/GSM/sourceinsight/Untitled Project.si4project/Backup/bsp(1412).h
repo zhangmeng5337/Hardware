@@ -50,7 +50,16 @@
 #define ADC_SENSOR_CHANNEL      ADC_Channel_2
 
 
+typedef struct
+{
+uint32_t 	rx_len;
+uint32_t 	rx_len_var;
+unsigned char 	receive_flag;
+unsigned int      real_index;
+unsigned int      loop_index;
+unsigned char	usartDMA_rxBuf[buffer_size];
 
+}Uart_Types;
 
 
 void SClK_Initial(void);                // 初始化系统时钟，系统时钟 = 16MHZ

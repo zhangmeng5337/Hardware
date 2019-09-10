@@ -450,12 +450,12 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
         UsartReceiveFlag ++;
         USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
     }
-    UsartReceiveData[0] = GetModuleParams()->ADDH;
-    UsartReceiveData[1] =  GetModuleParams()->ADDL;
-    UsartReceiveData[j+2] = USART_ReceiveData8(USART1);
+   // UsartReceiveData[0] = GetModuleParams()->ADDH;
+    //UsartReceiveData[1] =  GetModuleParams()->ADDL;
+    UsartReceiveData[j] = USART_ReceiveData8(USART1);
     j++;
     if(UsartReceiveFlag) {
-        usart_i = j + 2;
+        usart_i = j ;
         j = 0;
     }
 }

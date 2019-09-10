@@ -24,7 +24,6 @@
 #include "GSM.h"
 //#include "bsp.h"
 Uart_Types uart_str;
-unsigned char j=0;
 /** @addtogroup STM8L15x_StdPeriph_Examples
   * @{
   */
@@ -413,18 +412,15 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
   */
     if(USART_GetFlagStatus(USART1, USART_FLAG_IDLE) != RESET)
     {
-        //uart_str.receive_flag ++;
-		uart_str.receive_flag = 1;
+        UsartReceiveFlag ++;
         USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
     }
     //UsartReceiveData[0] = GetModuleParams()->ADDH;
     //UsartReceiveData[1] =  GetModuleParams()->ADDL;
-   uart_str.UsartReceiveData[j] = USART_ReceiveData8(USART1);
+    UsartReceiveData[j] = USART_ReceiveData8(USART1);
     j++;
-    if(uart_str.receive_flag) {
-     // uart_str.
-      //  usart_i = j ;
-		uart_str.real_index = uart_str.real_index + j;
+    if(UsartReceiveFlag) {
+        usart_i = j ;
         j = 0;
     }
 }
