@@ -111,7 +111,7 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 MagData_t dataMd;
-uint32_t current_tick,led_tick;
+uint32_t current_tick,led_tick,current_cnt;
 unsigned char uart2_tx_buff[16]={0x00,0x01,0x02,0x03,0x04};
 /* USER CODE END 0 */
 
@@ -169,10 +169,12 @@ int main(void)
 	
 	//HAL_Delay(1000);
 //	 sensor_process();
-		if((HAL_GetTick()-led_tick)>=1000)
+		if((HAL_GetTick()-led_tick)>=3000)
 		{
 			led_tick = HAL_GetTick();
-      led_ctrl(BLINK);	
+      led_ctrl(BLINK);
+      HAL_UART_Transmit(&huart2, uart2_tx_buff, 5, 1);	
+current_cnt =current_cnt +5;			
 		}   
 //		if((HAL_GetTick()-current_tick)>=50)
 //		{

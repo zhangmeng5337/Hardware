@@ -14,10 +14,7 @@ void index_zero()
 }
 unsigned char HeaderIdentify(unsigned char func)
 {
-
-
-
-       /*if((uart2.read_index+uart2.read_len)>=UARTBUFFERSIZE)
+       if((uart2.read_index+uart2.read_len)>=UARTBUFFERSIZE)
 	  {
 		memcopy(pb,&uart2.receive_buffer[uart2.read_index],UARTBUFFERSIZE-uart2.read_index);
 	  	memcopy(pb+UARTBUFFERSIZE-uart2.read_index,&uart2.receive_buffer[uart2.read_index],
@@ -26,39 +23,21 @@ unsigned char HeaderIdentify(unsigned char func)
 	   else
 	   {
 		memcpy(pb,&uart1.receive_buffer[uart1.read_index],uart1.read_len);
-	   }*/
-	   unsigned char i;
-	   for(i=0;i<uart2.receive_len;i++)
-	   	{
-			if(uart2.receive_buffer[i] == NODE_TO_SERVERH && 
-				uart2.receive_buffer[i+1] == NODE_TO_SERVERL)
-			{
-				if(uart2.receive_buffer[i+5] == func)
-				{
-					return 1;
-				}
-			}
-				
 	   }
-	   return 0;
 }
-
 unsigned char uartparase(unsigned char uartNo,unsigned char func)
 {
-	unsigned char res;
 	if(uartNo == 2)
 	{
 	    if( uart2.receive_flag==1)
 	    	{
 				if(HeaderIdentify(func)==1)
-				   res = 1;
+				   return 1;
 				else
-					res = 0;
+					return 0;
 		}
 	}
-	return res;
 }
-
 DataPack_stru DataPack;
 unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
 {
@@ -95,7 +74,7 @@ void NodeToServer()
 	memcpy(pbuffer,&DataPack.headerH ,1);
 	uTmpLen = uTmpLen+1;
 
-	memcpy(pbuffer+uTmpLen,&DataPack.headerL ,1);
+	memcpy(pbuffer++uTmpLen,&DataPack.headerL ,1);
 	uTmpLen = uTmpLen+1;
 	
 	memcpy(pbuffer+uTmpLen,&DataPack.id[0] ,3);
@@ -162,11 +141,8 @@ void Transmmit(unsigned char func)
 			   NodeToServer();
 			   while(TimingStart(2,0,TIME_OUT,0)!=2)
 				;
-			   if(uartparase(2,func)==1)
-			   	{
-					DataPack.seq_num = 0;
-					break;			  
-			   }
+			   if(uartparase(2))
+				;
 			   else 
 			   	goto loop1;
 				
@@ -197,12 +173,8 @@ void Transmmit(unsigned char func)
 				   NodeToServer();
 				   while(TimingStart(2,0,TIME_OUT,0)!=2)
 					;
-				   if(uartparase(2,func)==1)
-					{
-						DataPack.seq_num = 0;
-						break;			  
-					 }
-
+				   if(uartparase(2))
+					;
 				   else 
 					goto loop2;
 					
@@ -231,12 +203,8 @@ void Transmmit(unsigned char func)
 				   NodeToServer();
 				   while(TimingStart(2,0,TIME_OUT,0)!=2)
 					;
-				   if(uartparase(2,func)==1)
-					{
-						DataPack.seq_num = 0;
-						break;			  
-					 }
-
+				   if(uartparase(2))
+					;
 				   else 
 					goto loop3;
 					

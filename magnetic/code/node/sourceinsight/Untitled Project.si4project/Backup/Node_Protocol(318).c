@@ -12,53 +12,30 @@ void index_zero()
 	//else
 	//	uart1.index = 	uart1.index+1 ;		
 }
-unsigned char HeaderIdentify(unsigned char func)
+unsigned char HeaderIdentify()
 {
-
-
-
-       /*if((uart2.read_index+uart2.read_len)>=UARTBUFFERSIZE)
-	  {
-		memcopy(pb,&uart2.receive_buffer[uart2.read_index],UARTBUFFERSIZE-uart2.read_index);
-	  	memcopy(pb+UARTBUFFERSIZE-uart2.read_index,&uart2.receive_buffer[uart2.read_index],
-			      uart1.read_len+uart2.read_index-UARTBUFFERSIZE);
-	   }
-	   else
-	   {
-		memcpy(pb,&uart1.receive_buffer[uart1.read_index],uart1.read_len);
-	   }*/
-	   unsigned char i;
-	   for(i=0;i<uart2.receive_len;i++)
-	   	{
-			if(uart2.receive_buffer[i] == NODE_TO_SERVERH && 
-				uart2.receive_buffer[i+1] == NODE_TO_SERVERL)
-			{
-				if(uart2.receive_buffer[i+5] == func)
-				{
-					return 1;
-				}
-			}
-				
-	   }
-	   return 0;
+//       if((uart2.read_index+uart2.read_len)>=UARTBUFFERSIZE)
+//	  {
+//		memcopy(pb,&uart2.receive_buffer[uart2.read_index],UARTBUFFERSIZE-uart2.read_index);
+//	  	memcopy(pb+UARTBUFFERSIZE-uart2.read_index,&uart2.receive_buffer[uart2.read_index],
+//			      uart1.read_len+uart2.read_index-UARTBUFFERSIZE);
+//	   }
+//	   else
+//	   {
+//		memcpy(pb,&uart1.receive_buffer[uart1.read_index],uart1.read_len);
+//	   }
 }
-
-unsigned char uartparase(unsigned char uartNo,unsigned char func)
+unsigned char uartparase(unsigned char uartNo)
 {
-	unsigned char res;
 	if(uartNo == 2)
 	{
 	    if( uart2.receive_flag==1)
 	    	{
-				if(HeaderIdentify(func)==1)
-				   res = 1;
-				else
-					res = 0;
+				if(HeaderIdentify()==1)
+				;
 		}
 	}
-	return res;
 }
-
 DataPack_stru DataPack;
 unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
 {
@@ -92,13 +69,8 @@ void NodeToServer()
 	uTmpLen = 0;
 	memset(pbuffer, 0, sizeof(pbuffer));
 
-	memcpy(pbuffer,&DataPack.headerH ,1);
-	uTmpLen = uTmpLen+1;
-
-	memcpy(pbuffer+uTmpLen,&DataPack.headerL ,1);
-	uTmpLen = uTmpLen+1;
 	
-	memcpy(pbuffer+uTmpLen,&DataPack.id[0] ,3);
+	memcpy(pbuffer,&DataPack.id[0] ,3);
 	uTmpLen = uTmpLen+3;
 	
 	memcpy(pbuffer+uTmpLen,&DataPack.func ,1);
@@ -113,11 +85,11 @@ void NodeToServer()
 	memcpy(pbuffer+uTmpLen,&DataPack.payload ,DataPack.len);
 	uTmpLen = uTmpLen+DataPack.len;
 
-	DataPack.checksum = xorCheck(pbuffer+2,uTmpLen-2);
-	memcpy(pbuffer+7,&DataPack.checksum ,1);
+	DataPack.checksum = xorCheck(pbuffer,uTmpLen);
+	memcpy(pbuffer+5,&DataPack.checksum ,1);
 	//uTmpLen = uTmpLen+DataPack.len;
 	
-	HAL_UART_Transmit(&huart2,pbuffer,uTmpLen,10);
+//	HAL_UART_Transmit(&huart2,pbuffer,uTmpLen,10);
 }
 
 
@@ -125,8 +97,6 @@ void NodeToServer()
 
 void nodeParamsInit()
 {
-  DataPack.headerH = NODE_TO_SERVERH;
-  DataPack.headerL = NODE_TO_SERVERL;
   DataPack.id[0] = 0;
   DataPack.id[1] = 0;
   DataPack.id[2] = 0;
@@ -146,9 +116,7 @@ void Transmmit(unsigned char func)
 		loop1:	if(DataPack.seq_num <= 3)
 			{  
 			   i = 0;
-			   //DataPack.headerH = NODE_TO_SERVERH;
-			   //DataPack.headerL = NODE_TO_SERVERL;
-			   //DataPack.id[0] = 
+			   DataPack.id[0] = 
 			   DataPack.func = func;
 
 			   DataPack.checksum = 0;
@@ -162,11 +130,8 @@ void Transmmit(unsigned char func)
 			   NodeToServer();
 			   while(TimingStart(2,0,TIME_OUT,0)!=2)
 				;
-			   if(uartparase(2,func)==1)
-			   	{
-					DataPack.seq_num = 0;
-					break;			  
-			   }
+			   if(uartparase(2))
+				;
 			   else 
 			   	goto loop1;
 				
@@ -197,12 +162,8 @@ void Transmmit(unsigned char func)
 				   NodeToServer();
 				   while(TimingStart(2,0,TIME_OUT,0)!=2)
 					;
-				   if(uartparase(2,func)==1)
-					{
-						DataPack.seq_num = 0;
-						break;			  
-					 }
-
+				   if(uartparase(2))
+					;
 				   else 
 					goto loop2;
 					
@@ -231,12 +192,8 @@ void Transmmit(unsigned char func)
 				   NodeToServer();
 				   while(TimingStart(2,0,TIME_OUT,0)!=2)
 					;
-				   if(uartparase(2,func)==1)
-					{
-						DataPack.seq_num = 0;
-						break;			  
-					 }
-
+				   if(uartparase(2))
+					;
 				   else 
 					goto loop3;
 					

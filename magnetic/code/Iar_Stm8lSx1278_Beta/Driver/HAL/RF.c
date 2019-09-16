@@ -123,7 +123,7 @@ void RF_Initial( )
     SX1276_SetFreq(Module_Params.Channel);				//配置信道为23，即433Hz
   else
     SX1276_SetFreq(23);				//配置信道为23，即433Hz 
-  if( Module_Params.power*2<=14)
+  if( Module_Params.power*2<=14&&Module_Params.power>0)
   {
     SX1276_SetPower(Module_Params.power*2, 1);		  //配置RFO PIN输出，功率20dBm
   }
@@ -182,6 +182,7 @@ void moduleconfig()
   }
   
 }
+uint32_t tx_cnt=0;uint32_t count_recv;
 void moduleNormalOperation()
 {
   INT8U length = 0;
@@ -189,14 +190,15 @@ void moduleNormalOperation()
   
   if(GetModuleMode()->ConfigureDone) {
     //SX1276_SetPreambleSize(8);
-   // SX1276_SetRxMode();
+    SX1276_SetRxMode();
      if( UsartReceiveFlag == 1 )
     {
       //??????????	??????????鷢??????????ó????????飬??????????????????鷢???????????????????飬?????????
-      								//?????????????????????Щ
+      	SX1276_SetPreambleSize(8);							//?????????????????????Щ
      // SX1276_SetRxMode();
       AUX_CONFIGURING();
-      SX1276_SendPacket(UsartReceiveData, (usart_i-1));
+      SX1276_SendPacket(UsartReceiveData, (usart_i));
+      tx_cnt = tx_cnt +usart_i;
       //USART_SendData8(USART1, (usart_i-1));
       //while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
      // for(i = 0; i < (usart_i-1); i++) {
@@ -204,11 +206,12 @@ void moduleNormalOperation()
      //   while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
     //  }
       AUX_CONFIGURED();
-      SX1276_SetPreambleSize(65530);							//???????????????????????????????????????????
+     							//???????????????????????????????????????????
       usart_i = 0;
       LED_TOG();
       UsartReceiveFlag = 0;
-	  SX1276_SetRxMode();
+      SX1276_SetPreambleSize(2000);
+	//  SX1276_SetRxMode(); 
     }
     //AUX_CONFIGURED();
     if( ExitInterFlag) {
@@ -216,6 +219,8 @@ void moduleNormalOperation()
       length = SX1276_ReceivePacket(recv_buffer); 			// ?????????????????
       if( length )
       {
+        
+        count_recv = count_recv+length;
         AUX_CONFIGURING();
         delay_ms(50);
         for(i = 0; i < length; i++) {
@@ -224,14 +229,14 @@ void moduleNormalOperation()
         }
         AUX_CONFIGURED();
         length = 0;
-        LED_TOG();
+        LED_TOG();SX1276_SetRxMode();
       }
     }
   } else {
     AUX_CONFIGURING();
     Uart1_Init(GetModuleParams()->SerialRate, GetModuleParams()->CheckBit);							//????????????
     USART_SendStr("???+???????????\r\n");
-    SX1276_SetPreambleSize(65530);
+    //SX1276_SetPreambleSize(65530);
     GetModuleMode()->ConfigureDone = 1;
     AUX_CONFIGURED();
   }

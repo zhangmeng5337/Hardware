@@ -29,7 +29,7 @@ unsigned char UsartReceiveData[BUFFERSIZE] = {0}, usart_i = 0, UsartReceiveFlag 
 unsigned char  RtcWakeUp = 0, CadDoneFlag = 0, SleepModeFlag = 0, ExitInterFlag = 0;
 unsigned char sleep_time_count = 0,j = 0;
 unsigned char Tim3_Flag = 0;
-uint32_t count_recv;
+
 #define SleepTime 2  //2表示500ms
 //#include "bsp.h"
 
@@ -269,9 +269,9 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-      ExitInterFlag = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_6);
-      count_recv++;
-      EXTI_ClearITPendingBit(EXTI_IT_Pin6);
+      ExitInterFlag = 1;
+      
+        EXTI_ClearITPendingBit(EXTI_IT_Pin6);
 }
 
 /**
@@ -450,12 +450,13 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
         UsartReceiveFlag ++;
         USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
     }
+    
    // UsartReceiveData[0] = GetModuleParams()->ADDH;
     //UsartReceiveData[1] =  GetModuleParams()->ADDL;
     UsartReceiveData[j] = USART_ReceiveData8(USART1);
     j++;
-    if(UsartReceiveFlag) {
-        usart_i = j ;
+    if(UsartReceiveFlag==1) {
+        usart_i = j-1 ;
         j = 0;
     }
 }

@@ -45,18 +45,16 @@ unsigned char HeaderIdentify(unsigned char func)
 
 unsigned char uartparase(unsigned char uartNo,unsigned char func)
 {
-	unsigned char res;
 	if(uartNo == 2)
 	{
 	    if( uart2.receive_flag==1)
 	    	{
 				if(HeaderIdentify(func)==1)
-				   res = 1;
+				   return 1;
 				else
-					res = 0;
+					return 0;
 		}
 	}
-	return res;
 }
 
 DataPack_stru DataPack;
@@ -162,11 +160,8 @@ void Transmmit(unsigned char func)
 			   NodeToServer();
 			   while(TimingStart(2,0,TIME_OUT,0)!=2)
 				;
-			   if(uartparase(2,func)==1)
-			   	{
-					DataPack.seq_num = 0;
-					break;			  
-			   }
+			   if(uartparase(2,func))
+				;
 			   else 
 			   	goto loop1;
 				
@@ -197,12 +192,8 @@ void Transmmit(unsigned char func)
 				   NodeToServer();
 				   while(TimingStart(2,0,TIME_OUT,0)!=2)
 					;
-				   if(uartparase(2,func)==1)
-					{
-						DataPack.seq_num = 0;
-						break;			  
-					 }
-
+				   if(uartparase(2))
+					;
 				   else 
 					goto loop2;
 					
@@ -231,12 +222,8 @@ void Transmmit(unsigned char func)
 				   NodeToServer();
 				   while(TimingStart(2,0,TIME_OUT,0)!=2)
 					;
-				   if(uartparase(2,func)==1)
-					{
-						DataPack.seq_num = 0;
-						break;			  
-					 }
-
+				   if(uartparase(2))
+					;
 				   else 
 					goto loop3;
 					
