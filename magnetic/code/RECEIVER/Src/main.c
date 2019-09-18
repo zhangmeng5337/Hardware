@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "bsp.h"
+#include "Node_Protocol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,7 +51,9 @@ DMA_HandleTypeDef hdma_usart2_rx;
 DMA_HandleTypeDef hdma_usart3_rx;
 
 /* USER CODE BEGIN PV */
-
+extern uart_stru uart1;
+extern uart_stru uart2;
+extern uart_stru uart3;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,7 +106,23 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-
+	__HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
+	HAL_UART_DMAStop(&huart1);
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
+	__HAL_UART_CLEAR_IDLEFLAG(&huart1);
+	HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,UARTBUFFERSIZE);
+	
+	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+	HAL_UART_DMAStop(&huart2);
+	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+	__HAL_UART_CLEAR_IDLEFLAG(&huart2);
+	HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
+	
+	__HAL_UART_DISABLE_IT(&huart3, UART_IT_IDLE);	//使能空闲中断
+	HAL_UART_DMAStop(&huart3);
+	__HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);	//使能空闲中断
+	__HAL_UART_CLEAR_IDLEFLAG(&huart3);
+	HAL_UART_Receive_DMA(&huart3,uart3.receive_buffer,UARTBUFFERSIZE);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -113,6 +132,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		 uart_process();
   }
   /* USER CODE END 3 */
 }
