@@ -35,7 +35,6 @@ typedef struct{
 	unsigned char serverAirRate;
 	unsigned char nodeVersion;
 	unsigned char vbat;
-	unsigned char register_status;
 
 }DataPack_stru;
 void Transmmit(unsigned char func);

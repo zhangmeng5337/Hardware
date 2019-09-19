@@ -5,7 +5,6 @@
 extern UART_HandleTypeDef huart2;
 extern uart_stru uart1;
 extern uart_stru uart2;
-DataPack_stru DataPack;
 void index_zero()
 {
 	if(uart1.index>=UARTBUFFERSIZE)
@@ -34,9 +33,7 @@ unsigned char HeaderIdentify(unsigned char func)
 			if(uart2.receive_buffer[i] == NODE_TO_SERVERH && 
 				uart2.receive_buffer[i+1] == NODE_TO_SERVERL)
 			{
-			
-				if(uart2.receive_buffer[i+5] == func&&uart2.receive_buffer[i+2]==DataPack.id[0]&&
-					uart2.receive_buffer[i+3]==DataPack.id[1]&&uart2.receive_buffer[i+4]==DataPack.id[2])
+				if(uart2.receive_buffer[i+5] == func)
 				{
 					return 1;
 				}
@@ -62,7 +59,7 @@ unsigned char uartparase(unsigned char uartNo,unsigned char func)
 	return res;
 }
 
-
+DataPack_stru DataPack;
 unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
 {
     unsigned char result;
@@ -119,7 +116,7 @@ void NodeToServer()
 	DataPack.checksum = xorCheck(pbuffer+2,uTmpLen-2);
 	memcpy(pbuffer+7,&DataPack.checksum ,1);
 	//uTmpLen = uTmpLen+DataPack.len;
-	if(DataPack.register_status == 1||DataPack.func==REGISTER_CODE)
+	
 	HAL_UART_Transmit(&huart2,pbuffer,uTmpLen,10);
 }
 
@@ -137,7 +134,6 @@ void nodeParamsInit()
   DataPack.serverId[1] = 1; 
   DataPack.server_channel=2;
   DataPack.serverAirRate=3;
-  DataPack.register_status = 0;
 
 }
 void Transmmit(unsigned char func)
@@ -173,8 +169,7 @@ void Transmmit(unsigned char func)
 				   }		
 
 			   }
-			   if(DataPack.seq_num != 0)
-
+			   if(DataPack.seq_num == 0)
 			   	goto loop1;
 
 				
@@ -208,13 +203,12 @@ void Transmmit(unsigned char func)
 					   if(uartparase(2,func)==1)
 						{
 							DataPack.seq_num = 0;
-							DataPack.register_status = 1;
 							break;			  
 					   }
 							   
 				   }
-				   if(DataPack.seq_num != 0)
-					goto loop2;
+				   if(DataPack.seq_num == 0)
+					goto loop1;
 
 					
 				}
@@ -249,8 +243,8 @@ void Transmmit(unsigned char func)
 					   }
 								   
 				   }
-				   if(DataPack.seq_num != 0)
-					goto loop3;
+				   if(DataPack.seq_num == 0)
+					goto loop1;
 
 					
 				}
@@ -261,6 +255,8 @@ void Transmmit(unsigned char func)
 			}
 		     break;
 	}
+    
+
 }
 
 

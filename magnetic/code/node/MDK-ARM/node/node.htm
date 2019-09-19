@@ -3,7 +3,7 @@
 <title>Static Call Graph - [node\node.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image node\node.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Mon Sep 16 20:35:27 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Sep 19 19:49:25 2019
 <BR><P>
 <H3>Maximum Stack Usage =        288 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1010,7 +1010,7 @@ Global Symbols
 <P><STRONG><a name="[2]"></a>HardFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32l4xx_it.o(i.HardFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l433xx.o(RESET)
 </UL>
-<P><STRONG><a name="[e6]"></a>HeaderIdentify</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, node_protocol.o(i.HeaderIdentify))
+<P><STRONG><a name="[e6]"></a>HeaderIdentify</STRONG> (Thumb, 98 bytes, Stack size 0 bytes, node_protocol.o(i.HeaderIdentify))
 <BR><BR>[Called By]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartparase
 </UL>
 
@@ -1037,7 +1037,7 @@ Global Symbols
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32l4xx_it.o(i.NMI_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l433xx.o(RESET)
 </UL>
-<P><STRONG><a name="[c1]"></a>NodeToServer</STRONG> (Thumb, 138 bytes, Stack size 24 bytes, node_protocol.o(i.NodeToServer))
+<P><STRONG><a name="[c1]"></a>NodeToServer</STRONG> (Thumb, 154 bytes, Stack size 24 bytes, node_protocol.o(i.NodeToServer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = NodeToServer &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -1165,7 +1165,7 @@ Global Symbols
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Transmmit
 </UL>
 
-<P><STRONG><a name="[d4]"></a>Transmmit</STRONG> (Thumb, 440 bytes, Stack size 16 bytes, node_protocol.o(i.Transmmit))
+<P><STRONG><a name="[d4]"></a>Transmmit</STRONG> (Thumb, 474 bytes, Stack size 16 bytes, node_protocol.o(i.Transmmit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = Transmmit &rArr; NodeToServer &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_Battery_Gas_adc
