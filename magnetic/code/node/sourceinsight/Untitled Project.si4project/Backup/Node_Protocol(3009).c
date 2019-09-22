@@ -135,8 +135,7 @@ void nodeParamsInit()
   DataPack.id[2] = 0;
   DataPack.serverId[0] = 0;
   DataPack.serverId[1] = 1; 
-  DataPack.server_channelH=2;
-  DataPack.server_channelL=2;
+  DataPack.server_channel=2;
   DataPack.serverAirRate=3;
   DataPack.register_status = 0;
 
@@ -158,9 +157,7 @@ void Transmmit(unsigned char func)
 
 			   DataPack.checksum = 0;
 			   DataPack.payload[i++] = DataPack.seq_num;//tx number
-			   DataPack.payload[i++] = DataPack.server_channelH;//channel	
-			   DataPack.payload[i++] = DataPack.server_channelL;//channel
-
+			   DataPack.payload[i++] = DataPack.server_channel;//channel	
 			   DataPack.payload[i++] = DataPack.tx_period;//tx period
 			   DataPack.payload[i++] = DataPack.car_flag;//car status	
 			   DataPack.payload[i++] = DataPack.car_time;//time on the node 
@@ -201,9 +198,7 @@ void Transmmit(unsigned char func)
 				   DataPack.payload[i++] = DataPack.vbat;//
 				   DataPack.payload[i++] = DataPack.serverId[0];//	
 				   DataPack.payload[i++] = DataPack.serverId[1];//
-				   DataPack.payload[i++] = DataPack.server_channelH;//channel	
-				   DataPack.payload[i++] = DataPack.server_channelL;//channel
-
+				   DataPack.payload[i++] = DataPack.server_channel;//
 				   DataPack.payload[i++] = DataPack.serverAirRate;// 
 				   DataPack.len = i;
 				   DataPack.seq_num  = DataPack.seq_num+ 1;

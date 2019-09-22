@@ -112,7 +112,7 @@ static void MX_ADC1_Init(void);
 /* USER CODE BEGIN 0 */
 MagData_t dataMd;
 uint32_t current_tick,led_tick,current_cnt;
-unsigned char uart2_tx_buff[16]={0x00,0x01,0x02,0x03,0x04};
+unsigned char uart2_tx_buff[16]={0xab,0xab,0x01,0x04,0x03,0x91,0x01,0x90,0x06};
 /* USER CODE END 0 */
 
 /**
@@ -173,7 +173,7 @@ int main(void)
 		{
 			led_tick = HAL_GetTick();
       led_ctrl(BLINK);
-      HAL_UART_Transmit(&huart2, uart2_tx_buff, 5, 1);	
+      HAL_UART_Transmit(&huart2, uart2_tx_buff,9, 1);	
 current_cnt =current_cnt +5;			
 		}   
 //		if((HAL_GetTick()-current_tick)>=50)
@@ -184,7 +184,7 @@ current_cnt =current_cnt +5;
 //      printf("  Manetic Y:  %d",dataMd.MAG_Y);
 //      printf("  Manetic Z:  %d\n",dataMd.MAG_Z);		
 //		}
-		vehicle_process();
+	//	vehicle_process();
     
 
   }

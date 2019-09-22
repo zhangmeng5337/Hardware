@@ -75,9 +75,7 @@ unsigned int WakeupTime ;
 /*参数1*/
 unsigned char ADDH ;
 /*参数2*/
-unsigned char ADDM ;
 unsigned char ADDL ;
-
 /*参数3*/
 unsigned char TranMode;
 

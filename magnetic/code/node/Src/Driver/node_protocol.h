@@ -27,7 +27,8 @@ typedef struct{
 	unsigned char checksum;
 	unsigned char payload[12];	
 	unsigned char seq_num;
-	unsigned char server_channel;
+	unsigned char server_channelH;
+	unsigned char server_channelL;
 	unsigned char tx_period;
 	unsigned char car_flag;
 	unsigned char car_time;

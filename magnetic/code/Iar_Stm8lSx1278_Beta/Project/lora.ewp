@@ -146,7 +146,7 @@
                 </option>
                 <option>
                     <name>IccOptLevel</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IccOptStrategy</name>
@@ -155,7 +155,7 @@
                 </option>
                 <option>
                     <name>IccOptLevelSlave</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IccOptAllowList</name>
@@ -607,7 +607,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$TOOLKIT_DIR$\config\lnkstm8.icf</state>
+                    <state>$TOOLKIT_DIR$\config\lnkstm8l151g6.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>

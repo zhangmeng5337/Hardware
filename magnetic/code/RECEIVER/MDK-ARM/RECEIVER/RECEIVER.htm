@@ -3,7 +3,7 @@
 <title>Static Call Graph - [RECEIVER\RECEIVER.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image RECEIVER\RECEIVER.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Sep 19 20:21:15 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Sep 21 14:09:02 2019
 <BR><P>
 <H3>Maximum Stack Usage =        264 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -709,8 +709,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartparase
 </UL>
 
-<P><STRONG><a name="[9b]"></a>HeaderIdentify2</STRONG> (Thumb, 68 bytes, Stack size 20 bytes, node_protocol.o(i.HeaderIdentify2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = HeaderIdentify2
+<P><STRONG><a name="[9b]"></a>HeaderIdentify2</STRONG> (Thumb, 60 bytes, Stack size 16 bytes, node_protocol.o(i.HeaderIdentify2))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = HeaderIdentify2
 </UL>
 <BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartparase2
 </UL>
@@ -867,7 +867,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[97]"></a>uart_process</STRONG> (Thumb, 374 bytes, Stack size 32 bytes, node_protocol.o(i.uart_process))
+<P><STRONG><a name="[97]"></a>uart_process</STRONG> (Thumb, 384 bytes, Stack size 32 bytes, node_protocol.o(i.uart_process))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = uart_process &rArr; NodeToServer &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -888,7 +888,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[98]"></a>uartparase2</STRONG> (Thumb, 26 bytes, Stack size 4 bytes, node_protocol.o(i.uartparase2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = uartparase2 &rArr; HeaderIdentify2
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = uartparase2 &rArr; HeaderIdentify2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HeaderIdentify2
 </UL>

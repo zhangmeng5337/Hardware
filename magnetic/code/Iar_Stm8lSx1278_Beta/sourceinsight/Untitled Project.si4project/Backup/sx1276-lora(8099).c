@@ -501,38 +501,29 @@ INT8U SX1276_LoRa_GetRxPacket( INT8U *buffer )
         return 0;
     }
     SX1276_WriteReg( REG_LR_FIFOADDRPTR, SX1276_ReadReg( REG_LR_FIFORXCURRENTADDR ) );
-
-	for( i = 0; i < size; i++ )
-	{
-		*buffer ++ = SX1276_ReadFifo( );
-	}
-
-   // if(GetModuleParams()->TranMode)
-//    {
-//        /*地址判断*/
-//        if((GetModuleParams()->ADDH == *(buffer+2)) && (GetModuleParams()->ADDM == *(buffer+3))
-//			&& (GetModuleParams()->ADDL == *(buffer+4)))
-//        {
-//            //RTC_WakeUpCmd(DISABLE);
-//            //sleep_time_count = 0;
-////            size = size -2;
-////            for( i = 0; i < size; i++ )
-////            {
-////                    *buffer ++ = SX1276_ReadFifo( );
-////            }
-//          size=size;
-//        } else {
-//            size = 0;
-//        }
-//    } 
-//    else {
-//        SX1276_ReadFifo();//读取两次fifo 把地址数据先读取出来
-//        SX1276_ReadFifo();
-//        for( i = 0; i < (size - 2); i++ )
-//        {
-//            *buffer ++ = SX1276_ReadFifo( );
-//        }
-   // }
+    if(GetModuleParams()->TranMode)
+    {
+        /*地址判断*/
+        if((GetModuleParams()->ADDH == SX1276_ReadFifo()) && (GetModuleParams()->ADDL == SX1276_ReadFifo()))
+        {
+            //RTC_WakeUpCmd(DISABLE);
+            //sleep_time_count = 0;
+            size = size -2;
+            for( i = 0; i < size; i++ )
+            {
+                    *buffer ++ = SX1276_ReadFifo( );
+            }
+        } else {
+            size = 0;
+        }
+    } else {
+        SX1276_ReadFifo();//读取两次fifo 把地址数据先读取出来
+        SX1276_ReadFifo();
+        for( i = 0; i < (size - 2); i++ )
+        {
+            *buffer ++ = SX1276_ReadFifo( );
+        }
+    }
     return size;
 }
 /*

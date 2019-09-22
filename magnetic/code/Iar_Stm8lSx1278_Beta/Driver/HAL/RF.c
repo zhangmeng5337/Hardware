@@ -26,6 +26,18 @@ INT8U recv_buffer[128]={ 0 }; //receive data buffer
 
 /*参数4*/
 extern unsigned char Channel ; //默认通道为23通道 433MHZ
+unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
+{
+    unsigned char result;
+    unsigned char i;
+	result = 0;
+   for(i=0;i<len;i++)
+   {
+	result = result^pbuffer[i];
+   }
+  return result;
+}
+
 
 POWER_MODE_Stru *GetPowerMode()
 {
@@ -74,8 +86,10 @@ void ModuleInit()
   Module_mode.LoraM0Flag = 0;
   Module_mode.LoraM1Flag = 0;
   Module_Params.CheckBit = 0;  
-  Module_Params.ADDH = 0;
-  Module_Params.ADDL = 0;
+  Module_Params.ADDH = 0x01;
+  Module_Params.ADDM = 0x04;
+
+  Module_Params.ADDL = 0x03;
   
   Module_Params.Flash_Write_Done = 1;  
   Module_Params.AirRate = 2;
@@ -217,6 +231,24 @@ void moduleNormalOperation()
     if( ExitInterFlag) {
       ExitInterFlag = 0;
       length = SX1276_ReceivePacket(recv_buffer); 			// ?????????????????
+      if((GetModuleParams()->ADDH == recv_buffer[2]) && (GetModuleParams()->ADDM ==  recv_buffer[3])
+      && (GetModuleParams()->ADDL ==  recv_buffer[4]))
+      {
+      //RTC_WakeUpCmd(DISABLE);
+      //sleep_time_count = 0;
+      //            size = size -2;
+      //            for( i = 0; i < size; i++ )
+      //            {
+      //                    *buffer ++ = SX1276_ReadFifo( );
+      //            }
+      
+	  if(xorCheck(&recv_buffer[2],length-2)^recv_buffer[7]==recv_buffer[7])
+	  	length=length;
+	  else
+	  	length=0;
+      } else {
+    length = 0;
+  }
       if( length )
       {
         
@@ -385,7 +417,8 @@ void ModuleSleepModeOperation()
         GetModuleParams()->CheckBit = UsartReceiveData[INDEX_CHECK];
         GetModuleParams()->WakeupTime = UsartReceiveData[INDEX_WAKETIME];
         GetModuleParams()->ADDH = UsartReceiveData[INDEX_ADDH];
-        GetModuleParams()->ADDL = UsartReceiveData[INDEX_ADDL];	
+        GetModuleParams()->ADDM = UsartReceiveData[INDEX_ADDL];	
+       GetModuleParams()->ADDL = UsartReceiveData[INDEX_ADDL+1];		
         GetModuleParams()->TranMode = UsartReceiveData[INDEX_MODE]; 
         GetModuleParams()->Flash_Write_Done = 1;
         
