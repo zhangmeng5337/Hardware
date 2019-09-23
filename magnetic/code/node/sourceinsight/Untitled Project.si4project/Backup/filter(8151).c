@@ -292,5 +292,4 @@ void vehicle_process()
 		magnetic.Car_Flag=0;
 		Transmmit(DYNAMIC_MODE);
 	}
-	ReceiverAnalysis();
 }

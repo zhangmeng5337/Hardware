@@ -31,17 +31,14 @@ unsigned char HeaderIdentify(unsigned char func)
 	   unsigned char i;
 	   for(i=0;i<uart2.receive_len;i++)
 	   	{
-			if(uart2.receive_buffer[i] == SERVER_TO_NODEH && 
-				uart2.receive_buffer[i+1] == SERVER_TO_NODEH)
+			if(uart2.receive_buffer[i] == NODE_TO_SERVERH && 
+				uart2.receive_buffer[i+1] == NODE_TO_SERVERL)
 			{
 			
-				if(uart2.receive_buffer[i+2]==DataPack.id[0]&&
+				if(uart2.receive_buffer[i+5] == func&&uart2.receive_buffer[i+2]==DataPack.id[0]&&
 					uart2.receive_buffer[i+3]==DataPack.id[1]&&uart2.receive_buffer[i+4]==DataPack.id[2])
 				{
-				   if(uart2.receive_buffer[i+5] == func)
 					return 1;
-				   else
-				   	return uart2.receive_buffer[i+5];
 				}
 			}
 				
@@ -272,51 +269,7 @@ void Transmmit(unsigned char func)
 }
 
 
-void ReceiverAnalysis()
-{
 
-
-	switch(uartparase(2,1))
-	{
-		case STATIC_MODE:
-		{
-
-		}break;
-		case DYNAMIC_MODE:
-		{
-
-		}break;
-		case REGISTER_CODE:
-		{
-
-		}break;
-		case HEART_BIT:
-		{
-
-		}break;
-		case SET_PARAMS:
-		{
-
-            if(uart2.receive_buffer[6]>=6)
-            {
-				//DataPack.headerH = NODE_TO_SERVERH;
-				//DataPack.headerL = NODE_TO_SERVERL;
-				//DataPack.id[0] = uart2.receive_buffer[2];;
-				//DataPack.id[1] = uart2.receive_buffer[3];;
-				//DataPack.id[2] = uart2.receive_buffer[4];;
-				DataPack.serverId[0] = uart2.receive_buffer[8];
-				DataPack.serverId[1] = uart2.receive_buffer[9]; 
-				DataPack.server_channelH=uart2.receive_buffer[10];
-				DataPack.server_channelL=uart2.receive_buffer[11];
-				DataPack.serverAirRate=uart2.receive_buffer[12];
-				HAL_NVIC_SystemReset();
-			}
-		}break;
-
-
-	}		
-
-}
 
 
 

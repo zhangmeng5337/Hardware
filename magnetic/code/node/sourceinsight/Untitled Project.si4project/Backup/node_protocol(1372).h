@@ -9,7 +9,6 @@
 #define DYNAMIC_MODE				0x91
 #define REGISTER_CODE				0xa8
 #define HEART_BIT					0xa2
-#define SET_PARAMS					0xa3
 
 
 #define NODE_TO_SERVERH				0xAB
@@ -41,7 +40,6 @@ typedef struct{
 
 }DataPack_stru;
 void Transmmit(unsigned char func);
-void ReceiverAnalysis(void);
 
 #endif
 

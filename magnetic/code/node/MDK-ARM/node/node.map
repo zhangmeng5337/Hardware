@@ -911,6 +911,9 @@ Section Cross References
     node_protocol.o(i.NodeToServer) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Transmit) for HAL_UART_Transmit
     node_protocol.o(i.NodeToServer) refers to node_protocol.o(.bss) for DataPack
     node_protocol.o(i.NodeToServer) refers to main.o(.bss) for huart2
+    node_protocol.o(i.ReceiverAnalysis) refers to node_protocol.o(i.uartparase) for uartparase
+    node_protocol.o(i.ReceiverAnalysis) refers to bsp.o(.bss) for uart2
+    node_protocol.o(i.ReceiverAnalysis) refers to node_protocol.o(.bss) for DataPack
     node_protocol.o(i.Transmmit) refers to node_protocol.o(i.NodeToServer) for NodeToServer
     node_protocol.o(i.Transmmit) refers to node_protocol.o(i.uartparase) for uartparase
     node_protocol.o(i.Transmmit) refers to systme.o(i.TimingStart) for TimingStart
@@ -1768,8 +1771,9 @@ Removing Unused input sections from the image.
     Removing node_protocol.o(.rev16_text), (4 bytes).
     Removing node_protocol.o(.revsh_text), (4 bytes).
     Removing node_protocol.o(.rrx_text), (6 bytes).
-    Removing node_protocol.o(i.HeaderIdentify), (108 bytes).
+    Removing node_protocol.o(i.HeaderIdentify), (116 bytes).
     Removing node_protocol.o(i.NodeToServer), (164 bytes).
+    Removing node_protocol.o(i.ReceiverAnalysis), (104 bytes).
     Removing node_protocol.o(i.Transmmit), (504 bytes).
     Removing node_protocol.o(i.index_zero), (20 bytes).
     Removing node_protocol.o(i.nodeParamsInit), (56 bytes).
@@ -1782,7 +1786,7 @@ Removing Unused input sections from the image.
     Removing dfixul.o(.text), (48 bytes).
     Removing cdrcmple.o(.text), (48 bytes).
 
-585 unused section(s) (total 52533 bytes) removed from the image.
+586 unused section(s) (total 52645 bytes) removed from the image.
 
 ==============================================================================
 
@@ -2370,28 +2374,28 @@ Memory Map of the image
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x0000018c   Data   RO            3    RESET               startup_stm32l433xx.o
-    0x0800018c   0x00000000   Code   RO         4199  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x0800018c   0x00000004   Code   RO         4483    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x08000190   0x00000004   Code   RO         4486    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000194   0x00000000   Code   RO         4488    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000194   0x00000000   Code   RO         4490    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000194   0x00000008   Code   RO         4491    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x0800019c   0x00000000   Code   RO         4493    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x0800019c   0x00000000   Code   RO         4495    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x0800019c   0x00000004   Code   RO         4484    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x0800018c   0x00000000   Code   RO         4205  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x0800018c   0x00000004   Code   RO         4489    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x08000190   0x00000004   Code   RO         4492    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000194   0x00000000   Code   RO         4494    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000194   0x00000000   Code   RO         4496    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000194   0x00000008   Code   RO         4497    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x0800019c   0x00000000   Code   RO         4499    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x0800019c   0x00000000   Code   RO         4501    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x0800019c   0x00000004   Code   RO         4490    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x080001a0   0x00000024   Code   RO            4    .text               startup_stm32l433xx.o
-    0x080001c4   0x00000068   Code   RO         4202    .text               mc_w.l(uldiv.o)
-    0x0800022c   0x00000024   Code   RO         4206    .text               mc_w.l(memseta.o)
-    0x08000250   0x000000de   Code   RO         4475    .text               mf_w.l(ddiv.o)
-    0x0800032e   0x00000022   Code   RO         4477    .text               mf_w.l(dflti.o)
-    0x08000350   0x00000038   Code   RO         4481    .text               mf_w.l(d2f.o)
-    0x08000388   0x0000001e   Code   RO         4499    .text               mc_w.l(llshl.o)
-    0x080003a6   0x00000020   Code   RO         4501    .text               mc_w.l(llushr.o)
-    0x080003c6   0x00000000   Code   RO         4505    .text               mc_w.l(iusefp.o)
-    0x080003c6   0x0000006e   Code   RO         4506    .text               mf_w.l(fepilogue.o)
-    0x08000434   0x000000ba   Code   RO         4508    .text               mf_w.l(depilogue.o)
+    0x080001c4   0x00000068   Code   RO         4208    .text               mc_w.l(uldiv.o)
+    0x0800022c   0x00000024   Code   RO         4212    .text               mc_w.l(memseta.o)
+    0x08000250   0x000000de   Code   RO         4481    .text               mf_w.l(ddiv.o)
+    0x0800032e   0x00000022   Code   RO         4483    .text               mf_w.l(dflti.o)
+    0x08000350   0x00000038   Code   RO         4487    .text               mf_w.l(d2f.o)
+    0x08000388   0x0000001e   Code   RO         4505    .text               mc_w.l(llshl.o)
+    0x080003a6   0x00000020   Code   RO         4507    .text               mc_w.l(llushr.o)
+    0x080003c6   0x00000000   Code   RO         4511    .text               mc_w.l(iusefp.o)
+    0x080003c6   0x0000006e   Code   RO         4512    .text               mf_w.l(fepilogue.o)
+    0x08000434   0x000000ba   Code   RO         4514    .text               mf_w.l(depilogue.o)
     0x080004ee   0x00000002   PAD
-    0x080004f0   0x00000024   Code   RO         4514    .text               mc_w.l(init.o)
+    0x080004f0   0x00000024   Code   RO         4520    .text               mc_w.l(init.o)
     0x08000514   0x00000004   Code   RO          224    i.BusFault_Handler  stm32l4xx_it.o
     0x08000518   0x00000010   Code   RO          225    i.DMA1_Channel5_IRQHandler  stm32l4xx_it.o
     0x08000528   0x00000010   Code   RO          226    i.DMA1_Channel6_IRQHandler  stm32l4xx_it.o
@@ -2506,9 +2510,9 @@ Memory Map of the image
     0x08003e20   0x00000108   Code   RO         3700    i.UsartReceive_IDLE  bsp.o
     0x08003f28   0x00000010   Code   RO         3462    i.__NVIC_GetPriorityGrouping  stm32l4xx_hal_cortex.o
     0x08003f38   0x00000028   Code   RO         3463    i.__NVIC_SetPriority  stm32l4xx_hal_cortex.o
-    0x08003f60   0x0000000e   Code   RO         4518    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08003f6e   0x00000002   Code   RO         4519    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08003f70   0x0000000e   Code   RO         4520    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08003f60   0x0000000e   Code   RO         4524    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08003f6e   0x00000002   Code   RO         4525    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08003f70   0x0000000e   Code   RO         4526    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x08003f7e   0x00000002   PAD
     0x08003f80   0x00000020   Code   RO         3861    i.continuousModeConfig  mag3d3100.o
     0x08003fa0   0x00000040   Code   RO         3702    i.led_ctrl          bsp.o
@@ -2516,7 +2520,7 @@ Memory Map of the image
     0x08004074   0x0000013c   Code   RO         3866    i.setCMMdatarate    mag3d3100.o
     0x080041b0   0x0000006c   Code   RO         3868    i.setCycleCount     mag3d3100.o
     0x0800421c   0x00000048   Data   RO         3658    .constdata          system_stm32l4xx.o
-    0x08004264   0x00000020   Data   RO         4516    Region$$Table       anon$$obj.o
+    0x08004264   0x00000020   Data   RO         4522    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00000f40, Max: 0x00010000, ABSOLUTE)

@@ -309,7 +309,7 @@ void ReceiverAnalysis()
 				DataPack.server_channelH=uart2.receive_buffer[10];
 				DataPack.server_channelL=uart2.receive_buffer[11];
 				DataPack.serverAirRate=uart2.receive_buffer[12];
-				HAL_NVIC_SystemReset();
+				//SystemReconfig();
 			}
 		}break;
 
