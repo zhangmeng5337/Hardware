@@ -1,58 +1,70 @@
-/*
-    XXTEA，又称Corrected Block TEA，是XTEA的升级版，设计者是Roger Needham, David Wheeler
-*/
-#include <stdio.h>
+ 
 #include "tea.h"
-
-#define DELTA 0x5aa56aa6
-uint32_t const key[4]= {2,2,3,4};
-
-#define MX (((z>>5^y<<2) + (y>>3^z<<4)) ^ ((sum^y) + (key[(p&3)^e] ^ z)))
-
-void btea(uint32_t *v, int n, uint32_t const key[4])
+unsigned char TEA_key[16]=
 {
-    uint32_t y, z, sum;
-    unsigned p, rounds, e;
-    if (n > 1)            /* Coding Part */
+    0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,
+    0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,0x10
+};
+ 
+unsigned char TX_buffer[32];
+unsigned char RX_buffer[32]; 
+ 
+#define MX                (z>>5^y<<2)+(y>>3^z<<4)^(sum^y)+(k[p&3^e]^z)
+#define DELTA             0x9e3779b9
+#define S_LOOPTIME        1        //5
+#define BLOCK_SIZE        31       //PAGE_SIZE 
+/*
+*key  maybe 128bit =16 Bytes.
+*buf  maybe BLOCK_SIZE
+*/
+ 
+void btea_encrypt( unsigned char* buf, unsigned char* key )
+{
+    unsigned char n=BLOCK_SIZE/4;
+    unsigned long *v=(unsigned long *)buf;
+    unsigned long *k=(unsigned long *)key;
+    unsigned long z = v[n - 1],y = v[0],sum = 0,e ;
+    unsigned char p,q ;
+    // Coding Part
+     
+    q = S_LOOPTIME + 52 / n ;
+    while ( q-- > 0 )
     {
-        rounds = 6 + 52/n;
-        sum = 0;
-        z = v[n-1];
-        do
-        {
-            sum += DELTA;
-            e = (sum >> 2) & 3;
-            for (p=0; p<n-1; p++)
-            {
-                y = v[p+1];
-                z = v[p] += MX;
-            }
-            y = v[0];
-            z = v[n-1] += MX;
-        }
-        while (--rounds);
-    }
-    else if (n < -1)      /* Decoding Part */
-    {
-        n = -n;
-        rounds = 6 + 52/n;
-        sum = rounds*DELTA;
-        y = v[0];
-        do
-        {
-            e = (sum >> 2) & 3;
-            for (p=n-1; p>0; p--)
-            {
-                z = v[p-1];
-                y = v[p] -= MX;
-            }
-            z = v[n-1];
-            y = v[0] -= MX;
-            sum -= DELTA;
-        }
-        while (--rounds);
+        sum += DELTA ;
+        e = sum >> 2 & 3 ;
+        for ( p = 0 ; p < n - 1 ; p++ )
+          y = v[p + 1],
+          z = v[p] += MX;
+          y = v[0] ;
+        z = v[n - 1] += MX;
     }
 }
-
-
-
+ 
+ 
+/*
+*key  maybe 128bit =16Bytes.
+*buf  maybe BLOCK_SIZE
+inbuf == outbuf == buf
+*/
+ 
+void btea_decrpyt( unsigned char* buf, unsigned char* key )
+{
+    unsigned char n=BLOCK_SIZE/4;
+    unsigned long *v=(unsigned long *)buf;
+    unsigned long *k=(unsigned long *)key;
+    unsigned long z = v[n - 1],y = v[0],sum = 0,e ;
+    unsigned char  p,q ;
+     
+    //Decoding Part...
+    q = S_LOOPTIME + 52 / n ;
+    sum = q * DELTA ;
+    while ( sum != 0 )
+    {
+        e = sum >> 2 & 3 ;
+        for ( p = n - 1 ; p > 0 ; p-- )
+            z = v[p - 1],
+            y = v[p] -= MX;
+            z = v[n - 1] ;
+        y = v[0] -= MX;
+        sum -= DELTA ;
+    }}
