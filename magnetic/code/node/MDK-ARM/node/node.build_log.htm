@@ -27,16 +27,40 @@ Project File Date:  09/07/2019
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'node'
+compiling main.c...
+../Src/main.c(158): warning:  #223-D: function "MagneticInit" declared implicitly
+    MagneticInit();
+../Src/main.c(189): warning:  #223-D: function "vehicle_process" declared implicitly
+  		vehicle_process();
+../Src/main.c: 2 warnings, 0 errors
 compiling Node_Protocol.c...
 ..\Src\Driver\Node_Protocol.c(99): warning:  #223-D: function "memset" declared implicitly
   	memset(pbuffer, 0, sizeof(pbuffer));
 ..\Src\Driver\Node_Protocol.c(101): warning:  #223-D: function "memcpy" declared implicitly
   	memcpy(pbuffer,&DataPack.headerH ,1);
 ..\Src\Driver\Node_Protocol.c: 2 warnings, 0 errors
+compiling filter.c...
+..\Src\Driver\filter.c(159): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				                                                (magnetic.F[
+_DIR][index_tmp-1])*(
+LPHA);
+..\Src\Driver\filter.c(161): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				                                                magnetic.F[
+_DIR][index_tmp-1]*(
+LPHA);
+..\Src\Driver\filter.c(163): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				                                                (magnetic.F[
+_DIR][index_tmp-1])*(
+LPHA);
+..\Src\Driver\filter.c(196): warning:  #940-D: missing return statement at end of non-void function "vehicle_detect" 
+  }
+..\Src\Driver\filter.c(256): warning:  #223-D: function "printf" declared implicitly
+  		printf("  MX:  %f",magnetic.M[X_DIR][magnetic.index]);
+..\Src\Driver\filter.c: 5 warnings, 0 errors
 linking...
-Program Size: Code=16528 RO-data=500 RW-data=68 ZI-data=3836  
+Program Size: Code=24716 RO-data=500 RW-data=112 ZI-data=3880  
 FromELF: creating hex file...
-"node\node.axf" - 0 Error(s), 2 Warning(s).
+"node\node.axf" - 0 Error(s), 9 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,7 +78,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.1
-Build Time Elapsed:  00:00:05
+Build Time Elapsed:  00:00:08
 </pre>
 </body>
 </html>

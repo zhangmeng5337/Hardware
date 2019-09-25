@@ -109,26 +109,21 @@ int main(void)
 	__HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart1);
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
-	HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,UARTBUFFERSIZE);
 	__HAL_UART_CLEAR_IDLEFLAG(&huart1);
-
+	HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,UARTBUFFERSIZE);
 	
 	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart2);
 	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
-	HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
 	__HAL_UART_CLEAR_IDLEFLAG(&huart2);
-
+	HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
 	
 	__HAL_UART_DISABLE_IT(&huart3, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart3);
 	__HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);	//使能空闲中断
-	HAL_UART_Receive_DMA(&huart3,uart3.receive_buffer,UARTBUFFERSIZE);
 	__HAL_UART_CLEAR_IDLEFLAG(&huart3);
-
-	 nodeParamsInit();
-
-	/* USER CODE END 2 */
+	HAL_UART_Receive_DMA(&huart3,uart3.receive_buffer,UARTBUFFERSIZE);
+  /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

@@ -73,8 +73,8 @@ unsigned char HeaderIdentify2()
 				uart2.receive_buffer[i+1] == NODE_TO_SERVERL)
 			{
 			
-				if(uart2.receive_buffer[i+8]==DataPack.serverId[0]&&
-					uart2.receive_buffer[i+9]==DataPack.serverId[1])
+				if(uart2.receive_buffer[i+8]==DataPack.payload[0]&&
+					uart2.receive_buffer[i+9]==DataPack.payload[1])
 				{
 				    
 					return uart2.receive_buffer[i+5];
@@ -108,10 +108,10 @@ unsigned char uartparase2(unsigned char uartNo)
 	{
 	    if( uart2.receive_flag==1)
 	    	{
-				return(HeaderIdentify2());
-				 //  res = 1;
-			//	else
-				//	res = 0;
+				if(HeaderIdentify2()==1)
+				   res = 1;
+				else
+					res = 0;
 		}
 	}
 	return res;
@@ -132,7 +132,7 @@ unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
 void NodeToServer()
 {
 
-	unsigned char pbuffer[13],uTmpLen;
+	unsigned char pbuffer[12],uTmpLen;
 	/*DataPack.headerH = NODE_TO_SERVERH;
 
 	DataPack.headerL = NODE_TO_SERVERL;
@@ -175,7 +175,7 @@ void NodeToServer()
 	memcpy(pbuffer+7,&DataPack.checksum ,1);
 	//uTmpLen = uTmpLen+DataPack.len;
 	
-	HAL_UART_Transmit(&huart1,pbuffer,uTmpLen,10);
+	HAL_UART_Transmit(&huart2,pbuffer,uTmpLen,10);
 }
 
 
@@ -183,13 +183,13 @@ void NodeToServer()
 
 void nodeParamsInit()
 {
-  DataPack.headerH = SERVER_TO_NODEH;
-  DataPack.headerL = SERVER_TO_NODEL;
+  DataPack.headerH = NODE_TO_SERVERH;
+  DataPack.headerL = NODE_TO_SERVERL;
   DataPack.id[0] = 0;
   DataPack.id[1] = 0;
   DataPack.id[2] = 0;
-  DataPack.serverId[0] = 0x06;
-  DataPack.serverId[1] = 0; 
+  DataPack.serverId[0] = 0;
+  DataPack.serverId[1] = 1; 
   DataPack.server_channelH=2;
   DataPack.server_channelL=2;	
   DataPack.serverAirRate=3;
@@ -323,27 +323,24 @@ void uart_process()
 			HAL_UART_Transmit(&huart1,uart3.receive_buffer ,uart3.read_len ,10);
 			uart3.read_len = 0;
 	}
-	if(uart1.receive_flag == 1)
-	{
-				  uart1.receive_flag = 0;
-			HAL_UART_Transmit(&huart2,uart1.receive_buffer ,uart1.read_len ,10);
-						uart1.read_len = 0;
-	}	
 	if(uart2.receive_flag == 1)
 	{
+				  uart2.receive_flag = 0;
+			HAL_UART_Transmit(&huart1,uart2.receive_buffer ,uart2.read_len ,10);
+						uart2.read_len = 0;
+	}	
+	if(uart1.receive_flag == 1)
+	{
 			unsigned char ret;
-			
-			ret = uartparase2(2);
-		uart2.receive_flag = 0;
+			uart1.receive_flag = 0;
+			ret = uartparase2(1);
 			if(ret)
 			{
 				switch(ret)
 				{
 					case STATIC_MODE:break;
 					case DYNAMIC_MODE:
-					{
-						loop1:	
-						if(DataPack.seq_num <= 3)
+						loop1:	if(DataPack.seq_num <= 3)
 						{  
 						i = 0;
 						//DataPack.headerH = NODE_TO_SERVERH;
@@ -364,21 +361,20 @@ void uart_process()
 						NodeToServer();
 						while(TimingStart(2,0,TIME_OUT,0)!=2)
 						;
-						//if(uartparase(2,DYNAMIC_MODE)==1)
-						//{
-						//	DataPack.seq_num = 0;
-						//	break;			  
-						//}
-						//else 
-						//	goto loop1;
+						if(uartparase(2,DYNAMIC_MODE)==1)
+						{
+							DataPack.seq_num = 0;
+							break;			  
+						}
+						else 
+							goto loop1;
 
 						}
 						else
 						{
 							DataPack.seq_num = 0;
 						}
-						
-					}
+
 					break;
 
 					case REGISTER_CODE:
@@ -437,14 +433,14 @@ void uart_process()
 							NodeToServer();
 							while(TimingStart(2,0,TIME_OUT,0)!=2)
 							;
-							//if(uartparase(2,HEART_BIT)==1)
-							//{
-							//	DataPack.seq_num = 0;
-							//	break;			  
-							///}
+							if(uartparase(2,HEART_BIT)==1)
+							{
+								DataPack.seq_num = 0;
+								break;			  
+							}
 
-							//else 
-							//	goto loop3;
+							else 
+								goto loop3;
 						}
 						else
 						{
@@ -454,12 +450,11 @@ void uart_process()
 					break;
 				}
 
-				//HAL_UART_Transmit(&huart2,uart1.receive_buffer ,uart1.read_len ,10);
-				//HAL_UART_Transmit(&huart3,uart1.receive_buffer ,uart1.read_len ,10);
-				
+				HAL_UART_Transmit(&huart2,uart1.receive_buffer ,uart1.read_len ,10);
+				HAL_UART_Transmit(&huart3,uart1.receive_buffer ,uart1.read_len ,10);
+				uart1.read_len = 0;
 
 			}
-			uart2.read_len = 0;
 
 	}
 	

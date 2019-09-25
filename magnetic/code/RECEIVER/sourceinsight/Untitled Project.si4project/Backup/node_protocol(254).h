@@ -41,7 +41,5 @@ typedef struct{
 }DataPack_stru;
 void Transmmit(unsigned char func);
 void uart_process(void);
-void nodeParamsInit(void);
-
 #endif
 

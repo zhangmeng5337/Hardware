@@ -186,7 +186,7 @@ current_cnt =current_cnt +5;
 //      printf("  Manetic Y:  %d",dataMd.MAG_Y);
 //      printf("  Manetic Z:  %d\n",dataMd.MAG_Z);		
 //		}
-	//	vehicle_process();
+		vehicle_process();
     
 
   }
