@@ -10,7 +10,7 @@
 #define ADC_RATIO              ((uint16_t) 806) /*ADC_RATIO = ( 3.3 * 1000 * 1000)/4095 */
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint32_t ADCdata = 0;
+uint16_t ADCdata = 0;
 void delay_ms(uint32_t num)//不是很精确
 {
   u16 i = 0;
@@ -214,7 +214,7 @@ void adcInit(ADC_Channel_TypeDef num)
   
   
 }
-uint32_t adcGet(ADC_Channel_TypeDef num)
+uint16_t adcGet(ADC_Channel_TypeDef num)
 {
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */

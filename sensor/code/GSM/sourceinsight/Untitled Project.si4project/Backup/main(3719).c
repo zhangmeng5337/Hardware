@@ -4,7 +4,6 @@
 #include "bsp.h"
 #include "stm8l15x_it.h"
 #include "GSM.h"
-#include "Protocal.h"
 
 
 
@@ -24,7 +23,7 @@ void main(void)
     delay_ms(1000);
     tick ++;
   SIMCOM_Register_Network();
-  module_process(); 
+	//  adcGet(ADC_BAT_CHANNEL);
 
   }
 }

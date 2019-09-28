@@ -10,15 +10,7 @@
 #define ADC_RATIO              ((uint16_t) 806) /*ADC_RATIO = ( 3.3 * 1000 * 1000)/4095 */
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint32_t ADCdata = 0;
-void delay_ms(uint32_t num)//不是很精确
-{
-  u16 i = 0;
-  while(num--)
-  {
-    for (i=0; i<2654; i++);
-  }
-}
+uint16_t ADCdata = 0;
 
 void GPIO_Initial(void)
 {
@@ -30,60 +22,13 @@ void GPIO_Initial(void)
   
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
   GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_Out_PP_High_Fast ); 
-  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
+  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_Low_Fast );     
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
   
 }
 
 
-void GSM_HardwareInit(unsigned char flag)
-{
-   
-    if(flag == ON)
-    {
-		GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-		delay_ms(2000);
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-delay_ms(2000);
-delay_ms(2000);
-delay_ms(2000);
-delay_ms(2000);
-delay_ms(2000);
-delay_ms(2000);
-delay_ms(2000);
-	}
-	else
-	{
-		GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		delay_ms(2000);
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-		delay_ms(2000);
-		delay_ms(2000);
-
-	}
-
-}
-void Sensor_HardwareInit(unsigned char flag)
-{
-
- 
-    if(flag == ON)
-    {
-		GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
-
-
-	}
-	else
-	{
-		GPIO_ResetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
-
-
-	}
-
-}
 
 void RTC_Config(uint16_t time) 
 {
@@ -99,28 +44,26 @@ void RTC_Config(uint16_t time)
   RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
   RTC_WakeUpCmd(ENABLE);
 }
-
-
 extern u8 CurrentMode ;
 void EnterStopMode(void) 
 {
   disableInterrupts(); 
-//  SX1276_LoRa_SetMode( LORA_MODE_SLEEP );//lora enter sleep mode
-//  
-//  //GPIOA
-//  GPIO_Init( PORT_SX127X_TX_CTRL, PIN_SX127X_RX_CTRL|PIN_SX127X_TX_CTRL, GPIO_Mode_Out_PP_Low_Slow ); //lora tx and rx enbale signals 
-//  GPIO_Init( GPIOA, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Slow );
-//  GPIO_Init( GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Slow );
-//  
-//  //GPIOB
-//  GPIO_Init(GPIOB, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_Init(GPIOB, PIN_SX127X_M0, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_Init(GPIOB, PIN_SX127X_M1, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_SetBits( PORT_SX127X_CSN, PIN_SX127X_CSN ); 
-//  
-//  //GPIOC
-//  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
-//  GPIO_Init( PORT_SX127X_DIO3, GPIO_Pin_0|PIN_SX127X_DIO3|PIN_SX127X_DIO4|PIN_SX127X_DIO5, GPIO_Mode_Out_PP_Low_Slow );  
+  SX1276_LoRa_SetMode( LORA_MODE_SLEEP );//lora enter sleep mode
+  
+  //GPIOA
+  GPIO_Init( PORT_SX127X_TX_CTRL, PIN_SX127X_RX_CTRL|PIN_SX127X_TX_CTRL, GPIO_Mode_Out_PP_Low_Slow ); //lora tx and rx enbale signals 
+  GPIO_Init( GPIOA, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Slow );
+  GPIO_Init( GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Slow );
+  
+  //GPIOB
+  GPIO_Init(GPIOB, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
+  GPIO_Init(GPIOB, PIN_SX127X_M0, GPIO_Mode_Out_PP_Low_Slow);
+  GPIO_Init(GPIOB, PIN_SX127X_M1, GPIO_Mode_Out_PP_Low_Slow);
+  GPIO_SetBits( PORT_SX127X_CSN, PIN_SX127X_CSN ); 
+  
+  //GPIOC
+  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
+  GPIO_Init( PORT_SX127X_DIO3, GPIO_Pin_0|PIN_SX127X_DIO3|PIN_SX127X_DIO4|PIN_SX127X_DIO5, GPIO_Mode_Out_PP_Low_Slow );  
   
   //GPIOD
   GPIO_Init( GPIOD, GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_Out_PP_Low_Slow );   
@@ -159,11 +102,8 @@ void HardwareInit()
   SystemClock_Init();     // 系统时钟初始化
   GPIO_Initial(); 
   Uart1_Init(9600);// 初始化GPIO
- 
+  enableInterrupts();
   LED_Init();             //调试LED初始化
-GSM_HardwareInit(ON);
-  Sensor_HardwareInit(OFF);
- enableInterrupts();
 }
 void LED_Init(void)
 {
@@ -214,7 +154,7 @@ void adcInit(ADC_Channel_TypeDef num)
   
   
 }
-uint32_t adcGet(ADC_Channel_TypeDef num)
+uint16_t adcGet(ADC_Channel_TypeDef num)
 {
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
@@ -228,7 +168,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
   ADCdata = (uint32_t)((uint32_t)ADCdata * (uint32_t)ADC_RATIO);
   /* Waiting Delay 200ms */
-  delay_ms(200);
+  Delay(200);
   
   /* DeInitialize ADC1 */
   ADC_DeInit(ADC1);

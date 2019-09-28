@@ -9,6 +9,7 @@
 #define _BSP_H_
 #include "stm8l15x.h"
 #include "STM8l15x_conf.h"
+#include "sx1276.h"
 #include "mytypedef.h"
 #include "STM8l15x_spi.h"
 #include "stm8l15x_tim3.h"
@@ -51,19 +52,16 @@
 
 
 
-void GSM_HardwareInit(unsigned char flag);
 
-void RTC_Config(uint16_t time);
-
+void SClK_Initial(void);                // 初始化系统时钟，系统时钟 = 16MHZ
 void GPIO_Initial(void);                // 初始化通用IO端口
-
+void SPI_Initial(void);                 // 初始化SPI
+INT8U SPI_ExchangeByte(INT8U input);    // 通过SPI进行数据交换
 void HardwareInit(void);
 void LED_Init(void);
 void USART_SendStr(unsigned char *Str);
 void USART_SenByte(unsigned char *Str,unsigned char len) ;
-uint32_t adcGet(ADC_Channel_TypeDef num);
-void delay_ms(uint32_t num);//不是很精确
-
+uint16_t adcGet(ADC_Channel_TypeDef num);
 #endif //_BSP_H_
 
 /*===========================================================================

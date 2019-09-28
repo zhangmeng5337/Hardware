@@ -5,14 +5,11 @@
 #include "bsp.h"
 #include "string.h"
 #include "GSM.h"
-#include "stdlib.h"
-
 #define Network_Thres    30
 
 
 
-
-unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"106.13.36.241\",6000\r";
+unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"zhangmeng5337.iask.in\",15969\r";
 //unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"www. baidu.com.cn\",80\r";
 
 
@@ -25,31 +22,46 @@ extern Uart_Types uart_str;
 
 void reconfig_IP(unsigned char *pbuff,unsigned int len)
 {
-  unsigned int i;
-  for(i=0;i<len;len++)
-  {
-    Establish_TCP_Connection[i]=pbuff[i];
-  }
+	unsigned int i;
+	for(i=0;i<len;len++)
+	{
+	 Establish_TCP_Connection[i]=pbuff[i];
+	}
 }
+/************************************************************
+Function:  init LTE Module
+Name:      LTE_M_init()
+Parameter: no
+************************************************************/
+void LTE_M_init()
+{
 
+	
+
+	LTE_hw_init();
+	LTE_power_on();
+	LET_gps_power_ctrl(ON);
+	LET_power_ctrl();
+	LET_reset();
+}
 //找出temp在target的位置
 int FindIndex(char *target,char temp)
 {
-  int i= 0;
-  if(target ==NULL)
-  {
-    //  printf("搜索词为空...");
-    return 0;
-  }
-  for(i = strlen(target) -1; i>=0; i--)
-  {
-    if(target[i] == temp)
-    {
-      return i;
-    }
-  }
-  return -1;  //未找到字符匹配位置
-  
+	int i= 0;
+	if(target ==NULL)
+	{
+		//  printf("搜索词为空...");
+		return 0;
+	}
+	for(i = strlen(target) -1; i>=0; i--)
+	{
+		if(target[i] == temp)
+		{
+			return i;
+		}
+	}
+	return -1;  //未找到字符匹配位置
+
 }
 /************************************************************
 Function:  string match or not that return froom LTE module
@@ -58,114 +70,112 @@ Parameter: 1:string match, 0: string not match
 ************************************************************/
 unsigned char AT_cmd_ack(unsigned char *src,unsigned char *ack)
 {
-  int i= 0,j = 0;
-  int srclen = strlen((const char *)src);
-  int tarlen=strlen((const char *)ack);
-  int temp  =0;
-  int index = -1;
-  if(src ==NULL || ack ==NULL)
-  {
-    return 0;
-  }
-  
-  while(i<srclen)
-  {
-    //循环条件
-    if(src[i] == ack[j])
-    {
-      if(j==tarlen-1)
-      {
-        // printf("匹配成功...");
-        return 1;
-      }
-      i++;
-      j++;
-    }
-    else
-    {
-      //发现不相等位置
-      temp = tarlen - j + i;  //字符串后面的第一个字符位置
-      index = FindIndex((char *)ack,src[temp]);
-      if(index==-1)
-      {
-        //未找到位置，后移
-        i = temp+1;
-        j = 0;
-      }
-      else
-      {
-        //找到位置
-        i = temp-index;
-        j = 0;
-      }
-    }
-  }
-  //  printf("匹配失败..");
-  return 0;
+	int i= 0,j = 0;
+	int srclen = strlen((const char *)src);
+	int tarlen=strlen((const char *)ack);
+	int temp  =0;
+	int index = -1;
+	if(src ==NULL || ack ==NULL)
+	{
+		return 0;
+	}
+
+	while(i<srclen)
+	{
+		//循环条件
+		if(src[i] == ack[j])
+		{
+			if(j==tarlen-1)
+			{
+				// printf("匹配成功...");
+				return 1;
+			}
+			i++;
+			j++;
+		}
+		else
+		{
+			//发现不相等位置
+			temp = tarlen - j + i;  //字符串后面的第一个字符位置
+			index = FindIndex((char *)ack,src[temp]);
+			if(index==-1)
+			{
+				//未找到位置，后移
+				i = temp+1;
+				j = 0;
+			}
+			else
+			{
+				//找到位置
+				i = temp-index;
+				j = 0;
+			}
+		}
+	}
+//  printf("匹配失败..");
+	return 0;
 }
 
 
 unsigned char at_cmd_ok(unsigned char *src)
 {
-  if(AT_cmd_ack(src,(unsigned char *)Respond_OK)==1)//reset
-  {
-    return 1;
-  }
-  return 0;
-  
+	if(AT_cmd_ack(src,(unsigned char *)Respond_OK)==1)//reset
+	{
+		return 1;
+	}
+	return 0;
+
 }
 unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,unsigned int waittime)
 {
-  unsigned char res=0;
-  if(*p!=NULL)
-    Send_Comm((unsigned char*)p,strlen((const char*)p));
-  
-  if(waittime)		//需要等待应答
-  {
-    while(--waittime)	//等待倒计时
-    {
-      //delay_ms(10);
-      if(uart_str.receive_flag==1)//接收到期待的应答结果
-      {
-        if(AT_cmd_ack(uart_str.UsartReceiveData,(unsigned char*)ack))
-        {
-          
-          uart_str.real_index = 0;
-          res=1;
-          break;//得到有效数据
-        }
-        uart_str.real_index = 0;
-      }
-    }
-    if(waittime==0)res=0;
-  }
-  uart_str.receive_flag=0;
-  return res;
-  
+	unsigned char res=0;
+	if(*p!=NULL)
+		Send_Comm((unsigned char*)p,strlen((const char*)p));
+
+	if(waittime)		//需要等待应答
+	{
+		while(--waittime)	//等待倒计时
+		{
+			//delay_ms(10);
+			if(uart_str.receive_flag==1)//接收到期待的应答结果
+			{
+				if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)ack))
+				{
+					uart_str.receive_flag=0;
+					res=1;
+					break;//得到有效数据
+				}
+
+			}
+		}
+		if(waittime==0)res=0;
+	}
+	return res;
+
 }
 unsigned char  SIMCOM_Get_InitReady_Staus(unsigned int waittime)
 {
-  unsigned char res=0;
-  //Send_Comm((const char*)Normal_Mode,strlen((const char*)Normal_Mode));
-  if(waittime)		//需要等待应答
-  {
-    while(--waittime)	//等待倒计时
-    {
-      delay_ms(10);
-      if(uart_str.receive_flag==1)//接收到期待的应答结果
-      {
-        if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)Respond_Start))
-        {
-          uart_str.receive_flag=0;
-          res=1;
-          break;//得到有效数据
-        }
-      }
-    }
-    if(waittime==0)
-      res=0;
-  }
-  return res;
+	unsigned char res=0;
+	//Send_Comm((const char*)Normal_Mode,strlen((const char*)Normal_Mode));
+	if(waittime)		//需要等待应答
+	{
+		while(--waittime)	//等待倒计时
+		{
+			delay_ms(10);
+			if(uart_str.receive_flag==1)//接收到期待的应答结果
+			{
+				if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)Respond_Start))
+				{
+					uart_str.receive_flag=0;
+					res=1;
+					break;//得到有效数据
+				}
+			}
+		}
+		if(waittime==0)
+			res=0;
+	}
+	return res;
 }
 
 //unsigned char  SIMCOM_Get_Echo_Staus(unsigned int waittime)
@@ -398,31 +408,31 @@ unsigned int tmpp;
 //}
 signed char  SIMCOM_Get_NetOpen_Staus(unsigned int waittime)
 {
-  unsigned char res=0;
-  Send_Comm((unsigned char*)Net_Open,strlen((const char*)Net_Open));
-  
-  if(waittime)		//需要等待应答
-  {
-    while(--waittime)	//等待倒计时
-    {
-      delay_ms(10);
-      if(uart_str.receive_flag==1)//接收到期待的应答结果
-      {
-        if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)Respond_Network_Open2)||
-           AT_cmd_ack(&uart_str.UsartReceiveData [uart_str.real_index],(unsigned char*)Respond_Network_Open))
-        {
-          res=1;
-          uart_str.receive_flag=0;
-          break;//得到有效数据
-          
-        }
-        
-      }
-      if(waittime==0)res=0;
-    }
-    
-  }
-  return res;
+	unsigned char res=0;
+	Send_Comm((unsigned char*)Net_Open,strlen((const char*)Net_Open));
+
+	if(waittime)		//需要等待应答
+	{
+		while(--waittime)	//等待倒计时
+		{
+			delay_ms(10);
+			if(uart_str.receive_flag==1)//接收到期待的应答结果
+			{
+				if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)Respond_Network_Open2)||
+				        AT_cmd_ack(&uart_str.UsartReceiveData [uart_str.real_index],(unsigned char*)Respond_Network_Open))
+				{
+					res=1;
+					uart_str.receive_flag=0;
+					break;//得到有效数据
+
+				}
+
+			}
+			if(waittime==0)res=0;
+		}
+
+	}
+			return res;
 }
 //signed char  SIMCOM_Get_NetClose_Staus(unsigned int waittime)
 //{
@@ -508,32 +518,32 @@ signed char  SIMCOM_Get_NetOpen_Staus(unsigned int waittime)
 //}
 signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
 {
-  unsigned char res=0;
-  //Send_Comm((const char*)Establish_TCP_Connection,strlen((const char*)Establish_TCP_Connection));
-  
-  if(waittime)		//需要等待应答
-  {
-    while(--waittime)	//等待倒计时
-    {
-      //delay_ms(5);
-      if(uart_str.receive_flag==1)//接收到期待的应答结果
-      {
-        if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)TCP_Closed)
-           ||AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)Respond_No_Carrier)
-             ||AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)TCP_ERROR))
-        {
-          res=1;
-          uart_str.receive_flag=0;
-          break;//得到有效数据
-          
-        }
-        
-        //res=0;TIMEOUT
-      }
-    }
-    if(waittime==0)res=0;
-  }
-  return res;
+	unsigned char res=0;
+	//Send_Comm((const char*)Establish_TCP_Connection,strlen((const char*)Establish_TCP_Connection));
+
+	if(waittime)		//需要等待应答
+	{
+		while(--waittime)	//等待倒计时
+		{
+			//delay_ms(5);
+			if(uart_str.receive_flag==1)//接收到期待的应答结果
+			{
+				if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)TCP_Closed)
+					||AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)Respond_No_Carrier)
+					||AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)TCP_ERROR))
+				{
+					res=1;
+					uart_str.receive_flag=0;
+					break;//得到有效数据
+
+				}
+
+				//res=0;TIMEOUT
+			}
+		}
+		if(waittime==0)res=0;
+	}
+	return res;
 }
 //signed char  SIMCOM_Get_TIMEOUT_Staus(unsigned int waittime)
 //{
@@ -688,16 +698,16 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
 
 void SIMCOM_ReConnect()
 {
-  if(NET_STAUS!=SIMCOM_NET_NOT&&NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
-    SIMCOM_TimeOut_Count++;
-  else if(NET_STAUS==SIMCOM_NET_OK)
-    SIMCOM_TimeOut_Count=0;
-  if(SIMCOM_TimeOut_Count>=SIMCOM_TIME_OUT)
-  {
-    SIMCOM_TimeOut_Count=0;
-    NET_STAUS=SIMCOM_NET_ERROR;
-  }
-  
+	if(NET_STAUS!=SIMCOM_NET_NOT&&NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
+		SIMCOM_TimeOut_Count++;
+	else if(NET_STAUS==SIMCOM_NET_OK)
+		SIMCOM_TimeOut_Count=0;
+	if(SIMCOM_TimeOut_Count>=SIMCOM_TIME_OUT)
+	{
+	       SIMCOM_TimeOut_Count=0;
+		NET_STAUS=SIMCOM_NET_ERROR;
+	}
+
 }
 //void Net_Status_Change(unsigned status_tmp,unsigned char update_ip_flag,unsigned char *server_ip)
 //{
@@ -795,150 +805,144 @@ void SIMCOM_ReConnect()
 //	
 //
 //}
-void test()
-{
-Send_Comm((unsigned char*)Test,strlen((const char*)Test));
-}
 void SIMCOM_Register_Network()
 {
   unsigned char *p;
-  p=malloc(sizeof(unsigned char) * 64);
-  SIMCOM_ReConnect();
-  switch(NET_STAUS)
-  {
-    
-    
-  case SIMCOM_NET_NOT:
-    {       *p = 0;
-    if(SIMCOM_GetStatus((unsigned char*)Test,(unsigned char*)Respond_OK,1000)==1)
-      NET_STAUS=SIMCOM_READY_YES;
-    
-    }
-    break;
-  case SIMCOM_READY_YES://SIMCOM_READY_YES:
-    {
-      if( SIMCOM_GetStatus((unsigned char*)Echo_Dis,(unsigned char*)Respond_OK,500)==1)
-        NET_STAUS=SIMCOM_NORMAL_MODE;
-    }
-    break;
-    /*case SIMCOM_Echo_OFF:
-    {SIMCOM_GetStatus(Echo_Dis,Respond_OK,500)
-    if(SIMCOM_Get_StartGPS_Register_Staus(200)==1)
-    NET_STAUS=SIMCOM_START_GPS;
-  }
-    break;
-  case SIMCOM_START_GPS:
-    {
-    if(SIMCOM_Get_NormalMode_Staus(500)==1)
-    NET_STAUS=SIMCOM_NORMAL_MODE;
-  }
-    break;*/
-  case SIMCOM_NORMAL_MODE:
-    {
-      if(SIMCOM_GetStatus((unsigned char*)Check_SIM,(unsigned char*)Respond_CPIN,500)==1)
-        NET_STAUS=SIMCOM_NetClose_MODE;
-      //server_ip_tmp=Establish_TCP_Connection;
-    }
-    break;
-    
-    /*case SIMCOM_SIMCARD_READY:
-    {
-    if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity_eff,500)==1)
-    NET_STAUS=SIMCOM_Network_Intensity_READY;
-  }
-    break;
-  case SIMCOM_Network_Intensity_READY:
-    {
-    if(SIMCOM_GetStatus((unsigned char*)GPRS_Register,(unsigned char*)Respond_OK,200)==1)
-    NET_STAUS=SIMCOM_GPRS_READY;
-  }
-    break;
-  case SIMCOM_GPRS_READY:
-    {
-    if(SIMCOM_Get_StartGPS_Register_Staus(200)==1)
-    NET_STAUS=SIMCOM_START_GPS;
-  }
-    break;*/
-    /*case SIMCOM_GPRS_READY:
-    {
-    if(SIMCOM_GetStatus((unsigned char*)Pass_Through,(unsigned char*)Respond_OK,200)==1)
-    NET_STAUS=SIMCOM_TRANSPERENT_MODE;
-  }
-    break;*/
-  case SIMCOM_CIPClose_MODE:
-    {
-      if(SIMCOM_GetStatus((unsigned char*)CIP_Close,(unsigned char*)Respond_OK,200)==1)
-        NET_STAUS=SIMCOM_NET_ERROR;
-    }
-    break;	
-  case SIMCOM_NetClose_MODE:
-    {
-      if(SIMCOM_GetStatus((unsigned char*)Net_Close,(unsigned char*)Respond_OK,200)==1)
-        NET_STAUS=SIMCOM_TRANSPERENT_MODE;
-    }
-    break;	
-  case SIMCOM_TRANSPERENT_MODE:
-    {
-      if(SIMCOM_GetStatus((unsigned char*)Net_Open,(unsigned char*)Respond_OK,200)==1)
-        NET_STAUS=SIMCOM_NetOpen_READY;
-    }
-    break;
-  case SIMCOM_NetOpen_READY:
-    {
-      //server_ip_tmp=Establish_TCP_Connection;
-      if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,500)==1)
-        NET_STAUS=SIMCOM_NET_OK;
-      //Establish_TCP_Connection=server_ip_tmp;
-    }
-    break;
-  case SIMCOM_NET_OK:
-    {
-      if(SIMCOM_Get_TCP_Staus(40)==1)
-        NET_STAUS=SIMCOM_NET_ERROR;
-    }
-    break;
-  case SIMCOM_NET_ERROR:
-    {
-      GSM_HardwareInit(OFF);                   //复位重启
-      GSM_HardwareInit(ON);
-      NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
-    }
-    break;
-  }
-  /*if(NET_STAUS!=SIMCOM_NET_NOT&&NET_STAUS!=SIMCOM_NET_OK)
-  {
-  Network_Intens=Network_Intens++;
-}
+	SIMCOM_ReConnect();
+	switch(NET_STAUS)
+	{
+
+	*p = 0;
+	case SIMCOM_NET_NOT:
+	{
+		if(SIMCOM_GetStatus(p,(unsigned char*)Respond_Start,1000)==1)
+			NET_STAUS=SIMCOM_READY_YES;
+		   
+	}
+	break;
+	case SIMCOM_READY_YES:
+	{
+		if( SIMCOM_GetStatus((unsigned char*)Echo_Dis,(unsigned char*)Respond_OK,500)==1)
+			NET_STAUS=SIMCOM_NORMAL_MODE;
+	}
+	break;
+	/*case SIMCOM_Echo_OFF:
+	{SIMCOM_GetStatus(Echo_Dis,Respond_OK,500)
+		if(SIMCOM_Get_StartGPS_Register_Staus(200)==1)
+			NET_STAUS=SIMCOM_START_GPS;
+	}
+	break;
+	case SIMCOM_START_GPS:
+	{
+		if(SIMCOM_Get_NormalMode_Staus(500)==1)
+			NET_STAUS=SIMCOM_NORMAL_MODE;
+	}
+	break;*/
+	case SIMCOM_NORMAL_MODE:
+	{
+		if(SIMCOM_GetStatus((unsigned char*)Respond_CPIN,(unsigned char*)Check_SIM,500)==1)
+			NET_STAUS=SIMCOM_NetClose_MODE;
+		//server_ip_tmp=Establish_TCP_Connection;
+	}
+	break;
+
+	/*case SIMCOM_SIMCARD_READY:
+	{
+		if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity_eff,500)==1)
+			NET_STAUS=SIMCOM_Network_Intensity_READY;
+	}
+	break;
+	case SIMCOM_Network_Intensity_READY:
+	{
+		if(SIMCOM_GetStatus((unsigned char*)GPRS_Register,(unsigned char*)Respond_OK,200)==1)
+			NET_STAUS=SIMCOM_GPRS_READY;
+	}
+	break;
+	/*case SIMCOM_GPRS_READY:
+	{
+		if(SIMCOM_Get_StartGPS_Register_Staus(200)==1)
+			NET_STAUS=SIMCOM_START_GPS;
+	}
+	break;*/
+	/*case SIMCOM_GPRS_READY:
+	{
+		if(SIMCOM_GetStatus((unsigned char*)Pass_Through,(unsigned char*)Respond_OK,200)==1)
+			NET_STAUS=SIMCOM_TRANSPERENT_MODE;
+	}
+	break;*/
+	case SIMCOM_CIPClose_MODE:
+	{
+		if(SIMCOM_GetStatus((unsigned char*)CIP_Close,(unsigned char*)Respond_OK,200)==1)
+			NET_STAUS=SIMCOM_NET_ERROR;
+	}
+	break;	
+	case SIMCOM_NetClose_MODE:
+	{
+		if(SIMCOM_GetStatus((unsigned char*)Net_Close,(unsigned char*)Respond_OK,200)==1)
+			NET_STAUS=SIMCOM_TRANSPERENT_MODE;
+	}
+	break;	
+	case SIMCOM_TRANSPERENT_MODE:
+	{
+		if(SIMCOM_GetStatus((unsigned char*)Net_Open,(unsigned char*)Respond_OK,200)==1)
+			NET_STAUS=SIMCOM_NetOpen_READY;
+	}
+	break;
+	case SIMCOM_NetOpen_READY:
+	{
+		//server_ip_tmp=Establish_TCP_Connection;
+		if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,500)==1)
+			NET_STAUS=SIMCOM_NET_OK;
+		//Establish_TCP_Connection=server_ip_tmp;
+	}
+	break;
+	case SIMCOM_NET_OK:
+	{
+		if(SIMCOM_Get_TCP_Staus(40)==1)
+			NET_STAUS=SIMCOM_NET_ERROR;
+	}
+	break;
+	case SIMCOM_NET_ERROR:
+	{
+		GSM_HardwareInit(OFF);                   //复位重启
+		GSM_HardwareInit(ON);
+		NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
+	}
+	break;
+	}
+	/*if(NET_STAUS!=SIMCOM_NET_NOT&&NET_STAUS!=SIMCOM_NET_OK)
+	{
+		Network_Intens=Network_Intens++;
+	}
 	else
-  {
-  Network_Intens=0;
-  
-}*/
-  free(p);
+	{
+		Network_Intens=0;
+
+	}*/
 }
 void SIMCOM_Reconnect_status()
 {
-  NET_STAUS=SIMCOM_NetOpen_READY;
+	NET_STAUS=SIMCOM_NetOpen_READY;
 }
 void  Server_IP_Config(unsigned char * pbuff)
 {
-  //	Establish_TCP_Connection=pbuff;
+//	Establish_TCP_Connection=pbuff;
 }
 unsigned char Get_Network_status()
 {
-  return NET_STAUS;
+	return NET_STAUS;
 }
 void Set_Network_status()
 {
-  NET_STAUS=SIMCOM_NetOpen_READY;
+	NET_STAUS=SIMCOM_NetOpen_READY;
 }
 
 unsigned char Get_Network_Thres()
 {
-  if(Network_Intens>=Network_Thres)
-    return 1;
-  else
-    return 0;
+	if(Network_Intens>=Network_Thres)
+		return 1;
+	else
+		return 0;
 }
 
 

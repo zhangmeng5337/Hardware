@@ -10,7 +10,7 @@
 #define ADC_RATIO              ((uint16_t) 806) /*ADC_RATIO = ( 3.3 * 1000 * 1000)/4095 */
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint32_t ADCdata = 0;
+uint16_t ADCdata = 0;
 void delay_ms(uint32_t num)//不是很精确
 {
   u16 i = 0;
@@ -58,11 +58,6 @@ delay_ms(2000);
 	else
 	{
 		GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		delay_ms(2000);
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-		delay_ms(2000);
-		delay_ms(2000);
-
 	}
 
 }
@@ -105,22 +100,22 @@ extern u8 CurrentMode ;
 void EnterStopMode(void) 
 {
   disableInterrupts(); 
-//  SX1276_LoRa_SetMode( LORA_MODE_SLEEP );//lora enter sleep mode
-//  
-//  //GPIOA
-//  GPIO_Init( PORT_SX127X_TX_CTRL, PIN_SX127X_RX_CTRL|PIN_SX127X_TX_CTRL, GPIO_Mode_Out_PP_Low_Slow ); //lora tx and rx enbale signals 
-//  GPIO_Init( GPIOA, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Slow );
-//  GPIO_Init( GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Slow );
-//  
-//  //GPIOB
-//  GPIO_Init(GPIOB, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_Init(GPIOB, PIN_SX127X_M0, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_Init(GPIOB, PIN_SX127X_M1, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_SetBits( PORT_SX127X_CSN, PIN_SX127X_CSN ); 
-//  
-//  //GPIOC
-//  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
-//  GPIO_Init( PORT_SX127X_DIO3, GPIO_Pin_0|PIN_SX127X_DIO3|PIN_SX127X_DIO4|PIN_SX127X_DIO5, GPIO_Mode_Out_PP_Low_Slow );  
+  SX1276_LoRa_SetMode( LORA_MODE_SLEEP );//lora enter sleep mode
+  
+  //GPIOA
+  GPIO_Init( PORT_SX127X_TX_CTRL, PIN_SX127X_RX_CTRL|PIN_SX127X_TX_CTRL, GPIO_Mode_Out_PP_Low_Slow ); //lora tx and rx enbale signals 
+  GPIO_Init( GPIOA, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Slow );
+  GPIO_Init( GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Slow );
+  
+  //GPIOB
+  GPIO_Init(GPIOB, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
+  GPIO_Init(GPIOB, PIN_SX127X_M0, GPIO_Mode_Out_PP_Low_Slow);
+  GPIO_Init(GPIOB, PIN_SX127X_M1, GPIO_Mode_Out_PP_Low_Slow);
+  GPIO_SetBits( PORT_SX127X_CSN, PIN_SX127X_CSN ); 
+  
+  //GPIOC
+  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
+  GPIO_Init( PORT_SX127X_DIO3, GPIO_Pin_0|PIN_SX127X_DIO3|PIN_SX127X_DIO4|PIN_SX127X_DIO5, GPIO_Mode_Out_PP_Low_Slow );  
   
   //GPIOD
   GPIO_Init( GPIOD, GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_Out_PP_Low_Slow );   
@@ -214,7 +209,7 @@ void adcInit(ADC_Channel_TypeDef num)
   
   
 }
-uint32_t adcGet(ADC_Channel_TypeDef num)
+uint16_t adcGet(ADC_Channel_TypeDef num)
 {
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */

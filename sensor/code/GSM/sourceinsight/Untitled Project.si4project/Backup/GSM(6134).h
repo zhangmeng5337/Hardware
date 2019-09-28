@@ -41,7 +41,4 @@ unsigned char	UsartReceiveData[buffer_size];
 #define	SIMCOM_NET_OK						12 	//Á´½Ó³É¹¦
 #define	SIMCOM_NET_OK2     13
 #define	SIMCOM_NET_ERROR					0XFF	//´íÎó
-unsigned char Get_Network_status(void);
-void SIMCOM_Register_Network(void);
-void test(void);
 #endif

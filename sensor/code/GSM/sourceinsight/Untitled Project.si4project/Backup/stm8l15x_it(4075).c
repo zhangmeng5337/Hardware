@@ -411,26 +411,20 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-    unsigned char t;
     if(USART_GetFlagStatus(USART1, USART_FLAG_IDLE) != RESET)
     {
-       uart_str.receive_flag =1;
-	 //	uart_str.receive_flag ++;
+        uart_str.receive_flag =1;
+		//uart_str.receive_flag = 1;
         USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
-        t = USART_ReceiveData8(USART1);
     }
     //UsartReceiveData[0] = GetModuleParams()->ADDH;
     //UsartReceiveData[1] =  GetModuleParams()->ADDL;
-
-    if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
-    {
-       //uart_str.receive_flag =1;
-	 //	uart_str.receive_flag ++;
-        USART_ClearITPendingBit(USART1, USART_FLAG_RXNE);//清除中断标志
+     if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) 
+     {
+     USART_ClearITPendingBit (USART1,USART_IT_RXNE);//清中断标志
 	   uart_str.UsartReceiveData[j] = USART_ReceiveData8(USART1);
-	    j++;  
-    }
-
+	    j++;
+	 }
 
     if(uart_str.receive_flag==1) {
      // uart_str.
@@ -438,9 +432,8 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
         uart_str.rx_len = uart_str.rx_len + j;
 		uart_str.real_index = uart_str.real_index + j;
         j = 0; 
-	//	uart_str.receive_flag =0;
+		//uart_str.receive_flag =0;
     }
-
 }
 
 /**

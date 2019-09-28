@@ -12,7 +12,7 @@
 
 
 
-unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"106.13.36.241\",6000\r";
+unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"zhangmeng5337.iask.in\",15969\r";
 //unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"www. baidu.com.cn\",80\r";
 
 

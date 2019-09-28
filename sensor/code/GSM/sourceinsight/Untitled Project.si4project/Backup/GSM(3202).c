@@ -12,7 +12,7 @@
 
 
 
-unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"106.13.36.241\",6000\r";
+unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"zhangmeng5337.iask.in\",15969\r";
 //unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"www. baidu.com.cn\",80\r";
 
 
@@ -127,9 +127,9 @@ unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,unsigned int 
       //delay_ms(10);
       if(uart_str.receive_flag==1)//接收到期待的应答结果
       {
-        if(AT_cmd_ack(uart_str.UsartReceiveData,(unsigned char*)ack))
+        if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)ack))
         {
-          
+          uart_str.receive_flag=0;
           uart_str.real_index = 0;
           res=1;
           break;//得到有效数据
@@ -139,7 +139,6 @@ unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,unsigned int 
     }
     if(waittime==0)res=0;
   }
-  uart_str.receive_flag=0;
   return res;
   
 }
@@ -795,10 +794,6 @@ void SIMCOM_ReConnect()
 //	
 //
 //}
-void test()
-{
-Send_Comm((unsigned char*)Test,strlen((const char*)Test));
-}
 void SIMCOM_Register_Network()
 {
   unsigned char *p;
@@ -810,12 +805,12 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_NET_NOT:
     {       *p = 0;
-    if(SIMCOM_GetStatus((unsigned char*)Test,(unsigned char*)Respond_OK,1000)==1)
+    if(SIMCOM_GetStatus(p,(unsigned char*)Respond_Start,1000)==1)
       NET_STAUS=SIMCOM_READY_YES;
     
     }
     break;
-  case SIMCOM_READY_YES://SIMCOM_READY_YES:
+  case SIMCOM_READY_YES:
     {
       if( SIMCOM_GetStatus((unsigned char*)Echo_Dis,(unsigned char*)Respond_OK,500)==1)
         NET_STAUS=SIMCOM_NORMAL_MODE;
@@ -835,7 +830,7 @@ void SIMCOM_Register_Network()
     break;*/
   case SIMCOM_NORMAL_MODE:
     {
-      if(SIMCOM_GetStatus((unsigned char*)Check_SIM,(unsigned char*)Respond_CPIN,500)==1)
+      if(SIMCOM_GetStatus((unsigned char*)Respond_CPIN,(unsigned char*)Check_SIM,500)==1)
         NET_STAUS=SIMCOM_NetClose_MODE;
       //server_ip_tmp=Establish_TCP_Connection;
     }

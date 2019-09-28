@@ -488,7 +488,7 @@
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state></state>
+                    <state>GSM.srec</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -1655,6 +1655,9 @@
         <name>HAL</name>
         <file>
             <name>$PROJ_DIR$\..\Driver\HAL\GSM.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Driver\HAL\Protocal.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Driver\HAL\tea.c</name>

@@ -24,15 +24,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x.h"
 
-extern unsigned char UsartReceiveData[128], usart_i, UsartReceiveFlag, RtcWakeUp, CadDoneFlag, sleep_time_count, Tim3_Flag, SleepModeFlag, ExitInterFlag;
 
-//参数配置
-/*参数1*/
-extern unsigned char ADDH;
-/*参数2*/
-extern unsigned char ADDL;
-/*参数5*/
-extern unsigned char TranMode;
+
+
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
