@@ -12,7 +12,7 @@
 
 
 
-unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"15k801n729.iok.la\",36732\r";
+unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"106.13.36.241\",6000\r";
 //unsigned char Establish_TCP_Connection[100]="AT+CIPOPEN=0,\"TCP\",\"www. baidu.com.cn\",80\r";
 
 
@@ -836,8 +836,8 @@ void SIMCOM_Register_Network()
     break;*/
   case SIMCOM_NORMAL_MODE:
     {
-      if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_CPIN,2000)==1)
-        NET_STAUS=SIMCOM_CIPClose_MODE;
+      if(SIMCOM_GetStatus((unsigned char*)Check_SIM,(unsigned char*)Respond_CPIN,2000)==1)
+        NET_STAUS=SIMCOM_NetClose_MODE;
       //server_ip_tmp=Establish_TCP_Connection;
     }
     break;
@@ -866,23 +866,17 @@ void SIMCOM_Register_Network()
     NET_STAUS=SIMCOM_TRANSPERENT_MODE;
   }
     break;*/
- /* case SIMCOM_CIPClose_MODE:
+  case SIMCOM_CIPClose_MODE:
     {
-      if(SIMCOM_GetStatus((unsigned char*)Net_Close,(unsigned char*)Respond_OK,2000)==1)
-        NET_STAUS=SIMCOM_NetClose_MODE;
+      if(SIMCOM_GetStatus((unsigned char*)CIP_Close,(unsigned char*)Respond_OK,2000)==1)
+        NET_STAUS=SIMCOM_NET_ERROR;
     }
-    break;*/	
-    case SIMCOM_CIPClose_MODE:
-    {
-      if(SIMCOM_GetStatus((unsigned char*)Pass_Through,(unsigned char*)Respond_OK,2000)==1)
-        NET_STAUS=SIMCOM_TRANSPERENT_MODE;
-    }
-    break;
-  /*case SIMCOM_TRANSPERENT_MODE:
+    break;	
+  case SIMCOM_NetClose_MODE:
     {
       if(SIMCOM_GetStatus((unsigned char*)Net_Close,(unsigned char*)Respond_OK,2000)==1)
         NET_STAUS=SIMCOM_TRANSPERENT_MODE;
-    }*/
+    }
     break;	
   case SIMCOM_TRANSPERENT_MODE:
     {

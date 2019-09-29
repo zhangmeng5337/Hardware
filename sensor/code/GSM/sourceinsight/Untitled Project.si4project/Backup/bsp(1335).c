@@ -47,9 +47,9 @@ void GSM_HardwareInit(unsigned char flag)
 		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
 		delay_ms(2000);
 		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-delay_ms(4000);
-delay_ms(4000);
-delay_ms(4000);
+delay_ms(2000);
+delay_ms(2000);
+delay_ms(2000);
 delay_ms(2000);
 delay_ms(2000);
 delay_ms(2000);
@@ -159,11 +159,11 @@ void HardwareInit()
   SystemClock_Init();     // 系统时钟初始化
   GPIO_Initial(); 
   Uart1_Init(9600);// 初始化GPIO
-  
+ 
   LED_Init();             //调试LED初始化
 GSM_HardwareInit(ON);
   Sensor_HardwareInit(OFF);
-enableInterrupts();
+ enableInterrupts();
 }
 void LED_Init(void)
 {
