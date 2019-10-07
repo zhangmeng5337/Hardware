@@ -1,0 +1,52 @@
+Reading Layer Conversion File 
+Reading DXF file...
+ERROR: 3D data has been found in this dxf file.
+  Most 3D data is not supported by dxf2a.
+  For the special case of DXF code 230 = -1.0, ARC, CIRCLE 
+  and SOLID entities will be mirrored about the Y axis.
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 1988
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2028
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 2058
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 2088
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 2118
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2154
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2190
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2226
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2262
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2298
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2334
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2370
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2406
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2442
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 2472
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 2508
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 2544
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2670
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2706
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2770
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 2800
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2842
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2878
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 2908
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2950
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2986
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3078
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 3108
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 3144
+done.
+NOTE: Ignoring unsupported element VIEWPORT on line 1846.
+NOTE: Ignoring unsupported element POINT on line 2552.
+NOTE: Ignoring unsupported element POINT on line 2580.
+NOTE: Ignoring unsupported element POINT on line 2608.
+NOTE: Ignoring unsupported element POINT on line 2708.
+NOTE: Ignoring unsupported element POINT on line 2988.
+NOTE: Ignoring unsupported element POINT on line 3016.
+Layer conversion file: F:/projects/git/Hardware/ตุดล/PCB/RECEIVER/Receiver_l.cnv
+DXF file: F:/projects/git/Hardware/ตุดล/PCB/RECEIVER/Receiver.dxf
+BRD file: F:/projects/git/Hardware/ตุดล/PCB/RECEIVER/#Taaaahq07704.tmp
+Update existing design?: YES
+Use default text?: YES
+DXF units: MILLIMETERS
+Design units: MILLIMETERS
+Design precision: 4
+dxf2a complete.
