@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #include "main.h"
 #include "usystem.h"
 uint32_t TimingCount[3];

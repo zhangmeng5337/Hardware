@@ -1,4 +1,3 @@
-
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -225,8 +224,6 @@ void EXTI4_IRQHandler(void)
 
   /* USER CODE END EXTI4_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
-
-	data_ready = 1;
   /* USER CODE BEGIN EXTI4_IRQn 1 */
 
   /* USER CODE END EXTI4_IRQn 1 */
@@ -292,4 +289,3 @@ void USART2_IRQHandler(void)
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
->>>>>>> 1de386f8b5859101818602515ef230e12da9abaf

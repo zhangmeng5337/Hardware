@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #ifndef BSP_H
 #define BSP_H
 #include "main.h"
@@ -23,7 +23,6 @@ unsigned int read_len;
 unsigned int index;
 unsigned int read_index;
 unsigned char receive_buffer[UARTBUFFERSIZE];
-
 }uart_stru;
 void led_ctrl(unsigned char flag);
 void I2C1_SCL_IN(void);

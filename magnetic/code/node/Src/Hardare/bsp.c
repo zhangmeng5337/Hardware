@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #include "main.h"
 #include "bsp.h"
 extern ADC_HandleTypeDef hadc1;

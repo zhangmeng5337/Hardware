@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #ifndef __MAG3D3100_H
 #define __MAG3D3100_H
 

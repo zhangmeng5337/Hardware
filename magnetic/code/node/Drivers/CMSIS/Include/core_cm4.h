@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**************************************************************************//**
  * @file     core_cm4.h
  * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File

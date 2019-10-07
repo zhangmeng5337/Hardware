@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #ifndef uSYSTEM_H
 #define uSYSTEM_H
 #include "stdint.h"
