@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "main.h"
 #include "bsp.h"
 #include "rm3100.h"
@@ -31,5 +32,6 @@ void reset_timer (void)
    temptime = HAL_GetTick();
 }
  // short int ManeticBuffer[3];
+
 
 

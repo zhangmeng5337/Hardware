@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef __MAG3D3100_H
 #define __MAG3D3100_H
 
@@ -111,3 +112,4 @@ u8 SPI_Write_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *datain,u8 lenth);
 u8 SPI_Read_M3D3100(SPI_TypeDef* SPIx,u8 reg_addr,u8 *dataout,u8 lenth);
 void MagneticInit(void);
 #endif
+

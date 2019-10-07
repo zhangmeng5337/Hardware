@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "main.h"
 #include "bsp.h"
 extern ADC_HandleTypeDef hadc1;
@@ -214,3 +215,4 @@ void Hardware_test()
 	HAL_Delay(2000);
 	printf("uart1 test\n");
 }
+

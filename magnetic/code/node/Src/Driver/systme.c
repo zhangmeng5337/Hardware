@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "main.h"
 #include "usystem.h"
 uint32_t TimingCount[3];
@@ -73,6 +74,7 @@ unsigned char TimingStart(unsigned char select,uint32_t tCount1,uint32_t tCount2
 	}
 	return 0;
 }
+
 
 
 

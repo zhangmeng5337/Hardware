@@ -75,11 +75,11 @@
         <option>
           <name>GenLibOutFormatter</name>
           <version>0</version>
-          <state>1</state>
+          <state>5</state>
         </option>
         <option>
           <name>GenLibOutFormatterDescription</name>
-          <state>Full formatting.</state>
+          <state>No specifier a or A, no specifier n, no float.</state>
         </option>
         <option>
           <name>GenStackSize</name>
@@ -257,7 +257,7 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..\Include</state>
+          <state>$PROJ_DIR$\..\include</state>
           <state>$PROJ_DIR$\..\Library\inc</state>
         </option>
         <option>
@@ -608,7 +608,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\config\lnkstm8.icf</state>
+          <state>lnk0t.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -672,7 +672,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state>__iar_program_start</state>
+          <state></state>
         </option>
         <option>
           <name>DoFill</name>

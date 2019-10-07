@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef uSYSTEM_H
 #define uSYSTEM_H
 #include "stdint.h"
@@ -6,3 +7,4 @@ unsigned char TimingStart(unsigned char select,uint32_t tCount1,uint32_t tCount2
 unsigned char get_tick_end(unsigned char num);
 void set_tick_end(unsigned char num);
 #endif
+

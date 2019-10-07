@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <workspace>
@@ -8,3 +9,12 @@
 </workspace>
 
 
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<workspace>
+    <project>
+        <path>$WS_DIR$\lora.ewp</path>
+    </project>
+    <batchBuild />
+</workspace>
+>>>>>>> 1de386f8b5859101818602515ef230e12da9abaf

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef BSP_H
 #define BSP_H
 #include "main.h"
@@ -35,3 +36,4 @@ void UsartReceive_IDLE(unsigned char uart_num);
 uint32_t Get_Battery_Gas_adc(unsigned char count);
 
 #endif
+
