@@ -3,7 +3,7 @@
 <title>Static Call Graph - [node\node.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image node\node.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Mon Oct 07 20:12:57 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Mon Oct 07 21:38:20 2019
 <BR><P>
 <H3>Maximum Stack Usage =        288 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -536,7 +536,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start
 </UL>
 
-<P><STRONG><a name="[72]"></a>BaseLineProcess</STRONG> (Thumb, 816 bytes, Stack size 32 bytes, filter.o(i.BaseLineProcess))
+<P><STRONG><a name="[72]"></a>BaseLineProcess</STRONG> (Thumb, 814 bytes, Stack size 32 bytes, filter.o(i.BaseLineProcess))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = BaseLineProcess &rArr; MagneticGet &rArr; ThreeD3100_magic_GetData &rArr; SPI_Read_M3D3100 &rArr; SPI_WriteByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -1056,7 +1056,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ef]"></a>HeaderIdentify</STRONG> (Thumb, 192 bytes, Stack size 0 bytes, node_protocol.o(i.HeaderIdentify))
+<P><STRONG><a name="[ef]"></a>HeaderIdentify</STRONG> (Thumb, 188 bytes, Stack size 0 bytes, node_protocol.o(i.HeaderIdentify))
 <BR><BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartparase
 </UL>
 
@@ -1083,7 +1083,7 @@ Global Symbols
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32l4xx_it.o(i.NMI_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l433xx.o(RESET)
 </UL>
-<P><STRONG><a name="[c8]"></a>NodeToLORA</STRONG> (Thumb, 128 bytes, Stack size 32 bytes, node_protocol.o(i.NodeToLORA))
+<P><STRONG><a name="[c8]"></a>NodeToLORA</STRONG> (Thumb, 120 bytes, Stack size 32 bytes, node_protocol.o(i.NodeToLORA))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = NodeToLORA &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -1091,7 +1091,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReceiverAnalysis
 </UL>
 
-<P><STRONG><a name="[c9]"></a>NodeToServer</STRONG> (Thumb, 160 bytes, Stack size 40 bytes, node_protocol.o(i.NodeToServer))
+<P><STRONG><a name="[c9]"></a>NodeToServer</STRONG> (Thumb, 158 bytes, Stack size 40 bytes, node_protocol.o(i.NodeToServer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = NodeToServer &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -1105,7 +1105,7 @@ Global Symbols
 <P><STRONG><a name="[8]"></a>PendSV_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32l4xx_it.o(i.PendSV_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l433xx.o(RESET)
 </UL>
-<P><STRONG><a name="[cd]"></a>ReceiverAnalysis</STRONG> (Thumb, 300 bytes, Stack size 8 bytes, node_protocol.o(i.ReceiverAnalysis))
+<P><STRONG><a name="[cd]"></a>ReceiverAnalysis</STRONG> (Thumb, 288 bytes, Stack size 8 bytes, node_protocol.o(i.ReceiverAnalysis))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = ReceiverAnalysis &rArr; NodeToLORA &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -1221,7 +1221,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[dd]"></a>Transmmit</STRONG> (Thumb, 472 bytes, Stack size 16 bytes, node_protocol.o(i.Transmmit))
+<P><STRONG><a name="[dd]"></a>Transmmit</STRONG> (Thumb, 414 bytes, Stack size 16 bytes, node_protocol.o(i.Transmmit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = Transmmit &rArr; NodeToServer &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_Battery_Gas_adc
@@ -1367,7 +1367,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[ec]"></a>nodeParamsInit</STRONG> (Thumb, 64 bytes, Stack size 0 bytes, node_protocol.o(i.nodeParamsInit))
+<P><STRONG><a name="[ec]"></a>nodeParamsInit</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, node_protocol.o(i.nodeParamsInit))
 <BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1404,7 +1404,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BaseLineProcess
 </UL>
 
-<P><STRONG><a name="[ed]"></a>vehicle_process</STRONG> (Thumb, 230 bytes, Stack size 8 bytes, filter.o(i.vehicle_process))
+<P><STRONG><a name="[ed]"></a>vehicle_process</STRONG> (Thumb, 214 bytes, Stack size 8 bytes, filter.o(i.vehicle_process))
 <BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = vehicle_process &rArr; BaseLineProcess &rArr; MagneticGet &rArr; ThreeD3100_magic_GetData &rArr; SPI_Read_M3D3100 &rArr; SPI_WriteByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
