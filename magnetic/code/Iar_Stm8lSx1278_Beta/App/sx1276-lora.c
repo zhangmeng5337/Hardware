@@ -368,7 +368,7 @@ void SX1276_LoRa_Init( void )
 void SX1276_LoRa_SendPacket( INT8U *buffer, INT8U size )
 {
     if( size == 0 )                    { return; }
-    
+   //  SX1276_LoRa_SetMode( LORA_MODE_SLEEP );   
     SX1276_LoRa_SetMode( LORA_MODE_STDBY );
     SX1276_WriteReg( REG_LR_HOPPERIOD, 0 );
     /* only need FLAG_TXDONE */
@@ -412,6 +412,7 @@ void SX1276_LoRa_SendPacket( INT8U *buffer, INT8U size )
 */
 void SX1276_LoRa_StartRx( void )
 {
+ // SX1276_LoRa_SetMode( LORA_MODE_SLEEP );
 	//SX1276_LoRa_SetMode( LORA_MODE_STDBY );
 
 	/* need FLAG_RXDONE, FLAG_PAYLOADCRCERROR, FLAG_FHSSCHANGECHANNEL */

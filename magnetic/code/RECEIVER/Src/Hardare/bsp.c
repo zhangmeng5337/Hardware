@@ -26,14 +26,15 @@ void UsartReceive_IDLE(unsigned char uart_num)
 			temp=huart1.Instance->ISR;
 			temp=huart1.Instance->RDR;
 			//HAL_UART_DMAResume(&huart2);
-			HAL_UART_DMAPause(&huart1);
+			//HAL_UART_DMAPause(&huart1);
 			temp=hdma_usart1_rx.Instance->CNDTR;
-			uart1.receive_len=uart1.receive_len+UARTBUFFERSIZE-temp;
+			uart1.receive_len=UARTBUFFERSIZE-temp;
 			uart1.receive_flag=1;
 			uart1.index=uart1.index+UARTBUFFERSIZE-temp;
 			if(uart1.index>=UARTBUFFERSIZE)
 				uart1.index=uart1.index-UARTBUFFERSIZE;
-			HAL_UART_DMAPause(&huart1);
+			//HAL_UART_DMAPause(&huart1);
+			HAL_UART_DMAStop(&huart1);
 			HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,UARTBUFFERSIZE);
 		}
 	}

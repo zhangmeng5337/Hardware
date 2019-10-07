@@ -43,6 +43,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+IWDG_HandleTypeDef hiwdg;
+
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
@@ -63,6 +65,7 @@ static void MX_DMA_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_IWDG_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -105,30 +108,38 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
+		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
 	__HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart1);
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_Receive_DMA(&huart1,uart1.receive_buffer,UARTBUFFERSIZE);
-	__HAL_UART_CLEAR_IDLEFLAG(&huart1);
+//	HAL_Delay(1000);
 
-	
+
+
+	__HAL_UART_CLEAR_IDLEFLAG(&huart2);	
 	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart2);
-	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
-	HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
-	__HAL_UART_CLEAR_IDLEFLAG(&huart2);
 
-	
+	HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
+	//	HAL_Delay(1000);
+	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+
+
+	__HAL_UART_CLEAR_IDLEFLAG(&huart3);	
 	__HAL_UART_DISABLE_IT(&huart3, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart3);
 	__HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_Receive_DMA(&huart3,uart3.receive_buffer,UARTBUFFERSIZE);
-	__HAL_UART_CLEAR_IDLEFLAG(&huart3);
+	//	HAL_Delay(1000);
+
+
 
 	 nodeParamsInit();
 
-	/* USER CODE END 2 */
+  /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -138,6 +149,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		 uart_process();
+		    HAL_IWDG_Refresh(&hiwdg);
   }
   /* USER CODE END 3 */
 }
@@ -154,7 +166,8 @@ void SystemClock_Config(void)
 
   /** Initializes the CPU, AHB and APB busses clocks 
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
@@ -191,6 +204,35 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief IWDG Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_IWDG_Init(void)
+{
+
+  /* USER CODE BEGIN IWDG_Init 0 */
+
+  /* USER CODE END IWDG_Init 0 */
+
+  /* USER CODE BEGIN IWDG_Init 1 */
+
+  /* USER CODE END IWDG_Init 1 */
+  hiwdg.Instance = IWDG;
+  hiwdg.Init.Prescaler = IWDG_PRESCALER_32;
+  hiwdg.Init.Window = 4000;
+  hiwdg.Init.Reload = 4000;
+  if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN IWDG_Init 2 */
+
+  /* USER CODE END IWDG_Init 2 */
+
 }
 
 /**

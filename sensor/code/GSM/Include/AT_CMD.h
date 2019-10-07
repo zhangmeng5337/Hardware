@@ -10,9 +10,11 @@ const unsigned char Respond_IP[]="+IPADDR: ";
 const unsigned char Respond_Connection_ERROR[]="CLOSED";
 const unsigned char Respond_Connection_OK[]="CONNECT 115200\r";
 const unsigned char Respond_CPIN[]="+CPIN: READY\r\n";
-const unsigned char Respond_Network_Intensity[]="+CSQ: 0,0\r";//检查网络信号强度
+const unsigned char Respond_Network_Intensity[]="+CSQ:2";//检查网络信号强度
 const unsigned char Respond_Network_Intensity2[]=",99\r";//检查网络信号强度
 const unsigned char Respond_Network_Intensity_eff[]="+CSQ: ";//检查网络信号强度
+
+const unsigned char Respond_Attached_Ok[]="+CGATT: 1";//
 
 const unsigned char Respond_Attached_Fail[]="+CGATT: 0";//
 const unsigned char Respond_Network_Open[]="Network is already opened\r";//
@@ -45,7 +47,7 @@ const unsigned char Net_Open[]="AT+NETOPEN\r";//设置为透传模式
 const unsigned char Net_Close[]="AT+NETCLOSE\r";//设置为透传模式
 
 const unsigned char CIP_Close[]="AT+CIPCLOSE=0\r";//设置为透传模式
-
+const unsigned char LAST_CMD[]="A/\r";
 const unsigned char APN[]="AT+CGDCONT=1,\"IP\",\"jsczaiot02.clfu.njm2mapn\"\r";//查询运营商选择状态
 //const unsigned char Establish_TCP_Connection[]="AT+CIPSTART=\"TCP\",\"15k801n729.iok.la\",25718\r";
  

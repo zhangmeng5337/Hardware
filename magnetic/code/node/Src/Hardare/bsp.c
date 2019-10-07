@@ -185,14 +185,14 @@ void UsartReceive_IDLE(unsigned char uart_num)
 			temp=huart2.Instance->ISR;
 			temp=huart2.Instance->RDR;
 			//HAL_UART_DMAResume(&huart2);
-			HAL_UART_DMAPause(&huart2);
+		//	HAL_UART_DMAPause(&huart2);
 			temp=hdma_usart2_rx.Instance->CNDTR;
 			uart2.receive_len=uart2.receive_len+UARTBUFFERSIZE-temp;
 			uart2.receive_flag=1;
 			uart2.index=uart2.index+UARTBUFFERSIZE-temp;
 			if(uart2.index>=UARTBUFFERSIZE)
 				uart2.index=uart2.index-UARTBUFFERSIZE;
-			HAL_UART_DMAPause(&huart2);
+			HAL_UART_DMAStop(&huart2);
 			HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
 		}
 	}
@@ -201,7 +201,12 @@ void UsartReceive_IDLE(unsigned char uart_num)
 
 void Hardware_Init()
 {
-	bsp_InitI2C();                // PIC configurations + i2c,spi,uart,timers,interruptions inicializations
+			__HAL_UART_CLEAR_IDLEFLAG(&huart2);	
+	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+	HAL_UART_DMAStop(&huart2);
+		HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
+		__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+	//bsp_InitI2C();                // PIC configurations + i2c,spi,uart,timers,interruptions inicializations
 }
 void Hardware_test()
 {

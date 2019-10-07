@@ -5,6 +5,7 @@
 "node\stm32l4xx_hal_msp.o"
 "node\stm32l4xx_hal_adc.o"
 "node\stm32l4xx_hal_adc_ex.o"
+"node\stm32l4xx_hal_iwdg.o"
 "node\stm32l4xx_hal_spi.o"
 "node\stm32l4xx_hal_spi_ex.o"
 "node\stm32l4xx_hal_tim.o"

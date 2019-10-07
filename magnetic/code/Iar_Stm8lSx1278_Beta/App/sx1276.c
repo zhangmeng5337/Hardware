@@ -207,6 +207,8 @@ void SX1276_SetSwitchTx( void )
 //	SX1276_CTRL2_LOW( );
 //#endif
 	SX1276_TX_CTRL_HIGH( );
+	SX1276_TX_CTRL_HIGH( );
+	SX1276_RX_CTRL_LOW( );
 	SX1276_RX_CTRL_LOW( );
 	DelayMs( 3 );
 }
@@ -220,6 +222,8 @@ void SX1276_SetSwitchTx( void )
 void SX1276_SetSwitchRx( void )
 {
     SX1276_TX_CTRL_LOW( );
+    SX1276_TX_CTRL_LOW( );
+    SX1276_RX_CTRL_HIGH( );
     SX1276_RX_CTRL_HIGH( );
     DelayMs( 1 );
 }
@@ -371,6 +375,7 @@ void SX1276_SetRxMode( void )
 
     if( SX1276.Mode_Lora_Fsk == MODE_LORA )
     {
+        
         SX1276_LoRa_StartRx( );
         while((status_reg &0x04)!=0x04)
         status_reg=SX1276_ReadReg(REG_LR_MODEMSTAT ); 
@@ -388,7 +393,7 @@ void SX1276_SetRxMode( void )
 *Output  :  received size
 ===============================================================================
 */
-INT8U SX1276_ReceivePacket( INT8U *buffer )
+INT8U SX1276_ReceivePacket( unsigned char *buffer )
 {
     INT8U RxLength = 0;
     if( SX1276.Mode_Lora_Fsk == MODE_LORA )

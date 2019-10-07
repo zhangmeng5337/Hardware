@@ -4,7 +4,7 @@
 #define ON	0
 #define OFF    1
 #define BLINK	2
-#define UARTBUFFERSIZE		256
+#define UARTBUFFERSIZE		255
 /* ?????§ÕSCL??SDA??? */
 
 

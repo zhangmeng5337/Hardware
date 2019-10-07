@@ -9,6 +9,9 @@
 #define DYNAMIC_MODE				0x91
 #define REGISTER_CODE				0xa8
 #define HEART_BIT					0xa2
+#define SET_PARAMS					0xa3 //set channel burate etc.
+#define SET_PERIOD					0xa4  //set period
+#define SET_THRES    		        0xa5
 
 
 #define NODE_TO_SERVERH				0xAB
@@ -25,7 +28,7 @@ typedef struct{
 	unsigned char func;
 	unsigned char len;
 	unsigned char checksum;
-	unsigned char payload[12];	
+	unsigned char payload[16];	
 	unsigned char seq_num;
 	unsigned char server_channelH;
 	unsigned char server_channelL;
@@ -34,6 +37,8 @@ typedef struct{
 	unsigned char car_flag;
 	unsigned char car_time;
 	unsigned char serverId[2];
+	unsigned char maxThres[4];
+	unsigned char minThres[4];
 	unsigned char serverAirRate;
 	unsigned char nodeVersion;
 	unsigned char vbat;
@@ -42,6 +47,6 @@ typedef struct{
 void Transmmit(unsigned char func);
 void uart_process(void);
 void nodeParamsInit(void);
-
+void lora_test(void);
 #endif
 

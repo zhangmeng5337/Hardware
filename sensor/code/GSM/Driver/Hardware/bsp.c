@@ -43,27 +43,29 @@ void GSM_HardwareInit(unsigned char flag)
     if(flag == ON)
     {
 		GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-		delay_ms(2000);
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
+		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); delay_ms(3000);
+		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );		
+		delay_ms(3000);
+ 
+                
+                GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
+//delay_ms(4000);
 delay_ms(4000);
 delay_ms(4000);
-delay_ms(4000);
-delay_ms(2000);
-delay_ms(2000);
-delay_ms(2000);
-delay_ms(2000);
+//delay_ms(2000);
+//delay_ms(2000);
+//delay_ms(2000);
+//delay_ms(2000);
 	}
-	else
-	{
-		GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		delay_ms(2000);
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-		delay_ms(2000);
-		delay_ms(2000);
-
-	}
+//	else
+//	{
+//		GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
+//		delay_ms(2000);
+//		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
+//		delay_ms(2000);
+//		delay_ms(2000);
+//
+//	}
 
 }
 void Sensor_HardwareInit(unsigned char flag)

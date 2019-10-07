@@ -9,8 +9,8 @@
 #include "RF.h"
 
 
-#define TX              1       // 发送模式
-#define RX              0       // 接收模式
+//#define TX              1       // 发送模式
+//#define RX              0       // 接收模式
 
 //参数配置
 
@@ -32,7 +32,7 @@
 //
 //extern u8 ConfigureDone ;
 //extern u8 CurrentMode ;
-extern unsigned int pream_long[6] ;
+//extern unsigned int pream_long[6] ;
 //
 //extern u8 LastMode ;
 ///*参数4*/
@@ -70,36 +70,31 @@ void DelayMs(INT8U x)
 
 
 
-void delay_ms(u16 num)//不是很精确
-{
-  u8 i = 0;
-  while(num--)
-  {
-    for (i=0; i<100; i++);
-  }
-}
 
 
 
 
 
-
-extern unsigned char  ExitInterFlag ;
-int error_temp = 0;
+//extern unsigned char  ExitInterFlag ;
+//int error_temp = 0;
 void main(void)
 {
-
+  
   HardwareInit();
   RF_Initial( );
+  IWDG_Config();
   while(1)
   {
-   // if(ExitInterFlag == 0)
+    // if(ExitInterFlag == 0)
     //{SX1276_SendPacket(UsartReceiveData, 3);
-   // SX1276_SetPreambleSize((pream_long[GetModuleParams()->AirRate]*(GetModuleParams()->WakeupTime/250)));   //前导码为972 BW 500kHZ SF为7 则空中传输时间250ms
-   // SX1276_SetRxMode();      
-  // moduleconfig();
-   lora_process();
-   // }
+    // SX1276_SetPreambleSize((pream_long[GetModuleParams()->AirRate]*(GetModuleParams()->WakeupTime/250)));   //前导码为972 BW 500kHZ SF为7 则空中传输时间250ms
+    // SX1276_SetRxMode();      
+    // moduleconfig();
+    //RF_Initial( );
+    lora_process();
+    IWDG_ReloadCounter();
+    //USART_SendData8(USART1, 0x01);
+    // }
     //SX1276_SetRxMode(); 
   }
 }

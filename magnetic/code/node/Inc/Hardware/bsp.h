@@ -4,7 +4,7 @@
 #define ON	0
 #define OFF    1
 #define BLINK	2
-#define UARTBUFFERSIZE		256
+#define UARTBUFFERSIZE		64
 /* ?????§ÕSCL??SDA??? */
 #define I2C1_SCL_1()   HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET)				/* SCL = 1 */
 #define I2C1_SCL_0()   HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_RESET)				/* SCL = 0 */

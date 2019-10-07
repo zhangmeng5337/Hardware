@@ -1,18 +1,20 @@
 #include "uartParase.h"
 #include "sx1276.h"
 #include "RF.h"
-extern unsigned char UsartReceiveData[BUFFERSIZE] , UsartReceiveFlag,usart_i ;
+#include "stdlib.h"
 
+extern unsigned char UsartReceiveData[BUFFERSIZE] , UsartReceiveFlag,usart_i ;
+extern volatile Module_Params_stru Module_Params;
 unsigned char uart_read_index=0;
-unsigned char wrcommand[]={0xff,0x56,0xae,0x35,0xa9,0x55};
+const unsigned char wrcommand[]={0xff,0x56,0xae,0x35,0xa9,0x55};
 void module_process(unsigned char mode)
 {    unsigned char *pb,count;
         pb = 0;
 	count = 0;		
 	if(mode == NORMALCOMMAND)
 	{
-	      pb[0] = GetModuleParams()->ADDH;
-	      pb[1] = GetModuleParams()->ADDL;	  
+	      pb[0] = Module_Params.ADDH;
+	      pb[1] = Module_Params.ADDL;	  
 	      if(uart_read_index<usart_i)
 		{
 		       count = usart_i-uart_read_index;
@@ -38,6 +40,7 @@ void module_process(unsigned char mode)
 	{
 		
 	}	
+	free(pb);
 }
 
 

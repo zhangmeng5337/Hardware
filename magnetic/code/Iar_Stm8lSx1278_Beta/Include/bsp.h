@@ -45,7 +45,8 @@ INT8U SPI_ExchangeByte(INT8U input);    // 通过SPI进行数据交换
 void HardwareInit(void);
 void LED_Init(void);
 void USART_SendStr(unsigned char *Str);
-
+void DelayMs(INT8U x);
+ void IWDG_Config(void);
 #endif //_BSP_H_
 
 /*===========================================================================

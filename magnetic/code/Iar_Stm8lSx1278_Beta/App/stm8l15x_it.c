@@ -218,20 +218,21 @@ INTERRUPT_HANDLER(EXTI3_IRQHandler, 11)
   */
     
     SX1276_LoRa_SetMode( LORA_MODE_RXC );//CAD检测完成切换成接收模式
-    if( ( SX1276_ReadReg( REG_LR_IRQFLAGS ) & RFLR_IRQFLAGS_CADDETECTED ) == RFLR_IRQFLAGS_CADDETECTED )
-    {
-        sleep_time_count = 0;
-        // Clear Irq
-        //SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_CADDETECTED | RFLR_IRQFLAGS_CADDONE );
-        SX1276_WriteReg( REG_LR_IRQFLAGS, 0xff );
-        CadDoneFlag = 1;
-    } else {
-        //SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_CADDONE );
-        SX1276_WriteReg( REG_LR_IRQFLAGS, 0xff );
-        CadDoneFlag = 0;
-        //SX1276_LoRa_SetMode( LORA_MODE_SLEEP );
-    }
-    SleepModeFlag = 1;
+//    if( ( SX1276_ReadReg( REG_LR_IRQFLAGS ) & RFLR_IRQFLAGS_CADDETECTED ) == RFLR_IRQFLAGS_CADDETECTED )
+//    {
+//        sleep_time_count = 0;
+//        // Clear Irq
+//        //SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_CADDETECTED | RFLR_IRQFLAGS_CADDONE );
+//        SX1276_WriteReg( REG_LR_IRQFLAGS, 0xff );
+//        CadDoneFlag = 1;
+//    } else {
+//        //SX1276_WriteReg( REG_LR_IRQFLAGS, RFLR_IRQFLAGS_CADDONE );
+//        SX1276_WriteReg( REG_LR_IRQFLAGS, 0xff );
+//        CadDoneFlag = 0;
+//        //SX1276_LoRa_SetMode( LORA_MODE_SLEEP );
+//    }
+//    SleepModeFlag = 1;
+  SX1276_WriteReg( REG_LR_IRQFLAGS, 0xff );
     EXTI_ClearITPendingBit(EXTI_IT_Pin3);
 }
 
@@ -450,11 +451,15 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
         UsartReceiveFlag ++;
         USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
     }
-    
-   // UsartReceiveData[0] = GetModuleParams()->ADDH;
-    //UsartReceiveData[1] =  GetModuleParams()->ADDL;
+    //if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
+    {
     UsartReceiveData[j] = USART_ReceiveData8(USART1);
     j++;
+        ////USART_ClearITPendingBit(USART1, USART_FLAG_RXNE);//清除中断标志
+    }    
+   // UsartReceiveData[0] = GetModuleParams()->ADDH;
+    //UsartReceiveData[1] =  GetModuleParams()->ADDL;
+
     if(UsartReceiveFlag==1) {
         usart_i = j-1 ;
         j = 0;

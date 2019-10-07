@@ -22,7 +22,7 @@ void main(void)
   while(1)
   {
     
-    delay_ms(1000);
+   // delay_ms(1000);
     tick ++;
   SIMCOM_Register_Network();
  // module_process(); 

@@ -1,0 +1,5 @@
+---- module_process Matches (4 in 2 files) ----
+ModuleSleepModeOperation in RF.c (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\Driver\HAL) :         module_process(LORA_WRITE);
+ModuleSleepModeOperation in RF.c (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\Driver\HAL) :         module_process(LORA_READ);
+ModuleSleepModeOperation in RF.c (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\Driver\HAL) :           module_process(NORMA_OPERATION);
+uartParase.c (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\Driver\HAL) line 10 : void module_process(unsigned char mode)

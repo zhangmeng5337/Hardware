@@ -47,6 +47,8 @@
 #include "sensor.h"
 #include "mag3D3100.h"
 #include "stdio.h"
+#include "node_protocol.h"
+#include "filter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,6 +68,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+
+IWDG_HandleTypeDef hiwdg;
 
 SPI_HandleTypeDef hspi1;
 
@@ -104,6 +108,7 @@ static void MX_SPI1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_IWDG_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -137,8 +142,6 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
-  
-
 
   /* USER CODE BEGIN SysInit */
 
@@ -151,13 +154,16 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
-	// Hardware_Init();
-		HAL_GPIO_WritePin(I2C_MODE_GPIO_Port, I2C_MODE_Pin, GPIO_PIN_RESET);
+
+	 nodeParamsInit();
+	HAL_GPIO_WritePin(I2C_MODE_GPIO_Port, I2C_MODE_Pin, GPIO_PIN_RESET);
   ThreeD3100_magic_init();
   MagneticInit();
 	current_tick = HAL_GetTick();
 				led_tick = HAL_GetTick();
+	 Hardware_Init();
  // ;
   /* USER CODE END 2 */
 
@@ -175,7 +181,7 @@ int main(void)
 		{
 			led_tick = HAL_GetTick();
       led_ctrl(BLINK);
-      HAL_UART_Transmit(&huart2, uart2_tx_buff,9, 1);	
+    //  HAL_UART_Transmit(&huart2, uart2_tx_buff,9, 1);	
 current_cnt =current_cnt +5;			
 		}   
 //		if((HAL_GetTick()-current_tick)>=50)
@@ -187,7 +193,7 @@ current_cnt =current_cnt +5;
 //      printf("  Manetic Z:  %d\n",dataMd.MAG_Z);		
 //		}
 		vehicle_process();
-    
+    HAL_IWDG_Refresh(&hiwdg);
 
   }
   /* USER CODE END 3 */
@@ -205,7 +211,8 @@ void SystemClock_Config(void)
 
   /** Initializes the CPU, AHB and APB busses clocks 
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_11;
@@ -304,6 +311,35 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief IWDG Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_IWDG_Init(void)
+{
+
+  /* USER CODE BEGIN IWDG_Init 0 */
+
+  /* USER CODE END IWDG_Init 0 */
+
+  /* USER CODE BEGIN IWDG_Init 1 */
+
+  /* USER CODE END IWDG_Init 1 */
+  hiwdg.Instance = IWDG;
+  hiwdg.Init.Prescaler = IWDG_PRESCALER_32;
+  hiwdg.Init.Window = 4000;
+  hiwdg.Init.Reload = 4000;
+  if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN IWDG_Init 2 */
+
+  /* USER CODE END IWDG_Init 2 */
 
 }
 
@@ -475,7 +511,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(RM_DRY_GPIO_Port, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(RM_DRY_GPIO_Port, RM_DRY_Pin, GPIO_PIN_SET);
+
   /*Configure GPIO pin : RM3100_MODE_EN_Pin */
   GPIO_InitStruct.Pin = RM3100_MODE_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;

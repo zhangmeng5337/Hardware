@@ -1,1 +1,74 @@
----- Module_Params.TranMode Matches (0 in 0 files) ----
+---- unsigned char Channel Matches (4 in 3 files) ----
+main.c (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\App) line 18 : 
+////Flash 存储
+//extern unsigned char Flash_Data[5] ;
+//extern unsigned char Flash_Write_Done;
+////stm8控制线以及工作状态线
+//extern unsigned char LoraM0Flag;
+//extern unsigned char LoraM1Flag;
+//extern unsigned char AUX ;
+///*参数1*/
+//extern unsigned char ADDH ;
+///*参数2*/
+//extern unsigned char ADDL;
+///*参数3*/
+//extern u32 SerialRate ;
+//extern unsigned char AirRate ;   //空口速度 默认2.4k
+//
+//extern u8 ConfigureDone ;
+//extern u8 CurrentMode ;
+//extern unsigned int pream_long[6] ;
+//
+//extern u8 LastMode ;
+///*参数4*/
+//extern unsigned char Channel ; //默认通道为23通道 433MHZ
+///*参数5*/
+//extern  unsigned char TranMode;
+//extern  unsigned int WakeupTime ;
+
+//#define ACK_LENGTH      10      // 应答信号长度
+//#define SEND_LENGTH     10      // 发送数据每包的长度
+RF.c (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\Driver\HAL) line 28 : 
+/*参数4*/
+//extern unsigned char Channel ; //默认通道为23通道 433MHZ
+unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
+{
+  unsigned char result;
+  unsigned char i;
+  result = 0;
+  for(i=0;i<len;i++)
+  {
+ModuleSleepModeOperation in RF.c (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\Driver\HAL) : 
+        else tmp_76 = 0x02;
+        tmp_543 = (unsigned char) (ceil(log2(Module_Params.SerialRate/1200)));
+        USART_SendData8(USART1, (tmp_76 << 6 | tmp_543 << 3 | Module_Params.AirRate)); 
+        while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
+        
+        USART_SendData8(USART1,  Module_Params.Channel);
+        while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
+        
+        // USART_SendData8(USART1, (( Module_Params.TranMode<<7) | (( Module_Params.WakeupTime/250-1)<<3)));
+{anonModule_Params_stru} in RF.h (F:\projects\git\Hardware\magnetic\code\Iar_Stm8lSx1278_Beta\Include) : 
+//Flash 存储
+unsigned char TypeNo;
+unsigned char Version;
+/*参数4*/
+unsigned char Channel ; //默认通道为23通道 433MHZ
+unsigned char AirRate;   //空口速度 默认2.4k
+unsigned char  power ;
+unsigned char  SerialRate ;
+unsigned char  CheckBit;
+unsigned int WakeupTime ;
+/*参数1*/
+unsigned char ADDH ;
+/*参数2*/
+unsigned char ADDM ;
+unsigned char ADDL ;
+
+/*参数3*/
+unsigned char TranMode;
+
+unsigned char Flash_Write_Done ;
+
+}Module_Params_stru;
+

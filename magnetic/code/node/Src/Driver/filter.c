@@ -5,11 +5,16 @@
 //#include "stm32l4xx_hal.h"
 //#include "stm32l4xx_hal.h"
 magnetic_str magnetic;
-uint32_t MIN_PERIOD=500;
-float MAX_THRES=120;
-float  MIN_THRES=60;
+uint32_t MIN_PERIOD=1500;
+float MAX_THRES=700;//×î´óãÐÖµ
+float MIN_THRES=60;
  extern  short int ManeticBuffer[3];
  extern MagData_t dataMd;
+extern DataPack_stru DataPack;
+unsigned char tx_start_flag;
+extern uart_stru uart2;
+//uint32_t stime,etime;
+uint32_t sample_time_start,tx_time_start;
 unsigned char getIndex()
 {
   if(magnetic.index == 0)
@@ -233,7 +238,7 @@ unsigned char vehicle_detect()
 
 			}
 			
-			for(i=0;i<(N-magnetic.index);i++){
+			for(i=0;i<(N-magnetic.index-1);i++){
 				q[i+magnetic.index+1]=magnetic.B[Z_DIR][BUFFERSIZE+magnetic.index-N+i];
 				p[i+magnetic.index+1]=magnetic.M[Z_DIR][BUFFERSIZE+magnetic.index-N+i];
 
@@ -252,33 +257,40 @@ unsigned char vehicle_detect()
 		magnetic.BaseLineVari = VariBase;
 		
 		BaseLineTrace();
-		
-		printf("  MX:  %f",magnetic.M[X_DIR][magnetic.index]);
-		printf("  MY:  %f",magnetic.M[Y_DIR][magnetic.index]);
-		printf("  MZ:  %f",magnetic.M[Z_DIR][magnetic.index]);
-		
-		printf("  FX:  %f",magnetic.F[X_DIR][magnetic.index]);
-		printf("  FY:  %f",magnetic.F[Y_DIR][magnetic.index]);
-		printf("  FZ:  %f",magnetic.F[Z_DIR][magnetic.index]);
 
-		printf("  BX:  %f",magnetic.B[X_DIR][magnetic.index]);
-		printf("  BY:  %f",magnetic.B[Y_DIR][magnetic.index]);
-		printf("  BZ:  %f",magnetic.B[Z_DIR][magnetic.index]);
-		
-		printf("  BaseLineVari:  %f",magnetic.BaseLineVari);
-		printf("  VehicleVari:  %f",magnetic.VehicleVari);
-		printf("  err:  %f\n",error_tmp);
-	//	printf("  Car_Flag:  %d",magnetic.Car_Flag);
-	//	printf("  elapseTime:  %d",magnetic.elapseTime);
-	//	printf("  noupdate:  %d\n",magnetic.noupdate);
+		if(DataPack.tx_period == 0xff)
+		{
+					printf("  MX:  %f",magnetic.M[X_DIR][magnetic.index]);
+					printf("  MY:  %f",magnetic.M[Y_DIR][magnetic.index]);
+					printf("  MZ:  %f",magnetic.M[Z_DIR][magnetic.index]);
+					
+					printf("  FX:  %f",magnetic.F[X_DIR][magnetic.index]);
+					printf("  FY:  %f",magnetic.F[Y_DIR][magnetic.index]);
+					printf("  FZ:  %f",magnetic.F[Z_DIR][magnetic.index]);
+			
+					printf("  BX:  %f",magnetic.B[X_DIR][magnetic.index]);
+					printf("  BY:  %f",magnetic.B[Y_DIR][magnetic.index]);
+					printf("  BZ:  %f",magnetic.B[Z_DIR][magnetic.index]);
+					
+					printf("  BaseLineVari:  %f",magnetic.BaseLineVari);
+					printf("  VehicleVari:	%f",magnetic.VehicleVari);
+					printf("  err:	%f\n",error_tmp);
+					printf("  Car_Flag:  %d",magnetic.Car_Flag);
+					printf("  elapseTime:  %d",magnetic.elapseTime);
+					printf("  noupdate:  %d\n",magnetic.noupdate);
 
+		}
+
+       
 
 }
+
 void vehicle_process()
 {
-	if(TimingStart(1,SAMPLE_TIME,0,0)==1)
+	unsigned char func;
+	if((HAL_GetTick()-sample_time_start)>=SAMPLE_TIME)
 	{
-
+		sample_time_start = HAL_GetTick();
 		BaseLineProcess();
 		magnetic.index++;
 		//vehicle_detect();	
@@ -289,8 +301,53 @@ void vehicle_process()
 
 	if(magnetic.Car_Flag == 1)
 	{
-		magnetic.Car_Flag=0;
-		Transmmit(DYNAMIC_MODE);
+		
+    tx_start_flag = 1;
+		
 	}
+	if(DataPack.tx_period != 0xff)
+	{
+
+		if(tx_start_flag == 1)
+		{
+			if((HAL_GetTick()-tx_time_start)>=TIME_OUT)
+			{
+				tx_time_start = HAL_GetTick();
+
+
+				if(DataPack.register_status == 0)
+				{	
+					Transmmit(REGISTER_CODE);
+					func = REGISTER_CODE;
+				}
+				else
+				{
+					Transmmit(DYNAMIC_MODE);
+					func = DYNAMIC_MODE;
+				}
+				DataPack.seq_num = DataPack.seq_num + 1;	
+				if(DataPack.seq_num >1)
+				{
+					DataPack.seq_num = 0;
+					tx_start_flag = 0;
+					magnetic.Car_Flag = 0;
+				}			
+			}
+			else
+			{
+				if(uartparase(2,func))
+				{
+						DataPack.seq_num = 0;
+						DataPack.register_status = 1;
+						tx_start_flag = 0;	
+						magnetic.Car_Flag = 0;					
+				}	
+			}
+
+		}			
+	}
+	
+	
 	ReceiverAnalysis();
+	uart2.receive_flag = 0;
 }

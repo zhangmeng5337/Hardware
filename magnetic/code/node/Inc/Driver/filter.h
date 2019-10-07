@@ -10,7 +10,7 @@
 #define BETA		    0.05
 #define GAMMA			1.25
 
-#define TIME_OUT		3000
+#define TIME_OUT		2000
 
 #define NO_VEHICLE_TIME 100
 #define SAMPLE_TIME     50
