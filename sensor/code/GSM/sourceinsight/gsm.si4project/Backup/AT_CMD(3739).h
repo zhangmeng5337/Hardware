@@ -10,16 +10,15 @@ const unsigned char Respond_IP[]="+IPADDR: ";
 const unsigned char Respond_Connection_ERROR[]="CLOSED";
 const unsigned char Respond_Connection_OK[]="CONNECT 115200\r";
 const unsigned char Respond_CPIN[]="+CPIN: READY\r\n";
-const unsigned char Respond_Network_Intensity[]="+CSQ: ";//检查网络信号强度
+const unsigned char Respond_Network_Intensity[]="+CSQ:2";//检查网络信号强度
 const unsigned char Respond_Network_Intensity2[]=",99\r";//检查网络信号强度
 const unsigned char Respond_Network_Intensity_eff[]="+CSQ: ";//检查网络信号强度
-const unsigned char Respond_Network_Normal_ModeT[]="+CFUN: 1";//检查网络信号强度
 
 const unsigned char Respond_Attached_Ok[]="+CGATT: 1";//
 
 const unsigned char Respond_Attached_Fail[]="+CGATT: 0";//
 const unsigned char Respond_Network_Open[]="Network is already opened\r";//
-const unsigned char Respond_TCP_Connect[]="CONNECT\r";//
+const unsigned char Respond_TCP_Connect[]="CONNECT 115200\r";//
 const unsigned char Respond_Network_Open2[]="+NETOPEN: 0";//
 const unsigned char Respond_No_Carrier[]="+NO CARRIER";//
 
@@ -37,8 +36,6 @@ const unsigned char Echo_Dis[]="ATE0\r";//回显关闭命令，并保存
 const unsigned char Read_SIM_Num[]="AT+CICCID\r";
 const unsigned char Check_SIM[]="AT+CPIN?\r";//检查登入移动设备(ME)的密码
 const unsigned char Normal_Mode[]="AT+CFUN=1\r";
-const unsigned char Normal_ModeT[]="AT+CFUN?\r";
-
 const unsigned char Mnimum_Mode[]="AT+CFUN=0\r";
 const unsigned char Network_Intensity[]="AT+CSQ\r";//检查网络信号强度
 const unsigned char GPRS_Register[]="AT+CGREG?\r";//检查 GPRS 注册状态

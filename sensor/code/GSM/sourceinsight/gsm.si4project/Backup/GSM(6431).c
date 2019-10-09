@@ -132,22 +132,22 @@ unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t wait
           
           uart_str.real_index = 0;
           res=1;
-          uart_str.receive_flag = 0;
+        //  uart_str.receive_flag = 0;
           break;//得到有效数据
         }
         
         //memset(uart_str.UsartReceiveData,0,256);
-        
+       
       }
     } 
-    // uart_str.real_index = 0;
-    
+	// uart_str.real_index = 0;
+    uart_str.receive_flag=0;
+
   }
-  if(waittime==0){
-    res=0;
-    //uart_str.receive_flag=0;
-    //memset(uart_str.UsartReceiveData,0,256);
-  }  
+    if(waittime==0){
+      res=0;
+      //memset(uart_str.UsartReceiveData,0,256);
+    }  
   return res;
   
 }
@@ -526,12 +526,12 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
       //delay_ms(5);
       if(uart_str.receive_flag==1)//接收到期待的应答结果
       {
-        if(AT_cmd_ack(&uart_str.UsartReceiveData[0],(unsigned char*)TCP_Closed)
-           ||AT_cmd_ack(&uart_str.UsartReceiveData[0],(unsigned char*)Respond_No_Carrier)
-             ||AT_cmd_ack(&uart_str.UsartReceiveData[0],(unsigned char*)TCP_ERROR))
+        if(AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)TCP_Closed)
+           ||AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)Respond_No_Carrier)
+             ||AT_cmd_ack(&uart_str.UsartReceiveData[uart_str.real_index],(unsigned char*)TCP_ERROR))
         {
           res=1;
-          
+          uart_str.receive_flag=0;
           break;//得到有效数据
           
         }
@@ -539,7 +539,7 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
         //res=0;TIMEOUT
       }
     }
-    if(waittime==0){res=0;uart_str.receive_flag=0;}
+    if(waittime==0)res=0;
   }
   return res;
 }
@@ -805,13 +805,13 @@ void SIMCOM_ReConnect()
 //}
 void test()
 {
-  Send_Comm((unsigned char*)Test,strlen((const char*)Test));
+Send_Comm((unsigned char*)Test,strlen((const char*)Test));
 }
 void SIMCOM_Register_Network()
 {
   unsigned char *p;
   p=malloc(sizeof(unsigned char) * 64);
-  // SIMCOM_ReConnect();
+ // SIMCOM_ReConnect();
   switch(NET_STAUS)
   {
     
@@ -819,109 +819,85 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_NOT:
     {       *p = 0;
     if(SIMCOM_GetStatus((unsigned char*)Test,(unsigned char*)Respond_OK,20000)==1)
-    {  
-      NET_STAUS=SIMCOM_READY_YES;
-      memset(uart_str.UsartReceiveData,0,buffer_size);
-    }
+    {  NET_STAUS=SIMCOM_READY_YES;
+    memset(uart_str.UsartReceiveData,0,256);}
     
     }
     break;
   case SIMCOM_READY_YES://SIMCOM_READY_YES:
     {
-      if( SIMCOM_GetStatus((unsigned char*)Echo_Dis,(unsigned char*)Respond_OK,10000)==1)
-      {  
-        NET_STAUS=SIMCOM_ATE0;
-        memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
+      if( SIMCOM_GetStatus((unsigned char*)Echo_Dis,(unsigned char*)Respond_OK,100000)==1)
+      {  NET_STAUS=SIMCOM_ATE0;
+      memset(uart_str.UsartReceiveData,0,256);}
     }
     break;
-    
+ 
   case SIMCOM_ATE0:
     {
-      if(SIMCOM_GetStatus((unsigned char*)Check_SIM,(unsigned char*)Respond_CPIN,80000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)Check_SIM,(unsigned char*)Respond_CPIN,100000)==1)
       {  
       	NET_STAUS=SIMCOM_SIM_OK;
-      	memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
+      	memset(uart_str.UsartReceiveData,0,256);
+	  }
       //server_ip_tmp=Establish_TCP_Connection;
     }
     break;
-  case SIMCOM_SIM_OK:
-    {
-      if(SIMCOM_GetStatus((unsigned char*)Normal_ModeT,(unsigned char*)Respond_Network_Normal_ModeT,100000)==1)
-      { //NET_STAUS=SIMCOM_SIM_OK;
-        
-        NET_STAUS=SIMCOM_Network_Normal_ModeT;
-        memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
-    }
-    break;
+    case SIMCOM_SIM_OK:
+  {
+	if(SIMCOM_GetStatus((unsigned char*)Normal_ModeT,(unsigned char*)Respond_Network_Normal_ModeT,100000)==1)
+	{ //NET_STAUS=SIMCOM_SIM_OK;
+       
+         NET_STAUS=SIMCOM_Network_Normal_ModeT;
+	     memset(uart_str.UsartReceiveData,0,256);
+	}
+  }
+  break;
   case SIMCOM_Network_Normal_ModeT:
+  {
+	if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity,100000)==1)
+	{ 
+	    NET_STAUS=SIMCOM_Network_Intensity_READY;
+        memset(uart_str.UsartReceiveData,0,256);
+	}
+       //  NET_STAUS=SIMCOM_Network_Intensity_READY;
+  }
+  break;
+
+    	
+    case SIMCOM_Network_Intensity_READY:
     {
-      if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity,80000)==1)
-      { 
-        NET_STAUS=SIMCOM_Network_Intensity_READY;
-        memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
-      //  NET_STAUS=SIMCOM_Network_Intensity_READY;
-    }
-    break;
-    
-    
-  case SIMCOM_Network_Intensity_READY:
-    {
-      if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,80000)==1)
-      {
+      if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,100000)==1)
         NET_STAUS=SIMCOM_GPRS_READY;
-        memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
     }
     break;
-    
-    
-    
-    
+
+
+
+
   case SIMCOM_GPRS_READY:
     {
       if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,30000)==1)
-      {
         NET_STAUS=SIMCOM_NET_PORT_CLOSE;
-        memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
     }
     break;
-  case SIMCOM_NET_PORT_CLOSE:
+    case SIMCOM_NET_PORT_CLOSE:
     {
       if(SIMCOM_GetStatus((unsigned char*)Pass_Through,(unsigned char*)Respond_OK,30000)==1)
-      {
         NET_STAUS=SIMCOM_NET_TRANSPARENT;
-        memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
     }
     break;
   case SIMCOM_NET_TRANSPARENT:
     {
       //server_ip_tmp=Establish_TCP_Connection;
       if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,80000)==1)
-      {
-     	NET_STAUS=SIMCOM_NET_OK;
-        memset(uart_str.UsartReceiveData,0,buffer_size);
-      }
+        NET_STAUS=SIMCOM_NET_OK;
       //Establish_TCP_Connection=server_ip_tmp;
     }
     break;
   case SIMCOM_NET_OK:
     {
       if(SIMCOM_Get_TCP_Staus(40)==1)
-      {   
-        
-        if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==1)
-        {
-          NET_STAUS=SIMCOM_NET_ERROR;
-          memset(uart_str.UsartReceiveData,0,buffer_size);
-        }
-        
-      }
+        NET_STAUS=SIMCOM_NET_ERROR;
     }
     break;
   case SIMCOM_NET_ERROR:

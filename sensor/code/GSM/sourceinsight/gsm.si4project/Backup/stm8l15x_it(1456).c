@@ -24,7 +24,7 @@
 #include "GSM.h"
 //#include "bsp.h"
  Uart_Types uart_str;
- unsigned char ExeIntFlag,RtcWakeUp,j;
+ unsigned char RtcWakeUp,j;
 /** @addtogroup STM8L15x_StdPeriph_Examples
   * @{
   */
@@ -181,8 +181,6 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler, 9)
     //LoraM1Flag = 1;
    // ExitInterFlag = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_1);
 
-   ExeIntFlag = 1;
-  EXTI_ClearITPendingBit(EXTI_IT_Pin1);
     //EXTI_ClearITPendingBit(EXTI_IT_Pin1);
 }
 
@@ -417,18 +415,14 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
     if(USART_GetFlagStatus(USART1, USART_FLAG_IDLE) != RESET)
     {
        uart_str.receive_flag =1;
-	 	//uart_str.receive_flag ++;
-		t = USART1->SR;
-		t = USART1->DR;//IDLE清零需要依次读SR 和DR 寄存器
-		USART_ClearITPendingBit(USART1,  USART_IT_IDLE);
-		uart_str.rx_len =  DMA_GetCurrDataCounter(DMA1_Channel2);
-		DMA_START_RX();//重新开启串口DMA接收模式
-		
+	 //	uart_str.receive_flag ++;
+        USART_ClearITPendingBit(USART1, USART_IT_IDLE);//清除中断标志
+        t = USART_ReceiveData8(USART1);
     }
     //UsartReceiveData[0] = GetModuleParams()->ADDH;
     //UsartReceiveData[1] =  GetModuleParams()->ADDL;
 
-   /* if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
+    if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
     {
        //uart_str.receive_flag =1;
 	 //	uart_str.receive_flag ++;
@@ -445,7 +439,7 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
 		uart_str.real_index = uart_str.real_index + j;
         j = 0; 
 	//	uart_str.receive_flag =0;
-    }*/
+    }
 
 }
 

@@ -5,7 +5,7 @@
 
 #define SIMCOM_TIME_OUT					40
 
-#define buffer_size  128
+#define buffer_size  256
 
 typedef struct
 {

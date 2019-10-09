@@ -6,17 +6,8 @@
 ============================================================================*/
 #include "bsp.h"
 #include "uart1.h"
-#include "stm8l15x_dma.h"
-#include "GSM.h"
 
 #define ADC_RATIO              ((uint16_t) 806) /*ADC_RATIO = ( 3.3 * 1000 * 1000)/4095 */
-
-#define USART_DMA_CHANNEL_RX   DMA1_Channel2
-#define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
-
-extern  Uart_Types uart_str;
-
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint32_t ADCdata = 0;
@@ -42,9 +33,6 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
-
-  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_FL_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
   
 }
 
@@ -55,15 +43,12 @@ void GSM_HardwareInit(unsigned char flag)
     if(flag == ON)
     {
 		GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		//GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );                
+		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); delay_ms(3000);
+		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );		
 		delay_ms(3000);
-         
-        delay_ms(3000);
+ 
+                
+                GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
 //delay_ms(4000);
 delay_ms(4000);
 delay_ms(4000);
@@ -170,50 +155,13 @@ void EnterStopMode(void)
   enableInterrupts();
   halt();  //enter stop mode
 }
-
-
-static void DMA_Config(void)
-{
-	CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, ENABLE);
-
-  /* Deinitialize DMA channels */
-  DMA_GlobalDeInit();
-
-  DMA_DeInit(DMA1_Channel1);
-  DMA_DeInit(DMA1_Channel2);
-
-  /* DMA channel Rx of USART Configuration */
-  DMA_Init(USART_DMA_CHANNEL_RX, (uint16_t)uart_str.UsartReceiveData , (uint16_t)USART_DR_ADDRESS,
-           buffer_size, DMA_DIR_PeripheralToMemory, DMA_Mode_Normal,
-           DMA_MemoryIncMode_Inc, DMA_Priority_Low, DMA_MemoryDataSize_Byte);
-
-
-  /* Enable the USART Tx/Rx DMA requests */
-  USART_DMACmd(USART1, USART_DMAReq_RX, ENABLE);
-  /* Global DMA Enable */
-  DMA_GlobalCmd(ENABLE);
-
-  /* Enable the USART Tx DMA channel */
-// DMA_Cmd(USART_DMA_CHANNEL_TX, ENABLE);
-  /* Enable the USART Rx DMA channel */
-  //DMA_Cmd(USART_DMA_CHANNEL_RX, ENABLE);         
-}
-void DMA_START_RX(void)
-{   DMA_ClearFlag(DMA1_FLAG_TC2);
-    DMA_ClearFlag(DMA1_FLAG_HT2);
-    DMA_Cmd(USART_DMA_CHANNEL_RX, DISABLE);
-    DMA_SetCurrDataCounter(USART_DMA_CHANNEL_RX, buffer_size); 
-    DMA_Cmd(USART_DMA_CHANNEL_RX, ENABLE);
-}
-
-
 void HardwareInit()
 {
   disableInterrupts();
   SystemClock_Init();     // 系统时钟初始化
   GPIO_Initial(); 
   Uart1_Init(9600);// 初始化GPIO
-  DMA_Config();
+  
   LED_Init();             //调试LED初始化
 GSM_HardwareInit(ON);
   Sensor_HardwareInit(OFF);

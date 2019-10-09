@@ -19,11 +19,9 @@ typedef struct{
   unsigned char vbat[2];
   unsigned char status;
   unsigned int deepth_calibration;
-  uint32_t Warn_Thres;
+  unsigned int Warn_Thres;
 
 }Data_Stru;
 void module_process(void);
-void params_init(void);
-
 #endif
 
