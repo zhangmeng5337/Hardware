@@ -25,7 +25,7 @@ void main(void)
    // delay_ms(1000);
     tick ++;
   SIMCOM_Register_Network();
- // module_process(); 
+  module_process(); 
 
   }
 }
