@@ -20,6 +20,7 @@ typedef struct{
   unsigned char status;
   unsigned int deepth_calibration;
   uint32_t Warn_Thres;
+  float target;
   float calibration;
 }Data_Stru;
 void module_process(void);

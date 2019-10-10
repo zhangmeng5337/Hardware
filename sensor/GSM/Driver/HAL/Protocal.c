@@ -32,7 +32,7 @@ void module_prams_init()
   Data_usr.status = 0;
   Data_usr.deepth_calibration = 0.05;
   //Data_usr.Warn_Thres = 0x25;
-  
+  Data_usr.target =1;
 
   i= FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS);
   tmp = i;
@@ -138,9 +138,10 @@ void module_process()
       Data_usr.status = 1;
     else
       Data_usr.status = 0;
-    Data_usr.deepth[0] = (unsigned char)(adc_tmp*Data_usr.deepth_calibration );
-    Data_usr.deepth[0] = (unsigned char)(adc_tmp*Data_usr.deepth_calibration%256 );
-    
+    uint32_t t = adc_tmp*Data_usr.deepth_calibration;
+    Data_usr.deepth[0] = (unsigned char)(t);
+    Data_usr.deepth[1] = (unsigned char)(t%256 );
+    Data_usr.deepth_percent = (Data_usr.deepth[0]*10+Data_usr.deepth[1])*10/Data_usr.target;
     
     p[0] = NODE_TO_SERVERH;
     p[1] = NODE_TO_SERVERL;

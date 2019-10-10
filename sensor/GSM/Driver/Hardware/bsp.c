@@ -251,19 +251,26 @@ void adcInit(ADC_Channel_TypeDef num)
 }
 uint32_t adcGet(ADC_Channel_TypeDef num)
 {
+  unsigned char i;
+  uint32_t ADCdata_tmp;
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
   adcInit(num);
-  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
-  {}
-  
-  /* Get conversion value */
-  ADCdata = ADC_GetConversionValue(ADC1);
-  
-  /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-  ADCdata = (uint32_t)((uint32_t)ADCdata * (uint32_t)ADC_RATIO/1000);
-  /* Waiting Delay 200ms */
-  delay_ms(200);
+  ADCdata =0;
+  for(i=0;i<100;i++)
+  {
+    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
+    {}
+    /* Get conversion value */
+    ADCdata_tmp = ADC_GetConversionValue(ADC1);
+    
+    /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
+    ADCdata_tmp = (uint32_t)((uint32_t)ADCdata * (uint32_t)ADC_RATIO/1000);
+    ADCdata = ADCdata + ADCdata_tmp;
+    /* Waiting Delay 200ms */
+    delay_ms(200);  
+  }
+   ADCdata = ADCdata /100;
   
   /* DeInitialize ADC1 */
   ADC_DeInit(ADC1);
