@@ -3,9 +3,9 @@
 #define Ser_Head 0xfdfd
 #define Dev_Head 0xfefe
 
-#define SIMCOM_TIME_OUT					40
+#define SIMCOM_TIME_OUT					50
 
-#define buffer_size  255
+#define buffer_size  128
 
 typedef struct
 {
@@ -29,12 +29,12 @@ unsigned char	UsartReceiveData[buffer_size];
 #define	SIMCOM_READY_YES					1     //开机完成
 #define	SIMCOM_ATE0   						2    	//关闭回显
 #define	SIMCOM_SIM_OK  						3    	//SIM卡ok
-#define	SIMCOM_SIM_OK2  						9    	//SIM卡ok
 #define	SIMCOM_Network_Intensity_READY		4  	//信号满足要求
 #define	SIMCOM_GPRS_READY  					5    	//gprs ok
 #define	SIMCOM_NET_PORT_CLOSE				6    	//关闭tcp连接
 #define	SIMCOM_NET_TRANSPARENT				7    	//透传模式
 
+#define	SIMCOM_Network_Normal_ModeT         8
 
 
 /*#define	SIMCOM_READY_YES					1     //开机完成
@@ -49,7 +49,7 @@ unsigned char	UsartReceiveData[buffer_size];
 #define	SIMCOM_CIPClose_MODE                            10*/
 
 #define	SIMCOM_NetOpen_READY				11     //net open
-#define	SIMCOM_NET_OK						8 	//链接成功
+#define	SIMCOM_NET_OK						9	//链接成功
 #define	SIMCOM_NET_OK2     13
 #define	SIMCOM_NET_ERROR					0XFF	//错误
 unsigned char Get_Network_status(void);

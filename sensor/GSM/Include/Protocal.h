@@ -7,10 +7,11 @@
 #define SERVER_TO_NODEH  0xAA
 #define SERVER_TO_NODEL  0xAA
 
-#define CHECKSUM_INDEX   0x02
+#define CHECKSUM_INDEX   0x05
 
 typedef struct{
-  unsigned char id[2];
+  unsigned char id[2];
+
   unsigned char len;
   unsigned char checksum;
   unsigned char deepth[2];
@@ -18,9 +19,11 @@ typedef struct{
   unsigned char vbat[2];
   unsigned char status;
   unsigned int deepth_calibration;
-  unsigned int Warn_Thres;
-
+  uint32_t Warn_Thres;
+  float calibration;
 }Data_Stru;
 void module_process(void);
+void params_init(void);
+void module_prams_init(void);
 #endif
 

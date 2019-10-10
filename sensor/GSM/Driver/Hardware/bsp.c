@@ -9,9 +9,14 @@
 #include "stm8l15x_dma.h"
 #include "GSM.h"
 
+#define ADC_RATIO              ((uint16_t) 733) /*ADC_RATIO = ( 3 * 1000*1000 )/4095 */
 
-void DMA_Config(void);
-extern Uart_Types uart_str;
+#define USART_DMA_CHANNEL_RX   DMA1_Channel2
+#define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
+
+extern  Uart_Types uart_str;
+
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint32_t ADCdata = 0;
@@ -35,102 +40,82 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
   GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_Out_PP_High_Fast ); 
   GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
-  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast );   
-  GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
+  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_High_Fast );   
+  GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_High_Fast ); 
+  
+  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_FL_IT);
+  EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
   
 }
 
 
 void GSM_HardwareInit(unsigned char flag)
 {
-   
-    if(flag == ON)
-    {
-		GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); delay_ms(3000);
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );		
-		delay_ms(3000);
- 
-                
-               // GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-//delay_ms(4000);
-delay_ms(4000);
-delay_ms(4000);
-delay_ms(2000);
-delay_ms(2000);
-//delay_ms(2000);
-//delay_ms(2000);
-	}
-//	else
-//	{
-//		GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-//		delay_ms(2000);
-//		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-//		delay_ms(2000);
-//		delay_ms(2000);
-//
-//	}
-
+  GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
+  GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+  GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+  delay_ms(3000);
+  GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+  GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );                
+  delay_ms(1000);
+  
+  delay_ms(3000);
+  delay_ms(4000);
+  delay_ms(4000);
+  
+  
 }
 void Sensor_HardwareInit(unsigned char flag)
 {
-
- 
-    if(flag == ON)
-    {
-		GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
-
-
-	}
-	else
-	{
-		GPIO_ResetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
-
-
-	}
-
+  
+  
+  if(flag == ON)
+  {
+    GPIO_ResetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
+  }
+  else
+  {
+    GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
+  }
+  
 }
 
-void RTC_Config(uint16_t time) 
+void RTC_Config(uint16_t time,unsigned char flag) 
 {
   RTC_DeInit(); //初始化默认状态 
   CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟 
-  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_2); //选择RTC时钟源LSI 38K、2=19K
-  while (CLK_GetFlagStatus(CLK_FLAG_LSIRDY) == RESET);
+  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_64); //选择RTC时钟源LSI、38K/64 
+  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_17bits); //38k/64/8192/128 t=1766.02s 
+    if(flag == 1)
+    {
+    RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断 
+    RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值 
+    RTC_WakeUpCmd(ENABLE); //使能自动唤醒     
+    }
+    else
+    {
+    RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断 
+    RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值 
+    RTC_WakeUpCmd(DISABLE); //使能自动唤醒 		
+  }
   
-  RTC_WakeUpCmd(DISABLE);
-  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
-  RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
-  RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
-  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
-  RTC_WakeUpCmd(ENABLE);
 }
 
 
-extern u8 CurrentMode ;
 void EnterStopMode(void) 
 {
   disableInterrupts(); 
-//  SX1276_LoRa_SetMode( LORA_MODE_SLEEP );//lora enter sleep mode
-//  
-//  //GPIOA
-//  GPIO_Init( PORT_SX127X_TX_CTRL, PIN_SX127X_RX_CTRL|PIN_SX127X_TX_CTRL, GPIO_Mode_Out_PP_Low_Slow ); //lora tx and rx enbale signals 
-//  GPIO_Init( GPIOA, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Slow );
-//  GPIO_Init( GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Slow );
-//  
-//  //GPIOB
-//  GPIO_Init(GPIOB, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_Init(GPIOB, PIN_SX127X_M0, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_Init(GPIOB, PIN_SX127X_M1, GPIO_Mode_Out_PP_Low_Slow);
-//  GPIO_SetBits( PORT_SX127X_CSN, PIN_SX127X_CSN ); 
-//  
-//  //GPIOC
-//  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
-//  GPIO_Init( PORT_SX127X_DIO3, GPIO_Pin_0|PIN_SX127X_DIO3|PIN_SX127X_DIO4|PIN_SX127X_DIO5, GPIO_Mode_Out_PP_Low_Slow );  
+
+  GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   
-  //GPIOD
-  GPIO_Init( GPIOD, GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_Out_PP_Low_Slow );   
   
+  GPIO_SetBits( PORT_LED, PIN_LED );    
+  GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON );   
+  GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );  
+  GPIO_SetBits( PORT_SENSOR_EN, PIN_POWER_ON );
   //close clk
   TIM2_DeInit();
   TIM3_DeInit();
@@ -155,21 +140,65 @@ void EnterStopMode(void)
   PWR_UltraLowPowerCmd(ENABLE); //low power enable
   PWR_FastWakeUpCmd(ENABLE);  //wake up enable
   
-  
+  disableInterrupts();
+  RTC_Config(4,1);//2:1hour         
+  EnterStopMode();//enter stop mode 
+  HardwareInit(); // hardare init after wake up   
   enableInterrupts();
   halt();  //enter stop mode
 }
+
+
+static void DMA_Config(void)
+{
+  CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, ENABLE);
+  
+  /* Deinitialize DMA channels */
+  DMA_GlobalDeInit();
+  
+  DMA_DeInit(DMA1_Channel1);
+  DMA_DeInit(DMA1_Channel2);
+  
+  /* DMA channel Rx of USART Configuration */
+  DMA_Init(USART_DMA_CHANNEL_RX, (uint16_t)uart_str.UsartReceiveData , (uint16_t)USART_DR_ADDRESS,
+           buffer_size, DMA_DIR_PeripheralToMemory, DMA_Mode_Normal,
+           DMA_MemoryIncMode_Inc, DMA_Priority_Low, DMA_MemoryDataSize_Byte);
+  
+  
+  /* Enable the USART Tx/Rx DMA requests */
+  USART_DMACmd(USART1, USART_DMAReq_RX, ENABLE);
+  /* Global DMA Enable */
+  DMA_GlobalCmd(ENABLE);
+  
+  /* Enable the USART Tx DMA channel */
+  // DMA_Cmd(USART_DMA_CHANNEL_TX, ENABLE);
+  /* Enable the USART Rx DMA channel */
+  //DMA_Cmd(USART_DMA_CHANNEL_RX, ENABLE);         
+}
+void DMA_START_RX(void)
+{   DMA_ClearFlag(DMA1_FLAG_TC2);
+DMA_ClearFlag(DMA1_FLAG_HT2);
+DMA_Cmd(USART_DMA_CHANNEL_RX, DISABLE);
+DMA_SetCurrDataCounter(USART_DMA_CHANNEL_RX, buffer_size); 
+DMA_Cmd(USART_DMA_CHANNEL_RX, ENABLE);
+}
+
+extern  unsigned char RtcWakeUp;
 void HardwareInit()
 {
   disableInterrupts();
   SystemClock_Init();     // 系统时钟初始化
-  GPIO_Initial(); 
-  Uart1_Init(9600);// 初始化GPIO
-  DMA_Config();
-  LED_Init();             //调试LED初始化
-GSM_HardwareInit(ON);
-  Sensor_HardwareInit(OFF);
-enableInterrupts();
+  if(RtcWakeUp==1)
+  {
+    GPIO_Initial(); 
+    Uart1_Init(9600);// 初始化GPIO
+    DMA_Config();
+    LED_Init();             //调试LED初始化
+    GSM_HardwareInit(ON);
+    Sensor_HardwareInit(ON);
+    enableInterrupts();  
+  }
+
 }
 void LED_Init(void)
 {
@@ -232,7 +261,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   ADCdata = ADC_GetConversionValue(ADC1);
   
   /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-  ADCdata = (uint32_t)((uint32_t)ADCdata * (uint32_t)ADC_RATIO);
+  ADCdata = (uint32_t)((uint32_t)ADCdata * (uint32_t)ADC_RATIO/1000);
   /* Waiting Delay 200ms */
   delay_ms(200);
   
@@ -244,43 +273,4 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   return ADCdata;
 }
 
- void DMA_Config(void)
-{
-  CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, ENABLE);
-  /* Deinitialize DMA channels */
-  DMA_GlobalDeInit();
 
-  DMA_DeInit(DMA1_Channel1);
-  DMA_DeInit(DMA1_Channel2);
-
-  /* DMA channel Rx of USART Configuration */
-  DMA_Init(USART_DMA_CHANNEL_RX, (uint16_t) uart_str.UsartReceiveData , (uint16_t)USART_DR_ADDRESS,
-           buffer_size, DMA_DIR_PeripheralToMemory, DMA_Mode_Normal,
-           DMA_MemoryIncMode_Inc, DMA_Priority_Low, DMA_MemoryDataSize_Byte);
-
-  /* DMA channel Tx of USART Configuration */
-//  DMA_Init(USART_DMA_CHANNEL_TX, (uint16_t)TxBuffer, (uint16_t)USART_DR_ADDRESS,
-//           DATA_TO_TRANSFER, DMA_DIR_MemoryToPeripheral, DMA_Mode_Normal,
-//           DMA_MemoryIncMode_Inc, DMA_Priority_High, DMA_MemoryDataSize_Byte);
-
-  /* Enable the USART Tx/Rx DMA requests */
-  USART_DMACmd(USART1, USART_DMAReq_TX, ENABLE);
-  USART_DMACmd(USART1, USART_DMAReq_RX, ENABLE);
-
-   DMA_ITConfig(USART_DMA_CHANNEL_TX, DMA_ITx_TC, ENABLE);//浣胯兘TC涓柇
-  
-  /* Global DMA Enable */
-  DMA_GlobalCmd(ENABLE);
-
-  /* Enable the USART Tx DMA channel */
-// DMA_Cmd(USART_DMA_CHANNEL_TX, ENABLE);
-  /* Enable the USART Rx DMA channel */
-  //DMA_Cmd(USART_DMA_CHANNEL_RX, ENABLE);         
-}
-void DMA_START_RX(void)
-{   DMA_ClearFlag(DMA1_FLAG_TC2);
-    DMA_ClearFlag(DMA1_FLAG_HT2);
-    DMA_Cmd(USART_DMA_CHANNEL_RX, DISABLE);
-    DMA_SetCurrDataCounter(USART_DMA_CHANNEL_RX, buffer_size); 
-    DMA_Cmd(USART_DMA_CHANNEL_RX, ENABLE);
-}

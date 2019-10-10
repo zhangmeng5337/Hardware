@@ -49,17 +49,11 @@
 #define ADC_SENSOR_CHANNEL      ADC_Channel_2
 
 
-#define USART_DMA_CHANNEL_RX   DMA1_Channel2
-#define USART_DMA_CHANNEL_TX   DMA1_Channel1
-#define USART_DMA_FLAG_TCRX    (uint16_t)DMA1_FLAG_TC2
-#define USART_DMA_FLAG_TCTX    (uint16_t)DMA1_FLAG_TC1
-#define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
 
-#define ADC_RATIO              ((uint16_t) 806) /*ADC_RATIO = ( 3.3 * 1000 * 1000)/4095 */
 
 void GSM_HardwareInit(unsigned char flag);
 
-void RTC_Config(uint16_t time);
+void RTC_Config(uint16_t time,unsigned char flag) ;
 
 void GPIO_Initial(void);                // 初始化通用IO端口
 
@@ -69,8 +63,8 @@ void USART_SendStr(unsigned char *Str);
 void USART_SenByte(unsigned char *Str,unsigned char len) ;
 uint32_t adcGet(ADC_Channel_TypeDef num);
 void delay_ms(uint32_t num);//不是很精确
- void DMA_Config(void);
 void DMA_START_RX(void);
+void EnterStopMode(void); 
 #endif //_BSP_H_
 
 /*===========================================================================
