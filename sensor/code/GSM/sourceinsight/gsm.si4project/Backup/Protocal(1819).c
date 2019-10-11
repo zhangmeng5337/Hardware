@@ -87,20 +87,20 @@ uint32_t flash_read_operation(uint32_t addr)
 }
 void OilCalibration()
 {
-  uint32_t adc_tmp[2],adc_sum,i;
+  uint32_t adc_tmp,adc_sum,i;
   adc_sum = 0;
   
- // for(i=0;i<samplecount;i++)
+  for(i=0;i<samplecount;i++)
   {
-    adc_tmp[1] = (adcGet(ADC_SENSOR_CHANNEL));
-   // adc_sum = adc_sum + adc_tmp;
+    adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
+    adc_sum = adc_sum + adc_tmp;
   }
- // adc_sum = adc_sum /samplecount;
-  Data_usr.Warn_Thres = adc_tmp[1];
-  adc_tmp[0] = 0x5aa55a;
-  //flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,&adc_tmp,1);
-  //*(adc_tmp+1)=adc_tmp;
-  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,adc_tmp,2);
+  adc_sum = adc_sum /samplecount;
+  Data_usr.Warn_Thres = adc_sum;
+  adc_tmp = 0x5aa55a;
+  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,&adc_tmp,1);
+  
+  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1,&adc_sum,1);
   
 }
 
@@ -129,9 +129,8 @@ void module_process()
     if(RtcWakeUp==1)
     {
       adc_tmp = (adcGet(ADC_BAT_CHANNEL));
-      adc_tmp = adc_tmp*2;
-      Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000);
-      Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
+      Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000)*2;
+      Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10)*2;
       adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
       adc_tmp = adc_tmp/1000*Data_usr.deepth_calibration;
       if(adc_tmp>Data_usr.Warn_Thres)

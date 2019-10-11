@@ -6,21 +6,19 @@
 
 extern Uart_Types uart_str;
 uint32_t tick = 0;
-extern unsigned char RtcWakeUp;
 
 void main(void)
 {
   
   HardwareInit();
-  module_prams_init();
+  params_init();
   //test();
   uart_str.receive_flag =0;
-  RtcWakeUp = 1;
   while(1)
   {
     // delay_ms(1000);
     tick ++;
-    //SIMCOM_Register_Network();
+    SIMCOM_Register_Network();
     module_process(); 
   }
 }

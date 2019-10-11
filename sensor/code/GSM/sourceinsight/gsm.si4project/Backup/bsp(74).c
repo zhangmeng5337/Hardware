@@ -9,13 +9,13 @@
 #include "stm8l15x_dma.h"
 #include "GSM.h"
 
-
+uint32_t ADC_RATIO= ((uint16_t) 733) /*ADC_RATIO = ( 3 * 1000 * 1000)/4095 */
 
 #define USART_DMA_CHANNEL_RX   DMA1_Channel2
 #define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
 
-extern   Uart_Types uart_str;
-float ADC_RATIO= ((uint16_t) 733); /*ADC_RATIO = ( 3 * 1000 * 1000)/4095 */
+extern  Uart_Types uart_str;
+
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -287,8 +287,7 @@ void adcInit(ADC_Channel_TypeDef num)
 uint32_t adcGet(ADC_Channel_TypeDef num)
 {
   unsigned char i;
-  uint32_t tmp;
-  float tmp2;
+  uint32_t tmp,tmp2;
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
    adcInit(ADC_Channel_Vrefint);
@@ -297,7 +296,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   
   /* Get conversion value */
   tmp = ADC_GetConversionValue(ADC1);
-   ADC_RATIO= (1.225 * 4096)/tmp;
+   ADC_RATIO= (1.225 * 1000 * 1000)/tmp;
 
   adcInit(num);
   tmp = 0;
@@ -311,7 +310,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
 	  tmp = ADC_GetConversionValue(ADC1);
 	  
 	  /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-	  tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
+	  tmp2 = tmp2 + (uint32_t)((uint32_t)tmp /ADC_RATIO);
 	  /* Waiting Delay 200ms */
 	  delay_ms(2);
 	  

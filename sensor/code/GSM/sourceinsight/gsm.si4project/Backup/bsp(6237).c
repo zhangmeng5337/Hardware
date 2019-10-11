@@ -87,7 +87,7 @@ void RTC_Config(uint16_t time)
     
     RTC_WakeUpCmd(DISABLE);
     CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
-    RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_17bits);
+    RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
     RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
     RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
     RTC_WakeUpCmd(ENABLE);
@@ -139,8 +139,13 @@ void EnterStopMode(void)
 
     PWR_UltraLowPowerCmd(ENABLE); //low power enable
     PWR_FastWakeUpCmd(ENABLE);  //wake up enable
-
-	 RTC_Config(196);//1:55.2s 
+    
+    if(GetModuleMode()->CurrentMode == SleepMode) 
+    {
+        SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, DISABLE);
+        GPIO_Init(GPIOA, GPIO_Pin_3, GPIO_Mode_In_FL_IT);
+        EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising);
+    }
     enableInterrupts();
     halt();  //enter stop mode
 }

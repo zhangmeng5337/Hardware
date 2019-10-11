@@ -9,13 +9,13 @@
 #include "stm8l15x_dma.h"
 #include "GSM.h"
 
-
+#define ADC_RATIO              ((uint16_t) 806) /*ADC_RATIO = ( 3.3 * 1000 * 1000)/4095 */
 
 #define USART_DMA_CHANNEL_RX   DMA1_Channel2
 #define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
 
-extern   Uart_Types uart_str;
-float ADC_RATIO= ((uint16_t) 733); /*ADC_RATIO = ( 3 * 1000 * 1000)/4095 */
+extern  Uart_Types uart_str;
+
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -43,8 +43,8 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
 
-  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
+//  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_FL_IT);
+//  EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
   
 }
 
@@ -102,36 +102,20 @@ void Sensor_HardwareInit(unsigned char flag)
 
 }
 
-void RTC_Config(uint16_t time,unsigned char flag) 
+void RTC_Config(uint16_t time) 
 {
-  if(flag == ON)
-  {
-	  RTC_DeInit(); //初始化默认状态 
-	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟 
-	  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_2); //选择RTC时钟源LSI 38K、2=19K
-	  while (CLK_GetFlagStatus(CLK_FLAG_LSIRDY) == RESET);
-	  
-	  RTC_WakeUpCmd(DISABLE);
-	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
-	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_17bits);
-	  RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
-	  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
-	  RTC_WakeUpCmd(ENABLE);
-
-  }
-  else
-  {
-	  RTC_WakeUpCmd(DISABLE);
-	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
-	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_17bits);
-	  RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断
-	  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
-
-
-  }
-
+  RTC_DeInit(); //初始化默认状态 
+  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟 
+  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_2); //选择RTC时钟源LSI 38K、2=19K
+  while (CLK_GetFlagStatus(CLK_FLAG_LSIRDY) == RESET);
+  
+  RTC_WakeUpCmd(DISABLE);
+  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
+  RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
+  RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
+  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
+  RTC_WakeUpCmd(ENABLE);
 }
-
 
 
 extern u8 CurrentMode ;
@@ -182,7 +166,7 @@ void EnterStopMode(void)
   PWR_UltraLowPowerCmd(ENABLE); //low power enable
   PWR_FastWakeUpCmd(ENABLE);  //wake up enable
   
-  RTC_Config(196,ON);//1:55.2s 
+  
   enableInterrupts();
   halt();  //enter stop mode
 }
@@ -231,7 +215,7 @@ void HardwareInit()
   Uart1_Init(9600);// 初始化GPIO
   DMA_Config();
   LED_Init();             //调试LED初始化
-  GSM_HardwareInit(ON);
+GSM_HardwareInit(ON);
   Sensor_HardwareInit(OFF);
 enableInterrupts();
 }
@@ -272,7 +256,7 @@ void adcInit(ADC_Channel_TypeDef num)
   
   /* Enable ADC1 */
   ADC_Cmd(ADC1, ENABLE);
-  ADC_VrefintCmd(ENABLE);
+  
   /* Disable SchmittTrigger for ADC_Channel, to save power */
   ADC_SchmittTriggerConfig(ADC1, num, DISABLE);
   
@@ -286,46 +270,26 @@ void adcInit(ADC_Channel_TypeDef num)
 }
 uint32_t adcGet(ADC_Channel_TypeDef num)
 {
-  unsigned char i;
-  uint32_t tmp;
-  float tmp2;
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
-   adcInit(ADC_Channel_Vrefint);
+  adcInit(num);
   while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
   {}
   
   /* Get conversion value */
-  tmp = ADC_GetConversionValue(ADC1);
-   ADC_RATIO= (1.225 * 4096)/tmp;
-
-  adcInit(num);
-  tmp = 0;
-  tmp2 =0;
-  for(i=0;i<samplecount;i++)
-  {
-	  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
-	  {}
-	  
-	  /* Get conversion value */
-	  tmp = ADC_GetConversionValue(ADC1);
-	  
-	  /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-	  tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
-	  /* Waiting Delay 200ms */
-	  delay_ms(2);
-	  
-	  /* DeInitialize ADC1 */
-
-
-  }
-  ADCdata = tmp2 /samplecount;
+  ADCdata = ADC_GetConversionValue(ADC1);
+  
+  /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
+  ADCdata = (uint32_t)((uint32_t)ADCdata * (uint32_t)ADC_RATIO);
+  /* Waiting Delay 200ms */
+  delay_ms(200);
+  
+  /* DeInitialize ADC1 */
   ADC_DeInit(ADC1);
   
   /* Disable ADC1 clock */
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);
   return ADCdata;
-
 }
 
 

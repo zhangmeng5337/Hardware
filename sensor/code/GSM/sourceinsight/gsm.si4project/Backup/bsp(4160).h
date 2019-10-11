@@ -48,12 +48,12 @@
 #define ADC_BAT_CHANNEL         ADC_Channel_1
 #define ADC_SENSOR_CHANNEL      ADC_Channel_2
 
-#define samplecount			100
+
 
 
 void GSM_HardwareInit(unsigned char flag);
 
-void RTC_Config(uint16_t time,unsigned char flag);
+void RTC_Config(uint16_t time);
 
 void GPIO_Initial(void);                // 初始化通用IO端口
 

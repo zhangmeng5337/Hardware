@@ -9,13 +9,13 @@
 #include "stm8l15x_dma.h"
 #include "GSM.h"
 
-
+#define ADC_RATIO              ((uint16_t) 733) /*ADC_RATIO = ( 3 * 1000 * 1000)/4095 */
 
 #define USART_DMA_CHANNEL_RX   DMA1_Channel2
 #define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
 
-extern   Uart_Types uart_str;
-float ADC_RATIO= ((uint16_t) 733); /*ADC_RATIO = ( 3 * 1000 * 1000)/4095 */
+extern  Uart_Types uart_str;
+
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -43,8 +43,8 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
 
-  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
+//  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_FL_IT);
+//  EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
   
 }
 
@@ -231,7 +231,7 @@ void HardwareInit()
   Uart1_Init(9600);// 初始化GPIO
   DMA_Config();
   LED_Init();             //调试LED初始化
-  GSM_HardwareInit(ON);
+GSM_HardwareInit(ON);
   Sensor_HardwareInit(OFF);
 enableInterrupts();
 }
@@ -272,7 +272,7 @@ void adcInit(ADC_Channel_TypeDef num)
   
   /* Enable ADC1 */
   ADC_Cmd(ADC1, ENABLE);
-  ADC_VrefintCmd(ENABLE);
+  
   /* Disable SchmittTrigger for ADC_Channel, to save power */
   ADC_SchmittTriggerConfig(ADC1, num, DISABLE);
   
@@ -288,20 +288,10 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
 {
   unsigned char i;
   uint32_t tmp;
-  float tmp2;
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
-   adcInit(ADC_Channel_Vrefint);
-  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
-  {}
-  
-  /* Get conversion value */
-  tmp = ADC_GetConversionValue(ADC1);
-   ADC_RATIO= (1.225 * 4096)/tmp;
-
   adcInit(num);
   tmp = 0;
-  tmp2 =0;
   for(i=0;i<samplecount;i++)
   {
 	  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
@@ -311,15 +301,15 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
 	  tmp = ADC_GetConversionValue(ADC1);
 	  
 	  /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-	  tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
+	  tmp = tmp + (uint32_t)((uint32_t)ADCdata * (uint32_t)ADC_RATIO);
 	  /* Waiting Delay 200ms */
-	  delay_ms(2);
+	  delay_ms(200);
 	  
 	  /* DeInitialize ADC1 */
 
 
   }
-  ADCdata = tmp2 /samplecount;
+  ADCdata = tmp /samplecount;
   ADC_DeInit(ADC1);
   
   /* Disable ADC1 clock */

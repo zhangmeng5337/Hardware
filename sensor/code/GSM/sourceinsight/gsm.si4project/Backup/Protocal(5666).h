@@ -8,7 +8,7 @@
 #define SERVER_TO_NODEL  0xAA
 
 #define CHECKSUM_INDEX   0x05
-#define SENSOR_FACTOR	 3.5/70
+
 typedef struct{
   unsigned char id[2];
 
@@ -18,13 +18,12 @@ typedef struct{
   unsigned char deepth_percent;
   unsigned char vbat[2];
   unsigned char status;
-  float deepth_calibration;
-  float Warn_Thres;
+  unsigned int deepth_calibration;
+  uint32_t Warn_Thres;
 
 }Data_Stru;
 void module_process(void);
-void module_prams_init(void);
-
+void params_init(void);
 
 #endif
 
