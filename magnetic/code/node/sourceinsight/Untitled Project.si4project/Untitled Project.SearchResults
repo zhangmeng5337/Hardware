@@ -1,4 +1,1 @@
----- uart2.receive_flag Matches (0 in 0 files) ----
----- uart2.receive_flag Search Errors Encountered (1) ----
-The following 1 files could not be processed:
-F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\JLinkLog.txt : File could not be opened.
+---- receive_flag Matches (0 in 0 files) ----

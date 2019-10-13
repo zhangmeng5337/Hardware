@@ -80,7 +80,7 @@ void DelayMs(INT8U x)
 void main(void)
 {
   
-  HardwareInit();
+   HardwareInit();
   RF_Initial( );
   IWDG_Config();
   while(1)

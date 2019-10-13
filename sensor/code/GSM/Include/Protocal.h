@@ -20,6 +20,8 @@ typedef struct{
   unsigned char status;
   float deepth_calibration;
   float Warn_Thres;
+  float vbatf;
+  float deep;
 
 }Data_Stru;
 void module_process(void);

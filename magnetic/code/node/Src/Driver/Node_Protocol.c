@@ -70,7 +70,7 @@ unsigned char uartparase(unsigned char uartNo,unsigned char func)
 	if(uartNo == 2)
 	{
 	    if( uart2.receive_flag==1)
-	    	{   
+	    	{   uart2.receive_flag = 0;
 	    	   res = HeaderIdentify(func);
 					 
 				if(res)
@@ -78,6 +78,7 @@ unsigned char uartparase(unsigned char uartNo,unsigned char func)
 				else
 					return  0;
 		}
+		uart2.receive_flag = 0;
 	}
 	return res;
 }

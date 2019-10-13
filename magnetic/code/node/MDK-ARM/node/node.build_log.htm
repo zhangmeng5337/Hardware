@@ -17,121 +17,17 @@ Library Manager: ArmAr.exe V5.06 update 4 (build 422)
 Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
 CPU DLL:         SARMCM3.DLL V5.23
 Dialog DLL:      DCM.DLL V1.15.0.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node.uvprojx
-Project File Date:  10/07/2019
+Project File Date:  10/11/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'node'
-assembling startup_stm32l433xx.s...
-compiling stm32l4xx_it.c...
-compiling stm32l4xx_hal_iwdg.c...
-compiling stm32l4xx_hal_spi.c...
-compiling stm32l4xx_hal_adc_ex.c...
-compiling main.c...
-compiling stm32l4xx_hal_msp.c...
-compiling stm32l4xx_hal_adc.c...
-compiling stm32l4xx_hal_spi_ex.c...
-compiling stm32l4xx_hal_tim.c...
-compiling stm32l4xx_hal.c...
-compiling stm32l4xx_hal_uart_ex.c...
-compiling stm32l4xx_hal_tim_ex.c...
-compiling stm32l4xx_hal_uart.c...
-compiling stm32l4xx_hal_i2c.c...
-compiling stm32l4xx_hal_i2c_ex.c...
-compiling stm32l4xx_hal_flash_ex.c...
-compiling stm32l4xx_hal_rcc.c...
-compiling stm32l4xx_hal_flash.c...
-compiling stm32l4xx_hal_gpio.c...
-compiling stm32l4xx_hal_flash_ramfunc.c...
-compiling stm32l4xx_hal_rcc_ex.c...
-compiling stm32l4xx_hal_dma.c...
-compiling stm32l4xx_hal_cortex.c...
-compiling stm32l4xx_hal_dma_ex.c...
-compiling stm32l4xx_hal_pwr.c...
-compiling stm32l4xx_hal_exti.c...
-compiling system_stm32l4xx.c...
-compiling stm32l4xx_hal_pwr_ex.c...
-compiling bsp.c...
-..\Src\Hardare\bsp.c(216): warning:  #223-D: function "printf" declared implicitly
-  	printf("uart1 test\n");
-..\Src\Hardare\bsp.c: 1 warning, 0 errors
-compiling i2c.c...
-compiling filter.c...
-..\Src\Driver\filter.c(164): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				                                                (magnetic.F[
-_DIR][index_tmp-1])*(
-LPHA);
-..\Src\Driver\filter.c(166): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				                                                magnetic.F[
-_DIR][index_tmp-1]*(
-LPHA);
-..\Src\Driver\filter.c(168): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				                                                (magnetic.F[
-_DIR][index_tmp-1])*(
-LPHA);
-..\Src\Driver\filter.c(201): warning:  #940-D: missing return statement at end of non-void function "vehicle_detect" 
-  }
-..\Src\Driver\filter.c(263): warning:  #223-D: function "printf" declared implicitly
-  					printf("  MX:  %f",magnetic.M[X_DIR][magnetic.index]);
-..\Src\Driver\filter.c(338): warning:  #223-D: function "uartparase" declared implicitly
-  				if(uartparase(2,func))
-..\Src\Driver\filter.c: 6 warnings, 0 errors
-compiling sensor.c...
-compiling Node_Protocol.c...
-..\Src\Driver\Node_Protocol.c(116): warning:  #223-D: function "memset" declared implicitly
-  	memset(pbuffer, 0, sizeof(pbuffer));
-..\Src\Driver\Node_Protocol.c(118): warning:  #223-D: function "memcpy" declared implicitly
-  	memcpy(pbuffer,wrcommand ,6);
-..\Src\Driver\Node_Protocol.c(155): warning:  #223-D: function "memset" declared implicitly
-  	memset(pbuffer, 0, sizeof(pbuffer));
-..\Src\Driver\Node_Protocol.c(157): warning:  #223-D: function "memcpy" declared implicitly
-  	memcpy(pbuffer,&DataPack.headerH ,1);
-..\Src\Driver\Node_Protocol.c: 4 warnings, 0 errors
-compiling systme.c...
-compiling mag3D3100.c...
-..\Src\Hardare\mag3D3100.c(146): warning:  #186-D: pointless comparison of unsigned integer with zero
-      if (value > 65535 || value<0)
-..\Src\Hardare\mag3D3100.c(162): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-          if (SPI_Write_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(218): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-          if (SPI_Write_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(288): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-      if (SPI_Write_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(305): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-      if (SPI_Write_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(320): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-      SPI_Read_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(337): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-      if (SPI_Write_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(345): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-      if (SPI_Read_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(351): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-          if (SPI_Write_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(368): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
-  	SPI_Read_M3D3100(
-PI2, 
-..\Src\Hardare\mag3D3100.c(375): warning:  #177-D: variable "i"  was declared but never referenced
-  u8  i=0;
-..\Src\Hardare\mag3D3100.c(402): warning:  #177-D: variable "err"  was declared but never referenced
-   char err[5]={0xaa,0x00,0xa1,0xa2,0xa3};
-..\Src\Hardare\mag3D3100.c: 12 warnings, 0 errors
-linking...
-Program Size: Code=25500 RO-data=500 RW-data=120 ZI-data=3504  
-FromELF: creating hex file...
-"node\node.axf" - 0 Error(s), 23 Warning(s).
+"node\node.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -149,7 +45,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.1
-Build Time Elapsed:  00:01:16
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

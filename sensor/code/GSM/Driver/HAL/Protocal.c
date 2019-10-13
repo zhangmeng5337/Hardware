@@ -29,7 +29,7 @@ void module_prams_init()
   Data_usr.vbat[1] = 0;
   Data_usr.status = 0;
   Data_usr.deepth_calibration = SENSOR_FACTOR;
-  Data_usr.Warn_Thres = 0x25;
+  Data_usr.Warn_Thres = 2.5;
   
   uint32_t tmp;
   unsigned char i;
@@ -96,7 +96,8 @@ void OilCalibration()
    // adc_sum = adc_sum + adc_tmp;
   }
  // adc_sum = adc_sum /samplecount;
-  Data_usr.Warn_Thres = adc_tmp[1];
+  Data_usr.Warn_Thres = adc_tmp[1]/1000*Data_usr.deepth_calibration/50;
+
   adc_tmp[0] = 0x5aa55a;
   //flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,&adc_tmp,1);
   //*(adc_tmp+1)=adc_tmp;
@@ -125,21 +126,30 @@ void module_process()
     module_prams_init();
     
   }
-//  if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  
+ // if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  
     if(RtcWakeUp==1)
     {
       adc_tmp = (adcGet(ADC_BAT_CHANNEL));
       adc_tmp = adc_tmp*2;
+	  Data_usr.vbatf = adc_tmp;
       Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000);
       Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
       adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
-      adc_tmp = adc_tmp/1000*Data_usr.deepth_calibration;
-      if(adc_tmp>Data_usr.Warn_Thres)
+      adc_tmp = adc_tmp/50000*Data_usr.deepth_calibration;
+	  Data_usr.deep = adc_tmp;
+      if((adc_tmp*1.05)>Data_usr.Warn_Thres)
         Data_usr.status = 1;
       else
-        Data_usr.status = 0;
-      Data_usr.deepth[0] = (unsigned char)(adc_tmp/10 );
+      	{
+		  Data_usr.status = 0;
+		  //adc_tmp = Data_usr.Warn_Thres;
+
+	  }
+      if(adc_tmp>3.5)
+        adc_tmp = 3.5;
+      Data_usr.deepth[0] = (unsigned char)(adc_tmp*10/10 );
       Data_usr.deepth[1] = (((unsigned char)(adc_tmp*10))%10 );
+	  Data_usr.deepth_percent = (unsigned char)(adc_tmp/Data_usr.Warn_Thres*100);
       p[0] = NODE_TO_SERVERH;
       p[1] = NODE_TO_SERVERL;
       len = 2;
@@ -168,12 +178,13 @@ void module_process()
       
       while(len--)
         UART1_SendByte(p[i++]);
-//      RtcWakeUp = 0;
-//      EnterStopMode();
-//      disableInterrupts(); 
-//      RTC_Config(196,OFF);//1:55.2s
-//      enableInterrupts();
-//      HardwareInit();
+      RtcWakeUp = 0;
+      EnterStopMode();
+      disableInterrupts(); 
+      RTC_Config(196,OFF);//1:55.2s
+      HardwareInit();
+      enableInterrupts();
+      
       
     }
   

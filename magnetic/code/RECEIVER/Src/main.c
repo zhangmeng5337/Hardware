@@ -108,7 +108,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
-  MX_IWDG_Init();
+ // MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
 	__HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
@@ -122,10 +122,10 @@ int main(void)
 	__HAL_UART_CLEAR_IDLEFLAG(&huart2);	
 	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart2);
-
+	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_Receive_DMA(&huart2,uart2.receive_buffer,UARTBUFFERSIZE);
 	//	HAL_Delay(1000);
-	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+
 
 
 	__HAL_UART_CLEAR_IDLEFLAG(&huart3);	
@@ -149,7 +149,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		 uart_process();
-		    HAL_IWDG_Refresh(&hiwdg);
+		  //  HAL_IWDG_Refresh(&hiwdg);
   }
   /* USER CODE END 3 */
 }

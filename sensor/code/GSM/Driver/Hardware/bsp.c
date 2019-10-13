@@ -40,7 +40,7 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
   GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_Out_PP_High_Fast ); 
   GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
-  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast );   
+  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
 
   GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
@@ -55,12 +55,15 @@ void GSM_HardwareInit(unsigned char flag)
     if(flag == ON)
     {
 		GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+		//GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+		//GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
 		//GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
 		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );                
+                
+		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+                delay_ms(2000);
+		GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );		
+		//GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );                
 		delay_ms(3000);
          
         delay_ms(3000);
@@ -108,12 +111,12 @@ void RTC_Config(uint16_t time,unsigned char flag)
   {
 	  RTC_DeInit(); //初始化默认状态 
 	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟 
-	  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_2); //选择RTC时钟源LSI 38K、2=19K
+	  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_1); //选择RTC时钟源LSI 38K、2=19K
 	  while (CLK_GetFlagStatus(CLK_FLAG_LSIRDY) == RESET);
 	  
 	  RTC_WakeUpCmd(DISABLE);
 	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
-	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_17bits);
+	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
 	  RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
 	  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
 	  RTC_WakeUpCmd(ENABLE);
@@ -123,7 +126,7 @@ void RTC_Config(uint16_t time,unsigned char flag)
   {
 	  RTC_WakeUpCmd(DISABLE);
 	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
-	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_17bits);
+	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
 	  RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断
 	  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
 
@@ -154,10 +157,87 @@ void EnterStopMode(void)
 //  //GPIOC
 //  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
 //  GPIO_Init( PORT_SX127X_DIO3, GPIO_Pin_0|PIN_SX127X_DIO3|PIN_SX127X_DIO4|PIN_SX127X_DIO5, GPIO_Mode_Out_PP_Low_Slow );  
-  
+  //GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
   //GPIOD
-  GPIO_Init( GPIOD, GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_Out_PP_Low_Slow );   
+  //GPIO_Init( GPIOD, GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_Out_PP_Low_Slow );   
+
+  GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+ 
+  // GPIO_Mode_In_FL_No_IT      = (uint8_t)0x00,   /*!< Input floating, no external interrupt */
+  //GPIO_Mode_In_PU_No_IT      = (uint8_t)0x40,   /*!< Input pull-up, no external interrupt */
+ 
+ // GPIO_Mode_Out_OD_Low_Fast  = (uint8_t)0xA0,   /*!< Output open-drain, low level, 10MHz */
+  //GPIO_Mode_Out_PP_Low_Fast  = (uint8_t)0xE0,   /*!< Output push-pull, low level, 10MHz */
+ // GPIO_Mode_Out_OD_Low_Slow  = (uint8_t)0x80,   /*!< Output open-drain, low level, 2MHz */
+ // GPIO_Mode_Out_PP_Low_Slow  = (uint8_t)0xC0,   /*!< Output push-pull, low level, 2MHz */
+//  GPIO_Mode_Out_OD_HiZ_Fast  = (uint8_t)0xB0,   /*!< Output open-drain, high-impedance level, 10MHz */
+//  GPIO_Mode_Out_PP_High_Fast = (uint8_t)0xF0,   /*!< Output push-pull, high level, 10MHz */
+//  GPIO_Mode_Out_OD_HiZ_Slow  = (uint8_t)0x90,   /*!< Output open-drain, high-impedance level, 2MHz */
+//  GPIO_Mode_Out_PP_High_Slow
+    
+    
+
+  GPIO_Init( GPIOA,  GPIO_Pin_2, GPIO_Mode_In_FL_No_IT ); 
+  GPIO_Init( GPIOA,  GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Fast );
+  GPIO_Init( GPIOA,  GPIO_Pin_4, GPIO_Mode_Out_OD_Low_Fast );   
+  GPIO_Init( GPIOA,  GPIO_Pin_5, GPIO_Mode_In_PU_No_IT ); 
+
+  GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  GPIO_Init( GPIOC, GPIO_Pin_5|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_In_PU_No_IT );
+    GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast ); 
+
   
+  GPIO_Init( GPIOD,  GPIO_Pin_0|GPIO_Pin_2|GPIO_Pin_3, GPIO_Mode_In_PU_No_IT );
+  
+  GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
+  GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_Out_PP_High_Fast ); 
+  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
+  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast ); 
+  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_In_FL_No_IT ); 
+  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_OD_Low_Slow );   
+  GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_High_Fast ); 
+
+  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
+ // GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+  GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+		  
+
+		//  delay_ms(2000);
+ // GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );	  
+  GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
+
+
+  
+  
+  
+  
+  
+  
+  /* Deinitialize DMA channels */
+  DMA_GlobalDeInit();
+
+  DMA_DeInit(DMA1_Channel1);
+  DMA_DeInit(DMA1_Channel2);
+  /* Enable the USART Tx/Rx DMA requests */
+  USART_DMACmd(USART1, USART_DMAReq_RX, DISABLE);
+  /* Global DMA Enable */
+  DMA_GlobalCmd(DISABLE);
+   DMA_Cmd(USART_DMA_CHANNEL_RX, DISABLE);  
+CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, DISABLE);
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
   //close clk
   TIM2_DeInit();
   TIM3_DeInit();
@@ -182,9 +262,9 @@ void EnterStopMode(void)
   PWR_UltraLowPowerCmd(ENABLE); //low power enable
   PWR_FastWakeUpCmd(ENABLE);  //wake up enable
   
-  RTC_Config(196,ON);//1:55.2s 
+  RTC_Config(10,ON);//1:55.2s 
   enableInterrupts();
-  halt();  //enter stop mode
+ halt();  //enter stop mode
 }
 
 
@@ -231,7 +311,7 @@ void HardwareInit()
   Uart1_Init(9600);// 初始化GPIO
   DMA_Config();
   LED_Init();             //调试LED初始化
-  GSM_HardwareInit(ON);
+ // GSM_HardwareInit(ON);
   Sensor_HardwareInit(OFF);
 enableInterrupts();
 }

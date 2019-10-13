@@ -258,7 +258,7 @@ unsigned char vehicle_detect()
 		
 		BaseLineTrace();
 
-		if(DataPack.tx_period == 0xff)
+		//if(DataPack.tx_period == 0xff)
 		{
 					printf("  MX:  %f",magnetic.M[X_DIR][magnetic.index]);
 					printf("  MY:  %f",magnetic.M[Y_DIR][magnetic.index]);
@@ -349,5 +349,5 @@ void vehicle_process()
 	
 	
 	ReceiverAnalysis();
-	uart2.receive_flag = 0;
+	
 }

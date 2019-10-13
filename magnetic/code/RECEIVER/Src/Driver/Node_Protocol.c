@@ -213,6 +213,12 @@ void nodeParamsInit()
   DataPack.nodeVersion = 1;
 
 }
+void led_OFF()
+{
+	HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_SET);
+	 HAL_Delay(100);
+
+}
 void Transmmit(unsigned char func)
 {
     unsigned char i;
@@ -241,8 +247,8 @@ void Transmmit(unsigned char func)
 			   DataPack.len = i;
 			   DataPack.seq_num  = DataPack.seq_num+ 1;
 
-			   NodeToServer();					HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_SET);
-				HAL_Delay(1000);
+			   NodeToServer();					
+              led_OFF();
 				
 			  // while(TimingStart(2,0,TIME_OUT,0)!=2)
 				;
@@ -280,8 +286,8 @@ void Transmmit(unsigned char func)
 				   DataPack.len = i;
 				   DataPack.seq_num  = DataPack.seq_num+ 1;
 				   NodeToServer();
-	         HAL_Delay(1000);
-					HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_SET);
+				   led_OFF();
+
 				}
 				else
 				{
@@ -310,8 +316,8 @@ void Transmmit(unsigned char func)
 
 				   DataPack.len = i;
 				   DataPack.seq_num  = DataPack.seq_num+ 1;
-				   NodeToServer();					HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_SET);
-	         HAL_Delay(1000);
+				   NodeToServer();					            
+				   led_OFF();
 					
 				}
 				else
@@ -346,9 +352,8 @@ void Transmmit(unsigned char func)
 
 				DataPack.len = i;
 				DataPack.seq_num  = DataPack.seq_num+ 1;
-				NodeToServer();					HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_SET);
-	      HAL_Delay(1000);
-
+				NodeToServer();					             
+				led_OFF();
 			}
 			else
 			{
@@ -381,8 +386,8 @@ void Transmmit(unsigned char func)
 							DataPack.len = i;
 							DataPack.seq_num  = DataPack.seq_num+ 1;
 							NodeToServer();				
-							HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_SET);
-	            HAL_Delay(1000);
+							led_OFF();
+
 						}
 						else
 						{
@@ -423,8 +428,8 @@ void Transmmit(unsigned char func)
 			
 							DataPack.len = i;
 							DataPack.seq_num  = DataPack.seq_num+ 1;
-							NodeToServer();					HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_SET);
-							HAL_Delay(1000);
+							NodeToServer();					            
+							led_OFF();
 			
 						}
 						else

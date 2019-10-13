@@ -22,12 +22,23 @@ Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 F:\projects\git\Hardware\magnetic\code\RECEIVER\MDK-ARM\RECEIVER.uvprojx
-Project File Date:  10/07/2019
+Project File Date:  10/11/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'RECEIVER'
-"RECEIVER\RECEIVER.axf" - 0 Error(s), 0 Warning(s).
+compiling main.c...
+../Src/main.c(140): warning:  #223-D: function "nodeParamsInit" declared implicitly
+  	 nodeParamsInit();
+../Src/main.c(151): warning:  #223-D: function "uart_process" declared implicitly
+  		 uart_process();
+../Src/main.c(214): warning:  #177-D: function "MX_IWDG_Init"  was declared but never referenced
+  static void MX_IWDG_Init(void)
+../Src/main.c: 3 warnings, 0 errors
+linking...
+Program Size: Code=13076 RO-data=500 RW-data=16 ZI-data=2512  
+FromELF: creating hex file...
+"RECEIVER\RECEIVER.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -45,7 +56,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.1
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

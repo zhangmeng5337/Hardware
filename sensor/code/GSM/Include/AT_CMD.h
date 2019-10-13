@@ -14,6 +14,7 @@ const unsigned char Respond_Network_Intensity[]="+CSQ: ";//检查网络信号强度
 const unsigned char Respond_Network_Intensity2[]=",99\r";//检查网络信号强度
 const unsigned char Respond_Network_Intensity_eff[]="+CSQ: ";//检查网络信号强度
 const unsigned char Respond_Network_Normal_ModeT[]="+CFUN: 1";//检查网络信号强度
+const unsigned char platform_received[]="receive";//检查网络信号强度
 
 const unsigned char Respond_Attached_Ok[]="+CGATT: 1";//
 

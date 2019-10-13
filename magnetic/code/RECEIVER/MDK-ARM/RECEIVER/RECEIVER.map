@@ -24,37 +24,43 @@ Section Cross References
     startup_stm32l431xx.o(RESET) refers to stm32l4xx_it.o(i.USART3_IRQHandler) for USART3_IRQHandler
     startup_stm32l431xx.o(.text) refers to system_stm32l4xx.o(i.SystemInit) for SystemInit
     startup_stm32l431xx.o(.text) refers to entry.o(.ARM.Collect$$$$00000000) for __main
+    main.o(i.MX_DMA_Init) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority) for HAL_NVIC_SetPriority
+    main.o(i.MX_DMA_Init) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ) for HAL_NVIC_EnableIRQ
     main.o(i.MX_GPIO_Init) refers to memseta.o(.text) for __aeabi_memclr4
     main.o(i.MX_GPIO_Init) refers to stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
     main.o(i.MX_GPIO_Init) refers to stm32l4xx_hal_gpio.o(i.HAL_GPIO_Init) for HAL_GPIO_Init
     main.o(i.MX_GPIO_Init) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority) for HAL_NVIC_SetPriority
     main.o(i.MX_GPIO_Init) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ) for HAL_NVIC_EnableIRQ
+    main.o(i.MX_IWDG_Init) refers to stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Init) for HAL_IWDG_Init
+    main.o(i.MX_IWDG_Init) refers to main.o(i.Error_Handler) for Error_Handler
+    main.o(i.MX_IWDG_Init) refers to main.o(.bss) for hiwdg
     main.o(i.MX_USART1_UART_Init) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Init) for HAL_UART_Init
-    main.o(i.MX_USART1_UART_Init) refers to main.o(.bss) for .bss
+    main.o(i.MX_USART1_UART_Init) refers to main.o(i.Error_Handler) for Error_Handler
+    main.o(i.MX_USART1_UART_Init) refers to main.o(.bss) for huart1
     main.o(i.MX_USART2_UART_Init) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Init) for HAL_UART_Init
-    main.o(i.MX_USART2_UART_Init) refers to main.o(.bss) for .bss
+    main.o(i.MX_USART2_UART_Init) refers to main.o(i.Error_Handler) for Error_Handler
+    main.o(i.MX_USART2_UART_Init) refers to main.o(.bss) for huart2
     main.o(i.MX_USART3_UART_Init) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Init) for HAL_UART_Init
-    main.o(i.MX_USART3_UART_Init) refers to main.o(.bss) for .bss
+    main.o(i.MX_USART3_UART_Init) refers to main.o(i.Error_Handler) for Error_Handler
+    main.o(i.MX_USART3_UART_Init) refers to main.o(.bss) for huart3
     main.o(i.SystemClock_Config) refers to memseta.o(.text) for __aeabi_memclr4
     main.o(i.SystemClock_Config) refers to stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) for HAL_RCC_OscConfig
+    main.o(i.SystemClock_Config) refers to main.o(i.Error_Handler) for Error_Handler
     main.o(i.SystemClock_Config) refers to stm32l4xx_hal_rcc.o(i.HAL_RCC_ClockConfig) for HAL_RCC_ClockConfig
     main.o(i.SystemClock_Config) refers to stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig) for HAL_RCCEx_PeriphCLKConfig
     main.o(i.SystemClock_Config) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ControlVoltageScaling) for HAL_PWREx_ControlVoltageScaling
     main.o(i.main) refers to stm32l4xx_hal.o(i.HAL_Init) for HAL_Init
     main.o(i.main) refers to main.o(i.SystemClock_Config) for SystemClock_Config
     main.o(i.main) refers to main.o(i.MX_GPIO_Init) for MX_GPIO_Init
-    main.o(i.main) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority) for HAL_NVIC_SetPriority
-    main.o(i.main) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ) for HAL_NVIC_EnableIRQ
+    main.o(i.main) refers to main.o(i.MX_DMA_Init) for MX_DMA_Init
     main.o(i.main) refers to main.o(i.MX_USART1_UART_Init) for MX_USART1_UART_Init
     main.o(i.main) refers to main.o(i.MX_USART2_UART_Init) for MX_USART2_UART_Init
     main.o(i.main) refers to main.o(i.MX_USART3_UART_Init) for MX_USART3_UART_Init
-    main.o(i.main) refers to stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Init) for HAL_IWDG_Init
     main.o(i.main) refers to stm32l4xx_hal_uart.o(i.HAL_UART_DMAStop) for HAL_UART_DMAStop
     main.o(i.main) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA) for HAL_UART_Receive_DMA
     main.o(i.main) refers to node_protocol.o(i.nodeParamsInit) for nodeParamsInit
     main.o(i.main) refers to node_protocol.o(i.uart_process) for uart_process
-    main.o(i.main) refers to stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Refresh) for HAL_IWDG_Refresh
-    main.o(i.main) refers to main.o(.bss) for .bss
+    main.o(i.main) refers to main.o(.bss) for huart1
     main.o(i.main) refers to bsp.o(.bss) for uart1
     stm32l4xx_it.o(i.DMA1_Channel3_IRQHandler) refers to stm32l4xx_hal_dma.o(i.HAL_DMA_IRQHandler) for HAL_DMA_IRQHandler
     stm32l4xx_it.o(i.DMA1_Channel3_IRQHandler) refers to main.o(.bss) for hdma_usart3_rx
@@ -83,8 +89,6 @@ Section Cross References
     stm32l4xx_hal_msp.o(i.HAL_UART_MspInit) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority) for HAL_NVIC_SetPriority
     stm32l4xx_hal_msp.o(i.HAL_UART_MspInit) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ) for HAL_NVIC_EnableIRQ
     stm32l4xx_hal_msp.o(i.HAL_UART_MspInit) refers to main.o(.bss) for hdma_usart1_rx
-    stm32l4xx_hal_msp.o(i.HAL_UART_MspInit) refers to main.o(.bss) for hdma_usart2_rx
-    stm32l4xx_hal_msp.o(i.HAL_UART_MspInit) refers to main.o(.bss) for hdma_usart3_rx
     stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Init) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_Init) refers to stm32l4xx_hal_msp.o(i.HAL_UART_MspInit) for HAL_UART_MspInit
     stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_Init) refers to stm32l4xx_hal_uart.o(i.UART_SetConfig) for UART_SetConfig
@@ -125,7 +129,7 @@ Section Cross References
     stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler) refers to stm32l4xx_hal_dma.o(i.HAL_DMA_Abort_IT) for HAL_DMA_Abort_IT
     stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler) refers to stm32l4xx_hal_uart.o(i.HAL_UART_ErrorCallback) for HAL_UART_ErrorCallback
     stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler) refers to stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_WakeupCallback) for HAL_UARTEx_WakeupCallback
-    stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler) refers to stm32l4xx_hal_uart.o(i.HAL_UART_TxCpltCallback) for HAL_UART_TxCpltCallback
+    stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler) refers to stm32l4xx_hal_uart.o(i.UART_EndTransmit_IT) for UART_EndTransmit_IT
     stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler) refers to stm32l4xx_hal_uart.o(i.UART_DMAAbortOnError) for UART_DMAAbortOnError
     stm32l4xx_hal_uart.o(i.HAL_UART_Init) refers to stm32l4xx_hal_msp.o(i.HAL_UART_MspInit) for HAL_UART_MspInit
     stm32l4xx_hal_uart.o(i.HAL_UART_Init) refers to stm32l4xx_hal_uart.o(i.UART_SetConfig) for UART_SetConfig
@@ -137,16 +141,16 @@ Section Cross References
     stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA) refers to stm32l4xx_hal_uart.o(i.UART_DMAReceiveCplt) for UART_DMAReceiveCplt
     stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA) refers to stm32l4xx_hal_uart.o(i.UART_DMARxHalfCplt) for UART_DMARxHalfCplt
     stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA) refers to stm32l4xx_hal_uart.o(i.UART_DMAError) for UART_DMAError
-    stm32l4xx_hal_uart.o(i.HAL_UART_Receive_IT) refers to stm32l4xx_hal_uart.o(i.UART_RxISR_8BIT) for UART_RxISR_8BIT
     stm32l4xx_hal_uart.o(i.HAL_UART_Receive_IT) refers to stm32l4xx_hal_uart.o(i.UART_RxISR_16BIT) for UART_RxISR_16BIT
+    stm32l4xx_hal_uart.o(i.HAL_UART_Receive_IT) refers to stm32l4xx_hal_uart.o(i.UART_RxISR_8BIT) for UART_RxISR_8BIT
     stm32l4xx_hal_uart.o(i.HAL_UART_Transmit) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_uart.o(i.HAL_UART_Transmit) refers to stm32l4xx_hal_uart.o(i.UART_WaitOnFlagUntilTimeout) for UART_WaitOnFlagUntilTimeout
     stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_DMA) refers to stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT) for HAL_DMA_Start_IT
     stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_DMA) refers to stm32l4xx_hal_uart.o(i.UART_DMATransmitCplt) for UART_DMATransmitCplt
     stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_DMA) refers to stm32l4xx_hal_uart.o(i.UART_DMATxHalfCplt) for UART_DMATxHalfCplt
     stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_DMA) refers to stm32l4xx_hal_uart.o(i.UART_DMAError) for UART_DMAError
-    stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_IT) refers to stm32l4xx_hal_uart.o(i.UART_TxISR_8BIT) for UART_TxISR_8BIT
     stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_IT) refers to stm32l4xx_hal_uart.o(i.UART_TxISR_16BIT) for UART_TxISR_16BIT
+    stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_IT) refers to stm32l4xx_hal_uart.o(i.UART_TxISR_8BIT) for UART_TxISR_8BIT
     stm32l4xx_hal_uart.o(i.UART_CheckIdleState) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_uart.o(i.UART_CheckIdleState) refers to stm32l4xx_hal_uart.o(i.UART_WaitOnFlagUntilTimeout) for UART_WaitOnFlagUntilTimeout
     stm32l4xx_hal_uart.o(i.UART_DMAAbortOnError) refers to stm32l4xx_hal_uart.o(i.HAL_UART_ErrorCallback) for HAL_UART_ErrorCallback
@@ -161,6 +165,7 @@ Section Cross References
     stm32l4xx_hal_uart.o(i.UART_DMATxAbortCallback) refers to stm32l4xx_hal_uart.o(i.HAL_UART_AbortCpltCallback) for HAL_UART_AbortCpltCallback
     stm32l4xx_hal_uart.o(i.UART_DMATxHalfCplt) refers to stm32l4xx_hal_uart.o(i.HAL_UART_TxHalfCpltCallback) for HAL_UART_TxHalfCpltCallback
     stm32l4xx_hal_uart.o(i.UART_DMATxOnlyAbortCallback) refers to stm32l4xx_hal_uart.o(i.HAL_UART_AbortTransmitCpltCallback) for HAL_UART_AbortTransmitCpltCallback
+    stm32l4xx_hal_uart.o(i.UART_EndTransmit_IT) refers to stm32l4xx_hal_uart.o(i.HAL_UART_TxCpltCallback) for HAL_UART_TxCpltCallback
     stm32l4xx_hal_uart.o(i.UART_RxISR_16BIT) refers to stm32l4xx_hal_uart.o(i.HAL_UART_RxCpltCallback) for HAL_UART_RxCpltCallback
     stm32l4xx_hal_uart.o(i.UART_RxISR_8BIT) refers to stm32l4xx_hal_uart.o(i.HAL_UART_RxCpltCallback) for HAL_UART_RxCpltCallback
     stm32l4xx_hal_uart.o(i.UART_SetConfig) refers to stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq) for HAL_RCC_GetPCLK1Freq
@@ -173,25 +178,26 @@ Section Cross References
     stm32l4xx_hal_uart_ex.o(i.HAL_RS485Ex_Init) refers to stm32l4xx_hal_uart.o(i.UART_SetConfig) for UART_SetConfig
     stm32l4xx_hal_uart_ex.o(i.HAL_RS485Ex_Init) refers to stm32l4xx_hal_uart.o(i.UART_AdvFeatureConfig) for UART_AdvFeatureConfig
     stm32l4xx_hal_uart_ex.o(i.HAL_RS485Ex_Init) refers to stm32l4xx_hal_uart.o(i.UART_CheckIdleState) for UART_CheckIdleState
+    stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_StopModeWakeUpSourceConfig) refers to stm32l4xx_hal_uart_ex.o(i.UARTEx_Wakeup_AddressConfig) for UARTEx_Wakeup_AddressConfig
     stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_StopModeWakeUpSourceConfig) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_StopModeWakeUpSourceConfig) refers to stm32l4xx_hal_uart.o(i.UART_WaitOnFlagUntilTimeout) for UART_WaitOnFlagUntilTimeout
     stm32l4xx_hal.o(i.HAL_DeInit) refers to stm32l4xx_hal.o(i.HAL_MspDeInit) for HAL_MspDeInit
     stm32l4xx_hal.o(i.HAL_Delay) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
-    stm32l4xx_hal.o(i.HAL_Delay) refers to stm32l4xx_hal.o(.data) for .data
-    stm32l4xx_hal.o(i.HAL_GetTick) refers to stm32l4xx_hal.o(.data) for .data
-    stm32l4xx_hal.o(i.HAL_GetTickFreq) refers to stm32l4xx_hal.o(.data) for .data
-    stm32l4xx_hal.o(i.HAL_GetTickPrio) refers to stm32l4xx_hal.o(.data) for .data
-    stm32l4xx_hal.o(i.HAL_IncTick) refers to stm32l4xx_hal.o(.data) for .data
+    stm32l4xx_hal.o(i.HAL_Delay) refers to stm32l4xx_hal.o(.data) for uwTickFreq
+    stm32l4xx_hal.o(i.HAL_GetTick) refers to stm32l4xx_hal.o(.data) for uwTick
+    stm32l4xx_hal.o(i.HAL_GetTickFreq) refers to stm32l4xx_hal.o(.data) for uwTickFreq
+    stm32l4xx_hal.o(i.HAL_GetTickPrio) refers to stm32l4xx_hal.o(.data) for uwTickPrio
+    stm32l4xx_hal.o(i.HAL_IncTick) refers to stm32l4xx_hal.o(.data) for uwTick
     stm32l4xx_hal.o(i.HAL_Init) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriorityGrouping) for HAL_NVIC_SetPriorityGrouping
     stm32l4xx_hal.o(i.HAL_Init) refers to stm32l4xx_hal.o(i.HAL_InitTick) for HAL_InitTick
     stm32l4xx_hal.o(i.HAL_Init) refers to stm32l4xx_hal_msp.o(i.HAL_MspInit) for HAL_MspInit
     stm32l4xx_hal.o(i.HAL_InitTick) refers to stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Config) for HAL_SYSTICK_Config
     stm32l4xx_hal.o(i.HAL_InitTick) refers to stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority) for HAL_NVIC_SetPriority
-    stm32l4xx_hal.o(i.HAL_InitTick) refers to stm32l4xx_hal.o(.data) for .data
+    stm32l4xx_hal.o(i.HAL_InitTick) refers to stm32l4xx_hal.o(.data) for uwTickFreq
     stm32l4xx_hal.o(i.HAL_InitTick) refers to system_stm32l4xx.o(.data) for SystemCoreClock
     stm32l4xx_hal.o(i.HAL_SYSCFG_EnableVREFBUF) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal.o(i.HAL_SetTickFreq) refers to stm32l4xx_hal.o(i.HAL_InitTick) for HAL_InitTick
-    stm32l4xx_hal.o(i.HAL_SetTickFreq) refers to stm32l4xx_hal.o(.data) for .data
+    stm32l4xx_hal.o(i.HAL_SetTickFreq) refers to stm32l4xx_hal.o(.data) for uwTickFreq
     stm32l4xx_hal_i2c.o(i.HAL_I2C_DeInit) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MspDeInit) for HAL_I2C_MspDeInit
     stm32l4xx_hal_i2c.o(i.HAL_I2C_DisableListen_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
     stm32l4xx_hal_i2c.o(i.HAL_I2C_ER_IRQHandler) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
@@ -342,15 +348,15 @@ Section Cross References
     stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_DMAError) for I2C_DMAError
     stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ) for I2C_Enable_IRQ
     stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) for I2C_Slave_ISR_IT
-    stm32l4xx_hal_i2c.o(i.I2C_DMAAbort) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_ErrorCallback) for HAL_I2C_ErrorCallback
     stm32l4xx_hal_i2c.o(i.I2C_DMAAbort) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_AbortCpltCallback) for HAL_I2C_AbortCpltCallback
+    stm32l4xx_hal_i2c.o(i.I2C_DMAAbort) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_ErrorCallback) for HAL_I2C_ErrorCallback
     stm32l4xx_hal_i2c.o(i.I2C_DMAError) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
+    stm32l4xx_hal_i2c.o(i.I2C_DMAMasterReceiveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ) for I2C_Enable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_DMAMasterReceiveCplt) refers to stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT) for HAL_DMA_Start_IT
     stm32l4xx_hal_i2c.o(i.I2C_DMAMasterReceiveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
-    stm32l4xx_hal_i2c.o(i.I2C_DMAMasterReceiveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ) for I2C_Enable_IRQ
+    stm32l4xx_hal_i2c.o(i.I2C_DMAMasterTransmitCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ) for I2C_Enable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_DMAMasterTransmitCplt) refers to stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT) for HAL_DMA_Start_IT
     stm32l4xx_hal_i2c.o(i.I2C_DMAMasterTransmitCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
-    stm32l4xx_hal_i2c.o(i.I2C_DMAMasterTransmitCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ) for I2C_Enable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_DMASlaveReceiveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) for I2C_ITSlaveSeqCplt
     stm32l4xx_hal_i2c.o(i.I2C_DMASlaveTransmitCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) for I2C_ITSlaveSeqCplt
     stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ) refers to stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) for I2C_Master_ISR_DMA
@@ -359,46 +365,46 @@ Section Cross References
     stm32l4xx_hal_i2c.o(i.I2C_ITAddrCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_dma.o(i.HAL_DMA_Abort_IT) for HAL_DMA_Abort_IT
-    stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_ErrorCallback) for HAL_I2C_ErrorCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_AbortCpltCallback) for HAL_I2C_AbortCpltCallback
-    stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_i2c.o(i.I2C_DMAAbort) for I2C_DMAAbort
+    stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_ErrorCallback) for HAL_I2C_ErrorCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) for I2C_Slave_ISR_IT
+    stm32l4xx_hal_i2c.o(i.I2C_ITError) refers to stm32l4xx_hal_i2c.o(i.I2C_DMAAbort) for I2C_DMAAbort
     stm32l4xx_hal_i2c.o(i.I2C_ITListenCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_ITListenCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_ListenCpltCallback) for HAL_I2C_ListenCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR) for I2C_Flush_TXDR
     stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
-    stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterRxCpltCallback) for HAL_I2C_MasterRxCpltCallback
-    stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterTxCpltCallback) for HAL_I2C_MasterTxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MemTxCpltCallback) for HAL_I2C_MemTxCpltCallback
+    stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterTxCpltCallback) for HAL_I2C_MasterTxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MemRxCpltCallback) for HAL_I2C_MemRxCpltCallback
+    stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterRxCpltCallback) for HAL_I2C_MasterRxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
-    stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterRxCpltCallback) for HAL_I2C_MasterRxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterTxCpltCallback) for HAL_I2C_MasterTxCpltCallback
+    stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterRxCpltCallback) for HAL_I2C_MasterRxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR) for I2C_Flush_TXDR
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITListenCplt) for I2C_ITListenCplt
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) for I2C_ITSlaveSeqCplt
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_ListenCpltCallback) for HAL_I2C_ListenCpltCallback
-    stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveTxCpltCallback) for HAL_I2C_SlaveTxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveRxCpltCallback) for HAL_I2C_SlaveRxCpltCallback
+    stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveTxCpltCallback) for HAL_I2C_SlaveTxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) refers to stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ) for I2C_Disable_IRQ
-    stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveRxCpltCallback) for HAL_I2C_SlaveRxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveTxCpltCallback) for HAL_I2C_SlaveTxCpltCallback
+    stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) refers to stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveRxCpltCallback) for HAL_I2C_SlaveRxCpltCallback
     stm32l4xx_hal_i2c.o(i.I2C_IsAcknowledgeFailed) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_i2c.o(i.I2C_IsAcknowledgeFailed) refers to stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR) for I2C_Flush_TXDR
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ) for I2C_Enable_IRQ
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR) for I2C_Flush_TXDR
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_TransferConfig) for I2C_TransferConfig
-    stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt) for I2C_ITMasterSeqCplt
+    stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) for I2C_ITMasterCplt
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR) for I2C_Flush_TXDR
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_TransferConfig) for I2C_TransferConfig
+    stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt) for I2C_ITMasterSeqCplt
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
     stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt) for I2C_ITMasterCplt
-    stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt) for I2C_ITMasterSeqCplt
     stm32l4xx_hal_i2c.o(i.I2C_RequestMemoryRead) refers to stm32l4xx_hal_i2c.o(i.I2C_TransferConfig) for I2C_TransferConfig
     stm32l4xx_hal_i2c.o(i.I2C_RequestMemoryRead) refers to stm32l4xx_hal_i2c.o(i.I2C_WaitOnTXISFlagUntilTimeout) for I2C_WaitOnTXISFlagUntilTimeout
     stm32l4xx_hal_i2c.o(i.I2C_RequestMemoryRead) refers to stm32l4xx_hal_i2c.o(i.I2C_WaitOnFlagUntilTimeout) for I2C_WaitOnFlagUntilTimeout
@@ -411,11 +417,11 @@ Section Cross References
     stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
     stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_ITAddrCplt) for I2C_ITAddrCplt
     stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_DMA) refers to stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) for I2C_ITSlaveCplt
-    stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
     stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITListenCplt) for I2C_ITListenCplt
     stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR) for I2C_Flush_TXDR
-    stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITAddrCplt) for I2C_ITAddrCplt
     stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt) for I2C_ITSlaveSeqCplt
+    stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITError) for I2C_ITError
+    stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITAddrCplt) for I2C_ITAddrCplt
     stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT) refers to stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt) for I2C_ITSlaveCplt
     stm32l4xx_hal_i2c.o(i.I2C_WaitOnFlagUntilTimeout) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_i2c.o(i.I2C_WaitOnRXNEFlagUntilTimeout) refers to stm32l4xx_hal_i2c.o(i.I2C_IsAcknowledgeFailed) for I2C_IsAcknowledgeFailed
@@ -435,17 +441,17 @@ Section Cross References
     stm32l4xx_hal_rcc.o(i.HAL_RCC_DeInit) refers to system_stm32l4xx.o(.data) for SystemCoreClock
     stm32l4xx_hal_rcc.o(i.HAL_RCC_DeInit) refers to stm32l4xx_hal.o(.data) for uwTickPrio
     stm32l4xx_hal_rcc.o(i.HAL_RCC_GetHCLKFreq) refers to system_stm32l4xx.o(.data) for SystemCoreClock
-    stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq) refers to system_stm32l4xx.o(.data) for SystemCoreClock
+    stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq) refers to stm32l4xx_hal_rcc.o(i.HAL_RCC_GetHCLKFreq) for HAL_RCC_GetHCLKFreq
     stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq) refers to system_stm32l4xx.o(.constdata) for APBPrescTable
-    stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq) refers to system_stm32l4xx.o(.data) for SystemCoreClock
+    stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq) refers to stm32l4xx_hal_rcc.o(i.HAL_RCC_GetHCLKFreq) for HAL_RCC_GetHCLKFreq
     stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq) refers to system_stm32l4xx.o(.constdata) for APBPrescTable
     stm32l4xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq) refers to system_stm32l4xx.o(.constdata) for MSIRangeTable
     stm32l4xx_hal_rcc.o(i.HAL_RCC_MCOConfig) refers to stm32l4xx_hal_gpio.o(i.HAL_GPIO_Init) for HAL_GPIO_Init
     stm32l4xx_hal_rcc.o(i.HAL_RCC_NMI_IRQHandler) refers to stm32l4xx_hal_rcc.o(i.HAL_RCC_CSSCallback) for HAL_RCC_CSSCallback
-    stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to stm32l4xx_hal_rcc.o(i.RCC_SetFlashLatencyFromMSIRange) for RCC_SetFlashLatencyFromMSIRange
     stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to stm32l4xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq) for HAL_RCC_GetSysClockFreq
     stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to stm32l4xx_hal.o(i.HAL_InitTick) for HAL_InitTick
+    stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to system_stm32l4xx.o(.constdata) for AHBPrescTable
     stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to system_stm32l4xx.o(.data) for SystemCoreClock
     stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig) refers to stm32l4xx_hal.o(.data) for uwTickPrio
@@ -472,34 +478,41 @@ Section Cross References
     stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_rcc_ex.o(i.RCCEx_PLLSAI1_Config) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
-    stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) refers to stm32l4xx_hal_flash.o(.data) for .data
-    stm32l4xx_hal_flash.o(i.HAL_FLASH_GetError) refers to stm32l4xx_hal_flash.o(.data) for .data
+    stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) refers to stm32l4xx_hal_flash.o(.data) for pFlash
+    stm32l4xx_hal_flash.o(i.HAL_FLASH_GetError) refers to stm32l4xx_hal_flash.o(.data) for pFlash
     stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_FlushCaches) for FLASH_FlushCaches
     stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler) refers to stm32l4xx_hal_flash.o(i.HAL_FLASH_OperationErrorCallback) for HAL_FLASH_OperationErrorCallback
     stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler) refers to stm32l4xx_hal_flash.o(i.HAL_FLASH_EndOfOperationCallback) for HAL_FLASH_EndOfOperationCallback
     stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_PageErase) for FLASH_PageErase
-    stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler) refers to stm32l4xx_hal_flash.o(.data) for .data
+    stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler) refers to stm32l4xx_hal_flash.o(.data) for pFlash
     stm32l4xx_hal_flash.o(i.HAL_FLASH_OB_Launch) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
     stm32l4xx_hal_flash.o(i.HAL_FLASH_Program) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
     stm32l4xx_hal_flash.o(i.HAL_FLASH_Program) refers to stm32l4xx_hal_flash.o(i.FLASH_Program_DoubleWord) for FLASH_Program_DoubleWord
     stm32l4xx_hal_flash.o(i.HAL_FLASH_Program) refers to stm32l4xx_hal_flash.o(i.FLASH_Program_Fast) for FLASH_Program_Fast
     stm32l4xx_hal_flash.o(i.HAL_FLASH_Program) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_FlushCaches) for FLASH_FlushCaches
-    stm32l4xx_hal_flash.o(i.HAL_FLASH_Program) refers to stm32l4xx_hal_flash.o(.data) for .data
+    stm32l4xx_hal_flash.o(i.HAL_FLASH_Program) refers to stm32l4xx_hal_flash.o(.data) for pFlash
     stm32l4xx_hal_flash.o(i.HAL_FLASH_Program_IT) refers to stm32l4xx_hal_flash.o(i.FLASH_Program_DoubleWord) for FLASH_Program_DoubleWord
     stm32l4xx_hal_flash.o(i.HAL_FLASH_Program_IT) refers to stm32l4xx_hal_flash.o(i.FLASH_Program_Fast) for FLASH_Program_Fast
-    stm32l4xx_hal_flash.o(i.HAL_FLASH_Program_IT) refers to stm32l4xx_hal_flash.o(.data) for .data
+    stm32l4xx_hal_flash.o(i.HAL_FLASH_Program_IT) refers to stm32l4xx_hal_flash.o(.data) for pFlash
     stm32l4xx_hal_flash_ex.o(i.FLASH_FlushCaches) refers to stm32l4xx_hal_flash.o(.data) for pFlash
     stm32l4xx_hal_flash_ex.o(i.FLASH_OB_PCROPConfig) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    stm32l4xx_hal_flash_ex.o(i.FLASH_OB_RDPConfig) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
     stm32l4xx_hal_flash_ex.o(i.FLASH_OB_UserConfig) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    stm32l4xx_hal_flash_ex.o(i.FLASH_OB_WRPConfig) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_MassErase) for FLASH_MassErase
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_PageErase) for FLASH_PageErase
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_FlushCaches) for FLASH_FlushCaches
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase) refers to stm32l4xx_hal_flash.o(.data) for pFlash
-    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase_IT) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_PageErase) for FLASH_PageErase
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase_IT) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_MassErase) for FLASH_MassErase
+    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase_IT) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_PageErase) for FLASH_PageErase
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase_IT) refers to stm32l4xx_hal_flash.o(.data) for pFlash
-    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram) refers to stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation) for FLASH_WaitForLastOperation
+    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBGetConfig) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetWRP) for FLASH_OB_GetWRP
+    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBGetConfig) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetRDP) for FLASH_OB_GetRDP
+    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBGetConfig) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetUser) for FLASH_OB_GetUser
+    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBGetConfig) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetPCROP) for FLASH_OB_GetPCROP
+    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_WRPConfig) for FLASH_OB_WRPConfig
+    stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_RDPConfig) for FLASH_OB_RDPConfig
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_UserConfig) for FLASH_OB_UserConfig
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram) refers to stm32l4xx_hal_flash_ex.o(i.FLASH_OB_PCROPConfig) for FLASH_OB_PCROPConfig
     stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram) refers to stm32l4xx_hal_flash.o(.data) for pFlash
@@ -507,45 +520,45 @@ Section Cross References
     stm32l4xx_hal_dma.o(i.HAL_DMA_PollForTransfer) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
     stm32l4xx_hal_dma.o(i.HAL_DMA_Start) refers to stm32l4xx_hal_dma.o(i.DMA_SetConfig) for DMA_SetConfig
     stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT) refers to stm32l4xx_hal_dma.o(i.DMA_SetConfig) for DMA_SetConfig
-    stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSLEEPMode) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableLowPowerRunMode) for HAL_PWREx_EnableLowPowerRunMode
     stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSLEEPMode) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableLowPowerRunMode) for HAL_PWREx_DisableLowPowerRunMode
-    stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSTOPMode) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP0Mode) for HAL_PWREx_EnterSTOP0Mode
+    stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSLEEPMode) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableLowPowerRunMode) for HAL_PWREx_EnableLowPowerRunMode
     stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSTOPMode) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP1Mode) for HAL_PWREx_EnterSTOP1Mode
+    stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSTOPMode) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP0Mode) for HAL_PWREx_EnterSTOP0Mode
     stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ControlVoltageScaling) refers to system_stm32l4xx.o(.data) for SystemCoreClock
     stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableLowPowerRunMode) refers to system_stm32l4xx.o(.data) for SystemCoreClock
     stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVD_PVM_IRQHandler) refers to stm32l4xx_hal_pwr.o(i.HAL_PWR_PVDCallback) for HAL_PWR_PVDCallback
     stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVD_PVM_IRQHandler) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVM3Callback) for HAL_PWREx_PVM3Callback
     stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVD_PVM_IRQHandler) refers to stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVM4Callback) for HAL_PWREx_PVM4Callback
+    stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetPriorityGrouping) refers to stm32l4xx_hal_cortex.o(i.__NVIC_GetPriorityGrouping) for __NVIC_GetPriorityGrouping
+    stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority) refers to stm32l4xx_hal_cortex.o(i.__NVIC_GetPriorityGrouping) for __NVIC_GetPriorityGrouping
     stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority) refers to stm32l4xx_hal_cortex.o(i.__NVIC_SetPriority) for __NVIC_SetPriority
     stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Config) refers to stm32l4xx_hal_cortex.o(i.__NVIC_SetPriority) for __NVIC_SetPriority
     stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_IRQHandler) refers to stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Callback) for HAL_SYSTICK_Callback
-    system_stm32l4xx.o(i.SystemCoreClockUpdate) refers to system_stm32l4xx.o(.constdata) for .constdata
-    system_stm32l4xx.o(i.SystemCoreClockUpdate) refers to system_stm32l4xx.o(.data) for .data
-    bsp.o(i.UsartReceive_IDLE) refers to stm32l4xx_hal_uart.o(i.HAL_UART_DMAPause) for HAL_UART_DMAPause
-    bsp.o(i.UsartReceive_IDLE) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA) for HAL_UART_Receive_DMA
+    system_stm32l4xx.o(i.SystemCoreClockUpdate) refers to system_stm32l4xx.o(.constdata) for MSIRangeTable
+    system_stm32l4xx.o(i.SystemCoreClockUpdate) refers to system_stm32l4xx.o(.data) for SystemCoreClock
     bsp.o(i.UsartReceive_IDLE) refers to stm32l4xx_hal_uart.o(i.HAL_UART_DMAStop) for HAL_UART_DMAStop
-    bsp.o(i.UsartReceive_IDLE) refers to main.o(.bss) for huart3
-    bsp.o(i.UsartReceive_IDLE) refers to main.o(.bss) for hdma_usart3_rx
-    bsp.o(i.UsartReceive_IDLE) refers to bsp.o(.bss) for .bss
-    bsp.o(i.UsartReceive_IDLE) refers to main.o(.bss) for hdma_usart1_rx
-    bsp.o(i.UsartReceive_IDLE) refers to main.o(.bss) for hdma_usart2_rx
-    node_protocol.o(i.HeaderIdentify) refers to node_protocol.o(.bss) for .bss
+    bsp.o(i.UsartReceive_IDLE) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA) for HAL_UART_Receive_DMA
+    bsp.o(i.UsartReceive_IDLE) refers to stm32l4xx_hal_uart.o(i.HAL_UART_DMAPause) for HAL_UART_DMAPause
+    bsp.o(i.UsartReceive_IDLE) refers to main.o(.bss) for huart1
+    bsp.o(i.UsartReceive_IDLE) refers to bsp.o(.bss) for uart1
     node_protocol.o(i.HeaderIdentify) refers to bsp.o(.bss) for uart2
-    node_protocol.o(i.HeaderIdentify2) refers to node_protocol.o(.bss) for .bss
+    node_protocol.o(i.HeaderIdentify) refers to node_protocol.o(.bss) for DataPack
     node_protocol.o(i.HeaderIdentify2) refers to bsp.o(.bss) for uart1
+    node_protocol.o(i.HeaderIdentify2) refers to node_protocol.o(.bss) for DataPack
     node_protocol.o(i.NodeToServer) refers to memseta.o(.text) for __aeabi_memclr4
     node_protocol.o(i.NodeToServer) refers to memcpya.o(.text) for __aeabi_memcpy
     node_protocol.o(i.NodeToServer) refers to node_protocol.o(i.xorCheck) for xorCheck
     node_protocol.o(i.NodeToServer) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Transmit) for HAL_UART_Transmit
-    node_protocol.o(i.NodeToServer) refers to node_protocol.o(.bss) for .bss
+    node_protocol.o(i.NodeToServer) refers to node_protocol.o(.bss) for DataPack
     node_protocol.o(i.NodeToServer) refers to main.o(.bss) for huart1
     node_protocol.o(i.Transmmit) refers to node_protocol.o(i.NodeToServer) for NodeToServer
-    node_protocol.o(i.Transmmit) refers to stm32l4xx_hal.o(i.HAL_Delay) for HAL_Delay
-    node_protocol.o(i.Transmmit) refers to stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
-    node_protocol.o(i.Transmmit) refers to node_protocol.o(.bss) for .bss
+    node_protocol.o(i.Transmmit) refers to node_protocol.o(i.led_OFF) for led_OFF
+    node_protocol.o(i.Transmmit) refers to node_protocol.o(.bss) for DataPack
     node_protocol.o(i.index_zero) refers to bsp.o(.bss) for uart1
+    node_protocol.o(i.led_OFF) refers to stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
+    node_protocol.o(i.led_OFF) refers to stm32l4xx_hal.o(i.HAL_Delay) for HAL_Delay
     node_protocol.o(i.lora_test) refers to node_protocol.o(i.NodeToServer) for NodeToServer
-    node_protocol.o(i.nodeParamsInit) refers to node_protocol.o(.bss) for .bss
+    node_protocol.o(i.nodeParamsInit) refers to node_protocol.o(.bss) for DataPack
     node_protocol.o(i.uart_process) refers to stm32l4xx_hal_uart.o(i.HAL_UART_Transmit) for HAL_UART_Transmit
     node_protocol.o(i.uart_process) refers to stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
     node_protocol.o(i.uart_process) refers to node_protocol.o(i.uartparase2) for uartparase2
@@ -557,9 +570,9 @@ Section Cross References
     node_protocol.o(i.uartparase) refers to bsp.o(.bss) for uart2
     node_protocol.o(i.uartparase2) refers to node_protocol.o(i.HeaderIdentify2) for HeaderIdentify2
     systme.o(i.TimingStart) refers to stm32l4xx_hal.o(i.HAL_GetTick) for HAL_GetTick
-    systme.o(i.TimingStart) refers to systme.o(.bss) for .bss
-    systme.o(i.TimingStart) refers to systme.o(.data) for .data
-    systme.o(i.TimingStop) refers to systme.o(.data) for .data
+    systme.o(i.TimingStart) refers to systme.o(.data) for start_flag
+    systme.o(i.TimingStart) refers to systme.o(.bss) for TimingCount
+    systme.o(i.TimingStop) refers to systme.o(.data) for start_flag
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry10a.o(.ARM.Collect$$$$0000000D) for __rt_final_cpp
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry11a.o(.ARM.Collect$$$$0000000F) for __rt_final_exit
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry7b.o(.ARM.Collect$$$$00000008) for _main_clock
@@ -587,16 +600,19 @@ Removing Unused input sections from the image.
     Removing main.o(.rev16_text), (4 bytes).
     Removing main.o(.revsh_text), (4 bytes).
     Removing main.o(.rrx_text), (6 bytes).
+    Removing main.o(i.MX_IWDG_Init), (44 bytes).
     Removing stm32l4xx_it.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_it.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_it.o(.rrx_text), (6 bytes).
     Removing stm32l4xx_hal_msp.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_msp.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_msp.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_msp.o(i.HAL_UART_MspDeInit), (140 bytes).
+    Removing stm32l4xx_hal_msp.o(i.HAL_UART_MspDeInit), (156 bytes).
     Removing stm32l4xx_hal_iwdg.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_iwdg.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_iwdg.o(.rrx_text), (6 bytes).
+    Removing stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Init), (98 bytes).
+    Removing stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Refresh), (14 bytes).
     Removing stm32l4xx_hal_tim.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_tim.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_tim.o(.rrx_text), (6 bytes).
@@ -606,65 +622,66 @@ Removing Unused input sections from the image.
     Removing stm32l4xx_hal_uart.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_uart.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_uart.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_EnableReceiver), (56 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_EnableTransmitter), (56 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_Init), (112 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_LIN_Init), (136 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_LIN_SendBreak), (46 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_DisableMuteMode), (40 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_EnableMuteMode), (40 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_EnterMuteMode), (12 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_Init), (134 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Abort), (154 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_EnableReceiver), (70 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_EnableTransmitter), (70 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_HalfDuplex_Init), (120 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_LIN_Init), (156 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_LIN_SendBreak), (58 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_DisableMuteMode), (54 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_EnableMuteMode), (54 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_EnterMuteMode), (14 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_MultiProcessor_Init), (144 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Abort), (190 bytes).
     Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortCpltCallback), (2 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortReceive), (104 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortReceive), (120 bytes).
     Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortReceiveCpltCallback), (2 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortReceive_IT), (124 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortTransmit), (78 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortReceive_IT), (148 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortTransmit), (90 bytes).
     Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortTransmitCpltCallback), (2 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortTransmit_IT), (84 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Abort_IT), (192 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_DMAResume), (88 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_DeInit), (58 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_GetError), (4 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_GetState), (8 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_AbortTransmit_IT), (112 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Abort_IT), (248 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_DMAResume), (104 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_DeInit), (66 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_GetError), (6 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_GetState), (12 bytes).
     Removing stm32l4xx_hal_uart.o(i.HAL_UART_MspDeInit), (2 bytes).
     Removing stm32l4xx_hal_uart.o(i.HAL_UART_MspInit), (2 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Receive), (238 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Receive_IT), (172 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_DMA), (144 bytes).
-    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_IT), (100 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Receive), (298 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Receive_IT), (228 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_DMA), (180 bytes).
+    Removing stm32l4xx_hal_uart.o(i.HAL_UART_Transmit_IT), (120 bytes).
     Removing stm32l4xx_hal_uart.o(i.HAL_UART_TxHalfCpltCallback), (2 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_DMARxAbortCallback), (58 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_DMARxOnlyAbortCallback), (36 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_DMATransmitCplt), (48 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_DMATxAbortCallback), (48 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_DMATxHalfCplt), (10 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_DMATxOnlyAbortCallback), (20 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_RxISR_16BIT), (90 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_RxISR_8BIT), (90 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_TxISR_16BIT), (64 bytes).
-    Removing stm32l4xx_hal_uart.o(i.UART_TxISR_8BIT), (60 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_DMARxAbortCallback), (70 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_DMARxOnlyAbortCallback), (42 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_DMATransmitCplt), (56 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_DMATxAbortCallback), (58 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_DMATxHalfCplt), (14 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_DMATxOnlyAbortCallback), (24 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_RxISR_16BIT), (106 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_RxISR_8BIT), (102 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_TxISR_16BIT), (68 bytes).
+    Removing stm32l4xx_hal_uart.o(i.UART_TxISR_8BIT), (64 bytes).
     Removing stm32l4xx_hal_uart_ex.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_uart_ex.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_uart_ex.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_uart_ex.o(i.HAL_MultiProcessorEx_AddressLength_Set), (46 bytes).
-    Removing stm32l4xx_hal_uart_ex.o(i.HAL_RS485Ex_Init), (136 bytes).
-    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_DisableClockStopMode), (38 bytes).
-    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_DisableStopMode), (38 bytes).
-    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_EnableClockStopMode), (38 bytes).
-    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_EnableStopMode), (38 bytes).
-    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_StopModeWakeUpSourceConfig), (134 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.HAL_MultiProcessorEx_AddressLength_Set), (62 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.HAL_RS485Ex_Init), (148 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_DisableClockStopMode), (50 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_DisableStopMode), (50 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_EnableClockStopMode), (50 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_EnableStopMode), (50 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_StopModeWakeUpSourceConfig), (140 bytes).
+    Removing stm32l4xx_hal_uart_ex.o(i.UARTEx_Wakeup_AddressConfig), (38 bytes).
     Removing stm32l4xx_hal.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_DisableDBGSleepMode), (16 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_DisableDBGStandbyMode), (16 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_DisableDBGStopMode), (16 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_EnableDBGSleepMode), (16 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_EnableDBGStandbyMode), (16 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_EnableDBGStopMode), (16 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_DeInit), (44 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_DisableDBGSleepMode), (20 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_DisableDBGStandbyMode), (20 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_DisableDBGStopMode), (20 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_EnableDBGSleepMode), (20 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_EnableDBGStandbyMode), (20 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_DBGMCU_EnableDBGStopMode), (20 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_DeInit), (60 bytes).
     Removing stm32l4xx_hal.o(i.HAL_GetDEVID), (16 bytes).
     Removing stm32l4xx_hal.o(i.HAL_GetHalVersion), (6 bytes).
     Removing stm32l4xx_hal.o(i.HAL_GetREVID), (12 bytes).
@@ -675,302 +692,307 @@ Removing Unused input sections from the image.
     Removing stm32l4xx_hal.o(i.HAL_GetUIDw2), (12 bytes).
     Removing stm32l4xx_hal.o(i.HAL_MspDeInit), (2 bytes).
     Removing stm32l4xx_hal.o(i.HAL_MspInit), (2 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_ResumeTick), (14 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_DisableIOAnalogSwitchBooster), (16 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_ResumeTick), (18 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_DisableIOAnalogSwitchBooster), (20 bytes).
     Removing stm32l4xx_hal.o(i.HAL_SYSCFG_DisableMemorySwappingBank), (12 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_DisableVREFBUF), (16 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_EnableIOAnalogSwitchBooster), (16 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_DisableVREFBUF), (20 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_EnableIOAnalogSwitchBooster), (20 bytes).
     Removing stm32l4xx_hal.o(i.HAL_SYSCFG_EnableMemorySwappingBank), (12 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_EnableVREFBUF), (48 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_SYSCFG_EnableVREFBUF), (56 bytes).
     Removing stm32l4xx_hal.o(i.HAL_SYSCFG_SRAM2Erase), (28 bytes).
     Removing stm32l4xx_hal.o(i.HAL_SYSCFG_VREFBUF_HighImpedanceConfig), (20 bytes).
     Removing stm32l4xx_hal.o(i.HAL_SYSCFG_VREFBUF_TrimmingConfig), (20 bytes).
     Removing stm32l4xx_hal.o(i.HAL_SYSCFG_VREFBUF_VoltageScalingConfig), (20 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_SetTickFreq), (32 bytes).
-    Removing stm32l4xx_hal.o(i.HAL_SuspendTick), (14 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_SetTickFreq), (44 bytes).
+    Removing stm32l4xx_hal.o(i.HAL_SuspendTick), (18 bytes).
     Removing stm32l4xx_hal_i2c.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_i2c.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_i2c.o(.rrx_text), (6 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_AbortCpltCallback), (2 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_AddrCallback), (2 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_DeInit), (50 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_DeInit), (60 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_DisableListen_IT), (54 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_ER_IRQHandler), (104 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_EV_IRQHandler), (16 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_EnableListen_IT), (40 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_ER_IRQHandler), (118 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_EV_IRQHandler), (28 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_EnableListen_IT), (44 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_ErrorCallback), (2 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_GetError), (4 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_GetMode), (6 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_GetState), (6 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Init), (184 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_IsDeviceReady), (298 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_GetError), (6 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_GetMode), (8 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_GetState), (8 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Init), (196 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_IsDeviceReady), (384 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_ListenCpltCallback), (2 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterRxCpltCallback), (2 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_MasterTxCpltCallback), (2 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Abort_IT), (96 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Receive), (298 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Receive_DMA), (304 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Receive_IT), (136 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Receive_DMA), (338 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Receive_IT), (164 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Transmit_DMA), (338 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Transmit_IT), (160 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Transmit), (298 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Transmit_DMA), (300 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Transmit_IT), (136 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Abort_IT), (104 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Receive), (356 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Receive_DMA), (368 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Receive_IT), (168 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Receive_DMA), (406 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Receive_IT), (202 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Transmit_DMA), (406 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Seq_Transmit_IT), (202 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Transmit), (352 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Transmit_DMA), (368 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Master_Transmit_IT), (168 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_MemRxCpltCallback), (2 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_MemTxCpltCallback), (2 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Read), (362 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Read_DMA), (322 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Read_IT), (210 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Write), (350 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Write_DMA), (318 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Write_IT), (202 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Read), (422 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Read_DMA), (390 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Read_IT), (238 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Write), (414 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Write_DMA), (386 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Mem_Write_IT), (234 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_MspDeInit), (2 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_MspInit), (2 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveRxCpltCallback), (2 bytes).
     Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_SlaveTxCpltCallback), (2 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Receive), (302 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Receive_DMA), (220 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Receive_IT), (92 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Receive_DMA), (360 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Receive_IT), (196 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Transmit_DMA), (360 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Transmit_IT), (196 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit), (308 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit_DMA), (212 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit_IT), (92 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ConvertOtherXferOptions), (26 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAAbort), (40 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAError), (18 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAMasterReceiveCplt), (78 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAMasterTransmitCplt), (78 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_DMASlaveReceiveCplt), (36 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_DMASlaveTransmitCplt), (30 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ), (86 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ), (92 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR), (34 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ITAddrCplt), (136 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ITError), (224 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ITListenCplt), (96 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt), (180 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt), (76 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt), (240 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt), (84 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_IsAcknowledgeFailed), (140 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA), (272 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT), (296 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_RequestMemoryRead), (100 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_RequestMemoryWrite), (100 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_DMA), (220 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT), (296 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_TransferConfig), (44 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnFlagUntilTimeout), (88 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnRXNEFlagUntilTimeout), (136 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnSTOPFlagUntilTimeout), (76 bytes).
-    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnTXISFlagUntilTimeout), (80 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Receive), (362 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Receive_DMA), (276 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Receive_IT), (116 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Receive_DMA), (444 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Receive_IT), (228 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Transmit_DMA), (444 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Seq_Transmit_IT), (228 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit), (388 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit_DMA), (276 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.HAL_I2C_Slave_Transmit_IT), (116 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ConvertOtherXferOptions), (28 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAAbort), (46 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAError), (28 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAMasterReceiveCplt), (94 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_DMAMasterTransmitCplt), (94 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_DMASlaveReceiveCplt), (42 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_DMASlaveTransmitCplt), (36 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_Disable_IRQ), (120 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_Enable_IRQ), (140 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_Flush_TXDR), (40 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ITAddrCplt), (202 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ITError), (284 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ITListenCplt), (108 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ITMasterCplt), (232 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ITMasterSeqCplt), (98 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ITSlaveCplt), (296 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_ITSlaveSeqCplt), (98 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_IsAcknowledgeFailed), (152 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_DMA), (352 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_Master_ISR_IT), (408 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_RequestMemoryRead), (124 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_RequestMemoryWrite), (124 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_DMA), (282 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_Slave_ISR_IT), (332 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_TransferConfig), (52 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnFlagUntilTimeout), (94 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnRXNEFlagUntilTimeout), (160 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnSTOPFlagUntilTimeout), (86 bytes).
+    Removing stm32l4xx_hal_i2c.o(i.I2C_WaitOnTXISFlagUntilTimeout), (90 bytes).
     Removing stm32l4xx_hal_i2c_ex.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_i2c_ex.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_i2c_ex.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_ConfigAnalogFilter), (86 bytes).
-    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_ConfigDigitalFilter), (82 bytes).
-    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_DisableFastModePlus), (40 bytes).
-    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_DisableWakeUp), (78 bytes).
-    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_EnableFastModePlus), (40 bytes).
-    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_EnableWakeUp), (78 bytes).
+    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_ConfigAnalogFilter), (106 bytes).
+    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_ConfigDigitalFilter), (104 bytes).
+    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_DisableFastModePlus), (52 bytes).
+    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_DisableWakeUp), (96 bytes).
+    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_EnableFastModePlus), (52 bytes).
+    Removing stm32l4xx_hal_i2c_ex.o(i.HAL_I2CEx_EnableWakeUp), (96 bytes).
     Removing stm32l4xx_hal_rcc.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_rcc.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_rcc.o(.rrx_text), (6 bytes).
     Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_CSSCallback), (2 bytes).
-    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_DeInit), (216 bytes).
-    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_EnableCSS), (16 bytes).
-    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_GetClockConfig), (64 bytes).
-    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_GetHCLKFreq), (12 bytes).
-    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_GetOscConfig), (228 bytes).
-    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_MCOConfig), (72 bytes).
-    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_NMI_IRQHandler), (24 bytes).
+    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_DeInit), (256 bytes).
+    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_EnableCSS), (20 bytes).
+    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_GetClockConfig), (68 bytes).
+    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_GetOscConfig), (312 bytes).
+    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_MCOConfig), (92 bytes).
+    Removing stm32l4xx_hal_rcc.o(i.HAL_RCC_NMI_IRQHandler), (36 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSConfig), (76 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSGetSynchronizationInfo), (36 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSSoftwareSynchronizationGenerate), (16 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSWaitSynchronization), (132 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSConfig), (84 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSGetSynchronizationInfo), (44 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSSoftwareSynchronizationGenerate), (20 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRSWaitSynchronization), (196 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRS_ErrorCallback), (2 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRS_ExpectedSyncCallback), (2 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRS_IRQHandler), (108 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRS_IRQHandler), (144 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRS_SyncOkCallback), (2 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_CRS_SyncWarnCallback), (2 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisableLSCO), (88 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisableLSECSS), (28 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisableMSIPLLMode), (16 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisablePLLSAI1), (76 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableLSCO), (140 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableLSECSS), (20 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableLSECSS_IT), (56 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableMSIPLLMode), (16 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnablePLLSAI1), (152 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_GetPeriphCLKConfig), (204 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_GetPeriphCLKFreq), (850 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisableLSCO), (112 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisableLSECSS), (32 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisableMSIPLLMode), (20 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_DisablePLLSAI1), (96 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableLSCO), (180 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableLSECSS), (24 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableLSECSS_IT), (64 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnableMSIPLLMode), (20 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_EnablePLLSAI1), (172 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_GetPeriphCLKConfig), (272 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_GetPeriphCLKFreq), (1632 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_LSECSS_Callback), (2 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_LSECSS_IRQHandler), (24 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_StandbyMSIRangeConfig), (24 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_LSECSS_IRQHandler), (36 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_StandbyMSIRangeConfig), (28 bytes).
     Removing stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_WakeUpStopCLKConfig), (20 bytes).
-    Removing stm32l4xx_hal_rcc_ex.o(i.RCCEx_GetSAIxPeriphCLKFreq), (156 bytes).
+    Removing stm32l4xx_hal_rcc_ex.o(i.RCCEx_GetSAIxPeriphCLKFreq), (252 bytes).
     Removing stm32l4xx_hal_flash.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_flash.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_flash.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_flash.o(i.FLASH_Program_DoubleWord), (28 bytes).
-    Removing stm32l4xx_hal_flash.o(i.FLASH_Program_Fast), (44 bytes).
-    Removing stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation), (116 bytes).
+    Removing stm32l4xx_hal_flash.o(i.FLASH_Program_DoubleWord), (40 bytes).
+    Removing stm32l4xx_hal_flash.o(i.FLASH_Program_Fast), (64 bytes).
+    Removing stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation), (156 bytes).
     Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_EndOfOperationCallback), (2 bytes).
     Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_GetError), (12 bytes).
-    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler), (256 bytes).
+    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_IRQHandler), (364 bytes).
     Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_Lock), (20 bytes).
-    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_OB_Launch), (24 bytes).
+    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_OB_Launch), (28 bytes).
     Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_OB_Lock), (20 bytes).
-    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_OB_Unlock), (36 bytes).
+    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_OB_Unlock), (44 bytes).
     Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_OperationErrorCallback), (2 bytes).
-    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_Program), (170 bytes).
-    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_Program_IT), (116 bytes).
-    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_Unlock), (40 bytes).
+    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_Program), (192 bytes).
+    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_Program_IT), (160 bytes).
+    Removing stm32l4xx_hal_flash.o(i.HAL_FLASH_Unlock), (48 bytes).
     Removing stm32l4xx_hal_flash.o(.data), (32 bytes).
     Removing stm32l4xx_hal_flash_ex.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_flash_ex.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_flash_ex.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_FlushCaches), (84 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_MassErase), (28 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_PCROPConfig), (104 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_UserConfig), (248 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_PageErase), (40 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase), (230 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase_IT), (148 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBGetConfig), (148 bytes).
-    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram), (278 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_FlushCaches), (108 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_MassErase), (36 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetPCROP), (64 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetRDP), (32 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetUser), (16 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_GetWRP), (56 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_PCROPConfig), (136 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_RDPConfig), (72 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_UserConfig), (296 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_OB_WRPConfig), (112 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.FLASH_PageErase), (44 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase), (268 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_Erase_IT), (200 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBGetConfig), (78 bytes).
+    Removing stm32l4xx_hal_flash_ex.o(i.HAL_FLASHEx_OBProgram), (140 bytes).
     Removing stm32l4xx_hal_flash_ramfunc.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_flash_ramfunc.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_flash_ramfunc.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_flash_ramfunc.o(i.HAL_FLASHEx_DisableRunPowerDown), (36 bytes).
-    Removing stm32l4xx_hal_flash_ramfunc.o(i.HAL_FLASHEx_EnableRunPowerDown), (36 bytes).
+    Removing stm32l4xx_hal_flash_ramfunc.o(i.HAL_FLASHEx_DisableRunPowerDown), (40 bytes).
+    Removing stm32l4xx_hal_flash_ramfunc.o(i.HAL_FLASHEx_EnableRunPowerDown), (40 bytes).
     Removing stm32l4xx_hal_gpio.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_gpio.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_gpio.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_gpio.o(i.HAL_GPIO_DeInit), (270 bytes).
-    Removing stm32l4xx_hal_gpio.o(i.HAL_GPIO_LockPin), (34 bytes).
-    Removing stm32l4xx_hal_gpio.o(i.HAL_GPIO_ReadPin), (10 bytes).
+    Removing stm32l4xx_hal_gpio.o(i.HAL_GPIO_DeInit), (280 bytes).
+    Removing stm32l4xx_hal_gpio.o(i.HAL_GPIO_LockPin), (46 bytes).
+    Removing stm32l4xx_hal_gpio.o(i.HAL_GPIO_ReadPin), (16 bytes).
     Removing stm32l4xx_hal_gpio.o(i.HAL_GPIO_TogglePin), (14 bytes).
     Removing stm32l4xx_hal_dma.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_dma.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_dma.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_DeInit), (156 bytes).
-    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_GetState), (6 bytes).
-    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_PollForTransfer), (220 bytes).
-    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_RegisterCallback), (74 bytes).
-    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_Start), (80 bytes).
-    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_UnRegisterCallback), (82 bytes).
+    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_DeInit), (196 bytes).
+    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_GetState), (8 bytes).
+    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_PollForTransfer), (264 bytes).
+    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_RegisterCallback), (90 bytes).
+    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_Start), (114 bytes).
+    Removing stm32l4xx_hal_dma.o(i.HAL_DMA_UnRegisterCallback), (106 bytes).
     Removing stm32l4xx_hal_dma_ex.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_dma_ex.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_dma_ex.o(.rrx_text), (6 bytes).
     Removing stm32l4xx_hal_pwr.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_pwr.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_pwr.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_ConfigPVD), (128 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DeInit), (24 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisableBkUpAccess), (16 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisablePVD), (16 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisableSEVOnPend), (16 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisableSleepOnExit), (16 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_ConfigPVD), (184 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DeInit), (28 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisableBkUpAccess), (20 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisablePVD), (20 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisableSEVOnPend), (20 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisableSleepOnExit), (20 bytes).
     Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_DisableWakeUpPin), (20 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableBkUpAccess), (16 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnablePVD), (16 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableSEVOnPend), (16 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableSleepOnExit), (16 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableWakeUpPin), (28 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSLEEPMode), (72 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSTANDBYMode), (36 bytes).
-    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSTOPMode), (16 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableBkUpAccess), (20 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnablePVD), (20 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableSEVOnPend), (20 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableSleepOnExit), (20 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnableWakeUpPin), (40 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSLEEPMode), (84 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSTANDBYMode), (44 bytes).
+    Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_EnterSTOPMode), (28 bytes).
     Removing stm32l4xx_hal_pwr.o(i.HAL_PWR_PVDCallback), (2 bytes).
     Removing stm32l4xx_hal_pwr_ex.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_pwr_ex.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_pwr_ex.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ConfigPVM), (212 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableBatteryCharging), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableGPIOPullDown), (92 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableGPIOPullUp), (88 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableInternalWakeUpLine), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableLowPowerRunMode), (68 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisablePVM3), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisablePVM4), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisablePullUpPullDownConfig), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableSRAM2ContentRetention), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableBatteryCharging), (28 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableGPIOPullDown), (132 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableGPIOPullUp), (132 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableInternalWakeUpLine), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableLowPowerRunMode), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnablePVM3), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnablePVM4), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnablePullUpPullDownConfig), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableSRAM2ContentRetention), (16 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSHUTDOWNMode), (36 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP0Mode), (52 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP1Mode), (56 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP2Mode), (56 bytes).
-    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVD_PVM_IRQHandler), (60 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ConfigPVM), (344 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableBatteryCharging), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableGPIOPullDown), (120 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableGPIOPullUp), (116 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableInternalWakeUpLine), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableLowPowerRunMode), (84 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisablePVM3), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisablePVM4), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisablePullUpPullDownConfig), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_DisableSRAM2ContentRetention), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableBatteryCharging), (32 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableGPIOPullDown), (180 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableGPIOPullUp), (180 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableInternalWakeUpLine), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableLowPowerRunMode), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnablePVM3), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnablePVM4), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnablePullUpPullDownConfig), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnableSRAM2ContentRetention), (20 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSHUTDOWNMode), (44 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP0Mode), (60 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP1Mode), (64 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_EnterSTOP2Mode), (64 bytes).
+    Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVD_PVM_IRQHandler), (80 bytes).
     Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVM3Callback), (2 bytes).
     Removing stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_PVM4Callback), (2 bytes).
     Removing stm32l4xx_hal_cortex.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_cortex.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_cortex.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_MPU_ConfigRegion), (84 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_MPU_Disable), (28 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_MPU_Enable), (36 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_ClearPendingIRQ), (26 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_DisableIRQ), (34 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetActive), (36 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetPendingIRQ), (36 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetPriority), (84 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetPriorityGrouping), (16 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPendingIRQ), (26 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_SystemReset), (36 bytes).
-    Removing stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_CLKSourceConfig), (24 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_MPU_ConfigRegion), (92 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_MPU_Disable), (44 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_MPU_Enable), (64 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_ClearPendingIRQ), (36 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_DisableIRQ), (68 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetActive), (48 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetPendingIRQ), (48 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetPriority), (148 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_GetPriorityGrouping), (8 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPendingIRQ), (36 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_NVIC_SystemReset), (68 bytes).
+    Removing stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_CLKSourceConfig), (40 bytes).
     Removing stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Callback), (2 bytes).
     Removing stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_IRQHandler), (8 bytes).
     Removing stm32l4xx_hal_exti.o(.rev16_text), (4 bytes).
     Removing stm32l4xx_hal_exti.o(.revsh_text), (4 bytes).
     Removing stm32l4xx_hal_exti.o(.rrx_text), (6 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_ClearConfigLine), (128 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_ClearPending), (28 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GenerateSWI), (28 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GetConfigLine), (172 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GetHandle), (12 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GetPending), (32 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_IRQHandler), (44 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_RegisterCallback), (14 bytes).
-    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_SetConfigLine), (176 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_ClearConfigLine), (148 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_ClearPending), (36 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GenerateSWI), (36 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GetConfigLine), (212 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GetHandle), (14 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_GetPending), (44 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_IRQHandler), (56 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_RegisterCallback), (20 bytes).
+    Removing stm32l4xx_hal_exti.o(i.HAL_EXTI_SetConfigLine), (228 bytes).
     Removing system_stm32l4xx.o(.rev16_text), (4 bytes).
     Removing system_stm32l4xx.o(.revsh_text), (4 bytes).
     Removing system_stm32l4xx.o(.rrx_text), (6 bytes).
-    Removing system_stm32l4xx.o(i.SystemCoreClockUpdate), (168 bytes).
+    Removing system_stm32l4xx.o(i.SystemCoreClockUpdate), (236 bytes).
     Removing bsp.o(.rev16_text), (4 bytes).
     Removing bsp.o(.revsh_text), (4 bytes).
     Removing bsp.o(.rrx_text), (6 bytes).
     Removing node_protocol.o(.rev16_text), (4 bytes).
     Removing node_protocol.o(.revsh_text), (4 bytes).
     Removing node_protocol.o(.rrx_text), (6 bytes).
-    Removing node_protocol.o(i.HeaderIdentify), (96 bytes).
+    Removing node_protocol.o(i.HeaderIdentify), (112 bytes).
     Removing node_protocol.o(i.index_zero), (20 bytes).
-    Removing node_protocol.o(i.lora_test), (4 bytes).
-    Removing node_protocol.o(i.uartparase), (32 bytes).
+    Removing node_protocol.o(i.lora_test), (8 bytes).
+    Removing node_protocol.o(i.uartparase), (44 bytes).
     Removing systme.o(.rev16_text), (4 bytes).
     Removing systme.o(.revsh_text), (4 bytes).
     Removing systme.o(.rrx_text), (6 bytes).
-    Removing systme.o(i.TimingStart), (172 bytes).
+    Removing systme.o(i.TimingStart), (236 bytes).
     Removing systme.o(i.TimingStop), (12 bytes).
     Removing systme.o(.bss), (12 bytes).
     Removing systme.o(.data), (3 bytes).
 
-386 unused section(s) (total 25399 bytes) removed from the image.
+395 unused section(s) (total 32083 bytes) removed from the image.
 
 ==============================================================================
 
@@ -1005,23 +1027,23 @@ Image Symbol Table
     ../Src/stm32l4xx_it.c                    0x00000000   Number         0  stm32l4xx_it.o ABSOLUTE
     ../Src/system_stm32l4xx.c                0x00000000   Number         0  system_stm32l4xx.o ABSOLUTE
     ../clib/microlib/division.c              0x00000000   Number         0  uldiv.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llshl.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llushr.o ABSOLUTE
-    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyb.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
+    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyb.o ABSOLUTE
     ../clib/microlib/string/memset.c         0x00000000   Number         0  memseta.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal.c 0x00000000   Number         0  stm32l4xx_hal.o ABSOLUTE
     ..\Drivers\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_cortex.c 0x00000000   Number         0  stm32l4xx_hal_cortex.o ABSOLUTE
@@ -1078,117 +1100,119 @@ Image Symbol Table
     .text                                    0x080002b4   Section       36  init.o(.text)
     i.BusFault_Handler                       0x080002d8   Section        0  stm32l4xx_it.o(i.BusFault_Handler)
     i.DMA1_Channel3_IRQHandler               0x080002dc   Section        0  stm32l4xx_it.o(i.DMA1_Channel3_IRQHandler)
-    i.DMA1_Channel5_IRQHandler               0x080002e8   Section        0  stm32l4xx_it.o(i.DMA1_Channel5_IRQHandler)
-    i.DMA1_Channel6_IRQHandler               0x080002f4   Section        0  stm32l4xx_it.o(i.DMA1_Channel6_IRQHandler)
-    i.DMA_SetConfig                          0x08000300   Section        0  stm32l4xx_hal_dma.o(i.DMA_SetConfig)
-    DMA_SetConfig                            0x08000301   Thumb Code    46  stm32l4xx_hal_dma.o(i.DMA_SetConfig)
-    i.DebugMon_Handler                       0x0800032e   Section        0  stm32l4xx_it.o(i.DebugMon_Handler)
-    i.EXTI9_5_IRQHandler                     0x08000330   Section        0  stm32l4xx_it.o(i.EXTI9_5_IRQHandler)
-    i.Error_Handler                          0x08000338   Section        0  main.o(i.Error_Handler)
-    i.HAL_DMA_Abort                          0x0800033a   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort)
-    i.HAL_DMA_Abort_IT                       0x08000384   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort_IT)
-    i.HAL_DMA_GetError                       0x080003d2   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_GetError)
-    i.HAL_DMA_IRQHandler                     0x080003d6   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_IRQHandler)
-    i.HAL_DMA_Init                           0x08000490   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Init)
-    i.HAL_DMA_Start_IT                       0x08000570   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT)
-    i.HAL_Delay                              0x080005e0   Section        0  stm32l4xx_hal.o(i.HAL_Delay)
-    i.HAL_GPIO_EXTI_Callback                 0x08000604   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_Callback)
-    i.HAL_GPIO_EXTI_IRQHandler               0x08000608   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_IRQHandler)
-    i.HAL_GPIO_Init                          0x08000620   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_Init)
-    i.HAL_GPIO_WritePin                      0x080007b6   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin)
-    i.HAL_GetTick                            0x080007c0   Section        0  stm32l4xx_hal.o(i.HAL_GetTick)
-    i.HAL_IWDG_Init                          0x080007cc   Section        0  stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Init)
-    i.HAL_IWDG_Refresh                       0x08000828   Section        0  stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Refresh)
-    i.HAL_IncTick                            0x08000834   Section        0  stm32l4xx_hal.o(i.HAL_IncTick)
-    i.HAL_Init                               0x08000844   Section        0  stm32l4xx_hal.o(i.HAL_Init)
-    i.HAL_InitTick                           0x08000864   Section        0  stm32l4xx_hal.o(i.HAL_InitTick)
-    i.HAL_MspInit                            0x080008a8   Section        0  stm32l4xx_hal_msp.o(i.HAL_MspInit)
-    i.HAL_NVIC_EnableIRQ                     0x080008d4   Section        0  stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ)
-    i.HAL_NVIC_SetPriority                   0x080008f0   Section        0  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority)
-    i.HAL_NVIC_SetPriorityGrouping           0x08000930   Section        0  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriorityGrouping)
-    i.HAL_PWREx_ControlVoltageScaling        0x08000954   Section        0  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ControlVoltageScaling)
-    i.HAL_PWREx_GetVoltageRange              0x080009bc   Section        0  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_GetVoltageRange)
-    i.HAL_RCCEx_PeriphCLKConfig              0x080009cc   Section        0  stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig)
-    i.HAL_RCC_ClockConfig                    0x08000c80   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_ClockConfig)
-    i.HAL_RCC_GetPCLK1Freq                   0x08000dac   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq)
-    i.HAL_RCC_GetPCLK2Freq                   0x08000dd0   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq)
-    i.HAL_RCC_GetSysClockFreq                0x08000df4   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq)
-    i.HAL_RCC_OscConfig                      0x08000e98   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig)
-    i.HAL_SYSTICK_Config                     0x080013b0   Section        0  stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Config)
-    i.HAL_UARTEx_WakeupCallback              0x080013d8   Section        0  stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_WakeupCallback)
-    i.HAL_UART_DMAPause                      0x080013da   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_DMAPause)
-    i.HAL_UART_DMAStop                       0x0800143a   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_DMAStop)
-    i.HAL_UART_ErrorCallback                 0x080014ac   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_ErrorCallback)
-    i.HAL_UART_IRQHandler                    0x080014b0   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler)
-    i.HAL_UART_Init                          0x080015f4   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_Init)
-    i.HAL_UART_MspInit                       0x0800165c   Section        0  stm32l4xx_hal_msp.o(i.HAL_UART_MspInit)
-    i.HAL_UART_Receive_DMA                   0x08001830   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA)
-    i.HAL_UART_RxCpltCallback                0x080018cc   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_RxCpltCallback)
-    i.HAL_UART_RxHalfCpltCallback            0x080018ce   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_RxHalfCpltCallback)
-    i.HAL_UART_Transmit                      0x080018d0   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_Transmit)
-    i.HAL_UART_TxCpltCallback                0x08001984   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_TxCpltCallback)
-    i.HardFault_Handler                      0x08001986   Section        0  stm32l4xx_it.o(i.HardFault_Handler)
-    i.HeaderIdentify2                        0x08001988   Section        0  node_protocol.o(i.HeaderIdentify2)
-    i.MX_GPIO_Init                           0x080019d8   Section        0  main.o(i.MX_GPIO_Init)
-    MX_GPIO_Init                             0x080019d9   Thumb Code   156  main.o(i.MX_GPIO_Init)
-    i.MX_USART1_UART_Init                    0x08001a80   Section        0  main.o(i.MX_USART1_UART_Init)
-    MX_USART1_UART_Init                      0x08001a81   Thumb Code    36  main.o(i.MX_USART1_UART_Init)
-    i.MX_USART2_UART_Init                    0x08001aac   Section        0  main.o(i.MX_USART2_UART_Init)
-    MX_USART2_UART_Init                      0x08001aad   Thumb Code    36  main.o(i.MX_USART2_UART_Init)
-    i.MX_USART3_UART_Init                    0x08001ad8   Section        0  main.o(i.MX_USART3_UART_Init)
-    MX_USART3_UART_Init                      0x08001ad9   Thumb Code    36  main.o(i.MX_USART3_UART_Init)
-    i.MemManage_Handler                      0x08001b04   Section        0  stm32l4xx_it.o(i.MemManage_Handler)
-    i.NMI_Handler                            0x08001b06   Section        0  stm32l4xx_it.o(i.NMI_Handler)
-    i.NodeToServer                           0x08001b08   Section        0  node_protocol.o(i.NodeToServer)
-    i.PendSV_Handler                         0x08001b84   Section        0  stm32l4xx_it.o(i.PendSV_Handler)
-    i.RCCEx_PLLSAI1_Config                   0x08001b88   Section        0  stm32l4xx_hal_rcc_ex.o(i.RCCEx_PLLSAI1_Config)
-    RCCEx_PLLSAI1_Config                     0x08001b89   Thumb Code   276  stm32l4xx_hal_rcc_ex.o(i.RCCEx_PLLSAI1_Config)
-    i.RCC_SetFlashLatencyFromMSIRange        0x08001cb0   Section        0  stm32l4xx_hal_rcc.o(i.RCC_SetFlashLatencyFromMSIRange)
-    RCC_SetFlashLatencyFromMSIRange          0x08001cb1   Thumb Code   116  stm32l4xx_hal_rcc.o(i.RCC_SetFlashLatencyFromMSIRange)
-    i.SVC_Handler                            0x08001d2c   Section        0  stm32l4xx_it.o(i.SVC_Handler)
-    i.SysTick_Handler                        0x08001d2e   Section        0  stm32l4xx_it.o(i.SysTick_Handler)
-    i.SystemClock_Config                     0x08001d32   Section        0  main.o(i.SystemClock_Config)
-    i.SystemInit                             0x08001d98   Section        0  system_stm32l4xx.o(i.SystemInit)
-    i.Transmmit                              0x08001ddc   Section        0  node_protocol.o(i.Transmmit)
-    i.UART_AdvFeatureConfig                  0x08001f92   Section        0  stm32l4xx_hal_uart.o(i.UART_AdvFeatureConfig)
-    i.UART_CheckIdleState                    0x0800205a   Section        0  stm32l4xx_hal_uart.o(i.UART_CheckIdleState)
-    i.UART_DMAAbortOnError                   0x080020b2   Section        0  stm32l4xx_hal_uart.o(i.UART_DMAAbortOnError)
-    UART_DMAAbortOnError                     0x080020b3   Thumb Code    20  stm32l4xx_hal_uart.o(i.UART_DMAAbortOnError)
-    i.UART_DMAError                          0x080020c6   Section        0  stm32l4xx_hal_uart.o(i.UART_DMAError)
-    UART_DMAError                            0x080020c7   Thumb Code    72  stm32l4xx_hal_uart.o(i.UART_DMAError)
-    i.UART_DMAReceiveCplt                    0x0800210e   Section        0  stm32l4xx_hal_uart.o(i.UART_DMAReceiveCplt)
-    UART_DMAReceiveCplt                      0x0800210f   Thumb Code    60  stm32l4xx_hal_uart.o(i.UART_DMAReceiveCplt)
-    i.UART_DMARxHalfCplt                     0x0800214a   Section        0  stm32l4xx_hal_uart.o(i.UART_DMARxHalfCplt)
-    UART_DMARxHalfCplt                       0x0800214b   Thumb Code    10  stm32l4xx_hal_uart.o(i.UART_DMARxHalfCplt)
-    i.UART_EndRxTransfer                     0x08002154   Section        0  stm32l4xx_hal_uart.o(i.UART_EndRxTransfer)
-    UART_EndRxTransfer                       0x08002155   Thumb Code    30  stm32l4xx_hal_uart.o(i.UART_EndRxTransfer)
-    i.UART_EndTxTransfer                     0x08002172   Section        0  stm32l4xx_hal_uart.o(i.UART_EndTxTransfer)
-    UART_EndTxTransfer                       0x08002173   Thumb Code    16  stm32l4xx_hal_uart.o(i.UART_EndTxTransfer)
-    i.UART_SetConfig                         0x08002184   Section        0  stm32l4xx_hal_uart.o(i.UART_SetConfig)
-    i.UART_WaitOnFlagUntilTimeout            0x080023f0   Section        0  stm32l4xx_hal_uart.o(i.UART_WaitOnFlagUntilTimeout)
-    i.USART1_IRQHandler                      0x08002450   Section        0  stm32l4xx_it.o(i.USART1_IRQHandler)
-    i.USART2_IRQHandler                      0x08002468   Section        0  stm32l4xx_it.o(i.USART2_IRQHandler)
-    i.USART3_IRQHandler                      0x08002480   Section        0  stm32l4xx_it.o(i.USART3_IRQHandler)
-    i.UsageFault_Handler                     0x08002498   Section        0  stm32l4xx_it.o(i.UsageFault_Handler)
-    i.UsartReceive_IDLE                      0x0800249c   Section        0  bsp.o(i.UsartReceive_IDLE)
-    i.__NVIC_SetPriority                     0x080025bc   Section        0  stm32l4xx_hal_cortex.o(i.__NVIC_SetPriority)
-    __NVIC_SetPriority                       0x080025bd   Thumb Code    32  stm32l4xx_hal_cortex.o(i.__NVIC_SetPriority)
-    i.__scatterload_copy                     0x080025dc   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x080025ea   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x080025ec   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i.main                                   0x080025fc   Section        0  main.o(i.main)
-    i.nodeParamsInit                         0x08002718   Section        0  node_protocol.o(i.nodeParamsInit)
-    i.uart_process                           0x08002744   Section        0  node_protocol.o(i.uart_process)
-    i.uartparase2                            0x080027e4   Section        0  node_protocol.o(i.uartparase2)
-    i.xorCheck                               0x080027f2   Section        0  node_protocol.o(i.xorCheck)
-    .constdata                               0x0800280c   Section       64  system_stm32l4xx.o(.constdata)
-    .constdata                               0x0800284c   Section        8  system_stm32l4xx.o(.constdata)
+    i.DMA1_Channel5_IRQHandler               0x080002ec   Section        0  stm32l4xx_it.o(i.DMA1_Channel5_IRQHandler)
+    i.DMA1_Channel6_IRQHandler               0x080002fc   Section        0  stm32l4xx_it.o(i.DMA1_Channel6_IRQHandler)
+    i.DMA_SetConfig                          0x0800030c   Section        0  stm32l4xx_hal_dma.o(i.DMA_SetConfig)
+    DMA_SetConfig                            0x0800030d   Thumb Code    48  stm32l4xx_hal_dma.o(i.DMA_SetConfig)
+    i.DebugMon_Handler                       0x0800033c   Section        0  stm32l4xx_it.o(i.DebugMon_Handler)
+    i.EXTI9_5_IRQHandler                     0x0800033e   Section        0  stm32l4xx_it.o(i.EXTI9_5_IRQHandler)
+    i.Error_Handler                          0x0800034a   Section        0  main.o(i.Error_Handler)
+    i.HAL_DMA_Abort                          0x0800034c   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort)
+    i.HAL_DMA_Abort_IT                       0x080003a6   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort_IT)
+    i.HAL_DMA_GetError                       0x08000402   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_GetError)
+    i.HAL_DMA_IRQHandler                     0x08000408   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_IRQHandler)
+    i.HAL_DMA_Init                           0x08000508   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Init)
+    i.HAL_DMA_Start_IT                       0x08000614   Section        0  stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT)
+    i.HAL_Delay                              0x080006b0   Section        0  stm32l4xx_hal.o(i.HAL_Delay)
+    i.HAL_GPIO_EXTI_Callback                 0x080006d8   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_Callback)
+    i.HAL_GPIO_EXTI_IRQHandler               0x080006dc   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_IRQHandler)
+    i.HAL_GPIO_Init                          0x080006f8   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_Init)
+    i.HAL_GPIO_WritePin                      0x080008c0   Section        0  stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin)
+    i.HAL_GetTick                            0x080008cc   Section        0  stm32l4xx_hal.o(i.HAL_GetTick)
+    i.HAL_IncTick                            0x080008d8   Section        0  stm32l4xx_hal.o(i.HAL_IncTick)
+    i.HAL_Init                               0x080008f0   Section        0  stm32l4xx_hal.o(i.HAL_Init)
+    i.HAL_InitTick                           0x08000910   Section        0  stm32l4xx_hal.o(i.HAL_InitTick)
+    i.HAL_MspInit                            0x08000968   Section        0  stm32l4xx_hal_msp.o(i.HAL_MspInit)
+    i.HAL_NVIC_EnableIRQ                     0x080009a8   Section        0  stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ)
+    i.HAL_NVIC_SetPriority                   0x080009c8   Section        0  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority)
+    i.HAL_NVIC_SetPriorityGrouping           0x08000a4c   Section        0  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriorityGrouping)
+    i.HAL_PWREx_ControlVoltageScaling        0x08000a74   Section        0  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ControlVoltageScaling)
+    i.HAL_PWREx_GetVoltageRange              0x08000b00   Section        0  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_GetVoltageRange)
+    i.HAL_RCCEx_PeriphCLKConfig              0x08000b10   Section        0  stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig)
+    i.HAL_RCC_ClockConfig                    0x08000e98   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_ClockConfig)
+    i.HAL_RCC_GetHCLKFreq                    0x08001014   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetHCLKFreq)
+    i.HAL_RCC_GetPCLK1Freq                   0x08001020   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq)
+    i.HAL_RCC_GetPCLK2Freq                   0x08001044   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq)
+    i.HAL_RCC_GetSysClockFreq                0x08001068   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq)
+    i.HAL_RCC_OscConfig                      0x08001154   Section        0  stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig)
+    i.HAL_SYSTICK_Config                     0x08001858   Section        0  stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Config)
+    i.HAL_UARTEx_WakeupCallback              0x0800188c   Section        0  stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_WakeupCallback)
+    i.HAL_UART_DMAPause                      0x0800188e   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_DMAPause)
+    i.HAL_UART_DMAStop                       0x0800190a   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_DMAStop)
+    i.HAL_UART_ErrorCallback                 0x08001996   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_ErrorCallback)
+    i.HAL_UART_IRQHandler                    0x08001998   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler)
+    i.HAL_UART_Init                          0x08001b28   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_Init)
+    i.HAL_UART_MspInit                       0x08001b9c   Section        0  stm32l4xx_hal_msp.o(i.HAL_UART_MspInit)
+    i.HAL_UART_Receive_DMA                   0x08001dc8   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA)
+    i.HAL_UART_RxCpltCallback                0x08001e88   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_RxCpltCallback)
+    i.HAL_UART_RxHalfCpltCallback            0x08001e8a   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_RxHalfCpltCallback)
+    i.HAL_UART_Transmit                      0x08001e8c   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_Transmit)
+    i.HAL_UART_TxCpltCallback                0x08001f62   Section        0  stm32l4xx_hal_uart.o(i.HAL_UART_TxCpltCallback)
+    i.HardFault_Handler                      0x08001f64   Section        0  stm32l4xx_it.o(i.HardFault_Handler)
+    i.HeaderIdentify2                        0x08001f68   Section        0  node_protocol.o(i.HeaderIdentify2)
+    i.MX_DMA_Init                            0x08001fdc   Section        0  main.o(i.MX_DMA_Init)
+    MX_DMA_Init                              0x08001fdd   Thumb Code    80  main.o(i.MX_DMA_Init)
+    i.MX_GPIO_Init                           0x08002030   Section        0  main.o(i.MX_GPIO_Init)
+    MX_GPIO_Init                             0x08002031   Thumb Code   180  main.o(i.MX_GPIO_Init)
+    i.MX_USART1_UART_Init                    0x080020f0   Section        0  main.o(i.MX_USART1_UART_Init)
+    MX_USART1_UART_Init                      0x080020f1   Thumb Code    56  main.o(i.MX_USART1_UART_Init)
+    i.MX_USART2_UART_Init                    0x08002130   Section        0  main.o(i.MX_USART2_UART_Init)
+    MX_USART2_UART_Init                      0x08002131   Thumb Code    56  main.o(i.MX_USART2_UART_Init)
+    i.MX_USART3_UART_Init                    0x08002170   Section        0  main.o(i.MX_USART3_UART_Init)
+    MX_USART3_UART_Init                      0x08002171   Thumb Code    56  main.o(i.MX_USART3_UART_Init)
+    i.MemManage_Handler                      0x080021b0   Section        0  stm32l4xx_it.o(i.MemManage_Handler)
+    i.NMI_Handler                            0x080021b4   Section        0  stm32l4xx_it.o(i.NMI_Handler)
+    i.NodeToServer                           0x080021b8   Section        0  node_protocol.o(i.NodeToServer)
+    i.PendSV_Handler                         0x08002264   Section        0  stm32l4xx_it.o(i.PendSV_Handler)
+    i.RCCEx_PLLSAI1_Config                   0x08002268   Section        0  stm32l4xx_hal_rcc_ex.o(i.RCCEx_PLLSAI1_Config)
+    RCCEx_PLLSAI1_Config                     0x08002269   Thumb Code   376  stm32l4xx_hal_rcc_ex.o(i.RCCEx_PLLSAI1_Config)
+    i.RCC_SetFlashLatencyFromMSIRange        0x080023f0   Section        0  stm32l4xx_hal_rcc.o(i.RCC_SetFlashLatencyFromMSIRange)
+    RCC_SetFlashLatencyFromMSIRange          0x080023f1   Thumb Code   148  stm32l4xx_hal_rcc.o(i.RCC_SetFlashLatencyFromMSIRange)
+    i.SVC_Handler                            0x0800248c   Section        0  stm32l4xx_it.o(i.SVC_Handler)
+    i.SysTick_Handler                        0x0800248e   Section        0  stm32l4xx_it.o(i.SysTick_Handler)
+    i.SystemClock_Config                     0x08002496   Section        0  main.o(i.SystemClock_Config)
+    i.SystemInit                             0x0800251c   Section        0  system_stm32l4xx.o(i.SystemInit)
+    i.Transmmit                              0x0800256c   Section        0  node_protocol.o(i.Transmmit)
+    i.UART_AdvFeatureConfig                  0x08002980   Section        0  stm32l4xx_hal_uart.o(i.UART_AdvFeatureConfig)
+    i.UART_CheckIdleState                    0x08002a78   Section        0  stm32l4xx_hal_uart.o(i.UART_CheckIdleState)
+    i.UART_DMAAbortOnError                   0x08002ae6   Section        0  stm32l4xx_hal_uart.o(i.UART_DMAAbortOnError)
+    UART_DMAAbortOnError                     0x08002ae7   Thumb Code    24  stm32l4xx_hal_uart.o(i.UART_DMAAbortOnError)
+    i.UART_DMAError                          0x08002afe   Section        0  stm32l4xx_hal_uart.o(i.UART_DMAError)
+    UART_DMAError                            0x08002aff   Thumb Code    86  stm32l4xx_hal_uart.o(i.UART_DMAError)
+    i.UART_DMAReceiveCplt                    0x08002b54   Section        0  stm32l4xx_hal_uart.o(i.UART_DMAReceiveCplt)
+    UART_DMAReceiveCplt                      0x08002b55   Thumb Code    70  stm32l4xx_hal_uart.o(i.UART_DMAReceiveCplt)
+    i.UART_DMARxHalfCplt                     0x08002b9a   Section        0  stm32l4xx_hal_uart.o(i.UART_DMARxHalfCplt)
+    UART_DMARxHalfCplt                       0x08002b9b   Thumb Code    14  stm32l4xx_hal_uart.o(i.UART_DMARxHalfCplt)
+    i.UART_EndRxTransfer                     0x08002ba8   Section        0  stm32l4xx_hal_uart.o(i.UART_EndRxTransfer)
+    UART_EndRxTransfer                       0x08002ba9   Thumb Code    34  stm32l4xx_hal_uart.o(i.UART_EndRxTransfer)
+    i.UART_EndTransmit_IT                    0x08002bca   Section        0  stm32l4xx_hal_uart.o(i.UART_EndTransmit_IT)
+    UART_EndTransmit_IT                      0x08002bcb   Thumb Code    32  stm32l4xx_hal_uart.o(i.UART_EndTransmit_IT)
+    i.UART_EndTxTransfer                     0x08002bea   Section        0  stm32l4xx_hal_uart.o(i.UART_EndTxTransfer)
+    UART_EndTxTransfer                       0x08002beb   Thumb Code    18  stm32l4xx_hal_uart.o(i.UART_EndTxTransfer)
+    i.UART_SetConfig                         0x08002bfc   Section        0  stm32l4xx_hal_uart.o(i.UART_SetConfig)
+    i.UART_WaitOnFlagUntilTimeout            0x08003006   Section        0  stm32l4xx_hal_uart.o(i.UART_WaitOnFlagUntilTimeout)
+    i.USART1_IRQHandler                      0x08003070   Section        0  stm32l4xx_it.o(i.USART1_IRQHandler)
+    i.USART2_IRQHandler                      0x08003084   Section        0  stm32l4xx_it.o(i.USART2_IRQHandler)
+    i.USART3_IRQHandler                      0x08003098   Section        0  stm32l4xx_it.o(i.USART3_IRQHandler)
+    i.UsageFault_Handler                     0x080030ac   Section        0  stm32l4xx_it.o(i.UsageFault_Handler)
+    i.UsartReceive_IDLE                      0x080030b0   Section        0  bsp.o(i.UsartReceive_IDLE)
+    i.__NVIC_GetPriorityGrouping             0x08003214   Section        0  stm32l4xx_hal_cortex.o(i.__NVIC_GetPriorityGrouping)
+    __NVIC_GetPriorityGrouping               0x08003215   Thumb Code    10  stm32l4xx_hal_cortex.o(i.__NVIC_GetPriorityGrouping)
+    i.__NVIC_SetPriority                     0x08003224   Section        0  stm32l4xx_hal_cortex.o(i.__NVIC_SetPriority)
+    __NVIC_SetPriority                       0x08003225   Thumb Code    32  stm32l4xx_hal_cortex.o(i.__NVIC_SetPriority)
+    i.__scatterload_copy                     0x0800324c   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0800325a   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x0800325c   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.led_OFF                                0x0800326a   Section        0  node_protocol.o(i.led_OFF)
+    i.main                                   0x08003280   Section        0  main.o(i.main)
+    i.nodeParamsInit                         0x08003368   Section        0  node_protocol.o(i.nodeParamsInit)
+    i.uart_process                           0x080033a4   Section        0  node_protocol.o(i.uart_process)
+    i.uartparase2                            0x08003468   Section        0  node_protocol.o(i.uartparase2)
+    i.xorCheck                               0x08003486   Section        0  node_protocol.o(i.xorCheck)
+    .constdata                               0x080034a0   Section       72  system_stm32l4xx.o(.constdata)
     .data                                    0x20000000   Section       12  stm32l4xx_hal.o(.data)
     .data                                    0x2000000c   Section        4  system_stm32l4xx.o(.data)
-    .bss                                     0x20000010   Section      400  main.o(.bss)
-    .bss                                     0x200001a0   Section       72  main.o(.bss)
-    .bss                                     0x200001e8   Section       72  main.o(.bss)
-    .bss                                     0x20000230   Section       72  main.o(.bss)
+    .bss                                     0x20000010   Section      616  main.o(.bss)
     .bss                                     0x20000278   Section      828  bsp.o(.bss)
     .bss                                     0x200005b4   Section       43  node_protocol.o(.bss)
     STACK                                    0x200005e0   Section     1024  startup_stm32l431xx.o(STACK)
@@ -1291,91 +1315,91 @@ Image Symbol Table
     _ll_ushift_r                             0x08000293   Thumb Code     0  llushr.o(.text)
     __scatterload                            0x080002b5   Thumb Code    28  init.o(.text)
     __scatterload_rt2                        0x080002b5   Thumb Code     0  init.o(.text)
-    BusFault_Handler                         0x080002d9   Thumb Code     2  stm32l4xx_it.o(i.BusFault_Handler)
-    DMA1_Channel3_IRQHandler                 0x080002dd   Thumb Code     6  stm32l4xx_it.o(i.DMA1_Channel3_IRQHandler)
-    DMA1_Channel5_IRQHandler                 0x080002e9   Thumb Code     6  stm32l4xx_it.o(i.DMA1_Channel5_IRQHandler)
-    DMA1_Channel6_IRQHandler                 0x080002f5   Thumb Code     6  stm32l4xx_it.o(i.DMA1_Channel6_IRQHandler)
-    DebugMon_Handler                         0x0800032f   Thumb Code     2  stm32l4xx_it.o(i.DebugMon_Handler)
-    EXTI9_5_IRQHandler                       0x08000331   Thumb Code     8  stm32l4xx_it.o(i.EXTI9_5_IRQHandler)
-    Error_Handler                            0x08000339   Thumb Code     2  main.o(i.Error_Handler)
-    HAL_DMA_Abort                            0x0800033b   Thumb Code    74  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort)
-    HAL_DMA_Abort_IT                         0x08000385   Thumb Code    78  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort_IT)
-    HAL_DMA_GetError                         0x080003d3   Thumb Code     4  stm32l4xx_hal_dma.o(i.HAL_DMA_GetError)
-    HAL_DMA_IRQHandler                       0x080003d7   Thumb Code   186  stm32l4xx_hal_dma.o(i.HAL_DMA_IRQHandler)
-    HAL_DMA_Init                             0x08000491   Thumb Code   210  stm32l4xx_hal_dma.o(i.HAL_DMA_Init)
-    HAL_DMA_Start_IT                         0x08000571   Thumb Code   112  stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT)
-    HAL_Delay                                0x080005e1   Thumb Code    32  stm32l4xx_hal.o(i.HAL_Delay)
-    HAL_GPIO_EXTI_Callback                   0x08000605   Thumb Code     2  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_Callback)
-    HAL_GPIO_EXTI_IRQHandler                 0x08000609   Thumb Code    18  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_IRQHandler)
-    HAL_GPIO_Init                            0x08000621   Thumb Code   370  stm32l4xx_hal_gpio.o(i.HAL_GPIO_Init)
-    HAL_GPIO_WritePin                        0x080007b7   Thumb Code    10  stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin)
-    HAL_GetTick                              0x080007c1   Thumb Code     6  stm32l4xx_hal.o(i.HAL_GetTick)
-    HAL_IWDG_Init                            0x080007cd   Thumb Code    92  stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Init)
-    HAL_IWDG_Refresh                         0x08000829   Thumb Code    12  stm32l4xx_hal_iwdg.o(i.HAL_IWDG_Refresh)
-    HAL_IncTick                              0x08000835   Thumb Code    12  stm32l4xx_hal.o(i.HAL_IncTick)
-    HAL_Init                                 0x08000845   Thumb Code    30  stm32l4xx_hal.o(i.HAL_Init)
-    HAL_InitTick                             0x08000865   Thumb Code    58  stm32l4xx_hal.o(i.HAL_InitTick)
-    HAL_MspInit                              0x080008a9   Thumb Code    38  stm32l4xx_hal_msp.o(i.HAL_MspInit)
-    HAL_NVIC_EnableIRQ                       0x080008d5   Thumb Code    26  stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ)
-    HAL_NVIC_SetPriority                     0x080008f1   Thumb Code    60  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority)
-    HAL_NVIC_SetPriorityGrouping             0x08000931   Thumb Code    26  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriorityGrouping)
-    HAL_PWREx_ControlVoltageScaling          0x08000955   Thumb Code    90  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ControlVoltageScaling)
-    HAL_PWREx_GetVoltageRange                0x080009bd   Thumb Code    10  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_GetVoltageRange)
-    HAL_RCCEx_PeriphCLKConfig                0x080009cd   Thumb Code   676  stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig)
-    HAL_RCC_ClockConfig                      0x08000c81   Thumb Code   278  stm32l4xx_hal_rcc.o(i.HAL_RCC_ClockConfig)
-    HAL_RCC_GetPCLK1Freq                     0x08000dad   Thumb Code    24  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq)
-    HAL_RCC_GetPCLK2Freq                     0x08000dd1   Thumb Code    24  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq)
-    HAL_RCC_GetSysClockFreq                  0x08000df5   Thumb Code   152  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq)
-    HAL_RCC_OscConfig                        0x08000e99   Thumb Code  1300  stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig)
-    HAL_SYSTICK_Config                       0x080013b1   Thumb Code    40  stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Config)
-    HAL_UARTEx_WakeupCallback                0x080013d9   Thumb Code     2  stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_WakeupCallback)
-    HAL_UART_DMAPause                        0x080013db   Thumb Code    96  stm32l4xx_hal_uart.o(i.HAL_UART_DMAPause)
-    HAL_UART_DMAStop                         0x0800143b   Thumb Code   114  stm32l4xx_hal_uart.o(i.HAL_UART_DMAStop)
-    HAL_UART_ErrorCallback                   0x080014ad   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_ErrorCallback)
-    HAL_UART_IRQHandler                      0x080014b1   Thumb Code   318  stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler)
-    HAL_UART_Init                            0x080015f5   Thumb Code   102  stm32l4xx_hal_uart.o(i.HAL_UART_Init)
-    HAL_UART_MspInit                         0x0800165d   Thumb Code   430  stm32l4xx_hal_msp.o(i.HAL_UART_MspInit)
-    HAL_UART_Receive_DMA                     0x08001831   Thumb Code   142  stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA)
-    HAL_UART_RxCpltCallback                  0x080018cd   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_RxCpltCallback)
-    HAL_UART_RxHalfCpltCallback              0x080018cf   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_RxHalfCpltCallback)
-    HAL_UART_Transmit                        0x080018d1   Thumb Code   180  stm32l4xx_hal_uart.o(i.HAL_UART_Transmit)
-    HAL_UART_TxCpltCallback                  0x08001985   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_TxCpltCallback)
-    HardFault_Handler                        0x08001987   Thumb Code     2  stm32l4xx_it.o(i.HardFault_Handler)
-    HeaderIdentify2                          0x08001989   Thumb Code    72  node_protocol.o(i.HeaderIdentify2)
-    MemManage_Handler                        0x08001b05   Thumb Code     2  stm32l4xx_it.o(i.MemManage_Handler)
-    NMI_Handler                              0x08001b07   Thumb Code     2  stm32l4xx_it.o(i.NMI_Handler)
-    NodeToServer                             0x08001b09   Thumb Code   116  node_protocol.o(i.NodeToServer)
-    PendSV_Handler                           0x08001b85   Thumb Code     2  stm32l4xx_it.o(i.PendSV_Handler)
-    SVC_Handler                              0x08001d2d   Thumb Code     2  stm32l4xx_it.o(i.SVC_Handler)
-    SysTick_Handler                          0x08001d2f   Thumb Code     4  stm32l4xx_it.o(i.SysTick_Handler)
-    SystemClock_Config                       0x08001d33   Thumb Code   102  main.o(i.SystemClock_Config)
-    SystemInit                               0x08001d99   Thumb Code    56  system_stm32l4xx.o(i.SystemInit)
-    Transmmit                                0x08001ddd   Thumb Code   408  node_protocol.o(i.Transmmit)
-    UART_AdvFeatureConfig                    0x08001f93   Thumb Code   200  stm32l4xx_hal_uart.o(i.UART_AdvFeatureConfig)
-    UART_CheckIdleState                      0x0800205b   Thumb Code    88  stm32l4xx_hal_uart.o(i.UART_CheckIdleState)
-    UART_SetConfig                           0x08002185   Thumb Code   578  stm32l4xx_hal_uart.o(i.UART_SetConfig)
-    UART_WaitOnFlagUntilTimeout              0x080023f1   Thumb Code    94  stm32l4xx_hal_uart.o(i.UART_WaitOnFlagUntilTimeout)
-    USART1_IRQHandler                        0x08002451   Thumb Code    18  stm32l4xx_it.o(i.USART1_IRQHandler)
-    USART2_IRQHandler                        0x08002469   Thumb Code    18  stm32l4xx_it.o(i.USART2_IRQHandler)
-    USART3_IRQHandler                        0x08002481   Thumb Code    18  stm32l4xx_it.o(i.USART3_IRQHandler)
-    UsageFault_Handler                       0x08002499   Thumb Code     2  stm32l4xx_it.o(i.UsageFault_Handler)
-    UsartReceive_IDLE                        0x0800249d   Thumb Code   250  bsp.o(i.UsartReceive_IDLE)
-    __scatterload_copy                       0x080025dd   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x080025eb   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x080025ed   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    main                                     0x080025fd   Thumb Code   260  main.o(i.main)
-    nodeParamsInit                           0x08002719   Thumb Code    40  node_protocol.o(i.nodeParamsInit)
-    uart_process                             0x08002745   Thumb Code   142  node_protocol.o(i.uart_process)
-    uartparase2                              0x080027e5   Thumb Code    14  node_protocol.o(i.uartparase2)
-    xorCheck                                 0x080027f3   Thumb Code    24  node_protocol.o(i.xorCheck)
-    AHBPrescTable                            0x0800280c   Data          16  system_stm32l4xx.o(.constdata)
-    MSIRangeTable                            0x0800281c   Data          48  system_stm32l4xx.o(.constdata)
-    APBPrescTable                            0x0800284c   Data           8  system_stm32l4xx.o(.constdata)
-    Region$$Table$$Base                      0x08002854   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08002874   Number         0  anon$$obj.o(Region$$Table)
-    uwTickPrio                               0x20000000   Data           4  stm32l4xx_hal.o(.data)
-    uwTickFreq                               0x20000004   Data           4  stm32l4xx_hal.o(.data)
-    uwTick                                   0x20000008   Data           4  stm32l4xx_hal.o(.data)
+    BusFault_Handler                         0x080002d9   Thumb Code     4  stm32l4xx_it.o(i.BusFault_Handler)
+    DMA1_Channel3_IRQHandler                 0x080002dd   Thumb Code    10  stm32l4xx_it.o(i.DMA1_Channel3_IRQHandler)
+    DMA1_Channel5_IRQHandler                 0x080002ed   Thumb Code    10  stm32l4xx_it.o(i.DMA1_Channel5_IRQHandler)
+    DMA1_Channel6_IRQHandler                 0x080002fd   Thumb Code    10  stm32l4xx_it.o(i.DMA1_Channel6_IRQHandler)
+    DebugMon_Handler                         0x0800033d   Thumb Code     2  stm32l4xx_it.o(i.DebugMon_Handler)
+    EXTI9_5_IRQHandler                       0x0800033f   Thumb Code    12  stm32l4xx_it.o(i.EXTI9_5_IRQHandler)
+    Error_Handler                            0x0800034b   Thumb Code     2  main.o(i.Error_Handler)
+    HAL_DMA_Abort                            0x0800034d   Thumb Code    90  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort)
+    HAL_DMA_Abort_IT                         0x080003a7   Thumb Code    92  stm32l4xx_hal_dma.o(i.HAL_DMA_Abort_IT)
+    HAL_DMA_GetError                         0x08000403   Thumb Code     6  stm32l4xx_hal_dma.o(i.HAL_DMA_GetError)
+    HAL_DMA_IRQHandler                       0x08000409   Thumb Code   254  stm32l4xx_hal_dma.o(i.HAL_DMA_IRQHandler)
+    HAL_DMA_Init                             0x08000509   Thumb Code   258  stm32l4xx_hal_dma.o(i.HAL_DMA_Init)
+    HAL_DMA_Start_IT                         0x08000615   Thumb Code   156  stm32l4xx_hal_dma.o(i.HAL_DMA_Start_IT)
+    HAL_Delay                                0x080006b1   Thumb Code    36  stm32l4xx_hal.o(i.HAL_Delay)
+    HAL_GPIO_EXTI_Callback                   0x080006d9   Thumb Code     2  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_Callback)
+    HAL_GPIO_EXTI_IRQHandler                 0x080006dd   Thumb Code    24  stm32l4xx_hal_gpio.o(i.HAL_GPIO_EXTI_IRQHandler)
+    HAL_GPIO_Init                            0x080006f9   Thumb Code   428  stm32l4xx_hal_gpio.o(i.HAL_GPIO_Init)
+    HAL_GPIO_WritePin                        0x080008c1   Thumb Code    10  stm32l4xx_hal_gpio.o(i.HAL_GPIO_WritePin)
+    HAL_GetTick                              0x080008cd   Thumb Code     6  stm32l4xx_hal.o(i.HAL_GetTick)
+    HAL_IncTick                              0x080008d9   Thumb Code    16  stm32l4xx_hal.o(i.HAL_IncTick)
+    HAL_Init                                 0x080008f1   Thumb Code    30  stm32l4xx_hal.o(i.HAL_Init)
+    HAL_InitTick                             0x08000911   Thumb Code    74  stm32l4xx_hal.o(i.HAL_InitTick)
+    HAL_MspInit                              0x08000969   Thumb Code    58  stm32l4xx_hal_msp.o(i.HAL_MspInit)
+    HAL_NVIC_EnableIRQ                       0x080009a9   Thumb Code    32  stm32l4xx_hal_cortex.o(i.HAL_NVIC_EnableIRQ)
+    HAL_NVIC_SetPriority                     0x080009c9   Thumb Code   124  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriority)
+    HAL_NVIC_SetPriorityGrouping             0x08000a4d   Thumb Code    32  stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriorityGrouping)
+    HAL_PWREx_ControlVoltageScaling          0x08000a75   Thumb Code   128  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ControlVoltageScaling)
+    HAL_PWREx_GetVoltageRange                0x08000b01   Thumb Code    10  stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_GetVoltageRange)
+    HAL_RCCEx_PeriphCLKConfig                0x08000b11   Thumb Code   894  stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig)
+    HAL_RCC_ClockConfig                      0x08000e99   Thumb Code   360  stm32l4xx_hal_rcc.o(i.HAL_RCC_ClockConfig)
+    HAL_RCC_GetHCLKFreq                      0x08001015   Thumb Code     6  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetHCLKFreq)
+    HAL_RCC_GetPCLK1Freq                     0x08001021   Thumb Code    26  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq)
+    HAL_RCC_GetPCLK2Freq                     0x08001045   Thumb Code    26  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq)
+    HAL_RCC_GetSysClockFreq                  0x08001069   Thumb Code   220  stm32l4xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq)
+    HAL_RCC_OscConfig                        0x08001155   Thumb Code  1778  stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig)
+    HAL_SYSTICK_Config                       0x08001859   Thumb Code    52  stm32l4xx_hal_cortex.o(i.HAL_SYSTICK_Config)
+    HAL_UARTEx_WakeupCallback                0x0800188d   Thumb Code     2  stm32l4xx_hal_uart_ex.o(i.HAL_UARTEx_WakeupCallback)
+    HAL_UART_DMAPause                        0x0800188f   Thumb Code   124  stm32l4xx_hal_uart.o(i.HAL_UART_DMAPause)
+    HAL_UART_DMAStop                         0x0800190b   Thumb Code   140  stm32l4xx_hal_uart.o(i.HAL_UART_DMAStop)
+    HAL_UART_ErrorCallback                   0x08001997   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_ErrorCallback)
+    HAL_UART_IRQHandler                      0x08001999   Thumb Code   394  stm32l4xx_hal_uart.o(i.HAL_UART_IRQHandler)
+    HAL_UART_Init                            0x08001b29   Thumb Code   116  stm32l4xx_hal_uart.o(i.HAL_UART_Init)
+    HAL_UART_MspInit                         0x08001b9d   Thumb Code   518  stm32l4xx_hal_msp.o(i.HAL_UART_MspInit)
+    HAL_UART_Receive_DMA                     0x08001dc9   Thumb Code   180  stm32l4xx_hal_uart.o(i.HAL_UART_Receive_DMA)
+    HAL_UART_RxCpltCallback                  0x08001e89   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_RxCpltCallback)
+    HAL_UART_RxHalfCpltCallback              0x08001e8b   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_RxHalfCpltCallback)
+    HAL_UART_Transmit                        0x08001e8d   Thumb Code   208  stm32l4xx_hal_uart.o(i.HAL_UART_Transmit)
+    HAL_UART_TxCpltCallback                  0x08001f63   Thumb Code     2  stm32l4xx_hal_uart.o(i.HAL_UART_TxCpltCallback)
+    HardFault_Handler                        0x08001f65   Thumb Code     4  stm32l4xx_it.o(i.HardFault_Handler)
+    HeaderIdentify2                          0x08001f69   Thumb Code   108  node_protocol.o(i.HeaderIdentify2)
+    MemManage_Handler                        0x080021b1   Thumb Code     4  stm32l4xx_it.o(i.MemManage_Handler)
+    NMI_Handler                              0x080021b5   Thumb Code     2  stm32l4xx_it.o(i.NMI_Handler)
+    NodeToServer                             0x080021b9   Thumb Code   162  node_protocol.o(i.NodeToServer)
+    PendSV_Handler                           0x08002265   Thumb Code     2  stm32l4xx_it.o(i.PendSV_Handler)
+    SVC_Handler                              0x0800248d   Thumb Code     2  stm32l4xx_it.o(i.SVC_Handler)
+    SysTick_Handler                          0x0800248f   Thumb Code     8  stm32l4xx_it.o(i.SysTick_Handler)
+    SystemClock_Config                       0x08002497   Thumb Code   132  main.o(i.SystemClock_Config)
+    SystemInit                               0x0800251d   Thumb Code    68  system_stm32l4xx.o(i.SystemInit)
+    Transmmit                                0x0800256d   Thumb Code  1040  node_protocol.o(i.Transmmit)
+    UART_AdvFeatureConfig                    0x08002981   Thumb Code   248  stm32l4xx_hal_uart.o(i.UART_AdvFeatureConfig)
+    UART_CheckIdleState                      0x08002a79   Thumb Code   110  stm32l4xx_hal_uart.o(i.UART_CheckIdleState)
+    UART_SetConfig                           0x08002bfd   Thumb Code   992  stm32l4xx_hal_uart.o(i.UART_SetConfig)
+    UART_WaitOnFlagUntilTimeout              0x08003007   Thumb Code   104  stm32l4xx_hal_uart.o(i.UART_WaitOnFlagUntilTimeout)
+    USART1_IRQHandler                        0x08003071   Thumb Code    16  stm32l4xx_it.o(i.USART1_IRQHandler)
+    USART2_IRQHandler                        0x08003085   Thumb Code    16  stm32l4xx_it.o(i.USART2_IRQHandler)
+    USART3_IRQHandler                        0x08003099   Thumb Code    16  stm32l4xx_it.o(i.USART3_IRQHandler)
+    UsageFault_Handler                       0x080030ad   Thumb Code     4  stm32l4xx_it.o(i.UsageFault_Handler)
+    UsartReceive_IDLE                        0x080030b1   Thumb Code   320  bsp.o(i.UsartReceive_IDLE)
+    __scatterload_copy                       0x0800324d   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0800325b   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x0800325d   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    led_OFF                                  0x0800326b   Thumb Code    22  node_protocol.o(i.led_OFF)
+    main                                     0x08003281   Thumb Code   208  main.o(i.main)
+    nodeParamsInit                           0x08003369   Thumb Code    54  node_protocol.o(i.nodeParamsInit)
+    uart_process                             0x080033a5   Thumb Code   180  node_protocol.o(i.uart_process)
+    uartparase2                              0x08003469   Thumb Code    30  node_protocol.o(i.uartparase2)
+    xorCheck                                 0x08003487   Thumb Code    26  node_protocol.o(i.xorCheck)
+    AHBPrescTable                            0x080034a0   Data          16  system_stm32l4xx.o(.constdata)
+    APBPrescTable                            0x080034b0   Data           8  system_stm32l4xx.o(.constdata)
+    MSIRangeTable                            0x080034b8   Data          48  system_stm32l4xx.o(.constdata)
+    Region$$Table$$Base                      0x080034e8   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08003508   Number         0  anon$$obj.o(Region$$Table)
+    uwTick                                   0x20000000   Data           4  stm32l4xx_hal.o(.data)
+    uwTickPrio                               0x20000004   Data           4  stm32l4xx_hal.o(.data)
+    uwTickFreq                               0x20000008   Data           4  stm32l4xx_hal.o(.data)
     SystemCoreClock                          0x2000000c   Data           4  system_stm32l4xx.o(.data)
     hiwdg                                    0x20000010   Data          16  main.o(.bss)
     huart1                                   0x20000020   Data         128  main.o(.bss)
@@ -1398,151 +1422,146 @@ Memory Map of the image
 
   Image Entry point : 0x0800018d
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00002884, Max: 0x00040000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00003518, Max: 0x00040000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Base: 0x08000000, Size: 0x00002874, Max: 0x00040000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x08000000, Size: 0x00003508, Max: 0x00040000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x0000018c   Data   RO            3    RESET               startup_stm32l431xx.o
-    0x0800018c   0x00000000   Code   RO         2938  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x0800018c   0x00000004   Code   RO         2949    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x08000190   0x00000004   Code   RO         2952    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000194   0x00000000   Code   RO         2954    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000194   0x00000000   Code   RO         2956    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000194   0x00000008   Code   RO         2957    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x0800019c   0x00000000   Code   RO         2959    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x0800019c   0x00000000   Code   RO         2961    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x0800019c   0x00000004   Code   RO         2950    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x0800018c   0x00000000   Code   RO         2998  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x0800018c   0x00000004   Code   RO         3009    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x08000190   0x00000004   Code   RO         3012    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000194   0x00000000   Code   RO         3014    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000194   0x00000000   Code   RO         3016    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000194   0x00000008   Code   RO         3017    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x0800019c   0x00000000   Code   RO         3019    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x0800019c   0x00000000   Code   RO         3021    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x0800019c   0x00000004   Code   RO         3010    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x080001a0   0x00000024   Code   RO            4    .text               startup_stm32l431xx.o
-    0x080001c4   0x00000068   Code   RO         2941    .text               mc_w.l(uldiv.o)
-    0x0800022c   0x00000024   Code   RO         2943    .text               mc_w.l(memcpya.o)
-    0x08000250   0x00000024   Code   RO         2945    .text               mc_w.l(memseta.o)
-    0x08000274   0x0000001e   Code   RO         2963    .text               mc_w.l(llshl.o)
-    0x08000292   0x00000020   Code   RO         2965    .text               mc_w.l(llushr.o)
+    0x080001c4   0x00000068   Code   RO         3001    .text               mc_w.l(uldiv.o)
+    0x0800022c   0x00000024   Code   RO         3003    .text               mc_w.l(memcpya.o)
+    0x08000250   0x00000024   Code   RO         3005    .text               mc_w.l(memseta.o)
+    0x08000274   0x0000001e   Code   RO         3023    .text               mc_w.l(llshl.o)
+    0x08000292   0x00000020   Code   RO         3025    .text               mc_w.l(llushr.o)
     0x080002b2   0x00000002   PAD
-    0x080002b4   0x00000024   Code   RO         2967    .text               mc_w.l(init.o)
-    0x080002d8   0x00000002   Code   RO          185    i.BusFault_Handler  stm32l4xx_it.o
-    0x080002da   0x00000002   PAD
-    0x080002dc   0x0000000c   Code   RO          186    i.DMA1_Channel3_IRQHandler  stm32l4xx_it.o
-    0x080002e8   0x0000000c   Code   RO          187    i.DMA1_Channel5_IRQHandler  stm32l4xx_it.o
-    0x080002f4   0x0000000c   Code   RO          188    i.DMA1_Channel6_IRQHandler  stm32l4xx_it.o
-    0x08000300   0x0000002e   Code   RO         2126    i.DMA_SetConfig     stm32l4xx_hal_dma.o
-    0x0800032e   0x00000002   Code   RO          189    i.DebugMon_Handler  stm32l4xx_it.o
-    0x08000330   0x00000008   Code   RO          190    i.EXTI9_5_IRQHandler  stm32l4xx_it.o
-    0x08000338   0x00000002   Code   RO           13    i.Error_Handler     main.o
-    0x0800033a   0x0000004a   Code   RO         2127    i.HAL_DMA_Abort     stm32l4xx_hal_dma.o
-    0x08000384   0x0000004e   Code   RO         2128    i.HAL_DMA_Abort_IT  stm32l4xx_hal_dma.o
-    0x080003d2   0x00000004   Code   RO         2130    i.HAL_DMA_GetError  stm32l4xx_hal_dma.o
-    0x080003d6   0x000000ba   Code   RO         2132    i.HAL_DMA_IRQHandler  stm32l4xx_hal_dma.o
-    0x08000490   0x000000e0   Code   RO         2133    i.HAL_DMA_Init      stm32l4xx_hal_dma.o
-    0x08000570   0x00000070   Code   RO         2137    i.HAL_DMA_Start_IT  stm32l4xx_hal_dma.o
-    0x080005e0   0x00000024   Code   RO          835    i.HAL_Delay         stm32l4xx_hal.o
-    0x08000604   0x00000002   Code   RO         2061    i.HAL_GPIO_EXTI_Callback  stm32l4xx_hal_gpio.o
-    0x08000606   0x00000002   PAD
-    0x08000608   0x00000018   Code   RO         2062    i.HAL_GPIO_EXTI_IRQHandler  stm32l4xx_hal_gpio.o
-    0x08000620   0x00000196   Code   RO         2063    i.HAL_GPIO_Init     stm32l4xx_hal_gpio.o
-    0x080007b6   0x0000000a   Code   RO         2067    i.HAL_GPIO_WritePin  stm32l4xx_hal_gpio.o
-    0x080007c0   0x0000000c   Code   RO          839    i.HAL_GetTick       stm32l4xx_hal.o
-    0x080007cc   0x0000005c   Code   RO          340    i.HAL_IWDG_Init     stm32l4xx_hal_iwdg.o
-    0x08000828   0x0000000c   Code   RO          341    i.HAL_IWDG_Refresh  stm32l4xx_hal_iwdg.o
-    0x08000834   0x00000010   Code   RO          845    i.HAL_IncTick       stm32l4xx_hal.o
-    0x08000844   0x0000001e   Code   RO          846    i.HAL_Init          stm32l4xx_hal.o
-    0x08000862   0x00000002   PAD
-    0x08000864   0x00000044   Code   RO          847    i.HAL_InitTick      stm32l4xx_hal.o
-    0x080008a8   0x0000002c   Code   RO          303    i.HAL_MspInit       stm32l4xx_hal_msp.o
-    0x080008d4   0x0000001a   Code   RO         2544    i.HAL_NVIC_EnableIRQ  stm32l4xx_hal_cortex.o
-    0x080008ee   0x00000002   PAD
-    0x080008f0   0x00000040   Code   RO         2550    i.HAL_NVIC_SetPriority  stm32l4xx_hal_cortex.o
-    0x08000930   0x00000024   Code   RO         2551    i.HAL_NVIC_SetPriorityGrouping  stm32l4xx_hal_cortex.o
-    0x08000954   0x00000068   Code   RO         2354    i.HAL_PWREx_ControlVoltageScaling  stm32l4xx_hal_pwr_ex.o
-    0x080009bc   0x00000010   Code   RO         2377    i.HAL_PWREx_GetVoltageRange  stm32l4xx_hal_pwr_ex.o
-    0x080009cc   0x000002b2   Code   RO         1696    i.HAL_RCCEx_PeriphCLKConfig  stm32l4xx_hal_rcc_ex.o
-    0x08000c7e   0x00000002   PAD
-    0x08000c80   0x0000012c   Code   RO         1574    i.HAL_RCC_ClockConfig  stm32l4xx_hal_rcc.o
-    0x08000dac   0x00000024   Code   RO         1580    i.HAL_RCC_GetPCLK1Freq  stm32l4xx_hal_rcc.o
-    0x08000dd0   0x00000024   Code   RO         1581    i.HAL_RCC_GetPCLK2Freq  stm32l4xx_hal_rcc.o
-    0x08000df4   0x000000a4   Code   RO         1582    i.HAL_RCC_GetSysClockFreq  stm32l4xx_hal_rcc.o
-    0x08000e98   0x00000518   Code   RO         1585    i.HAL_RCC_OscConfig  stm32l4xx_hal_rcc.o
-    0x080013b0   0x00000028   Code   RO         2555    i.HAL_SYSTICK_Config  stm32l4xx_hal_cortex.o
-    0x080013d8   0x00000002   Code   RO          769    i.HAL_UARTEx_WakeupCallback  stm32l4xx_hal_uart_ex.o
-    0x080013da   0x00000060   Code   RO          424    i.HAL_UART_DMAPause  stm32l4xx_hal_uart.o
-    0x0800143a   0x00000072   Code   RO          426    i.HAL_UART_DMAStop  stm32l4xx_hal_uart.o
-    0x080014ac   0x00000002   Code   RO          428    i.HAL_UART_ErrorCallback  stm32l4xx_hal_uart.o
-    0x080014ae   0x00000002   PAD
-    0x080014b0   0x00000144   Code   RO          431    i.HAL_UART_IRQHandler  stm32l4xx_hal_uart.o
-    0x080015f4   0x00000066   Code   RO          432    i.HAL_UART_Init     stm32l4xx_hal_uart.o
-    0x0800165a   0x00000002   PAD
-    0x0800165c   0x000001d4   Code   RO          305    i.HAL_UART_MspInit  stm32l4xx_hal_msp.o
-    0x08001830   0x0000009c   Code   RO          436    i.HAL_UART_Receive_DMA  stm32l4xx_hal_uart.o
-    0x080018cc   0x00000002   Code   RO          438    i.HAL_UART_RxCpltCallback  stm32l4xx_hal_uart.o
-    0x080018ce   0x00000002   Code   RO          439    i.HAL_UART_RxHalfCpltCallback  stm32l4xx_hal_uart.o
-    0x080018d0   0x000000b4   Code   RO          440    i.HAL_UART_Transmit  stm32l4xx_hal_uart.o
-    0x08001984   0x00000002   Code   RO          443    i.HAL_UART_TxCpltCallback  stm32l4xx_hal_uart.o
-    0x08001986   0x00000002   Code   RO          191    i.HardFault_Handler  stm32l4xx_it.o
-    0x08001988   0x00000050   Code   RO         2813    i.HeaderIdentify2   node_protocol.o
-    0x080019d8   0x000000a8   Code   RO           14    i.MX_GPIO_Init      main.o
-    0x08001a80   0x0000002c   Code   RO           15    i.MX_USART1_UART_Init  main.o
-    0x08001aac   0x0000002c   Code   RO           16    i.MX_USART2_UART_Init  main.o
-    0x08001ad8   0x0000002c   Code   RO           17    i.MX_USART3_UART_Init  main.o
-    0x08001b04   0x00000002   Code   RO          192    i.MemManage_Handler  stm32l4xx_it.o
-    0x08001b06   0x00000002   Code   RO          193    i.NMI_Handler       stm32l4xx_it.o
-    0x08001b08   0x0000007c   Code   RO         2814    i.NodeToServer      node_protocol.o
-    0x08001b84   0x00000002   Code   RO          194    i.PendSV_Handler    stm32l4xx_it.o
-    0x08001b86   0x00000002   PAD
-    0x08001b88   0x00000128   Code   RO         1700    i.RCCEx_PLLSAI1_Config  stm32l4xx_hal_rcc_ex.o
-    0x08001cb0   0x0000007c   Code   RO         1586    i.RCC_SetFlashLatencyFromMSIRange  stm32l4xx_hal_rcc.o
-    0x08001d2c   0x00000002   Code   RO          195    i.SVC_Handler       stm32l4xx_it.o
-    0x08001d2e   0x00000004   Code   RO          196    i.SysTick_Handler   stm32l4xx_it.o
-    0x08001d32   0x00000066   Code   RO           18    i.SystemClock_Config  main.o
-    0x08001d98   0x00000044   Code   RO         2747    i.SystemInit        system_stm32l4xx.o
-    0x08001ddc   0x000001b6   Code   RO         2815    i.Transmmit         node_protocol.o
-    0x08001f92   0x000000c8   Code   RO          445    i.UART_AdvFeatureConfig  stm32l4xx_hal_uart.o
-    0x0800205a   0x00000058   Code   RO          446    i.UART_CheckIdleState  stm32l4xx_hal_uart.o
-    0x080020b2   0x00000014   Code   RO          447    i.UART_DMAAbortOnError  stm32l4xx_hal_uart.o
-    0x080020c6   0x00000048   Code   RO          448    i.UART_DMAError     stm32l4xx_hal_uart.o
-    0x0800210e   0x0000003c   Code   RO          449    i.UART_DMAReceiveCplt  stm32l4xx_hal_uart.o
-    0x0800214a   0x0000000a   Code   RO          451    i.UART_DMARxHalfCplt  stm32l4xx_hal_uart.o
-    0x08002154   0x0000001e   Code   RO          457    i.UART_EndRxTransfer  stm32l4xx_hal_uart.o
-    0x08002172   0x00000010   Code   RO          458    i.UART_EndTxTransfer  stm32l4xx_hal_uart.o
-    0x08002182   0x00000002   PAD
-    0x08002184   0x0000026c   Code   RO          461    i.UART_SetConfig    stm32l4xx_hal_uart.o
-    0x080023f0   0x0000005e   Code   RO          464    i.UART_WaitOnFlagUntilTimeout  stm32l4xx_hal_uart.o
-    0x0800244e   0x00000002   PAD
-    0x08002450   0x00000018   Code   RO          197    i.USART1_IRQHandler  stm32l4xx_it.o
-    0x08002468   0x00000018   Code   RO          198    i.USART2_IRQHandler  stm32l4xx_it.o
-    0x08002480   0x00000018   Code   RO          199    i.USART3_IRQHandler  stm32l4xx_it.o
-    0x08002498   0x00000002   Code   RO          200    i.UsageFault_Handler  stm32l4xx_it.o
-    0x0800249a   0x00000002   PAD
-    0x0800249c   0x00000120   Code   RO         2784    i.UsartReceive_IDLE  bsp.o
-    0x080025bc   0x00000020   Code   RO         2557    i.__NVIC_SetPriority  stm32l4xx_hal_cortex.o
-    0x080025dc   0x0000000e   Code   RO         2971    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x080025ea   0x00000002   Code   RO         2972    i.__scatterload_null  mc_w.l(handlers.o)
-    0x080025ec   0x0000000e   Code   RO         2973    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x080025fa   0x00000002   PAD
-    0x080025fc   0x0000011c   Code   RO           19    i.main              main.o
-    0x08002718   0x0000002c   Code   RO         2818    i.nodeParamsInit    node_protocol.o
-    0x08002744   0x000000a0   Code   RO         2819    i.uart_process      node_protocol.o
-    0x080027e4   0x0000000e   Code   RO         2821    i.uartparase2       node_protocol.o
-    0x080027f2   0x00000018   Code   RO         2822    i.xorCheck          node_protocol.o
-    0x0800280a   0x00000002   PAD
-    0x0800280c   0x00000040   Data   RO         2748    .constdata          system_stm32l4xx.o
-    0x0800284c   0x00000008   Data   RO         2749    .constdata          system_stm32l4xx.o
-    0x08002854   0x00000020   Data   RO         2969    Region$$Table       anon$$obj.o
+    0x080002b4   0x00000024   Code   RO         3027    .text               mc_w.l(init.o)
+    0x080002d8   0x00000004   Code   RO          193    i.BusFault_Handler  stm32l4xx_it.o
+    0x080002dc   0x00000010   Code   RO          194    i.DMA1_Channel3_IRQHandler  stm32l4xx_it.o
+    0x080002ec   0x00000010   Code   RO          195    i.DMA1_Channel5_IRQHandler  stm32l4xx_it.o
+    0x080002fc   0x00000010   Code   RO          196    i.DMA1_Channel6_IRQHandler  stm32l4xx_it.o
+    0x0800030c   0x00000030   Code   RO         2174    i.DMA_SetConfig     stm32l4xx_hal_dma.o
+    0x0800033c   0x00000002   Code   RO          197    i.DebugMon_Handler  stm32l4xx_it.o
+    0x0800033e   0x0000000c   Code   RO          198    i.EXTI9_5_IRQHandler  stm32l4xx_it.o
+    0x0800034a   0x00000002   Code   RO           13    i.Error_Handler     main.o
+    0x0800034c   0x0000005a   Code   RO         2175    i.HAL_DMA_Abort     stm32l4xx_hal_dma.o
+    0x080003a6   0x0000005c   Code   RO         2176    i.HAL_DMA_Abort_IT  stm32l4xx_hal_dma.o
+    0x08000402   0x00000006   Code   RO         2178    i.HAL_DMA_GetError  stm32l4xx_hal_dma.o
+    0x08000408   0x000000fe   Code   RO         2180    i.HAL_DMA_IRQHandler  stm32l4xx_hal_dma.o
+    0x08000506   0x00000002   PAD
+    0x08000508   0x0000010c   Code   RO         2181    i.HAL_DMA_Init      stm32l4xx_hal_dma.o
+    0x08000614   0x0000009c   Code   RO         2185    i.HAL_DMA_Start_IT  stm32l4xx_hal_dma.o
+    0x080006b0   0x00000028   Code   RO          853    i.HAL_Delay         stm32l4xx_hal.o
+    0x080006d8   0x00000002   Code   RO         2109    i.HAL_GPIO_EXTI_Callback  stm32l4xx_hal_gpio.o
+    0x080006da   0x00000002   PAD
+    0x080006dc   0x0000001c   Code   RO         2110    i.HAL_GPIO_EXTI_IRQHandler  stm32l4xx_hal_gpio.o
+    0x080006f8   0x000001c8   Code   RO         2111    i.HAL_GPIO_Init     stm32l4xx_hal_gpio.o
+    0x080008c0   0x0000000a   Code   RO         2115    i.HAL_GPIO_WritePin  stm32l4xx_hal_gpio.o
+    0x080008ca   0x00000002   PAD
+    0x080008cc   0x0000000c   Code   RO          857    i.HAL_GetTick       stm32l4xx_hal.o
+    0x080008d8   0x00000018   Code   RO          863    i.HAL_IncTick       stm32l4xx_hal.o
+    0x080008f0   0x0000001e   Code   RO          864    i.HAL_Init          stm32l4xx_hal.o
+    0x0800090e   0x00000002   PAD
+    0x08000910   0x00000058   Code   RO          865    i.HAL_InitTick      stm32l4xx_hal.o
+    0x08000968   0x00000040   Code   RO          311    i.HAL_MspInit       stm32l4xx_hal_msp.o
+    0x080009a8   0x00000020   Code   RO         2592    i.HAL_NVIC_EnableIRQ  stm32l4xx_hal_cortex.o
+    0x080009c8   0x00000082   Code   RO         2598    i.HAL_NVIC_SetPriority  stm32l4xx_hal_cortex.o
+    0x08000a4a   0x00000002   PAD
+    0x08000a4c   0x00000028   Code   RO         2599    i.HAL_NVIC_SetPriorityGrouping  stm32l4xx_hal_cortex.o
+    0x08000a74   0x0000008c   Code   RO         2402    i.HAL_PWREx_ControlVoltageScaling  stm32l4xx_hal_pwr_ex.o
+    0x08000b00   0x00000010   Code   RO         2425    i.HAL_PWREx_GetVoltageRange  stm32l4xx_hal_pwr_ex.o
+    0x08000b10   0x00000388   Code   RO         1714    i.HAL_RCCEx_PeriphCLKConfig  stm32l4xx_hal_rcc_ex.o
+    0x08000e98   0x0000017c   Code   RO         1592    i.HAL_RCC_ClockConfig  stm32l4xx_hal_rcc.o
+    0x08001014   0x0000000c   Code   RO         1596    i.HAL_RCC_GetHCLKFreq  stm32l4xx_hal_rcc.o
+    0x08001020   0x00000024   Code   RO         1598    i.HAL_RCC_GetPCLK1Freq  stm32l4xx_hal_rcc.o
+    0x08001044   0x00000024   Code   RO         1599    i.HAL_RCC_GetPCLK2Freq  stm32l4xx_hal_rcc.o
+    0x08001068   0x000000ec   Code   RO         1600    i.HAL_RCC_GetSysClockFreq  stm32l4xx_hal_rcc.o
+    0x08001154   0x00000704   Code   RO         1603    i.HAL_RCC_OscConfig  stm32l4xx_hal_rcc.o
+    0x08001858   0x00000034   Code   RO         2603    i.HAL_SYSTICK_Config  stm32l4xx_hal_cortex.o
+    0x0800188c   0x00000002   Code   RO          782    i.HAL_UARTEx_WakeupCallback  stm32l4xx_hal_uart_ex.o
+    0x0800188e   0x0000007c   Code   RO          432    i.HAL_UART_DMAPause  stm32l4xx_hal_uart.o
+    0x0800190a   0x0000008c   Code   RO          434    i.HAL_UART_DMAStop  stm32l4xx_hal_uart.o
+    0x08001996   0x00000002   Code   RO          436    i.HAL_UART_ErrorCallback  stm32l4xx_hal_uart.o
+    0x08001998   0x00000190   Code   RO          439    i.HAL_UART_IRQHandler  stm32l4xx_hal_uart.o
+    0x08001b28   0x00000074   Code   RO          440    i.HAL_UART_Init     stm32l4xx_hal_uart.o
+    0x08001b9c   0x0000022c   Code   RO          313    i.HAL_UART_MspInit  stm32l4xx_hal_msp.o
+    0x08001dc8   0x000000c0   Code   RO          444    i.HAL_UART_Receive_DMA  stm32l4xx_hal_uart.o
+    0x08001e88   0x00000002   Code   RO          446    i.HAL_UART_RxCpltCallback  stm32l4xx_hal_uart.o
+    0x08001e8a   0x00000002   Code   RO          447    i.HAL_UART_RxHalfCpltCallback  stm32l4xx_hal_uart.o
+    0x08001e8c   0x000000d6   Code   RO          448    i.HAL_UART_Transmit  stm32l4xx_hal_uart.o
+    0x08001f62   0x00000002   Code   RO          451    i.HAL_UART_TxCpltCallback  stm32l4xx_hal_uart.o
+    0x08001f64   0x00000004   Code   RO          199    i.HardFault_Handler  stm32l4xx_it.o
+    0x08001f68   0x00000074   Code   RO         2865    i.HeaderIdentify2   node_protocol.o
+    0x08001fdc   0x00000054   Code   RO           14    i.MX_DMA_Init       main.o
+    0x08002030   0x000000c0   Code   RO           15    i.MX_GPIO_Init      main.o
+    0x080020f0   0x00000040   Code   RO           17    i.MX_USART1_UART_Init  main.o
+    0x08002130   0x00000040   Code   RO           18    i.MX_USART2_UART_Init  main.o
+    0x08002170   0x00000040   Code   RO           19    i.MX_USART3_UART_Init  main.o
+    0x080021b0   0x00000004   Code   RO          200    i.MemManage_Handler  stm32l4xx_it.o
+    0x080021b4   0x00000002   Code   RO          201    i.NMI_Handler       stm32l4xx_it.o
+    0x080021b6   0x00000002   PAD
+    0x080021b8   0x000000ac   Code   RO         2866    i.NodeToServer      node_protocol.o
+    0x08002264   0x00000002   Code   RO          202    i.PendSV_Handler    stm32l4xx_it.o
+    0x08002266   0x00000002   PAD
+    0x08002268   0x00000188   Code   RO         1718    i.RCCEx_PLLSAI1_Config  stm32l4xx_hal_rcc_ex.o
+    0x080023f0   0x0000009c   Code   RO         1604    i.RCC_SetFlashLatencyFromMSIRange  stm32l4xx_hal_rcc.o
+    0x0800248c   0x00000002   Code   RO          203    i.SVC_Handler       stm32l4xx_it.o
+    0x0800248e   0x00000008   Code   RO          204    i.SysTick_Handler   stm32l4xx_it.o
+    0x08002496   0x00000084   Code   RO           20    i.SystemClock_Config  main.o
+    0x0800251a   0x00000002   PAD
+    0x0800251c   0x00000050   Code   RO         2800    i.SystemInit        system_stm32l4xx.o
+    0x0800256c   0x00000414   Code   RO         2867    i.Transmmit         node_protocol.o
+    0x08002980   0x000000f8   Code   RO          453    i.UART_AdvFeatureConfig  stm32l4xx_hal_uart.o
+    0x08002a78   0x0000006e   Code   RO          454    i.UART_CheckIdleState  stm32l4xx_hal_uart.o
+    0x08002ae6   0x00000018   Code   RO          455    i.UART_DMAAbortOnError  stm32l4xx_hal_uart.o
+    0x08002afe   0x00000056   Code   RO          456    i.UART_DMAError     stm32l4xx_hal_uart.o
+    0x08002b54   0x00000046   Code   RO          457    i.UART_DMAReceiveCplt  stm32l4xx_hal_uart.o
+    0x08002b9a   0x0000000e   Code   RO          459    i.UART_DMARxHalfCplt  stm32l4xx_hal_uart.o
+    0x08002ba8   0x00000022   Code   RO          465    i.UART_EndRxTransfer  stm32l4xx_hal_uart.o
+    0x08002bca   0x00000020   Code   RO          466    i.UART_EndTransmit_IT  stm32l4xx_hal_uart.o
+    0x08002bea   0x00000012   Code   RO          467    i.UART_EndTxTransfer  stm32l4xx_hal_uart.o
+    0x08002bfc   0x0000040a   Code   RO          470    i.UART_SetConfig    stm32l4xx_hal_uart.o
+    0x08003006   0x00000068   Code   RO          473    i.UART_WaitOnFlagUntilTimeout  stm32l4xx_hal_uart.o
+    0x0800306e   0x00000002   PAD
+    0x08003070   0x00000014   Code   RO          205    i.USART1_IRQHandler  stm32l4xx_it.o
+    0x08003084   0x00000014   Code   RO          206    i.USART2_IRQHandler  stm32l4xx_it.o
+    0x08003098   0x00000014   Code   RO          207    i.USART3_IRQHandler  stm32l4xx_it.o
+    0x080030ac   0x00000004   Code   RO          208    i.UsageFault_Handler  stm32l4xx_it.o
+    0x080030b0   0x00000164   Code   RO         2836    i.UsartReceive_IDLE  bsp.o
+    0x08003214   0x00000010   Code   RO         2605    i.__NVIC_GetPriorityGrouping  stm32l4xx_hal_cortex.o
+    0x08003224   0x00000028   Code   RO         2606    i.__NVIC_SetPriority  stm32l4xx_hal_cortex.o
+    0x0800324c   0x0000000e   Code   RO         3031    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0800325a   0x00000002   Code   RO         3032    i.__scatterload_null  mc_w.l(handlers.o)
+    0x0800325c   0x0000000e   Code   RO         3033    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x0800326a   0x00000016   Code   RO         2869    i.led_OFF           node_protocol.o
+    0x08003280   0x000000e8   Code   RO           21    i.main              main.o
+    0x08003368   0x0000003c   Code   RO         2871    i.nodeParamsInit    node_protocol.o
+    0x080033a4   0x000000c4   Code   RO         2872    i.uart_process      node_protocol.o
+    0x08003468   0x0000001e   Code   RO         2874    i.uartparase2       node_protocol.o
+    0x08003486   0x0000001a   Code   RO         2875    i.xorCheck          node_protocol.o
+    0x080034a0   0x00000048   Data   RO         2801    .constdata          system_stm32l4xx.o
+    0x080034e8   0x00000020   Data   RO         3029    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x000009e0, Max: 0x00010000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x0000000c   Data   RW          863    .data               stm32l4xx_hal.o
-    0x2000000c   0x00000004   Data   RW         2750    .data               system_stm32l4xx.o
-    0x20000010   0x00000190   Zero   RW           20    .bss                main.o
-    0x200001a0   0x00000048   Zero   RW           21    .bss                main.o
-    0x200001e8   0x00000048   Zero   RW           22    .bss                main.o
-    0x20000230   0x00000048   Zero   RW           23    .bss                main.o
-    0x20000278   0x0000033c   Zero   RW         2785    .bss                bsp.o
-    0x200005b4   0x0000002b   Zero   RW         2823    .bss                node_protocol.o
+    0x20000000   0x0000000c   Data   RW          881    .data               stm32l4xx_hal.o
+    0x2000000c   0x00000004   Data   RW         2802    .data               system_stm32l4xx.o
+    0x20000010   0x00000268   Zero   RW           22    .bss                main.o
+    0x20000278   0x0000033c   Zero   RW         2837    .bss                bsp.o
+    0x200005b4   0x0000002b   Zero   RW         2876    .bss                node_protocol.o
     0x200005df   0x00000001   PAD
     0x200005e0   0x00000400   Zero   RW            1    STACK               startup_stm32l431xx.o
 
@@ -1554,28 +1573,27 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       288         38          0          0        828       1080   bsp.o
-       688         60          0          0        616     645580   main.o
-       884         42          0          0         43       6698   node_protocol.o
+       356         36          0          0        828       1064   bsp.o
+       834         64          0          0        616     642350   main.o
+      1666         48          0          0         43       6727   node_protocol.o
         36          8        396          0       1024        848   startup_stm32l431xx.o
-       162         24          0         12          0       4357   stm32l4xx_hal.o
-       198         14          0          0          0      33975   stm32l4xx_hal_cortex.o
-       724         14          0          0          0       5841   stm32l4xx_hal_dma.o
-       442         36          0          0          0       3776   stm32l4xx_hal_gpio.o
-       104          0          0          0          0       1799   stm32l4xx_hal_iwdg.o
-       512         44          0          0          0       2092   stm32l4xx_hal_msp.o
-       120         20          0          0          0       1386   stm32l4xx_hal_pwr_ex.o
-      1964         94          0          0          0       7308   stm32l4xx_hal_rcc.o
-       986         28          0          0          0       3264   stm32l4xx_hal_rcc_ex.o
-      2190         82          0          0          0      16444   stm32l4xx_hal_uart.o
-         2          0          0          0          0       1048   stm32l4xx_hal_uart_ex.o
-       136         36          0          0          0       7648   stm32l4xx_it.o
-        68         12         72          4          0       1241   system_stm32l4xx.o
+       194         32          0         12          0       4353   stm32l4xx_hal.o
+       310         22          0          0          0      34523   stm32l4xx_hal_cortex.o
+       914         10          0          0          0       5669   stm32l4xx_hal_dma.o
+       496         32          0          0          0       3548   stm32l4xx_hal_gpio.o
+       620         44          0          0          0       2096   stm32l4xx_hal_msp.o
+       156         18          0          0          0       1374   stm32l4xx_hal_pwr_ex.o
+      2652        110          0          0          0       7412   stm32l4xx_hal_rcc.o
+      1296         26          0          0          0       2904   stm32l4xx_hal_rcc_ex.o
+      2968         54          0          0          0      16408   stm32l4xx_hal_uart.o
+         2          0          0          0          0        980   stm32l4xx_hal_uart_ex.o
+       152         30          0          0          0       7752   stm32l4xx_it.o
+        80         12         72          4          0       1245   system_stm32l4xx.o
 
     ----------------------------------------------------------------------
-      9528        552        500         16       2512     744385   Object Totals
+     12750        546        500         16       2512     739253   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        24          0          0          0          1          0   (incl. Padding)
+        18          0          0          0          1          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -1598,8 +1616,8 @@ Image component sizes
        104          0          0          0          0         92   uldiv.o
 
     ----------------------------------------------------------------------
-       328         16          0          0          0        472   Library Totals
-         4          0          0          0          0          0   (incl. Padding)
+       326         16          0          0          0        472   Library Totals
+         2          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -1608,7 +1626,7 @@ Image component sizes
        324         16          0          0          0        472   mc_w.l
 
     ----------------------------------------------------------------------
-       328         16          0          0          0        472   Library Totals
+       326         16          0          0          0        472   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -1617,15 +1635,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      9856        568        500         16       2512     736905   Grand Totals
-      9856        568        500         16       2512     736905   ELF Image Totals
-      9856        568        500         16          0          0   ROM Totals
+     13076        562        500         16       2512     731373   Grand Totals
+     13076        562        500         16       2512     731373   ELF Image Totals
+     13076        562        500         16          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                10356 (  10.11kB)
+    Total RO  Size (Code + RO Data)                13576 (  13.26kB)
     Total RW  Size (RW Data + ZI Data)              2528 (   2.47kB)
-    Total ROM Size (Code + RO Data + RW Data)      10372 (  10.13kB)
+    Total ROM Size (Code + RO Data + RW Data)      13592 (  13.27kB)
 
 ==============================================================================
 
