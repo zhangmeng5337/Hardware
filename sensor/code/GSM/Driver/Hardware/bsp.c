@@ -54,7 +54,7 @@ void GSM_HardwareInit(unsigned char flag)
    
     if(flag == ON)
     {
-		GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
+		GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
 		//GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
 		//GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
 		//GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
@@ -311,7 +311,7 @@ void HardwareInit()
   Uart1_Init(9600);// 初始化GPIO
   DMA_Config();
   LED_Init();             //调试LED初始化
- // GSM_HardwareInit(ON);
+  GSM_HardwareInit(ON);
   Sensor_HardwareInit(OFF);
 enableInterrupts();
 }

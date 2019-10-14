@@ -29,7 +29,7 @@ void module_prams_init()
   Data_usr.vbat[1] = 0;
   Data_usr.status = 0;
   Data_usr.deepth_calibration = SENSOR_FACTOR;
-  Data_usr.Warn_Thres = 2;
+  Data_usr.Warn_Thres = 2.5;
   
   uint32_t tmp;
   unsigned char i;
@@ -96,8 +96,7 @@ void OilCalibration()
    // adc_sum = adc_sum + adc_tmp;
   }
  // adc_sum = adc_sum /samplecount;
-  Data_usr.Warn_Thres = adc_tmp[1]/50;
-  Data_usr.deepth_calibration = 2/ Data_usr.Warn_Thres ;
+  Data_usr.Warn_Thres = adc_tmp[1]/1000*Data_usr.deepth_calibration/50;
 
   adc_tmp[0] = 0x5aa55a;
   //flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,&adc_tmp,1);
@@ -124,11 +123,11 @@ void module_process()
   {
     ExeIntFlag = 0;
     OilCalibration();
-  //  module_prams_init();
+    module_prams_init();
     
   }
-  if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  
-  //  if(RtcWakeUp==1)
+ // if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  
+    if(RtcWakeUp==1)
     {
       adc_tmp = (adcGet(ADC_BAT_CHANNEL));
       adc_tmp = adc_tmp*2;
@@ -156,7 +155,7 @@ void module_process()
       len = 2;
       memcpy(p+len,Data_usr.id,2);
       len = len + 2;
-      Data_usr.len = 17;
+      Data_usr.len = 7;
       memcpy(p+len,&Data_usr.len ,1);
       
       
@@ -173,22 +172,18 @@ void module_process()
       len = len + 2;
       memcpy(p+len,&Data_usr.status  ,1);
       len = len + 1;
-       memcpy(p+len,Data_usr.flow  ,4);
-      len = len + 4;
-       memcpy(p+len,&Data_usr.flow_status  ,1);
-      len = len + 1;  
-
+      
       Data_usr.checksum = xorCheck(p+2,len-2);
       memcpy(p+CHECKSUM_INDEX,&Data_usr.checksum ,1);
       
       while(len--)
         UART1_SendByte(p[i++]);
-//      RtcWakeUp = 0;
-//      EnterStopMode();
-//      disableInterrupts(); 
-//      RTC_Config(196,OFF);//1:55.2s
-//      HardwareInit();
-//      enableInterrupts();
+      RtcWakeUp = 0;
+      EnterStopMode();
+      disableInterrupts(); 
+      RTC_Config(196,OFF);//1:55.2s
+      HardwareInit();
+      enableInterrupts();
       
       
     }

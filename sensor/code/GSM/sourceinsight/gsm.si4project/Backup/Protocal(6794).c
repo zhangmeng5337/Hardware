@@ -29,7 +29,7 @@ void module_prams_init()
   Data_usr.vbat[1] = 0;
   Data_usr.status = 0;
   Data_usr.deepth_calibration = SENSOR_FACTOR;
-  Data_usr.Warn_Thres = 2;
+  Data_usr.Warn_Thres = 2.5;
   
   uint32_t tmp;
   unsigned char i;
@@ -96,8 +96,7 @@ void OilCalibration()
    // adc_sum = adc_sum + adc_tmp;
   }
  // adc_sum = adc_sum /samplecount;
-  Data_usr.Warn_Thres = adc_tmp[1]/50;
-  Data_usr.deepth_calibration = 2/ Data_usr.Warn_Thres ;
+  Data_usr.Warn_Thres = adc_tmp[1]/1000*Data_usr.deepth_calibration/50;
 
   adc_tmp[0] = 0x5aa55a;
   //flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,&adc_tmp,1);
@@ -124,7 +123,7 @@ void module_process()
   {
     ExeIntFlag = 0;
     OilCalibration();
-  //  module_prams_init();
+    module_prams_init();
     
   }
   if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  

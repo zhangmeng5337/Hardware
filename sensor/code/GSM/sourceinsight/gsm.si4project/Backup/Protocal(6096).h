@@ -22,8 +22,7 @@ typedef struct{
   float Warn_Thres;
   float vbatf;
   float deep;
-  unsigned char flow[4];
-  unsigned char flow_status;
+
 }Data_Stru;
 void module_process(void);
 void module_prams_init(void);

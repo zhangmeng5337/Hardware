@@ -20,9 +20,9 @@ void main(void)
   {
     // delay_ms(1000);
     tick ++;
-
-	if(RtcWakeUp == 1)
-   	//SIMCOM_Register_Network();
+    
+    if(RtcWakeUp == 1)
+      SIMCOM_Register_Network();
     module_process(); 
   }
 }
