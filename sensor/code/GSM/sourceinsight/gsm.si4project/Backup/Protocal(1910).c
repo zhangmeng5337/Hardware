@@ -96,11 +96,11 @@ void OilCalibration()
  // Data_usr.deep_f = adc_tmp*Data_usr.deepth_calibration;
 
   tmp[0] = 0x5a;
-//  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,1);
+  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,1);
   //*(adc_tmp+1)=adc_tmp;
-  tmp[1]= ((unsigned char)(Data_usr.Warn_Thres*10))/10;
-  tmp[2]= ((unsigned char)(Data_usr.Warn_Thres*10))%10;
-  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,3);
+  tmp[0]= ((unsigned char)(Data_usr.Warn_Thres*10))/10;
+  tmp[1]= ((unsigned char)(Data_usr.Warn_Thres*10))%10;
+  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+4,tmp,2);
   free(tmp);
   
 }
@@ -126,8 +126,8 @@ void module_process()
   //  module_prams_init();
     
   }
-    if(Get_Network_status()==SIMCOM_NET_OK)  
- // if(RtcWakeUp==1)
+  //  if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  
+  if(RtcWakeUp==1)
     {
       adc_tmp = (adcGet(ADC_BAT_CHANNEL));
       adc_tmp = adc_tmp*2;
@@ -186,7 +186,6 @@ void module_process()
       
       while(len--)
         UART1_SendByte(p[i++]);
-      delay_ms(1000);
 //      RtcWakeUp = 0;
 //      EnterStopMode();
 //      disableInterrupts(); 

@@ -60,10 +60,10 @@ void flash_operation(uint32_t addr,unsigned char *p,unsigned char size)
   unsigned char i;
   i =0;
   FLASH_Unlock(FLASH_MemType_Data);  
-//  for(i=0;i<size;i++)
-//  {
-//    FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + i));
-//  }
+  for(i=0;i<size;i++)
+  {
+    FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + i));
+  }
   for(i=0;i<size;i++)
   {
     FLASH_ProgramByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+i, p[i]);
@@ -92,15 +92,15 @@ void OilCalibration()
   }
  // adc_sum = adc_sum /samplecount;
   Data_usr.deepth_calibration = SENSOR_FACTOR ;
-  Data_usr.Warn_Thres = adc_tmp/VOLTAGE_FACTOR/1000.0*Data_usr.deepth_calibration;
- // Data_usr.deep_f = adc_tmp*Data_usr.deepth_calibration;
+  Data_usr.Warn_Thres = adc_tmp/VOLTAGE_FACTOR/1000*Data_usr.deepth_calibration;
+  Data_usr.deep_f = adc_tmp*Data_usr.deepth_calibration;
 
   tmp[0] = 0x5a;
-//  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,1);
+  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,1);
   //*(adc_tmp+1)=adc_tmp;
-  tmp[1]= ((unsigned char)(Data_usr.Warn_Thres*10))/10;
-  tmp[2]= ((unsigned char)(Data_usr.Warn_Thres*10))%10;
-  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,3);
+  tmp[0]= ((unsigned char)(Data_usr.deep_f*10))/10;
+  tmp[1]= ((unsigned char)(Data_usr.deep_f*10))%10;
+  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1,tmp,2);
   free(tmp);
   
 }
@@ -126,8 +126,8 @@ void module_process()
   //  module_prams_init();
     
   }
-    if(Get_Network_status()==SIMCOM_NET_OK)  
- // if(RtcWakeUp==1)
+  //  if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  
+  if(RtcWakeUp==1)
     {
       adc_tmp = (adcGet(ADC_BAT_CHANNEL));
       adc_tmp = adc_tmp*2;
@@ -186,7 +186,6 @@ void module_process()
       
       while(len--)
         UART1_SendByte(p[i++]);
-      delay_ms(1000);
 //      RtcWakeUp = 0;
 //      EnterStopMode();
 //      disableInterrupts(); 

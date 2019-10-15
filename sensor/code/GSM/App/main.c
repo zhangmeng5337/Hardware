@@ -22,7 +22,9 @@ void main(void)
     tick ++;
     
     if(RtcWakeUp == 1)
+    {
       SIMCOM_Register_Network();
-    module_process(); 
+      module_process(); 
+    }
   }
 }

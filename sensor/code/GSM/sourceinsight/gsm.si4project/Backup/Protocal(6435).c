@@ -22,25 +22,32 @@ void module_prams_init()
   Data_usr.id[1] = 0x02;	//id
   Data_usr.len = 0x07;		//data pack length not include header and id
   Data_usr.checksum = 0x00;
-  //Data_usr.deepth [0] = 0x01;
-  //Data_usr.deepth[1] = 0x02;	
- // Data_usr.deepth_percent = 0;
- // Data_usr.vbat[0] = 0;
- // Data_usr.vbat[1] = 0;
+  Data_usr.deepth [0] = 0x01;
+  Data_usr.deepth[1] = 0x02;	
+  Data_usr.deepth_percent = 0;
+  Data_usr.vbat[0] = 0;
+  Data_usr.vbat[1] = 0;
   Data_usr.status = 0;
   Data_usr.deepth_calibration = SENSOR_FACTOR;
-  Data_usr.Warn_Thres = 3.5;
+  Data_usr.Warn_Thres = 2;
   
   uint32_t tmp;
   unsigned char i;
-  if(FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS)==0x5a)
-  {
-  	Data_usr.Warn_Thres = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1)+
-		                  FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+2)/10.0;		
-  }
-  else
-    Data_usr.Warn_Thres = 3.5;	
-
+  i= FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS);
+  tmp = i;
+  tmp = tmp<<8; 	  
+  i= FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1);
+  tmp = i;
+  tmp = tmp<<8;
+  i= FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+2);
+  tmp = i;
+  tmp = tmp<<8;
+  i= FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+3);
+  tmp = i;
+  tmp = tmp<<8;
+  
+  if(tmp==0x5aa55a)
+    Data_usr.Warn_Thres = tmp;
 }
 
 unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
@@ -55,18 +62,18 @@ unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
   return result;
 }
 extern  unsigned char ExeIntFlag;
-void flash_operation(uint32_t addr,unsigned char *p,unsigned char size)
+void flash_operation(uint32_t addr,uint32_t *p,unsigned char size)
 {
   unsigned char i;
   i =0;
   FLASH_Unlock(FLASH_MemType_Data);  
-//  for(i=0;i<size;i++)
-//  {
-//    FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + i));
-//  }
+  for(i=0;i<size*4;i++)
+  {
+    FLASH_EraseByte((FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + i));
+  }
   for(i=0;i<size;i++)
   {
-    FLASH_ProgramByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+i, p[i]);
+    FLASH_ProgramWord(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+i, p[i]);
     //FLASH_WaitForLastOperation(FLASH_MemType_Data);
   }
   FLASH_Lock(FLASH_MemType_Data);   
@@ -80,28 +87,22 @@ uint32_t flash_read_operation(uint32_t addr)
 }
 void OilCalibration()
 {
-  uint32_t adc_tmp,adc_sum,i;
-  unsigned char *tmp;
-  tmp=malloc(4);
+  uint32_t adc_tmp[2],adc_sum,i;
   adc_sum = 0;
   
  // for(i=0;i<samplecount;i++)
   {
-    adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
+    adc_tmp[1] = (adcGet(ADC_SENSOR_CHANNEL));
    // adc_sum = adc_sum + adc_tmp;
   }
  // adc_sum = adc_sum /samplecount;
-  Data_usr.deepth_calibration = SENSOR_FACTOR ;
-  Data_usr.Warn_Thres = adc_tmp/VOLTAGE_FACTOR/1000.0*Data_usr.deepth_calibration;
- // Data_usr.deep_f = adc_tmp*Data_usr.deepth_calibration;
+  Data_usr.Warn_Thres = adc_tmp[1]/50;
+  Data_usr.deepth_calibration = 2/ Data_usr.Warn_Thres ;
 
-  tmp[0] = 0x5a;
-//  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,1);
+  adc_tmp[0] = 0x5aa55a;
+  //flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,&adc_tmp,1);
   //*(adc_tmp+1)=adc_tmp;
-  tmp[1]= ((unsigned char)(Data_usr.Warn_Thres*10))/10;
-  tmp[2]= ((unsigned char)(Data_usr.Warn_Thres*10))%10;
-  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,3);
-  free(tmp);
+  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,adc_tmp,2);
   
 }
 
@@ -126,8 +127,8 @@ void module_process()
   //  module_prams_init();
     
   }
-    if(Get_Network_status()==SIMCOM_NET_OK)  
- // if(RtcWakeUp==1)
+  if(Get_Network_status()==SIMCOM_NET_OK&&RtcWakeUp==1)  
+  //  if(RtcWakeUp==1)
     {
       adc_tmp = (adcGet(ADC_BAT_CHANNEL));
       adc_tmp = adc_tmp*2;
@@ -136,7 +137,7 @@ void module_process()
       Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
       adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
       adc_tmp = adc_tmp/50000*Data_usr.deepth_calibration;
-	  Data_usr.deep_f = adc_tmp;
+	  Data_usr.deep = adc_tmp;
       if((adc_tmp*1.05)>Data_usr.Warn_Thres)
         Data_usr.status = 1;
       else
@@ -186,7 +187,6 @@ void module_process()
       
       while(len--)
         UART1_SendByte(p[i++]);
-      delay_ms(1000);
 //      RtcWakeUp = 0;
 //      EnterStopMode();
 //      disableInterrupts(); 

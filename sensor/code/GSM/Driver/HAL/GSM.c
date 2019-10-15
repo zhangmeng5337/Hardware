@@ -12,9 +12,10 @@
 
 
 //unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"15k801n729.iok.la\",36732\r";
-unsigned char one_net_key[]="*284261#abab#json* ";
-unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
+//unsigned char one_net_key[]="*284261#abab#json* ";
+unsigned char one_net_key[]="*285219#abab#json* ";
 
+unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 
 
 
@@ -311,7 +312,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_Network_Normal_ModeT:
     {
-      if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity,80000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity,160000)==1)
       { 
         NET_STAUS=SIMCOM_Network_Intensity_READY;
         memset(uart_str.UsartReceiveData,0,buffer_size);
