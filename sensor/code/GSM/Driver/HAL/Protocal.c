@@ -4,6 +4,7 @@
 #include "bsp.h"
 #include "stm8l15x_flash.h"
 Data_Stru Data_usr;
+Flow_stru Flow;
 //typedef struct{
 //  unsigned char id[2];
 //

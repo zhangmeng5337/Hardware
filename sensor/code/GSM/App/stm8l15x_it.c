@@ -21,9 +21,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x_it.h"
 #include "stm8l15x_rtc.h"
+#include "stm8l15x_tim1.h"
 #include "GSM.h"
-//#include "bsp.h"
+#include "Protocal.h"
  Uart_Types uart_str;
+extern  Flow_stru Flow;
  unsigned char ExeIntFlag,RtcWakeUp,j;
 /** @addtogroup STM8L15x_StdPeriph_Examples
   * @{
@@ -366,6 +368,27 @@ INTERRUPT_HANDLER(TIM1_CC_IRQHandler, 24)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+
+
+  static uint16_t num1;
+  static float num2;
+  uint8_t len = 0;
+ if(TIM1_GetITStatus(TIM1_IT_CC1) != RESET) //如果CH1边沿触发  
+  {  
+      Flow.cal_flag = 1;
+      Flow.pulse_period = TIM1_GetCapture1();  
+      TIM1_ClearITPendingBit(TIM1_IT_CC1);    //清除标志位  
+  }  
+ else if(TIM1_GetITStatus(TIM1_IT_CC2) != RESET) //如果CH2边沿触发  
+  {  
+      num2 = TIM1_GetCapture2();             //
+      TIM1_ClearITPendingBit(TIM1_IT_CC2);    //清除标志位  
+     // num = (uint16_t)((num2 / num1) * 100.0); //计算占空比
+
+ 
+  }
+
+
 }
 
 /**

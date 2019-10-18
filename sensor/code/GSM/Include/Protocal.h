@@ -29,6 +29,9 @@ typedef struct{
 void module_process(void);
 void module_prams_init(void);
 
-
+typedef struct {
+  unsigned char cal_flag;
+  unsigned int  pulse_period;
+}Flow_stru;
 #endif
 
