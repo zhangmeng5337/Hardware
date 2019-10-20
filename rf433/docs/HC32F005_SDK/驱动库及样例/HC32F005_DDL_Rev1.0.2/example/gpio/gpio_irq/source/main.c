@@ -121,10 +121,10 @@ void Gpio_IRQHandler(uint8_t u8Param)
 {
     *((uint32_t *)((uint32_t)&M0P_GPIO->P3ICLR + u8Param * 0x40)) = 0;
     
-    SK_LED_SET(0);
-    delay1ms(1000);
-    SK_LED_SET(1);
-    delay1ms(1000);
+   // SK_LED_SET(0);
+   // delay1ms(1000);
+   // SK_LED_SET(1);
+   // delay1ms(1000);
 }
 
 
@@ -142,18 +142,18 @@ int32_t main(void)
 {    
     //SW2 控制程序继续运行
     SK_SW2_INIT();
-    NextStep();
+   // NextStep();
 
     //GPIO初始化，配置P03为输出，外接LED
-    Gpio_InitIO(TEST_PORT, TEST_PIN, GpioDirOut);
-    Gpio_SetIO(TEST_PORT, TEST_PIN, TRUE);
+ //   Gpio_InitIO(TEST_PORT, TEST_PIN, GpioDirOut);
+  //  Gpio_SetIO(TEST_PORT, TEST_PIN, TRUE);
 
     //初始化外部IO P33
     Gpio_InitIOExt(3, 3, GpioDirIn, TRUE, FALSE, FALSE, 0);
     
     //开启GPIO中断
     Gpio_ClearIrq(3, 3);
-    Gpio_EnableIrq(3, 3, GpioIrqRising);
+    Gpio_EnableIrq(3, 3, GpioIrqFalling);
     EnableNvic(PORT3_IRQn, DDL_IRQ_LEVEL_DEFAULT, TRUE);
 
     while (1);

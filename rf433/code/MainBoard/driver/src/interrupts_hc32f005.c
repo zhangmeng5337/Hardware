@@ -54,6 +54,7 @@
  * Include files
  ******************************************************************************/
 #include "ddl.h"
+#include "main.h"
 #include "interrupts_hc32f005.h"
 __WEAKDEF void Gpio_IRQHandler(uint8_t u8Param);
 __WEAKDEF void Uart_IRQHandler(uint8_t u8Param);

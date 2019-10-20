@@ -56,6 +56,29 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
+[Document3]
+DocumentPath=F21-SEND-CTM.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[GeneratedDocument1]
+DocumentPath=F21-SEND-CTM - BOM.PcbDoc.htm
+DItemRevisionGUID=
+
+[GeneratedDocument2]
+DocumentPath=F21-SEND-CTM.PcbDoc.htm
+DItemRevisionGUID=
+
 [OutputGroup1]
 Name=Netlist Outputs
 Description=

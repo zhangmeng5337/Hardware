@@ -33,7 +33,7 @@
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile>$$Device:HC32F005C6PA$SVD\HC32F005.SFR</SFDFile>
-          <bCustSvd>0</bCustSvd>
+          <bCustSvd>1</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -132,12 +132,12 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <Capability>1</Capability>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -554,13 +554,20 @@
               <FileType>1</FileType>
               <FilePath>.\source\src\application\main.c</FilePath>
             </File>
+            <File>
+              <FileName>startup_hc32f005.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\startup_hc32f005.s</FilePath>
+            </File>
+            <File>
+              <FileName>system_hc32f005.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\mcu\common\system_hc32f005.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
-        </Group>
-        <Group>
-          <GroupName>::Device</GroupName>
         </Group>
       </Groups>
     </Target>
@@ -575,45 +582,31 @@
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="Startup" Cvendor="HDSC" Cversion="1.0.0" condition="HC32F005 CMSIS">
-        <package name="HC32F005" schemaVersion="1.2" supportContact="support@hdsc.com" url="https://raw.githubusercontent.com/hdscmcu/pack/master/" vendor="HDSC" version="1.0.0"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </component>
     </components>
     <files>
       <file attr="config" category="header" condition="HC32F005C6PA" name="Device\Include\HC32F005.h" version="1.0.0">
-        <instance index="0">RTE\Device\HC32F005C6PA\HC32F005.h</instance>
+        <instance index="0" removed="1">RTE\Device\HC32F005C6PA\HC32F005.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="HDSC" Cversion="1.0.0" condition="HC32F005 CMSIS"/>
         <package name="HC32F005" schemaVersion="1.2" supportContact="support@hdsc.com" url="https://raw.githubusercontent.com/hdscmcu/pack/master/" vendor="HDSC" version="1.0.0"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="sourceAsm" condition="Compiler ARMCC" name="Device\Source\ARM\startup_hc32f005.s" version="1.0.0">
-        <instance index="0">RTE\Device\HC32F005C6PA\startup_hc32f005.s</instance>
+        <instance index="0" removed="1">RTE\Device\HC32F005C6PA\startup_hc32f005.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="HDSC" Cversion="1.0.0" condition="HC32F005 CMSIS"/>
         <package name="HC32F005" schemaVersion="1.2" supportContact="support@hdsc.com" url="https://raw.githubusercontent.com/hdscmcu/pack/master/" vendor="HDSC" version="1.0.0"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="sourceC" name="Device\Source\system_hc32f005.c" version="1.0.0">
-        <instance index="0">RTE\Device\HC32F005C6PA\system_hc32f005.c</instance>
+        <instance index="0" removed="1">RTE\Device\HC32F005C6PA\system_hc32f005.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="HDSC" Cversion="1.0.0" condition="HC32F005 CMSIS"/>
         <package name="HC32F005" schemaVersion="1.2" supportContact="support@hdsc.com" url="https://raw.githubusercontent.com/hdscmcu/pack/master/" vendor="HDSC" version="1.0.0"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="header" name="Device\Include\system_hc32f005.h" version="1.0.0">
-        <instance index="0">RTE\Device\HC32F005C6PA\system_hc32f005.h</instance>
+        <instance index="0" removed="1">RTE\Device\HC32F005C6PA\system_hc32f005.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="HDSC" Cversion="1.0.0" condition="HC32F005 CMSIS"/>
         <package name="HC32F005" schemaVersion="1.2" supportContact="support@hdsc.com" url="https://raw.githubusercontent.com/hdscmcu/pack/master/" vendor="HDSC" version="1.0.0"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
     </files>
   </RTE>

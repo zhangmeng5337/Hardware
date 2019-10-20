@@ -163,15 +163,117 @@ word TXBank[11] = {
   0x5E3F,
   0x5F7F															
 };			
+extern uint16_t UpdateKeyStatus;
+void Gpio_IRQHandler(uint8_t u8Param)
+{
+    *((uint32_t *)((uint32_t)&M0P_GPIO->P3ICLR + u8Param * 0x40)) = 0;
+    
+    //SK_LED_SET(0);
+    //delay1ms(1000);
+   // SK_LED_SET(1);
+  //  delay1ms(1000);
+}
 
-;
+//void Gpio_IRQHandler(uint8_t u8Param)//key inttrupt call back function
+//{
+//  uint16_t tInchStatus;
+//  tInchStatus=system_params_get()->KEY_H8<<8+system_params_get()->KEY_L8;
+//  
+//  switch(u8Param)
+//  {
+//  case 0:
+//    {         
+//      if(Gpio_GetIrqStat(KEY_DOWN_PORT, KEY_DOWN_PIN))
+//      {  
+//          UpdateKeyStatus = UpdateKeyStatus |KEY_DOWN_BIT;	
+//      }
+//      
+//      if(Gpio_GetIrqStat(KEY_BREAK_PORT, KEY_BREAK_PIN))
+//      {
+//          UpdateKeyStatus = UpdateKeyStatus |KEY_BREAK_BIT;					      	
+//      }
+//      
+//      *((uint32_t *)((uint32_t)&M0P_GPIO->P0ICLR + u8Param * 0x40)) = 0;	
+//      
+//    }break;
+//    
+//  case 1:
+//    { 
+//      if(Gpio_GetIrqStat(KEY_STOP_PORT, KEY_STOP_PIN))
+//      {
+//        UpdateKeyStatus = UpdateKeyStatus |KEY_STOP_BIT;					
+//        
+//      }
+//      
+//      *((uint32_t *)((uint32_t)&M0P_GPIO->P1ICLR + u8Param * 0x40)) = 0;	
+//      
+//    }break;
+//  case 3:
+//    {		
+//      //NORTH key down
+//      if(Gpio_GetIrqStat(KEY_NORTH_PORT, KEY_NORTH_PIN))
+//      {
+//      	UpdateKeyStatus = UpdateKeyStatus |KEY_NORTH_BIT;		
+//      }
+//      //UP key down   
+//      if(Gpio_GetIrqStat(KEY_UP_PORT, KEY_UP_PIN))
+//      {
+//        UpdateKeyStatus = UpdateKeyStatus |KEY_UP_BIT;		
+//      }    
+//      
+//      //SOUTH key down
+//      if(Gpio_GetIrqStat(KEY_SOUTH_PORT, KEY_SOUTH_PIN))
+//      {
+//        UpdateKeyStatus = UpdateKeyStatus |KEY_SOUTH_BIT;		
+//      }  
+//      
+//      
+//      //WEST key down
+//      if(Gpio_GetIrqStat(KEY_WEST_PORT, KEY_WEST_PIN))
+//      {
+//        UpdateKeyStatus = UpdateKeyStatus |KEY_WEST_BIT;		
+//      }  
+//      
+//      
+//      //EAST key down
+//      if(Gpio_GetIrqStat(KEY_EAST_PORT, KEY_EAST_PIN))
+//      {
+//        UpdateKeyStatus = UpdateKeyStatus |KEY_EAST_BIT;		
+//      }  
+//      
+//      //START key down
+//      if(Gpio_GetIrqStat(KEY_START_PORT, KEY_START_PIN))
+//      {
+//        
+//        UpdateKeyStatus = UpdateKeyStatus |KEY_START_BIT;					
+//      }
+//      
+//      *((uint32_t *)((uint32_t)&M0P_GPIO->P3ICLR + u8Param * 0x40)) = 0;	
+//    }break;
+//    
+//    
+//  }
+//  
+//  
+//}
 void main(void)
 {
-  //SystemClock_Init();
+ //SystemClock_Init();
   //CLK_Init();
 
    delay1ms(5000);
-   //KEY_Init();
+   KEY_Init();
+	    //GPIO初始化，配置P03为输出，外接LED
+    Gpio_InitIO(3, 3, GpioDirOut);
+    Gpio_SetIO(3, 3, TRUE);
+
+    //初始化外部IO P33
+    Gpio_InitIOExt(3, 3, GpioDirIn, TRUE, FALSE, FALSE, 0);
+    
+    //开启GPIO中断
+    Gpio_ClearIrq(3, 3);
+    Gpio_EnableIrq(3, 3, GpioIrqFalling);
+    EnableNvic(PORT3_IRQn, DDL_IRQ_LEVEL_DEFAULT, TRUE);
   //CFG->GCR |= CFG_GCR_SWD;
  
  // ee_Test();
@@ -182,7 +284,7 @@ void main(void)
 //      
       while(1)
       {
-        // command_process();
+       ; // command_process();
       }
 //    }
 //    else

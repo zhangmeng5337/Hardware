@@ -17,29 +17,17 @@ Library Manager: ArmAr.exe V5.06 update 4 (build 422)
 Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
 CPU DLL:         SARMCM3.DLL V5.23
 Dialog DLL:      DARMCM1.DLL V1.17.0.0
-Target DLL:      UL2CM3.DLL V1.159.7.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
 Dialog DLL:      TARMCM1.DLL V1.12.0.0
  
 <h2>Project:</h2>
 F:\projects\git\Hardware\rf433\code\MainBoard\MainBoard.uvprojx
-Project File Date:  07/30/2019
+Project File Date:  10/11/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling led.c...
-compiling bsp_spi.c...
-compiling main.c...
-source\src\application\main.c(168): warning:  #951-D: return type of function "main" must be "int"
-  void main(void)
-source\src\application\main.c(10): warning:  #177-D: variable "statetx"  was declared but never referenced
-  static boolean_t statetx = TRUE;  //  falseΪRX  trueΪTX
-source\src\application\main.c: 2 warnings, 0 errors
-compiling CMT2300drive.c...
-compiling command.c...
-linking...
-Program Size: Code=828 RO-data=224 RW-data=4 ZI-data=356  
-".\Objects\remoter.axf" - 0 Error(s), 2 Warning(s).
+".\Objects\remoter.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -49,14 +37,7 @@ Package Vendor: ARM
                 CMSIS (Cortex Microcontroller Software Interface Standard)
    * Component: CORE Version: 5.1.1
 
-Package Vendor: HDSC
-                https://raw.githubusercontent.com/hdscmcu/pack/master/HDSC.HC32F005.1.0.0.pack
-                HDSC::Device:Startup:1.0.0
-                HC32F005 ARM Cortex-M0+ Device Family Pack
-   * Component: Startup Version: 1.0.0
-
 <h2>Collection of Component include folders:</h2>
-  .\RTE\Device\HC32F005C6PA
   .\RTE\_Target_1
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include
   C:\Keil_v5\ARM\PACK\HDSC\HC32F005\1.0.0\Device\Include
@@ -64,14 +45,7 @@ Package Vendor: HDSC
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.1
-
-   * Component: HDSC::Device:Startup:1.0.0
-      Include file:  Device\Include\HC32F005.h
-      Include file:  Device\Include\system_hc32f005.h
-      Source file:   Device\Source\system_hc32f005.c
-      Source file:   Device\Source\ARM\startup_hc32f005.s
-      Source file:   Device\Source\main.c
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

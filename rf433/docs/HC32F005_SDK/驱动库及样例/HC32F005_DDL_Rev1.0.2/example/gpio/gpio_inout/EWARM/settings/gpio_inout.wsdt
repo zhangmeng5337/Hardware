@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <Workspace>
     <ConfigDictionary>
-        <CurrentConfigs>
-            <Project>gpio_inout/Release</Project>
-        </CurrentConfigs>
-    </ConfigDictionary>
+        
+    <CurrentConfigs/></ConfigDictionary>
     <WindowStorage>
         <ChildIdMap>
             <TB_CMSISPACK>34048</TB_CMSISPACK>
@@ -73,7 +72,7 @@
                 <ColumnWidth0>21</ColumnWidth0>
                 <ColumnWidth1>1862</ColumnWidth1>
                 <FilterLevel>2</FilterLevel>
-                <LiveFile></LiveFile>
+                <LiveFile/>
                 <LiveLogEnabled>0</LiveLogEnabled>
                 <LiveFilterLevel>-1</LiveFilterLevel>
             </IarPane-34056>
@@ -134,7 +133,7 @@
             <BasePane-34050>
                 <IsVisible>0</IsVisible>
             </BasePane-34050>
-            <IarPane-34050 />
+            <IarPane-34050/>
             <Pane--1>
                 <ID>4294967295</ID>
                 <RectRecentFloat>0000000056000000180100000E030000</RectRecentFloat>
@@ -167,7 +166,7 @@
                 <ColumnWidth2>375</ColumnWidth2>
                 <ColumnWidth3>93</ColumnWidth3>
                 <FilterLevel>2</FilterLevel>
-                <LiveFile>F:\projects\git\Hardware\rf433\docs\HC32F005_SDK\驱动库及样例\HC32F005_DDL_Rev1.0.2\example\gpio\gpio_inout\EWARM\BuildLog.log</LiveFile>
+                <LiveFile>F:\projects\git\Hardware\rf433\docs\HC32F005_SDK\&#x9A71;&#x52A8;&#x5e93;&#x53CA;&#x6837;&#x4F8B;\HC32F005_DDL_Rev1.0.2\example\gpio\gpio_inout\EWARM\BuildLog.log</LiveFile>
                 <LiveLogEnabled>0</LiveLogEnabled>
                 <LiveFilterLevel>-1</LiveFilterLevel>
             </IarPane-34051>
@@ -216,7 +215,7 @@
             <BasePane-34057>
                 <IsVisible>0</IsVisible>
             </BasePane-34057>
-            <IarPane-34057 />
+            <IarPane-34057/>
             <Pane-34058>
                 <ID>34058</ID>
                 <RectRecentFloat>A9000000C6000000DF010000A1010000</RectRecentFloat>
@@ -230,7 +229,7 @@
             <BasePane-34058>
                 <IsVisible>0</IsVisible>
             </BasePane-34058>
-            <IarPane-34058 />
+            <IarPane-34058/>
             <Pane-34059>
                 <ID>34059</ID>
                 <RectRecentFloat>A9000000C6000000DF010000A1010000</RectRecentFloat>
@@ -244,7 +243,7 @@
             <BasePane-34059>
                 <IsVisible>0</IsVisible>
             </BasePane-34059>
-            <IarPane-34059 />
+            <IarPane-34059/>
             <Pane-34060>
                 <ID>34060</ID>
                 <RectRecentFloat>A9000000C6000000DF010000A1010000</RectRecentFloat>
@@ -258,7 +257,7 @@
             <BasePane-34060>
                 <IsVisible>0</IsVisible>
             </BasePane-34060>
-            <IarPane-34060 />
+            <IarPane-34060/>
             <Pane-34062>
                 <ID>34062</ID>
                 <RectRecentFloat>A9000000C6000000DF010000A1010000</RectRecentFloat>
@@ -272,7 +271,7 @@
             <BasePane-34062>
                 <IsVisible>0</IsVisible>
             </BasePane-34062>
-            <IarPane-34062 />
+            <IarPane-34062/>
             <Pane-34052>
                 <ID>34052</ID>
                 <RectRecentFloat>A9000000C60000005603000079010000</RectRecentFloat>
@@ -286,7 +285,7 @@
             <BasePane-34052>
                 <IsVisible>0</IsVisible>
             </BasePane-34052>
-            <IarPane-34052 />
+            <IarPane-34052/>
             <Pane-34054>
                 <ID>34054</ID>
                 <RectRecentFloat>A9000000C6000000DF010000A1010000</RectRecentFloat>
@@ -300,7 +299,7 @@
             <BasePane-34054>
                 <IsVisible>0</IsVisible>
             </BasePane-34054>
-            <IarPane-34054 />
+            <IarPane-34054/>
             <Pane-34055>
                 <ID>34055</ID>
                 <RectRecentFloat>A9000000C6000000DF010000A1010000</RectRecentFloat>
@@ -314,7 +313,7 @@
             <BasePane-34055>
                 <IsVisible>0</IsVisible>
             </BasePane-34055>
-            <IarPane-34055 />
+            <IarPane-34055/>
             <Pane-34061>
                 <ID>34061</ID>
                 <RectRecentFloat>A9000000C6000000C10100007D020000</RectRecentFloat>
@@ -389,4 +388,6 @@
             </MDIClientArea-0>
         </MDIWindows>
     </WindowStorage>
-</Workspace>
+<Desktop><Static><Workspace><ColumnWidths><Column0>124</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths></Workspace></Static><Windows><Wnd0><Tabs><Tab><Identity>TabID-15829-18071</Identity><TabName>Workspace</TabName><Factory>Workspace</Factory><Session><NodeDict/></Session></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd0></Windows><Editor><Pane/><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor><Positions><Top><Row0><Sizes><Toolbar-00AD1AC8><key>iaridepm.enu1</key></Toolbar-00AD1AC8></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>736</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>130208</sizeHorzCX><sizeHorzCY>256082</sizeHorzCY><sizeVertCX>130208</sizeVertCX><sizeVertCY>944942</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes/></Row0></Bottom><Float><Sizes/></Float></Positions></Desktop></Workspace>
+
+

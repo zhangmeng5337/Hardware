@@ -517,7 +517,7 @@ en_result_t Gpio_SetSignalSource(en_gpio_target_t enTarget, en_gpio_timex_in_t e
         default:
             return ErrorInvalidParameter;
     }
-    
+
     return Ok;
 }
 
