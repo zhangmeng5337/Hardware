@@ -24,7 +24,7 @@
 #include "typedefs.h"
 #include "cmt2300a_defs.h"
 #include "cmt2300a_hal.h"
-
+#include "time_server.h"
 #ifdef __cplusplus 
 extern "C" { 
 #endif

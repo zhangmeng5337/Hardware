@@ -25,6 +25,7 @@
 #include "gpio_defs.h"
 #include "ddl.h"
 #include "main.h"
+
 #ifdef __cplusplus 
 extern "C" { 
 #endif
@@ -38,9 +39,9 @@ extern "C" {
 #define CMT2300A_ReadGpio1()            Gpio_GetIO(CMT_GPIO1_GPIO, INT1)//READ_GPIO_PIN(CMT_GPIO1_GPIO)
 #define CMT2300A_ReadGpio2()            Gpio_GetIO(CMT_GPIO2_GPIO, INT2)
 #define CMT2300A_ReadGpio3()           ;// Gpio_GetIO(CMT_GPIO1_GPIO, INT1)READ_GPIO_PIN(CMT_GPIO3_GPIO)
-//#define CMT2300A_DelayMs(ms)            system_delay_ms(ms)
-//#define CMT2300A_DelayUs(us)            system_delay_us(us)
-//#define CMT2300A_GetTickCount()         g_nSysTickCount
+#define CMT2300A_DelayMs(ms)            system_delay_ms(ms)
+#define CMT2300A_DelayUs(us)            system_delay_us(us)
+#define CMT2300A_GetTickCount()         g_nSysTickCount
 /* ************************************************************************ */
 
 void CMT2300A_InitGpio(void);

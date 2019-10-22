@@ -1,6 +1,7 @@
 #ifndef BSP_CMT2300A_H
 #define BSP_CMT2300A_H
 #include "gpio.h"
+#include "time_server.h"
 #define SPI_PORT          2
 #define INT_PORT          3
 #define CSB_PIN           5

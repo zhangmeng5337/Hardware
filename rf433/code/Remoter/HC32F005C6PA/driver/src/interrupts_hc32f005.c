@@ -68,7 +68,7 @@ __WEAKDEF void Adc_IRQHandler(uint8_t u8Param);
 __WEAKDEF void Lvd_IRQHandler(uint8_t u8Param);
 __WEAKDEF void EfRam_IRQHandler(uint8_t u8Param);
 __WEAKDEF void ClkTrim_IRQHandler(uint8_t u8Param);
-
+volatile uint32_t g_nSysTickCount = 0;
 /**
  *******************************************************************************
  ** \brief NVIC 中断使能

@@ -7,15 +7,16 @@
 
   <Targets>
     <Target>
-      <TargetName>gpio_irq_Release</TargetName>
+      <TargetName>remoter</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>HC32F005C6PA</Device>
           <Vendor>HDSC</Vendor>
-          <PackID>HDSC.HC32F005.1.0.0</PackID>
+          <PackID>HDSC.HC32F005.1.0.1</PackID>
           <PackURL>https://raw.githubusercontent.com/hdscmcu/pack/master/</PackURL>
           <Cpu>IRAM(0x20000000,0x1000) IROM(0x00000000,0x8000) CPUTYPE("Cortex-M0+") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -48,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\output\release\</OutputDirectory>
-          <OutputName>gpio_irq</OutputName>
+          <OutputName>remoter</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -323,6 +324,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
+            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>0</v6Lang>
             <v6LangP>0</v6LangP>
@@ -567,6 +569,11 @@
               <FileType>1</FileType>
               <FilePath>..\source\radio\radio.c</FilePath>
             </File>
+            <File>
+              <FileName>time_server.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\hal\time_server.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -597,6 +604,11 @@
               <FileType>1</FileType>
               <FilePath>..\source\application\uartParse.c</FilePath>
             </File>
+            <File>
+              <FileName>radio_TxRx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\application\radio_TxRx.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -612,7 +624,7 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.1" condition="ARMv6_7_8-M Device">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.3.0"/>
         <targetInfos>
-          <targetInfo name="gpio_irq_Release"/>
+          <targetInfo name="remoter"/>
         </targetInfos>
       </component>
     </components>

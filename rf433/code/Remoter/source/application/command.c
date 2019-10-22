@@ -183,18 +183,18 @@ void  CommandTx(uint16_t key_num,uint8_t mode,boolean_t toggle_flag,uint8_t TxCo
   *pbuffer++ =(uint8_t)(crc_tmp);
   *pbuffer++ =WAKE_TAG;
   
-  CMT2300_Init();
-  setup_Tx();
+  //CMT2300_Init();
+ // setup_Tx();
   unsigned char i;
   i=0;
   while(i<TxCount)
   {
     i++;
-    loop_Tx(pbuffer,len_tmp);
+    //loop_Tx(pbuffer,len_tmp);
   }
   free(pbuffer);
   pbuffer = NULL;
-   setup_Rx();
+   //setup_Rx();
   KEY_Init();
 }
 /******************************************************************
@@ -649,12 +649,12 @@ boolean_t command_process()
     if(rfAck_Flag == 0)
     { 
       CommandTx(0,COMMAND_FUNC_SN_CONFIG,0,1);
-      CMT2300_Init();
-      setup_Rx();
+      //CMT2300_Init();
+     // setup_Rx();
     }
     unsigned char len;
     unsigned char *getstr=0;
-    len = loop_Rx(getstr);
+   // len = loop_Rx(getstr);
     if(len!=0)
     {
       if(rfPrase(getstr, len)==0)

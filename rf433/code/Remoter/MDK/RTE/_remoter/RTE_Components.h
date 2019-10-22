@@ -4,7 +4,7 @@
  *      *** Do not modify ! ***
  *
  * Project: 'remoter' 
- * Target:  'gpio_irq_Release' 
+ * Target:  'remoter' 
  */
 
 #ifndef RTE_COMPONENTS_H

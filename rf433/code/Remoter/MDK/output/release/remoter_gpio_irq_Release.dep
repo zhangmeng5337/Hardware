@@ -1,4 +1,4 @@
-Dependencies for Project 'gpio_irq', Target 'gpio_irq_Release': (DO NOT MODIFY !)
+Dependencies for Project 'remoter', Target 'gpio_irq_Release': (DO NOT MODIFY !)
 F (.\startup_hc32f005.s)(0x5DAE5D11)(--cpu Cortex-M0+ -g --apcs=interwork -I.\RTE\_gpio_irq_Release-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\HDSC\HC32F005\1.0.1\Device\Include--pd "__UVISION_VERSION SETA 525" --pd "_RTE_ SETA 1"-o .\output\release\startup_hc32f005.o --depend .\output\release\startup_hc32f005.d)
 F (..\HC32F005C6PA\mcu\common\system_hc32f005.c)(0x5DAE5D11)(--c99 -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\source -I ..\source\inc -I ..\HC32F005C6PA\driver\inc -I ..\HC32F005C6PA\mcu\common-I.\RTE\_gpio_irq_Release-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\HDSC\HC32F005\1.0.1\Device\Include-D__UVISION_VERSION="525" -D_RTE_-o .\output\release\system_hc32f005.o --omf_browse .\output\release\system_hc32f005.crf --depend .\output\release\system_hc32f005.d)
 I (..\HC32F005C6PA\mcu\common\base_types.h)(0x5DAE5D11)
