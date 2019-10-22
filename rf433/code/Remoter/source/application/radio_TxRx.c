@@ -8,7 +8,7 @@
 #include "bsp_i2c_ee.h"
 #include "command.h"
 #include "led.h"
-
+#include "radio_TxRx.h"
 
 
 
@@ -29,6 +29,12 @@ static u16 g_nErrCount  = 0;
 
 void Mcu_Init(void)
 {
+
+	
+	  CMT2300A_SetGpio1In();
+    CMT2300A_SetGpio2In();
+    CMT2300A_SetGpio3In();
+
     /* system init */
   //  SystemInit();
   //  GPIO_Config();

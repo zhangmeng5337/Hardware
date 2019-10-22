@@ -39,5 +39,5 @@
 ".\output\release\uartparse.o"
 ".\output\release\radio_txrx.o"
 --strict --scatter ".\output\release\remoter.sct"
---keep=*Handler --summary_stderr --info summarysizes --map --load_addr_map_info
+--keep=*Handler --summary_stderr --info summarysizes --map
 --list ".\output\release\remoter.map" -o .\output\release\remoter.axf

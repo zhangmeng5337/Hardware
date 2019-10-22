@@ -8,7 +8,7 @@
 #include "bsp_i2c_ee.h"
 #include "command.h"
 #include "led.h"
-
+#include "radio_TxRx.h"
 /**/						//false: for contain packet length in Tx message, the same mean with variable lenth
 //true : for doesn't include packet length in Tx message, the same mean with fixed length
 /**/	
@@ -55,7 +55,7 @@ void main(void)
       while(1)
       {
 
-
+        radio_process();
 	  //LED_blink(LED_RED,1000);
        ; // command_process();
 
