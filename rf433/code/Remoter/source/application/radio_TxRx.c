@@ -67,8 +67,8 @@ void OnMaster(void)
         g_nSendCount++;
         g_txBuffer[0] = (u8)g_nSendCount;
         g_txBuffer[1] = g_nSendCount >> 8;
-        
-        RF_StartTx(g_txBuffer, RF_PACKET_SIZE, 1000);
+        RF_StartRx(g_rxBuffer, RF_PACKET_SIZE, 1000);
+        //RF_StartTx(g_txBuffer, RF_PACKET_SIZE, 1000);
         break;
     }
     
@@ -89,6 +89,7 @@ void OnMaster(void)
         g_nRecvCount++;
         sprintf(str, "recv: %d", g_nRecvCount);
        // views_print_line(2, str);
+		RF_StartRx(g_rxBuffer, RF_PACKET_SIZE, 1000);
 
         break;
     }
@@ -97,7 +98,7 @@ void OnMaster(void)
     {
         sprintf(str, "recv: timeout");
         //views_print_line(2, str);
-        
+         RF_StartRx(g_rxBuffer, RF_PACKET_SIZE, 1000);
         break;
     }
     
@@ -193,14 +194,14 @@ int radio_process(void)
         ;//views_print_line(0, "CMT2300A ready");
     }
     
-    while(1)
+   // while(1)
     {
-        if(TRUE==g_bEnableMaster) {
+      //  if(TRUE==g_bEnableMaster) {
             OnMaster();
-        }
-        else {
-            OnSlave();
-        }
+       // }
+       // else {
+            //OnSlave();
+       // }
     }
 }
 

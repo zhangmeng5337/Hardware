@@ -134,6 +134,7 @@ void RF_StartRx(u8 buf[], u16 len, u32 timeout)
 
 void RF_StartTx(u8 buf[], u16 len, u32 timeout)
 {
+
     g_pTxBuffer = buf;
     g_nTxLength = len;
     g_nTxTimeout = timeout;
@@ -209,7 +210,7 @@ EnumRFResult RF_Process(void)
     {
         CMT2300A_GoSleep();
         
-        g_nNextRFState = RF_STATE_IDLE;
+        g_nNextRFState =RF_STATE_IDLE;
         nRes = RF_RX_TIMEOUT;
         break;
     }

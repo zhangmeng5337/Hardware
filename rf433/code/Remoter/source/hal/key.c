@@ -24,11 +24,12 @@ void Gpio_IRQHandler(uint8_t u8Param)//key inttrupt call back function
        if(Gpio_GetIrqStat(KEY_STOP_PORT, KEY_STOP_PIN))
       {
         UpdateKeyStatus = UpdateKeyStatus |KEY_STOP_BIT;					
-       		  		 LED_blink(LED_RED,10); 
+       	LED_blink(LED_RED,10); 
       }     
       if(Gpio_GetIrqStat(KEY_BREAK_PORT, KEY_BREAK_PIN))
       {
-          UpdateKeyStatus = UpdateKeyStatus |KEY_BREAK_BIT;			  		 LED_blink(LED_RED,10);				      	
+          UpdateKeyStatus = UpdateKeyStatus |KEY_BREAK_BIT;			  		 
+				LED_blink(LED_RED,10);				      	
       }
       
       //*((uint32_t *)((uint32_t)&M0P_GPIO->P0ICLR + u8Param * 0x40)) = 0;	
@@ -41,7 +42,8 @@ void Gpio_IRQHandler(uint8_t u8Param)//key inttrupt call back function
       //WEST key down
       if(Gpio_GetIrqStat(KEY_WEST_PORT, KEY_WEST_PIN))
       {
-        UpdateKeyStatus = UpdateKeyStatus |KEY_WEST_BIT;		  		 LED_blink(LED_RED,10);		
+        UpdateKeyStatus = UpdateKeyStatus |KEY_WEST_BIT;		  		 
+				LED_blink(LED_RED,10);		
       }  
 
       //*((uint32_t *)((uint32_t)&M0P_GPIO->P1ICLR + u8Param * 0x40)) = 0;	
