@@ -46,3 +46,6 @@ signoise.run/
 *.TMP
 /sourceinsight/
 !/sourceinsight/*.siproj
+/output
+!/output/*.hex
+!/output/*.bin
