@@ -6,9 +6,9 @@ Memory Map of the image
 
   Image Entry point : 0x000000c1
 
-  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00002550, Max: 0x00008000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00002468, Max: 0x00008000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x000024c0, Max: 0x00008000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x000023d8, Max: 0x00008000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -152,53 +152,52 @@ Memory Map of the image
     0x0000147a   0x00000086   Code   RO         2812    i.LED_blink         led.o
     0x00001500   0x00000028   Code   RO         1610    i.Lvd_IRQHandler    lvd.o
     0x00001528   0x0000002c   Code   RO         3502    i.Mcu_Init          radio_txrx.o
-    0x00001554   0x00000100   Code   RO         3503    i.OnMaster          radio_txrx.o
-    0x00001654   0x000000ec   Code   RO         3504    i.OnSlave           radio_txrx.o
-    0x00001740   0x00000010   Code   RO         1710    i.Pca_IRQHandler    pca.o
-    0x00001750   0x00000022   Code   RO         3147    i.RF_Config         radio.o
-    0x00001772   0x00000002   PAD
-    0x00001774   0x0000007c   Code   RO         3150    i.RF_Init           radio.o
-    0x000017f0   0x000001b4   Code   RO         3151    i.RF_Process        radio.o
-    0x000019a4   0x00000038   Code   RO         3153    i.RF_StartRx        radio.o
-    0x000019dc   0x00000028   Code   RO         3154    i.RF_StartTx        radio.o
-    0x00001a04   0x00000010   Code   RO         1870    i.Spi_IRQHandler    spi.o
-    0x00001a14   0x00000010   Code   RO           12    i.SystemCoreClockUpdate  system_hc32f005.o
-    0x00001a24   0x00000034   Code   RO           13    i.SystemInit        system_hc32f005.o
-    0x00001a58   0x0000003c   Code   RO          715    i.Tim_IRQHandler    bt.o
-    0x00001a94   0x00000030   Code   RO         2021    i.UartGetInternDataPtr  uart.o
-    0x00001ac4   0x0000005a   Code   RO         2024    i.Uart_ClrStatus    uart.o
-    0x00001b1e   0x00000074   Code   RO         2030    i.Uart_IRQHandler   uart.o
-    0x00001b92   0x00000002   PAD
-    0x00001b94   0x00000068   Code   RO         2188    i.Vc_IRQHandler     vc.o
-    0x00001bfc   0x0000002c   Code   RO         2301    i.Wdt_IRQHandler    wdt.o
-    0x00001c28   0x00000014   Code   RO         2305    i.Wdt_Start         wdt.o
-    0x00001c3c   0x0000001c   Code   RO          281    i.__ARM_common_switch8  adc.o
-    0x00001c58   0x00000078   Code   RO          823    i.__NVIC_SetPriority  clk.o
-    0x00001cd0   0x0000000e   Code   RO         3664    i._is_digit         c_p.l(__printf_wp.o)
-    0x00001cde   0x00000004   Code   RO         1017    i._sys_exit         ddl.o
-    0x00001ce2   0x0000000e   Code   RO         2658    i.cmt_spi3_delay    cmt_spi3.o
-    0x00001cf0   0x00000010   Code   RO         2663    i.cmt_spi3_delay_us  cmt_spi3.o
-    0x00001d00   0x000000a8   Code   RO         2607    i.cmt_spi3_init     cmt_spi3.o
-    0x00001da8   0x000000f0   Code   RO         2608    i.cmt_spi3_read     cmt_spi3.o
-    0x00001e98   0x0000010e   Code   RO         2609    i.cmt_spi3_read_fifo  cmt_spi3.o
-    0x00001fa6   0x0000004a   Code   RO         2610    i.cmt_spi3_recv     cmt_spi3.o
-    0x00001ff0   0x00000050   Code   RO         2611    i.cmt_spi3_send     cmt_spi3.o
-    0x00002040   0x000000da   Code   RO         2612    i.cmt_spi3_write    cmt_spi3.o
-    0x0000211a   0x0000010e   Code   RO         2613    i.cmt_spi3_write_fifo  cmt_spi3.o
-    0x00002228   0x00000020   Code   RO         1019    i.ddl_memclr        ddl.o
-    0x00002248   0x0000003c   Code   RO         1021    i.delay1ms          ddl.o
-    0x00002284   0x0000000c   Code   RO         3423    i.main              main.o
-    0x00002290   0x0000004c   Code   RO         3505    i.radio_process     radio_txrx.o
-    0x000022dc   0x00000094   Code   RO         3219    i.system_delay_100us  time_server.o
-    0x00002370   0x0000001c   Code   RO         3222    i.system_delay_ms   time_server.o
-    0x0000238c   0x0000008e   Code   RO         3223    i.system_delay_us   time_server.o
-    0x0000241a   0x00000002   PAD
-    0x0000241c   0x00000008   Code   RO         3463    i.system_params_get  uartparse.o
-    0x00002424   0x00000008   Data   RO          824    .constdata          clk.o
-    0x0000242c   0x00000060   Data   RO         3155    .constdata          radio.o
-    0x0000248c   0x00000011   Data   RO         3667    .constdata          c_p.l(__printf_flags_wp.o)
-    0x0000249d   0x00000003   PAD
-    0x000024a0   0x00000020   Data   RO         3913    Region$$Table       anon$$obj.o
+    0x00001554   0x00000118   Code   RO         3503    i.OnMaster          radio_txrx.o
+    0x0000166c   0x00000010   Code   RO         1710    i.Pca_IRQHandler    pca.o
+    0x0000167c   0x00000022   Code   RO         3147    i.RF_Config         radio.o
+    0x0000169e   0x00000002   PAD
+    0x000016a0   0x0000007c   Code   RO         3150    i.RF_Init           radio.o
+    0x0000171c   0x000001b4   Code   RO         3151    i.RF_Process        radio.o
+    0x000018d0   0x00000038   Code   RO         3153    i.RF_StartRx        radio.o
+    0x00001908   0x00000028   Code   RO         3154    i.RF_StartTx        radio.o
+    0x00001930   0x00000010   Code   RO         1870    i.Spi_IRQHandler    spi.o
+    0x00001940   0x00000010   Code   RO           12    i.SystemCoreClockUpdate  system_hc32f005.o
+    0x00001950   0x00000034   Code   RO           13    i.SystemInit        system_hc32f005.o
+    0x00001984   0x0000003c   Code   RO          715    i.Tim_IRQHandler    bt.o
+    0x000019c0   0x00000030   Code   RO         2021    i.UartGetInternDataPtr  uart.o
+    0x000019f0   0x0000005a   Code   RO         2024    i.Uart_ClrStatus    uart.o
+    0x00001a4a   0x00000074   Code   RO         2030    i.Uart_IRQHandler   uart.o
+    0x00001abe   0x00000002   PAD
+    0x00001ac0   0x00000068   Code   RO         2188    i.Vc_IRQHandler     vc.o
+    0x00001b28   0x0000002c   Code   RO         2301    i.Wdt_IRQHandler    wdt.o
+    0x00001b54   0x00000014   Code   RO         2305    i.Wdt_Start         wdt.o
+    0x00001b68   0x0000001c   Code   RO          281    i.__ARM_common_switch8  adc.o
+    0x00001b84   0x00000078   Code   RO          823    i.__NVIC_SetPriority  clk.o
+    0x00001bfc   0x0000000e   Code   RO         3664    i._is_digit         c_p.l(__printf_wp.o)
+    0x00001c0a   0x00000004   Code   RO         1017    i._sys_exit         ddl.o
+    0x00001c0e   0x0000000e   Code   RO         2658    i.cmt_spi3_delay    cmt_spi3.o
+    0x00001c1c   0x00000010   Code   RO         2663    i.cmt_spi3_delay_us  cmt_spi3.o
+    0x00001c2c   0x000000a8   Code   RO         2607    i.cmt_spi3_init     cmt_spi3.o
+    0x00001cd4   0x000000f0   Code   RO         2608    i.cmt_spi3_read     cmt_spi3.o
+    0x00001dc4   0x0000010e   Code   RO         2609    i.cmt_spi3_read_fifo  cmt_spi3.o
+    0x00001ed2   0x0000004a   Code   RO         2610    i.cmt_spi3_recv     cmt_spi3.o
+    0x00001f1c   0x00000050   Code   RO         2611    i.cmt_spi3_send     cmt_spi3.o
+    0x00001f6c   0x000000da   Code   RO         2612    i.cmt_spi3_write    cmt_spi3.o
+    0x00002046   0x0000010e   Code   RO         2613    i.cmt_spi3_write_fifo  cmt_spi3.o
+    0x00002154   0x00000020   Code   RO         1019    i.ddl_memclr        ddl.o
+    0x00002174   0x0000003c   Code   RO         1021    i.delay1ms          ddl.o
+    0x000021b0   0x0000000c   Code   RO         3423    i.main              main.o
+    0x000021bc   0x00000038   Code   RO         3505    i.radio_process     radio_txrx.o
+    0x000021f4   0x00000094   Code   RO         3219    i.system_delay_100us  time_server.o
+    0x00002288   0x0000001c   Code   RO         3222    i.system_delay_ms   time_server.o
+    0x000022a4   0x0000008e   Code   RO         3223    i.system_delay_us   time_server.o
+    0x00002332   0x00000002   PAD
+    0x00002334   0x00000008   Code   RO         3463    i.system_params_get  uartparse.o
+    0x0000233c   0x00000008   Data   RO          824    .constdata          clk.o
+    0x00002344   0x00000060   Data   RO         3155    .constdata          radio.o
+    0x000023a4   0x00000011   Data   RO         3667    .constdata          c_p.l(__printf_flags_wp.o)
+    0x000023b5   0x00000003   PAD
+    0x000023b8   0x00000020   Data   RO         3913    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00000410, Max: 0x00001000, ABSOLUTE)

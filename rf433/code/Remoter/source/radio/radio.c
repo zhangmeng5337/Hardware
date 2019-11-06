@@ -68,15 +68,15 @@ void RF_Config(void)
 #else
     /* Config GPIOs */
     CMT2300A_ConfigGpio(
-        CMT2300A_GPIO1_SEL_INT1 | /* INT1 > GPIO1 */
-        CMT2300A_GPIO2_SEL_INT2 | /* INT2 > GPIO2 */
+        CMT2300A_GPIO1_SEL_INT2 | /* INT1 > GPIO1 */
+        CMT2300A_GPIO2_SEL_INT1 | /* INT2 > GPIO2 */
         CMT2300A_GPIO3_SEL_DOUT
         );
     
     /* Config interrupt */
     CMT2300A_ConfigInterrupt(
-        CMT2300A_INT_SEL_TX_DONE, /* Config INT1 */
-        CMT2300A_INT_SEL_PKT_OK   /* Config INT2 */
+        CMT2300A_INT_SEL_PKT_OK,CMT2300A_INT_SEL_TX_DONE /* Config INT1 */
+           /* Config INT2 */
         );
 #endif
 
@@ -245,7 +245,7 @@ EnumRFResult RF_Process(void)
 #ifdef ENABLE_ANTENNA_SWITCH
         if(CMT2300A_MASK_TX_DONE_FLG & CMT2300A_ReadReg(CMT2300A_CUS_INT_CLR1))  /* Read TX_DONE flag */
 #else
-        if(CMT2300A_ReadGpio1())  /* Read INT1, TX_DONE */
+        if(CMT2300A_ReadGpio2())  /* Read INT1, TX_DONE */
 #endif
         {
             g_nNextRFState = RF_STATE_TX_DONE;

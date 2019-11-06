@@ -26,5 +26,7 @@ void main(void)
       SIMCOM_Register_Network();
       module_process(); 
     }
+	 // GPIO_ToggleBits( PORT_KEY, PIN_KEY );
+	//delay_ms(2);
   }
 }

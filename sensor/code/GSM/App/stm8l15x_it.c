@@ -363,6 +363,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_COM_IRQHandler, 23)
   * @param  None
   * @retval None
   */
+uint16_t IC1Value = 0, IC2Value = 0;
 INTERRUPT_HANDLER(TIM1_CC_IRQHandler, 24)
 {
   /* In order to detect unexpected events during development,
@@ -388,6 +389,10 @@ INTERRUPT_HANDLER(TIM1_CC_IRQHandler, 24)
  
   }
 
+
+ 
+ 
+ 
 
 }
 

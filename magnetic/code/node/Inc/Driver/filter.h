@@ -24,6 +24,7 @@ typedef struct{
  float BaseLineVari;
 unsigned char index;
 unsigned char Car_Flag;
+unsigned char detect_flag;
 uint32_t sTime;
 uint32_t eTime;
 uint32_t elapseTime;

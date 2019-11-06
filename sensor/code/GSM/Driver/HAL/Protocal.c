@@ -37,7 +37,10 @@ void module_prams_init()
   if(FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS)==0x5a)
   {
     Data_usr.Warn_Thres = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1)+
-      FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+2)/10.0;		
+      FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+2)/10.0;	
+    
+    
+    
   }
   else
     Data_usr.Warn_Thres = 3.5;	
@@ -101,6 +104,8 @@ void OilCalibration()
   //*(adc_tmp+1)=adc_tmp;
   tmp[1]= ((unsigned char)(Data_usr.Warn_Thres*10))/10;
   tmp[2]= ((unsigned char)(Data_usr.Warn_Thres*10))%10;
+  tmp[1]=2;  
+  tmp[2]=1;
   flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,3);
   free(tmp);
   
@@ -116,12 +121,12 @@ void sensor_adc()
 {
   float  adc_tmp;
   adc_tmp = (adcGet(ADC_BAT_CHANNEL));
-  adc_tmp = adc_tmp*2;
+  adc_tmp = adc_tmp*2+200000;
   Data_usr.vbatf = adc_tmp;
   Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000);
   Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
   adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
-  adc_tmp = adc_tmp/50000*Data_usr.deepth_calibration;
+  adc_tmp = adc_tmp/VOLTAGE_FACTOR*Data_usr.deepth_calibration;
   Data_usr.deep_f = adc_tmp;
   if((adc_tmp*1.05)>Data_usr.Warn_Thres)
     Data_usr.status = 1;
@@ -146,16 +151,17 @@ void flow_get()
   if(Flow.cal_flag == 1)
   { 
     flow_count = flow_count +1;
-    tmp = 1/Flow.pulse_period*1000000/7.8*10;//123
+    tmp = 1.0/Flow.pulse_period*6250/7.8*10;//123
     tmp2 =( (uint32_t)tmp+tmp2)/flow_count;
     if(flow_count>100)
     {
       flow_count = 0;
       tmp2 = 0;
     }
-    Data_usr.flow[0]= (unsigned char)(tmp2/256/256/256);
-    Data_usr.flow[1]= (unsigned char)(tmp2/256/256%256);//4294919544
-    Data_usr.flow[2]= (unsigned char)(tmp2%256);
+    //tmp2 =999997;
+    Data_usr.flow[0]= (unsigned char)(tmp2/256/256/10);
+    Data_usr.flow[1]= (unsigned char)(tmp2/256/10%256);//4294919544
+    Data_usr.flow[2]= (unsigned char)(tmp2/10%256);
     Data_usr.flow[3]= (unsigned char)(tmp2%10);
     Flow.cal_flag = 0;
   }
@@ -215,8 +221,8 @@ void module_process()
     //  module_prams_init();
     
   }
-  if(Get_Network_status()==SIMCOM_NET_OK)  
-    // if(RtcWakeUp==1)
+if(Get_Network_status()==SIMCOM_NET_OK)  
+  //     if(RtcWakeUp==1)
   {
     sensor_adc();
     flow_get();

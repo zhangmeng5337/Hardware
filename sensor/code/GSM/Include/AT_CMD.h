@@ -23,7 +23,7 @@ const unsigned char Respond_Network_Open[]="Network is already opened\r";//
 const unsigned char Respond_TCP_Connect[]="CONNECT\r";//
 const unsigned char Respond_Network_Open2[]="+NETOPEN: 0";//
 const unsigned char Respond_No_Carrier[]="+NO CARRIER";//
-
+const unsigned char Respond_IPR[]="+IPR: 9600";//
 
 
 
@@ -62,7 +62,8 @@ const unsigned char China_Mobile[]="AT+COPS?\r";//查询运营商选择状态
 const unsigned char AT_SHUNT[]="AT+CIPSHUT\r";//查询运营商选择状态
 const unsigned char FLY_Mode[]="AT+CFUN=0\r";
 const unsigned char M_RESET[]="AT+CRESET\r";
-
+const unsigned char IPR_SET[]="AT+IPR=9600\r";
+const unsigned char IPR_GET[]="AT+IPR?\r";
 //**********************************GPS Infor********************************************
 
 const unsigned char Start_GPS[]="AT+CGPSAUTO=1\r";//start gps

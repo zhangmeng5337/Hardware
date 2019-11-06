@@ -45,14 +45,20 @@ void GPIO_Initial(void)
 
   GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
   EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
-  
+ // GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_Out_PP_High_Fast);
+
+
+
 }
 void Init_Timer1(void)
 {
     GPIO_Init(GPIOD, GPIO_Pin_2, GPIO_Mode_In_FL_No_IT);   //输入浮动，没有外部中断  
-      
-    TIM1_DeInit();                                         //tim1 定时器寄存器全部复位  
-    TIM1_TimeBaseInit(2560-1, TIM1_CounterMode_Up, 62500-1, 0);//  10s  最小捕获50.2hz      设置时间分频  向上计数    捕捉50Hz及 以上的周期和占空比
+    //EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);    
+    TIM1_DeInit();     
+	 CLK_PeripheralClockConfig(CLK_Peripheral_TIM1, ENABLE);
+	//tim1 定时器寄存器全部复位  
+//	TIM1_TimeBaseInit(0x0f, TIM1_CounterMode_Up, 50000-1, 0);
+    TIM1_TimeBaseInit(2560-1, TIM1_CounterMode_Up, 1562-1, 0);//  250ms  最小捕获50.2hz      设置时间分频  向上计数    捕捉50Hz及 以上的周期和占空比
     TIM1_PWMIConfig(TIM1_Channel_1, TIM1_ICPolarity_Rising, TIM1_ICSelection_DirectTI, TIM1_ICPSC_DIV1, 0x00); //选择TI1输入上升沿触发 选择TI2输入下降沿触发 输入捕捉预定标器  无滤波
     TIM1_SelectInputTrigger(TIM1_TRGSelection_TI1FP1);   //滤波后输入TI1
     TIM1_SelectSlaveMode(TIM1_SlaveMode_Reset);//复位输入
@@ -60,9 +66,15 @@ void Init_Timer1(void)
     TIM1_ClearFlag(TIM1_FLAG_CC2);                         //指定要清除的标志
     TIM1_ITConfig( TIM1_IT_CC1, ENABLE);                  //去掉是查询方式，否则是中断方式
     TIM1_ITConfig( TIM1_IT_CC2, ENABLE);                  //去掉是查询方式，否则是中断方式
-    TIM1_CCxCmd(TIM1_Channel_1, ENABLE);                   //使能输入捕获通道1
+   TIM1_CCxCmd(TIM1_Channel_1, ENABLE);                   //使能输入捕获通道1
     TIM1_CCxCmd(TIM1_Channel_2, ENABLE);                   //使能输入捕获通道2
-    TIM1_Cmd(ENABLE);                                      //使能定时器
+    TIM1_Cmd(ENABLE);                                     //使能定时器
+
+		  
+
+
+
+	
 }
 
 
@@ -85,8 +97,8 @@ void GSM_HardwareInit(unsigned char flag)
          
         delay_ms(3000);
 //delay_ms(4000);
-delay_ms(4000);
-delay_ms(4000);
+//delay_ms(4000);
+//delay_ms(4000);
 //delay_ms(2000);
 //delay_ms(2000);
 //delay_ms(2000);
@@ -327,7 +339,9 @@ void HardwareInit()
   GPIO_Initial(); 
   Uart1_Init(9600);// 初始化GPIO
   DMA_Config();
-  LED_Init();             //调试LED初始化
+  LED_Init();
+  //delay_ms(5000);
+  //调试LED初始化
   GSM_HardwareInit(ON);
   Sensor_HardwareInit(OFF);
   Init_Timer1();

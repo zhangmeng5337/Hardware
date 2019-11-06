@@ -13,7 +13,7 @@
 
 //unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"15k801n729.iok.la\",36732\r";
 //unsigned char one_net_key[]="*284261#abab#json* ";
-unsigned char one_net_key[]="*285219#abab#json* ";
+unsigned char one_net_key[]="*284261#abab#json* ";
 
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 
@@ -282,7 +282,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_READY_YES://SIMCOM_READY_YES:
     {
-      if( SIMCOM_GetStatus((unsigned char*)Echo_Dis,(unsigned char*)Respond_OK,10000)==1)
+      if( SIMCOM_GetStatus((unsigned char*)Echo_Dis,(unsigned char*)Respond_OK,5000)==1)
       {  
         NET_STAUS=SIMCOM_ATE0;
         memset(uart_str.UsartReceiveData,0,buffer_size);
@@ -302,7 +302,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_SIM_OK:
     {
-      if(SIMCOM_GetStatus((unsigned char*)Normal_ModeT,(unsigned char*)Respond_Network_Normal_ModeT,100000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)Normal_ModeT,(unsigned char*)Respond_Network_Normal_ModeT,5000)==1)
       { //NET_STAUS=SIMCOM_SIM_OK;
         
         NET_STAUS=SIMCOM_Network_Normal_ModeT;
@@ -317,15 +317,19 @@ void SIMCOM_Register_Network()
         NET_STAUS=SIMCOM_Network_Intensity_READY;
         memset(uart_str.UsartReceiveData,0,buffer_size);
       }
-      //  NET_STAUS=SIMCOM_Network_Intensity_READY;
+       // NET_STAUS=SIMCOM_Network_Normal_ModeT;
     }
     break;
     
     
   case SIMCOM_Network_Intensity_READY:
     {
-      if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,80000)==1)
+      
+      // if(SIMCOM_GetStatus((unsigned char*)IPR_SET,(unsigned char*)Respond_OK,80000)==1)
+     
+     if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,160000)==1)
       {
+        
         NET_STAUS=SIMCOM_GPRS_READY;
         memset(uart_str.UsartReceiveData,0,buffer_size);
       }
@@ -337,9 +341,12 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_GPRS_READY:
     {
-      if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,30000)==1)
+     //  if(SIMCOM_GetStatus((unsigned char*)IPR_GET,(unsigned char*)Respond_IPR,80000)==1)
+     if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,30000)==1)
       {
-        NET_STAUS=SIMCOM_NET_PORT_CLOSE;
+      NET_STAUS=SIMCOM_NET_PORT_CLOSE;
+       //   NET_STAUS=SIMCOM_GPRS_READY;
+        
         memset(uart_str.UsartReceiveData,0,buffer_size);
       }
     }
@@ -356,7 +363,7 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_TRANSPARENT:
     {
       //server_ip_tmp=Establish_TCP_Connection;
-      if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,100000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,160000)==1)
       {
 #if debug 
      	NET_STAUS=SIMCOM_Connect_Platform;
@@ -371,7 +378,7 @@ void SIMCOM_Register_Network()
   case SIMCOM_Connect_Platform:
     {
       //server_ip_tmp=Establish_TCP_Connection;
-      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,100000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,160000)==1)
       {
      	NET_STAUS=SIMCOM_NET_OK;
         
@@ -398,7 +405,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_NET_ERROR:
     {
-      GSM_HardwareInit(OFF);                   //复位重启
+      GSM_HardwareInit(ON);                   //复位重启
       GSM_HardwareInit(ON);
       NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
     }

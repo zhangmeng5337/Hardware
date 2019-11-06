@@ -67,8 +67,8 @@ void OnMaster(void)
         g_nSendCount++;
         g_txBuffer[0] = (u8)g_nSendCount;
         g_txBuffer[1] = g_nSendCount >> 8;
-        RF_StartRx(g_rxBuffer, RF_PACKET_SIZE, 1000);
-        //RF_StartTx(g_txBuffer, RF_PACKET_SIZE, 1000);
+        //RF_StartRx(g_rxBuffer, RF_PACKET_SIZE, 1000);
+        RF_StartTx(g_txBuffer, RF_PACKET_SIZE, 1000);
         break;
     }
     

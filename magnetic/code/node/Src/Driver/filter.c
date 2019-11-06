@@ -4,9 +4,9 @@
 #include "Node_Protocol.h"
 //#include "stm32l4xx_hal.h"
 //#include "stm32l4xx_hal.h"
-magnetic_str magnetic;
+static magnetic_str magnetic;
 uint32_t MIN_PERIOD=1500;
-float MAX_THRES=700;//最大阈值
+float MAX_THRES=35;//最大阈值
 float MIN_THRES=60;
  extern  short int ManeticBuffer[3];
  extern MagData_t dataMd;
@@ -14,7 +14,7 @@ extern DataPack_stru DataPack;
 unsigned char tx_start_flag;
 extern uart_stru uart2;
 //uint32_t stime,etime;
-uint32_t sample_time_start,tx_time_start;
+uint32_t sample_time_start,tx_time_start,th;
 unsigned char getIndex()
 {
   if(magnetic.index == 0)
@@ -176,27 +176,48 @@ float error_tmp;
 
 unsigned char vehicle_detect()
 {
+  unsigned char res;
   if(magnetic.VehicleVari> magnetic.BaseLineVari)
 	error_tmp =  magnetic.VehicleVari- magnetic.BaseLineVari;
 	else
 	error_tmp =   magnetic.BaseLineVari-magnetic.VehicleVari;		
 
     if( error_tmp>= MAX_THRES){
-	    magnetic.eTime = HAL_GetTick();	
-	    magnetic.elapseTime = magnetic.eTime - magnetic.sTime;
-	    if(magnetic.elapseTime>= MIN_PERIOD){//检测有车时间超过最小周期，避免同一辆车未离开情况
-						magnetic.Car_Flag = 1;
-            magnetic.count = magnetic.count + 1;
-		    magnetic.sTime = HAL_GetTick();
-	    	}
-			else{ 
-				magnetic.noupdate = 1;//同一辆车未离开
-				return 1;
-				//magnetic.sTime = HAL_GetTick();
-			}
+		magnetic.detect_flag = 1;
+		res = 0;
+    }
+	else
+	{
+		if(magnetic.detect_flag == 1)
+		{
+		    magnetic.detect_flag = 0;
+			magnetic.eTime = HAL_GetTick(); 
+			magnetic.elapseTime = magnetic.eTime - magnetic.sTime;
+			if(magnetic.elapseTime>= MIN_PERIOD){//检测有车时间超过最小周期，避免同一辆车未离开情况
+			
+				//if(error_tmp>= MAX_THRES)
+				magnetic.Car_Flag = 1;
+				magnetic.count = magnetic.count + 1;
+				magnetic.sTime = HAL_GetTick();
+				th = magnetic.sTime;
+				magnetic.noupdate = 0; 
+				res = 1;
+				}
+				else{ 
+					magnetic.sTime = HAL_GetTick();
+					magnetic.noupdate = 1;//同一辆车未离开
+					res = 1;
+					
+					//magnetic.sTime = HAL_GetTick();
+				}
+
 		}
-	else 
-		return 0;
+	    else
+			res = 0;
+	}
+
+
+		return res;
 	
 }
  void BaseLineProcess()
@@ -277,7 +298,9 @@ unsigned char vehicle_detect()
 					printf("  err:	%f\n",error_tmp);
 					printf("  Car_Flag:  %d",magnetic.Car_Flag);
 					printf("  elapseTime:  %d",magnetic.elapseTime);
-					printf("  noupdate:  %d\n",magnetic.noupdate);
+					printf("  noupdate:  %d",magnetic.noupdate);
+					printf("  count:  %d\n",magnetic.count);
+
 
 		}
 
@@ -301,7 +324,7 @@ void vehicle_process()
 
 	if(magnetic.Car_Flag == 1)
 	{
-		
+	magnetic.Car_Flag = 0;	
     tx_start_flag = 1;
 		
 	}

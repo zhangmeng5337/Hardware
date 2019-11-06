@@ -1,5 +1,5 @@
 clear all;
-X=load('C:\Users\zhang\Desktop\log.txt');
+X=load('C:\Users\zhang\Desktop\2019.11.6地磁测试数据.txt');
 time_step = 0.05;
 len = size(X);
 t= 0:time_step:(len(1)-1)*time_step;
@@ -82,7 +82,7 @@ for i = 1:1:len(1)
         Bk(i,3) = Bk(i-1,3); 
      end
      if Bk(i,3) >= 0
-     MAX_THRES = Bk(i,3)*(gamma)
+     MAX_THRES = Bk(i,3)*(gamma);
      MIN_THRES =  Bk(i,3)*(gamma-1);
      else
      MAX_THRES = -Bk(i,3)*(gamma-1)+Bk(i,3);
@@ -101,7 +101,7 @@ for i = 1:1:len(1)
         Bk(i,3) = Bk(i-1,3)*(1-alpha)+ Mk(i,3)*alpha; 
      end
      if Bk(i,3) >= 0
-         MAX_THRES = Bk(i,3)*gamma
+         MAX_THRES = Bk(i,3)*gamma;
          MIN_THRES =  Bk(i,3)*(gamma-1);
      else
          MAX_THRES = -Bk(i,3)*(gamma-1)+Bk(i,3);
@@ -133,6 +133,10 @@ legend('z轴原始数据','z轴滤波后数据','z轴基线');
 xlabel('time/sec')
 ylabel('Manetic/gauss')
 title('Z axis gauss')
+subplot(2,3,4);
+plot(t,X(:,15),'b','linewidth',3);
+legend('车数量');
+
 % subplot(2,3,4);
 % plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g','linewidth',3);
 % legend('z轴原始数据','z轴滤波后数据','z轴基线');

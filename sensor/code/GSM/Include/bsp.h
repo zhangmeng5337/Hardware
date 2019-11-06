@@ -33,8 +33,8 @@
 #define PIN_KEY         GPIO_Pin_1
 
 #define PORT_POWER_ON        GPIOC
-#define PIN_POWER_ON         GPIO_Pin_0
-
+//#define PIN_POWER_ON         GPIO_Pin_0
+#define PIN_POWER_ON         GPIO_Pin_2
 #define PORT_PWRKEY_IN       GPIOD
 #define PIN_PWRKEY_IN        GPIO_Pin_4
 
