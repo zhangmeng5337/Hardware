@@ -1,7 +1,7 @@
 clear all;
-X=load('C:\Users\zhang\Desktop\2019.11.6地磁测试数据.txt');
+X=load('C:\Users\zhang\Desktop\log\2019.11.11地磁数据.txt');
 time_step = 0.05;
-len = size(X);
+len = fix(size(X));
 t= 0:time_step:(len(1)-1)*time_step;
 % subplot(2,2,1);
 % plot(t,X(:,1));
@@ -116,26 +116,24 @@ end
 % plot(t,X(:,1),'b',t,Fk(:,1),'r','linewidth',3);
 % plot(t,X(:,1),'b',t,Fk(:,1),'r','linewidth',3);
 subplot(2,3,1);
-plot(t,Mk(:,1),'b',t,Fk(:,1),'r',t,Bk(:,1),'g','linewidth',3);
+plot(t,Mk(1:len(1),1),'b',t,Fk(1:len(1),1),'r',t,Bk(1:len(1),1),'g','linewidth',3);
 legend('原始数据','滤波后','基线');
 xlabel('time/sec')
 ylabel('Manetic/gauss')
 title('X axis gauss')
 subplot(2,3,2);
-plot(t,Mk(:,2),'b',t,Fk(:,2),'r',t,Bk(:,2),'g','linewidth',3);
+plot(t,Mk(1:len(1),2),'b',t,Fk(1:len(1),2),'r',t,Bk(1:len(1),2),'g','linewidth',3);
 legend('原始数据','滤波后','基线');
 xlabel('time/sec')
 title('Y axis gauss')
 ylabel('Manetic/gauss')
 subplot(2,3,3);
-plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g','linewidth',3);
+plot(t,Mk(1:len(1),3),'b',t,Fk(1:len(1),3),'y',t,Bk(1:len(1),3),'g','linewidth',3);
 legend('z轴原始数据','z轴滤波后数据','z轴基线');
 xlabel('time/sec')
 ylabel('Manetic/gauss')
 title('Z axis gauss')
-subplot(2,3,4);
-plot(t,X(:,15),'b','linewidth',3);
-legend('车数量');
+
 
 % subplot(2,3,4);
 % plot(t,Mk(:,3),'b',t,Fk(:,3),'y',t,Bk(:,3),'g','linewidth',3);
@@ -152,24 +150,48 @@ sd_xx(j,:) = var(zz_tmp(:,:),1);
 
 j=j+1;
 end
-len_sd=size(sd_x);
-subplot(2,3,5);
+len_sd=fix(size(sd_xx));
+%len_sd =6000;
 t=0:time_step:time_step*(len_sd(1)-1);
 %plot(t,sd_x(:,1),'b','linewidth',3);
-plot(t,sd_x(:,1),'b',t,sd_x(:,2),'y',t,sd_x(:,3),'r','linewidth',3);
-legend('x轴方差','y轴方差','z轴方差');;
+figure(1);
+%plot(t,sd_xx(1:len_sd(1),1),'b',t,sd_xx(1:len_sd(1),2),'y',t,sd_xx(1:len_sd(1),3),'r',t,X(1:len_sd(1),11),'r+',t,X(1:len_sd(1),12),'b','linewidth',3);
+
+plot(t,sd_xx(1:len_sd(1),3),'g',t,X(1:len_sd(1),11),'r',t,X(1:len_sd(1),12),'b','linewidth',3);
+legend('z轴方差','z轴原始方差','z轴差');
 xlabel('time/sec')
 ylabel('均方差')
 title('均方差')
+
+figure(2);
+[ax,h1,h2]=plotyy(t,X(1:len_sd(1),16),t,X(1:len_sd(1),12));
+%plot(t,sd_x(1:len_sd(1)));
+grid on
+legend([h1,h2],'车辆数量','Z轴均方差',1); %加注多条线的图例
+
+
+
+
+
+
+
+
+
+
 
 
 subplot(2,3,4);
 t=0:time_step:time_step*(len_sd(1)-1);
 %plot(t,sd_x(:,1),'b','linewidth',3);
-plot(t,Mk(1:len_sd(1),8),'g',t,sd_x(:,3),'b','linewidth',3);
+plot(t,Mk(1:len_sd(1),8),'g',t,sd_x(1:len_sd(1),3),'b','linewidth',3);
 %legend('st Z轴基线方差','st Z轴方差','Z轴基线计算方差','Z轴计算方差');
 % plot(t,Mk(1:len_sd(1),7),'y',t,Mk(1:len_sd(1),8),'g',t,sd_xx(:,3),'r',t,sd_x(:,3),'b','linewidth',3);
 % legend('st Z轴基线方差','st Z轴方差','Z轴基线计算方差','Z轴计算方差');
 xlabel('time/sec')
 ylabel('均方差')
 title('均方差')
+
+
+
+
+

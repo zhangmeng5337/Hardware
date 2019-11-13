@@ -32,8 +32,8 @@ void module_prams_init()
   Data_usr.deepth_calibration = SENSOR_FACTOR;
   Data_usr.Warn_Thres = 3.5;
   
-
-
+  
+  
   if(FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS)==0x5a)
   {
     Data_usr.Warn_Thres = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1)+
@@ -79,7 +79,7 @@ void flash_operation(uint32_t addr,unsigned char *p,unsigned char size)
 
 uint32_t flash_read_operation(uint32_t addr)
 {
-
+  
   return FLASH_ReadByte(addr);
 }
 void OilCalibration()
@@ -87,7 +87,7 @@ void OilCalibration()
   uint32_t adc_tmp;
   unsigned char *tmp;
   tmp=malloc(4);
- 
+  
   
   // for(i=0;i<samplecount;i++)
   {
@@ -221,19 +221,23 @@ void module_process()
     //  module_prams_init();
     
   }
-if(Get_Network_status()==SIMCOM_NET_OK)  
-  //     if(RtcWakeUp==1)
+  if(Get_Network_status()==SIMCOM_NET_OK)  
+    //     if(RtcWakeUp==1)
   {
     sensor_adc();
     flow_get();
     data_tansmmit();
-    //      RtcWakeUp = 0;
-    //      EnterStopMode();
-    //      disableInterrupts(); 
-    //      RTC_Config(196,OFF);//1:55.2s
-    //      HardwareInit();
-    //      enableInterrupts();
-    
+    RtcWakeUp = 0;
+    Set_Network_status();
+    GSM_HardwareInit(ON);
+    EnterStopMode();
+    disableInterrupts(); 
+    RTC_Config(1,OFF);//1:55.2s
+    HardwareInit();
+    module_prams_init();
+    //uart_str.receive_flag =0;
+    enableInterrupts();
+   
     
   }
   

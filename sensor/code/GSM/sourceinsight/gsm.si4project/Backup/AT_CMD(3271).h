@@ -15,7 +15,7 @@ const unsigned char Respond_Network_Intensity2[]=",99\r";//检查网络信号强度
 const unsigned char Respond_Network_Intensity_eff[]="+CSQ: ";//检查网络信号强度
 const unsigned char Respond_Network_Normal_ModeT[]="+CFUN: 1";//检查网络信号强度
 const unsigned char platform_received[]="receive";//检查网络信号强度
-const unsigned char SMS_Ready[]="SMS Ready";//检查网络信号强度
+
 const unsigned char Respond_Attached_Ok[]="+CGATT: 1";//
 
 const unsigned char Respond_Attached_Fail[]="+CGATT: 0";//
@@ -39,7 +39,6 @@ const unsigned char Read_SIM_Num[]="AT+CICCID\r";
 const unsigned char Check_SIM[]="AT+CPIN?\r";//检查登入移动设备(ME)的密码
 const unsigned char Normal_Mode[]="AT+CFUN=1\r";
 const unsigned char Normal_ModeT[]="AT+CFUN?\r";
-const unsigned char ATE_W[]="ATE0&W\r";
 
 const unsigned char Mnimum_Mode[]="AT+CFUN=0\r";
 const unsigned char Network_Intensity[]="AT+CSQ\r";//检查网络信号强度

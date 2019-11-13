@@ -1,167 +1,173 @@
-\t (00:00:25) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
-\t (00:00:25)     Journal start - Sat Oct 05 15:27:21 2019
-\t (00:00:25)         Host=LAPTOP-U0A85BUA User=zhang Pid=14328 CPUs=8
-\t (00:00:25) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
-\t (00:00:25) 
-\d (00:00:25) Design opened: F:/projects/git/Hardware/magnetic/PCB/RECEIVER/Receiver.brd
-\i (00:00:25) etchedit 
-\i (00:00:26) zoom in 1 
-\i (00:00:27) setwindow pcb
-\i (00:00:27) zoom in 1147.026 -1199.253
-\i (00:00:27) trapsize 26828
-\i (00:00:27) zoom in 1 
-\i (00:00:27) setwindow pcb
-\i (00:00:27) zoom in 1114.833 -1193.887
-\i (00:00:27) trapsize 13414
-\i (00:00:32) setwindow form.find
-\i (00:00:32) FORM find all_off  
-\i (00:00:33) FORM find nets YES 
-\i (00:00:34) setwindow pcb
-\i (00:00:34) zoom in 1 
-\i (00:00:34) setwindow pcb
-\i (00:00:34) zoom in 929.718 -1263.640
-\i (00:00:34) trapsize 6707
-\i (00:00:34) zoom in 1 
-\i (00:00:34) setwindow pcb
-\i (00:00:34) zoom in 927.035 -1259.616
-\i (00:00:34) trapsize 3354
-\i (00:00:34) zoom in 1 
-\i (00:00:34) setwindow pcb
-\i (00:00:34) zoom in 927.035 -1258.945
-\i (00:00:34) trapsize 1677
-\i (00:00:35) zoom out 1 
-\i (00:00:35) setwindow pcb
-\i (00:00:35) zoom out 920.663 -1250.561
-\i (00:00:35) trapsize 3354
-\i (00:00:36) pick grid 946.821 -1225.745
-\t (00:00:36) last pick:  946.803 -1225.731
-\i (00:00:36) zoom out 1 
-\i (00:00:36) setwindow pcb
-\i (00:00:36) zoom out 946.821 -1225.745
-\i (00:00:36) trapsize 6707
-\i (00:00:39) zoom in 1 
-\i (00:00:39) setwindow pcb
-\i (00:00:39) zoom in 875.728 -1227.086
-\i (00:00:39) trapsize 3354
-\i (00:00:40) zoom in 1 
-\i (00:00:40) setwindow pcb
-\i (00:00:40) zoom in 875.728 -1227.086
-\i (00:00:40) trapsize 1677
-\i (00:00:41) pick grid 862.314 -1222.055
-\t (00:00:41) last pick:  862.329 -1222.065
-\i (00:00:41) zoom out 1 
-\i (00:00:41) setwindow pcb
-\i (00:00:41) zoom out 862.314 -1222.055
-\i (00:00:41) trapsize 3354
-\i (00:00:42) zoom out 1 
-\i (00:00:42) setwindow pcb
-\i (00:00:42) zoom out 862.315 -1222.055
-\i (00:00:42) trapsize 6707
-\i (00:00:43) zoom in 1 
-\i (00:00:43) setwindow pcb
-\i (00:00:43) zoom in 1632.285 -1032.916
-\i (00:00:43) trapsize 3354
-\i (00:00:43) zoom in 1 
-\i (00:00:43) setwindow pcb
-\i (00:00:43) zoom in 1631.614 -1030.904
-\i (00:00:43) trapsize 1677
-\i (00:00:44) zoom in 1 
-\i (00:00:44) setwindow pcb
-\i (00:00:44) zoom in 1631.614 -1030.903
-\i (00:00:44) trapsize 838
-\i (00:00:45) zoom out 1 
-\i (00:00:45) setwindow pcb
-\i (00:00:45) zoom out 1615.517 -1031.406
-\i (00:00:45) trapsize 1677
-\i (00:00:45) zoom out 1 
-\i (00:00:45) setwindow pcb
-\i (00:00:45) zoom out 1615.518 -1031.405
-\i (00:00:45) trapsize 3354
-\i (00:00:47) zoom in 1 
-\i (00:00:47) setwindow pcb
-\i (00:00:47) zoom in 1614.846 -1031.406
-\i (00:00:47) trapsize 1677
-\i (00:00:48) zoom in 1 
-\i (00:00:48) setwindow pcb
-\i (00:00:48) zoom in 1631.278 -1021.345
-\i (00:00:48) trapsize 838
-\i (00:02:18) zoom out 1 
-\i (00:02:18) setwindow pcb
-\i (00:02:18) zoom out 1611.661 -1022.854
-\i (00:02:18) trapsize 1677
-\i (00:02:20) zoom in 1 
-\i (00:02:20) setwindow pcb
-\i (00:02:20) zoom in 1609.648 -1034.590
-\i (00:02:20) trapsize 838
-\i (00:02:21) pick grid 1613.840 -1051.022
-\t (00:02:21) last pick:  1613.859 -1051.011
-\i (00:02:22) zoom out 1 
-\i (00:02:22) setwindow pcb
-\i (00:02:22) zoom out 1611.493 -1037.608
-\i (00:02:22) trapsize 1677
-\i (00:02:22) zoom out 1 
-\i (00:02:22) setwindow pcb
-\i (00:02:22) zoom out 1611.493 -1037.609
-\i (00:02:22) trapsize 3354
-\i (00:02:22) zoom out 1 
-\i (00:02:22) setwindow pcb
-\i (00:02:22) zoom out 1611.493 -1037.608
-\i (00:02:22) trapsize 6707
-\i (00:02:26) pick grid 1635.639 -1084.558
-\t (00:02:26) last pick:  1635.621 -1084.551
-\i (00:02:27) zoom in 1 
-\i (00:02:27) setwindow pcb
-\i (00:02:27) zoom in 1634.298 -1025.536
-\i (00:02:27) trapsize 3354
-\i (00:02:27) zoom in 1 
-\i (00:02:27) setwindow pcb
-\i (00:02:27) zoom in 1634.298 -1025.536
-\i (00:02:27) trapsize 1677
-\i (00:02:27) zoom in 1 
-\i (00:02:27) setwindow pcb
-\i (00:02:27) zoom in 1634.298 -1025.536
-\i (00:02:27) trapsize 838
-\i (00:02:28) zoom out 1 
-\i (00:02:28) setwindow pcb
-\i (00:02:28) zoom out 1634.298 -1023.858
-\i (00:02:28) trapsize 1677
-\i (00:02:29) pick grid 1619.208 -1060.077
-\t (00:02:29) last pick:  1619.202 -1060.059
-\i (00:02:30) zoom out 1 
-\i (00:02:30) setwindow pcb
-\i (00:02:30) zoom out 1620.214 -1057.730
-\i (00:02:30) trapsize 3354
-\i (00:02:30) zoom out 1 
-\i (00:02:30) setwindow pcb
-\i (00:02:30) zoom out 1620.885 -1057.729
-\i (00:02:30) trapsize 6707
-\i (00:02:30) zoom out 1 
-\i (00:02:30) setwindow pcb
-\i (00:02:30) zoom out 1620.886 -1057.729
-\i (00:02:30) trapsize 13414
-\i (00:02:31) zoom in 1 
-\i (00:02:31) setwindow pcb
-\i (00:02:31) zoom in 1620.886 -1055.047
-\i (00:02:31) trapsize 6707
-\i (00:02:31) zoom in 1 
-\i (00:02:31) setwindow pcb
-\i (00:02:31) zoom in 1620.886 -1055.047
-\i (00:02:31) trapsize 3354
-\i (06:17:17) zoom out 1 
-\i (06:17:17) setwindow pcb
-\i (06:17:17) zoom out 1353.275 -1033.584
-\i (06:17:17) trapsize 6707
-\i (06:17:17) zoom out 1 
-\i (06:17:17) setwindow pcb
-\i (06:17:17) zoom out 1353.275 -1033.584
-\i (06:17:17) trapsize 13414
-\i (06:17:17) zoom out 1 
-\i (06:17:17) setwindow pcb
-\i (06:17:17) zoom out 1353.275 -1033.583
-\i (06:17:17) trapsize 26828
-\i (06:17:22) opencd F:/projects/git/Hardware/magnetic/PCB/NODE/Node1.brd 
-\e (06:17:22) Do you want to save the changes you made to Receiver.brd?
-\i (06:17:23) fillin no 
-\t (06:17:23) Opening existing design...
-\i (06:17:23) trapsize 9637
-\t (06:17:24)     Journal end - Sat Oct 05 21:44:20 2019
+\t (00:12:35) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:12:35)     Journal start - Wed Nov 13 19:54:22 2019
+\t (00:12:35)         Host=LAPTOP-U0A85BUA User=zhang Pid=15080 CPUs=8
+\t (00:12:35) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:12:35) 
+\d (00:12:35) Design opened: F:/projects/git/Hardware/magnetic/PCB/RECEIVER/Receiver2.brd
+\i (00:12:36) etchedit 
+\i (00:12:36) zoom out 1 
+\i (00:12:36) setwindow pcb
+\i (00:12:36) zoom out 492.916 -1069.790
+\i (00:12:36) trapsize 13414
+\i (00:12:37) zoom out 1 
+\i (00:12:37) setwindow pcb
+\i (00:12:37) zoom out 492.917 -1069.789
+\i (00:12:37) trapsize 26828
+\i (00:12:38) zoom in 1 
+\i (00:12:38) setwindow pcb
+\i (00:12:38) zoom in 2220.662 -447.372
+\i (00:12:38) trapsize 13414
+\i (00:12:41) zoom in 1 
+\i (00:12:41) setwindow pcb
+\i (00:12:41) zoom in 2558.699 -699.558
+\i (00:12:41) trapsize 6707
+\i (00:12:42) zoom out 1 
+\i (00:12:42) setwindow pcb
+\i (00:12:42) zoom out 2397.729 -825.651
+\i (00:12:42) trapsize 13414
+\i (00:13:56) zoom out 1 
+\i (00:13:56) setwindow pcb
+\i (00:13:56) zoom out 1552.636 -594.927
+\i (00:13:56) trapsize 26828
+\i (00:13:56) zoom out 1 
+\i (00:13:56) setwindow pcb
+\i (00:13:56) zoom out 1617.025 -535.904
+\i (00:13:56) trapsize 53657
+\i (00:13:56) zoom in 1 
+\i (00:13:56) setwindow pcb
+\i (00:13:56) zoom in 1574.100 -664.679
+\i (00:13:56) trapsize 26828
+\i (00:13:58) zoom in 1 
+\i (00:13:58) setwindow pcb
+\i (00:13:58) zoom in 28.788 -1142.223
+\i (00:13:58) trapsize 13414
+\i (00:13:59) zoom in 1 
+\i (00:13:59) setwindow pcb
+\i (00:13:59) zoom in 259.511 -745.163
+\i (00:13:59) trapsize 6707
+\i (00:14:12) zoom in 1 
+\i (00:14:12) setwindow pcb
+\i (00:14:12) zoom in 150.857 -729.066
+\i (00:14:12) trapsize 3354
+\i (00:14:12) zoom in 1 
+\i (00:14:12) setwindow pcb
+\i (00:14:12) zoom in 150.857 -729.065
+\i (00:14:12) trapsize 1677
+\i (00:14:13) zoom out 1 
+\i (00:14:13) setwindow pcb
+\i (00:14:13) zoom out 150.857 -729.065
+\i (00:14:13) trapsize 3354
+\i (00:14:28) xhilite 
+\i (00:14:28) xrefdes J1 
+\i (00:14:28) xname_flush 
+\i (00:14:28) trapsize 6738
+\t (00:14:28) Symbol "J1" highlighted.
+\i (00:14:28) done 
+\i (00:14:28) etchedit 
+\i (00:14:42) xdehilite 
+\i (00:14:42) xrefdes J1 
+\i (00:14:42) xname_flush 
+\t (00:14:42) Symbol "J1" dehighlighted.
+\i (00:14:42) done 
+\i (00:14:42) etchedit 
+\i (00:14:47) xhilite 
+\i (00:14:47) xNet Txd 
+\i (00:14:47) xNet Rxd 
+\i (00:14:47) xname_flush 
+\i (00:14:47) trapsize 8776
+\t (00:14:47) Net "Txd" highlighted.
+\t (00:14:47) Net "Rxd" highlighted.
+\i (00:14:47) done 
+\i (00:14:47) etchedit 
+\i (00:14:47) xdehilite 
+\i (00:14:47) xNet Txd 
+\i (00:14:47) xNet Rxd 
+\i (00:14:47) xname_flush 
+\t (00:14:47) Net "Txd" dehighlighted.
+\t (00:14:47) Net "Rxd" dehighlighted.
+\i (00:14:47) done 
+\i (00:14:47) etchedit 
+\i (00:15:02) xdehilite 
+\i (00:15:02) xrefdes U4 
+\i (00:15:02) xname_flush 
+\i (00:15:02) done 
+\i (00:15:02) etchedit 
+\i (00:17:28) zoom out 1 
+\i (00:17:28) setwindow pcb
+\i (00:17:28) zoom out 710.365 -749.119
+\i (00:17:28) trapsize 17552
+\i (00:17:30) zoom in 1 
+\i (00:17:30) setwindow pcb
+\i (00:17:30) zoom in 949.075 -1437.164
+\i (00:17:30) trapsize 8776
+\i (00:17:31) zoom in 1 
+\i (00:17:31) setwindow pcb
+\i (00:17:31) zoom in 989.445 -1517.904
+\i (00:17:31) trapsize 4388
+\i (00:17:33) zoom out 1 
+\i (00:17:33) setwindow pcb
+\i (00:17:33) zoom out 952.586 -1531.068
+\i (00:17:33) trapsize 8776
+\i (00:17:33) zoom out 1 
+\i (00:17:33) setwindow pcb
+\i (00:17:33) zoom out 952.586 -1531.067
+\i (00:17:33) trapsize 17552
+\i (00:19:15) xhilite 
+\i (00:19:15) xname_flush 
+\i (00:19:15) done 
+\i (00:19:15) etchedit 
+\i (00:19:21) xdehilite 
+\i (00:19:21) xname_flush 
+\i (00:19:21) done 
+\i (00:19:21) etchedit 
+\i (00:19:22) xhilite 
+\i (00:19:22) xname_flush 
+\i (00:19:22) done 
+\i (00:19:22) etchedit 
+\i (00:19:24) xdehilite 
+\i (00:19:24) xname_flush 
+\i (00:19:24) done 
+\i (00:19:24) etchedit 
+\i (00:19:25) xhilite 
+\i (00:19:25) xrefdes U7 
+\i (00:19:25) xname_flush 
+\i (00:19:25) trapsize 13414
+\t (00:19:25) Symbol "U7" highlighted.
+\i (00:19:25) done 
+\i (00:19:25) etchedit 
+\i (00:19:27) xhilite 
+\i (00:19:27) xname_flush 
+\i (00:19:27) done 
+\i (00:19:27) etchedit 
+\i (00:19:35) xdehilite 
+\i (00:19:35) xname_flush 
+\i (00:19:35) done 
+\i (00:19:35) etchedit 
+\i (00:19:39) xhilite 
+\i (00:19:39) xNet Gnd 
+\i (00:19:39) xname_flush 
+\i (00:19:39) trapsize 13414
+\t (00:19:39) Net "Gnd" highlighted.
+\i (00:19:39) done 
+\i (00:19:39) etchedit 
+\i (00:19:40) xhilite 
+\i (00:19:40) xname_flush 
+\i (00:19:40) done 
+\i (00:19:40) etchedit 
+\i (00:19:41) xhilite 
+\i (00:19:41) xname_flush 
+\i (00:19:41) done 
+\i (00:19:41) etchedit 
+\i (00:20:05) save 
+\i (00:20:06) fillin yes 
+\i (00:20:06) etchedit 
+\i (00:20:08) open 
+\i (00:20:10) fillin "menu_cancel"
+\i (00:20:11) etchedit 
+\i (00:20:14) opencd F:/footprint/allegro/sipex3232ee.dra 
+\t (00:20:14) Opening existing design...
+\i (00:20:15) trapsize 998
+\i (00:20:15) trapsize 970
+\i (00:20:15) trapsize 998
+\i (00:20:16) trapsize 998
+\t (00:20:17)     Journal end - Wed Nov 13 20:02:03 2019

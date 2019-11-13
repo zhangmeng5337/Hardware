@@ -1,5 +1,5 @@
 FILE_TYPE = EXPANDEDPARTLIST;
-{ Using PSTWRITER 16.6.0 d001Jul-29-2019 at 15:41:18 }
+{ Using PSTWRITER 16.6.0 d001Nov-13-2019 at 20:07:11 }
 DIRECTIVES
  PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
  ROOT_DRAWING='RECEIVER';
@@ -478,6 +478,16 @@ SECTION_NUMBER 1
  SECTION='';
 
 PART_NAME
+ J7 'HEADER 4X2_CON4X2_HEADER 4X2':;
+
+SECTION_NUMBER 1
+ '@RECEIVER.SCHEMATIC1(SCH_1):INS81338@CONNECTOR.HEADER 4X2.NORMAL(CHIPS)':
+ C_PATH='@receiver.schematic1(sch_1):ins81338@connector.\header 4x2.normal\(chips)',
+ P_PATH='@receiver.schematic1(sch_1):page1_ins81338@connector.\header 4x2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
  L11 'INDUCTOR_R0603_18NH':;
 
 SECTION_NUMBER 1
@@ -724,16 +734,6 @@ SECTION_NUMBER 1
  '@RECEIVER.SCHEMATIC1(SCH_1):INS74341@RECEIVER.XC6234H331VR_2.NORMAL(CHIPS)':
  C_PATH='@receiver.schematic1(sch_1):ins74341@receiver.\xc6234h331vr_2.normal\(chips)',
  P_PATH='@receiver.schematic1(sch_1):page1_ins74341@receiver.\xc6234h331vr_2.normal\(chips)',
- PRIM_FILE='.\pstchip.dat',
- SECTION='';
-
-PART_NAME
- U7 'DB9_1_DB9_DB9':;
-
-SECTION_NUMBER 1
- '@RECEIVER.SCHEMATIC1(SCH_1):INS75757@RECEIVER.DB9_1.NORMAL(CHIPS)':
- C_PATH='@receiver.schematic1(sch_1):ins75757@receiver.\db9_1.normal\(chips)',
- P_PATH='@receiver.schematic1(sch_1):page1_ins75757@receiver.\db9_1.normal\(chips)',
  PRIM_FILE='.\pstchip.dat',
  SECTION='';
 

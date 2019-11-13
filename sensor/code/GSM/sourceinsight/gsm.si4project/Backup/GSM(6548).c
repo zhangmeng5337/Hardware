@@ -244,8 +244,6 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
 void SIMCOM_ReConnect()
 {
   if(NET_STAUS!=SIMCOM_NET_NOT&&NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
-
- // if(NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
     SIMCOM_TimeOut_Count++;
   else if(NET_STAUS==SIMCOM_NET_OK)
     SIMCOM_TimeOut_Count=0;
@@ -267,7 +265,7 @@ void SIMCOM_Register_Network()
 {
   unsigned char *p;
   p=malloc(sizeof(unsigned char) * 64);
-  
+  SIMCOM_ReConnect();
   switch(NET_STAUS)
   {
     
@@ -277,7 +275,6 @@ void SIMCOM_Register_Network()
     if(SIMCOM_GetStatus((unsigned char*)Test,(unsigned char*)Respond_OK,20000)==1)
     {  
       NET_STAUS=SIMCOM_READY_YES;
-      //SIMCOM_ReConnect();
       memset(uart_str.UsartReceiveData,0,buffer_size);
     }
     
@@ -368,7 +365,7 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_TRANSPARENT:
     {
       //server_ip_tmp=Establish_TCP_Connection;
-      if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,60000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,160000)==1)
       {
 #if debug 
      	NET_STAUS=SIMCOM_Connect_Platform;
@@ -383,7 +380,7 @@ void SIMCOM_Register_Network()
   case SIMCOM_Connect_Platform:
     {
       //server_ip_tmp=Establish_TCP_Connection;
-      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,60000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,160000)==1)
       {
      	NET_STAUS=SIMCOM_NET_OK;
         
@@ -426,7 +423,6 @@ void SIMCOM_Register_Network()
   Network_Intens=0;
   
 }*/
-  SIMCOM_ReConnect();
   free(p);
 }
 void SIMCOM_Reconnect_status()
@@ -443,10 +439,8 @@ unsigned char Get_Network_status()
 }
 void Set_Network_status()
 {
-  SIMCOM_TimeOut_Count = 0;
-   NET_STAUS = SIMCOM_NET_NOT;
+  NET_STAUS=SIMCOM_NetOpen_READY;
 }
-
 
 unsigned char Get_Network_Thres()
 {

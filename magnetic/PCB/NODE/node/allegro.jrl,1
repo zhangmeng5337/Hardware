@@ -1,19 +1,55 @@
 \t (00:00:01) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
-\t (00:00:01)     Journal start - Sat Oct 05 15:26:57 2019
-\t (00:00:01)         Host=LAPTOP-U0A85BUA User=zhang Pid=14328 CPUs=8
-\t (00:00:01) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:00:01)     Journal start - Sun Oct 13 16:05:37 2019
+\t (00:00:01)         Host=LAPTOP-U0A85BUA User=zhang Pid=11688 CPUs=8
+\t (00:00:01) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe -sq -product Allegro_PCB_Design_Planner
 \t (00:00:01) 
    (00:00:01) Loading axlcore.cxt 
 \t (00:00:02) Starting new design...
-\i (00:00:03) trapsize 837
-\i (00:00:03) trapsize 817
-\i (00:00:03) trapsize 840
-\i (00:00:04) trapsize 861
-\i (00:00:04) trapsize 1448
-\i (00:00:05) etchedit 
-\i (00:00:19) open 
-\i (00:00:25) fillin "F:\projects\git\Hardware\magnetic\PCB\RECEIVER\Receiver.brd"
-\i (00:00:25) cd "F:\projects\git\Hardware\magnetic\PCB\RECEIVER"
-\t (00:00:25) Opening existing design...
-\i (00:00:25) trapsize 53656
-\t (00:00:25)     Journal end - Sat Oct 05 15:27:21 2019
+\i (00:00:03) trapsize 1753
+\i (00:00:03) trapsize 1712
+\i (00:00:03) trapsize 1760
+\i (00:00:04) trapsize 1803
+\i (00:00:04) trapsize 2896
+\i (00:00:07) open 
+\i (00:00:12) fillin "Node1.brd"
+\t (00:00:12) Opening existing design...
+\i (00:00:12) trapsize 9637
+\d (00:00:12) Design opened: F:/projects/git/Hardware/magnetic/PCB/NODE/Node1.brd
+\i (00:00:20) zoom out 1 
+\i (00:00:20) setwindow pcb
+\i (00:00:20) zoom out -692.929 -50.689
+\i (00:00:20) trapsize 19274
+\i (00:00:20) zoom out 1 
+\i (00:00:20) setwindow pcb
+\i (00:00:20) zoom out -708.348 -77.672
+\i (00:00:20) trapsize 38549
+\i (00:00:20) zoom in 1 
+\i (00:00:20) setwindow pcb
+\i (00:00:20) zoom in -68.441 862.913
+\i (00:00:20) trapsize 19274
+\i (00:00:32) zoom in 1 
+\i (00:00:32) setwindow pcb
+\i (00:00:32) zoom in 644.709 346.363
+\i (00:00:32) trapsize 9637
+\i (00:00:33) zoom out 1 
+\i (00:00:33) setwindow pcb
+\i (00:00:33) zoom out 1109.219 172.895
+\i (00:00:33) trapsize 19274
+\i (00:00:34) zoom in 1 
+\i (00:00:34) setwindow pcb
+\i (00:00:34) zoom in -590.773 882.188
+\i (00:00:34) trapsize 9637
+\i (00:00:34) zoom in 1 
+\i (00:00:34) setwindow pcb
+\i (00:00:34) zoom in -592.701 884.116
+\i (00:00:34) trapsize 4819
+\i (00:00:37) zoom in 1 
+\i (00:00:37) setwindow pcb
+\i (00:00:37) zoom in -650.524 800.273
+\i (00:00:37) trapsize 2409
+\i (00:00:38) zoom out 1 
+\i (00:00:38) setwindow pcb
+\i (00:00:38) zoom out -649.079 806.055
+\i (00:00:38) trapsize 4819
+\i (01:31:20) exit 
+\t (01:31:21)     Journal end - Sun Oct 13 17:36:57 2019
