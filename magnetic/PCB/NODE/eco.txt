@@ -2,10 +2,420 @@
 |                                 ECO   REPORT                                 |
 |                                                                    Page   1  |
 |------------------------------------------------------------------------------|
-|  F:/PCB/NODE/Node.brd                                                        |
-|                                                    Mon Jul 29 15:29:39 2019  |
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
 |------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  BUSY         pins ADDED TO this new net
+                                 U15.14                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO0         pins MOVED FROM this net (to net name listed on right)
+                                 U12.27           39.217 -971.07
+                                                                           BUSY
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO1         pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.13                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO2         pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.12                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DIO3         pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.6                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  GND          pins MOVED FROM this net (to net name listed on right)
+                                 C40.2           -144.59 -792.83
+                                                                        N106429
+                                 C58.2           -144.32 -668.69
+                                                                        N106087
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C59.1                          
+                                 C61.1                          
+                                 C62.1                          
+                                 C63.1                          
+                                 C65.2                          
+                                 C66.1                          
+                                 U14.2                          
+                                 U15.2                          
+                                 U15.5                          
+                                 U15.8                          
+                                 U15.20                         
+                                 U15.25                         
+                                 X2.2                           
+                                 X2.4                           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LORA_RST     pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.15                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LORA_RXD     pins MOVED FROM this net (to net name listed on right)
+                                 U11.26          -148.70 390.236
+                                                                       LORA_TXD
+                                 U12.2            -0.153 -1006.5
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   2  |
 |------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+                                                                       LORA_TXD
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LORA_TXD     pins MOVED FROM this net (to net name listed on right)
+                                 U11.25          -213.66 455.197
+                                                                       LORA_RXD
+                                 U12.3            -0.153 -1026.1
+                                                                       LORA_RXD
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N36094       pins MOVED FROM this net (to net name listed on right)
+                                 C58.1           -108.89 -668.69
+                                                                        N105989
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N36478       pins MOVED FROM this net (to net name listed on right)
+                                 C29.2            72.716 -385.66
+                                                                        N105809
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N36552       pins MOVED FROM this net (to net name listed on right)
+                                 C18.2           -127.78 -322.25
+                                                                        N105809
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N36576       pins MOVED FROM this net (to net name listed on right)
+                                 C29.1            37.283 -385.66
+                                                                        N105813
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N36660       pins MOVED FROM this net (to net name listed on right)
+                                 C34.2           191.315 -480.16
+                                                                        N105665
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N36842       pins MOVED FROM this net (to net name listed on right)
+                                 C35.1           -248.23 -212.31
+                                                                        N105721
+                                 C37.2           -248.29 -254.24
+                                                                        N105725
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N37028       pins MOVED FROM this net (to net name listed on right)
+                                 C40.1           -109.16 -792.83
+                                                                            GND
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N60566       pins MOVED FROM this net (to net name listed on right)
+                                 C36.2           -248.13 -420.10
+                                                                        N105729
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N60733       pins MOVED FROM this net (to net name listed on right)
+                                 C35.2           -212.80 -212.31
+                                                                        N105725
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+                                 J4.1            -212.94 -149.89
+                                                                        N105729
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N63203       pins MOVED FROM this net (to net name listed on right)
+                                 C57.1           -159.70 -552.70
+                                                                        N106013
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N69894       pins MOVED FROM this net (to net name listed on right)
+                                 D1.2            172.520  69.646
+                                                                       N3877695
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105609      pins ADDED TO this new net
+                                 L13.1                          
+                                 U15.23                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105629      pins ADDED TO this new net
+                                 C60.2                          
+                                 C61.2                          
+                                 L12.1                          
+                                 L13.2                          
+                                 L14.1                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105665      pins ADDED TO this new net
+                                 C59.2                          
+                                 L12.2                          
+                                 U15.24                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105721      pins ADDED TO this new net
+                                 U14.5                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105725      pins ADDED TO this new net
+                                 L2.1            -248.23 -372.68
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105729      pins ADDED TO this new net
+                                 L2.2            -248.23 -337.25
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105809      pins ADDED TO this new net
+                                 U14.3                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105813      pins ADDED TO this new net
+                                 L8.2             37.091 -514.66
+                                 U15.22                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105849      pins ADDED TO this new net
+                                 C63.2                          
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   4  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+                                 L8.1             37.091 -550.09
+                                 U15.21                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N105989      pins ADDED TO this new net
+                                 C60.1                          
+                                 C62.2                          
+                                 L14.2                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N106013      pins ADDED TO this new net
+                                 L11.2           -108.89 -580.37
+                                 U14.1                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N106087      pins ADDED TO this new net
+                                 L11.1           -108.89 -615.81
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N106359      pins ADDED TO this new net
+                                 C64.1                          
+                                 U15.4                          
+                                 X2.1                           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N106387      pins ADDED TO this new net
+                                 C65.1                          
+                                 U15.3                          
+                                 X2.3                           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N106409      pins ADDED TO this new net
+                                 L7.2            203.307 -432.94
+                                 U15.9                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N106429      pins ADDED TO this new net
+                                 L7.1            128.504 -432.94
+                                 U15.7                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N3877695     pins MOVED FROM this net (to net name listed on right)
+                                 D1.1            235.512  69.646
+                                                                         N69894
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  RXEN         pins ADDED TO this existing net (pins not previously on any net)
+                                 U14.4                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPI_MISO     pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.16                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPI_MOSI     pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.17                         
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   5  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  SPI_NSS      pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.19                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPI_SCK      pins ADDED TO this existing net (pins not previously on any net)
+                                 U15.18                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  TXEN         pins ADDED TO this existing net (pins not previously on any net)
+                                 U14.6                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VCC_RF       pins ADDED TO this existing net (pins not previously on any net)
+                                 C66.2                          
+                                 U15.1                          
+                                 U15.10                         
+                                 U15.11                         
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   6  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENT DEFINITION added to design                                         |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    device type                                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ CAP NP_C0402_GRM1555C1H101JA01
+ CAP NP_C0402_GRM1555C1H101JA01#
+ CAP NP_C0402_GRM1555C1H120GA01
+ CAP NP_C0402_GRM1555C1H1R0CA01
+ CAP NP_C0402_GRM1555C1H3R6BA01D
+ CAP NP_C0402_GRM1555C1H3R9BA01#
+ CAP NP_C0402_GRM1555C1H4R7CA01#
+ CAP NP_C0402_GRM1555C1H820GA01
+ CAP NP_C0402_GRM1555C1H8R2BA01#
+ CAP NP_C0402_GRM155R61A105KE15D
+ CAP NP_C0402_GRM155R61A474KE15D
+ CAP NP_C0402_GRM155R71C104KA88D
+ CAP NP_C0402_GRM155R71C473KA01J
+ CAP NP_C0402_NC
+ CRY_0_2_0X1_6_EXS00A-CS06465
+ F5F1_0_LED0603_F5F1
+ INDUCTOR_R0402_33NH
+ INDUCTOR_R0402_CRCW04020000Z0ED
+ INDUCTOR_R0402_LQG15HN18NJ02D
+ INDUCTOR_R0402_LQG15HS56NJ02D
+ INDUCTOR_R0402_LQG15HS8N2J02D
+ INDUCTOR_R0402_LQW15AN33NH00D
+ INDUCTOR_R0805_MLZ2012M150W
+ SX1268_QFN4X4_SX1268
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   7  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS DELETED from design                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type      |   x   |   y                        |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C28                 CAP NP_C0402_18P       37.165 -433.83
+ C30                 CAP NP_C0402_9P       129.291 -307.12
+ C33                 CAP NP_C0402_18P        1.890 -236.10
+ C38                 CAP NP_C0402_15P      -156.81 -1034.6
+ C39                 CAP NP_C0402_15P      -192.54 -828.55
+ C42                 CAP NP_C0402_0.1UF    -144.57 -715.37
+ C43                 CAP NP_C0603_10UF     299.677 -506.57
+ C44                 CAP NP_C0402_0.1UF    248.705 -534.18
+ C45                 CAP NP_C0603_10UF     346.657 -872.29
+ L4                  INDUCTOR_R0603_12NH    73.240 -334.85
+ L5                  INDUCTOR_R0603_15NH   -65.051 -271.79
+ U2                  SX1278_QFN28_LEAD_SX1278 -91.335 -690.40
+ U10                 PE4259_SC-70_PE4259   -127.88 -445.80
+ Y2                  CRY_0_CRY_3225_FTR5092-A2-32MHZ -192.43 -976.42
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   8  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C59                 CAP NP_C0402_GRM155R71C473KA01J 
+ C60                 CAP NP_C0402_GRM1555C1H3R6BA01D 
+ C61                 CAP NP_C0402_NC       
+ C62                 CAP NP_C0402_GRM1555C1H120GA01 
+ C63                 CAP NP_C0402_GRM1555C1H3R9BA01# 
+ C64                 CAP NP_C0402_8.2P     
+ C65                 CAP NP_C0402_8.2P     
+ C66                 CAP NP_C0402_GRM155R71C104KA88D 
+ L12                 INDUCTOR_R0402_LQG15HS56NJ02D 
+ L13                 INDUCTOR_R0402_33NH   
+ L14                 INDUCTOR_R0402_LQG15HS8N2J02D 
+ U14                 PE4259_SC-70_PE4259   
+ U15                 SX1268_QFN4X4_SX1268  
+ X2                  CRY_0_2_0X1_6_EXS00A-CS06465 
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   9  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS CHANGED from one device type to another in design                 |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        | new device type     |   x   |   y   |  old  device type  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C18                 CAP NP_C0402_GRM1555C1H1R0CA01 -163.21 -322.25 CAP NP_C0402_12P
+ C29                 CAP NP_C0402_GRM1555C1H4R7CA01#  37.283 -385.66 CAP NP_C0402_22P
+ C34                 CAP NP_C0402_GRM1555C1H820GA01 155.882 -480.16 CAP NP_C0402_8.2P
+ C35                 CAP NP_C0402_GRM1555C1H101JA01# -248.23 -212.31 CAP NP_C0402_16PF
+ C36                 CAP NP_C0402_NC       -283.57 -420.10 CAP NP_C0402_51PF
+ C37                 CAP NP_C0402_NC       -283.72 -254.24 CAP NP_C0402_12PF
+ C40                 CAP NP_C0402_GRM155R61A474KE15D -109.16 -792.83 CAP NP_C0402_0.1UF
+ C41                 CAP NP_C0402_GRM155R61A105KE15D -145.03 -753.90 CAP NP_C0402_0.1UF
+ C57                 CAP NP_C0402_GRM1555C1H8R2BA01# -159.70 -552.70 CAP NP_C0402_8.2P
+ C58                 CAP NP_C0402_GRM1555C1H101JA01 -108.89 -668.69 CAP NP_C0402_8.2P
+ D1                  F5F1_0_LED0603_F5F1   235.512  69.646 F5F1_LED0603_F5F1
+ L2                  INDUCTOR_R0402_CRCW04020000Z0ED -248.23 -372.68 INDUCTOR_R0603_15NH
+ L7                  INDUCTOR_R0805_MLZ2012M150W 128.504 -432.94 INDUCTOR_R0603_47NH
+ L8                  INDUCTOR_R0402_LQW15AN33NH00D  37.091 -550.09 INDUCTOR_R0603_33NH
+ L11                 INDUCTOR_R0402_LQG15HN18NJ02D -108.89 -615.81 INDUCTOR_R0603_18NH
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page  10  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C18.2          -163.21 -322.25 PRIM_FILE      .\pstchip.dat
+ C29.2           37.283 -385.66 PRIM_FILE      .\pstchip.dat
+ C34.2          155.882 -480.16 PRIM_FILE      .\pstchip.dat
+ C35.2          -248.23 -212.31 PRIM_FILE      .\pstchip.dat
+ C36.2          -283.57 -420.10 PRIM_FILE      .\pstchip.dat
+ C37.2          -283.72 -254.24 PRIM_FILE      .\pstchip.dat
+ C40.2          -109.16 -792.83 PRIM_FILE      .\pstchip.dat
+ C41.2          -145.03 -753.90 PRIM_FILE      .\pstchip.dat
+ C57.2          -159.70 -552.70 PRIM_FILE      .\pstchip.dat
+ C58.2          -108.89 -668.69 PRIM_FILE      .\pstchip.dat
+ C59.2                          PRIM_FILE      .\pstchip.dat
+ C60.2                          PRIM_FILE      .\pstchip.dat
+ C61.2                          PRIM_FILE      .\pstchip.dat
+ C62.2                          PRIM_FILE      .\pstchip.dat
+ C63.2                          PRIM_FILE      .\pstchip.dat
+ C64.2                          PRIM_FILE      .\pstchip.dat
+ C65.2                          PRIM_FILE      .\pstchip.dat
+ C66.2                          PRIM_FILE      .\pstchip.dat
+ D1.2           235.512  69.646 PRIM_FILE      .\pstchip.dat
+ L2.2           -248.23 -372.68 PRIM_FILE      .\pstchip.dat
+ L7.2           128.504 -432.94 PRIM_FILE      .\pstchip.dat
+ L8.2            37.091 -550.09 PRIM_FILE      .\pstchip.dat
+ L11.2          -108.89 -615.81 PRIM_FILE      .\pstchip.dat
+ L12.2                          PRIM_FILE      .\pstchip.dat
+ L13.2                          PRIM_FILE      .\pstchip.dat
+ L14.2                          PRIM_FILE      .\pstchip.dat
+ U14.6                          PRIM_FILE      .\pstchip.dat
+ U15.4                          PRIM_FILE      .\pstchip.dat
+ X2.3                           PRIM_FILE      .\pstchip.dat
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page  11  |
+|------------------------------------------------------------------------------|
+|  F:/PCB/NODE/Node2.brd                                                       |
+|                                                    Thu Nov 14 14:55:07 2019  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|------------------------------------------------------------------------------|
+|       Nets changed          :      85                                        |
+|       Comp definitions added:      24                                        |
+|       Components added      :      14                                        |
+|       Components deleted    :      14                                        |
+|       Components changed    :      15                                        |
+|       Slot property added   :      29                                        |
 |                                                                              |
-|   Total ECO changes reported:       0                                        |
+|   Total ECO changes reported:     181                                        |
 |------------------------------------------------------------------------------|
