@@ -1,0 +1,37 @@
+Reading Layer Conversion File 
+Reading DXF file...
+ERROR: 3D data has been found in this dxf file.
+  Most 3D data is not supported by dxf2a.
+  For the special case of DXF code 230 = -1.0, ARC, CIRCLE 
+  and SOLID entities will be mirrored about the Y axis.
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2698
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3230
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3266
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3510
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3848
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4092
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4638
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6146
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6182
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6424
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 6454
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6496
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6532
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6568
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6604
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6640
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6676
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 6706
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 6742
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 6772
+done.
+NOTE: Ignoring unsupported element VIEWPORT on line 1846.
+Layer conversion file: C:/Users/zhang/Desktop/Drawing1_l.cnv
+DXF file: C:/Users/zhang/Desktop/Drawing1.dxf
+BRD file: F:/projects/git/Hardware/magnetic/PCB/NODE/#Taaaaah17536.tmp
+Update existing design?: YES
+Use default text?: YES
+DXF units: MILLIMETERS
+Design units: MILLIMETERS
+Design precision: 4
+dxf2a complete.
