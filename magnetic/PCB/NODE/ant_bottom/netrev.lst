@@ -1,0 +1,78 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Allegro Netrev Import Logic                                      )
+(                                                                     )
+(    Drawing          : Node2.brd                                     )
+(    Software Version : 16.6-2015S108                                 )
+(    Date/Time        : Sun Nov 17 15:40:39 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+------ Directives ------------
+
+Ripup etch:                  No
+Ripup delete first segment:  No
+Ripup retain bondwire:       No
+Ripup symbols:               Always
+Missing symbol has error:    No
+DRC update:                  Yes
+Schematic directory:         'F:/projects/git/Hardware/magnetic/PCB/NODE'
+Design Directory:            'F:/projects/git/Hardware/magnetic/PCB/NODE'
+Old design name:             'F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd'
+New design name:             'F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd'
+
+CmdLine: netrev -$ -i F:/projects/git/Hardware/magnetic/PCB/NODE -y 1 -q netrev_constraint_report.xml F:/projects/git/Hardware/magnetic/PCB/NODE/#Taaaaab14272.tmp
+
+------ Preparing to read pst files ------
+
+Starting to read F:/projects/git/Hardware/magnetic/PCB/NODE/pstchip.dat 
+   Finished reading F:/projects/git/Hardware/magnetic/PCB/NODE/pstchip.dat (00:00:00.14)
+Starting to read F:/projects/git/Hardware/magnetic/PCB/NODE/pstxprt.dat 
+   Finished reading F:/projects/git/Hardware/magnetic/PCB/NODE/pstxprt.dat (00:00:00.00)
+Starting to read F:/projects/git/Hardware/magnetic/PCB/NODE/pstxnet.dat 
+   Finished reading F:/projects/git/Hardware/magnetic/PCB/NODE/pstxnet.dat (00:00:00.00)
+
+------ Oversights/Warnings/Errors ------
+
+
+------ Library Paths ------
+MODULEPATH =  . 
+           C:/Cadence/Cadence/Cadence_SPB_16.6/share/local/pcb/modules 
+
+PSMPATH =  F:/footprint/allegro/ 
+
+PADPATH =  F:/footprint/allegro/ 
+
+
+------ Summary Statistics ------
+
+
+netrev run on Nov 17 15:40:39 2019
+   DESIGN NAME : 'MANETIC2'
+   PACKAGING ON Feb 15 2016 19:53:59
+
+   COMPILE 'logic'
+   CHECK_PIN_NAMES OFF
+   CROSS_REFERENCE OFF
+   FEEDBACK OFF
+   INCREMENTAL OFF
+   INTERFACE_TYPE PHYSICAL
+   MAX_ERRORS 500
+   MERGE_MINIMUM 5
+   NET_NAME_CHARS '#%&()*+-./:=>?@[]^_`|'
+   NET_NAME_LENGTH 24
+   OVERSIGHTS ON
+   REPLACE_CHECK OFF
+   SINGLE_NODE_NETS ON
+   SPLIT_MINIMUM 0
+   SUPPRESS   20
+   WARNINGS ON
+
+ No error detected
+ No oversight detected
+ No warning detected
+
+cpu time      0:02:01
+elapsed time  0:00:01
+

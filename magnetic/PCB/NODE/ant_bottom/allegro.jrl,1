@@ -1,0 +1,125 @@
+\t (00:11:25) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:11:25)     Journal start - Sun Nov 17 15:34:43 2019
+\t (00:11:25)         Host=LAPTOP-U0A85BUA User=zhang Pid=14340 CPUs=8
+\t (00:11:25) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:11:25) 
+\d (00:11:25) Design opened: F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd
+\i (00:11:25) etchedit 
+\i (00:11:26) zoom in 1 
+\i (00:11:26) setwindow pcb
+\i (00:11:26) zoom in 797.498 -1103.836
+\i (00:11:26) trapsize 26448
+\i (00:11:26) zoom in 1 
+\i (00:11:26) setwindow pcb
+\i (00:11:26) zoom in 797.498 -1103.836
+\i (00:11:26) trapsize 13224
+\i (00:11:27) zoom out 1 
+\i (00:11:27) setwindow pcb
+\i (00:11:27) zoom out 800.143 -1101.191
+\i (00:11:27) trapsize 26448
+\i (00:11:28) zoom in 1 
+\i (00:11:28) setwindow pcb
+\i (00:11:28) zoom in 874.199 930.036
+\i (00:11:28) trapsize 13224
+\i (00:11:29) zoom in 1 
+\i (00:11:29) setwindow pcb
+\i (00:11:29) zoom in 874.199 930.037
+\i (00:11:29) trapsize 6612
+\i (00:11:30) zoom out 1 
+\i (00:11:30) setwindow pcb
+\i (00:11:30) zoom out 900.648 893.010
+\i (00:11:30) trapsize 13224
+\i (00:11:30) zoom out 1 
+\i (00:11:30) setwindow pcb
+\i (00:11:30) zoom out 900.647 893.009
+\i (00:11:30) trapsize 26448
+\i (00:11:31) zoom in 1 
+\i (00:11:31) setwindow pcb
+\i (00:11:31) zoom in 1006.441 -487.589
+\i (00:11:31) trapsize 13224
+\i (00:12:05) zoom out 1 
+\i (00:12:05) setwindow pcb
+\i (00:12:05) zoom out 710.220 -133.182
+\i (00:12:05) trapsize 26448
+\i (00:12:06) zoom in 1 
+\i (00:12:06) setwindow pcb
+\i (00:12:06) zoom in 757.828 -328.900
+\i (00:12:06) trapsize 13224
+\i (00:12:06) zoom in 1 
+\i (00:12:06) setwindow pcb
+\i (00:12:06) zoom in 757.828 -328.900
+\i (00:12:06) trapsize 6612
+\i (00:12:08) zoom in 1 
+\i (00:12:08) setwindow pcb
+\i (00:12:08) zoom in 884.780 -518.005
+\i (00:12:08) trapsize 3306
+\i (00:12:08) zoom in 1 
+\i (00:12:08) setwindow pcb
+\i (00:12:08) zoom in 884.781 -518.005
+\i (00:12:08) trapsize 1653
+\i (00:12:09) zoom out 1 
+\i (00:12:09) setwindow pcb
+\i (00:12:09) zoom out 885.773 -507.094
+\i (00:12:09) trapsize 3306
+\i (00:12:09) zoom out 1 
+\i (00:12:09) setwindow pcb
+\i (00:12:09) zoom out 885.772 -483.953
+\i (00:12:09) trapsize 6612
+\i (00:12:09) zoom in 1 
+\i (00:12:09) setwindow pcb
+\i (00:12:09) zoom in 851.390 -561.974
+\i (00:12:09) trapsize 3306
+\i (00:12:10) zoom in 1 
+\i (00:12:10) setwindow pcb
+\i (00:12:10) zoom in 851.390 -561.974
+\i (00:12:10) trapsize 1653
+\i (00:12:10) zoom in 1 
+\i (00:12:10) setwindow pcb
+\i (00:12:10) zoom in 882.136 -572.884
+\i (00:12:10) trapsize 827
+\i (00:12:11) zoom in 1 
+\i (00:12:11) setwindow pcb
+\i (00:12:11) zoom in 881.640 -569.247
+\i (00:12:11) trapsize 413
+\i (00:12:11) zoom out 1 
+\i (00:12:11) setwindow pcb
+\i (00:12:11) zoom out 878.913 -557.676
+\i (00:12:11) trapsize 827
+\i (00:12:11) zoom out 1 
+\i (00:12:11) setwindow pcb
+\i (00:12:11) zoom out 878.913 -557.510
+\i (00:12:11) trapsize 1653
+\i (00:12:11) zoom out 1 
+\i (00:12:11) setwindow pcb
+\i (00:12:11) zoom out 878.913 -557.510
+\i (00:12:11) trapsize 3306
+\i (00:12:11) zoom out 1 
+\i (00:12:11) setwindow pcb
+\i (00:12:11) zoom out 878.914 -557.511
+\i (00:12:11) trapsize 6612
+\i (00:12:11) zoom out 1 
+\i (00:12:11) setwindow pcb
+\i (00:12:11) zoom out 878.913 -557.511
+\i (00:12:11) trapsize 13224
+\i (00:12:12) zoom out 1 
+\i (00:12:12) setwindow pcb
+\i (00:12:12) zoom out 878.913 -560.155
+\i (00:12:12) trapsize 26448
+\i (00:12:13) zoom in 1 
+\i (00:12:13) setwindow pcb
+\i (00:12:13) zoom in -665.665 -1052.093
+\i (00:12:13) trapsize 13224
+\i (00:12:13) zoom in 1 
+\i (00:12:13) setwindow pcb
+\i (00:12:13) zoom in -665.665 -1052.093
+\i (00:12:13) trapsize 6612
+\i (00:12:14) zoom out 1 
+\i (00:12:14) setwindow pcb
+\i (00:12:14) zoom out -622.025 -999.196
+\i (00:12:14) trapsize 13224
+\i (00:12:14) zoom out 1 
+\i (00:12:14) setwindow pcb
+\i (00:12:14) zoom out -622.025 -999.196
+\i (00:12:14) trapsize 26448
+\i (00:12:23) exit 
+\t (00:12:24)     Journal end - Sun Nov 17 15:35:42 2019
