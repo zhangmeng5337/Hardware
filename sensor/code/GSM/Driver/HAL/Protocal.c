@@ -221,22 +221,22 @@ void module_process()
     //  module_prams_init();
     
   }
-  if(Get_Network_status()==SIMCOM_NET_OK)  
-    //     if(RtcWakeUp==1)
+ // if(Get_Network_status()==SIMCOM_NET_OK)  
+         if(RtcWakeUp==1)
   {
     sensor_adc();
     flow_get();
     data_tansmmit();
-    RtcWakeUp = 0;
-    Set_Network_status();
-    GSM_HardwareInit(ON);
-    EnterStopMode();
-    disableInterrupts(); 
-    RTC_Config(1,OFF);//1:55.2s
-    HardwareInit();
-    module_prams_init();
-    //uart_str.receive_flag =0;
-    enableInterrupts();
+//    RtcWakeUp = 0;
+//    Set_Network_status();
+//    GSM_HardwareInit(ON);
+//    EnterStopMode();
+//    disableInterrupts(); 
+//    RTC_Config(1,OFF);//1:55.2s
+//    HardwareInit();
+//    module_prams_init();
+//    //uart_str.receive_flag =0;
+//    enableInterrupts();
    
     
   }

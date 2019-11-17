@@ -23,7 +23,7 @@ void main(void)
     
     if(RtcWakeUp == 1)
     {
-     SIMCOM_Register_Network();
+     //SIMCOM_Register_Network();
      module_process(); 
     }
 	 // GPIO_ToggleBits( PORT_KEY, PIN_KEY );

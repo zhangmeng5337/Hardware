@@ -1,0 +1,318 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    ARTWORK LOG                                                      )
+(                                                                     )
+(    Drawing          : bottom.brd                                    )
+(    Software Version : 16.6-2015S108                                 )
+(    Date/Time        : Sun Nov 17 12:12:11 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+
+Results from parameter file ...
+    DEVICE-TYPE           GERBER_RS274X
+    OUTPUT-UNITS          MM
+    FILM-SIZE             2400000 1600000
+    FORMAT                3.5
+    ABORT-ON-ERROR        NO
+    SCALE                 1
+    SUPPRESS-LEAD-ZEROES  YES
+    SUPPRESS-TRAIL-ZEROES NO
+    SUPPRESS-EQUAL        YES
+    UNDEF-APT-CONT        NO
+
+
+
+================================================================
+     PROCESSING FILM < TOP >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/TOP.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  RECTANGLE  4.00000     x 3.00000       0.000 NO     DARK 
+
+     TOP created.
+
+
+================================================================
+     PROCESSING FILM < BOTTOM >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/BOTTOM.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     BOTTOM created.
+
+
+================================================================
+     PROCESSING FILM < SolderMaskTop >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/SolderMaskTop.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  RECTANGLE  4.00000     x 3.00000       0.000 NO     DARK 
+
+     SolderMaskTop created.
+
+
+================================================================
+     PROCESSING FILM < SolderMaskBottom >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/SolderMaskBottom.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     SolderMaskBottom created.
+
+
+================================================================
+     PROCESSING FILM < SilkscreenTop >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/SilkscreenTop.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+    WARNING: text composed 0 width line found at (4.5030 -2.5990)
+           ... using undefined line width of 0.1270
+
+    WARNING: text having Multiple 0 width lines; all will be treated the same as the first.
+           ... using undefined line width of 0.1270
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     SilkscreenTop created with warnings
+
+
+================================================================
+     PROCESSING FILM < SilkscreenBottom >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/SilkscreenBottom.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     SilkscreenBottom created.
+
+
+================================================================
+     PROCESSING FILM < PasteMaskTop >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/PasteMaskTop.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  RECTANGLE  4.00000     x 3.00000       0.000 NO     DARK 
+
+     PasteMaskTop created.
+
+
+================================================================
+     PROCESSING FILM < PasteMaskBottom >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/PasteMaskBottom.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     PasteMaskBottom created.
+
+
+================================================================
+     PROCESSING FILM < NCDrill >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom/NCDrill.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1270
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Photoplot window (13594500 x 12691900) exceeds film size (2400000 x 1600000)
+          stated in parameter file. 
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     NCDrill created.
+
+
+------------------------------------------------------
+ SUMMARY:
+        TOP created.
+        BOTTOM created.
+        SolderMaskTop created.
+        SolderMaskBottom created.
+        SilkscreenTop created with warnings
+        SilkscreenBottom created.
+        PasteMaskTop created.
+        PasteMaskBottom created.
+        NCDrill created.
+
+ ARTWORK had warnings

@@ -1,4 +1,6 @@
 page_setup/unit=Inch
+page_setup/paper_size_width=8.250
+page_setup/paper_size_height=11.750
 page_setup/margin_left=0.500
 page_setup/margin_right=0.500
 page_setup/margin_top=0.500

@@ -1,0 +1,2570 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    ARTWORK LOG                                                      )
+(                                                                     )
+(    Drawing          : Receiver2.brd                                 )
+(    Software Version : 16.6-2015S108                                 )
+(    Date/Time        : Sun Nov 17 12:32:17 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+
+Results from parameter file ...
+    DEVICE-TYPE           GERBER_RS274X
+    OUTPUT-UNITS          MM
+    FILM-SIZE             2400000 1600000
+    FORMAT                3.1
+    ABORT-ON-ERROR        NO
+    SCALE                 1
+    SUPPRESS-LEAD-ZEROES  YES
+    SUPPRESS-TRAIL-ZEROES NO
+    SUPPRESS-EQUAL        YES
+    UNDEF-APT-CONT        NO
+
+ WARNING: Generating metric output data from an english database
+ may cause slight roundoff error of coordinates in output file.
+
+
+
+
+================================================================
+     PROCESSING FILM < TOP >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/TOP.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: 0 width line found at (177.362 -1457.283)
+           ... using undefined line width of 5.000
+
+    WARNING: Multiple 0 width lines; all will be treated the same as the first.
+           ... using undefined line width of 5.000
+
+    WARNING: Segment with same start and end points at
+	(703.172 -1260.840) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(514.884 -1032.096) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(634.093 -812.572) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(496.124 -777.872) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(466.991 -877.184) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(56.616 -767.942) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(63.926 -382.869) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(25.185 -343.602) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(853.396 -263.237) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(853.396 -263.426) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(853.573 -263.426) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(713.498 -456.845) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(752.872 -1103.604) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1036.712 -936.128) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(873.143 -1409.882) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(871.809 -1411.226) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(871.431 -1411.226) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(931.912 -1348.392) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(941.923 -1344.190) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1444.565 -1423.501) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1397.828 -1515.648) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(846.866 -528.586) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(846.370 -528.264) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(784.074 -523.429) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(778.798 -488.514) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1083.428 -264.208) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1083.616 -264.208) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1083.616 -264.032) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1094.948 -330.283) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1075.186 -349.471) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1044.864 -365.445) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(988.059 -376.072) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(987.481 -376.622) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(987.304 -376.622) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(948.219 -415.657) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(947.641 -416.206) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(947.464 -416.206) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(947.464 -416.383) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(897.714 -450.856) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(897.136 -451.406) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(896.960 -451.406) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(896.960 -451.582) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(852.850 -528.080) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(990.452 -1078.415) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(990.452 -1079.320) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(979.810 -759.100) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1701.754 -351.200) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1634.647 -359.812) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1386.521 -360.418) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1386.413 -410.120) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1622.181 -410.108) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1591.318 -582.864) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1444.919 -616.757) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1371.636 -953.435) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1159.416 -766.665) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1168.369 -767.717) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1251.151 -642.355) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1169.199 -622.704) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1167.296 -622.670) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1142.296 -606.427) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1294.045 -567.714) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1123.667 -571.310) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1121.403 -568.562) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1122.351 -492.312) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1121.266 -489.675) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1034.682 -178.537) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1034.104 -179.086) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(922.085 -204.146) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1560.416 -1452.428) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1637.078 -1446.781) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1558.876 -1385.378) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1653.790 -591.140) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1804.101 -1373.100) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1881.002 -1378.102) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1953.693 -1368.852) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2132.853 -1359.872) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2257.345 -1292.072) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2004.467 -1231.924) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1882.069 -1310.106) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1927.502 -1063.178) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1928.408 -505.616) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1927.503 -422.641) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1939.034 -418.570) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1091.606 -991.722) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1141.640 -993.614) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1147.558 -348.183) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1153.255 -342.470) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1180.712 -329.009) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1209.908 -295.152) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1111.366 -395.115) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1110.202 -394.738) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1351.435 -1189.763) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1318.857 -1187.078) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1249.604 -1119.316) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1255.079 -1058.809) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1340.728 -1069.360) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1564.526 -903.826) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1763.246 -419.004) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1809.392 -505.616) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1843.052 -343.297) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2136.429 -1137.409) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2094.559 -1135.691) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2096.425 -993.383) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2101.210 -972.498) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2102.761 -723.730) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2051.742 -496.801) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2184.815 -441.525) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2392.845 -877.305) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2364.212 -906.737) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2324.380 -968.384) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2300.047 -997.117) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2315.523 -1316.350) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2275.889 -1333.290) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2254.371 -975.710) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2209.106 -994.419) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2155.204 -1000.858) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2154.097 -999.828) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(808.085 -728.286) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(994.355 -999.570) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(985.812 -681.042) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1116.999 -1113.206) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1122.766 -760.767) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1301.916 -586.716) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1203.845 -641.862) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1161.328 -641.706) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1115.751 -245.056) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1115.970 -178.776) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(380.638 -1104.673) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(471.796 -911.283) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(985.782 -979.358) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(874.922 -1092.822) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(851.477 -1092.665) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(832.357 -728.793) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(995.187 -1078.364) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1241.319 -1139.318) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1198.603 -1038.807) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1198.563 -1019.003) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1198.603 -1058.334) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1519.706 -774.554) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1436.634 -636.759) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1769.706 -1024.554) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1759.741 -385.102) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1799.941 -1259.909) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1907.501 -1024.554) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1868.131 -1024.554) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1907.501 -414.356) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1789.391 -544.240) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2049.813 -1263.678) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2033.642 -932.035) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2000.020 -715.499) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2000.020 -715.500) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2189.104 -1122.751) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2116.140 -1092.783) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2269.222 -1002.385) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2295.045 -1031.366) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2305.557 -529.673) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(965.406 -552.846) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(923.130 -552.924) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(972.603 -476.190) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1011.855 -476.385) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1011.837 -517.218) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(972.075 -476.250) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1012.050 -401.565) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1011.756 -441.051) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1058.736 -239.400) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1008.873 -239.148) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1130.025 -808.860) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1090.401 -507.408) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1054.968 -508.776) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1055.223 -473.088) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1153.130 -307.459) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1094.669 -365.140) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1087.739 -203.931) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1278.209 -879.519) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1277.894 -932.429) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(975.930 -855.369) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(898.616 -517.413) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1103.081 -780.959) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1789.398 -1059.183) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1808.114 -1280.909) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(858.346 -1437.035) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1590.410 -1418.527) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1625.848 -1419.117) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1625.848 -1419.117) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2149.060 -472.271) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1813.918 -1344.318) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1815.615 -1344.318) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1912.623 -1344.200) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1912.815 -1344.007) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1638.323 -385.653) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1943.402 -1344.007) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2226.831 -1325.736) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     0.20320                                  DARK 
+  CIRCLE     0.25400                                  DARK 
+  CIRCLE     0.30000                                  DARK 
+  CIRCLE     0.30480                                  DARK 
+  CIRCLE     0.38100                                  DARK 
+  CIRCLE     0.50000                                  DARK 
+  CIRCLE     0.50800                                  DARK 
+  CIRCLE     0.63500                                  DARK 
+  CIRCLE     0.65001                                  DARK 
+  CIRCLE     0.70000                                  DARK 
+  CIRCLE     0.76200                                  DARK 
+  CIRCLE     1.10000                                  DARK 
+  CIRCLE     1.50000                                  DARK 
+  SQUARE     2.49999                     0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.85999       0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.85999      90.000 NO     DARK 
+  RECTANGLE  0.40000     x 1.55001       0.000 NO     DARK 
+  RECTANGLE  0.45001     x 0.23000       0.000 NO     DARK 
+  RECTANGLE  0.45001     x 0.23000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000       0.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000      45.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000     135.000 NO     DARK 
+  RECTANGLE  0.50010     x 0.89990      90.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.55001       0.000 NO     DARK 
+  RECTANGLE  0.95999     x 0.80000       0.000 NO     DARK 
+  RECTANGLE  0.95999     x 0.80000      90.000 NO     DARK 
+  RECTANGLE  0.96009     x 0.79980       0.000 NO     DARK 
+  RECTANGLE  0.96009     x 0.79980      90.000 NO     DARK 
+  RECTANGLE  1.10000     x 1.50000       0.000 NO     DARK 
+  RECTANGLE  1.20000     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  1.20000     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  1.40000     x 1.15001       0.000 NO     DARK 
+  RECTANGLE  1.50000     x 0.38001      90.000 NO     DARK 
+  RECTANGLE  2.89999     x 2.89999      90.000 NO     DARK 
+  RECTANGLE  4.49999     x 1.20000      90.000 NO     DARK 
+
+     TOP created with warnings
+
+
+================================================================
+     PROCESSING FILM < BOTTOM >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/BOTTOM.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Segment with same start and end points at
+	(2180.642 -539.925) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2180.938 -533.752) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1971.316 -719.065) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2112.537 -551.930) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2082.967 -582.181) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1358.837 -399.854) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1358.876 -388.063) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1408.578 -387.955) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1408.566 -420.397) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(896.736 -1327.243) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(896.664 -1326.982) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(901.913 -1092.584) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(770.822 -1137.942) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(707.715 -1114.812) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(707.732 -1114.681) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(704.770 -1112.549) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(698.184 -1112.470) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(721.412 -1072.466) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(734.667 -1072.545) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(907.193 -920.260) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(933.991 -892.684) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1066.885 -928.170) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1114.935 -783.858) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1158.507 -733.744) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1118.610 -967.327) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1091.933 -995.870) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1117.712 -1187.424) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1174.347 -1242.568) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1211.711 -1269.515) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(931.839 -1289.679) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1052.769 -1190.475) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1051.715 -1189.909) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1089.425 -1215.711) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1144.569 -1272.346) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1174.595 -773.941) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1193.306 -784.781) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(762.500 -1117.940) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(868.583 -1071.432) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1688.563 -1283.807) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1292.421 -681.665) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1266.837 -701.042) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2201.940 -532.020) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2149.056 -568.586) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1383.682 -410.145) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     0.20320                                  DARK 
+  CIRCLE     0.25400                                  DARK 
+  CIRCLE     0.30000                                  DARK 
+  CIRCLE     0.30480                                  DARK 
+  CIRCLE     0.50000                                  DARK 
+  CIRCLE     0.50800                                  DARK 
+  CIRCLE     0.63500                                  DARK 
+  CIRCLE     0.76200                                  DARK 
+  CIRCLE     1.10000                                  DARK 
+  CIRCLE     1.50000                                  DARK 
+  RECTANGLE  1.10000     x 1.50000       0.000 NO     DARK 
+  RECTANGLE  4.49999     x 1.20000      90.000 NO     DARK 
+
+     BOTTOM created with warnings
+
+
+================================================================
+     PROCESSING FILM < SolderMaskTop >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/SolderMaskTop.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     1.10000                                  DARK 
+  SQUARE     2.49999                     0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.85999       0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.85999      90.000 NO     DARK 
+  RECTANGLE  0.40000     x 1.55001       0.000 NO     DARK 
+  RECTANGLE  0.45001     x 0.23000       0.000 NO     DARK 
+  RECTANGLE  0.45001     x 0.23000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000       0.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000      45.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000     135.000 NO     DARK 
+  RECTANGLE  0.50010     x 0.89990      90.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.55001       0.000 NO     DARK 
+  RECTANGLE  0.95999     x 0.80000       0.000 NO     DARK 
+  RECTANGLE  0.95999     x 0.80000      90.000 NO     DARK 
+  RECTANGLE  0.96009     x 0.79980       0.000 NO     DARK 
+  RECTANGLE  0.96009     x 0.79980      90.000 NO     DARK 
+  RECTANGLE  1.10000     x 1.50000       0.000 NO     DARK 
+  RECTANGLE  1.20000     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  1.20000     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  1.40000     x 1.15001       0.000 NO     DARK 
+  RECTANGLE  1.50000     x 0.38001      90.000 NO     DARK 
+  RECTANGLE  2.89999     x 2.89999      90.000 NO     DARK 
+  RECTANGLE  4.49999     x 1.20000      90.000 NO     DARK 
+
+     SolderMaskTop created with warnings
+
+
+================================================================
+     PROCESSING FILM < SolderMaskBottom >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/SolderMaskBottom.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     1.10000                                  DARK 
+  CIRCLE     1.50000                                  DARK 
+  RECTANGLE  1.10000     x 1.50000       0.000 NO     DARK 
+  RECTANGLE  4.49999     x 1.20000      90.000 NO     DARK 
+
+     SolderMaskBottom created with warnings
+
+
+================================================================
+     PROCESSING FILM < SilkscreenTop >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/SilkscreenTop.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: Segment with same start and end points at
+	(29.444 -1203.344) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(69.291 -1188.701) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(67.559 -1134.606) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(87.334 -1018.460) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(82.001 -1057.127) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(373.210 -1362.536) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(400.210 -1339.869) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(402.544 -1363.869) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(388.389 -1046.171) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(393.389 -1025.504) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(395.389 -1008.839) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(244.062 -66.166) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(450.787 -1510.632) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(410.787 -1533.632) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(450.787 -1533.965) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(566.695 -1509.940) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(528.695 -1563.940) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(452.949 -969.295) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(414.282 -963.962) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(452.282 -990.295) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(508.737 -966.432) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(470.070 -963.765) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(576.172 -959.250) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(557.506 -985.916) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(575.505 -981.916) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(537.500 -929.870) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(627.861 -1482.438) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(667.861 -1482.771) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(719.397 -1342.029) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(722.063 -1316.696) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(687.944 -1168.667) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(696.944 -1166.667) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1388.721 -1288.413) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(593.682 -929.870) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(733.083 -393.588) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(687.453 -216.801) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(736.260 -245.160) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(701.592 -235.160) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(718.927 -261.827) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(734.232 -1478.437) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(752.233 -1486.104) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(754.232 -1488.104) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(729.566 -1509.771) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(731.566 -1509.104) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(734.232 -1530.437) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(750.898 -1540.438) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(770.899 -1537.104) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(812.266 -976.769) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(809.266 -1016.769) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(861.266 -1016.769) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(859.599 -995.435) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(861.266 -976.769) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(859.599 -995.435) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(774.134 -1108.958) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(777.468 -1070.291) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(775.135 -1095.625) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(797.997 -773.025) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(759.330 -770.025) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(762.663 -774.359) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(784.663 -794.359) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(760.663 -796.358) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(793.425 -679.743) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(795.630 -739.231) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(869.309 -764.663) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(853.577 -673.478) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(813.892 -673.281) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(756.769 -618.476) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(751.436 -657.143) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(777.769 -634.476) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(779.102 -619.143) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(805.769 -658.476) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(808.435 -633.143) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(834.339 -631.557) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(892.209 -429.485) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(895.543 -422.486) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(856.876 -451.152) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(895.543 -474.152) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(870.209 -471.819) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(842.698 -422.851) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(802.698 -419.851) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(826.698 -443.851) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(802.698 -446.185) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(842.698 -447.518) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(842.031 -471.184) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(896.043 -319.533) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(895.375 -311.533) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(857.376 -314.200) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(860.709 -320.867) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(858.043 -337.533) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(892.043 -346.200) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(881.376 -364.200) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(896.709 -365.533) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(787.428 -245.784) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(752.760 -235.784) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(770.095 -262.451) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(788.094 -265.784) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(788.761 -292.451) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(750.094 -295.117) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(801.723 -372.501) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(825.056 -376.500) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(783.886 -376.071) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(900.892 -1488.867) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(920.893 -1485.533) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(880.226 -1509.533) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(882.226 -1510.200) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(881.560 -1510.867) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(881.560 -1533.533) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(900.892 -1540.867) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1005.926 -945.736) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1005.926 -945.775) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(922.141 -816.907) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(882.141 -813.907) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1030.653 -576.030) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(955.422 -576.030) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(939.060 -587.892) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(938.392 -579.892) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(900.393 -584.892) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(903.726 -589.226) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(900.393 -608.893) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(923.726 -612.892) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(935.060 -614.559) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(937.631 -486.959) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1026.096 -320.636) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1029.430 -316.303) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(989.430 -313.303) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(990.763 -317.970) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(990.097 -336.636) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1010.764 -341.636) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1027.429 -343.636) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1024.716 -285.777) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(915.095 -325.937) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(912.428 -364.604) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(940.094 -326.604) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1018.302 -138.957) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1042.302 -100.290) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1048.636 -116.290) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1042.636 -138.290) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1130.752 -1510.128) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1095.418 -1563.795) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1065.321 -1188.479) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1120.989 -1189.812) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1126.655 -1155.145) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1206.112 -568.339) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1201.446 -565.007) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1149.615 -469.353) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1170.121 -418.676) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1157.158 -407.127) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1184.264 -433.761) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1077.543 -493.770) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1137.031 -491.565) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1044.300 -322.449) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1039.823 -325.042) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1065.279 -354.269) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1069.521 -351.912) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1104.641 -316.792) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1088.377 -302.885) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1091.206 -298.171) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1305.193 -1459.919) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1336.526 -1439.918) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1340.193 -1426.585) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1359.745 -1006.248) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1227.727 -785.639) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1226.394 -790.305) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1246.674 -420.709) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1250.007 -427.376) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1282.674 -477.042) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1285.341 -470.042) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1262.006 -475.375) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1312.558 -444.029) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1309.558 -484.029) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1333.558 -460.029) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1335.892 -484.029) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1337.225 -444.029) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1363.891 -462.695) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1279.798 -507.545) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1285.132 -506.212) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1279.132 -528.212) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1265.631 -288.870) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1238.760 -314.798) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1251.017 -325.169) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1383.843 -1021.002) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1375.843 -1021.670) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1376.177 -1058.336) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1380.843 -1059.669) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1385.177 -1056.336) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1397.177 -1053.670) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1407.176 -1034.336) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1430.510 -1019.669) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1427.843 -1058.336) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1442.301 -964.835) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1439.968 -990.169) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1394.100 -859.191) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1388.767 -897.858) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1440.100 -858.525) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1356.833 -952.061) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1361.499 -953.394) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1365.833 -950.061) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1606.740 -1477.950) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1572.072 -1467.950) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1500.463 -1471.206) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1499.130 -1475.872) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1502.463 -1480.206) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1560.224 -514.970) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1557.557 -553.637) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1680.317 -445.998) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1641.650 -442.998) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1630.048 -30.343) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1667.380 -37.343) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1628.048 -59.010) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1628.714 -58.343) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1630.048 -58.343) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1630.714 -59.010) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1630.048 -59.677) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1628.714 -59.677) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1629.381 -85.344) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1735.676 -1477.241) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1742.676 -1474.575) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1742.167 -445.447) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1703.500 -440.114) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1723.499 -496.781) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1743.500 -493.447) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1804.465 -435.260) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1787.800 -434.927) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1790.466 -454.927) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1805.799 -456.260) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1769.508 -404.240) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1735.656 -21.746) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1754.322 -25.080) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1775.656 -21.746) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1775.656 -72.747) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1736.989 -70.080) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1876.120 -1470.157) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1836.120 -1467.157) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1837.453 -1471.824) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1872.120 -1497.490) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1850.786 -1490.824) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1931.481 -1466.300) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1934.815 -1461.967) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1894.815 -1458.967) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1896.148 -1463.634) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1899.481 -1506.300) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1933.482 -1513.633) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1921.029 -1249.694) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1924.363 -1245.361) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1884.363 -1242.361) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1885.696 -1247.028) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1923.696 -1266.361) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1905.697 -1296.694) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1907.696 -1298.694) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1923.459 -449.481) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1922.791 -441.481) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1884.792 -444.148) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1888.125 -450.815) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1900.124 -498.814) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1839.378 -71.462) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1873.378 -62.128) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1927.657 -122.526) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1963.656 -120.193) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2066.630 -1305.161) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2118.964 -1323.161) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2115.630 -1303.160) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2123.607 -1155.502) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2138.274 -1199.502) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2104.155 -1270.999) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2132.155 -1234.332) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2017.320 -511.662) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2007.320 -546.330) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2033.987 -528.995) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1993.810 -447.545) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1958.477 -463.878) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1978.478 -474.212) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1981.810 -469.546) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(1954.351 -404.358) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2144.745 -1306.563) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2278.968 -1154.699) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2240.301 -1151.699) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2193.556 -1150.343) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2207.143 -1263.954) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2191.828 -1249.308) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2207.261 -1249.505) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2207.379 -1249.387) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2192.891 -1263.914) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2169.694 -1110.303) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2097.017 -1111.641) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2348.586 -1157.771) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2351.920 -1150.772) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2311.920 -1176.438) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2333.254 -1174.771) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2351.920 -1176.438) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2366.169 -781.966) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2363.568 -518.673) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2360.568 -558.673) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2386.902 -532.674) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2367.279 -450.163) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2359.279 -450.831) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2364.279 -488.830) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2368.613 -485.497) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2388.280 -488.830) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2393.946 -454.163) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(2444.594 -1024.362) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     0.15001                                  DARK 
+
+     SilkscreenTop created with warnings
+
+
+================================================================
+     PROCESSING FILM < SilkscreenBottom >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/SilkscreenBottom.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     SilkscreenBottom created with warnings
+
+
+================================================================
+     PROCESSING FILM < PasteMaskTop >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/PasteMaskTop.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     1.10000                                  DARK 
+  SQUARE     2.49999                     0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.85999       0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.85999      90.000 NO     DARK 
+  RECTANGLE  0.40000     x 1.55001       0.000 NO     DARK 
+  RECTANGLE  0.45001     x 0.23000       0.000 NO     DARK 
+  RECTANGLE  0.45001     x 0.23000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000       0.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000      45.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000      90.000 NO     DARK 
+  RECTANGLE  0.50000     x 0.50000     135.000 NO     DARK 
+  RECTANGLE  0.50010     x 0.89990      90.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  0.65001     x 0.55001       0.000 NO     DARK 
+  RECTANGLE  0.95999     x 0.80000       0.000 NO     DARK 
+  RECTANGLE  0.95999     x 0.80000      90.000 NO     DARK 
+  RECTANGLE  0.96009     x 0.79980       0.000 NO     DARK 
+  RECTANGLE  0.96009     x 0.79980      90.000 NO     DARK 
+  RECTANGLE  1.10000     x 1.50000       0.000 NO     DARK 
+  RECTANGLE  1.20000     x 0.30000       0.000 NO     DARK 
+  RECTANGLE  1.20000     x 0.30000      90.000 NO     DARK 
+  RECTANGLE  1.40000     x 1.15001       0.000 NO     DARK 
+  RECTANGLE  1.50000     x 0.38001      90.000 NO     DARK 
+  RECTANGLE  2.89999     x 2.89999      90.000 NO     DARK 
+  RECTANGLE  4.49999     x 1.20000      90.000 NO     DARK 
+
+     PasteMaskTop created with warnings
+
+
+================================================================
+     PROCESSING FILM < PasteMaskBottom >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/PasteMaskBottom.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     1.10000                                  DARK 
+  RECTANGLE  1.10000     x 1.50000       0.000 NO     DARK 
+  RECTANGLE  4.49999     x 1.20000      90.000 NO     DARK 
+
+     PasteMaskBottom created with warnings
+
+
+================================================================
+     PROCESSING FILM < NcDrill >
+     TO FILE < F:/projects/git/Hardware/magnetic/PCB/RECEIVER/receive/NcDrill.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                5.000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: text composed 0 width line found at (-491.219 2077.873)
+           ... using undefined line width of 5.000
+
+    WARNING: text having Multiple 0 width lines; all will be treated the same as the first.
+           ... using undefined line width of 5.000
+
+    WARNING: Segment with same start and end points at
+	(407.780 832.039) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(965.780 1573.707) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+    WARNING: Segment with same start and end points at
+	(962.680 1829.956) will be ignored. Increasing output
+	accuracy may allow segment to be generated.
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+
+     NcDrill created with warnings
+
+
+------------------------------------------------------
+ SUMMARY:
+        TOP created with warnings
+        BOTTOM created with warnings
+        SolderMaskTop created with warnings
+        SolderMaskBottom created with warnings
+        SilkscreenTop created with warnings
+        SilkscreenBottom created with warnings
+        PasteMaskTop created with warnings
+        PasteMaskBottom created with warnings
+        NcDrill created with warnings
+
+ ARTWORK had warnings

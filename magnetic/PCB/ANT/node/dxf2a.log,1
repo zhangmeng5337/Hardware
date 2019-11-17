@@ -1,0 +1,111 @@
+Reading Layer Conversion File 
+Reading DXF file...
+ERROR: 3D data has been found in this dxf file.
+  Most 3D data is not supported by dxf2a.
+  For the special case of DXF code 230 = -1.0, ARC, CIRCLE 
+  and SOLID entities will be mirrored about the Y axis.
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2142
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2178
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2422
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2738
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 2774
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3018
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3896
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3932
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 3968
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4306
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4342
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4378
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 4620
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 5498
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 5534
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 5570
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 5908
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 5944
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 5980
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6222
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 6252
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6288
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6324
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6360
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6396
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6432
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 6468
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 7030
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 7060
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 7090
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 7120
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 7156
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 7220
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 7256
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 7292
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 7356
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 7902
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 7936
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 7972
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8006
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8042
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8078
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8114
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8150
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 8180
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 8216
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 8280
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on ARC at line 8344
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8384
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8418
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on LINE at line 8454
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 8484
+ERROR: 3D data (DXF code 230, value = 1.0000) detected on CIRCLE at line 8514
+done.
+NOTE: Ignoring unsupported element VIEWPORT on line 1846.
+NOTE: Ignoring unsupported element POINT on line 6470.
+NOTE: Ignoring unsupported element POINT on line 6498.
+NOTE: Ignoring unsupported element POINT on line 6526.
+NOTE: Ignoring unsupported element POINT on line 6554.
+NOTE: Ignoring unsupported element POINT on line 6582.
+NOTE: Ignoring unsupported element POINT on line 6610.
+NOTE: Ignoring unsupported element POINT on line 6638.
+NOTE: Ignoring unsupported element POINT on line 6666.
+NOTE: Ignoring unsupported element POINT on line 6694.
+NOTE: Ignoring unsupported element POINT on line 6722.
+NOTE: Ignoring unsupported element POINT on line 6750.
+NOTE: Ignoring unsupported element POINT on line 6778.
+NOTE: Ignoring unsupported element POINT on line 6806.
+NOTE: Ignoring unsupported element POINT on line 6834.
+NOTE: Ignoring unsupported element POINT on line 6862.
+NOTE: Ignoring unsupported element POINT on line 6890.
+NOTE: Ignoring unsupported element POINT on line 6918.
+NOTE: Ignoring unsupported element POINT on line 6946.
+NOTE: Ignoring unsupported element POINT on line 6974.
+NOTE: Ignoring unsupported element POINT on line 7164.
+NOTE: Ignoring unsupported element POINT on line 7300.
+NOTE: Ignoring unsupported element POINT on line 7364.
+NOTE: Ignoring unsupported element POINT on line 7392.
+NOTE: Ignoring unsupported element POINT on line 7420.
+NOTE: Ignoring unsupported element POINT on line 7448.
+NOTE: Ignoring unsupported element POINT on line 7476.
+NOTE: Ignoring unsupported element POINT on line 7504.
+NOTE: Ignoring unsupported element POINT on line 7532.
+NOTE: Ignoring unsupported element POINT on line 7560.
+NOTE: Ignoring unsupported element POINT on line 7588.
+NOTE: Ignoring unsupported element POINT on line 7616.
+NOTE: Ignoring unsupported element POINT on line 7644.
+NOTE: Ignoring unsupported element POINT on line 7672.
+NOTE: Ignoring unsupported element POINT on line 7700.
+NOTE: Ignoring unsupported element POINT on line 7728.
+NOTE: Ignoring unsupported element POINT on line 7756.
+NOTE: Ignoring unsupported element POINT on line 7784.
+NOTE: Ignoring unsupported element POINT on line 7812.
+NOTE: Ignoring unsupported element POINT on line 7840.
+NOTE: Ignoring unsupported element POINT on line 8224.
+NOTE: Ignoring unsupported element POINT on line 8288.
+Layer conversion file: F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom_l.cnv
+DXF file: F:/projects/git/Hardware/magnetic/PCB/ANT/ant_bottom.dxf
+BRD file: F:/projects/git/Hardware/magnetic/PCB/ANT/#Taaaaeq17032.tmp
+Update existing design?: YES
+Use default text?: YES
+DXF units: MILLIMETERS
+Design units: MILLIMETERS
+Design precision: 4
+dxf2a complete.
