@@ -121,13 +121,16 @@ void sensor_adc()
 {
   float  adc_tmp;
   adc_tmp = (adcGet(ADC_BAT_CHANNEL));
-  adc_tmp = adc_tmp*2+200000;
+  adc_tmp = adc_tmp*2;
   Data_usr.vbatf = adc_tmp;
   Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000);
   Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
   adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
   adc_tmp = adc_tmp/VOLTAGE_FACTOR*Data_usr.deepth_calibration;
   Data_usr.deep_f = adc_tmp;
+  
+  if(adc_tmp>=vol_offset)
+    adc_tmp= adc_tmp - vol_offset;
   if((adc_tmp*1.05)>Data_usr.Warn_Thres)
     Data_usr.status = 1;
   else
@@ -151,14 +154,14 @@ void flow_get()
   if(Flow.cal_flag == 1)
   { 
     flow_count = flow_count +1;
-    tmp = 1.0/Flow.pulse_period*6250/7.8*10;//123
+    tmp = 1.0/Flow.pulse_period*6250/7.0*10;//123
     tmp2 =( (uint32_t)tmp+tmp2)/flow_count;
     if(flow_count>100)
     {
       flow_count = 0;
       tmp2 = 0;
     }
-    //tmp2 =999997;
+    tmp2 =999997;
     Data_usr.flow[0]= (unsigned char)(tmp2/256/256/10);
     Data_usr.flow[1]= (unsigned char)(tmp2/256/10%256);//4294919544
     Data_usr.flow[2]= (unsigned char)(tmp2/10%256);
@@ -193,10 +196,10 @@ void data_tansmmit()
   len = len + 2;
   memcpy(p+len,&Data_usr.status  ,1);
   len = len + 1;
-  Data_usr.flow[0]=0x01;
-  Data_usr.flow[1]=0x02;
-  Data_usr.flow[2]=0x05;
-  Data_usr.flow[3]=0x01;      
+//  Data_usr.flow[0]=0x01;
+//  Data_usr.flow[1]=0x02;
+//  Data_usr.flow[2]=0x05;
+//  Data_usr.flow[3]=0x01;      
   memcpy(p+len,Data_usr.flow  ,4);
   len = len + 4;
   memcpy(p+len,&Data_usr.flow_status  ,1);
@@ -221,22 +224,22 @@ void module_process()
     //  module_prams_init();
     
   }
- // if(Get_Network_status()==SIMCOM_NET_OK)  
-         if(RtcWakeUp==1)
+  if(Get_Network_status()==SIMCOM_NET_OK)  
+      //   if(RtcWakeUp==1)
   {
     sensor_adc();
     flow_get();
     data_tansmmit();
-//    RtcWakeUp = 0;
-//    Set_Network_status();
-//    GSM_HardwareInit(ON);
-//    EnterStopMode();
-//    disableInterrupts(); 
-//    RTC_Config(1,OFF);//1:55.2s
-//    HardwareInit();
-//    module_prams_init();
-//    //uart_str.receive_flag =0;
-//    enableInterrupts();
+    RtcWakeUp = 0;
+    Set_Network_status();
+    GSM_HardwareInit(ON);
+    EnterStopMode();
+    disableInterrupts(); 
+    RTC_Config(1,OFF);//1:55.2s
+    HardwareInit();
+    module_prams_init();
+    //uart_str.receive_flag =0;
+    enableInterrupts();
    
     
   }

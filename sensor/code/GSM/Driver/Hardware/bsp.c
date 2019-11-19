@@ -42,6 +42,7 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
+  GPIO_Init( GPIOA, GPIO_Pin_5, GPIO_Mode_In_FL_No_IT ); 
 
   GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
   EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
@@ -376,51 +377,44 @@ void USART_SenByte(unsigned char *Str,unsigned char len)
 void adcInit(ADC_Channel_TypeDef num)
 {
   /* Enable ADC1 clock */
-  CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, ENABLE);
-  
-  /* Initialize and configure ADC1 */
-  ADC_Init(ADC1, ADC_ConversionMode_Continuous, ADC_Resolution_12Bit, ADC_Prescaler_2);
-  
-  /* ADC channel used for IDD measurement */
-  ADC_SamplingTimeConfig(ADC1, ADC_Group_FastChannels, ADC_SamplingTime_384Cycles);
-  
-  /* Enable ADC1 */
-  ADC_Cmd(ADC1, ENABLE);
-  ADC_VrefintCmd(ENABLE);
-  /* Disable SchmittTrigger for ADC_Channel, to save power */
-  ADC_SchmittTriggerConfig(ADC1, num, DISABLE);
-  
-  /* Enable ADC1 Channel used for IDD measurement */
-  ADC_ChannelCmd(ADC1, num, ENABLE);
-  
-  /* Start ADC1 Conversion using Software trigger*/
-  ADC_SoftwareStartConv(ADC1);
-  
+  CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,ENABLE);//开启ADC1时钟
+	
+	ADC_VrefintCmd(ENABLE); //使能内部参考电压
+	ADC_Init(ADC1,ADC_ConversionMode_Continuous,ADC_Resolution_12Bit,ADC_Prescaler_2);//连续转换，12位，转换时钟1分频
+	
+	ADC_ChannelCmd(ADC1,num,ENABLE);//使能内部参考电压通道
+	ADC_Cmd(ADC1,ENABLE);//ADC使能
+
   
 }
+uint32_t tmp;
+  float tmp2;
 uint32_t adcGet(ADC_Channel_TypeDef num)
 {
   unsigned char i;
-  uint32_t tmp;
-  float tmp2;
+  
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
    adcInit(ADC_Channel_Vrefint);
+  ADC_SoftwareStartConv(ADC1); //开启软件转换
   while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
   {}
-  
+  ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
   /* Get conversion value */
   tmp = ADC_GetConversionValue(ADC1);
    ADC_RATIO= (1.225 * 4096)/tmp;
 
-  adcInit(num);
+
+  ADC_DeInit(ADC1);
   tmp = 0;
   tmp2 =0;
+  adcInit(num);  ADC_SoftwareStartConv(ADC1); //开启软件转换
   for(i=0;i<samplecount;i++)
-  {
+  { 
+
 	  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
 	  {}
-	  
+	  ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
 	  /* Get conversion value */
 	  tmp = ADC_GetConversionValue(ADC1);
 	  
@@ -434,7 +428,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
 
   }
   ADCdata = tmp2 /samplecount;
-  ADC_DeInit(ADC1);
+   ADC_DeInit(ADC1);
   
   /* Disable ADC1 clock */
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);

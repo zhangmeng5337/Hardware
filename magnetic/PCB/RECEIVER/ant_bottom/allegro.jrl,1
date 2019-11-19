@@ -1,0 +1,24 @@
+\t (00:00:00) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:00:00)     Journal start - Sun Nov 17 16:06:38 2019
+\t (00:00:00)         Host=LAPTOP-U0A85BUA User=zhang Pid=1252 CPUs=8
+\t (00:00:00) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:00:00) 
+   (00:00:00) Loading axlcore.cxt 
+\t (00:00:04) Opening existing design...
+\d (00:00:04) Design opened: F:/projects/git/Hardware/magnetic/PCB/RECEIVER/Receiver2.brd
+\i (00:00:04) trapsize 10973
+\i (00:00:04) trapsize 10717
+\i (00:00:04) trapsize 11017
+\i (00:00:05) trapsize 11288
+\i (00:00:05) trapsize 11288
+\i (00:00:06) etchedit 
+\i (00:00:06) zoom out 1 
+\i (00:00:06) setwindow pcb
+\i (00:00:06) zoom out 656.121 -452.343
+\i (00:00:06) trapsize 22575
+\i (00:00:07) open 
+\i (00:00:14) fillin "F:\projects\git\Hardware\magnetic\PCB\ANT\top.brd"
+\i (00:00:14) cd "F:\projects\git\Hardware\magnetic\PCB\ANT"
+\t (00:00:14) Opening existing design...
+\i (00:00:14) trapsize 13435
+\t (00:00:14)     Journal end - Sun Nov 17 16:06:52 2019

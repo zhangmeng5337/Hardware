@@ -9,7 +9,8 @@
 
 #define CHECKSUM_INDEX   0x05
 #define SENSOR_FACTOR	 3.5/70
-#define VOLTAGE_FACTOR	45.5
+#define VOLTAGE_FACTOR	10000
+#define vol_offset	2.95
 typedef struct{
   unsigned char id[2];
 
