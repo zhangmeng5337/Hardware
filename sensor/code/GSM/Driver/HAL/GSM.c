@@ -13,8 +13,7 @@
 
 //unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"15k801n729.iok.la\",36732\r";
 //unsigned char one_net_key[]="*284261#abab#json* ";
-unsigned char one_net_key[]="*284261#abab#json* ";
-
+unsigned char one_net_key[]="*284261#abab#json* ";//284261：产品编号；abab：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 
 
@@ -244,8 +243,8 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
 void SIMCOM_ReConnect()
 {
   if(NET_STAUS!=SIMCOM_NET_NOT&&NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
-
- // if(NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
+    
+    // if(NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
     SIMCOM_TimeOut_Count++;
   else if(NET_STAUS==SIMCOM_NET_OK)
     SIMCOM_TimeOut_Count=0;
@@ -305,34 +304,34 @@ void SIMCOM_Register_Network()
       //server_ip_tmp=Establish_TCP_Connection;
     }
     break;
-//  case SIMCOM_SIM_OK:
-//    {
-//      if(SIMCOM_GetStatus((unsigned char*)Normal_ModeT,(unsigned char*)Respond_Network_Normal_ModeT,5000)==1)
-//      { //NET_STAUS=SIMCOM_SIM_OK;
-//        
-//        NET_STAUS=SIMCOM_Network_Normal_ModeT;
-//        memset(uart_str.UsartReceiveData,0,buffer_size);
-//      }
-//    }
-//    break;
-//  case SIMCOM_Network_Normal_ModeT:
-//    {
-//      if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity,160000)==1)
-//      { 
-//        NET_STAUS=SIMCOM_Network_Intensity_READY;
-//        memset(uart_str.UsartReceiveData,0,buffer_size);
-//      }
-//       // NET_STAUS=SIMCOM_Network_Normal_ModeT;
-//    }
-//    break;
+    //  case SIMCOM_SIM_OK:
+    //    {
+    //      if(SIMCOM_GetStatus((unsigned char*)Normal_ModeT,(unsigned char*)Respond_Network_Normal_ModeT,5000)==1)
+    //      { //NET_STAUS=SIMCOM_SIM_OK;
+    //        
+    //        NET_STAUS=SIMCOM_Network_Normal_ModeT;
+    //        memset(uart_str.UsartReceiveData,0,buffer_size);
+    //      }
+    //    }
+    //    break;
+    //  case SIMCOM_Network_Normal_ModeT:
+    //    {
+    //      if(SIMCOM_GetStatus((unsigned char*)Network_Intensity,(unsigned char*)Respond_Network_Intensity,160000)==1)
+    //      { 
+    //        NET_STAUS=SIMCOM_Network_Intensity_READY;
+    //        memset(uart_str.UsartReceiveData,0,buffer_size);
+    //      }
+    //       // NET_STAUS=SIMCOM_Network_Normal_ModeT;
+    //    }
+    //    break;
     
     
   case SIMCOM_Network_Intensity_READY:
     {
       
       // if(SIMCOM_GetStatus((unsigned char*)IPR_SET,(unsigned char*)Respond_OK,80000)==1)
-     
-     if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,50000)==1)
+      
+      if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,50000)==1)
       {
         
         NET_STAUS=SIMCOM_GPRS_READY;
@@ -346,11 +345,11 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_GPRS_READY:
     {
-     //  if(SIMCOM_GetStatus((unsigned char*)IPR_GET,(unsigned char*)Respond_IPR,80000)==1)
-     if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,30000)==1)
+      //  if(SIMCOM_GetStatus((unsigned char*)IPR_GET,(unsigned char*)Respond_IPR,80000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,30000)==1)
       {
-      NET_STAUS=SIMCOM_NET_PORT_CLOSE;
-       //   NET_STAUS=SIMCOM_GPRS_READY;
+        NET_STAUS=SIMCOM_NET_PORT_CLOSE;
+        //   NET_STAUS=SIMCOM_GPRS_READY;
         
         memset(uart_str.UsartReceiveData,0,buffer_size);
       }
@@ -410,7 +409,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_NET_ERROR:
     {
-     // GSM_HardwareInit(ON);                   //复位重启
+      // GSM_HardwareInit(ON);                   //复位重启
       GSM_HardwareInit(ON);
       NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
     }
@@ -444,7 +443,7 @@ unsigned char Get_Network_status()
 void Set_Network_status()
 {
   SIMCOM_TimeOut_Count = 0;
-   NET_STAUS = SIMCOM_NET_NOT;
+  NET_STAUS = SIMCOM_NET_NOT;
 }
 
 

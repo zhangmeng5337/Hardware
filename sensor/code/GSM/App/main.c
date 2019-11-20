@@ -4,9 +4,10 @@
 #include "GSM.h"
 #include "Protocal.h"
 
+extern unsigned char RtcWakeUp;
 extern Uart_Types uart_str;
 uint32_t tick = 0;
-extern unsigned char RtcWakeUp;
+
 
 void main(void)
 {
@@ -23,10 +24,10 @@ void main(void)
     
     if(RtcWakeUp == 1)
     {
-     SIMCOM_Register_Network();
-     module_process(); 
+      SIMCOM_Register_Network();
+      module_process(); 
     }
-	 // GPIO_ToggleBits( PORT_KEY, PIN_KEY );
-	//delay_ms(2);
+    // GPIO_ToggleBits( PORT_KEY, PIN_KEY );
+    //delay_ms(2);
   }
 }

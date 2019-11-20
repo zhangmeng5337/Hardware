@@ -5,9 +5,10 @@
 //#include "stm32l4xx_hal.h"
 //#include "stm32l4xx_hal.h"
 static magnetic_str magnetic;
-uint32_t MIN_PERIOD=1500;
+uint32_t MIN_PERIOD=1000;
 float MAX_THRES=35;//最大阈值
-float MIN_THRES=60;
+float MIN_THRES=15;
+float MAX_ERROR = 20;
  extern  short int ManeticBuffer[3];
  extern MagData_t dataMd;
 extern DataPack_stru DataPack;
@@ -151,7 +152,7 @@ void BaseLineTrace()
 	  unsigned char index_tmp;
 	  index_tmp = getIndex();
 
-	if(magnetic.Car_Flag == 1)//x direction trance start
+	if(magnetic.detect_flag == 1)//x direction trance start
 	{
 
 		magnetic.B[X_DIR][magnetic.index] = magnetic.B[X_DIR][index_tmp-1];
@@ -183,37 +184,57 @@ unsigned char vehicle_detect()
 	error_tmp =   magnetic.BaseLineVari-magnetic.VehicleVari;		
 
     if( error_tmp>= MAX_THRES){
-		magnetic.detect_flag = 1;
+		magnetic.detect_flag = 1;//大于阈值，疑似有车
 		res = 0;
     }
 	else
 	{
 		if(magnetic.detect_flag == 1)
 		{
-		    magnetic.detect_flag = 0;
-			magnetic.eTime = HAL_GetTick(); 
-			magnetic.elapseTime = magnetic.eTime - magnetic.sTime;
-			if(magnetic.elapseTime>= MIN_PERIOD){//检测有车时间超过最小周期，避免同一辆车未离开情况
-			
-				//if(error_tmp>= MAX_THRES)
-				magnetic.Car_Flag = 1;
-				magnetic.count = magnetic.count + 1;
-				magnetic.sTime = HAL_GetTick();
-				th = magnetic.sTime;
-				magnetic.noupdate = 0; 
-				res = 1;
-				}
-				else{ 
+			if(error_tmp<= MIN_THRES)
+			{			
+				magnetic.eTime = HAL_GetTick(); 
+				magnetic.elapseTime = magnetic.eTime - magnetic.sTime;	
+				if(magnetic.elapseTime>= MIN_PERIOD)//检测有车时间超过最小周期，避免同一辆车未离开情况
+				{
+					magnetic.detect_flag = 0;
+					magnetic.Car_Flag = 1;
+					magnetic.count = magnetic.count + 1;
 					magnetic.sTime = HAL_GetTick();
-					magnetic.noupdate = 1;//同一辆车未离开
+					th = magnetic.sTime;
+					magnetic.noupdate = 0; 
 					res = 1;
-					
-					//magnetic.sTime = HAL_GetTick();
+			    }
+				else
+				{ 
+				       	magnetic.detect_flag = 0;
+						magnetic.Car_Flag = 1;
+						magnetic.noupdate = 1;//同一辆车未离开
+						res = 1;
 				}
+			}			
+
 
 		}
 	    else
 			res = 0;
+
+		if(magnetic.Car_Flag == 1)//车停在地磁上方
+		{
+			if((magnetic.M[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index])>MAX_ERROR)
+			{
+				magnetic.noupdate = 1;//同一辆车未离开
+				magnetic.Car_Flag = 1;
+
+			}
+			else
+			{
+				magnetic.noupdate = 0;//
+				magnetic.Car_Flag = 0;
+
+			}
+
+		}
 	}
 
 
