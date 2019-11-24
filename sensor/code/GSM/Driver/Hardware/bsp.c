@@ -147,20 +147,21 @@ void RTC_Config(uint16_t time,unsigned char flag)
 	  RTC_WakeUpCmd(DISABLE);
 	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
 	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
-	  RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
+
+	  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值	
+          RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
           RTC_ClearITPendingBit(RTC_IT_WUT);
-	  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
 	  RTC_WakeUpCmd(ENABLE);
 
   }
   else
   {
 	  RTC_WakeUpCmd(DISABLE);
-	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
-	  RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
+	  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, DISABLE); //允许RTC时钟
+	  //RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
 	  RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断
           RTC_ClearITPendingBit(RTC_IT_WUT);
-	  RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
+	 // RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
 
 
   }
@@ -294,7 +295,7 @@ CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, DISABLE);
   PWR_UltraLowPowerCmd(ENABLE); //low power enable
   PWR_FastWakeUpCmd(ENABLE);  //wake up enable
   
-  RTC_Config(70,ON);//10:9s 
+  RTC_Config(350,ON);//10:9s 
   enableInterrupts();
  halt();  //enter stop mode
 }

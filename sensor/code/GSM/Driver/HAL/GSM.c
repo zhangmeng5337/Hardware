@@ -13,7 +13,7 @@
 
 //unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"15k801n729.iok.la\",36732\r";
 //unsigned char one_net_key[]="*284261#abab#json* ";
-unsigned char one_net_key[]="*284261#abab#json* ";//284261：产品编号；abab：鉴权码；json：脚本
+unsigned char one_net_key[]="*296832#571498615#json*";//284261：产品编号；abab：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 
 
@@ -382,7 +382,7 @@ void SIMCOM_Register_Network()
   case SIMCOM_Connect_Platform:
     {
       //server_ip_tmp=Establish_TCP_Connection;
-      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,60000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,240000)==1)
       {
      	NET_STAUS=SIMCOM_NET_OK;
         
