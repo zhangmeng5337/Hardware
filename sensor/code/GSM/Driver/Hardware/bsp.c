@@ -16,7 +16,7 @@
 
 extern   Uart_Types uart_str;
 float ADC_RATIO= ((uint16_t) 733); /*ADC_RATIO = ( 3 * 1000 * 1000)/4095 */
-
+extern unsigned int rtctime;//10:9s 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint32_t ADCdata = 0;
@@ -295,7 +295,7 @@ CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, DISABLE);
   PWR_UltraLowPowerCmd(ENABLE); //low power enable
   PWR_FastWakeUpCmd(ENABLE);  //wake up enable
   
-  RTC_Config(350,ON);//10:9s 
+  RTC_Config(rtctime,ON);//10:9s 
   enableInterrupts();
  halt();  //enter stop mode
 }

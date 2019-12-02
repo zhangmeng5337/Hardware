@@ -85,12 +85,12 @@ void GPIO_Initial(void)
     GPIO_Init(PORT_SX127X_AUX, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
     GPIO_ResetBits(PORT_SX127X_AUX, PIN_SX127X_AUX);
     /*SX1276数据接收外部中断*/
-    GPIO_Init(PORT_SX127X_DIO0, PIN_SX127X_DIO0, GPIO_Mode_In_FL_IT);                //dio0
+    GPIO_Init(PORT_SX127X_BUSY, PIN_SX127X_BUSY, GPIO_Mode_In_FL_IT);                //dio0
     EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Rising);
 
     /*SX1276数据接收外部中断*/
-    GPIO_Init(PORT_SX127X_DIO3, PIN_SX127X_DIO3, GPIO_Mode_In_FL_IT);                //dio3
-    EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising);
+    GPIO_Init(PORT_SX127X_DIO1, PIN_SX127X_DIO1, GPIO_Mode_In_FL_IT);                //dio3
+    EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Rising);
     //EXTI_SetHalfPortSelection(EXTI_HalfPort_D_LSB, ENABLE);
 }
 
@@ -203,7 +203,7 @@ void HardwareInit()
     GPIO_Initial();         // 初始化GPIO
     SPI_Initial();          //SPI初始化
     enableInterrupts();
-    LED_Init();             //调试LED初始化
+    //LED_Init();             //调试LED初始化
 }
 void LED_Init(void)
 {

@@ -1,0 +1,13 @@
+---- DEVICE_SEL Matches (2 in 2 files) ----
+board.h (src\boards\NucleoL152) line 84 : 
+#define OPT                                         PB_0
+#define DEVICE_SEL                                  PA_4
+
+/*!
+ * LED GPIO pins objects
+SX126xIoInit in sx126x-board.c (src\boards\NucleoL152) : 
+    GpioInit( &SX126x.DIO1, RADIO_DIO_1, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    GpioInit( &DeviceSel, DEVICE_SEL, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+}
+
+void SX126xIoIrqInit( DioIrqHandler dioIrq )

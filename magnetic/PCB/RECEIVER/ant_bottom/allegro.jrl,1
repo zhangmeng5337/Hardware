@@ -1,24 +1,203 @@
-\t (00:00:00) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
-\t (00:00:00)     Journal start - Sun Nov 17 16:06:38 2019
-\t (00:00:00)         Host=LAPTOP-U0A85BUA User=zhang Pid=1252 CPUs=8
-\t (00:00:00) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
-\t (00:00:00) 
-   (00:00:00) Loading axlcore.cxt 
-\t (00:00:04) Opening existing design...
-\d (00:00:04) Design opened: F:/projects/git/Hardware/magnetic/PCB/RECEIVER/Receiver2.brd
-\i (00:00:04) trapsize 10973
-\i (00:00:04) trapsize 10717
-\i (00:00:04) trapsize 11017
-\i (00:00:05) trapsize 11288
-\i (00:00:05) trapsize 11288
-\i (00:00:06) etchedit 
-\i (00:00:06) zoom out 1 
-\i (00:00:06) setwindow pcb
-\i (00:00:06) zoom out 656.121 -452.343
-\i (00:00:06) trapsize 22575
-\i (00:00:07) open 
-\i (00:00:14) fillin "F:\projects\git\Hardware\magnetic\PCB\ANT\top.brd"
-\i (00:00:14) cd "F:\projects\git\Hardware\magnetic\PCB\ANT"
-\t (00:00:14) Opening existing design...
-\i (00:00:14) trapsize 13435
-\t (00:00:14)     Journal end - Sun Nov 17 16:06:52 2019
+\t (00:07:46) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:07:46)     Journal start - Sat Nov 30 16:45:48 2019
+\t (00:07:46)         Host=LAPTOP-U0A85BUA User=zhang Pid=1696 CPUs=8
+\t (00:07:46) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
+\t (00:07:46) 
+\d (00:07:46) Design opened: F:/projects/git/Hardware/magnetic/PCB/RECEIVER/Receiver2.brd
+\i (00:07:46) etchedit 
+\i (00:07:47) zoom in 1 
+\i (00:07:47) setwindow pcb
+\i (00:07:47) zoom in 940.565 -784.196
+\i (00:07:47) trapsize 11288
+\i (00:07:48) zoom in 1 
+\i (00:07:48) setwindow pcb
+\i (00:07:48) zoom in 920.247 -222.077
+\i (00:07:48) trapsize 5644
+\i (00:07:48) zoom in 1 
+\i (00:07:48) setwindow pcb
+\i (00:07:48) zoom in 920.247 -222.077
+\i (00:07:48) trapsize 2822
+\i (00:07:49) zoom out 1 
+\i (00:07:49) setwindow pcb
+\i (00:07:49) zoom out 934.921 -360.349
+\i (00:07:49) trapsize 5644
+\i (00:07:51) zoom in 1 
+\i (00:07:51) setwindow pcb
+\i (00:07:51) zoom in 1029.736 -189.906
+\i (00:07:51) trapsize 2822
+\i (00:07:53) pick grid 1045.539 -214.738
+\t (00:07:53) last pick:  1045.551 -214.734
+\i (00:07:54) pick grid 1041.588 -214.174
+\t (00:07:54) last pick:  1041.573 -214.188
+\i (00:07:55) zoom in 1 
+\i (00:07:55) setwindow pcb
+\i (00:07:55) zoom in 1041.024 -210.788
+\i (00:07:55) trapsize 1411
+\i (00:07:56) zoom out 1 
+\i (00:07:56) setwindow pcb
+\i (00:07:56) zoom out 1026.068 -219.254
+\i (00:07:56) trapsize 2822
+\i (00:07:57) zoom out 1 
+\i (00:07:57) setwindow pcb
+\i (00:07:57) zoom out 1026.068 -219.253
+\i (00:07:57) trapsize 5644
+\i (00:07:58) zoom in 1 
+\i (00:07:58) setwindow pcb
+\i (00:07:58) zoom in 1026.068 -219.253
+\i (00:07:58) trapsize 2822
+\i (00:08:03) setwindow form.find
+\i (00:08:03) FORM find all_on  
+\i (00:08:05) setwindow pcb
+\i (00:08:05) pick grid 1043.000 -221.511
+\t (00:08:05) last pick:  1043.016 -221.520
+\i (00:08:05) move 
+\t (00:08:05) last pick:  1043.016 -221.520
+\t (00:08:05) Moving C35 / CAP NP_C0402_GRM1555C1H101JA01# / C0402.
+\t (00:08:05) Pick new location for the element(s).
+\i (00:08:07) prepopup 1051.465 -204.015
+\i (00:08:09) cancel 
+\i (00:08:09) etchedit 
+\i (00:08:15) color192 
+\i (00:08:15) setwindow cvf.dialog
+\i (00:08:15) cvf layer_mode
+\i (00:08:15) setwindow pcb
+\i (00:08:15) etchedit 
+\i (00:08:17) setwindow cvf.dialog
+\i (00:08:17) cvf cancel
+\i (00:08:20) setwindow pcb
+\i (00:08:20) enved 
+\i (00:08:21) etchedit 
+\i (00:08:25) setwindow form.prfedit
+\i (00:08:25) FORM prfedit cancel  
+\i (00:08:27) setwindow pcb
+\i (00:08:27) color192 
+\i (00:08:27) setwindow cvf.dialog
+\i (00:08:27) cvf layer_mode
+\i (00:08:27) setwindow pcb
+\i (00:08:27) etchedit 
+\i (00:08:31) setwindow cvf.dialog
+\i (00:08:31) cvf layer_tree_item 'Components'
+\i (00:08:39) cvf layer_tree_item 'Manufacturing'
+\i (00:08:43) cvf layer_tree_item 'Package Geometry'
+\i (00:08:44) cvf layer_tree_item 'Board Geometry'
+\i (00:08:47) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:08:48) cvf layer_tree_item 'Package Geometry'
+\i (00:08:50) cvf layer_tree_item 'Components'
+\i (00:08:52) cvf layer_tree_item 'Manufacturing'
+\i (00:08:52) cvf layer_tree_item 'Drawing Format'
+\i (00:08:54) cvf okay
+\i (00:08:55) setwindow pcb
+\i (00:08:55) zoom in 1 
+\i (00:08:55) setwindow pcb
+\i (00:08:55) zoom in 1015.910 -253.680
+\i (00:08:55) trapsize 1411
+\i (00:08:56) pick grid 1041.307 -228.283
+\t (00:08:56) last pick:  1041.300 -228.267
+\i (00:08:56) move 
+\t (00:08:57) last pick:  1041.300 -228.267
+\t (00:08:57) Moving C35 / CAP NP_C0402_GRM1555C1H101JA01# / C0402.
+\t (00:08:57) Pick new location for the element(s).
+\i (00:08:57) zoom out 1 
+\i (00:08:57) setwindow pcb
+\i (00:08:57) zoom out 1041.307 -228.283
+\i (00:08:57) trapsize 2822
+\i (00:08:57) zoom out 1 
+\i (00:08:57) setwindow pcb
+\i (00:08:57) zoom out 1041.306 -228.283
+\i (00:08:57) trapsize 5644
+\i (00:08:58) zoom out 1 
+\i (00:08:58) setwindow pcb
+\i (00:08:58) zoom out 1041.306 -228.284
+\i (00:08:58) trapsize 11288
+\i (00:08:59) pick grid 1140.637 157.750
+\t (00:08:59) last pick:  1140.633 157.755
+\i (00:08:59) etchedit 
+\i (00:08:59) zoom in 1 
+\i (00:08:59) setwindow pcb
+\i (00:08:59) zoom in 1140.637 135.175
+\i (00:08:59) trapsize 5644
+\i (00:09:00) zoom in 1 
+\i (00:09:00) setwindow pcb
+\i (00:09:00) zoom in 1145.152 122.759
+\i (00:09:00) trapsize 2822
+\i (00:09:00) zoom out 1 
+\i (00:09:00) setwindow pcb
+\i (00:09:00) zoom out 1139.509 90.025
+\i (00:09:00) trapsize 5644
+\i (00:09:02) undo 
+\i (00:09:02) trapsize 1411
+\i (00:09:02) etchedit 
+\i (00:09:08) color192 
+\i (00:09:09) setwindow cvf.dialog
+\i (00:09:09) cvf layer_mode
+\i (00:09:09) setwindow pcb
+\i (00:09:09) etchedit 
+\i (00:09:12) setwindow cvf.dialog
+\i (00:09:12) cvf layer_tree_item 'Conductor' 'Stack-Up'
+\i (00:09:14) cvf layer_tree_item 'Non-Conductor' 'Stack-Up'
+\i (00:09:16) cvf layer_tree_item 'Areas'
+\i (00:09:16) cvf layer_tree_item 'Package Geometry'
+\i (00:09:26) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:09:27) cvf layer_tree_item 'Components'
+\i (00:09:38) cvf layer_tree_item 'Manufacturing'
+\i (00:09:41) cvf layer_tree_item 'Drawing Format'
+\i (00:09:43) cvf layer_tree_item 'Package Geometry'
+\i (00:09:45) cvf okay
+\i (00:09:47) setwindow pcb
+\i (00:09:47) zoom out 1 
+\i (00:09:47) setwindow pcb
+\i (00:09:47) zoom out 1051.465 -282.745
+\i (00:09:47) trapsize 2822
+\i (00:09:47) zoom out 1 
+\i (00:09:47) setwindow pcb
+\i (00:09:47) zoom out 1051.466 -282.746
+\i (00:09:47) trapsize 5644
+\i (00:09:47) zoom out 1 
+\i (00:09:47) setwindow pcb
+\i (00:09:47) zoom out 1051.465 -282.746
+\i (00:09:47) trapsize 11288
+\i (00:09:48) zoom in 1 
+\i (00:09:48) setwindow pcb
+\i (00:09:48) zoom in 1051.466 -282.745
+\i (00:09:48) trapsize 5644
+\i (00:09:48) zoom in 1 
+\i (00:09:48) setwindow pcb
+\i (00:09:48) zoom in 1051.466 -282.745
+\i (00:09:48) trapsize 2822
+\i (00:09:49) zoom out 1 
+\i (00:09:49) setwindow pcb
+\i (00:09:49) zoom out 1044.693 -270.329
+\i (00:09:49) trapsize 5644
+\i (00:09:51) pick grid 1046.951 -227.436
+\t (00:09:51) last pick:  1046.955 -227.448
+\i (00:09:51) move 
+\t (00:09:52) last pick:  1046.955 -227.448
+\t (00:09:52) Moving C35 / CAP NP_C0402_GRM1555C1H101JA01# / C0402.
+\t (00:09:52) Pick new location for the element(s).
+\i (00:09:54) zoom out 1 
+\i (00:09:54) setwindow pcb
+\i (00:09:54) zoom out 1115.805 8.474
+\i (00:09:54) trapsize 11288
+\i (00:09:54) zoom in 1 
+\i (00:09:54) setwindow pcb
+\i (00:09:54) zoom in 1072.912 119.091
+\i (00:09:54) trapsize 5644
+\i (00:09:55) zoom in 1 
+\i (00:09:55) setwindow pcb
+\i (00:09:55) zoom in 1072.912 119.091
+\i (00:09:55) trapsize 2822
+\i (00:09:56) pick grid 1071.783 105.546
+\t (00:09:56) last pick:  1071.798 105.534
+\i (00:09:57) etchedit 
+\i (00:09:59) color192 
+\i (00:10:00) setwindow cvf.dialog
+\i (00:10:00) cvf layer_mode
+\i (00:10:00) setwindow pcb
+\i (00:10:00) etchedit 
+\i (00:10:11) setwindow cvf.dialog
+\i (00:10:11) cvf cancel
+\i (00:10:13) setwindow pcb
+\i (00:10:13) exit 
+\e (00:10:13) Do you want to save the changes you made to Receiver2.brd?
+\i (00:10:14) fillin no 
+\t (00:10:15)     Journal end - Sat Nov 30 16:48:17 2019

@@ -1,5 +1,3 @@
-
-
 #include "stm8l15x_flash.h"
 #include "sx1276.h"
 #include "bsp.h"
