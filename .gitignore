@@ -30,6 +30,7 @@ settings/
 #.edp
 .ewt
 /settings/
+/*.si4project/
 *.out
 *.log
 *.cnv
