@@ -151,7 +151,7 @@ void HW_int(void)
    // Tick_Configration();
     //RCC_Configuration();
     GPIO_int();
-    SPI2_Int();
+    SPI_Int();
     enableInterrupts();
     //LED_Init();             //µ÷ÊÔLED³õÊ¼»¯ 
 }
@@ -241,7 +241,7 @@ void main(void)
     
     while( 1 )
     {
-        Radio.IrqProcess( ); // Process Radio IRQ
+        Radio.IrqProcess( ); // Process Radio IRQ£»
     }
 }
 

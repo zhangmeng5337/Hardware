@@ -1,6 +1,6 @@
 #include "bsp.h"
 
-void SPI2_Int()
+void SPI_Int()
 {
     CLK_PeripheralClockConfig(CLK_Peripheral_SPI1, ENABLE);
     SPI_DeInit(SPI1);

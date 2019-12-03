@@ -918,6 +918,10 @@ void RadioRx( uint32_t timeout )
     {
         SX126xSetRx( timeout << 6 );
     }
+	SX126x_TX_CTRL_LOW( );    
+	SX126x_TX_CTRL_LOW( );  	
+	SX126x_RX_CTRL_HIGH( );     
+	SX126x_RX_CTRL_HIGH( ); 
 }
 
 void RadioRxBoosted( uint32_t timeout )

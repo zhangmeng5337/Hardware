@@ -25,6 +25,7 @@
 #include "sx126x.h"
 #include "sx126x-board.h"
 #include "delay.h"
+#include "bsp.h"
 
 //#define USE_TCXO
 /*!
@@ -136,8 +137,12 @@ uint8_t SX126xGetPayload( uint8_t *buffer, uint8_t *size,  uint8_t maxSize )
 
 void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout )
 {
-    SX126xSetPayload( payload, size );
-    SX126xSetTx( timeout );
+	 SX126xSetPayload( payload, size );   
+	 SX126x_TX_CTRL_HIGH( );    
+	 SX126x_TX_CTRL_HIGH( );  	
+	 SX126x_RX_CTRL_LOW( );     
+	 SX126x_RX_CTRL_LOW( );   
+     SX126xSetTx( timeout );
 }
 
 uint8_t SX126xSetSyncWord( uint8_t *syncWord )
