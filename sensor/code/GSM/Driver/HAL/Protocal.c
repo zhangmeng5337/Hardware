@@ -36,7 +36,7 @@ void module_prams_init()
   
   if(FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS)==0x5a)
   {
-      Data_usr.Warn_Thres = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1)+
+    Data_usr.Warn_Thres = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1)+
       FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+2)/10.0;	
     
     
@@ -44,7 +44,8 @@ void module_prams_init()
   }
   else
     Data_usr.Warn_Thres = 3.5;	
-  
+  if(Data_usr.Warn_Thres<=0)
+    Data_usr.Warn_Thres = 3.5;  
 }
 
 unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
@@ -96,16 +97,17 @@ void OilCalibration()
   }
   // adc_sum = adc_sum /samplecount;
   Data_usr.deepth_calibration = SENSOR_FACTOR ;
-  Data_usr.Warn_Thres = adc_tmp/VOLTAGE_FACTOR/1000.0*Data_usr.deepth_calibration;
+  Data_usr.Warn_Thres = adc_tmp/VOLTAGE_FACTOR*Data_usr.deepth_calibration;
   // Data_usr.deep_f = adc_tmp*Data_usr.deepth_calibration;
-  
+  if(Data_usr.Warn_Thres<=0)
+    Data_usr.Warn_Thres = 3.5;
   tmp[0] = 0x5a;
   //  flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,1);
   //*(adc_tmp+1)=adc_tmp;
   tmp[1]= ((unsigned char)(Data_usr.Warn_Thres*10))/10;
   tmp[2]= ((unsigned char)(Data_usr.Warn_Thres*10))%10;
-  tmp[1]=2;  
-  tmp[2]=1;
+  // tmp[1]=2;  
+  // tmp[2]=1;
   flash_operation(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS,tmp,3);
   free(tmp);
   
@@ -115,23 +117,28 @@ void OilCalibration()
 
 
 unsigned char p[17];
-
+float  adc_tmp,adc_tmp2,adc_tmp3;
 extern unsigned char RtcWakeUp;
 void sensor_adc()
 {
-  float  adc_tmp;
+  
   adc_tmp = (adcGet(ADC_BAT_CHANNEL));
   adc_tmp = adc_tmp*2;
   Data_usr.vbatf = adc_tmp;
   Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000);
   Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
-  adc_tmp = (adcGet(ADC_SENSOR_CHANNEL));
-  adc_tmp = adc_tmp/VOLTAGE_FACTOR*Data_usr.deepth_calibration;
-  Data_usr.deep_f = adc_tmp;
+  adc_tmp2 = (adcGet(ADC_SENSOR_CHANNEL));
   
-  if(adc_tmp>=vol_offset)
-    adc_tmp= adc_tmp - vol_offset;
-  if((adc_tmp*1.05)>Data_usr.Warn_Thres)
+  adc_tmp2 = adc_tmp2/VOLTAGE_FACTOR;
+  adc_tmp3 = adc_tmp2;
+  if(adc_tmp2>=vol_offset)
+    adc_tmp2= adc_tmp2 - vol_offset;
+  
+  adc_tmp2 = adc_tmp2*Data_usr.deepth_calibration;
+  Data_usr.deep_f = adc_tmp2;
+  
+  
+  if((Data_usr.deep_f*1.05)>Data_usr.Warn_Thres)
     Data_usr.status = 1;
   else
   {
@@ -139,11 +146,11 @@ void sensor_adc()
     //adc_tmp = Data_usr.Warn_Thres;
     
   }
-  if(adc_tmp>3.5)
-    adc_tmp = 3.5;
-  Data_usr.deepth[0] = (unsigned char)(adc_tmp*10/10 );
-  Data_usr.deepth[1] = (((unsigned char)(adc_tmp*10))%10 );
-  Data_usr.deepth_percent = (unsigned char)(adc_tmp/Data_usr.Warn_Thres*100);
+  if(adc_tmp2>3.5)
+    adc_tmp2 = 3.5;
+  Data_usr.deepth[0] = (unsigned char)(adc_tmp2*10/10 );
+  Data_usr.deepth[1] = (((unsigned char)(adc_tmp2*10))%10 );
+  Data_usr.deepth_percent = (unsigned char)(adc_tmp2/Data_usr.Warn_Thres*100);
 }
 static uint32_t tmp2;
 unsigned int flow_count;
@@ -161,7 +168,7 @@ void flow_get()
       flow_count = 0;
       tmp2 = 0;
     }
-    tmp2 =999997;
+   // tmp2 =999997;
     Data_usr.flow[0]= (unsigned char)(tmp2/256/256/10);
     Data_usr.flow[1]= (unsigned char)(tmp2/256/10%256);//4294919544
     Data_usr.flow[2]= (unsigned char)(tmp2/10%256);
@@ -179,7 +186,7 @@ void data_tansmmit()
   len = 2;
   memcpy(p+len,Data_usr.id,2);
   len = len + 2;
-  Data_usr.len = 17;
+  Data_usr.len = 12;
   memcpy(p+len,&Data_usr.len ,1);
   
   
@@ -196,10 +203,10 @@ void data_tansmmit()
   len = len + 2;
   memcpy(p+len,&Data_usr.status  ,1);
   len = len + 1;
-//  Data_usr.flow[0]=0x01;
-//  Data_usr.flow[1]=0x02;
-//  Data_usr.flow[2]=0x05;
-//  Data_usr.flow[3]=0x01;      
+  //  Data_usr.flow[0]=0x01;
+  //  Data_usr.flow[1]=0x02;
+  //  Data_usr.flow[2]=0x05;
+  //  Data_usr.flow[3]=0x01;      
   memcpy(p+len,Data_usr.flow  ,4);
   len = len + 4;
   memcpy(p+len,&Data_usr.flow_status  ,1);
@@ -224,25 +231,29 @@ void module_process()
     //  module_prams_init();
     
   }
-  if(Get_Network_status()==SIMCOM_NET_OK)  
-      //   if(RtcWakeUp==1)
-  {
-    sensor_adc();
-    flow_get();
-    data_tansmmit();
-    RtcWakeUp = 0;
-    Set_Network_status();
-    GSM_HardwareInit(ON);
-    EnterStopMode();
-    disableInterrupts(); 
-    RTC_Config(1,OFF);//1:55.2s
-    HardwareInit();
-    module_prams_init();
-    //uart_str.receive_flag =0;
-    enableInterrupts();
-   
-    
-  }
+#if !DEGUG_SENSOR 
+  if(Get_Network_status()==SIMCOM_NET_OK) 
+#else
+    if(RtcWakeUp==1)
+#endif
+    {
+      sensor_adc();
+      flow_get();
+      data_tansmmit();
+#if !DEGUG_SENSOR 
+      RtcWakeUp = 0;
+      Set_Network_status();
+      GSM_HardwareInit(ON);
+      EnterStopMode();
+      disableInterrupts(); 
+      RTC_Config(1,OFF);//1:55.2s
+      HardwareInit();
+      module_prams_init();
+      //uart_str.receive_flag =0;
+      enableInterrupts();
+#endif    
+      
+    }
   
   //free(p);
   

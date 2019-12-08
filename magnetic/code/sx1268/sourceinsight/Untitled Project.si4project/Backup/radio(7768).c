@@ -1021,7 +1021,6 @@ void RadioSetMaxPayloadLength( RadioModems_t modem, uint8_t max )
     }
 }
 
-
 void RadioSetPublicNetwork( bool enable )
 {
     RadioPublicNetwork.Current = RadioPublicNetwork.Previous = enable;
@@ -1039,7 +1038,6 @@ void RadioSetPublicNetwork( bool enable )
         SX126xWriteRegister( REG_LR_SYNCWORD, ( LORA_MAC_PRIVATE_SYNCWORD >> 8 ) & 0xFF );
         SX126xWriteRegister( REG_LR_SYNCWORD + 1, LORA_MAC_PRIVATE_SYNCWORD & 0xFF );
     }
-	
 }
 
 uint32_t RadioGetWakeupTime( void )

@@ -19,6 +19,7 @@
 #include "GSM_BSP.h"
 #define ON   1
 #define OFF  0
+#define DEGUG_SENSOR    0
 // SPIÒý½Å¶¨Òå SCLK(PB5), MOSI(PB6), MISO(PB7)
 #define PORT_SPI        GPIOB
 #define PIN_SCLK        GPIO_Pin_5
@@ -48,7 +49,7 @@
 #define ADC_BAT_CHANNEL         ADC_Channel_1
 #define ADC_SENSOR_CHANNEL      ADC_Channel_2
 
-#define samplecount			100
+#define samplecount			200
 
 
 void GSM_HardwareInit(unsigned char flag);

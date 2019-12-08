@@ -32,7 +32,7 @@ void delay_ms(uint32_t num)//不是很精确
 void GPIO_Initial(void)
 {
   
-  GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+ //GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
@@ -43,7 +43,7 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
   GPIO_Init( GPIOA, GPIO_Pin_5, GPIO_Mode_In_FL_No_IT ); 
-
+ // GPIO_Init( GPIOA, GPIO_Pin_4, GPIO_Mode_Out_OD_HiZ_Slow ); 
   GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
   EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
  // GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_Out_PP_High_Fast);
@@ -122,14 +122,14 @@ void Sensor_HardwareInit(unsigned char flag)
  
     if(flag == ON)
     {
-		GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
+		GPIO_ResetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
 
 
 	}
 	else
 	{
-		GPIO_ResetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
-
+		
+                GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
 
 	}
 
@@ -346,8 +346,10 @@ void HardwareInit()
   LED_Init();
   //delay_ms(5000);
   //调试LED初始化
+#if !DEGUG_SENSOR 
   GSM_HardwareInit(ON);
-  Sensor_HardwareInit(OFF);
+#endif
+  Sensor_HardwareInit(ON);
   Init_Timer1();
 enableInterrupts();
 }
@@ -381,19 +383,17 @@ void adcInit(ADC_Channel_TypeDef num)
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,ENABLE);//开启ADC1时钟
 	
 	ADC_VrefintCmd(ENABLE); //使能内部参考电压
-	ADC_Init(ADC1,ADC_ConversionMode_Continuous,ADC_Resolution_12Bit,ADC_Prescaler_2);//连续转换，12位，转换时钟1分频
-	
+	ADC_Init(ADC1,ADC_ConversionMode_Single,ADC_Resolution_12Bit,ADC_Prescaler_1);//连续转换，12位，转换时钟1分频
+	ADC_Cmd(ADC1,ENABLE);//ADC使能	
 	ADC_ChannelCmd(ADC1,num,ENABLE);//使能内部参考电压通道
-	ADC_Cmd(ADC1,ENABLE);//ADC使能
 
-  
+        
 }
 uint32_t tmp;
   float tmp2;
 uint32_t adcGet(ADC_Channel_TypeDef num)
 {
-  unsigned char i;
-  
+  unsigned int i;
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
    adcInit(ADC_Channel_Vrefint);
@@ -409,10 +409,12 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   ADC_DeInit(ADC1);
   tmp = 0;
   tmp2 =0;
-  adcInit(num);  ADC_SoftwareStartConv(ADC1); //开启软件转换
+  adcInit(num);  
+  
   for(i=0;i<samplecount;i++)
   { 
-
+         ADC_SoftwareStartConv(ADC1); //开启软件转换
+         delay_ms(10);
 	  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
 	  {}
 	  ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
@@ -422,7 +424,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
 	  /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
 	  tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
 	  /* Waiting Delay 200ms */
-	  delay_ms(2);
+	  
 	  
 	  /* DeInitialize ADC1 */
 
@@ -434,6 +436,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   /* Disable ADC1 clock */
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);
   return ADCdata;
+
 
 }
 

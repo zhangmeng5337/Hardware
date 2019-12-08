@@ -726,7 +726,6 @@ void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
 
             break;
     }
-	
 }
 
 void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
@@ -923,7 +922,6 @@ void RadioRx( uint32_t timeout )
 	SX126x_TX_CTRL_LOW( );  	
 	SX126x_RX_CTRL_HIGH( );     
 	SX126x_RX_CTRL_HIGH( ); 
-       
 }
 
 void RadioRxBoosted( uint32_t timeout )
@@ -1021,7 +1019,6 @@ void RadioSetMaxPayloadLength( RadioModems_t modem, uint8_t max )
     }
 }
 
-
 void RadioSetPublicNetwork( bool enable )
 {
     RadioPublicNetwork.Current = RadioPublicNetwork.Previous = enable;
@@ -1039,7 +1036,6 @@ void RadioSetPublicNetwork( bool enable )
         SX126xWriteRegister( REG_LR_SYNCWORD, ( LORA_MAC_PRIVATE_SYNCWORD >> 8 ) & 0xFF );
         SX126xWriteRegister( REG_LR_SYNCWORD + 1, LORA_MAC_PRIVATE_SYNCWORD & 0xFF );
     }
-	
 }
 
 uint32_t RadioGetWakeupTime( void )
@@ -1070,7 +1066,6 @@ void RadioOnDioIrq( void )
 
 void RadioIrqProcess( void )
 {
-  SX126xGetRssiInst(  ); 
    // if( IrqFired == TRUE )
     if(GPIO_ReadInputDataBit(RADIO_DIO1_PORT, RADIO_DIO1_PIN)==1)
     {

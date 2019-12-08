@@ -97,7 +97,7 @@ void SX126xInit( DioIrqHandler dioIrq )
 
 #endif
     
-    SX126xSetDio2AsRfSwitchCtrl( FALSE );
+    SX126xSetDio2AsRfSwitchCtrl( TRUE );
     OperatingMode = MODE_STDBY_RC;
 }
 
@@ -423,10 +423,10 @@ void SX126xSetDio3AsTcxoCtrl( RadioTcxoCtrlVoltage_t tcxoVoltage, uint32_t timeo
 
     SX126xWriteCommand( RADIO_SET_TCXOMODE, buf, 4 );
 }
-   uint8_t buf[4],buff[4];
+ uint8_t buf[4],buff[4];
 void SX126xSetRfFrequency( uint32_t frequency )
 {
-  
+    //uint8_t buf[4];
     uint32_t freq = 0;
 
     if( ImageCalibrated == FALSE )
@@ -441,8 +441,7 @@ void SX126xSetRfFrequency( uint32_t frequency )
     buf[2] = ( uint8_t )( ( freq >> 8 ) & 0xFF );
     buf[3] = ( uint8_t )( freq & 0xFF );
     SX126xWriteCommand( RADIO_SET_RFFREQUENCY, buf, 4 );
-    //SX126xReadRegisters( RADIO_SET_RFFREQUENCY, buff, 4 );
-
+	SX126xReadCommand( RADIO_SET_RFFREQUENCY, buff, 4 );
 }
 
 void SX126xSetPacketType( RadioPacketTypes_t packetType )
@@ -636,15 +635,14 @@ RadioStatus_t SX126xGetStatus( void )
     status.Value = stat;
     return status;
 }
-uint8_t buf2[1];
-int8_t rssi = 0;
+
 int8_t SX126xGetRssiInst( void )
 {
-    
-    
+    uint8_t buf[1];
+    int8_t rssi = 0;
 
-    SX126xReadCommand( RADIO_GET_RSSIINST, buf2, 1 );
-    rssi = -buf2[0] >> 1;
+    SX126xReadCommand( RADIO_GET_RSSIINST, buf, 1 );
+    rssi = -buf[0] >> 1;
     return rssi;
 }
 

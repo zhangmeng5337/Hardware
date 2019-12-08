@@ -7,7 +7,7 @@ extern volatile  uint32_t TickCounter;
 extern volatile  uint32_t ticktimer;
 
 void Delay_Us (uint32_t delay);
-void Delay_Ms(uint32_t delay );
+void DelayMs(uint32_t x);
 void HAL_Delay_nMS(uint32_t Delay );
 
 #define HAL_GetTick()  TickCounter

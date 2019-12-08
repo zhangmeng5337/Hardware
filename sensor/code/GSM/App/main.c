@@ -17,6 +17,7 @@ void main(void)
   //test();
   uart_str.receive_flag =0;
   RtcWakeUp = 1;
+  
   while(1)
   {
     // delay_ms(1000);
@@ -24,7 +25,9 @@ void main(void)
     
     if(RtcWakeUp == 1)
     {
+      #if !DEGUG_SENSOR 
       SIMCOM_Register_Network();
+      #endif
       module_process(); 
     }
     // GPIO_ToggleBits( PORT_KEY, PIN_KEY );

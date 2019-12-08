@@ -1,233 +1,109 @@
-\t (00:03:29) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
-\t (00:03:29)     Journal start - Sat Nov 30 16:41:31 2019
-\t (00:03:29)         Host=LAPTOP-U0A85BUA User=zhang Pid=1696 CPUs=8
-\t (00:03:29) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
-\t (00:03:29) 
-\d (00:03:29) Design opened: F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd
-\i (00:03:29) etchedit 
-\i (00:03:31) zoom out 1 
-\i (00:03:31) setwindow pcb
-\i (00:03:31) zoom out -59.423 520.091
-\i (00:03:31) trapsize 26448
-\i (00:03:32) zoom in 1 
-\i (00:03:32) setwindow pcb
-\i (00:03:32) zoom in -503.754 943.263
-\i (00:03:32) trapsize 13224
-\i (00:03:35) setwindow form.vf_vis
-\i (00:03:35) FORM vf_vis 1 all_colorvisible NO 
-\i (00:03:36) FORM vf_vis 2 all_colorvisible NO 
-\i (00:03:38) setwindow pcb
-\i (00:03:38) zoom out 1 
-\i (00:03:38) setwindow pcb
-\i (00:03:38) zoom out -347.709 1041.122
-\i (00:03:38) trapsize 26448
-\i (00:03:40) zoom in 1 
-\i (00:03:40) setwindow pcb
-\i (00:03:40) zoom in -19.750 -693.885
-\i (00:03:40) trapsize 13224
-\i (00:03:40) zoom in 1 
-\i (00:03:40) setwindow pcb
-\i (00:03:40) zoom in -19.749 -693.884
-\i (00:03:40) trapsize 6612
-\i (00:03:42) zoom out 1 
-\i (00:03:42) setwindow pcb
-\i (00:03:42) zoom out -97.772 -475.686
-\i (00:03:42) trapsize 13224
-\i (00:03:43) zoom in 1 
-\i (00:03:43) setwindow pcb
-\i (00:03:43) zoom in 8.022 -777.196
-\i (00:03:43) trapsize 6612
-\i (00:03:43) zoom in 1 
-\i (00:03:43) setwindow pcb
-\i (00:03:43) zoom in 8.022 -777.196
-\i (00:03:43) trapsize 3306
-\i (00:03:44) zoom out 1 
-\i (00:03:44) setwindow pcb
-\i (00:03:44) zoom out 4.055 -768.600
-\i (00:03:44) trapsize 6612
-\i (00:03:52) pdf out 
-\i (00:03:55) setwindow form.pdf_out
-\i (00:03:55) FORM pdf_out pdftree 'MULTISEL YES' SilkscreenTOp 
-\i (00:03:55) FORM pdf_out pdftree  SilkscreenTOp 
-\i (00:03:58) FORM pdf_out export  
-\t (00:03:59) Starting Exporting PDF File...
-\t (00:04:02) PDF output completed.
-\i (00:05:09) FORM pdf_out cancel  
-\i (00:05:09) setwindow pcb
-\i (00:05:09) etchedit 
-\i (00:05:10) open 
-\e (00:05:10) Do you want to save the changes you made to Node2.brd?
-\i (00:05:12) fillin no 
-\i (00:05:14) fillin "Node1.brd"
-\t (00:05:14) Opening existing design...
-\i (00:05:14) trapsize 9637
-\d (00:05:15) Design opened: F:/projects/git/Hardware/magnetic/PCB/NODE/Node1.brd
-\i (00:05:15) etchedit 
-\i (00:05:18) zoom out 1 
-\i (00:05:18) setwindow pcb
-\i (00:05:18) zoom out -132.047 -289.690
-\i (00:05:18) trapsize 19274
-\i (00:05:19) zoom in 1 
-\i (00:05:19) setwindow pcb
-\i (00:05:19) zoom in 130.084 -690.595
-\i (00:05:19) trapsize 9637
-\i (00:05:19) zoom in 1 
-\i (00:05:19) setwindow pcb
-\i (00:05:19) zoom in 130.085 -690.594
-\i (00:05:19) trapsize 4819
-\i (00:05:19) zoom in 1 
-\i (00:05:19) setwindow pcb
-\i (00:05:19) zoom in 130.084 -690.594
-\i (00:05:19) trapsize 2409
-\i (00:05:19) zoom in 1 
-\i (00:05:19) setwindow pcb
-\i (00:05:19) zoom in 130.084 -690.594
-\i (00:05:19) trapsize 1205
-\i (00:05:20) zoom out 1 
-\i (00:05:20) setwindow pcb
-\i (00:05:20) zoom out 73.707 -652.045
-\i (00:05:20) trapsize 2409
-\i (00:05:21) zoom out 1 
-\i (00:05:21) setwindow pcb
-\i (00:05:21) zoom out 73.706 -652.046
-\i (00:05:21) trapsize 4819
-\i (00:05:21) zoom out 1 
-\i (00:05:21) setwindow pcb
-\i (00:05:21) zoom out 73.706 -652.046
-\i (00:05:21) trapsize 9637
-\i (00:05:22) zoom out 1 
-\i (00:05:22) setwindow pcb
-\i (00:05:22) zoom out 73.706 -652.045
-\i (00:05:22) trapsize 19274
-\i (00:05:24) zoom out 1 
-\i (00:05:24) setwindow pcb
-\i (00:05:24) zoom out 77.561 -659.755
-\i (00:05:24) trapsize 38549
-\i (00:05:27) open 
-\i (00:05:29) fillin "Node2.brd"
-\t (00:05:29) Opening existing design...
-\i (00:05:29) trapsize 13224
-\d (00:05:29) Design opened: F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd
-\i (00:05:30) etchedit 
-\i (00:05:30) zoom out 1 
-\i (00:05:30) setwindow pcb
-\i (00:05:30) zoom out -167.861 485.708
-\i (00:05:30) trapsize 26448
-\i (00:05:31) zoom out 1 
-\i (00:05:31) setwindow pcb
-\i (00:05:31) zoom out -173.150 517.446
-\i (00:05:31) trapsize 52897
-\i (00:05:32) zoom in 1 
-\i (00:05:32) setwindow pcb
-\i (00:05:32) zoom in -130.833 62.536
-\i (00:05:32) trapsize 26448
-\i (00:05:34) zoom in 1 
-\i (00:05:34) setwindow pcb
-\i (00:05:34) zoom in 6.698 -1111.767
-\i (00:05:34) trapsize 13224
-\i (00:05:34) zoom in 1 
-\i (00:05:34) setwindow pcb
-\i (00:05:34) zoom in 6.698 -1111.767
-\i (00:05:34) trapsize 6612
-\i (00:05:35) zoom out 1 
-\i (00:05:35) setwindow pcb
-\i (00:05:35) zoom out 1.409 -1054.903
-\i (00:05:35) trapsize 13224
-\i (00:05:36) zoom in 1 
-\i (00:05:36) setwindow pcb
-\i (00:05:36) zoom in -27.684 -309.061
-\i (00:05:36) trapsize 6612
-\i (00:05:46) zoom out 1 
-\i (00:05:46) setwindow pcb
-\i (00:05:46) zoom out -91.159 -209.880
-\i (00:05:46) trapsize 13224
-\i (00:05:47) zoom in 1 
-\i (00:05:47) setwindow pcb
-\i (00:05:47) zoom in 1.409 -725.621
-\i (00:05:47) trapsize 6612
-\i (00:05:47) zoom in 1 
-\i (00:05:47) setwindow pcb
-\i (00:05:47) zoom in 13.311 -725.621
-\i (00:05:47) trapsize 3306
-\i (00:05:48) zoom in 1 
-\i (00:05:48) setwindow pcb
-\i (00:05:48) zoom in 15.294 -725.621
-\i (00:05:48) trapsize 1653
-\i (00:05:48) zoom in 1 
-\i (00:05:48) setwindow pcb
-\i (00:05:48) zoom in 18.931 -693.883
-\i (00:05:48) trapsize 827
-\i (00:05:51) zoom out 1 
-\i (00:05:51) setwindow pcb
-\i (00:05:51) zoom out -9.170 -684.295
-\i (00:05:51) trapsize 1653
-\i (00:05:51) zoom out 1 
-\i (00:05:51) setwindow pcb
-\i (00:05:51) zoom out -14.129 -689.255
-\i (00:05:51) trapsize 3306
-\i (00:05:51) zoom out 1 
-\i (00:05:51) setwindow pcb
-\i (00:05:51) zoom out -22.725 -703.801
-\i (00:05:51) trapsize 6612
-\i (00:05:52) zoom out 1 
-\i (00:05:52) setwindow pcb
-\i (00:05:52) zoom out -2.889 -1011.923
-\i (00:05:52) trapsize 13224
-\i (00:05:53) zoom in 1 
-\i (00:05:53) setwindow pcb
-\i (00:05:53) zoom in -135.130 -131.195
-\i (00:05:53) trapsize 6612
-\i (00:06:52) zoom out 1 
-\i (00:06:52) setwindow pcb
-\i (00:06:52) zoom out -123.228 -460.476
-\i (00:06:52) trapsize 13224
-\i (00:06:53) zoom in 1 
-\i (00:06:53) setwindow pcb
-\i (00:06:53) zoom in 24.882 -608.586
-\i (00:06:53) trapsize 6612
-\i (00:06:55) zoom in 1 
-\i (00:06:55) setwindow pcb
-\i (00:06:55) zoom in -174.802 -98.135
-\i (00:06:55) trapsize 3306
-\i (00:06:56) zoom in 1 
-\i (00:06:56) setwindow pcb
-\i (00:06:56) zoom in -165.545 -118.632
-\i (00:06:56) trapsize 1653
-\i (00:06:56) zoom out 1 
-\i (00:06:56) setwindow pcb
-\i (00:06:56) zoom out -124.219 -229.714
-\i (00:06:56) trapsize 3306
-\i (00:07:10) zoom out 1 
-\i (00:07:10) setwindow pcb
-\i (00:07:10) zoom out -92.482 -126.566
-\i (00:07:10) trapsize 6612
-\i (00:07:11) zoom in 1 
-\i (00:07:11) setwindow pcb
-\i (00:07:11) zoom in -195.629 -180.785
-\i (00:07:11) trapsize 3306
-\i (00:07:35) zoom out 1 
-\i (00:07:35) setwindow pcb
-\i (00:07:35) zoom out -138.104 -128.549
-\i (00:07:35) trapsize 6612
-\i (00:07:35) zoom out 1 
-\i (00:07:35) setwindow pcb
-\i (00:07:35) zoom out -138.103 -128.549
-\i (00:07:35) trapsize 13224
-\i (00:07:36) zoom in 1 
-\i (00:07:36) setwindow pcb
-\i (00:07:36) zoom in -61.404 -271.370
-\i (00:07:36) trapsize 6612
-\i (00:07:39) zoom out 1 
-\i (00:07:39) setwindow pcb
-\i (00:07:39) zoom out -343.077 -166.899
-\i (00:07:39) trapsize 13224
-\i (00:07:40) zoom out 1 
-\i (00:07:40) setwindow pcb
-\i (00:07:40) zoom out -78.595 -452.540
-\i (00:07:40) trapsize 26448
-\i (00:07:41) open 
-\i (00:07:45) fillin "F:\projects\git\Hardware\magnetic\PCB\RECEIVER\Receiver2.brd"
-\i (00:07:45) cd "F:\projects\git\Hardware\magnetic\PCB\RECEIVER"
-\t (00:07:45) Opening existing design...
-\i (00:07:45) trapsize 22575
-\t (00:07:46)     Journal end - Sat Nov 30 16:45:48 2019
+\t (00:00:01) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:00:01)     Journal start - Sun Dec 08 17:54:55 2019
+\t (00:00:01)         Host=LAPTOP-U0A85BUA User=zhang Pid=312 CPUs=8
+\t (00:00:01) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe F:\projects\git\Hardware\magnetic\PCB\NODE\Node2.brd
+\t (00:00:01) 
+   (00:00:01) Loading axlcore.cxt 
+\t (00:00:02) Opening existing design...
+\d (00:00:03) Design opened: F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd
+\i (00:00:03) trapsize 12855
+\i (00:00:03) trapsize 12555
+\i (00:00:03) trapsize 12907
+\i (00:00:04) trapsize 13224
+\i (00:00:04) trapsize 13224
+\i (00:00:06) etchedit 
+\i (00:00:07) zoom in 1 
+\i (00:00:07) setwindow pcb
+\i (00:00:07) zoom in -889.898 797.798
+\i (00:00:07) trapsize 6612
+\i (00:00:07) zoom in 1 
+\i (00:00:07) setwindow pcb
+\i (00:00:07) zoom in -889.898 797.798
+\i (00:00:07) trapsize 3306
+\i (00:00:07) zoom in 1 
+\i (00:00:07) setwindow pcb
+\i (00:00:07) zoom in -889.898 797.799
+\i (00:00:07) trapsize 1653
+\i (00:00:09) zoom out 1 
+\i (00:00:09) setwindow pcb
+\i (00:00:09) zoom out -889.898 797.799
+\i (00:00:09) trapsize 3306
+\i (00:00:09) zoom out 1 
+\i (00:00:10) setwindow pcb
+\i (00:00:10) zoom out -889.898 797.800
+\i (00:00:10) trapsize 6612
+\i (00:00:12) zoom in 1 
+\i (00:00:12) setwindow pcb
+\i (00:00:12) zoom in -817.164 760.772
+\i (00:00:12) trapsize 3306
+\i (00:00:13) zoom out 1 
+\i (00:00:13) setwindow pcb
+\i (00:00:13) zoom out -826.421 782.592
+\i (00:00:13) trapsize 6612
+\i (00:00:15) pick grid -815.842 822.264
+\t (00:00:15) last pick:  -815.840 822.264
+\i (00:00:15) slide 
+\t (00:00:15) Waiting for the destination pick.
+\t (00:00:15) New cline would result in DRC error(s); retaining old cline.
+\i (00:00:16) pick grid -932.214 913.510
+\t (00:00:16) last pick:  -932.212 913.512
+\t (00:00:16) No DRC errors detected.
+\i (00:00:16) etchedit 
+\i (00:00:18) setwindow form.find
+\i (00:00:18) FORM find all_off  
+\i (00:00:19) FORM find nets YES 
+\i (00:00:20) setwindow pcb
+\i (00:00:20) pick grid -794.683 787.881
+\t (00:00:20) last pick:  -794.684 787.880
+\i (00:00:21) zoom out 1 
+\i (00:00:21) setwindow pcb
+\i (00:00:21) zoom out -794.683 787.881
+\i (00:00:21) trapsize 13224
+\i (00:04:18) zoom in 1 
+\i (00:04:18) setwindow pcb
+\i (00:04:18) zoom in -979.821 970.374
+\i (00:04:18) trapsize 6612
+\i (00:04:18) zoom in 1 
+\i (00:04:18) setwindow pcb
+\i (00:04:18) zoom in -978.499 971.697
+\i (00:04:18) trapsize 3306
+\i (00:04:19) zoom out 1 
+\i (00:04:19) setwindow pcb
+\i (00:04:19) zoom out -978.498 971.697
+\i (00:04:19) trapsize 6612
+\i (00:04:19) zoom out 1 
+\i (00:04:19) setwindow pcb
+\i (00:04:19) zoom out -978.499 971.697
+\i (00:04:19) trapsize 13224
+\i (00:04:20) zoom in 1 
+\i (00:04:20) setwindow pcb
+\i (00:04:20) zoom in -737.819 770.690
+\i (00:04:20) trapsize 6612
+\i (00:04:20) zoom in 1 
+\i (00:04:20) setwindow pcb
+\i (00:04:20) zoom in -737.819 770.691
+\i (00:04:20) trapsize 3306
+\i (00:04:20) zoom in 1 
+\i (00:04:20) setwindow pcb
+\i (00:04:20) zoom in -737.819 770.691
+\i (00:04:20) trapsize 1653
+\i (00:04:29) zoom out 1 
+\i (00:04:29) setwindow pcb
+\i (00:04:29) zoom out -710.378 748.210
+\i (00:04:29) trapsize 3306
+\i (00:04:30) zoom out 1 
+\i (00:04:30) setwindow pcb
+\i (00:04:30) zoom out -710.378 748.210
+\i (00:04:30) trapsize 6612
+\i (00:04:30) zoom out 1 
+\i (00:04:30) setwindow pcb
+\i (00:04:30) zoom out -710.379 748.210
+\i (00:04:30) trapsize 13224
+\i (00:04:55) open 
+\e (00:04:55) Do you want to save the changes you made to Node2.brd?
+\i (00:04:56) fillin no 
+\i (00:05:02) fillin "F:\projects\git\Hardware\magnetic\PCB\RECEIVER\Receiver2.brd"
+\i (00:05:02) cd "F:\projects\git\Hardware\magnetic\PCB\RECEIVER"
+\t (00:05:02) Opening existing design...
+\i (00:05:02) trapsize 22575
+\t (00:05:02)     Journal end - Sun Dec 08 17:59:56 2019

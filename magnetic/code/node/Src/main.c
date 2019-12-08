@@ -155,7 +155,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
-  MX_IWDG_Init();
+  //MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 
 	 nodeParamsInit();
@@ -194,7 +194,7 @@ current_cnt =current_cnt +5;
 //      printf("  Manetic Z:  %d\n",dataMd.MAG_Z);		
 //		}
 		vehicle_process();
-    HAL_IWDG_Refresh(&hiwdg);
+  //  HAL_IWDG_Refresh(&hiwdg);
 
   }
   /* USER CODE END 3 */
