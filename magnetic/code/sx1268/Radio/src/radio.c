@@ -412,7 +412,7 @@ bool RxContinuous = FALSE;
 
 
 PacketStatus_t RadioPktStatus;
-uint8_t RadioRxPayload[255];
+uint8_t RadioRxPayload[64];
 
 bool IrqFired = FALSE;
 
@@ -508,11 +508,13 @@ void RadioInit( RadioEvents_t *events )
     SX126xSetBufferBaseAddress( 0x00, 0x00 );
     SX126xSetTxParams( 0, RADIO_RAMP_200_US );
     SX126xSetDioIrqParams( IRQ_RADIO_ALL, IRQ_RADIO_ALL, IRQ_RADIO_NONE, IRQ_RADIO_NONE );
-    
+     //SX126xWriteRegister( REG_LR_SYNCWORD, ( LORA_MAC_PUBLIC_SYNCWORD >> 8 ) & 0xFF );
+    //    SX126xWriteRegister( REG_LR_SYNCWORD + 1, LORA_MAC_PUBLIC_SYNCWORD & 0xFF );
+   // SX126xReadRegisters( REG_LR_SYNCWORD, buffer, 2 );  
     //Initialize driver timeout timers
     //TimerInit( &TxTimeoutTimer, RadioOnTxTimeoutIrq );
     //TimerInit( &RxTimeoutTimer, RadioOnRxTimeoutIrq );
-    
+
     IrqFired = FALSE;
 }
 
@@ -905,8 +907,10 @@ void RadioStandby( void )
 
 void RadioRx( uint32_t timeout )
 {
-    SX126xSetDioIrqParams( IRQ_RADIO_ALL, //IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,
-                           IRQ_RADIO_ALL, //IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,
+    SX126xSetDioIrqParams( //IRQ_RADIO_ALL, 
+                          IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,
+                          // IRQ_RADIO_ALL, 
+                           IRQ_RX_DONE, //| IRQ_RX_TX_TIMEOUT,
                            IRQ_RADIO_NONE,
                            IRQ_RADIO_NONE );
     
@@ -1067,21 +1071,28 @@ void RadioOnDioIrq( void )
 {
     IrqFired = TRUE;
 }
-
+static uint32_t tx_count; uint32_t rx_count;uint32_t trx_count;
+extern unsigned char ExitInterFlag;
+unsigned char tx_complete_Flag;
+unsigned char irq_type;
 void RadioIrqProcess( void )
 {
   SX126xGetRssiInst(  ); 
-   // if( IrqFired == TRUE )
-    if(GPIO_ReadInputDataBit(RADIO_DIO1_PORT, RADIO_DIO1_PIN)==1)
+
+    if( ExitInterFlag == 1 )
+    //if(GPIO_ReadInputDataBit(RADIO_DIO1_PORT, RADIO_DIO1_PIN)==1)
     {
+      tx_complete_Flag = 1;
+      ExitInterFlag =0;
         IrqFired = FALSE;
 
         uint16_t irqRegs = SX126xGetIrqStatus( );
         SX126xClearIrqStatus( IRQ_RADIO_ALL );
-        
+         SX126xClearIrqStatus( IRQ_RADIO_ALL );       
         if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE )
         {
- 
+          
+           tx_count = tx_count + 1;   
             if( ( RadioEvents != NULL ) && ( RadioEvents->TxDone != NULL ) )
             {
                 RadioEvents->TxDone( );
@@ -1091,8 +1102,9 @@ void RadioIrqProcess( void )
         if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE )
         {
             uint8_t size;
-
-            SX126xGetPayload( RadioRxPayload, &size , 255 );
+          
+           rx_count = rx_count + 1; 
+            SX126xGetPayload( RadioRxPayload, &size , 64 );
             SX126xGetPacketStatus( &RadioPktStatus );
             if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
             {
@@ -1118,6 +1130,8 @@ void RadioIrqProcess( void )
 
         if( ( irqRegs & IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT )
         {
+                     
+           trx_count = trx_count + 1; 
             if( SX126xGetOperatingMode( ) == MODE_TX )
             {
                 if( ( RadioEvents != NULL ) && ( RadioEvents->TxTimeout != NULL ) )
@@ -1138,16 +1152,17 @@ void RadioIrqProcess( void )
         if( ( irqRegs & IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED )
         {
             //__NOP( );
+          irq_type = 1;
         }
 
         if( ( irqRegs & IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID )
         {
-            //__NOP( );
+            irq_type = 2;
         }
 
         if( ( irqRegs & IRQ_HEADER_VALID ) == IRQ_HEADER_VALID )
         {
-            //__NOP( );
+            irq_type = 3;
         }
 
         if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR )

@@ -73,18 +73,20 @@ void GPIO_int()
    
     
     /*PB2 PB1 分别代表M0 M1*/
-    GPIO_Init(PORT_SX127X_M0, PIN_SX127X_M0, GPIO_Mode_In_PU_No_IT);//GPIO_Mode_In_PU_IT
-    EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Rising_Falling);
-    GPIO_Init(PORT_SX127X_M1, PIN_SX127X_M1, GPIO_Mode_In_PU_No_IT);
+    //GPIO_Init(PORT_SX127X_M0, PIN_SX127X_M0, GPIO_Mode_In_FL_IT);//GPIO_Mode_In_PU_IT
+   // EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Rising_Falling);
+    GPIO_Init(PORT_SX127X_M1, PIN_SX127X_M1, GPIO_Mode_In_FL_IT);
     EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising_Falling);
 
 
     /*PB0 AUX*/
     GPIO_Init(PORT_SX127X_AUX, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
     GPIO_ResetBits(PORT_SX127X_AUX, PIN_SX127X_AUX);
-
-
-
+    
+    GPIO_Init(RADIO_TX_PORT, RADIO_TX_PIN, GPIO_Mode_Out_PP_High_Slow);
+    GPIO_Init(RADIO_RX_PORT, RADIO_RX_PIN, GPIO_Mode_Out_PP_High_Slow);
+    GPIO_SetBits(RADIO_TX_PORT, RADIO_TX_PIN);
+    GPIO_ResetBits(RADIO_RX_PORT, RADIO_RX_PIN);
 
     GPIO_Init(PORT_SX127X_DIO2, PIN_SX127X_DIO2, GPIO_Mode_In_FL_IT);                //dio3
     EXTI_SetPinSensitivity(EXTI_Pin_4, EXTI_Trigger_Rising); 

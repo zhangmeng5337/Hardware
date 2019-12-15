@@ -1,20 +1,97 @@
-\t (00:00:01) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
-\t (00:00:01)     Journal start - Sun Dec 01 12:01:13 2019
-\t (00:00:01)         Host=LAPTOP-U0A85BUA User=zhang Pid=4104 CPUs=8
-\t (00:00:01) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe
-\t (00:00:01) 
-   (00:00:01) Loading axlcore.cxt 
-\t (00:00:02) Opening existing design...
-\d (00:00:03) Design opened: F:/projects/git/Hardware/magnetic/PCB/RECEIVER/Receiver2.brd
-\i (00:00:03) trapsize 21945
-\i (00:00:03) trapsize 21433
-\i (00:00:03) trapsize 22033
-\i (00:00:05) trapsize 22575
-\i (00:00:05) trapsize 22575
-\i (00:00:06) etchedit 
-\i (00:00:08) open 
-\i (00:00:14) fillin "F:\projects\git\Hardware\magnetic\PCB\NODE\Node2.brd"
-\i (00:00:14) cd "F:\projects\git\Hardware\magnetic\PCB\NODE"
-\t (00:00:14) Opening existing design...
-\i (00:00:14) trapsize 13224
-\t (00:00:14)     Journal end - Sun Dec 01 12:01:26 2019
+\t (00:05:02) allegro 16.6-2015 S108 (v16-6-112HV) Windows 32
+\t (00:05:02)     Journal start - Sun Dec 08 17:59:56 2019
+\t (00:05:02)         Host=LAPTOP-U0A85BUA User=zhang Pid=312 CPUs=8
+\t (00:05:02) CmdLine= C:\Cadence\Cadence\Cadence_SPB_16.6\tools\pcb\bin\allegro.exe F:\projects\git\Hardware\magnetic\PCB\NODE\Node2.brd
+\t (00:05:02) 
+\d (00:05:02) Design opened: F:/projects/git/Hardware/magnetic/PCB/RECEIVER/Receiver2.brd
+\i (00:05:02) etchedit 
+\i (00:05:04) zoom in 1 
+\i (00:05:04) setwindow pcb
+\i (00:05:04) zoom in 705.784 -1465.963
+\i (00:05:04) trapsize 11288
+\i (00:05:04) zoom in 1 
+\i (00:05:04) setwindow pcb
+\i (00:05:04) zoom in 705.784 -1465.963
+\i (00:05:04) trapsize 5644
+\i (00:05:05) zoom out 1 
+\i (00:05:05) setwindow pcb
+\i (00:05:05) zoom out 705.785 -1463.705
+\i (00:05:05) trapsize 11288
+\i (00:05:05) zoom out 1 
+\i (00:05:05) setwindow pcb
+\i (00:05:05) zoom out 703.527 -1454.676
+\i (00:05:05) trapsize 22575
+\i (00:05:06) zoom in 1 
+\i (00:05:06) setwindow pcb
+\i (00:05:06) zoom in 477.775 -199.501
+\i (00:05:06) trapsize 11288
+\i (00:05:06) zoom in 1 
+\i (00:05:06) setwindow pcb
+\i (00:05:06) zoom in 477.776 -199.501
+\i (00:05:06) trapsize 5644
+\i (00:05:06) zoom in 1 
+\i (00:05:06) setwindow pcb
+\i (00:05:06) zoom in 477.776 -199.501
+\i (00:05:06) trapsize 2822
+\i (00:05:06) zoom in 1 
+\i (00:05:06) setwindow pcb
+\i (00:05:06) zoom in 477.776 -199.501
+\i (00:05:06) trapsize 1411
+\i (00:05:08) pick grid 444.196 -221.794
+\t (00:05:08) last pick:  444.210 -221.793
+\i (00:05:11) setwindow form.find
+\i (00:05:11) FORM find all_off  
+\i (00:05:12) FORM find nets YES 
+\i (00:05:13) setwindow pcb
+\i (00:05:13) pick grid 435.448 -238.161
+\t (00:05:13) last pick:  435.435 -238.173
+\i (00:05:13) zoom out 1 
+\i (00:05:13) setwindow pcb
+\i (00:05:13) zoom out 478.905 -185.392
+\i (00:05:13) trapsize 2822
+\i (00:05:13) zoom out 1 
+\i (00:05:13) setwindow pcb
+\i (00:05:13) zoom out 478.905 -185.392
+\i (00:05:13) trapsize 5644
+\i (00:05:14) zoom out 1 
+\i (00:05:14) setwindow pcb
+\i (00:05:14) zoom out 478.904 -185.391
+\i (00:05:14) trapsize 11288
+\i (00:05:14) zoom out 1 
+\i (00:05:14) setwindow pcb
+\i (00:05:14) zoom out 478.903 -185.391
+\i (00:05:14) trapsize 22575
+\i (00:05:17) zoom in 1 
+\i (00:05:17) setwindow pcb
+\i (00:05:17) zoom in 1539.930 -1535.378
+\i (00:05:17) trapsize 11288
+\i (00:05:17) zoom in 1 
+\i (00:05:17) setwindow pcb
+\i (00:05:17) zoom in 1539.931 -1535.377
+\i (00:05:17) trapsize 5644
+\i (00:05:17) zoom in 1 
+\i (00:05:17) setwindow pcb
+\i (00:05:17) zoom in 1539.931 -1535.377
+\i (00:05:17) trapsize 2822
+\i (00:05:18) zoom in 1 
+\i (00:05:18) setwindow pcb
+\i (00:05:18) zoom in 1539.931 -1535.377
+\i (00:05:18) trapsize 1411
+\i (00:05:18) zoom out 1 
+\i (00:05:18) setwindow pcb
+\i (00:05:18) zoom out 1539.931 -1535.377
+\i (00:05:18) trapsize 2822
+\i (00:05:18) zoom out 1 
+\i (00:05:18) setwindow pcb
+\i (00:05:18) zoom out 1539.931 -1535.377
+\i (00:05:18) trapsize 5644
+\i (00:05:19) zoom out 1 
+\i (00:05:19) setwindow pcb
+\i (00:05:19) zoom out 1539.930 -1535.377
+\i (00:05:19) trapsize 11288
+\i (00:05:42) opencd F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd 
+\e (00:05:42) Do you want to save the changes you made to Receiver2.brd?
+\i (00:05:43) fillin no 
+\t (00:05:43) Opening existing design...
+\i (00:05:43) trapsize 13224
+\t (00:05:43)     Journal end - Sun Dec 08 18:00:37 2019

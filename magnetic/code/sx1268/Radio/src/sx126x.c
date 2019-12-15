@@ -137,12 +137,18 @@ uint8_t SX126xGetPayload( uint8_t *buffer, uint8_t *size,  uint8_t maxSize )
 
 void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout )
 {
-	 SX126xSetPayload( payload, size );   
-	 SX126x_TX_CTRL_HIGH( );    
+ 	 SX126x_TX_CTRL_HIGH( );    
 	 SX126x_TX_CTRL_HIGH( );  	
 	 SX126x_RX_CTRL_LOW( );     
-	 SX126x_RX_CTRL_LOW( );   
-     SX126xSetTx( timeout );
+	 SX126x_RX_CTRL_LOW( );
+         
+         
+//	 SX126x_TX_CTRL_LOW( );    
+//	 SX126x_TX_CTRL_LOW( );  	
+//	 SX126x_RX_CTRL_HIGH( );     
+//	 SX126x_RX_CTRL_HIGH( ); 
+	 SX126xSetPayload( payload, size ); 
+          SX126xSetTx( timeout );
 }
 
 uint8_t SX126xSetSyncWord( uint8_t *syncWord )
@@ -397,6 +403,7 @@ void SX126xSetDioIrqParams( uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Ma
     buf[6] = ( uint8_t )( ( dio3Mask >> 8 ) & 0x00FF );
     buf[7] = ( uint8_t )( dio3Mask & 0x00FF );
     SX126xWriteCommand( RADIO_CFG_DIOIRQ, buf, 8 );
+
 }
 
 uint16_t SX126xGetIrqStatus( void )
@@ -423,10 +430,10 @@ void SX126xSetDio3AsTcxoCtrl( RadioTcxoCtrlVoltage_t tcxoVoltage, uint32_t timeo
 
     SX126xWriteCommand( RADIO_SET_TCXOMODE, buf, 4 );
 }
-   uint8_t buf[4],buff[4];
+  
 void SX126xSetRfFrequency( uint32_t frequency )
 {
-  
+   uint8_t buf[4];
     uint32_t freq = 0;
 
     if( ImageCalibrated == FALSE )

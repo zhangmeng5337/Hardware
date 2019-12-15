@@ -68,7 +68,7 @@ extern bool IrqFired;
 
 
 bool EnableMaster=TRUE;//主从选择
-
+//bool EnableMaster=FALSE;//主从选择
 uint16_t  crc_value;
 /*!
 * Radio events function pointer
@@ -114,7 +114,7 @@ typedef enum
   TX_TIMEOUT,
 }States_t;
 
-#define RX_TIMEOUT_VALUE                            1000
+#define RX_TIMEOUT_VALUE                            0xffffffff
 #define BUFFER_SIZE                                 64 // Define the payload size here
 
 const uint8_t PingMsg[] = "PING";
@@ -147,7 +147,12 @@ void Tick_Configration()
 void HW_int(void)
 {
   disableInterrupts();
+  
   SystemClock_Init();     // 系统时钟初始化
+  CLK_LSEConfig(CLK_LSE_OFF);
+//  SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortC,DISABLE);
+ // SYSCFG_REMAPPinConfig(REMAP_Pin_SPI1Full,DISABLE); 
+ // SYSCFG_REMAPPinConfig(REMAP_Pin_TIM2Channel1,DISABLE);  
   // Tick_Configration();
   //RCC_Configuration();
   GPIO_int();
@@ -155,7 +160,7 @@ void HW_int(void)
   enableInterrupts();
   //LED_Init();             //调试LED初始化 
 }
-
+uint8_t buffer[2];
 //extern unsigned char  ExitInterFlag ;
 //int error_temp = 0;
 void main(void)
@@ -174,7 +179,7 @@ void main(void)
   
   Radio.Init( &RadioEvents );
   Radio.SetChannel( RF_FREQUENCY );
-  
+ 
   //    Radio.WriteBuffer(0x06C0,data,2);
   //    Radio.ReadBuffer(0x06C0,test,2);
   
@@ -184,12 +189,12 @@ void main(void)
                     LORA_SPREADING_FACTOR, LORA_CODINGRATE,
                     LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
                     TRUE, 0, 0, LORA_IQ_INVERSION_ON, 3000 );
-  
+     
   Radio.SetRxConfig( MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
                     LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
                     LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
                     0, TRUE, 0, 0, LORA_IQ_INVERSION_ON, FALSE );
-  
+    
 #elif defined( USE_MODEM_FSK )
   
   Radio.SetTxConfig( MODEM_FSK, TX_OUTPUT_POWER, FSK_FDEV, 0,
@@ -205,7 +210,7 @@ void main(void)
 #error "Please define a frequency band in the compiler options."
 #endif
   
-  
+  SX126xReadRegisters( REG_LR_SYNCWORD, buffer, 2 ); 
   if(EnableMaster)
   {
     TX_Buffer[0] = 'P';
@@ -225,6 +230,21 @@ void main(void)
   
   while( 1 )
   {
+   extern unsigned char tx_complete_Flag;
+  if(tx_complete_Flag&&EnableMaster)
+  {
+     DelayMs(1000);
+    tx_complete_Flag = 0;
+    TX_Buffer[0] = 'P';
+    TX_Buffer[1] = 'I';
+    TX_Buffer[2] = 'N';
+    TX_Buffer[3] = 'G'; 
+    
+    crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//计算得出要发送数据包CRC值
+    TX_Buffer[4]=crc_value>>8;
+    TX_Buffer[5]=crc_value;
+    Radio.Send( TX_Buffer, 6);
+  }
     Radio.IrqProcess( ); // Process Radio IRQ；
   }
 }
