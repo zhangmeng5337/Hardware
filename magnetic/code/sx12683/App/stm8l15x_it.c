@@ -205,7 +205,7 @@ INTERRUPT_HANDLER(EXTI2_IRQHandler, 10)
      it is recommended to set a breakpoint on the following instruction.
   */
   #if MODULE
-  ExitInterFlag = 1;
+   ExitInterFlag = 1;
 #endif
   EXTI_ClearITPendingBit(EXTI_IT_Pin2);
 }

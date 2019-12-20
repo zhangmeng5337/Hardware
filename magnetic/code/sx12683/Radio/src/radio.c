@@ -31,6 +31,10 @@
 #include "sx126x.h"
 #include "sx126x-board.h"
 #include "bsp.h"
+   extern uint8_t ExitInterFlag;
+uint8_t tx_complete;
+uint32_t tx_count;
+uint32_t rx_count;
 /*!
  * \brief Initializes the radio
  *
@@ -406,7 +410,7 @@ uint8_t MaxPayloadLength = 0xFF;
 uint32_t TxTimeout = 0;
 uint32_t RxTimeout = 0;
 
-bool RxContinuous = false;
+bool RxContinuous = TRUE;
 
 
 PacketStatus_t RadioPktStatus;
@@ -903,7 +907,8 @@ void RadioStandby( void )
 void RadioRx( uint32_t timeout )
 {
     SX126xSetDioIrqParams( IRQ_RADIO_ALL, //IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,
-                           IRQ_RADIO_ALL, //IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,
+                           //IRQ_RADIO_ALL, 
+                          IRQ_RX_DONE,// | IRQ_RX_TX_TIMEOUT,
                            IRQ_RADIO_NONE,
                            IRQ_RADIO_NONE );
     
@@ -1061,16 +1066,17 @@ void RadioOnDioIrq( void )
 void RadioIrqProcess( void )
 {
    // if( IrqFired == true )
-    if(GPIO_ReadInputDataBit(RADIO_DIO1_PORT, RADIO_DIO1_PIN)==1)
+    if(ExitInterFlag==1)
     {
+        tx_complete = 1;
         IrqFired = false;
-
+        ExitInterFlag = 0;
         uint16_t irqRegs = SX126xGetIrqStatus( );
         SX126xClearIrqStatus( IRQ_RADIO_ALL );
         
         if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE )
-        {
- 
+        {//LedToggle();
+            tx_count = tx_count + 1;
             if( ( RadioEvents != NULL ) && ( RadioEvents->TxDone != NULL ) )
             {
                 RadioEvents->TxDone( );
@@ -1080,7 +1086,7 @@ void RadioIrqProcess( void )
         if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE )
         {
             uint8_t size;
-
+                rx_count = rx_count + 1;//LedToggle();
             SX126xGetPayload( RadioRxPayload, &size , 255 );
             SX126xGetPacketStatus( &RadioPktStatus );
             if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )

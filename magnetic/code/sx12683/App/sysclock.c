@@ -20,7 +20,7 @@ void SystemClock_Init(void)
 #else
 		CLK_HSICmd(ENABLE);      //使能内部高速时钟源 16MHZ
 		CLK_SYSCLKSourceConfig(CLK_SYSCLKSource_HSI);  //HSI作为系统时钟源
-	  	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);   //设置系统分频，分频越大系统指令时间越长，功耗越低
+	  	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_2);   //设置系统分频，分频越大系统指令时间越长，功耗越低
 	
 #endif   
 
