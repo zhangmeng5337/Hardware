@@ -50,20 +50,22 @@ void GPIO_int()
   ****************************************/
     GPIO_Init(RADIO_NSS_PORT, RADIO_NSS_PIN, GPIO_Mode_Out_PP_High_Slow);
     GPIO_SetBits(RADIO_NSS_PORT, RADIO_NSS_PIN);
+    GPIO_Init(PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Slow);
+    GPIO_SetBits(PORT_LED, PIN_LED);    
   /****************************************
    RF_RST
   ****************************************/
     GPIO_Init(RADIO_nRESET_PORT, RADIO_nRESET_PIN, GPIO_Mode_Out_PP_High_Slow);
     GPIO_SetBits(RADIO_nRESET_PORT, RADIO_nRESET_PIN);
-	
+   #if MODULE==0	
     /*SX1276数据接收外部中断*/
-    GPIO_Init(RADIO_DIO1_PORT, RADIO_DIO1_PIN, GPIO_Mode_In_FL_IT);                //dio1
-    EXTI_SetPinSensitivity(EXTI_Pin_5, EXTI_Trigger_Rising);  
+    GPIO_Init(RADIO_DIO1_PORT, RADIO_DIO1_PIN, GPIO_Mode_In_PU_IT);                //dio1
+   EXTI_SetPinSensitivity(EXTI_Pin_5, EXTI_Trigger_Rising);  
 
     //EXTI_SetHalfPortSelection(EXTI_HalfPort_D_LSB, ENABLE);
     /*SX1276数据接收外部中断*/
-    GPIO_Init(RADIO_DIO3_PORT, RADIO_DIO3_PIN, GPIO_Mode_In_FL_IT);                //dio3
-    EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising); 	
+   // GPIO_Init(RADIO_DIO3_PORT, RADIO_DIO3_PIN, GPIO_Mode_In_PU_No_IT);                //dio3
+    //EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising); 	
 
 	/****************************************
    Radio_BUSY
@@ -73,26 +75,46 @@ void GPIO_int()
    
     
     /*PB2 PB1 分别代表M0 M1*/
-    //GPIO_Init(PORT_SX127X_M0, PIN_SX127X_M0, GPIO_Mode_In_FL_IT);//GPIO_Mode_In_PU_IT
+    GPIO_Init(PORT_SX127X_M0, PIN_SX127X_M0, GPIO_Mode_In_PU_No_IT);//GPIO_Mode_In_PU_IT
    // EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Rising_Falling);
-    GPIO_Init(PORT_SX127X_M1, PIN_SX127X_M1, GPIO_Mode_In_FL_IT);
-    EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising_Falling);
+   
+    GPIO_Init(PORT_SX127X_M1, PIN_SX127X_M1, GPIO_Mode_In_PU_No_IT);
+   // EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising_Falling);
 
 
     /*PB0 AUX*/
     GPIO_Init(PORT_SX127X_AUX, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
     GPIO_ResetBits(PORT_SX127X_AUX, PIN_SX127X_AUX);
-    
-    GPIO_Init(RADIO_TX_PORT, RADIO_TX_PIN, GPIO_Mode_Out_PP_High_Slow);
-    GPIO_Init(RADIO_RX_PORT, RADIO_RX_PIN, GPIO_Mode_Out_PP_High_Slow);
-    GPIO_SetBits(RADIO_TX_PORT, RADIO_TX_PIN);
-    GPIO_ResetBits(RADIO_RX_PORT, RADIO_RX_PIN);
 
-    GPIO_Init(PORT_SX127X_DIO2, PIN_SX127X_DIO2, GPIO_Mode_In_FL_IT);                //dio3
-    EXTI_SetPinSensitivity(EXTI_Pin_4, EXTI_Trigger_Rising); 
-     GPIO_Init(RADIO_TX_PORT, RADIO_TX_PIN, GPIO_Mode_Out_PP_Low_Slow);
-    GPIO_ResetBits(RADIO_TX_PORT, RADIO_TX_PIN);
 
     GPIO_Init(RADIO_RX_PORT, RADIO_RX_PIN, GPIO_Mode_Out_PP_High_Slow);
     GPIO_SetBits(RADIO_RX_PORT, RADIO_RX_PIN); 
+
+    //GPIO_Init(PORT_SX127X_DIO2, PIN_SX127X_DIO2, GPIO_Mode_In_PU_No_IT);                //dio3
+   // EXTI_SetPinSensitivity(EXTI_Pin_4, EXTI_Trigger_Rising); 
+     GPIO_Init(RADIO_TX_PORT, RADIO_TX_PIN, GPIO_Mode_Out_PP_Low_Slow);
+    GPIO_ResetBits(RADIO_TX_PORT, RADIO_TX_PIN);
+#else
+   /*SX1276数据接收外部中断*/
+    GPIO_Init(RADIO_DIO1_PORT, RADIO_DIO1_PIN, GPIO_Mode_In_PU_IT);                //dio1
+   EXTI_SetPinSensitivity(EXTI_Pin_2, EXTI_Trigger_Rising);  
+
+    //EXTI_SetHalfPortSelection(EXTI_HalfPort_D_LSB, ENABLE);
+    /*SX1276数据接收外部中断*/
+    //GPIO_Init(RADIO_DIO3_PORT, RADIO_DIO3_PIN, GPIO_Mode_In_PU_No_IT);                //dio3
+    //EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising); 	
+
+	/****************************************
+   Radio_BUSY
+  ****************************************/
+    GPIO_Init(RADIO_BUSY_PORT, RADIO_BUSY_PIN, GPIO_Mode_In_FL_IT);                //Radio_BUSY
+    EXTI_SetPinSensitivity(EXTI_Pin_3, EXTI_Trigger_Rising);
+   
+   // GPIO_Init(PORT_SX127X_DIO2, PIN_SX127X_DIO2, GPIO_Mode_In_PU_No_IT);                //dio3
+   // EXTI_SetPinSensitivity(EXTI_Pin_4, EXTI_Trigger_Rising); 
+    // GPIO_Init(RADIO_TX_PORT, RADIO_TX_PIN, GPIO_Mode_Out_PP_Low_Slow);
+   // GPIO_ResetBits(RADIO_TX_PORT, RADIO_TX_PIN);    
+    
+#endif
+
 }

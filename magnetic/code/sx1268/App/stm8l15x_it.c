@@ -197,13 +197,18 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler, 9)
   * @param  None
   * @retval None
   */
+    unsigned char   ExitInterFlag ;
 INTERRUPT_HANDLER(EXTI2_IRQHandler, 10)
 {
     //LoraM0Flag = 1;
-    EXTI_ClearITPendingBit(EXTI_IT_Pin2);
+    //EXTI_ClearITPendingBit(EXTI_IT_Pin2);
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+    #if MODULE==1
+      ExitInterFlag = 1;
+   #endif 
+          EXTI_ClearITPendingBit(EXTI_IT_Pin2);
 }
 
 /**
@@ -246,7 +251,7 @@ INTERRUPT_HANDLER(EXTI4_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-   EXTI_ClearITPendingBit(EXTI_IT_Pin4);
+  
 }
 
 /**
@@ -254,14 +259,15 @@ INTERRUPT_HANDLER(EXTI4_IRQHandler, 12)
   * @param  None
   * @retval None
   */
-uint32_t irq_count;
+
 INTERRUPT_HANDLER(EXTI5_IRQHandler, 13)
 {
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-  ExitInterFlag = 1;
-  irq_count = irq_count +1;
+  #if MODULE==0
+      ExitInterFlag = 1;
+   #endif 
    EXTI_ClearITPendingBit(EXTI_IT_Pin5);
 }
 
@@ -275,7 +281,7 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-      
+     // ExitInterFlag = 1;
       
         EXTI_ClearITPendingBit(EXTI_IT_Pin6);
 }

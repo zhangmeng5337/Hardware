@@ -67,8 +67,8 @@ extern bool IrqFired;
 
 
 
-bool EnableMaster=TRUE;//主从选择
-//bool EnableMaster=FALSE;//主从选择
+//bool EnableMaster=TRUE;//主从选择
+bool EnableMaster=FALSE;//主从选择
 uint16_t  crc_value;
 /*!
 * Radio events function pointer
@@ -166,7 +166,7 @@ uint8_t buffer[2];
 void main(void)
 {
   
-  HW_int();
+  HW_int();//DelayMs(5000);
   // RF_Initial( );
  // IWDG_Config();
   // Radio initialization
@@ -233,6 +233,17 @@ void main(void)
    extern unsigned char tx_complete_Flag;
   if(tx_complete_Flag&&EnableMaster)
   {
+
+	//SX126xSetBufferBaseAddress(0,0);			//(TX_base_addr,RX_base_addr)
+	//SetPacketParams(payload_length);	//PreambleLength;HeaderType;PayloadLength;CRCType;InvertIQ
+#if MODULE==0	
+	
+	Radio.Rx( RX_TIMEOUT_VALUE ); 
+	 SX126x_RX_CTRL_LOW( );    
+	 SX126x_RX_CTRL_LOW( );  	
+	 SX126x_TX_CTRL_HIGH( );     
+	 SX126x_TX_CTRL_HIGH( );  
+#endif
      DelayMs(1000);
     tx_complete_Flag = 0;
     TX_Buffer[0] = 'P';
@@ -243,8 +254,10 @@ void main(void)
     crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//计算得出要发送数据包CRC值
     TX_Buffer[4]=crc_value>>8;
     TX_Buffer[5]=crc_value;
-    Radio.Send( TX_Buffer, 6);
+    Radio.Send( TX_Buffer, 64);  GPIO_ToggleBits(PORT_LED, PIN_LED);
   }
+   DelayMs(1000);
+
     Radio.IrqProcess( ); // Process Radio IRQ；
   }
 }

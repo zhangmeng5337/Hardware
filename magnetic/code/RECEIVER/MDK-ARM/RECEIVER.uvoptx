@@ -148,16 +148,32 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>ST-LINKIII-KEIL_SWO</Key>
-          <Name>-U51FF6E067172485424211767 -O2254 -S0 -C0 -A0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32L4xx_256.FLM -FS08000000 -FL040000 -FP0($$Device:STM32L431RCTx$CMSIS\Flash\STM32L4xx_256.FLM)</Name>
+          <Name>-U51FF6E067172485424211767 -O2254 -S1 -C0 -A0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32L4xx_256.FLM -FS08000000 -FL040000 -FP0($$Device:STM32L431RCTx$CMSIS\Flash\STM32L4xx_256.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint>
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
+          <LineNumber>155</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229522</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>../Src/main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\RECEIVER\../Src/main.c\155</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
           <LineNumber>282</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134230150</Address>
+          <Address>134228790</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -169,11 +185,11 @@
           <Expression>\\RECEIVER\../Src/stm32l4xx_it.c\282</Expression>
         </Bp>
         <Bp>
-          <Number>1</Number>
+          <Number>2</Number>
           <Type>0</Type>
           <LineNumber>44</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230308</Address>
+          <Address>134228948</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -185,11 +201,11 @@
           <Expression>\\RECEIVER\../Src/Hardare/bsp.c\44</Expression>
         </Bp>
         <Bp>
-          <Number>2</Number>
+          <Number>3</Number>
           <Type>0</Type>
           <LineNumber>65</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230406</Address>
+          <Address>134229046</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -201,59 +217,11 @@
           <Expression>\\RECEIVER\../Src/Hardare/bsp.c\65</Expression>
         </Bp>
         <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>92</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134230656</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\RECEIVER\../Src/main.c\92</Expression>
-        </Bp>
-        <Bp>
           <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>472</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134231032</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\Driver\Node_Protocol.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\RECEIVER\../Src/Driver/Node_Protocol.c\472</Expression>
-        </Bp>
-        <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>23</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134230212</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\Hardare\bsp.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\RECEIVER\../Src/Hardare/bsp.c\23</Expression>
-        </Bp>
-        <Bp>
-          <Number>6</Number>
           <Type>0</Type>
           <LineNumber>68</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230418</Address>
+          <Address>134229058</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -263,6 +231,22 @@
           <Filename>..\Src\Hardare\bsp.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\RECEIVER\../Src/Hardare/bsp.c\68</Expression>
+        </Bp>
+        <Bp>
+          <Number>5</Number>
+          <Type>0</Type>
+          <LineNumber>474</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>..\Src\Driver\Node_Protocol.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

@@ -403,12 +403,12 @@ static double RadioLoRaSymbTime[3][6] = {{ 32.768, 16.384, 8.192, 4.096, 2.048, 
                                          { 16.384, 8.192,  4.096, 2.048, 1.024, 0.512 },  // 250 KHz
                                          { 8.192,  4.096,  2.048, 1.024, 0.512, 0.256 }}; // 500 KHz
 
-uint8_t MaxPayloadLength = 0xFF;
+uint8_t MaxPayloadLength = 128;
 
 uint32_t TxTimeout = 0;
 uint32_t RxTimeout = 0;
 
-bool RxContinuous = FALSE;
+bool RxContinuous = TRUE;
 
 
 PacketStatus_t RadioPktStatus;
@@ -907,14 +907,25 @@ void RadioStandby( void )
 
 void RadioRx( uint32_t timeout )
 {
+  RxContinuous = TRUE;
     SX126xSetDioIrqParams( //IRQ_RADIO_ALL, 
-                          IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,
+                          IRQ_RX_DONE ,//| IRQ_RX_TX_TIMEOUT,
                           // IRQ_RADIO_ALL, 
                            IRQ_RX_DONE, //| IRQ_RX_TX_TIMEOUT,
                            IRQ_RADIO_NONE,
                            IRQ_RADIO_NONE );
-    
-
+//	SX126x_TX_CTRL_HIGH( );    
+//	SX126x_TX_CTRL_HIGH( );  	
+//	SX126x_RX_CTRL_LOW( );     
+//	SX126x_RX_CTRL_LOW( ); 
+  #if MODULE==0	
+	
+	SX126x_TX_CTRL_LOW( );    
+	SX126x_TX_CTRL_LOW( );  	
+	SX126x_RX_CTRL_HIGH( );     
+	SX126x_RX_CTRL_HIGH( );
+#endif      
+ 
     if( RxContinuous == TRUE )
     {
         SX126xSetRx( 0xFFFFFF ); // Rx Continuous
@@ -923,10 +934,7 @@ void RadioRx( uint32_t timeout )
     {
         SX126xSetRx( timeout << 6 );
     }
-	SX126x_TX_CTRL_LOW( );    
-	SX126x_TX_CTRL_LOW( );  	
-	SX126x_RX_CTRL_HIGH( );     
-	SX126x_RX_CTRL_HIGH( ); 
+
        
 }
 
@@ -1082,13 +1090,13 @@ void RadioIrqProcess( void )
     if( ExitInterFlag == 1 )
     //if(GPIO_ReadInputDataBit(RADIO_DIO1_PORT, RADIO_DIO1_PIN)==1)
     {
+      	GPIO_ToggleBits(PORT_LED, PIN_LED);
       tx_complete_Flag = 1;
       ExitInterFlag =0;
         IrqFired = FALSE;
 
         uint16_t irqRegs = SX126xGetIrqStatus( );
         SX126xClearIrqStatus( IRQ_RADIO_ALL );
-         SX126xClearIrqStatus( IRQ_RADIO_ALL );       
         if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE )
         {
           
@@ -1101,17 +1109,17 @@ void RadioIrqProcess( void )
 
         if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE )
         {
-            uint8_t size;
-          
+            uint8_t size=0;
+          size=0;
            rx_count = rx_count + 1; 
-            SX126xGetPayload( RadioRxPayload, &size , 64 );
+            SX126xGetPayload( RadioRxPayload, &size , 128 );
             SX126xGetPacketStatus( &RadioPktStatus );
             if( ( RadioEvents != NULL ) && ( RadioEvents->RxDone != NULL ) )
             {
                 RadioEvents->RxDone( RadioRxPayload, size, RadioPktStatus.Params.LoRa.RssiPkt, RadioPktStatus.Params.LoRa.SnrPkt );
             }
         }
-
+//
         if( ( irqRegs & IRQ_CRC_ERROR ) == IRQ_CRC_ERROR )
         {
             if( ( RadioEvents != NULL ) && ( RadioEvents->RxError ) )

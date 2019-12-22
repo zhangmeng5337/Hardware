@@ -414,7 +414,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   for(i=0;i<samplecount;i++)
   { 
          ADC_SoftwareStartConv(ADC1); //开启软件转换
-         delay_ms(10);
+         delay_ms(1);
 	  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
 	  {}
 	  ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志

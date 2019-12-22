@@ -97,7 +97,7 @@ void SX126xInit( DioIrqHandler dioIrq )
 
 #endif
     
-    SX126xSetDio2AsRfSwitchCtrl( FALSE );
+    SX126xSetDio2AsRfSwitchCtrl( TRUE );
     OperatingMode = MODE_STDBY_RC;
 }
 
@@ -137,11 +137,12 @@ uint8_t SX126xGetPayload( uint8_t *buffer, uint8_t *size,  uint8_t maxSize )
 
 void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout )
 {
+#if MODULE == 0
  	 SX126x_TX_CTRL_HIGH( );    
 	 SX126x_TX_CTRL_HIGH( );  	
 	 SX126x_RX_CTRL_LOW( );     
 	 SX126x_RX_CTRL_LOW( );
-         
+#endif         
          
 //	 SX126x_TX_CTRL_LOW( );    
 //	 SX126x_TX_CTRL_LOW( );  	
@@ -408,7 +409,7 @@ void SX126xSetDioIrqParams( uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Ma
 
 uint16_t SX126xGetIrqStatus( void )
 {
-    uint8_t irqStatus[2];
+  uint8_t irqStatus[2]={0,0};
 
     SX126xReadCommand( RADIO_GET_IRQSTATUS, irqStatus, 2 );
     return ( irqStatus[0] << 8 ) | irqStatus[1];

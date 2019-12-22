@@ -39,7 +39,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+extern uart_stru uart1;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -138,7 +138,10 @@ int main(void)
 
 
 	 nodeParamsInit();
-
+   uart1.receive_buffer[0]=0x5a;
+   uart1.receive_buffer[1]=0x50;
+   uart1.receive_buffer[2]=0x51;
+uart1.read_len=2;	 
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -148,7 +151,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		 uart_process();
+		HAL_Delay(10000);
+		 HAL_GPIO_TogglePin(GPIOA, LED_Pin);
+		HAL_UART_Transmit(&huart1,uart1.receive_buffer, 3 ,10);
+		// uart_process();
 		  //  HAL_IWDG_Refresh(&hiwdg);
   }
   /* USER CODE END 3 */
@@ -251,7 +257,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;

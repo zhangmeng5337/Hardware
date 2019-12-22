@@ -16,7 +16,48 @@
 #include "sysclock.h"
 #include "uart1.h"
 #include "stm8l15x_clk.h"
+#define MODULE          1
+#if MODULE==1
+#define RADIO_NSS_PORT     	   GPIOB
+#define RADIO_NSS_PIN             GPIO_Pin_4
 
+#define RADIO_nRESET_PORT            GPIOA
+#define RADIO_nRESET_PIN             GPIO_Pin_5
+
+//#define RADIO_TX_PORT        GPIOA
+//#define RADIO_TX_PIN         GPIO_Pin_5
+
+//#define RADIO_RX_PORT        GPIOA
+//#define RADIO_RX_PIN         GPIO_Pin_4
+
+#define RADIO_BUSY_PORT     	   GPIOB
+#define RADIO_BUSY_PIN            GPIO_Pin_3
+
+#define RADIO_DIO1_PORT     	   GPIOC
+#define RADIO_DIO1_PIN            GPIO_Pin_2
+
+//#define PORT_SX127X_DIO2     	   GPIOC
+//#define PIN_SX127X_DIO2            GPIO_Pin_4
+
+//#define RADIO_DIO3_PORT     	   GPIOC
+//#define RADIO_DIO3_PIN            GPIO_Pin_3
+//
+//#define PORT_SX127X_DIO4     	   GPIOC
+//#define PIN_SX127X_DIO4            GPIO_Pin_2
+//
+//#define PORT_SX127X_DIO5     	   GPIOC
+//#define PIN_SX127X_DIO5            GPIO_Pin_1
+//
+//#define PORT_SX127X_M0             GPIOB
+//#define PIN_SX127X_M0              GPIO_Pin_1
+//
+//#define PORT_SX127X_M1             GPIOB
+//#define PIN_SX127X_M1              GPIO_Pin_3
+//
+//#define PORT_SX127X_AUX            GPIOB
+//#define PIN_SX127X_AUX             GPIO_Pin_2
+
+#else 
 
 #define RADIO_NSS_PORT     	   GPIOB
 #define RADIO_NSS_PIN             GPIO_Pin_4
@@ -56,7 +97,7 @@
 
 #define PORT_SX127X_AUX            GPIOB
 #define PIN_SX127X_AUX             GPIO_Pin_2
-
+#endif
 
 #define SX126x_NSS_LOW( )          GPIO_ResetBits( RADIO_NSS_PORT, RADIO_NSS_PIN )
 #define SX126x_NSS_HIGH( )         GPIO_SetBits( RADIO_NSS_PORT, RADIO_NSS_PIN )
@@ -104,13 +145,14 @@
 #define AUX_CONFIGURED()        GPIO_SetBits(PORT_SX127X_AUX, PIN_SX127X_AUX)
 
 void SClK_Initial(void);                // 初始化系统时钟，系统时钟 = 16MHZ
-void GPIO_Initial(void);                // 初始化通用IO端口
-void SPI_Initial(void);                 // 初始化SPI
+void  GPIO_int(void);                // 初始化通用IO端口
+void  SPI_Int(void);                 // 初始化SPI
 INT8U SPI_ExchangeByte(INT8U input);    // 通过SPI进行数据交换
 void HardwareInit(void);
 void LED_Init(void);
 void USART_SendStr(unsigned char *Str);
  void IWDG_Config(void);
+ uint8_t SpiInOut( uint8_t txBuffer);
 #endif //_BSP_H_
 
 /*===========================================================================

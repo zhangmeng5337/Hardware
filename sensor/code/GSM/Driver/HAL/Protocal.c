@@ -131,8 +131,8 @@ void sensor_adc()
   
   adc_tmp2 = adc_tmp2/VOLTAGE_FACTOR;
   adc_tmp3 = adc_tmp2;
-  if(adc_tmp2>=vol_offset)
-    adc_tmp2= adc_tmp2 - vol_offset;
+//  if(adc_tmp2>=vol_offset)
+//    adc_tmp2= adc_tmp2 - vol_offset;
   
   adc_tmp2 = adc_tmp2*Data_usr.deepth_calibration;
   Data_usr.deep_f = adc_tmp2;
@@ -146,7 +146,7 @@ void sensor_adc()
     //adc_tmp = Data_usr.Warn_Thres;
     
   }
-  if(adc_tmp2>3.5)
+  if(Data_usr.deep_f>3.5)
     adc_tmp2 = 3.5;
   Data_usr.deepth[0] = (unsigned char)(adc_tmp2*10/10 );
   Data_usr.deepth[1] = (((unsigned char)(adc_tmp2*10))%10 );
