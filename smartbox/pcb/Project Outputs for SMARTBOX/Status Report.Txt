@@ -1,0 +1,14 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [SMARTBOX.PrjPCB]
+   Generated File[smartbox-RoundHoles.TXT]
+   Generated File[smartbox-SlotHoles.TXT]
+   Generated File[smartbox.DRL]
+   Generated File[smartbox.LDP]
+   Generated File[smartbox.DRR]
+
+
+Files Generated   : 5
+Documents Printed : 0
+
+Finished Output Generation At 15:52:12 On 2019/12/24
