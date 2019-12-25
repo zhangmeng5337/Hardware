@@ -8,25 +8,29 @@
 #include "uart1.h"
 #include "stm8l15x_dma.h"
 #include "stm8l15x_tim1.h"
-
+#include "uart_hal.h"
 
 #define USART_DMA_CHANNEL_RX   DMA1_Channel2
 #define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
 
-unsigned char UsartReceiveData[BUFFERSIZE];
+uart_stru uart;
 float ADC_RATIO= ((uint16_t) 733); /*ADC_RATIO = ( 3 * 1000 * 1000)/4095 */
 extern unsigned int rtctime;//10:9s 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint32_t ADCdata = 0;
-void delay_ms(uint32_t num)//不是很精确
+unsigned char delay_ms(uint32_t num)//不是很精确
 {
   u16 i = 0;
   while(num--)
   {
     for (i=0; i<2654; i++);
   }
+  return 0;
 }
+
+
+
 
 void GPIO_Initial(void)
 { 
@@ -34,9 +38,83 @@ void GPIO_Initial(void)
   GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT ); 
+  
+  // battery quantity ios
+  GPIO_Init( BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL1_PIN|
+            BATEERY_QUANTITY_LEVEL2_PIN|BATEERY_QUANTITY_LEVEL3_PIN,
+            GPIO_Mode_Out_PP_High_Slow );  
+  // module status io
+  GPIO_Init( MODULE_STATUS_PORT, MODULE_STATUS_PIN, GPIO_Mode_Out_PP_High_Slow );
+  //elec lock ios
+  GPIO_Init( LOCK_CTRL_PORT, LOCK_CTRL_PIN, GPIO_Mode_Out_PP_High_Slow );  
+  GPIO_Init( LOCK_FB_PORT, LOCK_FB_PIN, GPIO_Mode_In_FL_No_IT );   
+  //gsm power and gps enbale ios
+  GPIO_Init( GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, GPIO_Mode_Out_PP_Low_Slow ); 
+  GPIO_Init( GSM_PWR_PORT, GSM_PWR_PIN, GPIO_Mode_Out_PP_Low_Slow ); 
+  
 }
-
-
+/*******************************************************************
+function: ctronl  gnss enable or disable
+@param    newstate:
+          this param can be one of the following values:
+          ON:           enable gnss
+          OFF:          disable gnss
+********************************************************************/
+void gnss_state(unsigned char newstate)
+{
+  if(newstate == ON)
+  {
+    GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, SET);   
+  }
+  else
+  {
+    GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, RESET);  
+  }
+}
+/*******************************************************************
+function: ctronl  gsm module power on or off
+@param    newstate:
+          this param can be one of the following values:
+          ON:           module power on
+          OFF:          module power off
+********************************************************************/
+void gsm_power_state(unsigned char newstate)
+{
+  if(newstate == ON)
+  {
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, SET);
+    delay_ms(500);
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);      
+  }
+  else
+  {
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, SET);
+    delay_ms(500);
+     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);  
+  }
+}
+void lock_state(unsigned char newstate)
+{
+  if(newstate == ON)
+  {
+    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, SET);
+    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
+    {
+      
+      if(delay_ms(500)==0)
+      {
+        GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+        break;
+      }
+    }
+    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+    
+  }
+  else
+  {
+    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+  }
+}
 
 
 void RTC_Config(uint16_t time,unsigned char flag) 
@@ -101,11 +179,11 @@ static void DMA_Config(void)
   DMA_DeInit(DMA1_Channel2);
   
   /* DMA channel Rx of USART Configuration */
-  DMA_Init(USART_DMA_CHANNEL_RX, (uint16_t)UsartReceiveData , (uint16_t)USART_DR_ADDRESS,
+  DMA_Init(USART_DMA_CHANNEL_RX, (uint16_t)uart.rxbuffer , (uint16_t)USART_DR_ADDRESS,
            BUFFERSIZE, DMA_DIR_PeripheralToMemory, DMA_Mode_Normal,
            DMA_MemoryIncMode_Inc, DMA_Priority_Low, DMA_MemoryDataSize_Byte);
   
-  
+
   /* Enable the USART Tx/Rx DMA requests */
   USART_DMACmd(USART1, USART_DMAReq_RX, ENABLE);
   /* Global DMA Enable */
@@ -131,14 +209,92 @@ void HardwareInit()
   disableInterrupts();
   SystemClock_Init();     // 系统时钟初始化
   GPIO_Initial(); 
+  lock_state(OFF);
+  
   Uart1_Init(9600);// 初始化GPIO
   DMA_Config();
-  LED_Init();
+  LED_Init(LEVEL_ALL_LED,OFF);
   enableInterrupts();
+  gnss_state(OFF);
+  gsm_power_state(ON);
+    
 }
-void LED_Init(void)
+
+/*******************************************************************
+function: ctronl leds
+@param    num:specify the led num
+@param    newstate:specify the led on or off           
+********************************************************************/
+void LED_Init(unsigned char num,unsigned char newstate)
 {
-  GPIO_Init(GPIOD, GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);
+
+  switch(num)
+  {
+  case LEVEL1_LED:
+    {
+      if(newstate == ON)
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL1_PIN, RESET);     
+      }
+      else
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL1_PIN, SET);
+      }
+    }break;
+  case LEVEL2_LED:
+    {
+      if(newstate == ON)
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL2_PIN, RESET);     
+      }
+      else
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL2_PIN, SET);
+      }
+    }break;
+    
+  case LEVEL3_LED:
+    {
+      if(newstate == ON)
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL3_PIN, RESET);     
+      }
+      else
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL3_PIN, SET);
+      }
+    }break;    
+  case STATUS_LED:
+    {
+      if(newstate == ON)
+      {
+        GPIO_WriteBit(MODULE_STATUS_PORT, MODULE_STATUS_PIN, RESET);     
+      }
+      else
+      {
+        GPIO_WriteBit(MODULE_STATUS_PORT, MODULE_STATUS_PIN, SET);
+      }
+    }break; 
+
+  case LEVEL_ALL_LED:
+    {
+      if(newstate == ON)
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT,BATEERY_QUANTITY_LEVEL1_PIN, RESET);
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT,BATEERY_QUANTITY_LEVEL2_PIN, RESET);        
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT,BATEERY_QUANTITY_LEVEL3_PIN, RESET);       
+        GPIO_WriteBit(MODULE_STATUS_PORT, MODULE_STATUS_PIN, RESET);
+      }
+      else
+      {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT,BATEERY_QUANTITY_LEVEL1_PIN, SET);
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT,BATEERY_QUANTITY_LEVEL2_PIN, SET);        
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT,BATEERY_QUANTITY_LEVEL3_PIN, SET);
+        GPIO_WriteBit(MODULE_STATUS_PORT, MODULE_STATUS_PIN, SET);
+      }
+    }break;     
+  }
+  
 }
 
 

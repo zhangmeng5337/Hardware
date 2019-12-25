@@ -6,7 +6,7 @@
 #include <stdarg.h>
 #include "stm8l15x.h"
 #include "stm8l15x_syscfg.h"
-#define BUFFERSIZE		128
+
 /* Private define ------------------------------------------------------------*/
 #ifdef _RAISONANCE_
 #define PUTCHAR_PROTOTYPE int putchar (char c)
