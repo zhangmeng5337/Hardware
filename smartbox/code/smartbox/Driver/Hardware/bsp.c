@@ -56,9 +56,9 @@ void GPIO_Initial(void)
 /*******************************************************************
 function: ctronl  gnss enable or disable
 @param    newstate:
-          this param can be one of the following values:
-          ON:           enable gnss
-          OFF:          disable gnss
+this param can be one of the following values:
+ON:           enable gnss
+OFF:          disable gnss
 ********************************************************************/
 void gnss_state(unsigned char newstate)
 {
@@ -74,9 +74,9 @@ void gnss_state(unsigned char newstate)
 /*******************************************************************
 function: ctronl  gsm module power on or off
 @param    newstate:
-          this param can be one of the following values:
-          ON:           module power on
-          OFF:          module power off
+this param can be one of the following values:
+ON:           module power on
+OFF:          module power off
 ********************************************************************/
 void gsm_power_state(unsigned char newstate)
 {
@@ -90,7 +90,7 @@ void gsm_power_state(unsigned char newstate)
   {
     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, SET);
     delay_ms(500);
-     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);  
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);  
   }
 }
 void lock_state(unsigned char newstate)
@@ -183,7 +183,7 @@ static void DMA_Config(void)
            BUFFERSIZE, DMA_DIR_PeripheralToMemory, DMA_Mode_Normal,
            DMA_MemoryIncMode_Inc, DMA_Priority_Low, DMA_MemoryDataSize_Byte);
   
-
+  
   /* Enable the USART Tx/Rx DMA requests */
   USART_DMACmd(USART1, USART_DMAReq_RX, ENABLE);
   /* Global DMA Enable */
@@ -204,21 +204,7 @@ void DMA_START_RX(void)
 }
 
 
-void HardwareInit()
-{
-  disableInterrupts();
-  SystemClock_Init();     // 系统时钟初始化
-  GPIO_Initial(); 
-  lock_state(OFF);
-  
-  Uart1_Init(9600);// 初始化GPIO
-  DMA_Config();
-  LED_Init(LEVEL_ALL_LED,OFF);
-  enableInterrupts();
-  gnss_state(OFF);
-  gsm_power_state(ON);
-    
-}
+
 
 /*******************************************************************
 function: ctronl leds
@@ -227,7 +213,7 @@ function: ctronl leds
 ********************************************************************/
 void LED_Init(unsigned char num,unsigned char newstate)
 {
-
+  
   switch(num)
   {
   case LEVEL1_LED:
@@ -275,7 +261,7 @@ void LED_Init(unsigned char num,unsigned char newstate)
         GPIO_WriteBit(MODULE_STATUS_PORT, MODULE_STATUS_PIN, SET);
       }
     }break; 
-
+    
   case LEVEL_ALL_LED:
     {
       if(newstate == ON)
@@ -297,7 +283,73 @@ void LED_Init(unsigned char num,unsigned char newstate)
   
 }
 
+void adcInit(ADC_Channel_TypeDef num)
+{
+  /* Enable ADC1 clock */
+  CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,ENABLE);//开启ADC1时钟
+  
+  ADC_VrefintCmd(ENABLE); //使能内部参考电压
+  ADC_Init(ADC1,ADC_ConversionMode_Single,ADC_Resolution_12Bit,ADC_Prescaler_1);//连续转换，12位，转换时钟1分频
+  ADC_Cmd(ADC1,ENABLE);//ADC使能	
+  ADC_ChannelCmd(ADC1,num,ENABLE);//使能内部参考电压通道
+  
+  
+}
 
+uint32_t adcGet(ADC_Channel_TypeDef num)
+{
+  uint32_t tmp;
+  float tmp2;
+  unsigned int i;
+  /* Waiting until press Joystick Up */
+  /* Wait until End-Of-Convertion */
+  adcInit(ADC_Channel_Vrefint);
+  ADC_SoftwareStartConv(ADC1); //开启软件转换
+  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
+  {}
+  ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
+  /* Get conversion value */
+  tmp = ADC_GetConversionValue(ADC1);
+  ADC_RATIO= (1.225 * 4096)/tmp;
+  ADC_DeInit(ADC1);
+  tmp = 0;
+  tmp2 =0;
+  
+  
+  adcInit(num);  
+  
+  for(i=0;i<SAMPLE_COUNT;i++)
+  { 
+    ADC_SoftwareStartConv(ADC1); //开启软件转换
+    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
+    {}
+    ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
+    /* Get conversion value */
+    tmp = ADC_GetConversionValue(ADC1);
+    /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
+    tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
+    
+  }
+  ADCdata = tmp2 /SAMPLE_COUNT;
+  ADC_DeInit(ADC1);
+  /* Disable ADC1 clock */
+  CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);
+  return ADCdata;
+}
 
+void HardwareInit()
+{
+  disableInterrupts();
+  SystemClock_Init();     // 系统时钟初始化
+  GPIO_Initial(); 
+  lock_state(OFF);
+  Uart1_Init(9600);// 初始化GPIO
+  DMA_Config();
+  LED_Init(LEVEL_ALL_LED,OFF);
+  enableInterrupts();
+  gnss_state(OFF);
+  gsm_power_state(ON);
+  adcGet(VBAT_SENSE_CHANNEL);
+}
 
 

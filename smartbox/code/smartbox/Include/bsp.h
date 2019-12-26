@@ -20,6 +20,8 @@
 #define ON   1
 #define OFF  0
 
+#define SAMPLE_COUNT            100
+
 #define LEVEL1_LED              0
 #define LEVEL2_LED              1
 #define LEVEL3_LED              2
