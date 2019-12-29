@@ -110,7 +110,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_IWDG_Init(void);
 /* USER CODE BEGIN PFP */
-
+extern uart_stru uart2;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -163,7 +163,7 @@ int main(void)
   ThreeD3100_magic_init();
   MagneticInit();
 	current_tick = HAL_GetTick();
-				led_tick = HAL_GetTick();
+	led_tick = HAL_GetTick();
 	 Hardware_Init();
  // ;
   /* USER CODE END 2 */
@@ -175,15 +175,16 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	
+
 	//HAL_Delay(1000);
 //	 sensor_process();
-		if((HAL_GetTick()-led_tick)>=3000)
+		//
+			if((HAL_GetTick()-led_tick)>=2000)
 		{
+
 			led_tick = HAL_GetTick();
-      led_ctrl(BLINK);
-    //  HAL_UART_Transmit(&huart2, uart2_tx_buff,9, 1);	
-current_cnt =current_cnt +5;			
+      //HAL_UART_Transmit(&huart2, uart2_tx_buff,9, 1);	
+    current_cnt =current_cnt +5;			
 		}   
 //		if((HAL_GetTick()-current_tick)>=50)
 //		{

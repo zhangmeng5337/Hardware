@@ -16,7 +16,7 @@
 #include "radio.h"
 
 unsigned char InitFlag = 0;
-extern  Module_mode_stru Module_mode;
+  Module_mode_stru Module_mode;
 extern Module_Params_stru Module_Params;
 
 
@@ -105,7 +105,7 @@ void moduleconfig()
   
 //  if(Module_mode.LastMode != Module_mode.CurrentMode) { 							  //?????????Å£???
 //    AUX_CONFIGURING();
-    Module_mode.ConfigureDone = 0;
+   // Module_mode.ConfigureDone = 0;
     RtcWakeUp = 0;
     RTC_DeInit();											//?????????? 
     CLK_PeripheralClockConfig(CLK_Peripheral_RTC, DISABLE); //???RTC??? 

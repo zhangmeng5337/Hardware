@@ -142,10 +142,11 @@ void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout )
 {
 #if MODULE == 0
  SX126x_TX_CTRL_LOW( );      
- //SX126x_TX_CTRL_HIGH( ) ;   
-// SX126x_RX_CTRL_LOW( );      
+  //SX126x_TX_CTRL_HIGH( ) ;   
+//SX126x_RX_CTRL_LOW( );      
  SX126x_RX_CTRL_HIGH( );  
 #endif
+   DelayMs(100);
     SX126xSetPayload( payload, size );
 
     SX126xSetTx( timeout );

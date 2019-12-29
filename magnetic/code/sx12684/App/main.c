@@ -12,7 +12,7 @@
 #include "sx126x-board.h"
 #include "crc.h"
 #include "lora_params.h"
-
+#include "RF.h"
 
 extern bool IrqFired;
 static RadioEvents_t RadioEvents;
@@ -35,7 +35,7 @@ void OnTxDone( void )
   Radio.Standby();
   Radio.Rx( RX_TIMEOUT_VALUE ); //??è??óê?
   usart_i=0;
-  UsartReceiveFlag=0;
+  UsartReceiveFlag=0;Ping_Pong();
 }
 
 void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
@@ -47,20 +47,28 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
   
   Radio.Standby();
   crc_value=RadioComputeCRC(RX_Buffer,BufferSize-2,CRC_TYPE_IBM);
+#if DEBUG 
+    unsigned char i;
+    for(i = 0; i < (BufferSize-2); i++) 
+    {
+      USART_SendData8(USART1, RX_Buffer[i]);
+      while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
+    }
+#endif
   if(rf_receive_analy(BufferSize)==0&&(unsigned char)crc_value==RX_Buffer[BufferSize-1]&&
      (unsigned char)(crc_value>>8)==RX_Buffer[BufferSize-2])
   {
   crc_value=0;
     //数据转发给主cpu
     unsigned char i;
-    for(i = 0; i < (BufferSize-4); i++) 
+    for(i = 0; i < (BufferSize-2); i++) 
     {
       USART_SendData8(USART1, RX_Buffer[i]);
       while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==0);
     }		
   }
   
-  
+#if DEBUG 
   if(EnableMaster)
   {
     if(memcmp(RX_Buffer,PongMsg,4)==0)
@@ -76,7 +84,7 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
     
     crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//????μ?3?òa·￠?íêy?Y°üCRC?μ
     TX_Buffer[4]=crc_value>>8;
-    TX_Buffer[5]=crc_value;
+    TX_Buffer[5]=crc_value;      DelayMs(1000);
     Radio.Send( TX_Buffer, 6);
   }
   else
@@ -93,6 +101,7 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
       crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//????μ?3?òa·￠?íêy?Y°üCRC?μ
       TX_Buffer[4]=crc_value>>8;
       TX_Buffer[5]=crc_value;
+      DelayMs(1000);
       Radio.Send( TX_Buffer, 6);
     }
     else
@@ -101,6 +110,10 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
       //DelayMs(5);
     }   
   }
+#else
+Radio.Rx( RX_TIMEOUT_VALUE ); 
+#endif
+
 }
 
 void OnTxTimeout( void )
@@ -131,7 +144,7 @@ void OnRxTimeout( void )
 
 void OnRxError( void )
 {
-  
+  Radio.Rx( RX_TIMEOUT_VALUE );
   
 }
 
@@ -161,7 +174,7 @@ void radio_init()
   Radio.SetRxConfig( MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
                     LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
                     LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
-                    0, true, 0, 0, LORA_IQ_INVERSION_ON, false );
+                    0, true, 0, 0, LORA_IQ_INVERSION_ON, true );
 }
 void Ping_Pong()
 {
@@ -192,14 +205,15 @@ int main( void )
   
   HW_int();//MCUía?§×ê?′3?ê??ˉ
   DelayMs(1000);
-  
+  ModuleInit();
   radio_init();
   Ping_Pong();
+  //IWDG_Config();
   while( 1 )
   {
     extern  uint8_t tx_complete;     
     Radio.IrqProcess( ); // Process Radio IRQ
-    Lora_Process();
+    Lora_Process();//IWDG_ReloadCounter();
   }
 }
 

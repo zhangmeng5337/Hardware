@@ -179,7 +179,7 @@ void UsartReceive_IDLE(unsigned char uart_num)
 	{
 		temp=__HAL_UART_GET_FLAG(&huart2,UART_FLAG_IDLE);
 		if((temp!=RESET))
-		{
+		{led_ctrl(BLINK);
 			__HAL_UART_CLEAR_IDLEFLAG(&huart2);
 
 			//HAL_UART_DMAStop(&huart2);
@@ -189,6 +189,7 @@ void UsartReceive_IDLE(unsigned char uart_num)
 		//	HAL_UART_DMAPause(&huart2);
 			temp=hdma_usart2_rx.Instance->CNDTR;
 			uart2.receive_len=uart2.receive_len+UARTBUFFERSIZE-temp;
+			
 			uart2.receive_flag=1;
 			uart2.index=uart2.index+UARTBUFFERSIZE-temp;
 			if(uart2.index>=UARTBUFFERSIZE)

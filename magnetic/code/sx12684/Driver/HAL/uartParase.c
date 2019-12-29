@@ -10,7 +10,7 @@ extern unsigned char UsartReceiveFlag,usart_i ;
  Module_Params_stru Module_Params;
 unsigned char uart_read_index=0;
 const unsigned char wrcommand[]={0xff,0x56,0xae,0x35,0xa9,0x55};
-    unsigned char pb[10],count;
+    unsigned char pb[64],count;
 void module_process(unsigned char mode)
 {    
    // unsigned char *pb,count;
@@ -19,20 +19,21 @@ void module_process(unsigned char mode)
 	count = 0;		
 	if(mode == NORMALCOMMAND)
 	{
-	      pb[0] = Module_Params.ADDH;
-	      pb[1] = Module_Params.ADDL;	  
+	     // Module_Params.ADDH=TX_Buffer[2];
+	     // Module_Params.ADDM=TX_Buffer[3];
+	     // Module_Params.ADDL=TX_Buffer[4];
 	      if(uart_read_index!=usart_i)
 		{
 		       count = usart_i-uart_read_index;
-		       memmove(pb+2,&TX_Buffer[uart_read_index],count);
+		       memmove(pb,&TX_Buffer[uart_read_index],count);
 		       uart_read_index = 0;
 				
 		  } 
-		  crc_value=RadioComputeCRC(pb,count+2,CRC_TYPE_IBM);//????¦Ì?3?¨°a¡¤¡é?¨ª¨ºy?Y¡ã¨¹CRC?¦Ì
-		  pb[count+2]=crc_value>>8;
-		  pb[count+3]=crc_value;
+		  crc_value=RadioComputeCRC(pb,count,CRC_TYPE_IBM);//????¦Ì?3?¨°a¡¤¡é?¨ª¨ºy?Y¡ã¨¹CRC?¦Ì
+		  pb[count]=crc_value>>8;
+		  pb[count+1]=crc_value;
          Radio.Standby();         
-         Radio.Send( pb, count+4);
+         Radio.Send( pb, count+2);
 		
 	}
 	else if(mode == WRITECOMMAND)

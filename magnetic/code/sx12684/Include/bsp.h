@@ -16,8 +16,10 @@
 #include "sysclock.h"
 #include "uart1.h"
 #include "stm8l15x_clk.h"
-#define MODULE          1
-
+#define MODULE          0
+#define DEBUG           0
+#define EnableMaster false
+//#define EnableMaster true
 #if MODULE
 #define RADIO_NSS_PORT     	   GPIOB
 #define RADIO_NSS_PIN             GPIO_Pin_4

@@ -328,7 +328,7 @@ unsigned char vehicle_detect()
        
 
 }
-volatile unsigned char func;
+unsigned char func;
 void vehicle_process()
 {
 	

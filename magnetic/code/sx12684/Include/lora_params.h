@@ -5,8 +5,7 @@
 #define RX_TIMEOUT_VALUE                            0xffff
 #define BUFFERSIZE                                 64 // Define the payload size here
 
-//#define EnableMaster false
-#define EnableMaster true
+
 
 #if defined( REGION_AS923 )
 
@@ -56,12 +55,12 @@
 //  1: 250 kHz,
 //  2: 500 kHz,
 //  3: Reserved]
-#define LORA_SPREADING_FACTOR                       12         // [SF7..SF12]
+#define LORA_SPREADING_FACTOR                       8         // [SF7..SF12]
 #define LORA_CODINGRATE                             2         // [1: 4/5,
 //  2: 4/6,
 //  3: 4/7,
 //  4: 4/8]
-#define LORA_PREAMBLE_LENGTH                        20         // Same for Tx and Rx
+#define LORA_PREAMBLE_LENGTH                        128         // Same for Tx and Rx
 #define LORA_SYMBOL_TIMEOUT                         0         // Symbols
 #define LORA_FIX_LENGTH_PAYLOAD_ON                  false
 #define LORA_IQ_INVERSION_ON                        false

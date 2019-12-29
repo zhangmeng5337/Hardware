@@ -148,8 +148,12 @@ void sensor_adc()
   }
   if(Data_usr.deep_f>3.5)
     adc_tmp2 = 3.5;
-  Data_usr.deepth[0] = (unsigned char)(adc_tmp2*10/10 );
-  Data_usr.deepth[1] = (((unsigned char)(adc_tmp2*10))%10 );
+  adc_tmp3=adc_tmp2*10;
+  Data_usr.deepth[0] = (unsigned char)(adc_tmp3/10 );
+  if(adc_tmp3<10)
+  Data_usr.deepth[1] = (((unsigned char)(adc_tmp3))%10 );
+  else
+   Data_usr.deepth[1] = (((unsigned char)(adc_tmp3))%10 );   
   Data_usr.deepth_percent = (unsigned char)(adc_tmp2/Data_usr.Warn_Thres*100);
 }
 static uint32_t tmp2;

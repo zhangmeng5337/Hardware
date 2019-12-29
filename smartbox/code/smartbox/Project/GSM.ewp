@@ -1607,6 +1607,9 @@
   <group>
     <name>hal</name>
     <file>
+      <name>$PROJ_DIR$\..\Driver\HAL\GSM.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Driver\HAL\tea.c</name>
     </file>
   </group>

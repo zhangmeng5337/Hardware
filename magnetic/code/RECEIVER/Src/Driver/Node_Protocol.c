@@ -473,6 +473,7 @@ void uart_process()
 		unsigned char ret;
 HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_RESET);
 		ret = uartparase2(2);
+		HAL_UART_Transmit(&huart2,uart1.receive_buffer ,uart1.receive_len ,10);
 		memset(uart1.receive_buffer,0,256);
 		uart1.receive_flag = 0;
 		if(ret)
@@ -482,7 +483,7 @@ HAL_GPIO_WritePin(GPIOA, LED_Pin, GPIO_PIN_RESET);
 				case STATIC_MODE:break;
 				case DYNAMIC_MODE:
 				{
-					Transmmit(SET_PERIOD);
+					Transmmit(DYNAMIC_MODE);
 				}break;
 				case REGISTER_CODE:
 

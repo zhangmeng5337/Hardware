@@ -17,7 +17,7 @@ Library Manager: ArmAr.exe V5.06 update 4 (build 422)
 Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
 CPU DLL:         SARMCM3.DLL V5.23
 Dialog DLL:      DCM.DLL V1.15.0.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
@@ -27,16 +27,26 @@ Project File Date:  10/13/2019
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'RECEIVER'
-compiling main.c...
-../Src/main.c(140): warning:  #223-D: function "nodeParamsInit" declared implicitly
-  	 nodeParamsInit();
-../Src/main.c(220): warning:  #177-D: function "MX_IWDG_Init"  was declared but never referenced
-  static void MX_IWDG_Init(void)
-../Src/main.c: 2 warnings, 0 errors
+compiling Node_Protocol.c...
+..\Src\Driver\Node_Protocol.c(159): warning:  #223-D: function "memset" declared implicitly
+  	memset(pbuffer, 0, sizeof(pbuffer));
+..\Src\Driver\Node_Protocol.c(161): warning:  #223-D: function "memcpy" declared implicitly
+  	memcpy(pbuffer,&DataPack.headerH ,1);
+..\Src\Driver\Node_Protocol.c(230): warning:  #177-D: label "loop1"  was declared but never referenced
+  		loop1:	if(DataPack.seq_num <= 3)
+..\Src\Driver\Node_Protocol.c(275): warning:  #177-D: label "loop2"  was declared but never referenced
+  			loop2:	if(DataPack.seq_num <= 3)
+..\Src\Driver\Node_Protocol.c(305): warning:  #177-D: label "loop3"  was declared but never referenced
+  			loop3:	if(DataPack.seq_num <= 3)
+..\Src\Driver\Node_Protocol.c(477): warning:  #223-D: function "memset" declared implicitly
+  		memset(uart1.receive_buffer,0,256);
+..\Src\Driver\Node_Protocol.c(458): warning:  #177-D: variable "i"  was declared but never referenced
+  	unsigned char i=0;
+..\Src\Driver\Node_Protocol.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=11500 RO-data=500 RW-data=16 ZI-data=2512  
+Program Size: Code=13152 RO-data=500 RW-data=16 ZI-data=2512  
 FromELF: creating hex file...
-"RECEIVER\RECEIVER.axf" - 0 Error(s), 2 Warning(s).
+"RECEIVER\RECEIVER.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,7 +64,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.1
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

@@ -507,6 +507,9 @@ void RadioInit( RadioEvents_t *events )
   RadioEvents = events;
   
   SX126xInit( RadioOnDioIrq );
+  
+  SX126xWriteRegister(REG_XTA_TRIM, 0 );
+   SX126xWriteRegister(REG_XTA_TRIM+1, 1 ); 
   SX126xSetStandby( STDBY_RC );
   SX126xSetRegulatorMode( USE_DCDC );
   
@@ -929,7 +932,7 @@ void RadioRx( uint32_t timeout )
  // SX126x_TX_CTRL_LOW( );      
   SX126x_TX_CTRL_HIGH( );    
   SX126x_RX_CTRL_LOW( );      
-  //SX126x_RX_CTRL_HIGH( );  
+ // SX126x_RX_CTRL_HIGH( );  
 #endif
 }
 
@@ -1187,9 +1190,12 @@ extern Module_Params_stru Module_Params;
 extern uint8_t RX_Buffer[BUFFERSIZE];
 unsigned char   rf_receive_analy(unsigned char size)
 {
-  if(RX_Buffer[0]==Module_Params.ADDH&&RX_Buffer[1]==Module_Params.ADDL)
+  if(RX_Buffer[2]==Module_Params.ADDH&&RX_Buffer[3]==Module_Params.ADDM
+     &&RX_Buffer[4]==Module_Params.ADDL||
+       (RX_Buffer[10]==Module_Params.ADDH&&RX_Buffer[11]==Module_Params.ADDM
+     &&RX_Buffer[12]==Module_Params.ADDL))
   {
-    //memmove(RX_Buffer,RX_Buffer+2,size-2);
+    //memmove(RX_Buffer,RX_Buffer+3,size-2);
     return 0;
   }
   else

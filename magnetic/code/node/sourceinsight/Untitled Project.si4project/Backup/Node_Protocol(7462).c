@@ -4,7 +4,7 @@
 #include "usystem.h"
 
 
-extern unsigned char tx_start_flag;
+
 extern UART_HandleTypeDef huart2;
 extern uart_stru uart1;
 extern uart_stru uart2;
@@ -226,7 +226,7 @@ void Transmmit(unsigned char func)
 					DataPack.payload[i++] = DataPack.server_channelH;//channel	
 					DataPack.payload[i++] = DataPack.server_channelL;//channel
 					DataPack.payload[i++] = DataPack.tx_period;//tx period
-					DataPack.payload[i++] = tx_start_flag;//car status	
+					DataPack.payload[i++] = DataPack.car_flag;//car status	
 					DataPack.payload[i++] = DataPack.car_time;//time on the node 
 					DataPack.len = i;
 					//DataPack.seq_num  = DataPack.seq_num+ 1;	

@@ -12,6 +12,6 @@
 void RF_Initial(void);
 void moduleconfig(void);
 void lora_process(void);
-
+void ModuleInit(void);
 #endif
 

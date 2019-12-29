@@ -244,7 +244,7 @@ void HW_int(void)
   // Tick_Configration();
   //RCC_Configuration();
   GPIO_int();
-  Uart1_Init(9600, 0);
+  Uart1_Init(115200, 0);
   SPI_Int();
   enableInterrupts();
   //LED_Init();             //µ÷ÊÔLED³õÊ¼»¯ 

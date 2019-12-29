@@ -14,7 +14,7 @@ uint32_t 	rx_len_var;
 unsigned char 	receive_flag;
 unsigned int      real_index;
 unsigned int      loop_index;
-unsigned char	UsartReceiveData[buffer_size];
+unsigned char	UsartReceiveData[BUFFERSIZE];
 
 }Uart_Types;
 
