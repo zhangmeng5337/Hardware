@@ -22,7 +22,7 @@
 #include "stm8l15x_it.h"
 #include "stm8l15x_rtc.h"
 #include "stm8l15x_tim1.h"
-
+#include "uart_hal.h"
 /** @addtogroup STM8L15x_StdPeriph_Examples
   * @{
   */
@@ -414,6 +414,7 @@ INTERRUPT_HANDLER(USART1_TX_TIM5_UPD_OVF_TRG_BRK_IRQHandler, 27)
   * @param  None
   * @retval None
   */
+extern uart_stru uart;
 INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
 {
   /* In order to detect unexpected events during development,
@@ -422,7 +423,8 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
     unsigned char t;
     if(USART_GetFlagStatus(USART1, USART_FLAG_IDLE) != RESET)
     {
-       //uart_str.receive_flag =1;
+               
+                 uart.received_flag =1;
 	 	//uart_str.receive_flag ++;
 		t = USART1->SR;
 		t = USART1->DR;//IDLE清零需要依次读SR 和DR 寄存器

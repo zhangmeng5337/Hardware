@@ -20,6 +20,14 @@
 #define ON   1
 #define OFF  0
 
+#define SAMPLE_COUNT            100
+
+#define LEVEL1_LED              0
+#define LEVEL2_LED              1
+#define LEVEL3_LED              2
+#define LEVEL_ALL_LED           3
+#define STATUS_LED              4
+
 
 #define BATEERY_QUANTITY_PORT           GPIOA           //BATTERY  quantity level
 #define BATEERY_QUANTITY_LEVEL1_PIN     GPIO_Pin_5
@@ -43,10 +51,10 @@
 #define VBAT_SENSE_CHANNEL              ADC_Channel_23
 
 void HardwareInit(void);
-void LED_Init(void);
-
-
-
+void LED_Init(unsigned char num,unsigned char newstate);
+void lock_state(unsigned char newstate);
+void gsm_power_state(unsigned char newstate);
+void gnss_state(unsigned char newstate);
 #endif //_BSP_H_
 
 /*===========================================================================
