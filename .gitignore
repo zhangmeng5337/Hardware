@@ -10,6 +10,8 @@
 *.PS
 *.WK3
 *.o
+*.crf
+
 Obj/
 /Project/Debug/
 *.DS_Store
@@ -45,7 +47,7 @@ signoise.run/
 *.cout
 /Obj/
 *.TMP
-/sourceinsight
+sourceinsigh/t
 !/sourceinsight/*.siproj
 /output
 !/output/*.hex
