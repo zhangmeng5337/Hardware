@@ -43,18 +43,22 @@
 #define LOCK_FB_PIN                     GPIO_Pin_0
 
 #define GNSS_ENABLE_PORT                GPIOB          //gsm related ios
-#define GNSS_ENABLE_PIN                 GPIO_Pin_1
+#define GNSS_ENABLE_PIN                 GPIO_Pin_2
 #define GSM_PWR_PORT                    GPIOB
-#define GSM_PWR_PIN                     GPIO_Pin_2
+#define GSM_PWR_PIN                     GPIO_Pin_1
 
 
 #define VBAT_SENSE_CHANNEL              ADC_Channel_23
-
+unsigned char delay_ms(uint32_t num);//不是很精确
 void HardwareInit(void);
 void LED_Init(unsigned char num,unsigned char newstate);
 void lock_state(unsigned char newstate);
 void gsm_power_state(unsigned char newstate);
 void gnss_state(unsigned char newstate);
+void Send_Comm(unsigned char* comm,unsigned short len);
+void Send_Comm2(unsigned char* comm,unsigned short len);
+void DMA_START_RX2();
+unsigned char get_lock_status(void);
 #endif //_BSP_H_
 
 /*===========================================================================

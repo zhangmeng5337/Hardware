@@ -46,6 +46,6 @@ typedef struct{
 }DataPack_stru;
 void Transmmit(unsigned char func);
 void ReceiverAnalysis(void);
-
+unsigned char uartparase(unsigned char uartNo,unsigned char func);
 #endif
 

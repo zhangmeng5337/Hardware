@@ -9,7 +9,7 @@
 #include "stm8l15x_dma.h"
 #include "stm8l15x_tim1.h"
 #include "uart_hal.h"
-
+#define USART2_DMA_CHANNEL_RX   DMA1_Channel3
 #define USART_DMA_CHANNEL_RX   DMA1_Channel2
 #define USART_DR_ADDRESS       (uint16_t)0x5231  /* USART1 Data register Address */
 
@@ -47,7 +47,7 @@ void GPIO_Initial(void)
   GPIO_Init( MODULE_STATUS_PORT, MODULE_STATUS_PIN, GPIO_Mode_Out_PP_High_Slow );
   //elec lock ios
   GPIO_Init( LOCK_CTRL_PORT, LOCK_CTRL_PIN, GPIO_Mode_Out_PP_High_Slow );  
-  GPIO_Init( LOCK_FB_PORT, LOCK_FB_PIN, GPIO_Mode_In_FL_No_IT );   
+  GPIO_Init( LOCK_FB_PORT, LOCK_FB_PIN, GPIO_Mode_In_PU_No_IT );   
   //gsm power and gps enbale ios
   GPIO_Init( GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, GPIO_Mode_Out_PP_Low_Slow ); 
   GPIO_Init( GSM_PWR_PORT, GSM_PWR_PIN, GPIO_Mode_Out_PP_Low_Slow ); 
@@ -64,7 +64,9 @@ void gnss_state(unsigned char newstate)
 {
   if(newstate == ON)
   {
-    GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, SET);   
+    GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, RESET); //delay_ms(1000);//
+    GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, SET);delay_ms(1000);//
+   // GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, RESET);
   }
   else
   {
@@ -82,15 +84,23 @@ void gsm_power_state(unsigned char newstate)
 {
   if(newstate == ON)
   {
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);
+    delay_ms(500);//
     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, SET);
-    delay_ms(500);
-    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);      
+    delay_ms(1000);//
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);
+    delay_ms(1000);
+
+
+    
   }
   else
   {
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);
+    delay_ms(2000);
     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, SET);
-    delay_ms(500);
-    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);  
+    delay_ms(1000);
+    GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);
   }
 }
 void lock_state(unsigned char newstate)
@@ -98,7 +108,8 @@ void lock_state(unsigned char newstate)
   if(newstate == ON)
   {
     GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, SET);
-    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
+    
+    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==ON)
     {
       
       if(delay_ms(500)==0)
@@ -112,10 +123,22 @@ void lock_state(unsigned char newstate)
   }
   else
   {
-    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET); 
+    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
+    {
+      
+      if(delay_ms(500)==0)
+      {
+        GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+        break;
+      }
+    }
   }
 }
-
+unsigned char get_lock_status()
+{
+  return GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN);
+}
 
 void RTC_Config(uint16_t time,unsigned char flag) 
 {
@@ -167,7 +190,7 @@ void EnterStopMode(void)
   
 }
 
-
+extern uart_stru uart2;
 static void DMA_Config(void)
 {
   CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, ENABLE);
@@ -177,15 +200,16 @@ static void DMA_Config(void)
   
   DMA_DeInit(DMA1_Channel1);
   DMA_DeInit(DMA1_Channel2);
-  
+
   /* DMA channel Rx of USART Configuration */
   DMA_Init(USART_DMA_CHANNEL_RX, (uint16_t)uart.rxbuffer , (uint16_t)USART_DR_ADDRESS,
            BUFFERSIZE, DMA_DIR_PeripheralToMemory, DMA_Mode_Normal,
            DMA_MemoryIncMode_Inc, DMA_Priority_Low, DMA_MemoryDataSize_Byte);
   
-  
+ 
   /* Enable the USART Tx/Rx DMA requests */
   USART_DMACmd(USART1, USART_DMAReq_RX, ENABLE);
+
   /* Global DMA Enable */
   DMA_GlobalCmd(ENABLE);
   
@@ -201,6 +225,20 @@ void DMA_START_RX(void)
   DMA_Cmd(USART_DMA_CHANNEL_RX, DISABLE);
   DMA_SetCurrDataCounter(USART_DMA_CHANNEL_RX, BUFFERSIZE); 
   DMA_Cmd(USART_DMA_CHANNEL_RX, ENABLE);
+  
+  
+  
+}
+void DMA_START_RX2(void)
+{   
+  DMA_ClearFlag(DMA1_FLAG_TC3);
+  DMA_ClearFlag(DMA1_FLAG_HT3);
+  DMA_Cmd(USART2_DMA_CHANNEL_RX, DISABLE);
+  DMA_SetCurrDataCounter(USART2_DMA_CHANNEL_RX, BUFFERSIZE); 
+  DMA_Cmd(USART2_DMA_CHANNEL_RX, ENABLE);
+  
+  
+  
 }
 
 
@@ -336,18 +374,67 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);
   return ADCdata;
 }
+void USART_SenByte(unsigned char *Str,unsigned char len) 
+{
+  while(len>0)
+  {
+    USART_SendData8(USART1, *Str);
+    while(!USART_GetFlagStatus (USART1, USART_FLAG_TXE));
+    Str++;
+    len--;
+  }
+}
+void USART2_SenByte(unsigned char *Str,unsigned char len) 
+{
+  while(len>0)
+  {
+    USART_SendData8(USART2, *Str);
+    while(!USART_GetFlagStatus (USART2, USART_FLAG_TXE));
+    Str++;
+    len--;
+  }
+}
+void Send_Comm(unsigned char* comm,unsigned short len)
+{
 
+	//HAL_UART_DMAStop(&huart5);
+	//HAL_UART_DMAResume(&huart5);
+       //UsartType5.real_index=0;
+	//UsartType5.rx_len=0;
+	//UsartType5.rx_len_var=0;
+	//UsartType5.loop_index=0;
+	//HAL_UART_Receive_DMA(&huart5,UsartType5.usartDMA_rxBuf,buffer_size);
+	//delay_ms(100);
+	//uart5_dma_state=0;
+	USART_SenByte(comm,len);
+
+}
+void Send_Comm2(unsigned char* comm,unsigned short len)
+{
+
+	//HAL_UART_DMAStop(&huart5);
+	//HAL_UART_DMAResume(&huart5);
+       //UsartType5.real_index=0;
+	//UsartType5.rx_len=0;
+	//UsartType5.rx_len_var=0;
+	//UsartType5.loop_index=0;
+	//HAL_UART_Receive_DMA(&huart5,UsartType5.usartDMA_rxBuf,buffer_size);
+	//delay_ms(100);
+	//uart5_dma_state=0;
+	USART2_SenByte(comm,len);
+
+}
 void HardwareInit()
 {
   disableInterrupts();
   SystemClock_Init();     // 系统时钟初始化
   GPIO_Initial(); 
   lock_state(OFF);
-  Uart1_Init(9600);// 初始化GPIO
+  Uart1_Init(115200);// 初始化GPIO
   DMA_Config();
   LED_Init(LEVEL_ALL_LED,OFF);
   enableInterrupts();
-  gnss_state(OFF);
+  
   gsm_power_state(ON);
   adcGet(VBAT_SENSE_CHANNEL);
 }

@@ -7,14 +7,14 @@
 
 void main(void)
 {
-  
+ 
   HardwareInit();
- // module_prams_init();
+  module_prams_init();
   
   while(1)
   {
-
-
-
+  //delay_ms(5000);
+    SIMCOM_Register_Network();
+    module_process(); 
   }
 }

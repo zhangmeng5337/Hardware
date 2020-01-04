@@ -18,7 +18,7 @@ void index_zero()
 	//else
 	//	uart1.index = 	uart1.index+1 ;		
 }
-unsigned char HeaderIdentify(unsigned char func)
+unsigned char HeaderIdentify(unsigned char func2)
 {
 
 
@@ -49,7 +49,7 @@ unsigned char HeaderIdentify(unsigned char func)
 				   	uart2.receive_buffer[i+12]==DataPack.id[2])
 					 )
 				   	{
-					   if(uart2.receive_buffer[i+5] == func)
+					   if(uart2.receive_buffer[i+5] == func2)
 						return 1;
 					   else
 						return uart2.receive_buffer[i+5];
@@ -63,7 +63,7 @@ unsigned char HeaderIdentify(unsigned char func)
 	   return 0;
 }
 
-unsigned char uartparase(unsigned char uartNo,unsigned char func)
+unsigned char uartparase(unsigned char uartNo,unsigned char func1)
 {
 	unsigned char res;
 	res = 0;
@@ -71,7 +71,7 @@ unsigned char uartparase(unsigned char uartNo,unsigned char func)
 	{
 	    if( uart2.receive_flag==1)
 	    	{   uart2.receive_flag = 0;
-	    	   res = HeaderIdentify(func);
+	    	   res = HeaderIdentify(func1);
 					 
 				if(res)
 				   return res;

@@ -7,8 +7,9 @@
 #include "GSM.h"
 #include "stdlib.h"
 #include "uart_hal.h"
+#define debug  1
 extern uart_stru uart;
-unsigned char one_net_key[]="*296832#571498622#json* ";//284261：产品编号；abab：鉴权码；json：脚本
+unsigned char one_net_key[]="*296832#571498702#json*";//284261：产品编号；abab：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 unsigned char* server_ip=Establish_TCP_Connection;
 unsigned char NET_STAUS = 0;
@@ -45,7 +46,7 @@ unsigned char AT_cmd_ack(unsigned char *src,unsigned char *ack)
   int index = -1;
   if(src ==NULL || ack ==NULL)
   {
-    return 0;
+    return 1;
   }
   
   while(i<srclen)
@@ -97,7 +98,8 @@ unsigned char at_cmd_ok(unsigned char *src)
 
 unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t waittime)
 {
-  unsigned char res=0;
+  unsigned char res;
+  res=1;
   if(*p!=NULL)
     Send_Comm((unsigned char*)p,strlen((const char*)p));
   
@@ -107,10 +109,10 @@ unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t wait
     {
       if(uart.received_flag ==1)//接收到期待的应答结果
       {
-        if(AT_cmd_ack(uart.rxbuffer,(unsigned char*)ack))
+        if(AT_cmd_ack(uart.rxbuffer,(unsigned char*)ack)==0)
         {
           
-          
+          memset(uart.rxbuffer,0,BUFFERSIZE); 
           res=0;
           break;//得到有效数据
         }    
@@ -122,7 +124,7 @@ unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t wait
   } 
   
   uart.received_flag = 0;
-  memset(uart.rxbuffer,0,BUFFERSIZE); 
+  
   return res;
   
 }
@@ -142,6 +144,35 @@ void SIMCOM_ReConnect()
   }
   
 }
+signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
+{
+  unsigned char res=0;
+  //Send_Comm((const char*)Establish_TCP_Connection,strlen((const char*)Establish_TCP_Connection));
+  
+  if(waittime)		//需要等待应答
+  {
+    while(--waittime)	//等待倒计时
+    {
+      //delay_ms(5);
+      if(uart.received_flag==1)//接收到期待的应答结果
+      {
+        if(AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_Closed)
+           ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)Respond_No_Carrier)
+             ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_ERROR))
+        {
+          res=0;
+          
+          break;//得到有效数据
+          
+        }
+        
+        //res=0;TIMEOUT
+      }
+    }
+    if(waittime==0){res=1;uart.received_flag=0;}
+  }
+  return res;
+}
 void SIMCOM_Register_Network()
 {
   unsigned char *p;
@@ -149,10 +180,10 @@ void SIMCOM_Register_Network()
   
   switch(NET_STAUS)
   {                                                                                                                                                                                         
-    case SIMCOM_NET_NOT:
+  case SIMCOM_NET_NOT:
     {      
       *p = 0;
-      if(SIMCOM_GetStatus((unsigned char*)Test,(unsigned char*)Respond_OK,200)==1)
+      if(SIMCOM_GetStatus((unsigned char*)Test,(unsigned char*)Respond_OK,50)==0)//at 
       {  
         NET_STAUS=SIMCOM_READY_YES;
         memset(uart.rxbuffer,0,BUFFERSIZE);
@@ -160,7 +191,7 @@ void SIMCOM_Register_Network()
     }break;
   case SIMCOM_READY_YES://SIMCOM_READY_YES:
     {
-      if( SIMCOM_GetStatus((unsigned char*)Echo_OFF,(unsigned char*)Respond_OK,500)==1)
+      if( SIMCOM_GetStatus((unsigned char*)Echo_OFF,(unsigned char*)Respond_OK,50)==0)//close echo
       {  
         NET_STAUS=SIMCOM_ATE0;
         
@@ -171,11 +202,11 @@ void SIMCOM_Register_Network()
   case SIMCOM_ATE0:
     {
       *p = 0;
-      if(SIMCOM_GetStatus((unsigned char*)p,(unsigned char*)SMS_Ready,1000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)p,(unsigned char*)SMS_Ready,1000)==0)//wait module init complete
       {  
-      	NET_STAUS=SIMCOM_Network_Intensity_READY;
-      	memset(uart.rxbuffer,0,BUFFERSIZE);
-        delay_ms(3000);
+        NET_STAUS=SIMCOM_Network_Intensity_READY;
+        memset(uart.rxbuffer,0,BUFFERSIZE);
+        //delay_ms(3000);
       }
     }
     break;
@@ -183,7 +214,7 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_Network_Intensity_READY:
     {        
-      if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,50000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)GPRS_Attached_State,(unsigned char*)Respond_Attached_Ok,50000)==0)
       {
         
         NET_STAUS=SIMCOM_GPRS_READY;
@@ -194,7 +225,7 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_GPRS_READY:
     {
-      if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,3000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,3000)==0)
       {
         NET_STAUS=SIMCOM_NET_PORT_CLOSE;   
         memset(uart.rxbuffer,0,BUFFERSIZE);
@@ -203,7 +234,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_NET_PORT_CLOSE:
     {
-      if(SIMCOM_GetStatus((unsigned char*)Pass_Through,(unsigned char*)Respond_OK,1000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)Pass_Through,(unsigned char*)Respond_OK,1000)==0)
       {
         NET_STAUS=SIMCOM_NET_TRANSPARENT;
         memset(uart.rxbuffer,0,BUFFERSIZE);
@@ -212,10 +243,11 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_NET_TRANSPARENT:
     {
-      if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,60000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)server_ip,(unsigned char*)Respond_TCP_Connect,60000)==0)
       {
-#if debug 
-     	NET_STAUS=SIMCOM_Connect_Platform;
+#if debug
+        
+        NET_STAUS=SIMCOM_NET_TRANSPARENT; NET_STAUS=SIMCOM_Connect_Platform;
 #else
         NET_STAUS=SIMCOM_NET_OK;
 #endif
@@ -225,9 +257,9 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_Connect_Platform:
     {
-      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,60000)==1)
+      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,220000)==0)
       {
-     	NET_STAUS=SIMCOM_NET_OK;
+        NET_STAUS=SIMCOM_NET_OK;
         
         memset(uart.rxbuffer,0,BUFFERSIZE);
       }
@@ -240,7 +272,7 @@ void SIMCOM_Register_Network()
       if(SIMCOM_Get_TCP_Staus(40)==1)
       {   
         
-        if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==1)
+        if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==0)
         {
           NET_STAUS=SIMCOM_NET_ERROR;
           memset(uart.rxbuffer,0,BUFFERSIZE);
@@ -252,17 +284,31 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_ERROR:
     {
       // GSM_HardwareInit(ON);                   //复位重启
-      gsm_power_state(OFF);
+      //gsm_power_state(OFF);
       //GSM_HardwareInit(ON);
       NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
     }
     break;
   default : break;
   }
-  SIMCOM_ReConnect();
+  //SIMCOM_ReConnect();
   free(p);
 }
 
-
-
+unsigned char Get_Network_status()
+{
+  return NET_STAUS;
+}
+unsigned char gps_flag;
+void gps_test()
+{
+  if(gps_flag==0)
+  {
+    gps_flag = 1;
+    gnss_state(ON);
+    
+  }
+  delay_ms(2000);
+  Send_Comm2((unsigned char*)GNSS_PWR,strlen((const char*)GNSS_PWR));
+}
 

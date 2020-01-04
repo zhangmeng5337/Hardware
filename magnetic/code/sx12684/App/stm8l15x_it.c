@@ -467,11 +467,12 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
       tmp = USART_ReceiveData8(USART1);
     
   }
-  if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
+  else
+  //if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
   {
   TX_Buffer[usart_i] = USART_ReceiveData8(USART1);
   usart_i++;
-    USART_ClearITPendingBit(USART1, USART_FLAG_RXNE);//清除中断标志
+    //USART_ClearITPendingBit(USART1, USART_FLAG_RXNE);//清除中断标志
   }  
 
   //USART_ClearITPendingBit(USART1, USART_IT_RXNE);//清除中断标志

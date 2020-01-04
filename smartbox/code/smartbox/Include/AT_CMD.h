@@ -13,14 +13,21 @@ const unsigned char Respond_Start[]="+CFUN: 1";//开机完成
 const unsigned char SMS_Ready[]="SMS Ready";//sms ready
 const unsigned char Respond_Attached_Ok[]="+CGATT: 1";//
 const unsigned char Respond_TCP_Connect[]="CONNECT\r";//
-
-
+const unsigned char Respond_No_Carrier[]="+NO CARRIER";//
+const unsigned char Respond_CPIN[]="+CPIN: READY\r\n";
 //发送命令
 const unsigned char Echo_OFF[]="ATE0\r";//回显关闭命令，并保存
 const unsigned char GPRS_Attached_State[]="AT+CGATT?\r";//检查 GPRS 附着状态
 const unsigned char AT_SHUNT[]="AT+CIPSHUT\r";//查询运营商选择状态
 const unsigned char Pass_Through[]="AT+CIPMODE=1\r";//设置为透传模式
 const unsigned char Quit_transparent[]="+++";//quit from data transparent
+const unsigned char TCP_Closed[]="CLOSED\r\n";//
+const unsigned char TCP_ERROR[]="+CIPOPEN: 0,4\r\n";//
+const unsigned char Check_SIM[]="AT+CPIN?\r";//检查登入移动设备(ME)的
+ const unsigned char GNSS_INFO[]="AT+CGNSPWR=?\r\n";
+ const unsigned char GNSS_PWR[]="AT+CGNSPWR=1\r\n";
+
+//const unsigned char GNSS_INFO[]="AT+CGNSINF\r";//检查登入移动设备(ME)的
 #elif  MODULE == SIM800
 //const unsigned char Test2[]='\0';
 const unsigned char Test[]="AT\r";

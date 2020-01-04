@@ -8,17 +8,6 @@
 
 
 
-typedef struct
-{
-uint32_t 	rx_len;
-uint32_t 	rx_len_var;
-unsigned char 	receive_flag;
-unsigned int      real_index;
-unsigned int      loop_index;
-unsigned char	UsartReceiveData[BUFFERSIZE];
-
-}Uart_Types;
-
 
 
 
@@ -47,4 +36,5 @@ unsigned char Get_Network_status(void);
 void SIMCOM_Register_Network(void);
 void test(void);
 void Set_Network_status(void);
+void gps_test(void);
 #endif

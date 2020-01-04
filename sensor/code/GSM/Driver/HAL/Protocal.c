@@ -244,7 +244,7 @@ void module_process()
       sensor_adc();
       flow_get();
       data_tansmmit();
-#if !DEGUG_SENSOR 
+#if DEGUG_SENSOR 
       RtcWakeUp = 0;
       Set_Network_status();
       GSM_HardwareInit(ON);

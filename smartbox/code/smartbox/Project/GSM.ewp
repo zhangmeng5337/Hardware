@@ -17,7 +17,7 @@
         <debug>1</debug>
         <option>
           <name>GenDeviceSelectMenu</name>
-          <state>STM8L151G6	STM8L151G6</state>
+          <state>STM8L151C8	STM8L151C8</state>
         </option>
         <option>
           <name>GenCodeModel</name>
@@ -147,7 +147,7 @@
         </option>
         <option>
           <name>IccOptLevel</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IccOptStrategy</name>
@@ -156,7 +156,7 @@
         </option>
         <option>
           <name>IccOptLevelSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IccOptAllowList</name>
@@ -608,7 +608,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\config\lnkstm8l151g6.icf</state>
+          <state>$TOOLKIT_DIR$\config\lnkstm8l151c8.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -1608,6 +1608,9 @@
     <name>hal</name>
     <file>
       <name>$PROJ_DIR$\..\Driver\HAL\GSM.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Driver\HAL\Protocal.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Driver\HAL\tea.c</name>
