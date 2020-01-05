@@ -3,7 +3,7 @@
 <title>Static Call Graph - [node\node.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image node\node.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sun Jan 05 15:48:37 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sun Jan 05 18:10:12 2020
 <BR><P>
 <H3>Maximum Stack Usage =        288 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -99,7 +99,7 @@ Function Pointers
  <LI><a href="#[5]">UsageFault_Handler</a> from stm32l4xx_it.o(i.UsageFault_Handler) referenced from startup_stm32l433xx.o(RESET)
  <LI><a href="#[a]">WWDG_IRQHandler</a> from startup_stm32l433xx.o(.text) referenced from startup_stm32l433xx.o(RESET)
  <LI><a href="#[4e]">__main</a> from entry.o(.ARM.Collect$$$$00000000) referenced from startup_stm32l433xx.o(.text)
- <LI><a href="#[53]">fputc</a> from main.o(i.fputc) referenced from printf1.o(i.__0printf$1)
+ <LI><a href="#[53]">fputc</a> from bsp.o(i.fputc) referenced from printf1.o(i.__0printf$1)
  <LI><a href="#[4c]">main</a> from main.o(i.main) referenced from entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
 <P>
@@ -520,7 +520,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start
 </UL>
 
-<P><STRONG><a name="[71]"></a>BaseLineProcess</STRONG> (Thumb, 392 bytes, Stack size 24 bytes, filter.o(i.BaseLineProcess))
+<P><STRONG><a name="[71]"></a>BaseLineProcess</STRONG> (Thumb, 414 bytes, Stack size 24 bytes, filter.o(i.BaseLineProcess))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = BaseLineProcess &rArr; MagneticGet &rArr; ThreeD3100_magic_GetData &rArr; SPI_Read_M3D3100 &rArr; SPI_WriteByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -746,7 +746,6 @@ Global Symbols
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Disable
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_ConversionStop
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vehicle_process
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCCEx_PeriphCLKConfig
@@ -754,6 +753,7 @@ Global Symbols
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_WaitOnFlagUntilTimeout
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_CheckIdleState
+<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TransmitReceive
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFlagStateUntilTimeout
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFifoStateUntilTimeout
@@ -1228,8 +1228,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
-<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_CheckIdleState
+<BR>[Called By]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_CheckIdleState
+<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 </UL>
 
 <P><STRONG><a name="[2d]"></a>USART1_IRQHandler</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, stm32l4xx_it.o(i.USART1_IRQHandler))
@@ -1273,6 +1273,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vehicle_process
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vehicle_detect
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BaseLineProcess
 </UL>
 
@@ -1296,7 +1297,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ThreeD3100_magic_init
 </UL>
 
-<P><STRONG><a name="[53]"></a>fputc</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, main.o(i.fputc))
+<P><STRONG><a name="[53]"></a>fputc</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, bsp.o(i.fputc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = fputc &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -1366,10 +1367,11 @@ Global Symbols
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReceiverAnalysis
 </UL>
 
-<P><STRONG><a name="[75]"></a>vehicle_detect</STRONG> (Thumb, 610 bytes, Stack size 24 bytes, filter.o(i.vehicle_detect))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = vehicle_detect &rArr; __hardfp_fabs
+<P><STRONG><a name="[75]"></a>vehicle_detect</STRONG> (Thumb, 740 bytes, Stack size 24 bytes, filter.o(i.vehicle_detect))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = vehicle_detect &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
@@ -1377,7 +1379,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BaseLineProcess
 </UL>
 
-<P><STRONG><a name="[e6]"></a>vehicle_process</STRONG> (Thumb, 290 bytes, Stack size 8 bytes, filter.o(i.vehicle_process))
+<P><STRONG><a name="[e6]"></a>vehicle_process</STRONG> (Thumb, 280 bytes, Stack size 8 bytes, filter.o(i.vehicle_process))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = vehicle_process &rArr; BaseLineProcess &rArr; MagneticGet &rArr; ThreeD3100_magic_GetData &rArr; SPI_Read_M3D3100 &rArr; SPI_WriteByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick

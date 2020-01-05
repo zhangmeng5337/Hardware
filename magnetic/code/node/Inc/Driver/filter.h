@@ -31,6 +31,7 @@ uint32_t elapseTime;
 unsigned char noupdate;
 short int count;
 unsigned char base_line_update;
+unsigned char run_step;
 }magnetic_str;
 void MagneticInit(void);
 void vehicle_process(void);

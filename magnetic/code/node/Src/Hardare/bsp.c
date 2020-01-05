@@ -1,4 +1,4 @@
-
+#include "stdio.h"
 #include "main.h"
 #include "bsp.h"
 extern ADC_HandleTypeDef hadc1;
@@ -199,6 +199,25 @@ void UsartReceive_IDLE(unsigned char uart_num)
 		}
 	}
 	
+}
+#pragma import(__use_no_semihosting)
+void _sys_exit(int x)
+{
+x = x;
+}
+struct __FILE
+{
+int handle;
+};
+FILE __stdout;
+
+int fputc(int ch, FILE *f)
+{
+				//发送数据到串口
+	unsigned char tmp;
+	tmp =(unsigned char )ch;
+ HAL_UART_Transmit(&huart1, &tmp, 1, 1);
+	return ch;
 }
 
 void Hardware_Init()

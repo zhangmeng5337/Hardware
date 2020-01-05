@@ -203,20 +203,41 @@ unsigned char vehicle_detect()
 				magnetic.elapseTime = magnetic.eTime - magnetic.sTime;	
 				if(magnetic.elapseTime>= MIN_PERIOD)//检测有车时间超过最小周期，避免同一辆车未离开情况
 				{
-				  magnetic.detect_flag = 0;	
+				  
 					if(magnetic.noupdate )   //如果车没走
-					{
+					{   	
 						magnetic.noupdate = 0;
 					    magnetic.Car_Flag = 0;
 						magnetic.base_line_update =0;
+						magnetic.run_step = 1;
+						magnetic.detect_flag = 0;
+						magnetic.run_step = 6;
+						#if DEBUG_LOG
+							printf("********run_step:    %d\n",magnetic.run_step);
+						#endif
 					}
 					else
-					{
+					{   magnetic.detect_flag = 0;
 						magnetic.Car_Flag = 1;
-						if(magnetic.noupdate == 0) //车辆加1
-							magnetic.count = magnetic.count + 1;
-					}
+						magnetic.run_step = 2;
+						#if DEBUG_LOG
+							printf("********run_step:    %d\n",magnetic.run_step);
+						#endif
 
+						if(magnetic.noupdate == 0) //车辆加1
+						{
+							magnetic.count = magnetic.count + 1;
+							magnetic.run_step = 3;
+							magnetic.detect_flag = 0;
+							#if DEBUG_LOG
+								printf("********run_step:    %d\n",magnetic.run_step);
+							#endif
+
+
+						}
+							
+					}
+					
 					magnetic.sTime = HAL_GetTick();
 					th = magnetic.sTime;
 					res = 1;
@@ -228,7 +249,12 @@ unsigned char vehicle_detect()
 					if(magnetic.noupdate == 0)
                     {
 						  magnetic.noupdate = 1;
-					      magnetic.Car_Flag = 1;					
+					      magnetic.Car_Flag = 1;
+						  magnetic.run_step = 4;
+							#if DEBUG_LOG
+							  printf("********run_step:	 %d\n",magnetic.run_step);
+							#endif
+
 					}						
 					magnetic.sTime = HAL_GetTick();
 					  res = 1;
@@ -237,6 +263,13 @@ unsigned char vehicle_detect()
 		}
 	  else
 			res = 0;
+	}
+    if(magnetic.detect_flag == 1)
+    {
+		
+			if(magnetic.base_line_update==0)
+				magnetic.base_line_update = 3;	
+
 	}
 
     if(magnetic.Car_Flag == 1)
@@ -258,13 +291,18 @@ unsigned char vehicle_detect()
 	if(magnetic.base_line_update == 2)//车停在地磁上方
 	{	
 		etime_tmp=HAL_GetTick() - stime_tmp;
-		if((etime_tmp<= MIN_PERIOD)&&etime_tmp>1000)//避免检测过于灵敏
+		if((etime_tmp<= MIN_PERIOD))//避免检测过于灵敏
 		{
 		  
 			error_tmp22 = magnetic.M[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index];
 			error_tmp33 = fabs(error_tmp22);
 			if(error_tmp33>MAX_ERROR)
 			{
+			        magnetic.run_step = 5;
+					#if DEBUG_LOG
+						printf("********run_step:    %d\n",magnetic.run_step);
+					#endif
+
 				    magnetic.Car_Flag =1;
 				    magnetic.noupdate = 2;//同一辆车未离开
 					magnetic.base_line_update =1;						
@@ -342,8 +380,11 @@ unsigned char vehicle_detect()
 		
 		BaseLineTrace();
 
-		if(magnetic.Car_Flag == 1||(magnetic.Car_Flag == 1&&magnetic.noupdate == 1))
+		if(magnetic.detect_flag  == 1||magnetic.Car_Flag == 1||(magnetic.Car_Flag == 1&&magnetic.noupdate == 1))
 		{
+			#if DEBUG_LOG
+
+						
 //					printf("  MX:           %f",magnetic.M[X_DIR][magnetic.index]);
 //					printf("  MY:           %f",magnetic.M[Y_DIR][magnetic.index]);
 //					printf("  MZ:           %f",magnetic.M[Z_DIR][magnetic.index]);
@@ -360,11 +401,13 @@ unsigned char vehicle_detect()
 //					printf("  VehicleVari:	%f",magnetic.VehicleVari);
 //					printf("  err:	        %f",error_tmp);
 			
-					printf("  Car_Flag:          %d",magnetic.Car_Flag);
-					printf("  elapseTime:        %d",magnetic.elapseTime);
-					printf("  noupdate:          %d",magnetic.noupdate);
-					printf("  base_line_update:  %d",magnetic.base_line_update);
-					printf("  count:             %d\n",magnetic.count);
+					printf("  Car_Flag:    %d",magnetic.Car_Flag);
+					printf("  elapseTime:  %d",magnetic.elapseTime);
+					printf("  noupdate:    %d",magnetic.noupdate); 
+					printf("  update:      %d",magnetic.base_line_update);
+					printf("  run_step:    %d",magnetic.run_step);
+					printf("  count:       %d\n",magnetic.count);
+			#endif
 		}
 
        
@@ -385,7 +428,7 @@ void vehicle_process()
 
 	if(magnetic.Car_Flag == 1)
 	{
-	  magnetic.Car_Flag = 0;	
+	  //magnetic.Car_Flag = 0;	
       tx_start_flag = 1;
 	  tx_time_start = HAL_GetTick();
 	  tx_time_e = TIME_OUT;

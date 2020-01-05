@@ -79,25 +79,7 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
-#pragma import(__use_no_semihosting)
-void _sys_exit(int x)
-{
-x = x;
-}
-struct __FILE
-{
-int handle;
-};
-FILE __stdout;
-UART_HandleTypeDef huart1;
-int fputc(int ch, FILE *f)
-{
-				//发送数据到串口
-	unsigned char tmp;
-	tmp =(unsigned char )ch;
- HAL_UART_Transmit(&huart1, &tmp, 1, 1);
-	return ch;
-}
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
