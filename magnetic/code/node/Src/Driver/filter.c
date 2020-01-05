@@ -1,5 +1,6 @@
 #include "filter.h"
 #include "usystem.h"
+#include "math.h"
 #include "mag3D3100.h"
 #include "Node_Protocol.h"
 //#include "stm32l4xx_hal.h"
@@ -8,7 +9,7 @@
 uint32_t MIN_PERIOD=1500;
 float MAX_THRES=45;//最大阈值
 float MIN_THRES=5;
-float MAX_ERROR = 30;
+float MAX_ERROR = 20;
  extern  short int ManeticBuffer[3];
  extern MagData_t dataMd;
 extern DataPack_stru DataPack;
@@ -175,9 +176,8 @@ void BaseLineTrace()
 	//MIN_THRES = magnetic.B[Z_DIR][magnetic.index]*(GAMMA-1);	
 }
 float error_tmp;
-float error_tmp22;
+float error_tmp22,error_tmp33;
 uint32_t stime_tmp,etime_tmp;
-unsigned char car_flag_tmp,jj,repeat_flag;
 float base_original;
 unsigned char vehicle_detect()
 {
@@ -204,18 +204,16 @@ unsigned char vehicle_detect()
 				if(magnetic.elapseTime>= MIN_PERIOD)//检测有车时间超过最小周期，避免同一辆车未离开情况
 				{
 				  magnetic.detect_flag = 0;	
-					if(magnetic.noupdate )
+					if(magnetic.noupdate )   //如果车没走
 					{
 						magnetic.noupdate = 0;
 					    magnetic.Car_Flag = 0;
-						car_flag_tmp = 0;
-						repeat_flag = 0;
 						magnetic.base_line_update =0;
 					}
 					else
 					{
 						magnetic.Car_Flag = 1;
-						if(magnetic.noupdate == 0)
+						if(magnetic.noupdate == 0) //车辆加1
 							magnetic.count = magnetic.count + 1;
 					}
 
@@ -228,9 +226,9 @@ unsigned char vehicle_detect()
 				{ 
 				    magnetic.detect_flag = 0;
 					if(magnetic.noupdate == 0)
-          {
+                    {
 						  magnetic.noupdate = 1;
-					    magnetic.Car_Flag = 1;					
+					      magnetic.Car_Flag = 1;					
 					}						
 					magnetic.sTime = HAL_GetTick();
 					  res = 1;
@@ -260,32 +258,24 @@ unsigned char vehicle_detect()
 	if(magnetic.base_line_update == 2)//车停在地磁上方
 	{	
 		etime_tmp=HAL_GetTick() - stime_tmp;
-		if((etime_tmp<= MIN_PERIOD)&&etime_tmp>1000)//检测有车时间超过最小周期，避免同一辆车未离开情况
+		if((etime_tmp<= MIN_PERIOD)&&etime_tmp>1000)//避免检测过于灵敏
 		{
 		  
-			error_tmp22 = magnetic.M[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index];				
-			if(fabs(error_tmp22)>MAX_ERROR)
+			error_tmp22 = magnetic.M[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index];
+			error_tmp33 = fabs(error_tmp22);
+			if(error_tmp33>MAX_ERROR)
 			{
 				    magnetic.Car_Flag =1;
 				    magnetic.noupdate = 2;//同一辆车未离开
-						magnetic.base_line_update =1;	
-						repeat_flag = 0;					
-			}
-			else
-			{      
-				repeat_flag = 0;
-			
+					magnetic.base_line_update =1;						
 			}
 
 		}
-		if(etime_tmp>= 2*MIN_PERIOD||magnetic.noupdate == 2)
+		if(etime_tmp>= 2*MIN_PERIOD||magnetic.noupdate == 2)//检测超时，计时复位
 		{	
-			car_flag_tmp = 0;
-			repeat_flag = 0;
 			if(magnetic.base_line_update==2&&magnetic.noupdate == 0)
 			magnetic.base_line_update =0;
-
-			}
+		}
 	
 	}
 
@@ -370,12 +360,11 @@ unsigned char vehicle_detect()
 //					printf("  VehicleVari:	%f",magnetic.VehicleVari);
 //					printf("  err:	        %f",error_tmp);
 			
-					printf("  Car_Flag:     %d",magnetic.Car_Flag);
-					printf("  elapseTime:   %d",magnetic.elapseTime);
-					printf("  noupdate:     %d",magnetic.noupdate);
-					printf("  count:        %d\n",magnetic.count);
-
-
+					printf("  Car_Flag:          %d",magnetic.Car_Flag);
+					printf("  elapseTime:        %d",magnetic.elapseTime);
+					printf("  noupdate:          %d",magnetic.noupdate);
+					printf("  base_line_update:  %d",magnetic.base_line_update);
+					printf("  count:             %d\n",magnetic.count);
 		}
 
        
