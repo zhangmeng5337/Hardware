@@ -8,7 +8,7 @@
 uint32_t MIN_PERIOD=1500;
 float MAX_THRES=45;//最大阈值
 float MIN_THRES=5;
-float MAX_ERROR = 30;
+float MAX_ERROR = 40;
  extern  short int ManeticBuffer[3];
  extern MagData_t dataMd;
 extern DataPack_stru DataPack;
@@ -152,7 +152,7 @@ void BaseLineTrace()
 	  unsigned char index_tmp;
 	  index_tmp = getIndex();
 
-	if(magnetic.base_line_update )//x direction trance start
+	if(magnetic.detect_flag == 1|magnetic.noupdate==1|magnetic.Car_Flag == 1)//x direction trance start
 	{
 	
 
@@ -208,9 +208,6 @@ unsigned char vehicle_detect()
 					{
 						magnetic.noupdate = 0;
 					    magnetic.Car_Flag = 0;
-						car_flag_tmp = 0;
-						repeat_flag = 0;
-						magnetic.base_line_update =0;
 					}
 					else
 					{
@@ -241,35 +238,32 @@ unsigned char vehicle_detect()
 			res = 0;
 	}
 
-    if(magnetic.Car_Flag == 1)
-    {
-		
-			if( magnetic.noupdate == 1)
-				magnetic.base_line_update = 1;	
-			else if(magnetic.noupdate == 0)
-			{
-					if(magnetic.base_line_update !=2)
-					{	
-						stime_tmp = HAL_GetTick();
-						magnetic.base_line_update = 2;
-					}						
-			}
+	if(magnetic.Car_Flag == 1 && magnetic.noupdate == 0)//车停在地磁上方
+	{
+		car_flag_tmp = 1;
+		stime_tmp = HAL_GetTick();
 
 	}
 
-	if(magnetic.base_line_update == 2)//车停在地磁上方
+	if(car_flag_tmp == 1)//车停在地磁上方
 	{	
 		etime_tmp=HAL_GetTick() - stime_tmp;
 		if((etime_tmp<= MIN_PERIOD)&&etime_tmp>1000)//检测有车时间超过最小周期，避免同一辆车未离开情况
 		{
-		  
-			error_tmp22 = magnetic.M[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index];				
+			//error_tmp22 = magnetic.M[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index];
+			if(magnetic.index==0)
+			 error_tmp22 = magnetic.B[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][BUFFERSIZE-1];
+			else
+			 error_tmp22 = magnetic.B[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index-1];				
 			if(fabs(error_tmp22)>MAX_ERROR)
 			{
-				    magnetic.Car_Flag =1;
-				    magnetic.noupdate = 2;//同一辆车未离开
-						magnetic.base_line_update =1;	
-						repeat_flag = 0;					
+			  if(repeat_flag==0)
+			  {
+					magnetic.sTime = HAL_GetTick();
+				  magnetic.noupdate = 2;//同一辆车未离开
+				  magnetic.Car_Flag =1;
+				  repeat_flag = 1;
+			  }
 			}
 			else
 			{      
@@ -278,12 +272,10 @@ unsigned char vehicle_detect()
 			}
 
 		}
-		if(etime_tmp>= 2*MIN_PERIOD||magnetic.noupdate == 2)
+		if(etime_tmp>= 4*MIN_PERIOD)
 		{	
 			car_flag_tmp = 0;
 			repeat_flag = 0;
-			if(magnetic.base_line_update==2&&magnetic.noupdate == 0)
-			magnetic.base_line_update =0;
 
 			}
 	

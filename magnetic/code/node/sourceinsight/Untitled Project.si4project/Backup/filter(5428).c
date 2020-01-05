@@ -208,9 +208,6 @@ unsigned char vehicle_detect()
 					{
 						magnetic.noupdate = 0;
 					    magnetic.Car_Flag = 0;
-						car_flag_tmp = 0;
-						repeat_flag = 0;
-						magnetic.base_line_update =0;
 					}
 					else
 					{
@@ -241,22 +238,17 @@ unsigned char vehicle_detect()
 			res = 0;
 	}
 
-    if(magnetic.Car_Flag == 1)
+    if(magnetic.Car_Flag == 1 || magnetic.noupdate == 1)
     {
-		
-			if( magnetic.noupdate == 1)
-				magnetic.base_line_update = 1;	
-			else if(magnetic.noupdate == 0)
-			{
-					if(magnetic.base_line_update !=2)
-					{	
-						stime_tmp = HAL_GetTick();
-						magnetic.base_line_update = 2;
-					}						
-			}
-
+		magnetic.base_line_update = 1;	
 	}
 
+    if(magnetic.Car_Flag == 1 && magnetic.noupdate == 0)
+    {
+      if(magnetic.base_line_update !=2)
+			stime_tmp = HAL_GetTick();
+		magnetic.base_line_update = 2;	
+	}
 	if(magnetic.base_line_update == 2)//车停在地磁上方
 	{	
 		etime_tmp=HAL_GetTick() - stime_tmp;
@@ -278,7 +270,7 @@ unsigned char vehicle_detect()
 			}
 
 		}
-		if(etime_tmp>= 2*MIN_PERIOD||magnetic.noupdate == 2)
+		if(etime_tmp>= 2*MIN_PERIOD||magnetic.noupdate == 2||magnetic.)
 		{	
 			car_flag_tmp = 0;
 			repeat_flag = 0;

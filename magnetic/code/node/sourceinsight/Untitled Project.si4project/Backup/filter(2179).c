@@ -8,7 +8,7 @@
 uint32_t MIN_PERIOD=1500;
 float MAX_THRES=45;//最大阈值
 float MIN_THRES=5;
-float MAX_ERROR = 30;
+float MAX_ERROR = 40;
  extern  short int ManeticBuffer[3];
  extern MagData_t dataMd;
 extern DataPack_stru DataPack;
@@ -208,9 +208,6 @@ unsigned char vehicle_detect()
 					{
 						magnetic.noupdate = 0;
 					    magnetic.Car_Flag = 0;
-						car_flag_tmp = 0;
-						repeat_flag = 0;
-						magnetic.base_line_update =0;
 					}
 					else
 					{
@@ -241,22 +238,17 @@ unsigned char vehicle_detect()
 			res = 0;
 	}
 
-    if(magnetic.Car_Flag == 1)
+    if(magnetic.Car_Flag == 1 || magnetic.noupdate == 1)
     {
-		
-			if( magnetic.noupdate == 1)
-				magnetic.base_line_update = 1;	
-			else if(magnetic.noupdate == 0)
-			{
-					if(magnetic.base_line_update !=2)
-					{	
-						stime_tmp = HAL_GetTick();
-						magnetic.base_line_update = 2;
-					}						
-			}
-
+		magnetic.base_line_update = 1;	
 	}
 
+    if(magnetic.Car_Flag == 1 && magnetic.noupdate == 0)
+    {
+      if(magnetic.base_line_update !=2)
+			stime_tmp = HAL_GetTick();
+		magnetic.base_line_update = 2;	
+	}
 	if(magnetic.base_line_update == 2)//车停在地磁上方
 	{	
 		etime_tmp=HAL_GetTick() - stime_tmp;
@@ -266,10 +258,20 @@ unsigned char vehicle_detect()
 			error_tmp22 = magnetic.M[Z_DIR][magnetic.index]-magnetic.B[Z_DIR][magnetic.index];				
 			if(fabs(error_tmp22)>MAX_ERROR)
 			{
-				    magnetic.Car_Flag =1;
-				    magnetic.noupdate = 2;//同一辆车未离开
-						magnetic.base_line_update =1;	
+			  if(repeat_flag<=10)
+			  {
+				 magnetic.sTime = HAL_GetTick();
+				 // magnetic.noupdate = 2;//同一辆车未离开
+				  magnetic.Car_Flag =1;
+				  repeat_flag = repeat_flag +1;
+				  //magnetic.base_line_update =0;
+			  }
+				else
+				{
+				   magnetic.noupdate = 2;//同一辆车未离开
+						magnetic.base_line_update =0;	
 						repeat_flag = 0;					
+				}
 			}
 			else
 			{      
@@ -278,11 +280,10 @@ unsigned char vehicle_detect()
 			}
 
 		}
-		if(etime_tmp>= 2*MIN_PERIOD||magnetic.noupdate == 2)
+		if(etime_tmp>= 4*MIN_PERIOD)
 		{	
 			car_flag_tmp = 0;
 			repeat_flag = 0;
-			if(magnetic.base_line_update==2&&magnetic.noupdate == 0)
 			magnetic.base_line_update =0;
 
 			}

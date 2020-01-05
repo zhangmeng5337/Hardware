@@ -40,17 +40,19 @@ LPHA);
   				                                                (magnetic.F[
 _DIR][index_tmp-1])*(
 LPHA);
+..\Src\Driver\filter.c(267): warning:  #223-D: function "fabs" declared implicitly
+  			if(fabs(error_tmp22)>MAX_ERROR)
 ..\Src\Driver\filter.c(373): warning:  #223-D: function "printf" declared implicitly
   					printf("  Car_Flag:     %d",magnetic.Car_Flag);
 ..\Src\Driver\filter.c(442): warning:  #223-D: function "printf" declared implicitly
             printf("  received data from station\n");
 ..\Src\Driver\filter.c(448): warning:  #223-D: function "memset" declared implicitly
             			 memset(uart2.receive_buffer,0,UARTBUFFERSIZE);					
-..\Src\Driver\filter.c: 6 warnings, 0 errors
+..\Src\Driver\filter.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=23300 RO-data=500 RW-data=156 ZI-data=3500  
+Program Size: Code=23408 RO-data=500 RW-data=156 ZI-data=3508  
 FromELF: creating hex file...
-"node\node.axf" - 0 Error(s), 6 Warning(s).
+"node\node.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
