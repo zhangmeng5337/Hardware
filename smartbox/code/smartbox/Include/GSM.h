@@ -8,7 +8,6 @@
 
 
 
-<<<<<<< HEAD
 //typedef struct
 //{
 //uint32_t 	rx_len;
@@ -20,8 +19,6 @@
 //
 //}Uart_Types;
 
-=======
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
 
 
 

@@ -13,14 +13,9 @@ void main(void)
   
   while(1)
   {
-<<<<<<< HEAD
     
-    SIMCOM_Register_Network();
-    lock_ctrl_process();
-=======
   //delay_ms(5000);
     SIMCOM_Register_Network();
     module_process(); 
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
   }
 }

@@ -7,11 +7,8 @@
 #include "GSM.h"
 #include "stdlib.h"
 #include "uart_hal.h"
-<<<<<<< HEAD
 #include "uart1.h"
-=======
 #define debug  1
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
 extern uart_stru uart;
 unsigned char one_net_key[]="*296832#571498702#json*";//284261：产品编号；abab：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
@@ -169,11 +166,7 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
            ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)Respond_No_Carrier)
              ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_ERROR))
         {
-<<<<<<< HEAD
-          res=1;
-=======
           res=0;
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
           
           break;//得到有效数据
           
@@ -182,11 +175,7 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
         //res=0;TIMEOUT
       }
     }
-<<<<<<< HEAD
-    if(waittime==0){res=0;uart.received_flag=0;}
-=======
     if(waittime==0){res=1;uart.received_flag=0;}
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
   }
   return res;
 }
@@ -287,14 +276,8 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_OK:
     {
       if(SIMCOM_Get_TCP_Staus(40)==1)
-<<<<<<< HEAD
       {      
-        if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==1)
-=======
-      {   
-        
         if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==0)
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
         {
           NET_STAUS=SIMCOM_NET_ERROR;
           memset(uart.rxbuffer,0,BUFFERSIZE);
@@ -315,18 +298,10 @@ void SIMCOM_Register_Network()
   //SIMCOM_ReConnect();
   free(p);
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
 unsigned char Get_Network_status()
 {
   return NET_STAUS;
 }
-<<<<<<< HEAD
-
-
-=======
 unsigned char gps_flag;
 void gps_test()
 {
@@ -339,5 +314,4 @@ void gps_test()
   delay_ms(2000);
   Send_Comm2((unsigned char*)GNSS_PWR,strlen((const char*)GNSS_PWR));
 }
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
 

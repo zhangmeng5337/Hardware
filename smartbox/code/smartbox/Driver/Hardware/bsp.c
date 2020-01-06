@@ -384,8 +384,6 @@ void USART_SenByte(unsigned char *Str,unsigned char len)
     len--;
   }
 }
-<<<<<<< HEAD
-=======
 void USART2_SenByte(unsigned char *Str,unsigned char len) 
 {
   while(len>0)
@@ -426,7 +424,6 @@ void Send_Comm2(unsigned char* comm,unsigned short len)
 	USART2_SenByte(comm,len);
 
 }
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
 void HardwareInit()
 {
   disableInterrupts();

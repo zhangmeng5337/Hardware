@@ -49,11 +49,8 @@
 
 
 #define VBAT_SENSE_CHANNEL              ADC_Channel_23
-<<<<<<< HEAD
 void USART_SenByte(unsigned char *Str,unsigned char len) ;
-=======
 unsigned char delay_ms(uint32_t num);//不是很精确
->>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
 void HardwareInit(void);
 void LED_Init(unsigned char num,unsigned char newstate);
 void lock_state(unsigned char newstate);
