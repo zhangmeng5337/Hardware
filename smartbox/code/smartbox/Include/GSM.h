@@ -8,6 +8,7 @@
 
 
 
+<<<<<<< HEAD
 //typedef struct
 //{
 //uint32_t 	rx_len;
@@ -19,6 +20,8 @@
 //
 //}Uart_Types;
 
+=======
+>>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
 
 
 
@@ -47,4 +50,5 @@ unsigned char Get_Network_status(void);
 void SIMCOM_Register_Network(void);
 void test(void);
 void Set_Network_status(void);
+void gps_test(void);
 #endif

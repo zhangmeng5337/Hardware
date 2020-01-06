@@ -1,0 +1,184 @@
+---- printf Matches (22 in 5 files) ----
+Hardware_test in bsp.c (F:\projects\git\Hardware\magnetic\code\node\Src\Hardare) : 
+	HAL_Delay(2000);
+	printf("uart1 test\n");
+}
+
+Statistic in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+// vari = &variIns;
+ // printf("  variIns:  %f",variIns);
+ //printf("  variBase:  %f",variBase); 
+ //printf("  variIns:  %f",*vari1);
+ //printf("  variBase:  %f",*vari1); 
+ 
+}
+void MagneticGet()
+vehicle_detect in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+						#if DEBUG_LOG
+							printf("run_step:    %d\n",magnetic.run_step);
+						#endif
+					}
+					else
+vehicle_detect in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+						#if DEBUG_LOG
+							printf("run_step:    %d\n",magnetic.run_step);
+						#endif
+
+						if(magnetic.noupdate == 0) //车辆加1
+vehicle_detect in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+							#if DEBUG_LOG
+								printf("  run_step:    %d\n",magnetic.run_step);
+							#endif
+
+
+vehicle_detect in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+							#if DEBUG_LOG
+							  printf("	run_step:	 %d\n",magnetic.run_step);
+							#endif
+
+					}						
+vehicle_detect in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+					#if DEBUG_LOG
+						printf("  run_step:    %d\n",magnetic.run_step);
+					#endif
+
+				    magnetic.Car_Flag =1;
+BaseLineProcess in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+		Statistic(p ,q,N,&VariIns,&VariBase);
+		//printf("  M X:  %f",VariIns);
+		//printf("  M X:  %f",VariBase);
+
+		vehicle_detect();
+		magnetic.VehicleVari = VariIns; 
+BaseLineProcess in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+						
+//					printf("  MX:           %f",magnetic.M[X_DIR][magnetic.index]);
+//					printf("  MY:           %f",magnetic.M[Y_DIR][magnetic.index]);
+//					printf("  MZ:           %f",magnetic.M[Z_DIR][magnetic.index]);
+//					
+//					printf("  FX:           %f",magnetic.F[X_DIR][magnetic.index]);
+//					printf("  FY:           %f",magnetic.F[Y_DIR][magnetic.index]);
+//					printf("  FZ:           %f",magnetic.F[Z_DIR][magnetic.index]);
+//			
+//					printf("  BX:           %f",magnetic.B[X_DIR][magnetic.index]);
+//					printf("  BY:           %f",magnetic.B[Y_DIR][magnetic.index]);
+//					printf("  BZ:           %f",magnetic.B[Z_DIR][magnetic.index]);
+//					
+//					printf("  BaseLineVari: %f",magnetic.BaseLineVari);
+//					printf("  VehicleVari:	%f",magnetic.VehicleVari);
+//					printf("  err:	        %f",error_tmp);
+			
+					printf("  Car_Flag:    %d",magnetic.Car_Flag);
+					printf("  elapseTime:  %d",magnetic.elapseTime);
+					printf("  noupdate:    %d",magnetic.noupdate); 
+					printf("  update:      %d",magnetic.base_line_update);
+					printf("  run_step:    %d",magnetic.run_step);
+					printf("  count:       %d\n",magnetic.count);
+			#endif
+		}
+
+vehicle_process in filter.c (F:\projects\git\Hardware\magnetic\code\node\Src\Driver) : 
+				{
+          printf("  received data from station\n");
+					func = 0;
+					DataPack.seq_num = 0;
+					DataPack.register_status = 1;
+main in main.c (F:\projects\git\Hardware\magnetic\code\node\Src) : 
+//			
+//      printf("  Manetic X:  %d",dataMd.MAG_X);
+//      printf("  Manetic Y:  %d",dataMd.MAG_Y);
+//      printf("  Manetic Z:  %d\n",dataMd.MAG_Z);		
+//		}
+		vehicle_process();
+  //  HAL_IWDG_Refresh(&hiwdg);
+assert_failed in main.c (F:\projects\git\Hardware\magnetic\code\node\Src) : 
+  /* User can add his own implementation to report the file name and line number,
+     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */
+node.build_log.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 30 : 
+compiling bsp.c...
+..\Src\Hardare\bsp.c(217): warning:  #223-D: function "printf" declared implicitly
+  	printf("uart1 test\n");
+..\Src\Hardare\bsp.c: 1 warning, 0 errors
+compiling stm32l4xx_it.c...
+compiling main.c...
+node.build_log.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 51 : 
+LPHA);
+..\Src\Driver\filter.c(216): warning:  #223-D: function "printf" declared implicitly
+  							printf("run_step:    %d\n",magnetic.run_step);
+..\Src\Driver\filter.c(224): warning:  #223-D: function "printf" declared implicitly
+  							printf("run_step:    %d\n",magnetic.run_step);
+..\Src\Driver\filter.c(255): warning:  #223-D: function "printf" declared implicitly
+  							  printf("	run_step:	 %d\n",magnetic.run_step);
+..\Src\Driver\filter.c(303): warning:  #223-D: function "printf" declared implicitly
+  						printf("  run_step:    %d\n",magnetic.run_step);
+..\Src\Driver\filter.c(404): warning:  #223-D: function "printf" declared implicitly
+  					printf("  Car_Flag:    %d",magnetic.Car_Flag);
+..\Src\Driver\filter.c(474): warning:  #223-D: function "printf" declared implicitly
+            printf("  received data from station\n");
+..\Src\Driver\filter.c(480): warning:  #223-D: function "memset" declared implicitly
+            			 memset(uart2.receive_buffer,0,UARTBUFFERSIZE);					
+..\Src\Driver\filter.c: 10 warnings, 0 errors
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 101 : 
+ <LI><a href="#[4e]">__main</a> from entry.o(.ARM.Collect$$$$00000000) referenced from startup_stm32l433xx.o(.text)
+ <LI><a href="#[53]">fputc</a> from main.o(i.fputc) referenced from printf1.o(i.__0printf$1)
+ <LI><a href="#[4c]">main</a> from main.o(i.main) referenced from entry9a.o(.ARM.Collect$$$$0000000B)
+</UL>
+<P>
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 431 : 
+<P><STRONG><a name="[e3]"></a>__aeabi_uidivmod</STRONG> (Thumb, 44 bytes, Stack size 12 bytes, uidiv.o(.text), UNUSED)
+<BR><BR>[Called By]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+</UL>
+
+<P><STRONG><a name="[58]"></a>__aeabi_llsl</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, llshl.o(.text))
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 525 : 
+</UL>
+<BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vehicle_detect
+<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Statistic
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SmoothFilter
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 1265 : 
+
+<P><STRONG><a name="[e1]"></a>__0printf$1</STRONG> (Thumb, 22 bytes, Stack size 24 bytes, printf1.o(i.__0printf$1), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
+</UL>
+
+<P><STRONG><a name="[fb]"></a>__1printf$1</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf1.o(i.__0printf$1), UNUSED)
+
+<P><STRONG><a name="[77]"></a>__2printf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf1.o(i.__0printf$1))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
+</UL>
+<BR>[Called By]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vehicle_process
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vehicle_detect
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 1304 : 
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> printf1.o(i.__0printf$1)
+</UL>
+<P><STRONG><a name="[78]"></a>getIndex</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, filter.o(i.getIndex))
+<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BaseLineTrace
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 1370 : 
+<P><STRONG><a name="[75]"></a>vehicle_detect</STRONG> (Thumb, 740 bytes, Stack size 24 bytes, filter.o(i.vehicle_detect))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = vehicle_detect &rArr; __2printf
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 1385 : 
+<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartparase
+<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Transmmit
+node.htm (F:\projects\git\Hardware\magnetic\code\node\MDK-ARM\node) line 1631 : 
+
+<P><STRONG><a name="[e2]"></a>_printf_core</STRONG> (Thumb, 336 bytes, Stack size 88 bytes, printf1.o(i._printf_core), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
+</UL>
+<BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__0printf$1
+</UL>
+<P>
+<H3>

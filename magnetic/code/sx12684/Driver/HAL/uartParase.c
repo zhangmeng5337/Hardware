@@ -52,10 +52,10 @@ void module_process(unsigned char mode)
 unsigned char HeaderIdentify()
 {
        unsigned char i,j,re;
-	 //j=uart_read_index;
+	 j=0;
 	while(j!=usart_i)
 	{
-              if(i<sizeof(wrcommand))
+              if(usart_i<sizeof(wrcommand))
               	{
 			if(TX_Buffer[j]!=wrcommand[i++])
 			{
@@ -63,7 +63,7 @@ unsigned char HeaderIdentify()
 				break;
 			}
               }
-		else if(i>=6)
+		else if(usart_i>=6)
 		{
 			if(TX_Buffer[j]==LORA_WRITE)
 			{
@@ -93,6 +93,7 @@ void uartParase()
 	{
 	module_process(HeaderIdentify());
 	UsartReceiveFlag = 0;
+        usart_i = 0;
 	}
         
 }

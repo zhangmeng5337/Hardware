@@ -1961,7 +1961,11 @@
       <name>$PROJ_DIR$\..\Driver\HAL\GSM.c</name>
     </file>
     <file>
+<<<<<<< HEAD
       <name>F:\code\GSM\Driver\HAL\Protocal.c</name>
+=======
+      <name>$PROJ_DIR$\..\Driver\HAL\Protocal.c</name>
+>>>>>>> 51c400f7820177b55d954b6f6682b2acd4551e24
     </file>
     <file>
       <name>$PROJ_DIR$\..\Driver\HAL\tea.c</name>

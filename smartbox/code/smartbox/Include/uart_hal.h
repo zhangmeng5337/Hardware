@@ -2,7 +2,7 @@
 #define UART_HAL_H_
 #include "stm8l15x.h"
 
-#define BUFFERSIZE		128
+#define BUFFERSIZE                      64
 
 typedef struct{
   unsigned char rxbuffer[BUFFERSIZE];

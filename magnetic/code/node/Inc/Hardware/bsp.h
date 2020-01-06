@@ -2,6 +2,7 @@
 #ifndef BSP_H
 #define BSP_H
 #include "main.h"
+#define DEBUG_LOG		1
 #define ON	0
 #define OFF    1
 #define BLINK	2

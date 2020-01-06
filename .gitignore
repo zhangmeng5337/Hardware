@@ -48,7 +48,7 @@ signoise.run/
 /Obj/
 *.TMP
 sourceinsigh/t
-!/sourceinsight/*.siproj
+/sourceinsight/!*.siproj
 /output
-!/output/*.hex
-!/output/*.bin
+/output/!*.hex
+/output/*.bin
