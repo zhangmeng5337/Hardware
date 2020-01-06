@@ -96,12 +96,6 @@ unsigned char at_cmd_ok(unsigned char *src)
   return 1;
   
 }
-void Send_Comm(unsigned char* comm,unsigned short len)
-{
-
-	USART_SenByte(comm,len);
-
-}
 unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t waittime)
 {
   unsigned char res;
@@ -152,9 +146,9 @@ void SIMCOM_ReConnect()
 }
 signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
 {
-  unsigned char res=0;
+  unsigned char res=1;
   //Send_Comm((const char*)Establish_TCP_Connection,strlen((const char*)Establish_TCP_Connection));
-  
+  res=1;
   if(waittime)		//需要等待应答
   {
     while(--waittime)	//等待倒计时
@@ -231,7 +225,7 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_GPRS_READY:
     {
-      if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,3000)==0)
+      if(SIMCOM_GetStatus((unsigned char*)AT_SHUNT,(unsigned char*)Respond_OK,300)==0)
       {
         NET_STAUS=SIMCOM_NET_PORT_CLOSE;   
         memset(uart.rxbuffer,0,BUFFERSIZE);
@@ -275,7 +269,7 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_NET_OK:
     {
-      if(SIMCOM_Get_TCP_Staus(40)==1)
+      if(SIMCOM_Get_TCP_Staus(40)==0)
       {      
         if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==0)
         {
@@ -288,7 +282,8 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_ERROR:
     {
       // GSM_HardwareInit(ON);                   //复位重启
-      //gsm_power_state(OFF);
+      gsm_power_state(OFF);
+      delay_ms(4000);
       //GSM_HardwareInit(ON);
       NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
     }
