@@ -7,6 +7,7 @@
 #include "GSM.h"
 #include "stdlib.h"
 #include "uart_hal.h"
+#include "uart1.h"
 extern uart_stru uart;
 unsigned char one_net_key[]="*296832#571498622#json* ";//284261：产品编号；abab：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
@@ -94,7 +95,12 @@ unsigned char at_cmd_ok(unsigned char *src)
   return 1;
   
 }
+void Send_Comm(unsigned char* comm,unsigned short len)
+{
 
+	USART_SenByte(comm,len);
+
+}
 unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t waittime)
 {
   unsigned char res=0;
@@ -141,6 +147,35 @@ void SIMCOM_ReConnect()
     NET_STAUS=SIMCOM_NET_ERROR;
   }
   
+}
+signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
+{
+  unsigned char res=0;
+  //Send_Comm((const char*)Establish_TCP_Connection,strlen((const char*)Establish_TCP_Connection));
+  
+  if(waittime)		//需要等待应答
+  {
+    while(--waittime)	//等待倒计时
+    {
+      //delay_ms(5);
+      if(uart.received_flag==1)//接收到期待的应答结果
+      {
+        if(AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_Closed)
+           ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)Respond_No_Carrier)
+             ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_ERROR))
+        {
+          res=1;
+          
+          break;//得到有效数据
+          
+        }
+        
+        //res=0;TIMEOUT
+      }
+    }
+    if(waittime==0){res=0;uart.received_flag=0;}
+  }
+  return res;
 }
 void SIMCOM_Register_Network()
 {
@@ -238,14 +273,12 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_OK:
     {
       if(SIMCOM_Get_TCP_Staus(40)==1)
-      {   
-        
+      {      
         if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==1)
         {
           NET_STAUS=SIMCOM_NET_ERROR;
           memset(uart.rxbuffer,0,BUFFERSIZE);
         }
-        
       }
     }
     break;
@@ -262,7 +295,10 @@ void SIMCOM_Register_Network()
   SIMCOM_ReConnect();
   free(p);
 }
-
+unsigned char Get_Network_status()
+{
+  return NET_STAUS;
+}
 
 
 

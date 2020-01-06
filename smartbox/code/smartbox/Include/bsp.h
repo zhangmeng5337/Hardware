@@ -49,7 +49,7 @@
 
 
 #define VBAT_SENSE_CHANNEL              ADC_Channel_23
-
+void USART_SenByte(unsigned char *Str,unsigned char len) ;
 void HardwareInit(void);
 void LED_Init(unsigned char num,unsigned char newstate);
 void lock_state(unsigned char newstate);

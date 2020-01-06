@@ -336,7 +336,16 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);
   return ADCdata;
 }
-
+void USART_SenByte(unsigned char *Str,unsigned char len) 
+{
+  while(len>0)
+  {
+    USART_SendData8(USART1, *Str);
+    while(!USART_GetFlagStatus (USART1, USART_FLAG_TXE));
+    Str++;
+    len--;
+  }
+}
 void HardwareInit()
 {
   disableInterrupts();
