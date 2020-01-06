@@ -49,6 +49,7 @@ signoise.run/
 *.TMP
 sourceinsigh/t
 /sourceinsight/!*.siproj
+sourceinsight/Backup/
 *.xml
 *.sip_sym
 *.sip_xab
