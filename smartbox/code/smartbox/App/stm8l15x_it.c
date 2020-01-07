@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x_it.h"
 #include "stm8l15x_rtc.h"
+#include "stm8l15x_tim3.h"
 #include "stm8l15x_tim1.h"
 #include "uart_hal.h"
 /** @addtogroup STM8L15x_StdPeriph_Examples
@@ -359,6 +360,9 @@ INTERRUPT_HANDLER(TIM3_UPD_OVF_TRG_BRK_USART3_TX_IRQHandler, 21)
   /* In order to detect unexpected events during development,
   it is recommended to set a breakpoint on the following instruction.
   */
+  
+
+TIM3_ClearITPendingBit(TIM3_IT_Update);
   
 }
 /**

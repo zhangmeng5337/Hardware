@@ -6,7 +6,7 @@
 #if MODULE == SIM868
 //模块返回响应
 
-const unsigned char platform_received[]="receive";//one net platform
+const unsigned char platform_received[]="received";//one net platform
 const unsigned char Test[]="AT\r";
 const unsigned char Respond_OK[]="OK\r\n";
 const unsigned char Respond_Start[]="+CFUN: 1";//开机完成

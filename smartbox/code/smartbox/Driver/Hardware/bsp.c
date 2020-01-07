@@ -30,7 +30,20 @@ unsigned char delay_ms(uint32_t num)//不是很精确
 }
 
 
+void TIM3_Initial(void)
 
+{
+  
+  TIM3_DeInit();
+  CLK_PeripheralClockConfig(CLK_Peripheral_TIM3, ENABLE);
+  
+  // 配置Timer3相关参数，内部时钟为16MHZ，定时时间 1ms  需要计次125
+  TIM3_TimeBaseInit(TIM3_Prescaler_128, TIM3_CounterMode_Up, 50000); //625定时5ms
+  TIM3_SetCounter(0);
+ //  TIM3->EGR = TIM3_PSCReloadMode_Immediate;
+  TIM3_ITConfig(TIM3_IT_Update, ENABLE);
+  TIM3_Cmd(DISABLE);
+}
 
 void GPIO_Initial(void)
 { 
@@ -64,9 +77,9 @@ void gnss_state(unsigned char newstate)
 {
   if(newstate == ON)
   {
-    GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, RESET); //delay_ms(1000);//
+    //GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, RESET); //delay_ms(1000);//
     GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, SET);delay_ms(1000);//
-   // GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, RESET);
+    // GPIO_WriteBit(GNSS_ENABLE_PORT, GNSS_ENABLE_PIN, RESET);
   }
   else
   {
@@ -85,13 +98,13 @@ void gsm_power_state(unsigned char newstate)
   if(newstate == ON)
   {
     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);
-    delay_ms(500);//
+    delay_ms(10);//
     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, SET);
-    delay_ms(1000);//
+    delay_ms(900);//
     GPIO_WriteBit(GSM_PWR_PORT, GSM_PWR_PIN, RESET);
-    delay_ms(1000);
-
-
+    delay_ms(10);
+    
+    
     
   }
   else
@@ -200,16 +213,16 @@ static void DMA_Config(void)
   
   DMA_DeInit(DMA1_Channel1);
   DMA_DeInit(DMA1_Channel2);
-
+  
   /* DMA channel Rx of USART Configuration */
   DMA_Init(USART_DMA_CHANNEL_RX, (uint16_t)uart.rxbuffer , (uint16_t)USART_DR_ADDRESS,
            BUFFERSIZE, DMA_DIR_PeripheralToMemory, DMA_Mode_Normal,
            DMA_MemoryIncMode_Inc, DMA_Priority_Low, DMA_MemoryDataSize_Byte);
   
- 
+  
   /* Enable the USART Tx/Rx DMA requests */
   USART_DMACmd(USART1, USART_DMAReq_RX, ENABLE);
-
+  
   /* Global DMA Enable */
   DMA_GlobalCmd(ENABLE);
   
@@ -259,21 +272,17 @@ void LED_Init(unsigned char num,unsigned char newstate)
       if(newstate == ON)
       {
         GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL1_PIN, RESET);     
-      }
-      else
-      {
-        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL1_PIN, SET);
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL2_PIN, SET);
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL3_PIN, SET);
       }
     }break;
   case LEVEL2_LED:
     {
       if(newstate == ON)
       {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL1_PIN, RESET);         
         GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL2_PIN, RESET);     
-      }
-      else
-      {
-        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL2_PIN, SET);
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL3_PIN, SET);
       }
     }break;
     
@@ -281,12 +290,11 @@ void LED_Init(unsigned char num,unsigned char newstate)
     {
       if(newstate == ON)
       {
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL1_PIN, RESET);         
+        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL2_PIN, RESET);
         GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL3_PIN, RESET);     
       }
-      else
-      {
-        GPIO_WriteBit(BATEERY_QUANTITY_PORT, BATEERY_QUANTITY_LEVEL3_PIN, SET);
-      }
+      
     }break;    
   case STATUS_LED:
     {
@@ -294,10 +302,12 @@ void LED_Init(unsigned char num,unsigned char newstate)
       {
         GPIO_WriteBit(MODULE_STATUS_PORT, MODULE_STATUS_PIN, RESET);     
       }
-      else
+      else if(newstate == OFF)
       {
         GPIO_WriteBit(MODULE_STATUS_PORT, MODULE_STATUS_PIN, SET);
       }
+      else
+        GPIO_ToggleBits(MODULE_STATUS_PORT, MODULE_STATUS_PIN);     
     }break; 
     
   case LEVEL_ALL_LED:
@@ -325,7 +335,7 @@ void adcInit(ADC_Channel_TypeDef num)
 {
   /* Enable ADC1 clock */
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,ENABLE);//开启ADC1时钟
-  
+  ADC_DeInit(ADC1);
   ADC_VrefintCmd(ENABLE); //使能内部参考电压
   ADC_Init(ADC1,ADC_ConversionMode_Single,ADC_Resolution_12Bit,ADC_Prescaler_1);//连续转换，12位，转换时钟1分频
   ADC_Cmd(ADC1,ENABLE);//ADC使能	
@@ -337,7 +347,7 @@ void adcInit(ADC_Channel_TypeDef num)
 uint32_t adcGet(ADC_Channel_TypeDef num)
 {
   uint32_t tmp;
-  float tmp2;
+  uint32_t tmp2;
   unsigned int i;
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
@@ -355,7 +365,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
   
   
   adcInit(num);  
-  
+  //delay_ms(3000);
   for(i=0;i<SAMPLE_COUNT;i++)
   { 
     ADC_SoftwareStartConv(ADC1); //开启软件转换
@@ -365,13 +375,13 @@ uint32_t adcGet(ADC_Channel_TypeDef num)
     /* Get conversion value */
     tmp = ADC_GetConversionValue(ADC1);
     /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-    tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
+    tmp2 = tmp2 + ((uint32_t)(tmp*3.3*244.14));
     
   }
   ADCdata = tmp2 /SAMPLE_COUNT;
   ADC_DeInit(ADC1);
   /* Disable ADC1 clock */
-  CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);
+  
   return ADCdata;
 }
 void USART_SenByte(unsigned char *Str,unsigned char len) 
@@ -396,33 +406,33 @@ void USART2_SenByte(unsigned char *Str,unsigned char len)
 }
 void Send_Comm(unsigned char* comm,unsigned short len)
 {
-
-	//HAL_UART_DMAStop(&huart5);
-	//HAL_UART_DMAResume(&huart5);
-       //UsartType5.real_index=0;
-	//UsartType5.rx_len=0;
-	//UsartType5.rx_len_var=0;
-	//UsartType5.loop_index=0;
-	//HAL_UART_Receive_DMA(&huart5,UsartType5.usartDMA_rxBuf,buffer_size);
-	//delay_ms(100);
-	//uart5_dma_state=0;
-	USART_SenByte(comm,len);
-
+  
+  //HAL_UART_DMAStop(&huart5);
+  //HAL_UART_DMAResume(&huart5);
+  //UsartType5.real_index=0;
+  //UsartType5.rx_len=0;
+  //UsartType5.rx_len_var=0;
+  //UsartType5.loop_index=0;
+  //HAL_UART_Receive_DMA(&huart5,UsartType5.usartDMA_rxBuf,buffer_size);
+  //delay_ms(100);
+  //uart5_dma_state=0;
+  USART_SenByte(comm,len);
+  
 }
 void Send_Comm2(unsigned char* comm,unsigned short len)
 {
-
-	//HAL_UART_DMAStop(&huart5);
-	//HAL_UART_DMAResume(&huart5);
-       //UsartType5.real_index=0;
-	//UsartType5.rx_len=0;
-	//UsartType5.rx_len_var=0;
-	//UsartType5.loop_index=0;
-	//HAL_UART_Receive_DMA(&huart5,UsartType5.usartDMA_rxBuf,buffer_size);
-	//delay_ms(100);
-	//uart5_dma_state=0;
-	USART2_SenByte(comm,len);
-
+  
+  //HAL_UART_DMAStop(&huart5);
+  //HAL_UART_DMAResume(&huart5);
+  //UsartType5.real_index=0;
+  //UsartType5.rx_len=0;
+  //UsartType5.rx_len_var=0;
+  //UsartType5.loop_index=0;
+  //HAL_UART_Receive_DMA(&huart5,UsartType5.usartDMA_rxBuf,buffer_size);
+  //delay_ms(100);
+  //uart5_dma_state=0;
+  USART2_SenByte(comm,len);
+  
 }
 void HardwareInit()
 {
@@ -432,11 +442,12 @@ void HardwareInit()
   lock_state(OFF);
   Uart1_Init(115200);// 初始化GPIO
   DMA_Config();
-  LED_Init(LEVEL_ALL_LED,OFF);
-  enableInterrupts();
-  
+  LED_Init(LEVEL_ALL_LED,ON);
+  enableInterrupts();  
+  gnss_state(ON);
   gsm_power_state(ON);
-  adcGet(VBAT_SENSE_CHANNEL);
+  //adcGet(VBAT_SENSE_CHANNEL);
+  
 }
 
 

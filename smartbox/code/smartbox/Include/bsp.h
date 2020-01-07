@@ -17,9 +17,12 @@
 #include "uart1.h"
 #include "stm8l15x_clk.h"
 
-#define ON   1
-#define OFF  0
-
+#define DEBUG_MOD       1
+#define OFF             0
+#define ON              1
+#define TOGGLE          2
+#define BATTERY_FACTOR            2
+#define BATTERY_FULL            4.2
 #define SAMPLE_COUNT            100
 
 #define LEVEL1_LED              0
@@ -35,7 +38,7 @@
 #define BATEERY_QUANTITY_LEVEL3_PIN     GPIO_Pin_7
 
 #define MODULE_STATUS_PORT              GPIOA      //module status led
-#define MODULE_STATUS_PIN               GPIO_Pin_7
+#define MODULE_STATUS_PIN               GPIO_Pin_4
 
 #define LOCK_CTRL_PORT                  GPIOE        // lock io
 #define LOCK_CTRL_PIN                   GPIO_Pin_1
@@ -60,6 +63,7 @@ void Send_Comm(unsigned char* comm,unsigned short len);
 void Send_Comm2(unsigned char* comm,unsigned short len);
 void DMA_START_RX2();
 unsigned char get_lock_status(void);
+void  battery_quantity(void);
 #endif //_BSP_H_
 
 /*===========================================================================

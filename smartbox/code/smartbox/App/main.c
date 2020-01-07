@@ -10,11 +10,11 @@ void main(void)
  
   HardwareInit();
   module_prams_init();
-  
+   battery_quantity();
   while(1)
   {
     
-  //delay_ms(5000);
+  //delay_ms(3000);
     SIMCOM_Register_Network();
     module_process(); 
   }
