@@ -118,35 +118,41 @@ void gsm_power_state(unsigned char newstate)
 }
 void lock_state(unsigned char newstate)
 {
-  if(newstate == ON)
+  unsigned char i;
+  for(i=0;i<3;i++)
   {
-    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, SET);
-    
-    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
+    if(newstate == ON)
     {
+      GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, SET);
       
-      if(delay_ms(700)==0)
+      while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
       {
-        GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
-        break;
+        
+        if(delay_ms(700)==0)
+        {
+          GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+          break;
+        }
       }
+      GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+      break;
     }
-    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
-    
-  }
-  else
-  {
-    GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET); 
-    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
+    else
     {
-      
-      if(delay_ms(500)==0)
+      GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET); 
+      while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
       {
-        GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
-        break;
+        
+        if(delay_ms(500)==0)
+        {
+          GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
+          break;
+        }
       }
-    }
+      break;
+    }  
   }
+
 }
 unsigned char get_lock_status()
 {
