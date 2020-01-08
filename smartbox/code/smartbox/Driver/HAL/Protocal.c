@@ -114,8 +114,8 @@ void data_process(unsigned char dataNo)
     if(get_lock_status()==1)
       p[len+1] = 0x31;
     else
-      p[len+1] = 0x30;  
-    len = len +1;
+      p[len+1] = 0x32;  
+    len = len +2;
       p[+6] = len;     
     while(len--)
       UART1_SendByte(p[len_i++]);
