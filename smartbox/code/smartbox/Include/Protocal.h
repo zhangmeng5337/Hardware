@@ -29,7 +29,7 @@ typedef struct{
 }Data_Stru;
 typedef struct SaveData 
 {
-	//char GPS_Buffer[GPS_Buffer_Length];
+	char GPS_Buffer[GPS_Buffer_Length];
 	char isGetData;		//是否获取到GPS数据
 	char isParseData;	//是否解析完成
 	char UTCTime[UTCTime_Length];		//UTC时间

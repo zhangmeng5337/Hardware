@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<dpInst>
-	<enableNotListedLanguages/>
-	<suppressAddRemovePrograms/>
-	<suppressWizard/>
-	<quietInstallStrict/>
-	<forceIfDriverIsNotBetter/>
-	
-</dpInst>

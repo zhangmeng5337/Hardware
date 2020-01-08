@@ -24,6 +24,7 @@
 #include "stm8l15x_tim3.h"
 #include "stm8l15x_tim1.h"
 #include "uart_hal.h"
+#include "Protocal.h"
 /** @addtogroup STM8L15x_StdPeriph_Examples
 * @{
 */
@@ -313,6 +314,7 @@ INTERRUPT_HANDLER(TIM2_UPD_OVF_TRG_BRK_USART2_TX_IRQHandler, 19)
 * @retval None
 */
 uart_stru uart2;
+extern _SaveData Save_Data;
 unsigned char j=0;
 INTERRUPT_HANDLER(TIM2_CC_USART2_RX_IRQHandler, 20)
 {
@@ -324,7 +326,6 @@ INTERRUPT_HANDLER(TIM2_CC_USART2_RX_IRQHandler, 20)
   
   if(USART_GetFlagStatus(USART2, USART_FLAG_IDLE) != RESET)
   {
-    uart2.received_flag =2;
     t = USART2->SR;
     t = USART2->DR;//IDLE清零需要依次读SR 和DR 寄存器
     USART_ClearITPendingBit(USART2,  USART_IT_IDLE);	
@@ -339,8 +340,14 @@ INTERRUPT_HANDLER(TIM2_CC_USART2_RX_IRQHandler, 20)
     {
       if(res == '\n')									   
       {
-        uart2.received_flag =1;			
-      }	 
+        uart2.received_flag =1;	
+        memset(Save_Data.GPS_Buffer, 0, GPS_Buffer_Length);      //清空
+        memcpy(Save_Data.GPS_Buffer, uart2.rxbuffer, j); 	//保存数据
+        Save_Data.isGetData = 1;
+        j=0;
+        memset( uart2.rxbuffer, 0, BUFFERSIZE);      //清空		
+      }
+      
     }
   }
   

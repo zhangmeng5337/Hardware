@@ -112,9 +112,9 @@ void data_process(unsigned char dataNo)
     memcpy(p+len+1,Data_usr.vbat,3);
     len = len +3; 
     if(get_lock_status()==1)
-      p[len+1] = 1;
+      p[len+1] = 0x31;
     else
-      p[len+1] = 0;  
+      p[len+1] = 0x30;  
     len = len +1;
       p[+6] = len;     
     while(len--)
@@ -154,14 +154,14 @@ unsigned char parseGpsBuffer()
   char *subStringNext;
   unsigned char i = 0,res;
   res = 1;
-  if (uart2.received_flag  == 1)
+  if (Save_Data.isGetData  == 1)
   {
-    uart2.received_flag = 0;
+    Save_Data.isGetData = 0;
     for (i = 0 ; i <= 6 ; i++)
     {
       if (i == 0)
       {
-        if ((subString = strstr(uart2.rxbuffer, ",")) == NULL)
+        if ((subString = strstr(Save_Data.GPS_Buffer, ",")) == NULL)
           res= 1;	//½âÎö´íÎó
       }
       else
@@ -196,7 +196,13 @@ unsigned char parseGpsBuffer()
         }
       }
     }
+    memset(uart2.rxbuffer,0,BUFFERSIZE);
   }
+    if (uart2.received_flag  == 2)
+    {
+      uart2.received_flag  =0;
+     memset(uart2.rxbuffer,0,BUFFERSIZE);
+    }
   return res;
 }
 extern uint32_t ADCdata ;
@@ -227,9 +233,9 @@ unsigned char tt,tt1,tt2,t3;
 uint32_t time_out;
 void module_process()
 {
-  parseGpsBuffer();
+
   if(Get_Network_status()==SIMCOM_NET_OK)
-  {
+  { parseGpsBuffer();
     switch(uart_analy())
     {
     case LOCK_ON: lock_state(ON);tt++;break;

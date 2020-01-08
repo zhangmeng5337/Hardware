@@ -122,10 +122,10 @@ void lock_state(unsigned char newstate)
   {
     GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, SET);
     
-    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==ON)
+    while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
     {
       
-      if(delay_ms(500)==0)
+      if(delay_ms(700)==0)
       {
         GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET);  
         break;
