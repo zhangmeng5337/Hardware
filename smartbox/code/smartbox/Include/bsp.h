@@ -22,7 +22,8 @@
 #define ON              1
 #define TOGGLE          2
 #define BATTERY_FACTOR            2
-#define BATTERY_FULL            4.2
+#define BATTERY_FULL            1.2
+#define BATTERY_REF            3
 #define SAMPLE_COUNT            100
 
 #define LEVEL1_LED              0

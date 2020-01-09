@@ -125,7 +125,7 @@ unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t wait
       }
     }
   }
-  if(waittime==0){//
+  if(waittime==0){uart.received_flag = 2;//
     res=1;
   } 
   
@@ -257,18 +257,22 @@ void SIMCOM_Register_Network()
 #else
         NET_STAUS=SIMCOM_NET_OK;
 #endif
+        delay_ms(1000);
         memset(uart.rxbuffer,0,BUFFERSIZE);
       }
     }
     break;
   case SIMCOM_Connect_Platform:
     {
-      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,120000)==0)
+      Send_Comm((unsigned char*)one_net_key,strlen((const char*)one_net_key));
+      delay_ms(2000);
+      //if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,50000)==0)
       {
         NET_STAUS=SIMCOM_NET_OK;
         
-        memset(uart.rxbuffer,0,BUFFERSIZE);
+        //memset(uart.rxbuffer,0,BUFFERSIZE);
       }
+
        //uart.received_flag = 0;
     }
     break;
@@ -298,7 +302,7 @@ void SIMCOM_Register_Network()
     break;
   default : break;
   }
-  //SIMCOM_ReConnect();
+  SIMCOM_ReConnect();
   free(p);
 }
 unsigned char Get_Network_status()

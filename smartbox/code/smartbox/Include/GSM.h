@@ -3,7 +3,7 @@
 #define Ser_Head 0xfdfd
 #define Dev_Head 0xfefe
 
-#define SIMCOM_TIME_OUT					40
+#define SIMCOM_TIME_OUT					600
 
 
 
