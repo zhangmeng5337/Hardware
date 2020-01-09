@@ -118,8 +118,8 @@ void data_process(unsigned char dataNo)
   }
   } 
   
-  memcpy(p+len,Data_usr.vbat,3);
-  len = len +3; 
+  memcpy(p+len,Data_usr.vbat,4);
+  len = len +4; 
   if(get_lock_status()==1)
     p[len] = 0x31;
   else
@@ -228,6 +228,7 @@ void battery_quantity()
   Data_usr.vbat[0]= ADCdata/1000/1000 + 0x30;
   Data_usr.vbat[1]= '.';  
   Data_usr.vbat[2]= ADCdata/1000/100%10 + 0x30; 
+  Data_usr.vbat[3]= ADCdata/1000/10%10 + 0x30; 
   vbat_tmp = ADCdata/1000/1000.0;
   if(vbat_tmp<=3)
     vbat_tmp = 0.05;

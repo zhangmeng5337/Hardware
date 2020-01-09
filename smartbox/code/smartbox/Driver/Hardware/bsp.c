@@ -343,7 +343,7 @@ void adcInit(ADC_Channel_TypeDef num)
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,ENABLE);//开启ADC1时钟
   
   ADC_VrefintCmd(ENABLE); //使能内部参考电压
-  ADC_Init(ADC1,ADC_ConversionMode_Continuous,ADC_Resolution_12Bit,ADC_Prescaler_2);//连续转换，12位，转换时钟1分频
+  ADC_Init(ADC1,ADC_ConversionMode_Continuous,ADC_Resolution_12Bit,ADC_Prescaler_1);//连续转换，12位，转换时钟1分频
   
   ADC_ChannelCmd(ADC1,num,ENABLE);//使能内部参考电压通道
   ADC_Cmd(ADC1,ENABLE);//ADC使能

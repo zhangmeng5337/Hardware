@@ -24,7 +24,7 @@ typedef struct{
   unsigned char id[4];
   unsigned char len;
   unsigned char checksum;
-  unsigned char vbat[3];
+  unsigned char vbat[4];
   unsigned char status;
 }Data_Stru;
 typedef struct SaveData 
