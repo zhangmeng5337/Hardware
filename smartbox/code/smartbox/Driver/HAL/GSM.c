@@ -276,13 +276,13 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_Connect_Platform:
     {
-      Send_Comm((unsigned char*)one_net_key,strlen((const char*)one_net_key));
-      delay_ms(2000);
-      //if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,50000)==0)
+     // Send_Comm((unsigned char*)one_net_key,strlen((const char*)one_net_key));
+      //delay_ms(2000);
+      if(SIMCOM_GetStatus((unsigned char*)one_net_key,(unsigned char*)platform_received,50000)==0)
       {
         NET_STAUS=SIMCOM_NET_OK;
         
-        //memset(uart.rxbuffer,0,BUFFERSIZE);
+        memset(uart.rxbuffer,0,BUFFERSIZE);
       }
 
        //uart.received_flag = 0;
