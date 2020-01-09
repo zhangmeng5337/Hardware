@@ -25,12 +25,12 @@ Debug/
 *.opj
 *.DRC
 ####################iar#############
-#*.ewd
-#*.ewt
-#*.ewp
+*.ewd
+*.ewt
+*.ewp
 settings/
-#.edp
-.ewt
+*.edp
+*.ewt
 /settings/
 /*.si4project/
 *.out
