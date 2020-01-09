@@ -112,10 +112,10 @@ void data_process(unsigned char dataNo)
   } 
   else
   { if(dataNo == HEART) 
-    {
-      p[len] = HEART;
-      len = len +1;
-    }
+  {
+    p[len] = HEART;
+    len = len +1;
+  }
   } 
   
   memcpy(p+len,Data_usr.vbat,3);
@@ -134,7 +134,7 @@ unsigned char uart_analy()
 {
   
   
-  if(uart.received_flag == 1)
+  if(uart.received_flag == 2)
   {
     if(uart.rxbuffer[0] ==SERVER_TO_NODEH&&uart.rxbuffer[1] ==SERVER_TO_NODEL&&
        uart.rxbuffer[2] ==Data_usr.id[0]&&uart.rxbuffer[3] ==Data_usr.id[1]&& 
@@ -215,6 +215,11 @@ unsigned char parseGpsBuffer()
   return res;
 }
 extern uint32_t ADCdata ;
+unsigned char bat_status=0;
+unsigned char battery_status()
+{
+  return bat_status;
+}
 void battery_quantity()
 {
   float vbat_tmp;
@@ -224,58 +229,103 @@ void battery_quantity()
   Data_usr.vbat[1]= '.';  
   Data_usr.vbat[2]= ADCdata/1000/100%10 + 0x30; 
   vbat_tmp = ADCdata/1000/1000.0;
-  vbat_tmp = (vbat_tmp-BATTERY_REF)/BATTERY_FULL;  
+  if(vbat_tmp<=3)
+    vbat_tmp = 0.05;
+  else
+    vbat_tmp = (vbat_tmp-BATTERY_REF)/BATTERY_FULL;  
   if(vbat_tmp>=1)
   {
     LED_Init(LEVEL3_LED,ON);
+    bat_status =4;
   }
   else if(vbat_tmp>=0.3&&vbat_tmp<1)
   {
     LED_Init(LEVEL2_LED,ON);
+    bat_status =3;
   }
-  else 
+  else if(vbat_tmp>=0.1)
   {
     LED_Init(LEVEL1_LED,ON);
+    bat_status =2; 
+    
+  }
+  else
+  {
+    LED_Init(LEVEL_ALL_LED,OFF);
+    LED_Init(STATUS_LED,ON);
+    bat_status=1;
   }
 }
-unsigned char tt,tt1,tt2,tt3,t3;
-uint32_t time_out;
+
+static unsigned char lockOnCount,lockOffCount,heartCount,getGPSCount,t3;
+
+extern unsigned char wake_up_flag;
+void gsm_module_pwr()
+{
+  if(battery_status()>1)
+  {
+    if(Get_Network_status()==SIMCOM_NET_INIT)  
+    {
+      gsm_power_state(ON);
+      Set_Network_status(SIMCOM_NET_NOT);
+      //Set_Network_status(SIMCOM_NET_ERROR);
+    }  
+  }
+  else
+  {
+    if(Get_Network_status()!=SIMCOM_NET_INIT&&Get_Network_status()!=SIMCOM_NET_ERROR)  
+    {
+      gsm_power_state(OFF);
+      Set_Network_status(SIMCOM_NET_ERROR);
+    }
+  }
+//  if(wake_up_flag)
+//  {
+//    wake_up_flag = 0;
+//    heartCount++;
+//    if(heartCount>5)
+//    {
+//      heartCount =0;
+//      gsm_power_state(OFF);
+//      Set_Network_status(SIMCOM_NET_ERROR);
+//      
+//    }
+//  }
+}
+
 void module_process()
 {
-  
+  static uint32_t time_out;
   if(Get_Network_status()==SIMCOM_NET_OK)
-  { parseGpsBuffer();
-  switch(uart_analy())
-  {
-  case LOCK_ON: lock_state(ON);tt++;break;
-  case LOCK_OFF:lock_state(OFF);tt1++; break;
-  case HEART:data_process(HEART);tt2++;t3=1; break; 
-  case GET_GNSS:data_process(GET_GNSS);tt3++;t3=1; break; 
-  }
-  memset(uart.rxbuffer,0,BUFFERSIZE);
-  if(t3==0)
-  {
-    if(time_out>=1000)
+  { 
+    parseGpsBuffer();
+    switch(uart_analy())
     {
-      time_out=0; 
-      data_process(GET_GNSS);    
+    case LOCK_ON: lock_state(ON);lockOnCount++;break;
+    case LOCK_OFF:lock_state(OFF);lockOffCount++; break;
+    case HEART:data_process(HEART);heartCount++;t3=1; break; 
+    case GET_GNSS:data_process(GET_GNSS);getGPSCount++;t3=1; break;
+    default:; break;      
     }
+    
+    if(t3==0)
+    {
+      if(time_out>=1000)
+      {
+        time_out=0; 
+        data_process(GET_GNSS);    
+      }
+      else
+        time_out++;
+      if(time_out%50==0&&time_out>0&&battery_status()>1)
+        LED_Init(STATUS_LED,TOGGLE);    
+    }
+    
     else
-      time_out++;
-    if(time_out%50==0&&time_out>0)
-      LED_Init(STATUS_LED,TOGGLE);    
+      t3=0;
   }
   
-  else
-    t3=0;
-  
-  
-  }
-  else
-  {
-    LED_Init(STATUS_LED,ON);  
-  }
   battery_quantity();
-  
+  gsm_module_pwr();
 }
 

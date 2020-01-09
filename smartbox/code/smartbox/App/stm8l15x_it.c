@@ -110,12 +110,14 @@ INTERRUPT_HANDLER(DMA1_CHANNEL2_3_IRQHandler, 3)
 * @param  None
 * @retval None
 */
+unsigned char wake_up_flag;
 INTERRUPT_HANDLER(RTC_CSSLSE_IRQHandler, 4)
 {
   /* In order to detect unexpected events during development,
   it is recommended to set a breakpoint on the following instruction.
   */
-  RTC_WakeUpCmd(DISABLE);
+   wake_up_flag =1;
+  //RTC_WakeUpCmd(DISABLE);
   RTC_ClearITPendingBit(RTC_IT_WUT);
 }
 /**

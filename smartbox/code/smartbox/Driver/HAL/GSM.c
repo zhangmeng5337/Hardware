@@ -15,7 +15,7 @@ extern uart_stru uart;
 unsigned char one_net_key[]="*284261#iii#json*";//284261：产品编号；abab：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 unsigned char* server_ip=Establish_TCP_Connection;
-unsigned char NET_STAUS = 0;
+unsigned char NET_STAUS = SIMCOM_NET_INIT;
 //找出temp在target的位置
 int FindIndex(char *target,char temp)
 {
@@ -137,7 +137,7 @@ unsigned char SIMCOM_GetStatus(unsigned char *p,unsigned char *ack,uint32_t wait
 uint32_t  SIMCOM_TimeOut_Count;
 void SIMCOM_ReConnect()
 {
-  if(NET_STAUS!=SIMCOM_NET_NOT&&NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
+  if(NET_STAUS!=SIMCOM_NET_INIT&&NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
     
     // if(NET_STAUS!=SIMCOM_NET_OK) //控制系统超时机制，保证系统能够在超时后重新启动链接
     SIMCOM_TimeOut_Count++;
@@ -152,7 +152,7 @@ void SIMCOM_ReConnect()
 }
 signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
 {
-  unsigned char res=1;
+  unsigned char res=0;
   //Send_Comm((const char*)Establish_TCP_Connection,strlen((const char*)Establish_TCP_Connection));
   res=0;
   if(waittime)		//需要等待应答
@@ -162,20 +162,32 @@ signed char  SIMCOM_Get_TCP_Staus(unsigned int waittime)
       //delay_ms(5);
       if(uart.received_flag==1)//接收到期待的应答结果
       {
-        if(AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_Closed)
-           ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)Respond_No_Carrier)
-             ||AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_ERROR))
+        if(AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_Closed)==0)
         {
-          res=1;
-          
+          res=1; 
           break;//得到有效数据
-          
         }
+        else if(AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)Respond_No_Carrier)==0)
+        {
+          res=2; 
+          break;//得到有效数据
+        }
+        else if(AT_cmd_ack(&uart.rxbuffer[0],(unsigned char*)TCP_ERROR)==0)
+        {
+          res=3; 
+          break;//得到有效数据
+        }
+        else
+        {
+            res = 0;
+            break;
+        }
+        
         
         //res=0;TIMEOUT
       }
     }
-    if(waittime==0){res=1;}
+    if(waittime==0){res=0;}
   }
   return res;
 }
@@ -280,24 +292,39 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_NET_OK:
     {
-      if(SIMCOM_Get_TCP_Staus(40)==0)
-      {      
-        if(SIMCOM_GetStatus((unsigned char*)Quit_transparent,(unsigned char*)Respond_OK,5000)==0)
+      unsigned char res;
+      res = SIMCOM_Get_TCP_Staus(40);
+      if(res>0)
+      {
+        if(res == 1)
+        {
+          NET_STAUS=SIMCOM_NET_TRANSPARENT;
+        }
+        else if(res==2||res == 3)
         {
           NET_STAUS=SIMCOM_NET_ERROR;
-          memset(uart.rxbuffer,0,BUFFERSIZE);
-        }
+        } 
+        else 
+          ;
+        memset(uart.rxbuffer,0,BUFFERSIZE);
+        uart.received_flag =0;
       }
+      else
+      {
+        if(uart.received_flag==1)
+          uart.received_flag =2;
+      }
+      
     }
     break;
   case SIMCOM_NET_ERROR:
     {
       // GSM_HardwareInit(ON);                   //复位重启
-      gsm_power_state(OFF);
-      delay_ms(4000);
-      gsm_power_state(ON);
+     // gsm_power_state(OFF);
+      //delay_ms(4000);
+     // gsm_power_state(ON);
       //GSM_HardwareInit(ON);
-      NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
+      NET_STAUS=SIMCOM_NET_INIT;       //状态机复位
     }
     break;
   default : break;
@@ -308,6 +335,10 @@ void SIMCOM_Register_Network()
 unsigned char Get_Network_status()
 {
   return NET_STAUS;
+}
+void Set_Network_status(unsigned char status)
+{
+   NET_STAUS = status;
 }
 unsigned char gps_flag;
 void gps_test()

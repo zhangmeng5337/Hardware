@@ -15,7 +15,8 @@ void main(void)
   {
     
   //delay_ms(3000);
-    SIMCOM_Register_Network();
+    if(battery_status()!=1)
+      SIMCOM_Register_Network();
     module_process(); 
   }
 }

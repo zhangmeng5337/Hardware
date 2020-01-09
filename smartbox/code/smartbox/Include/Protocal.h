@@ -42,7 +42,7 @@ typedef struct SaveData
 
 void module_process(void);
 void module_prams_init(void);
-
+unsigned char battery_status(void);
 unsigned char uart_analy(void);
 void lock_ctrl_process(void);
 unsigned char parseGpsBuffer(void);

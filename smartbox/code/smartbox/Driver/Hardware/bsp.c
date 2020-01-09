@@ -40,7 +40,7 @@ void TIM3_Initial(void)
   // 配置Timer3相关参数，内部时钟为16MHZ，定时时间 1ms  需要计次125
   TIM3_TimeBaseInit(TIM3_Prescaler_128, TIM3_CounterMode_Up, 50000); //625定时5ms
   TIM3_SetCounter(0);
- //  TIM3->EGR = TIM3_PSCReloadMode_Immediate;
+  //  TIM3->EGR = TIM3_PSCReloadMode_Immediate;
   TIM3_ITConfig(TIM3_IT_Update, ENABLE);
   TIM3_Cmd(DISABLE);
 }
@@ -125,7 +125,7 @@ void lock_state(unsigned char newstate)
     {
       GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, SET);
       
-      while(GPIO_ReadInputDataBit(LOCK_FB_PORT, LOCK_FB_PIN)==OFF)
+      while(GPIO_ReadInputDataBit(LOCK_FB_PORT, LOCK_FB_PIN)==ON)
       {
         
         if(delay_ms(700)==0)
@@ -140,7 +140,7 @@ void lock_state(unsigned char newstate)
     else
     {
       GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET); 
-      while(GPIO_ReadInputDataBit(LOCK_FB_PORT, LOCK_FB_PIN)==ON)
+      while(GPIO_ReadInputDataBit(LOCK_FB_PORT, LOCK_FB_PIN)==OFF)
       {
         
         if(delay_ms(500)==0)
@@ -152,7 +152,7 @@ void lock_state(unsigned char newstate)
       break;
     }  
   }
-
+  
 }
 unsigned char get_lock_status()
 {
@@ -341,52 +341,59 @@ void adcInit(ADC_Channel_TypeDef num)
 {
   /* Enable ADC1 clock */
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,ENABLE);//开启ADC1时钟
-  ADC_DeInit(ADC1);
-  ADC_VrefintCmd(ENABLE); //使能内部参考电压
-  ADC_Init(ADC1,ADC_ConversionMode_Single,ADC_Resolution_12Bit,ADC_Prescaler_1);//连续转换，12位，转换时钟1分频
-  ADC_Cmd(ADC1,ENABLE);//ADC使能	
-  ADC_ChannelCmd(ADC1,num,ENABLE);//使能内部参考电压通道
   
+  ADC_VrefintCmd(ENABLE); //使能内部参考电压
+  ADC_Init(ADC1,ADC_ConversionMode_Continuous,ADC_Resolution_12Bit,ADC_Prescaler_2);//连续转换，12位，转换时钟1分频
+  
+  ADC_ChannelCmd(ADC1,num,ENABLE);//使能内部参考电压通道
+  ADC_Cmd(ADC1,ENABLE);//ADC使能
   
 }
 
 uint32_t adcGet(ADC_Channel_TypeDef num)
 {
   uint32_t tmp;
-  uint32_t tmp2;
-  unsigned int i;
-  /* Waiting until press Joystick Up */
+  unsigned char i;
+  float tmp2;
+ /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
-  adcInit(ADC_Channel_Vrefint);
+   adcInit(ADC_Channel_Vrefint);
   ADC_SoftwareStartConv(ADC1); //开启软件转换
   while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
   {}
   ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
   /* Get conversion value */
   tmp = ADC_GetConversionValue(ADC1);
-  ADC_RATIO= (1.225 * 4096)/tmp;
+   ADC_RATIO= (1.225 * 4096)/tmp;
+
+
   ADC_DeInit(ADC1);
   tmp = 0;
   tmp2 =0;
-  
-  
-  adcInit(num);  
-  //delay_ms(3000);
-  for(i=0;i<SAMPLE_COUNT;i++)
+  adcInit(num);  ADC_SoftwareStartConv(ADC1); //开启软件转换
+  for(i=0;i<100;i++)
   { 
-    ADC_SoftwareStartConv(ADC1); //开启软件转换
-    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
-    {}
-    ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
-    /* Get conversion value */
-    tmp = ADC_GetConversionValue(ADC1);
-    /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-    tmp2 = tmp2 + ((uint32_t)(tmp*3.3*244.14));
-    
+
+	  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
+	  {}
+	  ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
+	  /* Get conversion value */
+	  tmp = ADC_GetConversionValue(ADC1);
+	  
+	  /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
+	  tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
+	  /* Waiting Delay 200ms */
+	 // delay_ms(2);
+	  
+	  /* DeInitialize ADC1 */
+
+
   }
-  ADCdata = tmp2 /SAMPLE_COUNT;
-  ADC_DeInit(ADC1);
+  ADCdata = tmp2 /100;
+   ADC_DeInit(ADC1);
+  
   /* Disable ADC1 clock */
+  CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, DISABLE);
   
   return ADCdata;
 }
@@ -449,9 +456,10 @@ void HardwareInit()
   Uart1_Init(115200);// 初始化GPIO
   DMA_Config();
   LED_Init(LEVEL_ALL_LED,ON);
+  RTC_Config(20,ON);
   enableInterrupts();  
   gnss_state(ON);
-  gsm_power_state(ON);
+  //gsm_power_state(ON);
   //adcGet(VBAT_SENSE_CHANNEL);
   
 }
