@@ -125,7 +125,7 @@ void lock_state(unsigned char newstate)
     {
       GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, SET);
       
-      while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
+      while(GPIO_ReadInputDataBit(LOCK_FB_PORT, LOCK_FB_PIN)==OFF)
       {
         
         if(delay_ms(700)==0)
@@ -140,7 +140,7 @@ void lock_state(unsigned char newstate)
     else
     {
       GPIO_WriteBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN, RESET); 
-      while(GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN)==OFF)
+      while(GPIO_ReadInputDataBit(LOCK_FB_PORT, LOCK_FB_PIN)==ON)
       {
         
         if(delay_ms(500)==0)
@@ -156,7 +156,7 @@ void lock_state(unsigned char newstate)
 }
 unsigned char get_lock_status()
 {
-  return GPIO_ReadInputDataBit(LOCK_CTRL_PORT, LOCK_CTRL_PIN);
+  return GPIO_ReadInputDataBit(LOCK_FB_PORT, LOCK_FB_PIN);
 }
 
 void RTC_Config(uint16_t time,unsigned char flag) 
