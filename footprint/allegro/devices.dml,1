@@ -1,0 +1,11 @@
+("devices.dml" 
+ (PackagedDevice 
+  (DEFAULT_RESISTOR_10000OHM_1_2 
+   (ESpice ".subckt DEFAULT_RESISTOR_10000OHM_1_2 2 1
+R1 2 1 10000
+.ends DEFAULT_RESISTOR_10000OHM_1_2
+" ) 
+   (PinConnections 
+    (2 1 ) 
+    (1 2 ) ) ) ) 
+ (LibraryVersion 136.2 ) ) 
