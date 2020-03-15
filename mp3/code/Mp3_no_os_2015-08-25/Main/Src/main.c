@@ -40,9 +40,9 @@
 int main(void)
 {
 	u8 t;
-	OLED_Init();
+	//OLED_Init();
 	//OLED_ColorTurn(0);//0正常显示，1 反色显示
-  OLED_DisplayTurn(0);//0正常显示 1 屏幕翻转显示
+//  OLED_DisplayTurn(0);//0正常显示 1 屏幕翻转显示
 //	OLED_DrawPoint(0,0);
 //	OLED_DrawLine(20,0,50,60);
 //	OLED_DrawCircle(64,32,20);
