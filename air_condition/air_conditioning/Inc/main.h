@@ -32,7 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#define DEBUG_USER		1
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

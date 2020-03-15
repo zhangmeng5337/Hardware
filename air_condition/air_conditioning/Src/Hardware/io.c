@@ -21,6 +21,9 @@ void device_ctrl(unsigned char devNo,unsigned char on_off)
 			case PUMP:HAL_GPIO_WritePin(CTR_OUT3_GPIO_Port, CTR_OUT3_Pin,GPIO_PIN_RESET);break;
 		}
 	}
+		#if DEBUG_USER
+		printf("device_ctrl is:   %d  %d\n",devNo,on_off);
+		#endif
 }
 GPIO_PinState get_io(unsigned char devNo)
 {

@@ -17,35 +17,35 @@ void display(float dat,unsigned char updateflag,unsigned char dattypes)
 		{
 			if(dat<10)
 			{
-				tmp = dat*1000;
-			buf[0] = table[tmp/1000]-DOT;
-			buf[1] = table[tmp%1000/100];
-			buf[2] = table[tmp%10/100];
-			buf[3] = table[tmp%10];
+					tmp = dat*1000;
+					buf[0] = table[tmp/1000]-DOT;
+					buf[1] = table[tmp%1000/100];
+					buf[2] = table[tmp%10/100];
+					buf[3] = table[tmp%10];
 			}
 			else if(dat>=10&&dat<100)
 			{
-				tmp = dat*100;
-			buf[0] =  table[tmp/1000];
-			buf[1] =  table[tmp%1000/100]-DOT;
-			buf[2] =  table[tmp%10/100];
-			buf[3] =  table[tmp%10];
+					tmp = dat*100;
+					buf[0] =  table[tmp/1000];
+					buf[1] =  table[tmp%1000/100]-DOT;
+					buf[2] =  table[tmp%10/100];
+					buf[3] =  table[tmp%10];
 			}
 			else if(dat>=100&&dat<1000)
 			{
-				tmp = dat*10;
-			buf[0] =  table[tmp/1000];
-			buf[1] =  table[tmp%1000/100];
-			buf[2] =  table[tmp%10/100]-DOT;
-			buf[3] =  table[tmp%10];
+					tmp = dat*10;
+					buf[0] =  table[tmp/1000];
+					buf[1] =  table[tmp%1000/100];
+					buf[2] =  table[tmp%10/100]-DOT;
+					buf[3] =  table[tmp%10];
 			}
 			else
 			{
-			 // tmp = dat*10;
-			buf[0] =  table[tmp/1000];
-			buf[1] =  table[tmp%1000/100];
-			buf[2] =  table[tmp%10/100];
-			buf[3] =  table[tmp%10]-DOT;
+					// tmp = dat*10;
+					buf[0] =  table[tmp/1000];
+					buf[1] =  table[tmp%1000/100];
+					buf[2] =  table[tmp%10/100];
+					buf[3] =  table[tmp%10]-DOT;
 			}
 				
 		}
@@ -54,37 +54,39 @@ void display(float dat,unsigned char updateflag,unsigned char dattypes)
 			if(dat<10)
 			{
 				tmp = dat*1000;
-			buf[0] = table[tmp/1000];
-			buf[1] = table[tmp%1000/100];
-			buf[2] = table[tmp%10/100];
-			buf[3] = table[tmp%10];
+				buf[0] = table[tmp/1000];
+				buf[1] = table[tmp%1000/100];
+				buf[2] = table[tmp%10/100];
+				buf[3] = table[tmp%10];
 			}
 			else if(dat>=10&&dat<100)
 			{
 				tmp = dat*100;
-			buf[0] =  table[tmp/1000];
-			buf[1] =  table[tmp%1000/100];
-			buf[2] =  table[tmp%10/100];
-			buf[3] =  table[tmp%10];
+				buf[0] =  table[tmp/1000];
+				buf[1] =  table[tmp%1000/100];
+				buf[2] =  table[tmp%10/100];
+				buf[3] =  table[tmp%10];
 			}
 			else if(dat>=100&&dat<1000)
 			{
 				tmp = dat*10;
-			buf[0] =  table[tmp/1000];
-			buf[1] =  table[tmp%1000/100];
-			buf[2] =  table[tmp%10/100];
-			buf[3] =  table[tmp%10];
+				buf[0] =  table[tmp/1000];
+				buf[1] =  table[tmp%1000/100];
+				buf[2] =  table[tmp%10/100];
+				buf[3] =  table[tmp%10];
 			}
 			else
 			{
-			 // tmp = dat*10;
-			buf[0] =  table[tmp/1000];
-			buf[1] =  table[tmp%1000/100];
-			buf[2] =  table[tmp%10/100];
-			buf[3] =  table[tmp%10];
+				// tmp = dat*10;
+				buf[0] =  table[tmp/1000];
+				buf[1] =  table[tmp%1000/100];
+				buf[2] =  table[tmp%10/100];
+				buf[3] =  table[tmp%10];
 			}
 		}
-		
+		#if DEBUG_USER
+		printf("display is:   %d\n",dat);
+		#endif
 		bitselect = 1;	
 
   }

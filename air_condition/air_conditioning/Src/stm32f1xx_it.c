@@ -280,7 +280,9 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-
+ #if DEBUG_USER
+	printf("uart1 data:  \n");
+ #endif
   /* USER CODE END USART1_IRQn 1 */
 }
 

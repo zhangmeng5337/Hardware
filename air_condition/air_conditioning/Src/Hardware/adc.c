@@ -35,9 +35,14 @@ unsigned int Get_Adc_Average(uint32_t ch,unsigned char times)
 		{
 			//temp_val+=Get_Adc(ch);	
 			HAL_ADC_PollForConversion(&hadc1,0xffff);
-			adcBuf[i]=HAL_ADC_GetValue(&hadc1);
+			adcBuf[i]=adcBuf[i] + HAL_ADC_GetValue(&hadc1);
+			
 			//delay_ms(5);
 		}
+		adcBuf[i] = adcBuf[i] /times;
+		#if DEBUG_USER
+		printf("adcBuf[%d] is:   %d\n",i,adcBuf[i]);
+		#endif
 		HAL_ADC_Stop(&hadc1);
 	}
 	return temp_val/times;
