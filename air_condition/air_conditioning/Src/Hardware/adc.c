@@ -26,12 +26,19 @@ unsigned int Get_Adc(uint32_t ch)
 //返回值:通道ch的times次转换结果平均值
 unsigned int Get_Adc_Average(uint32_t ch,unsigned char times)
 {
-	uint32_t temp_val=0;
-	unsigned char t;
-	for(t=0;t<times;t++)
+	uint32_t temp_val=0,adcBuf[5];
+	unsigned char i,t;
+	for(i=0;i<5;i++)
 	{
-		temp_val+=Get_Adc(ch);
-		//delay_ms(5);
+		HAL_ADC_Start(&hadc1);
+		for(t=0;t<times;t++)
+		{
+			//temp_val+=Get_Adc(ch);	
+			HAL_ADC_PollForConversion(&hadc1,0xffff);
+			adcBuf[i]=HAL_ADC_GetValue(&hadc1);
+			//delay_ms(5);
+		}
+		HAL_ADC_Stop(&hadc1);
 	}
 	return temp_val/times;
 } 
