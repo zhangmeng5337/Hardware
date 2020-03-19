@@ -4,7 +4,7 @@
 #define DISPLAY_BLINK    200
 void display_off(void);
 
-void display(float dat,unsigned char updateflag,unsigned char dattypes);
+void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes);
 void display_proc(void);
 
 #endif

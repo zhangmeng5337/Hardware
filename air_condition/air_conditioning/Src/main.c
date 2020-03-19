@@ -552,6 +552,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1==0))
 		{
 			key_time = HAL_GetTick();
+			KeyNum = KeyNum |0x01;
 		}
 		else
 		{
@@ -559,8 +560,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			{
 				KeyNum = KeyNum |0x02;
 			}
-			else
-				KeyNum = KeyNum |0x01;
 		}
 	}
 	else if(GPIO_Pin==GPIO_PIN_4)
@@ -568,6 +567,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4==0))
 		{
 			key_time = HAL_GetTick();
+			KeyNum = KeyNum |0x40;
 		}
 		else
 		{
@@ -575,8 +575,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			{
 				KeyNum = KeyNum |0x80;
 			}
-			else
-				KeyNum = KeyNum |0x40;
+				
 		}
 
 	}
@@ -585,6 +584,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5==0))
 		{
 			key_time = HAL_GetTick();
+			KeyNum = KeyNum |0x10;
 		}
 		else
 		{
@@ -592,8 +592,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			{
 				KeyNum = KeyNum |0x20;
 			}
-			else
-				KeyNum = KeyNum |0x10;
+				
 		}
 
 	}
@@ -602,6 +601,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_15==0))
 		{
 			key_time = HAL_GetTick();
+			KeyNum = KeyNum |0x04;
 		}
 		else
 		{
@@ -609,8 +609,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			{
 				KeyNum = KeyNum |0x08;
 			}
-			else
-				KeyNum = KeyNum |0x04;
+				
 		}
 
 

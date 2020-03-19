@@ -30,7 +30,7 @@ unsigned int Get_Adc_Average(uint32_t ch,unsigned char times)
 	unsigned char i,t;
 	for(i=0;i<5;i++)
 	{
-		Get_Adc( ch);
+		HAL_ADC_Start(&hadc1);
 		for(t=0;t<times;t++)
 		{
 			//temp_val+=Get_Adc(ch);	
