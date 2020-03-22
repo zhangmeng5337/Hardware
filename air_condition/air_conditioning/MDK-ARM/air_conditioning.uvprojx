@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB,USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;                ../Drivers/STM32F1xx_HAL_Driver/Inc;                ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;                ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;                ../Drivers/CMSIS/Include;                ..\Inc\inc</IncludePath>
+              <IncludePath>../Inc;                          ../Drivers/STM32F1xx_HAL_Driver/Inc;                          ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;                          ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;                          ../Drivers/CMSIS/Include;                          ..\Inc\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -458,6 +458,11 @@
               <FileName>menu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\app\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>settings.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\app\settings.c</FilePath>
             </File>
           </Files>
         </Group>

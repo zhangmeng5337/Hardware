@@ -19,31 +19,34 @@ unsigned int Get_Adc(uint32_t ch)
 	
     HAL_ADC_PollForConversion(&hadc1,10);                //轮询转换
  
-	return (unsigned int)HAL_ADC_GetValue(&hadc1);	        //返回最近一次ADC1规则组的转换结果
+//	return (unsigned int)HAL_ADC_GetValue(&hadc1);	        //返回最近一次ADC1规则组的转换结果
 }
 //获取指定通道的转换值，取times次,然后平均 
 //times:获取次数
 //返回值:通道ch的times次转换结果平均值
-unsigned int Get_Adc_Average(uint32_t ch,unsigned char times)
+uint32_t Get_Adc_Average(uint32_t ch,unsigned char times)
 {
-	uint32_t temp_val=0,adcBuf[5];
+	uint32_t temp_val=0,adcBuf[6];
 	unsigned char i,t;
-	for(i=0;i<5;i++)
-	{
-		Get_Adc( ch);
-		for(t=0;t<times;t++)
-		{
-			//temp_val+=Get_Adc(ch);	
+	for(i=0;i<times;i++)
+	{                               //开启ADC
+		//Get_Adc( ch);
+		for(t=0;t<6;t++)
+		{;
+			HAL_ADC_Start(&hadc1);
 			HAL_ADC_PollForConversion(&hadc1,0xffff);
-			adcBuf[i]=adcBuf[i] + HAL_ADC_GetValue(&hadc1);
 			
-			//delay_ms(5);
+			adcBuf[t]=HAL_ADC_GetValue(&hadc1);
+			if(adcBuf[t]>5000)
+				adcBuf[t] = 0;
 		}
-		adcBuf[i] = adcBuf[i] /times;
-		#if DEBUG_USER
+	//	adcBuf[t] = adcBuf[t] /times;
+
+	}
+
+	#if DEBUG_USER
 		printf("adcBuf[%d] is:   %d\n",i,adcBuf[i]);
 		#endif
 		HAL_ADC_Stop(&hadc1);
-	}
 	return temp_val/times;
 } 

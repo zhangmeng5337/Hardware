@@ -91,7 +91,8 @@ int fputc(int ch, FILE *f)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-unsigned char KeyStatus2,KeyStatus3;
+uint32_t adc_result[5],tmp[5];
+unsigned char KeyStatus2,KeyStatus3,i;
 /* USER CODE END 0 */
 
 /**
@@ -140,10 +141,15 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		 Get_Adc_Average(ADC_CHANNEL_1,100);
-	   led_ctrl(WORK_STATUS,ON);
+		// for(i=0;i<5;i++)
+		//{
+		  adc_result[0]=Get_Adc_Average(0,100);		
+	//	}
+
+	   led_ctrl(LED_ALL,OFF);
+		 key_scan();
 		 KeyStatus2 = GetKeyNum();
-		 device_ctrl(FAN_HOT,ON);
+		 device_ctrl(FAN_HOT,OFF);
 		 KeyStatus3 = get_io(1);
   }
   /* USER CODE END 3 */
@@ -162,12 +168,12 @@ void SystemClock_Config(void)
   /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL4;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -181,7 +187,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -215,10 +221,11 @@ static void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.DiscontinuousConvMode = ENABLE;
+  hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 5;
+  hadc1.Init.NbrOfConversion = 6;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -227,7 +234,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_41CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -260,6 +267,15 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_7;
   sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  sConfig.Rank = ADC_REGULAR_RANK_6;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -462,17 +478,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : KEY4_Pin */
-  GPIO_InitStruct.Pin = KEY4_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(KEY4_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : KEY3_Pin */
-  GPIO_InitStruct.Pin = KEY3_Pin;
+  /*Configure GPIO pins : KEY4_Pin KEY3_Pin */
+  GPIO_InitStruct.Pin = KEY4_Pin|KEY3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(KEY3_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : CTR_OUT1_Pin CTR_OUT2_Pin CTR_OUT3_Pin led_ctrl2_Pin */
   GPIO_InitStruct.Pin = CTR_OUT1_Pin|CTR_OUT2_Pin|CTR_OUT3_Pin|led_ctrl2_Pin;
@@ -483,7 +493,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : KEY1_Pin */
   GPIO_InitStruct.Pin = KEY1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(KEY1_GPIO_Port, &GPIO_InitStruct);
 
@@ -544,73 +554,62 @@ unsigned char KeyNum;
 bit1  bit0:0x01 ¶Ì°´
            0x10 ³¤°´
 */
+
+
+
 uint32_t key_time;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(GPIO_Pin==GPIO_PIN_1)
+	unsigned int i;
+	i=50000;
+	while(i--)
+		
+	 ;
+	if(GPIO_Pin==KEY1_Pin)
 	{
-		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1==0))
+		
+		if(HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin)==GPIO_PIN_RESET)
 		{
 			key_time = HAL_GetTick();
 			KeyNum = KeyNum |0x01;
+
 		}
-		else
-		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
-			{
-				KeyNum = KeyNum |0x02;
-			}
-		}
+//		else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1)==GPIO_PIN_SET)
+//		{
+//			if((HAL_GetTick()-key_time)>=LONG_HIT)
+//			{
+//				KeyNum = KeyNum |0x02;
+//			}
+//		}
 	}
-	else if(GPIO_Pin==GPIO_PIN_4)
+	else if(GPIO_Pin==KEY4_Pin)
 	{
-		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4==0))
+		if(HAL_GPIO_ReadPin(KEY4_GPIO_Port, KEY4_Pin)==0)
 		{
 			key_time = HAL_GetTick();
 			KeyNum = KeyNum |0x40;
 		}
-		else
-		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
-			{
-				KeyNum = KeyNum |0x80;
-			}
-				
-		}
+
 
 	}
-	else if(GPIO_Pin==GPIO_PIN_5)
+	else if(GPIO_Pin==KEY3_Pin)
 	{
-		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5==0))
+		if(HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin)==0)
 		{
 			key_time = HAL_GetTick();
 			KeyNum = KeyNum |0x10;
 		}
-		else
-		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
-			{
-				KeyNum = KeyNum |0x20;
-			}
-				
-		}
+
 
 	}
-	else if(GPIO_Pin==GPIO_PIN_15)
+	else if(GPIO_Pin==KEY2_Pin)
 	{
-		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_15==0))
+		if(HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin)==0)
 		{
 			key_time = HAL_GetTick();
 			KeyNum = KeyNum |0x04;
 		}
-		else
-		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
-			{
-				KeyNum = KeyNum |0x08;
-			}
-				
-		}
+
 
 
 	}

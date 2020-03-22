@@ -1,12 +1,14 @@
 #include "74hc595.h"
 #include "display.h"
+#include "settings.h"
 
-#define DOT		0x80
 
-unsigned char table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e};
+#define DOT		0x01
+
+unsigned char table[]={0x03,0x9f,0x25,0x0d,0x99,0x49,0x41,0x1f,0x01,0x09,0x11,0xc1,0x63,0x85,0x61,0x71};
 //unsigned char table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
 const unsigned char seg_table[16]={0};
-static unsigned char buf[4];
+static unsigned char buf[4]={0x03,0x9f,0x25,0x0d};
 void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 {
 	
@@ -85,15 +87,25 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 				buf[3] =  table[tmp%10];
 			}
 		}
+		if(dat<0)
+		{
+			// tmp = dat*10;
+			buf[0] =  0x40;
+			buf[1] = buf[0];
+			buf[2] =  buf[1];
+			buf[3] =  buf[2];
+
+		}
 		#if DEBUG_USER
 		printf("display is:   %d\n",dat);
 		#endif
   }
-  else
-  {
 
-  }
-
+}
+unsigned char get_display_mode()
+{
+	if(get_params_mode()->diplay_mode==NORMAL)
+		return NORMAL;
 }
 
 void display_off(void)
@@ -101,20 +113,78 @@ void display_off(void)
 	seg_select(4);
 }
 
-void display_proc()
+void display_proc(unsigned char flag)
 {
-	uint32_t gettime;
-	static unsigned char bitselect=1;
-	if((HAL_GetTick()-gettime)>=DISPLAY_PERIOD)
+	static uint32_t gettime;
+	static unsigned char bitselect=0;
+	if(flag == 0)
 	{
-	     
-		 M74HC595_WriteData(buf[bitselect-1]);
-     seg_select(bitselect);
-	   bitselect = bitselect +1;
-	   if(bitselect == 4)
-		   bitselect = 1;	
+		if( get_params_mode()->diplay_mode==NORMAL)
+		{
+			if((HAL_GetTick()-gettime)>=DISPLAY_PERIOD)
+			{
+				 
+				 M74HC595_WriteData(buf[bitselect-1]);
+				 seg_select(bitselect);
+				 bitselect = bitselect +1;
+				 if(bitselect > 4)
+					 bitselect = 1;	
+			
+			}
+			else
+				 gettime = HAL_GetTick();
 
+		}
+		else if( get_params_mode()->diplay_mode == SETTING_MODE)
+		{
+			if((HAL_GetTick()-gettime)>=DISPLAY_PERIOD)
+			{
+				M74HC595_WriteData(buf[bitselect]);
+				 if(get_params_mode()->setting_bit ==bitselect)
+					{
+						 if((HAL_GetTick()-gettime)>=DISPLAY_BLINK)
+							 seg_select(bitselect);			   
+				 }
+				 else
+					seg_select(bitselect);
+				 bitselect = bitselect +1;
+				 if(bitselect == 4)
+					 bitselect = 1;	
+			
+			}
+			else
+				 gettime = HAL_GetTick();
+
+		}	
 	}
 	else
-	   gettime = HAL_GetTick();
+	{
+		if( get_params_mode()->diplay_mode==NORMAL)
+		{
+			static unsigned char j=0;
+			
+			if((HAL_GetTick()-gettime)>=DISPLAY_PERIOD)
+			{
+				M74HC595_WriteData(table[j]-0x01);
+				seg_select(bitselect);
+				bitselect = bitselect +1;
+				if(bitselect > 4)
+					bitselect = 1;
+
+							
+			}
+
+			{
+				
+				if((HAL_GetTick()-gettime)>=2000)
+				{gettime = HAL_GetTick();
+					j = j+1;
+					if(j>=16)
+					j=0;
+				} 
+			}
+						
+    }
+	}
+
 }

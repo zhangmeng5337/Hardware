@@ -73,8 +73,8 @@ void seg_select(unsigned char num)
 		}break;
 		case 4:
 		{
-				HAL_GPIO_WritePin(DIS_COM4_GPIO_Port, DIS_COM4_Pin,GPIO_PIN_SET);		
-				HAL_GPIO_WritePin(DIS_COM3_GPIO_Port, DIS_COM3_Pin,GPIO_PIN_RESET);		
+				HAL_GPIO_WritePin(DIS_COM4_GPIO_Port, DIS_COM4_Pin,GPIO_PIN_RESET);		
+				HAL_GPIO_WritePin(DIS_COM3_GPIO_Port, DIS_COM3_Pin,GPIO_PIN_SET);		
 				HAL_GPIO_WritePin(DIS_COM2_GPIO_Port, DIS_COM2_Pin,GPIO_PIN_SET);		
 				HAL_GPIO_WritePin(DIS_COM1_GPIO_Port, DIS_COM1_Pin,GPIO_PIN_SET);				
 		}break;		
