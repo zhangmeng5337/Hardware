@@ -23,12 +23,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "display.h"
-#include "adc.h"
+
 #include "led.h"
-#include "key.h"
-#include "io.h"
 #include "stdio.h"
+#include "settings.h"
+#include "key.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,8 +90,7 @@ int fputc(int ch, FILE *f)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t adc_result[5],tmp[5];
-unsigned char KeyStatus2,KeyStatus3,i;
+
 /* USER CODE END 0 */
 
 /**
@@ -141,16 +139,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		// for(i=0;i<5;i++)
-		//{
-		  adc_result[0]=Get_Adc_Average(0,100);		
-	//	}
-
-	   led_ctrl(LED_ALL,OFF);
-		 key_scan();
-		 KeyStatus2 = GetKeyNum();
-		 device_ctrl(FAN_HOT,OFF);
-		 KeyStatus3 = get_io(1);
+	//adc_process();
+	//key_process();
+	 run_process();
+	//io_process();
+	led_ctrl(LED_ALL,OFF);
+//	device_ctrl(FAN_HOT,OFF);
   }
   /* USER CODE END 3 */
 }
@@ -557,37 +551,30 @@ bit1  bit0:0x01 ¶Ì°´
 
 
 
-uint32_t key_time;
+extern key_stru key;
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	unsigned int i;
 	i=50000;
 	while(i--)
-		
 	 ;
 	if(GPIO_Pin==KEY1_Pin)
 	{
 		
 		if(HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin)==GPIO_PIN_RESET)
 		{
-			key_time = HAL_GetTick();
-			KeyNum = KeyNum |0x01;
+		    key.keytime= HAL_GetTick();
+			key.keynum = key.keynum|0x01;  
 
 		}
-//		else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1)==GPIO_PIN_SET)
-//		{
-//			if((HAL_GetTick()-key_time)>=LONG_HIT)
-//			{
-//				KeyNum = KeyNum |0x02;
-//			}
-//		}
 	}
 	else if(GPIO_Pin==KEY4_Pin)
 	{
 		if(HAL_GPIO_ReadPin(KEY4_GPIO_Port, KEY4_Pin)==0)
 		{
-			key_time = HAL_GetTick();
-			KeyNum = KeyNum |0x40;
+			key.keytime = HAL_GetTick();
+			key.keynum = key.keynum|0x40;
 		}
 
 
@@ -596,22 +583,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		if(HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin)==0)
 		{
-			key_time = HAL_GetTick();
-			KeyNum = KeyNum |0x10;
+			key.keytime = HAL_GetTick();
+			key.keynum = key.keynum|0x10;
 		}
-
-
 	}
 	else if(GPIO_Pin==KEY2_Pin)
 	{
 		if(HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin)==0)
 		{
-			key_time = HAL_GetTick();
-			KeyNum = KeyNum |0x04;
+			key.keytime = HAL_GetTick();
+			key.keynum = key.keynum|0x04;
 		}
-
-
-
 	}
 	else
 		;

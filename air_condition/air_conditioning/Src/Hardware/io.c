@@ -1,4 +1,5 @@
 #include "io.h"
+#include "adc.h"
 
 void device_ctrl(unsigned char devNo,unsigned char on_off)
 {
@@ -25,10 +26,31 @@ void device_ctrl(unsigned char devNo,unsigned char on_off)
 		printf("device_ctrl is:   %d  %d\n",devNo,on_off);
 		#endif
 }
-GPIO_PinState get_io(unsigned char devNo)
+extern adc_io_str adc_io;
+void get_io()
 {
-      if(devNo == 1)
-			 return HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin);
-			if(devNo == 2)
-				return HAL_GPIO_ReadPin(SW2_GPIO_Port, SW2_Pin);
+     
+	if(HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin) == 1)
+	{	 
+		adc_io.io_status = adc_io.io_status|0x01;
+		adc_io.fault_status = adc_io.fault_status|0xe20;
+	}
+	else
+	{	    
+		adc_io.fault_status = adc_io.fault_status&(~0xf20);
+		adc_io.io_status = adc_io.io_status&0xfe;
+	}
+
+	if(HAL_GPIO_ReadPin(SW2_GPIO_Port, SW2_Pin) == 1)
+	{	 
+		adc_io.io_status =adc_io.io_status|0x02;
+		adc_io.fault_status = adc_io.fault_status|0xe40;
+	}
+	else
+	{	   
+		adc_io.io_status =  adc_io.io_status&0xed0;
+		adc_io.fault_status = adc_io.fault_status&(~0xfd0);
+	}
 }
+
+

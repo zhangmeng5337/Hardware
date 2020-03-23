@@ -4,6 +4,7 @@
 
 
 #define DOT		0x01
+#define MINUS		0x01
 
 unsigned char table[]={0x03,0x9f,0x25,0x0d,0x99,0x49,0x41,0x1f,0x01,0x09,0x11,0xc1,0x63,0x85,0x61,0x71};
 //unsigned char table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
@@ -23,7 +24,7 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 					tmp = dat*1000;
 					buf[0] = table[tmp/1000]-DOT;
 					buf[1] = table[tmp%1000/100];
-					buf[2] = table[tmp%10/100];
+					buf[2] = table[tmp%100/10];
 					buf[3] = table[tmp%10];
 			}
 			else if(dat>=10&&dat<100)
@@ -31,7 +32,7 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 					tmp = dat*100;
 					buf[0] =  table[tmp/1000];
 					buf[1] =  table[tmp%1000/100]-DOT;
-					buf[2] =  table[tmp%10/100];
+					buf[2] =  table[tmp%100/10];
 					buf[3] =  table[tmp%10];
 			}
 			else if(dat>=100&&dat<1000)
@@ -39,7 +40,7 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 					tmp = dat*10;
 					buf[0] =  table[tmp/1000];
 					buf[1] =  table[tmp%1000/100];
-					buf[2] =  table[tmp%10/100]-DOT;
+					buf[2] =  table[tmp%100/10]-DOT;
 					buf[3] =  table[tmp%10];
 			}
 			else
@@ -47,19 +48,19 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 					// tmp = dat*10;
 					buf[0] =  table[tmp/1000];
 					buf[1] =  table[tmp%1000/100];
-					buf[2] =  table[tmp%10/100];
+					buf[2] =  table[tmp%100/10];
 					buf[3] =  table[tmp%10]-DOT;
 			}
 				
 		}
-		else
+		else if(dattypes == 1)
 		{
 			if(dat<10)
 			{
 				tmp = dat*1000;
 				buf[0] = table[tmp/1000];
 				buf[1] = table[tmp%1000/100];
-				buf[2] = table[tmp%10/100];
+				buf[2] = table[tmp%100/10];
 				buf[3] = table[tmp%10];
 			}
 			else if(dat>=10&&dat<100)
@@ -67,7 +68,7 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 				tmp = dat*100;
 				buf[0] =  table[tmp/1000];
 				buf[1] =  table[tmp%1000/100];
-				buf[2] =  table[tmp%10/100];
+				buf[2] =  table[tmp%100/10];
 				buf[3] =  table[tmp%10];
 			}
 			else if(dat>=100&&dat<1000)
@@ -75,7 +76,7 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 				tmp = dat*10;
 				buf[0] =  table[tmp/1000];
 				buf[1] =  table[tmp%1000/100];
-				buf[2] =  table[tmp%10/100];
+				buf[2] =  table[tmp%100/10];
 				buf[3] =  table[tmp%10];
 			}
 			else
@@ -83,14 +84,27 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
 				// tmp = dat*10;
 				buf[0] =  table[tmp/1000];
 				buf[1] =  table[tmp%1000/100];
-				buf[2] =  table[tmp%10/100];
+				buf[2] =  table[tmp%100/10];
 				buf[3] =  table[tmp%10];
 			}
 		}
+		else if(dattypes == 2)//16½ûÖ¹ÏÔÊ¾
+		{
+			if(dat<10)
+			{
+				
+				buf[0] = table[tmp/(0xfff)];
+				buf[1] = table[tmp%(0xfff/0xff)];
+				buf[2] = table[tmp%(0xff/0x0f)];
+				buf[3] = table[tmp%(0x0f)];
+			}
+
+		}
+
 		if(dat<0)
 		{
 			// tmp = dat*10;
-			buf[0] =  0x40;
+			buf[0] =  MINUS;
 			buf[1] = buf[0];
 			buf[2] =  buf[1];
 			buf[3] =  buf[2];
@@ -102,11 +116,7 @@ void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes)
   }
 
 }
-unsigned char get_display_mode()
-{
-	if(get_params_mode()->diplay_mode==NORMAL)
-		return NORMAL;
-}
+
 
 void display_off(void)
 {
@@ -119,7 +129,7 @@ void display_proc(unsigned char flag)
 	static unsigned char bitselect=0;
 	if(flag == 0)
 	{
-		if( get_params_mode()->diplay_mode==NORMAL)
+		if( get_params_mode()->present_mode ==NORMAL)
 		{
 			if((HAL_GetTick()-gettime)>=DISPLAY_PERIOD)
 			{
@@ -135,7 +145,7 @@ void display_proc(unsigned char flag)
 				 gettime = HAL_GetTick();
 
 		}
-		else if( get_params_mode()->diplay_mode == SETTING_MODE)
+		else if( get_params_mode()->present_mode == SETTING_MODE)
 		{
 			if((HAL_GetTick()-gettime)>=DISPLAY_PERIOD)
 			{
@@ -159,7 +169,7 @@ void display_proc(unsigned char flag)
 	}
 	else
 	{
-		if( get_params_mode()->diplay_mode==NORMAL)
+		if( get_params_mode()->present_mode==NORMAL)
 		{
 			static unsigned char j=0;
 			

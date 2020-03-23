@@ -3,109 +3,113 @@
 extern unsigned char KeyNum;
 unsigned char KeyStatus;
 extern uint32_t key_time;
-
+key_stru key;
 
 
 void key_scan()
 {
-	if(KeyNum&0x03)
+    if(key.keynum != 0)
+    {
+		key.update = 1;
+	}
+	if(key.keynum &0x03)
 	{
 		while(HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin)==GPIO_PIN_RESET)
 		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
+			if((HAL_GetTick()-key.keytime)>=LONG_HIT)
 			{
-				KeyNum = KeyNum |0x02;
+				key.keynum = key.keynum |0x02;
 				break;
 			}
 		}
 		
-		if(KeyNum == 0x01)
+		if(key.keynum == 0x01)
 		{  
-		    KeyNum = 0;
-			KeyStatus = 0x01;//key1 短按
+		    key.keynum = 0;
+			key.key_status = 0x01;//key1 短按 
 			#if DEBUG_USER
 			  printf("key1 is short hit\n");
 	    #endif
 		}
 		else
-		{    KeyNum = 0;
-			KeyStatus = 0x02;	//key1 长按		
+		{    key.keynum = 0;
+			key.key_status = 0x02;	//key1 长按		
 		  #if DEBUG_USER
 			  printf("key1 is long hit\n");
 	    #endif
 		}
 	}
-	else if(KeyNum&0x0c)
+	else if(key.keynum&0x0c)
 	{
 		while(HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin)==GPIO_PIN_RESET)
 		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
+			if((HAL_GetTick()-key.keytime)>=LONG_HIT)
 			{  
-				KeyNum = KeyNum |0x08;
+				key.keynum = key.keynum |0x08;
 				break;
 			}
 		}
-		if(KeyNum==0x04)
-		{ KeyNum = 0;
-			KeyStatus = 0x03;//key2 短按
+		if(key.keynum==0x04)
+		{ key.keynum = 0;
+			key.key_status = 0x03;//key2 短按
 		 #if DEBUG_USER
 			  printf("key2 is short hit\n");
 	    #endif
 		}
 			else
-			{ KeyNum = 0;
-				KeyStatus = 0x04;	
+			{ key.keynum = 0;
+				key.key_status = 0x04;	
 		   #if DEBUG_USER
 			  printf("key2 is long hit\n");
 	     #endif
 			}				
 	}
-	else 	if(KeyNum&0x30)
+	else 	if(key.keynum&0x30)
 	{
 		while(HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin)==GPIO_PIN_RESET)
 		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
+			if((HAL_GetTick()-key.keytime)>=LONG_HIT)
 			{
-				KeyNum = KeyNum |0x20;
+				key.keynum = key.keynum |0x20;
 				break;
 			}
 		}
-		if(KeyNum==0x10)
-		{ KeyNum = 0;
-			KeyStatus = 0x05;//key3 短按
+		if(key.keynum==0x10)
+		{ key.keynum = 0;
+			key.key_status = 0x05;//key3 短按
 		 #if DEBUG_USER
 			  printf("key3 is short hit\n");
 	    #endif
 		}
 		else
-		{ KeyNum = 0;
-			KeyStatus = 0x06;	
+		{ key.keynum = 0;
+			key.key_status = 0x06;	
 		   #if DEBUG_USER
 			  printf("key3 is long hit\n");
 	     #endif
 		}			
 	}
-	else 	if(KeyNum&0xc0)
+	else 	if(key.keynum&0xc0)
 	{
 		while(HAL_GPIO_ReadPin(KEY4_GPIO_Port, KEY4_Pin)==GPIO_PIN_RESET)
 		{
-			if((HAL_GetTick()-key_time)>=LONG_HIT)
+			if((HAL_GetTick()-key.keytime)>=LONG_HIT)
 			{
-				KeyNum = KeyNum |0x80;
+				key.keynum = key.keynum |0x80;
 				break;
 			}
 		}
-		if(KeyNum==0x40)
-		{ KeyNum = 0;
-			KeyStatus = 0x07;//key4 短按
+		if(key.keynum==0x40)
+		{ key.keynum = 0;
+			key.key_status = 0x07;//key4 短按
 		 #if DEBUG_USER
 			  printf("key4 is short hit\n");
 	    #endif
 			
 		}
 		else
-		{ KeyNum = 0;
-			KeyStatus = 0x08;
+		{ key.keynum = 0;
+			key.key_status = 0x08;
 		   #if DEBUG_USER
 			  printf("key4 is long hit\n");
 	     #endif
@@ -115,12 +119,18 @@ void key_scan()
 	
 }
 
-unsigned char GetKeyNum()
+key_stru *GetKeyNum()
 {
-	return KeyStatus;
+	return &key;
 }
-void SetKeyNum(unsigned char clr)
+void SetKeyNum()
 {
-	KeyStatus = KeyStatus & clr;
+	key.key_status = 0;
 	
+}
+key_stru * key_process()
+{
+    key_stru *KeyStatus2;
+	key_scan();
+	return &key;
 }

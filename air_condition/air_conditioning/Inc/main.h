@@ -37,7 +37,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-uint32_t Get_Adc_Average(uint32_t ch,unsigned char times);
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
