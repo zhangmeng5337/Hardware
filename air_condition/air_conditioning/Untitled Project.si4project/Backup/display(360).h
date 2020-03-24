@@ -15,7 +15,6 @@ void display_off(void);
 
 void display_dat_deal(float dat,unsigned char updateflag,unsigned char dattypes);
 void display_proc(unsigned char flag);
-void init_seg(void);
 
 #endif
 

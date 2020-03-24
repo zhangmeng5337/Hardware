@@ -136,7 +136,41 @@ void work_mode_process()
     uint32_t gettime;
 	key_stru *key_tmp;
 	key_tmp=key_process();
+	if(key_tmp->key_status == 0x07)//key4 shot hit
+	{
+		if(mode.status == WORK_OFF)
+		{
+		  mode.status = WORK_ON;  //system start
+		}
+		else if(mode.status == WORK_ON)
+	    {
+			 mode.status = WORK_OFF;//system stop
+	    }
+		else if(mode.status == POWER_ON)
+	    {
+			 mode.status = WORK_ON;//system stop
+	    }
+	}
+	else if(key_tmp->key_status == 0x08)//key4 long hit,power off or power on
+	{
+		if(mode.status == WORK_OFF)
+		{
+		  mode.status = POWER_ON;  //power on
+		}
+		else if(mode.status == WORK_ON)
+	    {
+			 mode.status = POWER_OFF; //power off
+	    }
+		else if(mode.status == POWER_OFF)
+	    {
+			 mode.status = POWER_ON;
+	    }
+		else if(mode.status == POWER_ON)
+	    {
+			 mode.status = POWER_OFF;
+	    }
 
+	}
 	if(key_tmp->key_status == 0x01)    //key1 setting or display mode setting
 	{
 		if(mode.status == WORK_ON||mode.status == POWER_ON)
@@ -151,7 +185,7 @@ void work_mode_process()
 	}
 	else if(key_tmp->key_status == 0x02)
 	{
-		if(mode.status == WORK_ON&&mode.status == POWER_ON)
+		if(mode.status == WORK_ON||mode.status == POWER_ON)
 		{
 		  mode.mode = NORMAL;    //normal mode
 		  if(mode.modeNo !=RECYCLE_DISPLAY)
@@ -160,14 +194,13 @@ void work_mode_process()
 			  mode.modeNo = RECYCLE_DISPLAY;
 
 		  }
-		}
-		else 
-		{
+		   
+		  else
+		  {
 			  mode.modeNo = mode.last_mode_no;
-        mode.last_mode_no = 0;
-		mode.mode = NORMAL;
-		 }	
-		  
+              mode.last_mode_no = 0;
+		  }	
+		}  
 	}
 	if(key_tmp->key_status == 0x03)  //kye 2 inc key
 	{
@@ -203,7 +236,7 @@ void work_mode_process()
 
 	}
 
-	if(key_tmp->key_status == 0x05)//key3
+	if(key_tmp->key_status == 0x05)
 	{
 		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
 		{
@@ -237,48 +270,6 @@ void work_mode_process()
 		}   
 
 	}
-	if(key_tmp->key_status == 0x07)//key4 shot hit
-	{
-		if(mode.status == WORK_OFF)
-		{
-		  mode.status = WORK_ON;  //system start
-		   
-		}
-		else if(mode.status == WORK_ON)
-	    {
-			 mode.status = WORK_OFF;//system stop
-	    }
-		else if(mode.status == POWER_ON)
-	    {
-			 mode.status = WORK_ON;//system stop
-	    }
-		init_seg();
-	}
-	else if(key_tmp->key_status == 0x08)//key4 long hit,power off or power on
-	{
-		if(mode.status == WORK_OFF)
-		{
-		  mode.status = POWER_ON;  //power on
-		}
-		else if(mode.status == WORK_ON)
-	    {
-			 mode.status = POWER_OFF; //power off
-			
-	    }
-		else if(mode.status == POWER_OFF)
-	    {
-			 mode.status = POWER_ON;
-	    }
-		else if(mode.status == POWER_ON)
-	    {
-			 mode.status = POWER_OFF;
-			 
-	    }
-		init_seg();
-
-	}
-
-	
 	SetKeyNum();
 
 

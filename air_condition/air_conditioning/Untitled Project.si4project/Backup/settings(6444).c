@@ -165,7 +165,6 @@ void work_mode_process()
 		{
 			  mode.modeNo = mode.last_mode_no;
         mode.last_mode_no = 0;
-		mode.mode = NORMAL;
 		 }	
 		  
 	}
@@ -242,7 +241,6 @@ void work_mode_process()
 		if(mode.status == WORK_OFF)
 		{
 		  mode.status = WORK_ON;  //system start
-		   
 		}
 		else if(mode.status == WORK_ON)
 	    {
@@ -252,7 +250,6 @@ void work_mode_process()
 	    {
 			 mode.status = WORK_ON;//system stop
 	    }
-		init_seg();
 	}
 	else if(key_tmp->key_status == 0x08)//key4 long hit,power off or power on
 	{
@@ -263,7 +260,6 @@ void work_mode_process()
 		else if(mode.status == WORK_ON)
 	    {
 			 mode.status = POWER_OFF; //power off
-			
 	    }
 		else if(mode.status == POWER_OFF)
 	    {
@@ -272,9 +268,7 @@ void work_mode_process()
 		else if(mode.status == POWER_ON)
 	    {
 			 mode.status = POWER_OFF;
-			 
 	    }
-		init_seg();
 
 	}
 

@@ -126,21 +126,16 @@ void display_dat_deal(float dat,unsigned char header_code,unsigned char dattypes
 
 }
 
-static unsigned char bitselect=0;
 
 void display_off(void)
 {
 	seg_select(4);
 }
-void init_seg()
-{
-	bitselect = 0;
 
-}
 void display_proc(unsigned char flag)
 {
 	static uint32_t gettime,gettime2;
-	
+	static unsigned char bitselect=0;
 	if((get_params_mode()->status)>WORK_OFF)
 	{
 		if(flag == 0)
