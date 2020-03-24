@@ -37,7 +37,7 @@ void get_io()
 	}
 	else
 	{	    
-		adc_io.fault_status = adc_io.fault_status&(~0xf20);
+		adc_io.fault_status = adc_io.fault_status&(~0x020);
 		adc_io.io_status = adc_io.io_status&0xfe;
 	}
 
@@ -49,7 +49,7 @@ void get_io()
 	else
 	{	   
 		adc_io.io_status =  adc_io.io_status&0xed0;
-		adc_io.fault_status = adc_io.fault_status&(~0xfd0);
+		adc_io.fault_status = adc_io.fault_status&(~0x0d0);
 	}
 }
 

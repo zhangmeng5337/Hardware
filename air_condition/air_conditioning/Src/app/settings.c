@@ -146,6 +146,10 @@ void work_mode_process()
 	    {
 			 mode.status = WORK_OFF;//system stop
 	    }
+		else if(mode.status == POWER_ON)
+	    {
+			 mode.status = WORK_ON;//system stop
+	    }
 	}
 	else if(key_tmp->key_status == 0x08)//key4 long hit,power off or power on
 	{
@@ -203,7 +207,7 @@ void work_mode_process()
 		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
 		{
 
-		   	   gettime = HAL_GetTick();
+		   	  
 			   if(settings_params.target_set_temper<=MAX_SET_TEMPER)
 				settings_params.target_set_temper = settings_params.target_set_temper + 1;
 			   else 
@@ -214,14 +218,19 @@ void work_mode_process()
 	{
 		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
 		{
-			while((HAL_GetTick()-gettime)>=1000)
-			{
-				if(settings_params.target_set_temper<=MAX_SET_TEMPER)
-					settings_params.target_set_temper = settings_params.target_set_temper + 1;
-				else 
-					settings_params.target_set_temper = 0;
-				if(get_key_level(2)==1)
-					break;
+			while(1)
+			{ 
+				if((HAL_GetTick()-gettime)>=1000)
+				{
+					gettime = HAL_GetTick();
+					if(settings_params.target_set_temper<=MAX_SET_TEMPER)
+						settings_params.target_set_temper = settings_params.target_set_temper + 1;
+					else 
+						settings_params.target_set_temper = 0;
+					if(get_key_level(2)==1)
+						break;				
+				}
+
 			}
 		}   
 
@@ -232,7 +241,7 @@ void work_mode_process()
 		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
 		{
 
-		   	   gettime = HAL_GetTick();
+		   	  
 			   if(settings_params.target_set_temper>MIN_SET_TEMPER)
 				settings_params.target_set_temper = settings_params.target_set_temper - 1;
 			   else 
@@ -243,12 +252,20 @@ void work_mode_process()
 	{
 		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
 		{
-			while((HAL_GetTick()-gettime)>=1000)
-			{
-				if(settings_params.target_set_temper>MIN_SET_TEMPER)
-					 settings_params.target_set_temper = MIN_SET_TEMPER;
-				if(get_key_level(3)==1)
-					break;
+			while(1)
+			{ 
+			    if((HAL_GetTick()-gettime)>=1000)
+			    {
+					gettime = HAL_GetTick();
+			   if(settings_params.target_set_temper>MIN_SET_TEMPER)
+				settings_params.target_set_temper = settings_params.target_set_temper - 1;
+			   else 
+				settings_params.target_set_temper = MIN_SET_TEMPER;
+					if(get_key_level(3)==1)
+						break;
+
+				}
+
 			}
 		}   
 
@@ -271,12 +288,12 @@ void run_process()
 			machine_control(mode.mode);
 	}
    
-	if(get_params_mode()->mode ==NORMAL)//正常模式
+	if(get_params_mode()->mode ==NORMAL&&get_params_mode()->status >WORK_OFF)//正常模式
 	{	
 		if( adc_io.fault_status!=0)
 		{
 		    
-		    display_dat_deal(adc_io.fault_status,1,2);	//显示故障码		
+		   display_dat_deal(adc_io.fault_status,1,2);	//显示故障码		
 		}
 		else                                  //显示正常数据
 		{

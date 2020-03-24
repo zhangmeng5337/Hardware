@@ -48,7 +48,7 @@ void Get_Adc_Average(unsigned char times)
 			HAL_ADC_PollForConversion(&hadc1,0xffff);
 			temp_val = HAL_ADC_GetValue(&hadc1); 			
 			adcBuf[t]=temp_val + adcBuf[t];
-			if(adcBuf[t]>5000)
+			if(temp_val>5000)
 				adcBuf[t] = 0;
 		}
 	}

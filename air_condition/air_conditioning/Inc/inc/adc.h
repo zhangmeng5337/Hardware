@@ -6,7 +6,7 @@
 typedef struct{
 	uint32_t adc_result[5];
 	unsigned char io_status;
-    unsigned char fault_status;
+    unsigned int fault_status;
 }adc_io_str;
 void Get_Adc_Average(unsigned char times);
 unsigned int adc_process(void);

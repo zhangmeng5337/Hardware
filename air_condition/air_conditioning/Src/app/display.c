@@ -45,7 +45,7 @@ void display_dat_deal(float dat,unsigned char header_code,unsigned char dattypes
 			}
 			else
 			{
-					// tmp = dat*10;
+					 tmp = dat;
 					buf[0] =  table[tmp/1000];
 					buf[1] =  table[tmp%1000/100];
 					buf[2] =  table[tmp%100/10];
@@ -91,11 +91,11 @@ void display_dat_deal(float dat,unsigned char header_code,unsigned char dattypes
 		else if(dattypes == 2)//16½øÖÆÏÔÊ¾
 		{
 			{
-				
-				buf[0] = table[tmp/(0xfff)];
-				buf[1] = table[tmp%(0xfff/0xff)];
-				buf[2] = table[tmp%(0xff/0x0f)];
-				buf[3] = table[tmp%(0x0f)];
+				tmp = dat;
+				buf[0] = table[tmp>>16];
+				buf[1] = table[(tmp>>8)&0x00f];
+				buf[2] = table[(tmp>>4)&0x00f];
+				buf[3] = table[tmp&0x0f];
 			}
 
 		}
@@ -134,7 +134,7 @@ void display_off(void)
 
 void display_proc(unsigned char flag)
 {
-	static uint32_t gettime;
+	static uint32_t gettime,gettime2;
 	static unsigned char bitselect=0;
 	if((get_params_mode()->status)>WORK_OFF)
 	{
@@ -181,6 +181,7 @@ void display_proc(unsigned char flag)
 				static unsigned char j=0;
 				if((HAL_GetTick()-gettime)>=DISPLAY_PERIOD)
 				{
+					gettime = HAL_GetTick();
 					display_dat_deal(1234,1,0);
 					M74HC595_WriteData(buf[bitselect-1]);
 					seg_select(bitselect);
@@ -188,14 +189,14 @@ void display_proc(unsigned char flag)
 					if(bitselect > 4)
 					bitselect = 1;
 				}
+
+			if((HAL_GetTick()-gettime2)>=2000)
 			{
-			if((HAL_GetTick()-gettime)>=2000)
-			{gettime = HAL_GetTick();
-			j = j+1;
-			if(j>=16)
-			j=0;
+			//	
+				gettime2 = HAL_GetTick();
+
 			} 
-			}
+
 
 			}
 		}
