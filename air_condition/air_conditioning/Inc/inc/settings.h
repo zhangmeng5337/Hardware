@@ -2,7 +2,15 @@
 #define SETTINGS_H_
 #define NORMAL		        0x00
 #define SETTING_MODE		0x01
+#define MAX_MODE_NO			0x05
 
+#define WORK_ON				3
+#define POWER_ON			2
+#define WORK_OFF			1
+#define POWER_OFF			0
+
+#define MAX_SET_TEMPER		85
+#define MIN_SET_TEMPER      10
 #define MAX_ERROR_CA		5
 #define MIDU_ERROR_CA		0.5
 #define MID_ERROR_CA		0
@@ -21,6 +29,8 @@
 #define HOT          2
 #define COLD_HUM     3
 #define FAST_COLD    4
+#define RECYCLE_DISPLAY    5
+
 
 #define FAN_RUN_TIME 2000
 
@@ -38,7 +48,16 @@ typedef struct {
   unsigned char present_mode;
   unsigned char present_status;
 }params_stru;
-params_stru *get_params_mode(void);
+
+typedef struct {
+  //unsigned char diplay_mode;
+  unsigned char mode;
+  unsigned char modeNo;
+  unsigned char status;
+  unsigned char last_mode_no;
+}mode_stru;
+
+mode_stru *get_params_mode(void);
 void run_process(void);
 
 #endif

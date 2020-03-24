@@ -10,5 +10,6 @@ typedef struct{
 key_stru *GetKeyNum(void);
 void SetKeyNum(void);
 key_stru * key_process(void);
+GPIO_PinState get_key_level(unsigned char keyNo);
 
 #endif

@@ -134,3 +134,14 @@ key_stru * key_process()
 	key_scan();
 	return &key;
 }
+GPIO_PinState get_key_level(unsigned char keyNo)
+{
+  if(keyNo == 1)
+  	return HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin);
+  else if(keyNo == 2)
+   return HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin);
+  else if(keyNo == 3)
+   return HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin);
+  else if(keyNo == 4)
+   return HAL_GPIO_ReadPin(KEY4_GPIO_Port, KEY4_Pin);
+}
