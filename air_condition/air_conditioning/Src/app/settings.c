@@ -3,10 +3,14 @@
 #include "key.h"
 #include "io.h"
 #include "display.h"
-
+#include "pid.h"
 params_stru settings_params;
 extern adc_io_str adc_io;
 mode_stru mode;
+PID xPID, yPID;
+
+
+
 
 mode_stru *get_params_mode()
 {
@@ -17,10 +21,17 @@ mode_stru *get_params_mode()
 }
 void fan_ctrl(unsigned char umode)
 {
-	static uint32_t gettime;
-	int32_t ca,cb;
-	ca = settings_params.tar_env_temper[0]-settings_params.tar_set_temper[0];
-	cb = settings_params.tar_set_temper[0]-settings_params.target_wind_temper[0];
+		static uint32_t gettime;
+		int32_t ca,cb;
+		int16_t xError, yError;
+		int16_t xPWM, yPWM;
+		ca = settings_params.tar_env_temper[0]-settings_params.tar_set_temper[0];
+		cb = settings_params.tar_set_temper[0]-settings_params.target_wind_temper[0];
+		// PID calculation
+		xError = ca;
+		//yError = yPID.targetValue - yPos;
+		xPWM = calcPID(&xPID, xError);
+		//yPWM = calcPID(&yPID, yError);
 		if(ca>MAX_ERROR_CA)
 		{
 			if(cb>=MAX_ERROR_CB)
