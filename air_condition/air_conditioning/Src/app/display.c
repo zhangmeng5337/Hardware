@@ -104,9 +104,9 @@ void display_dat_deal(float dat,unsigned char header_code,unsigned char dattypes
 			{
 				
 				buf[0] = header_code;
-				buf[1] = table[tmp%(0xfff/0xff)];
-				buf[2] = table[tmp%(0xff/0x0f)];
-				buf[3] = table[tmp%(0x0f)];
+				buf[1] = table[tmp/100];
+				buf[2] = table[tmp%100/10];
+				buf[3] = table[tmp%10];
 			}
 
 		}

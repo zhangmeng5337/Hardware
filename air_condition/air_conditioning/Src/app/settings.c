@@ -18,9 +18,9 @@ mode_stru *get_params_mode()
 void fan_ctrl(unsigned char umode)
 {
 	static uint32_t gettime;
-	uint32_t ca,cb;
-	ca = settings_params.target_environment_temper-settings_params.target_set_temper;
-	cb = settings_params.target_set_temper-settings_params.target_wind_temper;
+	int32_t ca,cb;
+	ca = settings_params.tar_env_temper[0]-settings_params.tar_set_temper[0];
+	cb = settings_params.tar_set_temper[0]-settings_params.target_wind_temper[0];
 		if(ca>MAX_ERROR_CA)
 		{
 			if(cb>=MAX_ERROR_CB)
@@ -101,9 +101,9 @@ void machine_control(unsigned char umode)
 		}
 
 	}
-	else if(umode == COLD_HUM)
+	else if(umode == COLD_HUM_COLD)
 	{
-		if(mode.last_mode_no == COLD_HUM)
+		if(mode.last_mode_no == COLD_HUM_COLD)
 		{
 		  if((HAL_GetTick() -gettime)>=FAN_RUN_TIME)
 		  {
@@ -131,6 +131,18 @@ void machine_control(unsigned char umode)
 
 }
 
+unsigned char tar_set_temper[6];//0:target cold temp;1:target hot temp;2:target cold and humid temp;3:fast colde temp; 
+unsigned char tar_env_temper[4];//4:target cold and humid humid 5:fast humid
+
+void init_params()
+{
+	settings_params.tar_set_temper[0] = INIT_SET_TEMPER;//0:target cold temp;
+	settings_params.tar_set_temper[1]=INIT_SET_TEMPER;
+	settings_params.tar_set_temper[2]=INIT_SET_TEMPER;
+	settings_params.tar_set_temper[3]=INIT_SET_TEMPER;
+	settings_params.humid[0]=INIT_SET_HUM;
+	settings_params.humid[1]=INIT_SET_HUM;
+}
 void work_mode_process()
 {
     uint32_t gettime;
@@ -139,7 +151,7 @@ void work_mode_process()
 
 	if(key_tmp->key_status == 0x01)    //key1 setting or display mode setting
 	{
-		if(mode.status == WORK_ON||mode.status == POWER_ON)
+		if(mode.status == WORK_OFF&&mode.status == POWER_ON)//开机状态并且系统未运行时可以进行参数设置
 		{
 		  mode.mode = SETTING_MODE;    //setting mode
 		  if(mode.modeNo<(MAX_MODE_NO-1))
@@ -147,7 +159,12 @@ void work_mode_process()
 		  else
 		  	mode.modeNo = 1;
 		  
-		}      
+		} 
+		else if(mode.status == WORK_ON&&mode.status == POWER_ON)//开机状态并且系统运行时可以查询参数
+		{
+			if(mode.manual == 0&&mode.modeNo != RECYCLE_DISPLAY)
+			 mode.manual = 1;
+		}
 	}
 	else if(key_tmp->key_status == 0x02)
 	{
@@ -158,6 +175,7 @@ void work_mode_process()
 		  	{
 		  	  mode.last_mode_no = mode.modeNo;
 			  mode.modeNo = RECYCLE_DISPLAY;
+			  mode.manual = 0;
 
 		  }
 		}
@@ -169,31 +187,67 @@ void work_mode_process()
 		 }	
 		  
 	}
+	static unsigned char i,j;
+	switch(mode.modeNo)
+	{
+		case COLD:          i=0; j=2;break;
+		case HOT:           i=1; j=2;break;
+		case COLD_HUM_COLD: i=2; j=2;break;
+		case COLD_HUM_HUM:  i=5; j=0;break;		
+		case FAST_COLD:     i=3; j=2;break;
+		case FAST_COLD_HUM: i=5; j=1;break;		
+		case RECYCLE_DISPLAY:break;
+		//case COLD:i=0;break;
+	}
+
 	if(key_tmp->key_status == 0x03)  //kye 2 inc key
 	{
-		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
+		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD_HUM)
 		{
+             
+		   	   if(i<5)
+		   	   	{
+				   if(settings_params.tar_set_temper[i]<=MAX_SET_TEMPER)
+					settings_params.tar_set_temper[i] = settings_params.tar_set_temper[i] + 1;
+				   else 
+					settings_params.tar_set_temper[i] = 0;
+			   }
+			   else
+			   	{
+				   if(settings_params.humid[i]<=MAX_SET_HUM)
+					settings_params.humid[j] = settings_params.humid[j] + 1;
+				   else 
+					settings_params.humid[j] = 0;
 
-		   	  
-			   if(settings_params.target_set_temper<=MAX_SET_TEMPER)
-				settings_params.target_set_temper = settings_params.target_set_temper + 1;
-			   else 
-				settings_params.target_set_temper = 0;
+			   }
+
 		}      
 	}
 	else if(key_tmp->key_status == 0x04)
 	{
-		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
+		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD_HUM)
 		{
 			while(1)
 			{ 
 				if((HAL_GetTick()-gettime)>=1000)
 				{
 					gettime = HAL_GetTick();
-					if(settings_params.target_set_temper<=MAX_SET_TEMPER)
-						settings_params.target_set_temper = settings_params.target_set_temper + 1;
-					else 
-						settings_params.target_set_temper = 0;
+					if(i<5)
+					{
+						if(settings_params.tar_set_temper[i]<=MAX_SET_TEMPER)
+							settings_params.tar_set_temper[i] = settings_params.tar_set_temper[i] + 1;
+						else 
+							settings_params.tar_set_temper[i] = 0;
+					}
+					else
+					 {
+						if(settings_params.humid[j]<=MAX_SET_HUM)
+						 settings_params.humid[j] = settings_params.humid[j] + 1;
+						else 
+						 settings_params.humid[j] = 0;
+					
+					}
+
 					if(get_key_level(2)==1)
 						break;				
 				}
@@ -205,29 +259,38 @@ void work_mode_process()
 
 	if(key_tmp->key_status == 0x05)//key3
 	{
-		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
+		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD_HUM)
 		{
 
-		   	  
-			   if(settings_params.target_set_temper>MIN_SET_TEMPER)
-				settings_params.target_set_temper = settings_params.target_set_temper - 1;
-			   else 
-				settings_params.target_set_temper = MIN_SET_TEMPER;
+		   	  if(i<5)
+		   	  {
+				  if(settings_params.tar_set_temper[i]>MIN_SET_TEMPER)
+				   settings_params.tar_set_temper[i] = settings_params.tar_set_temper[i] - 1;
+				  else 
+				   settings_params.tar_set_temper[i] = MIN_SET_TEMPER;
+
+			  }
+
 		}      
 	}
 	else if(key_tmp->key_status == 0x06)
 	{
-		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD)
+		if(mode.modeNo >=COLD && mode.modeNo<=FAST_COLD_HUM)
 		{
 			while(1)
 			{ 
 			    if((HAL_GetTick()-gettime)>=1000)
 			    {
 					gettime = HAL_GetTick();
-			   if(settings_params.target_set_temper>MIN_SET_TEMPER)
-				settings_params.target_set_temper = settings_params.target_set_temper - 1;
-			   else 
-				settings_params.target_set_temper = MIN_SET_TEMPER;
+					if(i<5)
+					{
+						if(settings_params.tar_set_temper[i]>MIN_SET_TEMPER)
+						 settings_params.tar_set_temper[i] = settings_params.tar_set_temper[i] - 1;
+						else 
+						 settings_params.tar_set_temper[i] = MIN_SET_TEMPER;
+
+					}
+
 					if(get_key_level(3)==1)
 						break;
 
@@ -283,10 +346,68 @@ void work_mode_process()
 
 
 }
+
+void recycle_dis_deal(unsigned char mode_sel,unsigned char cycle_flag)
+{
+   switch(cycle_flag)
+   	{
+		case 0:
+			if(mode_sel ==COLD)
+			{
+			 
+				display_dat_deal(settings_params.tar_set_temper[0],SET_ST,3);
+			}
+			else if(mode_sel ==HOT)
+			{
+			 
+				display_dat_deal(settings_params.tar_set_temper[1],SET_ST,3);
+			}
+			else if(mode_sel ==COLD_HUM_COLD||mode_sel ==COLD_HUM_HUM)
+			{
+			 
+				display_dat_deal(settings_params.tar_set_temper[2],SET_ST,3);
+			}
+			else if(mode_sel ==FAST_COLD||mode_sel ==FAST_COLD_HUM)
+			{
+			 
+				display_dat_deal(settings_params.tar_set_temper[3],SET_ST,3);
+			}break;
+		case 1:
+			if(mode_sel ==COLD)
+			{
+			 
+				display_dat_deal(settings_params.tar_env_temper[0],SET_AT,3);
+			}
+			else if(mode_sel ==HOT)
+			{
+			 
+				display_dat_deal(settings_params.tar_env_temper[1],SET_AT,3);
+			}
+			else if(mode_sel ==COLD_HUM_COLD||mode_sel ==COLD_HUM_HUM)
+			{
+			 
+				display_dat_deal(settings_params.tar_env_temper[2],SET_AT,3);
+			}
+			else if(mode_sel ==FAST_COLD||mode_sel ==FAST_COLD_HUM)
+			{
+			 
+				display_dat_deal(settings_params.tar_env_temper[3],SET_AT,3);
+			}break;
+		case 2:
+				display_dat_deal(settings_params.machine_air_temper,SET_AT,3);break;
+		case 3:
+				display_dat_deal(settings_params.speed,SET_AT,1);break;
+		case 4:
+			    display_dat_deal(settings_params.current,SET_AT,0);break;
+
+   }
+}
+
 void run_process()
 {
 	uint32_t gettime;
-	unsigned char tcode[5]={ SET_TT, SET_TA,SET_TW,SET_H,SET_WL},i;
+	const unsigned char tcode[9]={ SET_CM, SET_CHM,SET_HM,SET_FHM,SET_H,SET_ST,SET_WL,SET_I,SET_AT};
+	static unsigned char toggle_flag=0;
 
    work_mode_process();
    adc_process();
@@ -306,22 +427,100 @@ void run_process()
 		}
 		else                                  //显示正常数据
 		{
-			if(mode.modeNo == RECYCLE_DISPLAY)
+			if(mode.modeNo == RECYCLE_DISPLAY||mode.manual)//自动循环显示正常数据
 			{
 			  if((HAL_GetTick()-gettime)>=RECYCLE_TIME)
-			  {
-				gettime = HAL_GetTick();
-				
-				display_dat_deal(adc_io.fault_status,tcode[i++],3);	//显示故障码		
-				if(i>=5)
-					i=0;
+			  { 
+					gettime = HAL_GetTick();
+					switch(mode.last_mode_no)
+					{
+						case COLD:				
+							recycle_dis_deal(COLD,toggle_flag);
+							 toggle_flag = toggle_flag +1;
+							break; 
+						case COLD_HUM_COLD:
+						case COLD_HUM_HUM: 	
+							recycle_dis_deal(COLD_HUM_COLD,toggle_flag);
+							 toggle_flag = toggle_flag +1;
+							break; 
+
+ 
+						case FAST_COLD:
+						case FAST_COLD_HUM: 		
+							recycle_dis_deal(FAST_COLD,toggle_flag);
+							 toggle_flag = toggle_flag +1;
+							break; 	
+
+					}
+					if(toggle_flag>=5)
+						toggle_flag = 0;
+
 			  }
 			  
 			}
+			else
+			{
+				if((HAL_GetTick()-gettime)>=RECYCLE_TIME)
+				{
+				   
+					gettime = HAL_GetTick();
+					switch(mode.modeNo)
+					{
+						case COLD:				display_dat_deal(settings_params.tar_env_temper[0],SET_AT,3);break;
+						case HOT:				display_dat_deal(settings_params.tar_env_temper[1],SET_AT,3);break;
+						case COLD_HUM_COLD:
+						case COLD_HUM_HUM: 	
+							if(toggle_flag ==0)
+							{
+							  
+								display_dat_deal(settings_params.tar_env_temper[2],SET_AT,3);
+							}
+							else
+							{
+							   
+								display_dat_deal(settings_params.humid[0],SET_H,3);
+							}
+							toggle_flag = ~toggle_flag;
+							break; 
+ 
+						case FAST_COLD:
+						case FAST_COLD_HUM: 		
+							if(toggle_flag ==0)
+							{
+								display_dat_deal(settings_params.tar_env_temper[3],SET_AT,3);
+							}
+							else
+							{
+								display_dat_deal(settings_params.humid[1],SET_H,3);
+							}
+							toggle_flag = ~toggle_flag;
+							break; 	
+
+					}
+				
+				}
+
+			}
 		}
 	}
-	else   //显示设置数据
+	else if(get_params_mode()->mode ==SETTING_MODE)//显示设置数据
 	{
+		if((HAL_GetTick()-gettime)>=DISPLAY_BLINK)
+		{
+			gettime = HAL_GetTick();
+			switch(mode.modeNo)
+			{
+				case COLD:				display_dat_deal(settings_params.tar_set_temper[0],tcode[0],3);break;
+				case HOT:				display_dat_deal(settings_params.tar_set_temper[1],tcode[2],3);break;
+				case COLD_HUM_COLD: 	display_dat_deal(settings_params.tar_set_temper[2],tcode[1],3);break;
+				case COLD_HUM_HUM:				 display_dat_deal(settings_params.humid[0],tcode[4],3);break; 	
+				case FAST_COLD: 		display_dat_deal(settings_params.tar_set_temper[3],tcode[3],3);break;
+				case FAST_COLD_HUM: 			 display_dat_deal(settings_params.humid[1],tcode[4],3);break;	
+				case RECYCLE_DISPLAY:break;
+				//case COLD:i=0;break;
+			}
+		
+		}
 
 	}
 
