@@ -3,8 +3,10 @@
 
 #include "main.h"
 
-#define MAX_PID_OUTPUT					950
+
+#define MAX_PID_OUTPUT					1016
 #define MAX_INTEGRATION_ERROR		100
+#define MIN_PID_OUTPUT					0
 
 typedef struct {
 	int16_t targetValue;

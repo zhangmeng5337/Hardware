@@ -23,14 +23,16 @@ int16_t calcPID(PID *pid, int16_t error)
 
 	// Limit the maximum output#define MAX_SPEED			5000
 
-	if (output > MAX_SPEED)
+	if (output > MAX_PID_OUTPUT)
 	{
-		output = MAX_SPEED;
+		output = MAX_PID_OUTPUT;
 	}
-	else if (output < -MAX_SPEED)
+
+	else if(output < MIN_PID_OUTPUT)
 	{
-		output = -MAX_SPEED;
+		output = MIN_PID_OUTPUT;
 	}
+	output=36*output/10+2000;
 
 	pid->prevError = error;
   return output;

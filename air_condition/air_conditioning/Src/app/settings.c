@@ -14,7 +14,16 @@ PID xPID, yPID;
 void write_dipay_ram(unsigned char mode);
 
 
+void init_Pid()
+{
+   xPID.Kp = 30;
+   xPID.Ki = 10;
+   xPID.Kd = 1;
+   yPID.Kp = 30;
+   yPID.Ki = 10;
+   yPID.Kd = 1;
 
+}
 mode_stru *get_params_mode()
 {
     mode_stru *tmp;
@@ -27,7 +36,7 @@ void fan_ctrl(unsigned char umode)
     float ca,cb;
     int16_t xError, yError;
     int16_t xPWM, yPWM;
-    ca = settings_params.tar_env_temper-settings_params.tar_set_temper[0];
+    ca = settings_params.tar_set_temper[0]-settings_params.tar_env_temper;
     cb = settings_params.tar_set_temper[0]-settings_params.target_wind_temper;
     // PID calculation
     xError = ca;
@@ -603,7 +612,7 @@ void recycle_dis_deal(unsigned char mode_sel,unsigned char cycle_flag)
 }
 void write_dipay_ram(unsigned char umode)
 {
-    uint32_t gettime;
+   static uint32_t gettime;
     unsigned char tmp[4];
     unsigned char tcode[9]= { SET_CM, SET_CHM,SET_HM,SET_FHM,SET_H,SET_ST,SET_WL,SET_I,SET_AT};
     static unsigned char toggle_flag=0;
@@ -767,6 +776,8 @@ void run_process()
     settings_params.equip_env_temper = adc_io.adc_result[2];
     settings_params.machine_air_temper = adc_io.adc_result[3];
     settings_params.target_wind_temper =adc_io.adc_result[4];
+	   settings_params.humid[0] = adc_io.adc_result[0];
+ 	  settings_params.humid[1] = adc_io.adc_result[0];	
     // if( adc_io.fault_status ==0&&mode.status == WORK_ON)//启动正常
     if( mode.status == WORK_ON)//启动正常
     {

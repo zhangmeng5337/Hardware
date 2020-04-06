@@ -107,6 +107,7 @@ int main(void)
 	  display_off();
 	led_ctrl(LED_ALL,OFF);
 	 //TIM1->CCR2 = 9999; 
+	 init_Pid();
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
  // HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
   /* USER CODE END 2 */
@@ -206,7 +207,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -215,6 +216,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = ADC_REGULAR_RANK_2;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -223,6 +225,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_3;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -231,6 +234,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_4;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -239,6 +243,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_7;
   sConfig.Rank = ADC_REGULAR_RANK_5;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();

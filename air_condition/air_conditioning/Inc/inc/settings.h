@@ -59,7 +59,7 @@ typedef struct {
   float target_wind_temper;
   unsigned int  speed;
   unsigned int  current;
-  unsigned char humid[2];
+  float humid[2];
   unsigned char present_mode;
   unsigned char present_status;
 }params_stru;
@@ -77,5 +77,6 @@ typedef struct {
 mode_stru *get_params_mode(void);
 void run_process(void);
 void init_params(void);
+void init_Pid(void);
 
 #endif

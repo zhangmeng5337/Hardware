@@ -53,14 +53,15 @@ void Get_Adc_Average(unsigned char times)
 				adcBuf[t] = 0;
 		}
 	}
-		HAL_ADC_Stop(&hadc1);
+	//	HAL_ADC_Stop(&hadc1);
 	for(t=0;t<6;t++)
 	{		
 		adcBuf[t]=adcBuf[t]/times;
 	}
+
 	for(t=0;t<5;t++)
 	{		
-		adcBuf[t]=adcBuf[t]+(uint32_t)(2.75*adcBuf[5]-4096);
+		adcBuf[t]=adcBuf[t]+(uint32_t)(2.75*adcBuf[5]-4095);
 	}
 
 
@@ -70,7 +71,7 @@ void Get_Adc_Average(unsigned char times)
 		//else
 			//adc_io.adc_result[t]=(float)(get_temperature(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));			
 	}
-	adc_io.adc_result[0]=(float)(get_temperature(adcBuf[t],HUMID,adc_io.adc_result[1]));
+	adc_io.adc_result[0]=(float)(get_temperature(adcBuf[0],HUMID,adc_io.adc_result[1]));
 
 	#if DEBUG_USER
 		printf("adcBuf[%d] is:   %d\n",i,adcBuf[i]);
@@ -138,13 +139,19 @@ float get_temperature(uint16_t data,unsigned char SensorTypes,float env_temper)
 	}
 	if(SensorTypes == HUMID)
 	{
-	    index = (unsigned int)env_temper/5;
+	    index = (unsigned int)(env_temper+5)/5;
 		if( (data<=HLTAB[ index][0]) && (data>HLTAB[ index][HL_SIZE_COLUMB-1]) )
 			{
 				num=look_up_table((u16 *)(HLTAB[index]),HL_SIZE_COLUMB,data);
 				t1=num_to_temperature(num,1);
 				return tx=0.5*(data-HLTAB[ index][num])/(HLTAB[ index][num+1]-HLTAB[ index][num])+t1;	
 			}
+			else
+			{
+				t1=num_to_temperature(num,1);
+				return tx=0.5*(data-HLTAB[ index][0])/(HLTAB[ index][1]-HLTAB[ index][0])+t1;	
+			}
+				
 
 	}
 
