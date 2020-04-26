@@ -71,7 +71,7 @@ void Get_Adc_Average(unsigned char times)
 		//else
 			//adc_io.adc_result[t]=(float)(get_temperature(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));			
 	}
-	adc_io.adc_result[0]=(float)(get_temperature(adcBuf[0],HUMID,adc_io.adc_result[1]));
+	adc_io.adc_result[0]=(float)(get_temperature(adcBuf[0],HUMIDTYPE,adc_io.adc_result[1]));
 
 	#if DEBUG_USER
 		printf("adcBuf[%d] is:   %d\n",i,adcBuf[i]);
@@ -121,8 +121,7 @@ float num_to_temperature(u8 num,u8 types)
     return data;
 }
 float t1,tx;
-#define TEMPERATURE 0x00
-#define HUMID   0x01
+
 
 float get_temperature(uint16_t data,unsigned char SensorTypes,float env_temper)
 {
@@ -137,7 +136,7 @@ float get_temperature(uint16_t data,unsigned char SensorTypes,float env_temper)
 			}
 
 	}
-	if(SensorTypes == HUMID)
+	if(SensorTypes == HUMIDTYPE)
 	{
 	    index = (unsigned int)(env_temper+5)/5;
 		if( (data<=HLTAB[ index][0]) && (data>HLTAB[ index][HL_SIZE_COLUMB-1]) )

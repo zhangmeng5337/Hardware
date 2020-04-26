@@ -4,7 +4,7 @@
 #define MAX_TEMPER  4000
 #define MIN_TEMPER  0
 #define TEMPERATURE 0x00
-#define HUMID   0x01
+#define HUMIDTYPE   0x01
 typedef unsigned char u8;
 typedef unsigned int u16;
 

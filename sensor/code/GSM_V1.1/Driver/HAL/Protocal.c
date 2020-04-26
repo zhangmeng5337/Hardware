@@ -3,9 +3,12 @@
 #include "bsp.h"
 #include "gprs_app.h"
 #include "stm8l15x_flash.h"
+
 Data_Stru Data_usr;
 Flow_stru Flow;
 extern _uart uart1;
+unsigned int rtctime=300;//10:9s，修改休眠时间
+unsigned int RepeatTime=300;//10:9s，修改休眠时间
 
 
 void module_prams_init()
@@ -216,39 +219,52 @@ void data_tansmmit()
 void module_process()
 {
   
-  
-    //p=malloc(12);
-    if(ExeIntFlag)
+  if(ExeIntFlag)
+  {
+    ExeIntFlag = 0;
+    OilCalibration();
+    //  module_prams_init();
+  }
+  sensor_adc();
+  #if module == sensor
+    if(Get_Network_status()==SIMCOM_NET_OK) 
+  #elif module == DEGUG_SENSOR
+  #endif
+ {
+  if(RtcWakeUp==1||Data_usr.status == 1)
+  {
+    
+    // flow_get();
+    data_tansmmit();
+    RtcWakeUp = 0;
+    Set_Network_status();
+    #if module == sensor
+    if(Data_usr.vbatf != 0)
     {
-      ExeIntFlag = 0;
-      OilCalibration();
-      //  module_prams_init();
+      RTC_Config(RepeatTime,ON);//1:55.2s
+    }
+    else
+    {
+      
+      GSM_HardwareInit(ON);
+      EnterStopMode();
+      RTC_Config(rtctime,ON);//10:9s 
+      enableInterrupts();
+      halt();	//enter stop mode
+      disableInterrupts(); 
+      RTC_Config(1,OFF);//1:55.2s
+      HardwareInit();
+      module_prams_init();
+      //uart_str.receive_flag =0;
+      enableInterrupts();
+     
       
     }
-  #if !DEGUG_SENSOR 
-    if(Get_Network_status()==SIMCOM_NET_OK) 
-  #else
-      if(RtcWakeUp==1)
-  #endif
-      {
-        sensor_adc();
-        flow_get();
-        data_tansmmit();
-  #if DEGUG_SENSOR 
-        RtcWakeUp = 0;
-        Set_Network_status();
-        GSM_HardwareInit(ON);
-        EnterStopMode();
-        disableInterrupts(); 
-        RTC_Config(1,OFF);//1:55.2s
-        HardwareInit();
-        module_prams_init();
-        //uart_str.receive_flag =0;
-        enableInterrupts();
-  #endif    
-        
-      }
-    
-    //free(p);
+    #endif
+  }
   
+}
+
+//free(p);
+
 }

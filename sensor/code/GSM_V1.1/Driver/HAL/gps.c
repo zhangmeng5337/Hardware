@@ -10,8 +10,8 @@ void parseGpsBuffer()
   if (Save_Data.isGetData)
   {
     Save_Data.isGetData = false;
-    printf("**************\r\n");
-    printf(Save_Data.GPS_Buffer);
+    //printf("**************\r\n");
+   // printf(Save_Data.GPS_Buffer);
     
     
     for (i = 0 ; i <= 6 ; i++)

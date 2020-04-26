@@ -8,17 +8,25 @@ void Uart1_Init(u32 boundrate)
   CLK_PeripheralClockConfig(CLK_Peripheral_USART1,ENABLE);
   
   SYSCFG_REMAPDeInit();
+#if module == smartbox
+  //SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortC,ENABLE);
+  GPIO_Init(GPIOC, GPIO_Pin_3, GPIO_Mode_Out_PP_High_Fast);//TXD
+  GPIO_Init(GPIOC, GPIO_Pin_2, GPIO_Mode_In_PU_No_IT);//RXD
+#else if module == sensor
   SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA,ENABLE);
-  
   GPIO_Init(GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast);//TXD
   GPIO_Init(GPIOA, GPIO_Pin_3, GPIO_Mode_In_PU_No_IT);//RXD
+#endif
+  
+  
+  
   USART_DeInit(USART1);		//复位UART1 
   
   
   USART_Init(USART1,boundrate, USART_WordLength_8b, USART_StopBits_1, 
              USART_Parity_No, USART_Mode_Tx|USART_Mode_Rx);
   USART_ClearITPendingBit(USART1, USART_IT_RXNE);
-  //USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//开启接收中断
+  USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//开启接收中断
   USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);//开启接收中断
   //USART_ITConfig(USART1, USART_IT_TC, ENABLE);  //开启发送中断
   USART_Cmd(USART1, ENABLE);	//使能UART2
@@ -35,7 +43,7 @@ void UART1_SendByte(u8 data)
 {
   USART_SendData8(USART1, data);
   /* 等待传输结束 */
-  while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+  while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
 }
 
 /*******************************************************************************
@@ -48,11 +56,18 @@ void UART1_SendByte(u8 data)
 ******************************************************************************/
 void UART1_SendStr(u8 *str)
 {
-  while(*str != '\0')
+  unsigned char len;
+  len = strlen((const char*)str);
+	
+  while(len>0)
   {
-    UART1_SendByte(*str++);	/* 循环调用发送一个字符函数 */
-  }	
+    UART1_SendByte(*str);
+   // while(!USART_GetFlagStatus (USART1, USART_FLAG_TXE));
+    str++;
+    len--;
+  }
 }
+
 
 /*******************************************************************************
 * 名称: UART2_ReceiveByte

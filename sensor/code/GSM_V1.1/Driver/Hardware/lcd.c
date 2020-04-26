@@ -24,7 +24,7 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm8l1528_eval_glass_lcd.h"
+#include "lcd.h"
 
 /** @addtogroup Utilities
   * @{
@@ -141,10 +141,10 @@ void LCD_GLASS_Init(void)
 
   /* Enable LCD clock */
   CLK_PeripheralClockConfig(CLK_Peripheral_LCD, ENABLE);
-  CLK_RTCClockConfig(CLK_RTCCLKSource_LSE, CLK_RTCCLKDiv_1);
+  CLK_RTCClockConfig(CLK_RTCCLKSource_HSI, CLK_RTCCLKDiv_1);
 
   /* Initialize the LCD */
-  LCD_Init(LCD_Prescaler_2, LCD_Divider_18, LCD_Duty_1_8,
+  LCD_Init(LCD_Prescaler_2, LCD_Divider_18, LCD_Duty_1_4,
            LCD_Bias_1_4, LCD_VoltageSource_Internal);
 
   /* Mask register*/

@@ -7,6 +7,23 @@
  u16 USART_RX_STA;         		//接收状态标记
 void Uart3_Init(u32 boundrate)
 {
+  #if module == smartbox
+   CLK_PeripheralClockConfig(CLK_Peripheral_USART2,ENABLE);
+          GPIO_Init(GPIOE, GPIO_Pin_4, GPIO_Mode_Out_PP_High_Fast);//TXD
+  	GPIO_Init(GPIOE, GPIO_Pin_3, GPIO_Mode_In_PU_No_IT);//RXD
+  	USART_DeInit(USART2);		//复位UART1 
+        
+        USART_Init(USART2,9600, USART_WordLength_8b, USART_StopBits_1, 
+				USART_Parity_No, USART_Mode_Tx|USART_Mode_Rx);
+	USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);//开启接收中断
+        USART_ITConfig(USART2, USART_IT_IDLE, ENABLE);//开启接收中断
+	//USART_ITConfig(USART1, USART_IT_TC, ENABLE);  //开启发送中断
+	USART_Cmd(USART2, ENABLE);	//使能UART2     
+  
+  
+  
+#else if module == sensor
         CLK_PeripheralClockConfig(CLK_Peripheral_USART3,ENABLE);
         
         SYSCFG_REMAPDeInit();
@@ -34,6 +51,7 @@ void Uart3_Init(u32 boundrate)
         USART_ITConfig(USART3, USART_IT_IDLE, ENABLE);//开启接收中断
 	//USART_ITConfig(USART1, USART_IT_TC, ENABLE);  //开启发送中断
 	USART_Cmd(USART3, ENABLE);	//使能UART2
+#endif
 }
 
 /*******************************************************************************
@@ -76,12 +94,17 @@ void UART3_SendStr(u8 *str)
 u8 UART3_ReceiveByte(void)
 {
 	u8 UART3_RX_BUF; 
+#if module == smartbox
+	/* 等待接收完成 */
+	while (USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == RESET);
 	
+	UART3_RX_BUF = USART_ReceiveData8(USART2);
+#else if module == sensor
 	/* 等待接收完成 */
 	while (USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
 	
-	UART3_RX_BUF = USART_ReceiveData8(USART3);
-	
+	UART3_RX_BUF = USART_ReceiveData8(USART3);	
+#endif
 	return  UART3_RX_BUF;
 }
 

@@ -31,79 +31,98 @@ mode_stru *get_params_mode()
 
     return tmp;
 }
-void fan_ctrl(unsigned char umode)
+void airMachine_ctrl(unsigned char umode)
 {
+
+    settings_params.tar_env_temper =adc_io.adc_result[1];
+    settings_params.equip_env_temper = adc_io.adc_result[2];
+    settings_params.machine_air_temper = adc_io.adc_result[3];
+    settings_params.target_wind_temper =adc_io.adc_result[4];
+	   settings_params.humid[0] = adc_io.adc_result[0];
+ 	  settings_params.humid[1] = adc_io.adc_result[0];	
+
+
     float ca,cb;
     int16_t xError, yError;
     int16_t xPWM, yPWM;
-    ca = settings_params.tar_set_temper[0]-settings_params.tar_env_temper;
-    cb = settings_params.tar_set_temper[0]-settings_params.target_wind_temper;
-    // PID calculation
-    xError = ca;
+	if(umode == ON)
+	{
+		ca = settings_params.tar_set_temper[0]-settings_params.tar_env_temper;
+		cb = settings_params.tar_set_temper[0]-settings_params.target_wind_temper;
+		// PID calculation
+		xError = ca;
+		
+		yError = cb;
+		xPWM = calcPID(&xPID, xError);
+		yPWM = calcPID(&yPID, yError);
+		
+		if(ca>=5)
+		{
+			if(cb<=1)
+			{
+				TransmitCommand(xPWM,umode);
+			}
+			else if(cb>=2)
+			{
+				if((xPWM+yPWM)>=MAX_SPEED)
+					TransmitCommand(MAX_SPEED,umode);
+				else
+					TransmitCommand(xPWM+yPWM,umode);
+			}
+			else
+			{
+				TransmitCommand(xPWM,umode);
+			}
+		}
+		else if(ca<5&&ca>=0)
+		{
+			if(cb<=0)
+			{
+				TransmitCommand(xPWM,umode);
+			}
+			else if(cb>=1)
+			{
+				if((xPWM+yPWM)>=MAX_SPEED)
+					TransmitCommand(MAX_SPEED,umode);
+				else
+					TransmitCommand(xPWM+yPWM,umode);
+			}
+			else
+			{
+				TransmitCommand(yPWM,umode);
+			}
+		
+		
+		}
+		else if(ca<0&&ca>=-0.5)
+		{
+			TransmitCommand(MIN_SPEED,umode);
+		
+		}
+		else if(ca<-0.5)
+		{
+			TransmitCommand(MIN_SPEED,OFF);
+			device_ctrl(DEV_ALL,OFF);
+		
+		}
+		else if(ca>=0.5)
+		{
+			TransmitCommand(MIN_SPEED,ON);
+			mode.flag_mark = 0;
+		
+		}
+		if(settings_params.machine_air_temper>=MAX_MACHINE_AIRT)
+		{
+			TransmitCommand(MIN_SPEED,OFF);
+		}
 
-    yError = cb;
-    xPWM = calcPID(&xPID, xError);
-    yPWM = calcPID(&yPID, yError);
+	}
+	else
+	{
+		TransmitCommand(MIN_SPEED,OFF);
 
-    if(ca>=5)
-    {
-        if(cb<=1)
-        {
-            TransmitCommand(xPWM,umode);
-        }
-        else if(cb>=2)
-        {
-            if((xPWM+yPWM)>=MAX_SPEED)
-                TransmitCommand(MAX_SPEED,umode);
-            else
-                TransmitCommand(xPWM+yPWM,umode);
-        }
-        else
-        {
-            TransmitCommand(xPWM,umode);
-        }
-    }
-    else if(ca<5&&ca>=0)
-    {
-        if(cb<=0)
-        {
-            TransmitCommand(xPWM,umode);
-        }
-        else if(cb>=1)
-        {
-            if((xPWM+yPWM)>=MAX_SPEED)
-                TransmitCommand(MAX_SPEED,umode);
-            else
-                TransmitCommand(xPWM+yPWM,umode);
-        }
-        else
-        {
-            TransmitCommand(yPWM,umode);
-        }
+	}
 
-
-    }
-    else if(ca<0&&ca>=-0.5)
-    {
-        TransmitCommand(MIN_SPEED,umode);
-
-    }
-    else if(ca<-0.5)
-    {
-        TransmitCommand(MIN_SPEED,OFF);
-        device_ctrl(DEV_ALL,OFF);
-
-    }
-    else if(ca>=0.5)
-    {
-        TransmitCommand(MIN_SPEED,ON);
-        mode.flag_mark = 0;
-
-    }
-    if(settings_params.machine_air_temper>=MAX_MACHINE_AIRT)
-    {
-        TransmitCommand(MIN_SPEED,OFF);
-    }
 
 
 }
@@ -131,7 +150,7 @@ unsigned char command_tx_time_loop(unsigned char umode)
     }
 
 }
-void machine_control(unsigned char umode)
+void machine_mode_control(unsigned char umode)
 {
 
     if(mode.flag_mark == 0x00)
@@ -149,8 +168,9 @@ void machine_control(unsigned char umode)
                 {
                     mode.flag_mark==2;
                     settings_params.present_status = 0x02;
-                    fan_ctrl(ON);
+                    airMachine_ctrl(ON);
                     device_ctrl(FAN_HOT,ON);
+					
                 }
                 if(command_tx_time_loop(umode)==2)
                 {
@@ -168,7 +188,7 @@ void machine_control(unsigned char umode)
                 {
                     settings_params.present_status = 0x02;
                     device_ctrl(FAN_COOL,ON);
-                    fan_ctrl(ON);
+                    airMachine_ctrl(ON);
                 }
                 if(command_tx_time_loop(umode)==2)
                 {
@@ -187,7 +207,9 @@ void machine_control(unsigned char umode)
                 {
                     settings_params.present_status = 0x02;
                     device_ctrl(FAN_COOL,ON);
-                    fan_ctrl(ON);
+                    device_ctrl(HUMID,ON);	
+                    airMachine_ctrl(ON);
+					device_ctrl(PUMP,ON);
 
                 }
                 if(command_tx_time_loop(umode)==2)
@@ -207,7 +229,9 @@ void machine_control(unsigned char umode)
                 {
                     settings_params.present_status = 0x02;
                     device_ctrl(FAN_COOL,ON);
-                    fan_ctrl(ON);
+                    airMachine_ctrl(ON);
+				    device_ctrl(HUMID,ON);	
+					device_ctrl(PUMP,ON);
 
                 }
                 if(command_tx_time_loop(umode)==2)
@@ -781,8 +805,16 @@ void run_process()
     // if( adc_io.fault_status ==0&&mode.status == WORK_ON)//启动正常
     if( mode.status == WORK_ON)//启动正常
     {
-        machine_control(mode.modeNo);
+        machine_mode_control(mode.modeNo);
+		
     }
+	else
+	{
+	   mode.flag_mark = 0;
+		airMachine_ctrl(OFF);
+		device_ctrl(DEV_ALL,OFF);
+
+	}
 
     if(get_params_mode()->mode ==NORMAL&&get_params_mode()->status >=WORK_OFF)//正常模式
     {
