@@ -173,6 +173,8 @@ INTERRUPT_HANDLER(EXTI0_IRQHandler, 8)
   /* In order to detect unexpected events during development,
   it is recommended to set a breakpoint on the following instruction.
   */
+    ExeIntFlag = 1;
+  EXTI_ClearITPendingBit(EXTI_IT_Pin0);
 }
 
 /**
@@ -188,8 +190,7 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler, 9)
   //LoraM1Flag = 1;
   // ExitInterFlag = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_1);
   
-  ExeIntFlag = 1;
-  EXTI_ClearITPendingBit(EXTI_IT_Pin1);
+
   //EXTI_ClearITPendingBit(EXTI_IT_Pin1);
 }
 
@@ -326,6 +327,18 @@ INTERRUPT_HANDLER(TIM2_CC_USART2_RX_IRQHandler, 20)
   /* In order to detect unexpected events during development,
   it is recommended to set a breakpoint on the following instruction.
   */
+  unsigned char t;
+    if(USART_GetFlagStatus(USART2, USART_FLAG_IDLE) != RESET)
+  {
+    t = USART2->SR;
+    t = USART2->DR;//IDLE清零需要依次读SR 和DR 寄存器
+    USART_ClearITPendingBit(USART2,  USART_IT_IDLE);	
+  }
+  else
+  {
+  uart3_interrupt_handler();
+  }
+  
 }
 
 
@@ -353,9 +366,16 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
   it is recommended to set a breakpoint on the following instruction.
   */
  
-  if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) 
+  unsigned char t;
+    if(USART_GetFlagStatus(USART3, USART_FLAG_IDLE) != RESET)
   {
-     void uart3_interrupt_handler();
+    t = USART3->SR;
+    t = USART3->DR;//IDLE清零需要依次读SR 和DR 寄存器
+    USART_ClearITPendingBit(USART3,  USART_IT_IDLE);	
+  }
+  else
+  {
+  uart3_interrupt_handler();
   }
 }
 /**

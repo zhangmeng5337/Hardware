@@ -28,7 +28,7 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
   for (n = 0; n < Retry; n++)
   {
     if(Retry>0)
-      UART1_SendStr((u8 *)*Command); 		//发送GPRS指令
+      UART1_SendStr(Command); 		//发送GPRS指令
     
     // printf("\r\n***************send****************\r\n");
     //printf(Command);
@@ -37,7 +37,7 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
     while (Time_Cont < Timeout)
     {
       //  delay_ms(100);
-      Time_Cont += 100;
+      Time_Cont += 1;
       if (strstr(USARTX_RX_BUF, Response) != NULL)
       {				
         // printf("\r\n***************receive****************\r\n");
@@ -54,7 +54,7 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
     Time_Cont = 0;
     while (Time_Cont < Timeout)
     {
-      Time_Cont += 100;
+      Time_Cont += 1;
       if (strstr(USARTX_RX_BUF, Response) != NULL)
       {				
         USART1_CLR_Buf();

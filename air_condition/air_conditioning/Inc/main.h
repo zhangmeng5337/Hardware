@@ -50,8 +50,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -92,6 +90,8 @@ void Error_Handler(void);
 #define DIS_COM1_GPIO_Port GPIOB
 #define DIS_COM2_Pin GPIO_PIN_15
 #define DIS_COM2_GPIO_Port GPIOB
+#define PWM_Pin GPIO_PIN_8
+#define PWM_GPIO_Port GPIOA
 #define M74HC595_SI_Pin GPIO_PIN_11
 #define M74HC595_SI_GPIO_Port GPIOA
 #define M74HC595_SCK_Pin GPIO_PIN_12

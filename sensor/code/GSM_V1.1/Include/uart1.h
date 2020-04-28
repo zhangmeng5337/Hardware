@@ -36,8 +36,6 @@ void UART1_SendStr(u8 *str);
 u8 UART1_ReceiveByte(void);
 void uart1_interrupt_handler(void);
 void USART1_CLR_Buf(void); 
-#ifdef _IAR_
-int fputc(int ch, FILE *f);
-#endif
+
 #endif
 

@@ -1,35 +1,37 @@
 #include "machine.h"
 extern UART_HandleTypeDef huart1;
-unsigned char Receive_data[UART1_BUFFER_SIZE];
+unsigned char Receive_data[UART1_BUFFER_SIZE],Receive_data_temp[UART1_BUFFER_SIZE];
 unsigned char  Uart1_Receive_flag;
+unsigned char inByte,temp;
+static unsigned char Receive_item;
 //本程序是 Arduino 的示例程序，其他 MCU 请移植。
 void Receive_command(unsigned char revdat)
 {
-	unsigned char Receive_data_temp[UART1_BUFFER_SIZE];
+	//unsigned char Receive_data_temp[UART1_BUFFER_SIZE];
 
-    unsigned char inByte,temp;
-	static unsigned char Receive_item;
+   
+	
     //if(Serial.available() > 0)
     {
         inByte = revdat;
-        if(inByte==0xAA)
+        if(Receive_data_temp[0]==0xAA)
         {
             Receive_item=0;
         }
-        Receive_data_temp[Receive_item]=inByte;
-        Receive_item++;
-        if(Receive_item>15)
-        {
-            Receive_item=0;
-        }
-        if(inByte==0x55)
+        //Receive_data_temp[Receive_item++]=inByte;
+        ;
+//        if(Receive_item>=15)
+//        {
+//            Receive_item=0;
+//        }
+        if(Receive_data_temp[15]==0x55)
         {
             temp=0; //对接受的数据进行累计校验
-            for(int i=0; i<(UART1_BUFFER_SIZE-1); i++)
+            for(int i=0; i<(UART1_BUFFER_SIZE-2); i++)
             {
                 temp += Receive_data_temp[i];
             }
-            if(temp==Receive_data_temp[UART1_BUFFER_SIZE-1])
+            if(temp==Receive_data_temp[UART1_BUFFER_SIZE-2])
             {
                 for(int j=0; j<UART1_BUFFER_SIZE; j++)
                 {
@@ -39,6 +41,8 @@ void Receive_command(unsigned char revdat)
             Uart1_Receive_flag=1;
         }
     }
+		HAL_UART_DMAPause(&huart1);
+			HAL_UART_Receive_DMA(&huart1,Receive_data_temp,UART1_BUFFER_SIZE);
 }
 void TransmitCommand(unsigned int pspeed,unsigned char sw)
 {
@@ -56,7 +60,7 @@ void TransmitCommand(unsigned int pspeed,unsigned char sw)
    memcpy(&p[i++],&tmp,1);
    tmp = (unsigned char)(pspeed>>8);
    memcpy(&p[i++],&tmp,1);
-   tmp = sw + tmp + tmp2 + 0x00;
+   tmp = sw + tmp + tmp2 + 0xaa;
    tmp2 = 0;
    memcpy(&p[i++],&tmp2,1);
 	memcpy(&p[i++],&tmp2,1);
@@ -79,10 +83,10 @@ void UsartReceive_IDLE(unsigned char uart_num)
 
 	if(uart_num==1)
 	{
-		temp=__HAL_UART_GET_FLAG(&huart1,UART_FLAG_RXNE);
+		temp=__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE);
 		if((temp!=RESET))
 		{
-			 __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
+			 __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_IDLE);
 
 			//HAL_UART_DMAStop(&huart2);
 			temp=huart1.Instance->SR;

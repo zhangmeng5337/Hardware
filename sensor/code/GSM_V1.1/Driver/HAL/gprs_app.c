@@ -5,8 +5,10 @@
 #include "string.h"
 #include "gprs_app.h"
 #include "stdlib.h"
-#include "config.h"
+
 #define Network_Thres    30
+unsigned char one_net_key[]="*296832#571498701#json*";//284261：产品编号；abab：鉴权码；json：脚本
+unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 
 
 
@@ -64,26 +66,26 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_POWER_ON://SIMCOM_READY_YES:
     {
-      if (sendCommand("AT\r\n", "OK\r\n", 3000, 1) == Success)
+      if (sendCommand("AT\r\n", "OK\r\n", 50, 1) == Success)
         NET_STAUS = SIMCOM_READY_YES;
     }
     break;
   case SIMCOM_READY_YES:
     {
-      if (sendCommand("ATE0\r\n", "OK\r\n", 3000, 1) == Success)
+      if (sendCommand("ATE0\r\n", "OK\r\n", 50, 1) == Success)
         NET_STAUS = SIMCOM_CLOSE_ECHO;  
     }
     break;
     
   case SIMCOM_CLOSE_ECHO:
     {
-      if (sendCommand("AT+CPIN?\r\n", "READY", 3000, 1) == Success)
+      if (sendCommand("AT+CPIN?\r\n", "READY", 50, 1) == Success)
         NET_STAUS = SIMCOM_CARD_DET; 
     }
     break;
   case SIMCOM_CARD_DET:
     {
-      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 3000, 1) == Success)
+      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 30000, 1) == Success)
       {
         
         NET_STAUS=SIMCOM_GPRS_READY;
@@ -119,7 +121,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_Connect_Platform:
     {
-      if (sendCommand((char *)*one_net_key, "OK", 240000, 1) == Success)
+      if (sendCommand(one_net_key, "received", 240000, 1) == Success)
       {
         NET_STAUS=SIMCOM_NET_OK;          
       } 
@@ -129,9 +131,9 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_NET_OK:
     {
-      if (sendCommand((char *)*one_net_key, "CLOSED", 20, 0) == Success||
-          sendCommand((char *)*one_net_key, "+CIPOPEN: 0,4", 20, 0) == Success||
-            sendCommand((char *)*one_net_key, "NO CARRIER", 20, 0) == Success)
+      if (sendCommand(one_net_key, "CLOSED", 20, 0) == Success||
+          sendCommand(one_net_key, "+CIPOPEN: 0,4", 20, 0) == Success||
+            sendCommand(one_net_key, "NO CARRIER", 20, 0) == Success)
       {
         NET_STAUS=SIMCOM_NET_ERROR;
       }

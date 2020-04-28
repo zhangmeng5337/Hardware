@@ -29,23 +29,34 @@ void delay_ms(uint32_t num)//不是很精确
 
 void GPIO_Initial(void)
 {
-  
+#if module == smartbox
   //GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
-  GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_Out_PP_High_Fast ); 
   GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
-  GPIO_Init( GPIOA, GPIO_Pin_5, GPIO_Mode_In_FL_No_IT ); 
-  // GPIO_Init( GPIOA, GPIO_Pin_4, GPIO_Mode_Out_OD_HiZ_Slow ); 
-  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_1, EXTI_Trigger_Falling_Low);
-  // GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_Out_PP_High_Fast);
   GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast ); 
+#elif module == sensor||module == DEGUG_SENSOR
+  //GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+
+  GPIO_Init( PORT_FLOW, PIN_FLOW, GPIO_Mode_Out_PP_Low_Fast );
+
+  GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
+  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
+  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );   
+  GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
+  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
+  EXTI_SetPinSensitivity(EXTI_Pin_0, EXTI_Trigger_Falling);
+  GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast ); 
+#endif
+  
   
   
 }
@@ -68,12 +79,7 @@ void Init_Timer1(void)
   TIM1_CCxCmd(TIM1_Channel_1, ENABLE);                   //使能输入捕获通道1
   TIM1_CCxCmd(TIM1_Channel_2, ENABLE);                   //使能输入捕获通道2
   TIM1_Cmd(ENABLE);                                     //使能定时器
-  
-  
-  
-  
-  
-  
+
 }
 
 
@@ -128,6 +134,27 @@ void Sensor_HardwareInit(unsigned char flag)
   {
     
     GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
+    
+  }
+  
+}
+void FLOW_Ctrl(unsigned char flag)
+{
+  
+
+  if(flag == ON)
+  {
+    GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
+    GPIO_SetBits( PORT_FLOW, PIN_FLOW );   
+  //  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );    
+  }
+  else
+  {
+    
+  GPIO_SetBits( PORT_FLOW, PIN_FLOW );
+  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );	 
+  //GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
+
     
   }
   
@@ -215,11 +242,8 @@ void EnterStopMode(void)
   
   GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOC, GPIO_Pin_5|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_In_PU_No_IT );
+#if module == sensor
   GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast ); 
-  
-  
-  GPIO_Init( GPIOD,  GPIO_Pin_0|GPIO_Pin_2|GPIO_Pin_3, GPIO_Mode_In_PU_No_IT );
-  
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
   GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_Out_PP_High_Fast ); 
   GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
@@ -227,10 +251,15 @@ void EnterStopMode(void)
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_In_FL_No_IT ); 
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_OD_Low_Slow );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_High_Fast ); 
-  
   GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
   // GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-  GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+  GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );  
+#endif 
+  GPIO_Init( GPIOD,  GPIO_Pin_0|GPIO_Pin_2|GPIO_Pin_3, GPIO_Mode_In_PU_No_IT );
+  
+
+  
+
   
   
   //  delay_ms(2000);
@@ -275,9 +304,7 @@ void EnterStopMode(void)
   PWR_UltraLowPowerCmd(ENABLE); //low power enable
   PWR_FastWakeUpCmd(ENABLE);  //wake up enable
   
-  RTC_Config(rtctime,ON);//10:9s 
-  enableInterrupts();
-  halt();  //enter stop mode
+
 }
 
 extern _uart uart1;
@@ -321,17 +348,21 @@ void HardwareInit()
   disableInterrupts();
   SystemClock_Init();     // 系统时钟初始化
   GPIO_Initial(); 
-  Uart1_Init(9600);// 初始化GPIO
+  Uart1_Init(115200);// 初始化GPIO
+  Uart3_Init(9600);
   DMA_Config();
-  LED_Init();
+  //LED_Init();
   //delay_ms(5000);
   //调试LED初始化
-#if !DEGUG_SENSOR 
-  GSM_HardwareInit(ON);
-  set_NetStatus(SIMCOM_POWER_ON);  
-#endif
+  
+ 
+#if module == DEGUG_SENSOR||sensor
   Sensor_HardwareInit(ON);
   Init_Timer1();
+#elif module == sensor
+  GSM_HardwareInit(ON);
+  set_NetStatus(SIMCOM_POWER_ON); 
+#endif
   enableInterrupts();
 }
 void LED_Init(void)
