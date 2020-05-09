@@ -18,6 +18,7 @@ History/
 *.PcbDocPreview
 *.SchDocPreview
 ._
+*.$$$
 Debug/
 !Debug/Exe/**.hex
 *.jrl
