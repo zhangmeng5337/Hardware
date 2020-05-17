@@ -82,4 +82,5 @@ sourceinsight/!*.siproj
 *.PrjPCBStructure
 *.cnv,**
 *.SAV
-
+*.si4project
+._*
