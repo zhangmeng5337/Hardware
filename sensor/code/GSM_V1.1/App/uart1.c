@@ -8,15 +8,15 @@ void Uart1_Init(u32 boundrate)
   CLK_PeripheralClockConfig(CLK_Peripheral_USART1,ENABLE);
   
   SYSCFG_REMAPDeInit();
-#if module == smartbox
-  //SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortC,ENABLE);
-  GPIO_Init(GPIOC, GPIO_Pin_3, GPIO_Mode_Out_PP_High_Fast);//TXD
-  GPIO_Init(GPIOC, GPIO_Pin_2, GPIO_Mode_In_PU_No_IT);//RXD
-#else if module == sensor
+//#if module == smartbox
+//  //SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortC,ENABLE);
+//  GPIO_Init(GPIOC, GPIO_Pin_3, GPIO_Mode_Out_PP_High_Fast);//TXD
+//  GPIO_Init(GPIOC, GPIO_Pin_2, GPIO_Mode_In_PU_No_IT);//RXD
+//#else if module == sensor
   SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA,ENABLE);
   GPIO_Init(GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast);//TXD
-  GPIO_Init(GPIOA, GPIO_Pin_3, GPIO_Mode_In_PU_No_IT);//RXD
-#endif
+  GPIO_Init(GPIOA, GPIO_Pin_3, GPIO_Mode_In_FL_No_IT);//RXD
+//#endif
   
   
   
@@ -26,9 +26,11 @@ void Uart1_Init(u32 boundrate)
   USART_Init(USART1,boundrate, USART_WordLength_8b, USART_StopBits_1, 
              USART_Parity_No, USART_Mode_Tx|USART_Mode_Rx);
   USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+  
   USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//开启接收中断
   USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);//开启接收中断
   //USART_ITConfig(USART1, USART_IT_TC, ENABLE);  //开启发送中断
+  USART_ClearITPendingBit(USART1,  USART_IT_IDLE);
   USART_Cmd(USART1, ENABLE);	//使能UART2
 }
 

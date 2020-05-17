@@ -4,7 +4,7 @@
 
 
 extern ADC_HandleTypeDef hadc1;
-float get_temperature(uint16_t data,unsigned char SensorTypes,float env_temper);
+float get_sensor_restult(uint16_t data,unsigned char SensorTypes,float env_temper);
 
 //获得ADC值
 //ch: 通道值 0~16，取值范围为：ADC_CHANNEL_0~ADC_CHANNEL_16
@@ -33,9 +33,11 @@ adc_io_str adc_io;
 
 void Get_Adc_Average(unsigned char times)
 {
-	uint32_t temp_val=0,adcBuf[6];
+    #define adc_count 7
+	uint32_t temp_val=0,adcBuf[adc_count];
 	unsigned char i,t;
-	for(t=0;t<6;t++)
+
+	for(t=0;t<adc_count;t++)
 	{;			
 		adcBuf[t]=0;
 	}
@@ -43,7 +45,7 @@ void Get_Adc_Average(unsigned char times)
 	for(i=0;i<times;i++)
 	{                               //开启ADC
 		//Get_Adc( ch);
-		for(t=0;t<6;t++)
+		for(t=0;t<adc_count;t++)
 		{;
 			HAL_ADC_Start(&hadc1);
 			HAL_ADC_PollForConversion(&hadc1,0xffff);
@@ -54,24 +56,24 @@ void Get_Adc_Average(unsigned char times)
 		}
 	}
 	//	HAL_ADC_Stop(&hadc1);
-	for(t=0;t<6;t++)
+	for(t=0;t<adc_count;t++)
 	{		
 		adcBuf[t]=adcBuf[t]/times;
 	}
 
-	for(t=0;t<5;t++)
+	for(t=0;t<(adc_count-1);t++)//基于内部参考电压补偿
 	{		
-		adcBuf[t]=adcBuf[t]+(uint32_t)(2.75*adcBuf[5]-4095);
+		adcBuf[t]=adcBuf[t]+(uint32_t)(2.75*adcBuf[adc_count-1]-4095);
 	}
 
 
-	for(t=1;t<5;t++)
+	for(t=1;t<(adc_count-1);t++)
 	{
-			adc_io.adc_result[t-1]=(float)(get_temperature(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));
+			adc_io.adc_result[t-1]=(float)(get_sensor_restult(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));
 		//else
 			//adc_io.adc_result[t]=(float)(get_temperature(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));			
 	}
-	adc_io.adc_result[0]=(float)(get_temperature(adcBuf[0],HUMIDTYPE,adc_io.adc_result[1]));
+	adc_io.adc_result[0]=(float)(get_sensor_restult(adcBuf[0],HUMIDTYPE,adc_io.adc_result[1]));
 
 	#if DEBUG_USER
 		printf("adcBuf[%d] is:   %d\n",i,adcBuf[i]);
@@ -123,7 +125,7 @@ float num_to_temperature(u8 num,u8 types)
 float t1,tx;
 
 
-float get_temperature(uint16_t data,unsigned char SensorTypes,float env_temper)
+float get_sensor_restult(uint16_t data,unsigned char SensorTypes,float env_temper)
 {
     unsigned int num,index;
 	if(SensorTypes == TEMPERATURE)

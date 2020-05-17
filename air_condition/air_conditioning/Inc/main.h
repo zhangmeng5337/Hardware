@@ -75,8 +75,6 @@ void Error_Handler(void);
 #define KEY3_Pin GPIO_PIN_5
 #define KEY3_GPIO_Port GPIOA
 #define KEY3_EXTI_IRQn EXTI9_5_IRQn
-#define CTR_OUT1_Pin GPIO_PIN_0
-#define CTR_OUT1_GPIO_Port GPIOB
 #define KEY1_Pin GPIO_PIN_1
 #define KEY1_GPIO_Port GPIOB
 #define KEY1_EXTI_IRQn EXTI1_IRQn
@@ -104,10 +102,10 @@ void Error_Handler(void);
 #define DIS_COM3_GPIO_Port GPIOB
 #define led_ctrl2_Pin GPIO_PIN_5
 #define led_ctrl2_GPIO_Port GPIOB
-#define IIC_SCL_Pin GPIO_PIN_6
-#define IIC_SCL_GPIO_Port GPIOB
-#define IIC_SDA_Pin GPIO_PIN_7
-#define IIC_SDA_GPIO_Port GPIOB
+#define CTR_OUT4_Pin GPIO_PIN_6
+#define CTR_OUT4_GPIO_Port GPIOB
+#define CTR_OUT1_Pin GPIO_PIN_7
+#define CTR_OUT1_GPIO_Port GPIOB
 #define PWM_AD_OUT_Pin GPIO_PIN_8
 #define PWM_AD_OUT_GPIO_Port GPIOB
 #define M74HC595_RCK_Pin GPIO_PIN_9

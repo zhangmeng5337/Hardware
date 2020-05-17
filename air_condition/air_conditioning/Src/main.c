@@ -12,6 +12,7 @@
 #include "key.h"
 #include "settings.h"
 #include "machine.h"
+#include "display.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -80,6 +81,7 @@ extern unsigned char Receive_data[UART1_BUFFER_SIZE],Receive_data_temp[UART1_BUF
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -88,12 +90,14 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -104,7 +108,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-	init_params();
+		init_params();
 	  display_off();
 	led_ctrl(LED_ALL,OFF);
 				__HAL_UART_CLEAR_FLAG(&huart1,UART_IT_IDLE);	
@@ -112,25 +116,18 @@ int main(void)
 	HAL_UART_Receive_DMA(&huart1,Receive_data_temp,UART1_BUFFER_SIZE);
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);	//Ê¹ÄÜ¿ÕÏÐÖÐ¶Ï
 	 //TIM1->CCR2 = 9999; 
-	 init_Pid();
- // HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
- // HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
+	 init_Pid();	
   /* USER CODE END 2 */
-while(1)
-{
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  while (1)
+  {
     /* USER CODE END WHILE */
 
+		run_process();	
     /* USER CODE BEGIN 3 */
-	//adc_process();
-	//key_process();
-	 run_process();
-	// HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
-	//io_process();
-//	led_ctrl(LED_ALL,OFF);
-//	device_ctrl(FAN_HOT,OFF);
-	}	
+  }
   /* USER CODE END 3 */
 }
 
@@ -202,7 +199,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 6;
+  hadc1.Init.NbrOfConversion = 7;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -211,7 +208,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -250,9 +247,16 @@ static void MX_ADC1_Init(void)
   }
   /** Configure Regular Channel 
   */
-  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  sConfig.Channel = ADC_CHANNEL_8;
   sConfig.Rank = ADC_REGULAR_RANK_6;
-  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  sConfig.Rank = ADC_REGULAR_RANK_7;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -400,9 +404,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, led_status_Pin|led_ctrl1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, CTR_OUT1_Pin|SW2_Pin|CTR_OUT2_Pin|CTR_OUT3_Pin 
-                          |DIS_COM1_Pin|DIS_COM2_Pin|DIS_COM4_Pin|DIS_COM3_Pin 
-                          |led_ctrl2_Pin|IIC_SCL_Pin|IIC_SDA_Pin|M74HC595_RCK_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SW2_Pin|CTR_OUT2_Pin|CTR_OUT3_Pin|DIS_COM1_Pin 
+                          |DIS_COM2_Pin|DIS_COM4_Pin|DIS_COM3_Pin|led_ctrl2_Pin 
+                          |CTR_OUT4_Pin|CTR_OUT1_Pin|M74HC595_RCK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, PWM_Pin|M74HC595_SI_Pin|M74HC595_SCK_Pin, GPIO_PIN_RESET);
@@ -432,25 +436,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : CTR_OUT1_Pin CTR_OUT2_Pin CTR_OUT3_Pin led_ctrl2_Pin */
-  GPIO_InitStruct.Pin = CTR_OUT1_Pin|CTR_OUT2_Pin|CTR_OUT3_Pin|led_ctrl2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
   /*Configure GPIO pin : KEY1_Pin */
   GPIO_InitStruct.Pin = KEY1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(KEY1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : SW2_Pin */
-  GPIO_InitStruct.Pin = SW2_Pin;
+  /*Configure GPIO pins : SW2_Pin CTR_OUT4_Pin CTR_OUT1_Pin */
+  GPIO_InitStruct.Pin = SW2_Pin|CTR_OUT4_Pin|CTR_OUT1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SW2_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : CTR_OUT2_Pin CTR_OUT3_Pin led_ctrl2_Pin */
+  GPIO_InitStruct.Pin = CTR_OUT2_Pin|CTR_OUT3_Pin|led_ctrl2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : DIS_COM1_Pin DIS_COM2_Pin DIS_COM4_Pin DIS_COM3_Pin 
                            M74HC595_RCK_Pin */
@@ -474,13 +478,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : IIC_SCL_Pin IIC_SDA_Pin */
-  GPIO_InitStruct.Pin = IIC_SCL_Pin|IIC_SDA_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PWM_AD_OUT_Pin */
   GPIO_InitStruct.Pin = PWM_AD_OUT_Pin;

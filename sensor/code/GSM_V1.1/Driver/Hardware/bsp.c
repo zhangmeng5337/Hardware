@@ -6,6 +6,8 @@
 ============================================================================*/
 #include "bsp.h"
 #include "uart1.h"
+#include "uart3.h"
+
 #include "stm8l15x_dma.h"
 #include "stm8l15x_tim1.h"
 #include "gprs_app.h"
@@ -29,7 +31,7 @@ void delay_ms(uint32_t num)//不是很精确
 
 void GPIO_Initial(void)
 {
-#if module == smartbox
+/*#if module == smartbox
   //GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
@@ -40,22 +42,21 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
   GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast ); 
-#elif module == sensor||module == DEGUG_SENSOR
+#elif module == sensor||module == DEGUG_SENSOR*/
   //GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
-  GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
-  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
-  GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+ // GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  //GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  //GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
 
   GPIO_Init( PORT_FLOW, PIN_FLOW, GPIO_Mode_Out_PP_Low_Fast );
 
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
-  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
-  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );   
+ 
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
   GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_0, EXTI_Trigger_Falling);
-  GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast ); 
-#endif
+  EXTI_SetPinSensitivity(EXTI_Pin_0, EXTI_Trigger_Rising);
+
+//#endif
   
   
   
@@ -85,10 +86,17 @@ void Init_Timer1(void)
 
 void GSM_HardwareInit(unsigned char flag)
 {
+	GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast );
+	GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast ); 
+	GPIO_Init( GPIOC, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast ); 
+	GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );	
+
   
   if(flag == ON)
   {
-    GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
+    GPIO_ResetBits( GPIOC, GPIO_Pin_2 );
+     //GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
+    //  GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
     //GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
@@ -100,6 +108,8 @@ void GSM_HardwareInit(unsigned char flag)
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );                
     delay_ms(2000);
     GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, SET);
+    GPIO_SetBits(GPIOD, GPIO_Pin_2);
+
     //delay_ms(3000);
     //delay_ms(4000);
     //delay_ms(4000);
@@ -145,15 +155,24 @@ void FLOW_Ctrl(unsigned char flag)
   if(flag == ON)
   {
     GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
-    GPIO_SetBits( PORT_FLOW, PIN_FLOW );   
+    delay_ms(50);
+    GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
+	delay_ms(50);
+   // GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
+    
+
   //  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );    
   }
   else
   {
     
   GPIO_SetBits( PORT_FLOW, PIN_FLOW );
-  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );	 
-  //GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
+  delay_ms(50);
+  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );	
+    delay_ms(50);
+//  GPIO_SetBits( PORT_FLOW, PIN_FLOW );
+
+
 
     
   }
@@ -184,8 +203,8 @@ void RTC_Config(uint16_t time,unsigned char flag)
     RTC_WakeUpCmd(DISABLE);
     CLK_PeripheralClockConfig(CLK_Peripheral_RTC, DISABLE); //允许RTC时钟
     //RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
-    RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断
-    RTC_ClearITPendingBit(RTC_IT_WUT);
+   // RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断
+    //RTC_ClearITPendingBit(RTC_IT_WUT);
     // RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
     
     
@@ -264,9 +283,10 @@ void EnterStopMode(void)
   
   //  delay_ms(2000);
   // GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );	  
-  GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
+  GPIO_ResetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
   
-  
+  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
+  EXTI_SetPinSensitivity(EXTI_Pin_0, EXTI_Trigger_Rising);
   /* Deinitialize DMA channels */
   DMA_GlobalDeInit();
   
@@ -356,14 +376,22 @@ void HardwareInit()
   //调试LED初始化
   
  
-#if module == DEGUG_SENSOR||sensor
+#if module == DEGUG_SENSOR
   Sensor_HardwareInit(ON);
   Init_Timer1();
 #elif module == sensor
-  GSM_HardwareInit(ON);
-  set_NetStatus(SIMCOM_POWER_ON); 
+  Sensor_HardwareInit(ON);
 #endif
   enableInterrupts();
+}
+void GSMInit()
+{
+
+#if module == sensor
+	  GSM_HardwareInit(ON);
+	  set_NetStatus(SIMCOM_POWER_ON); 
+#endif
+
 }
 void LED_Init(void)
 {
@@ -395,6 +423,7 @@ void adcInit(ADC_Channel_TypeDef num)
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,ENABLE);//开启ADC1时钟
   
   ADC_VrefintCmd(ENABLE); //使能内部参考电压
+  ADC_SamplingTimeConfig(ADC1,ADC_Group_SlowChannels,ADC_SamplingTime_96Cycles);
   ADC_Init(ADC1,ADC_ConversionMode_Single,ADC_Resolution_12Bit,ADC_Prescaler_1);//连续转换，12位，转换时钟1分频
   ADC_Cmd(ADC1,ENABLE);//ADC使能	
   ADC_ChannelCmd(ADC1,num,ENABLE);//使能内部参考电压通道
@@ -402,20 +431,27 @@ void adcInit(ADC_Channel_TypeDef num)
   
 }
 uint32_t tmp;
-float tmp2;
-uint32_t adcGet(ADC_Channel_TypeDef num)
+float tmp2,tmp3;
+uint32_t adcGet(ADC_Channel_TypeDef num,unsigned int samplecount)
 {
   unsigned int i;
   /* Waiting until press Joystick Up */
   /* Wait until End-Of-Convertion */
+  tmp = 0;
+  tmp3 = 0;
   adcInit(ADC_Channel_Vrefint);
-  ADC_SoftwareStartConv(ADC1); //开启软件转换
-  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
-  {}
-  ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
-  /* Get conversion value */
-  tmp = ADC_GetConversionValue(ADC1);
-  ADC_RATIO= (1.225 * 4096)/tmp;
+    for(i=0;i<samplecount;i++)
+  { 
+      ADC_SoftwareStartConv(ADC1); //开启软件转换
+    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
+    {}
+    ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
+    /* Get conversion value */
+    tmp = ADC_GetConversionValue(ADC1);
+    tmp3=tmp3+tmp;
+  }
+
+  ADC_RATIO= 3;//(1.225 * 4096)*samplecount/tmp3;
   
   
   ADC_DeInit(ADC1);

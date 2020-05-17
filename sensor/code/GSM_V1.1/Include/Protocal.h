@@ -2,13 +2,14 @@
 #define PROTOCAL_H_
 #include "stm8l15x.h"
 
+
 #define NODE_TO_SERVERH  0xAB
 #define NODE_TO_SERVERL  0xAB
 #define SERVER_TO_NODEH  0xAA
 #define SERVER_TO_NODEL  0xAA
-
+#define SETTING_THRES    0.001
 #define CHECKSUM_INDEX   0x05
-#define SENSOR_FACTOR	 3.5/70
+#define SENSOR_FACTOR	 0.05
 #define VOLTAGE_FACTOR	22275
 #define vol_offset	60.6
 typedef struct{
@@ -22,8 +23,11 @@ typedef struct{
   unsigned char status;
   float deepth_calibration;
   float Warn_Thres;
+  float voltage_calibration_value;
   float vbatf;
   float deep_f;
+  float deep_f_last;
+  unsigned char calibration_done;
   unsigned char flow[4];
   unsigned char flow_status;
 }Data_Stru;

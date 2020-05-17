@@ -33,11 +33,21 @@ mode_stru *get_params_mode()
 }
 void airMachine_ctrl(unsigned char umode)
 {
+/*
+adc_io.adc_result[0];//humid
+adc_io.adc_result[1];//tar_env_temper
+adc_io.adc_result[2];//equip_env_temper
+adc_io.adc_result[3];//water temperature
+adc_io.adc_result[4];machine_air_temper
+adc_io.adc_result[5];target_wind_temper
+adc_io.adc_result[6];
+
+*/
 
     settings_params.tar_env_temper =adc_io.adc_result[1];
     settings_params.equip_env_temper = adc_io.adc_result[2];
-    settings_params.machine_air_temper = adc_io.adc_result[3];
-    settings_params.target_wind_temper =adc_io.adc_result[4];
+    settings_params.machine_air_temper = adc_io.adc_result[4];
+    settings_params.target_wind_temper =adc_io.adc_result[5];
 	   settings_params.humid[0] = adc_io.adc_result[0];
  	  settings_params.humid[1] = adc_io.adc_result[0];	
 

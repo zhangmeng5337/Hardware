@@ -16,5 +16,6 @@
 
 #define m 0x00
 void LCD_Congfig(void);
-void lcd_process(void);
+void lcd_process(unsigned char flag);
+
 #endif

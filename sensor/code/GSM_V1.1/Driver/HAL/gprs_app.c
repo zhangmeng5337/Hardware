@@ -59,7 +59,7 @@ void SIMCOM_Register_Network()
         SIMCOM_TimeOut_Count = 0;
         NET_STAUS = SIMCOM_NET_NOT;
         GSM_HardwareInit(ON);                   //复位重启
-        GSM_HardwareInit(ON);
+       // GSM_HardwareInit(ON);
         NET_STAUS=SIMCOM_POWER_ON;       //状态机复位
       }
     }
@@ -95,7 +95,7 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_GPRS_READY:
     {
-      if (sendCommand("AT+CIPSHUT\r\n", "OK", 3000, 1) == Success)
+      if (sendCommand("AT+CIPSHUT\r\n", "OK", 300, 1) == Success)
         NET_STAUS = SIMCOM_NET_CLOSE; 
     }
     break;
@@ -107,7 +107,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_NET_PASS_THROUGH:
     {
-      if (sendCommand(Establish_TCP_Connection, "OK", 30000, 1) == Success)
+      if (sendCommand((char*)Establish_TCP_Connection, "OK", 30000, 1) == Success)
       {
 #if debug 
         NET_STAUS=SIMCOM_Connect_Platform;
@@ -121,10 +121,22 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_Connect_Platform:
     {
-      if (sendCommand(one_net_key, "received", 240000, 1) == Success)
+        static unsigned char tx_count;
+      
+      if (sendCommand("*296832#571498701#json*", "received", 140000, 1) == Success)
       {
         NET_STAUS=SIMCOM_NET_OK;          
       } 
+      else
+      {
+        tx_count++;
+        if(tx_count>=100)
+        {
+            NET_STAUS=SIMCOM_NET_OK;
+           tx_count = 0;        
+        }
+
+      }
     }
     break;
     
@@ -142,7 +154,7 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_ERROR:
     {
       GSM_HardwareInit(ON);                   //复位重启
-      GSM_HardwareInit(ON);
+     // GSM_HardwareInit(ON);
       NET_STAUS=SIMCOM_POWER_ON;       //状态机复位
     }
     break;

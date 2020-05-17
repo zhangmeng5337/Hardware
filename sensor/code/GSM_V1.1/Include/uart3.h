@@ -1,5 +1,5 @@
-#ifndef __UART1_H
-#define __UART1_H
+#ifndef __UART3_H
+#define __UART3_H
 
 /* 包含系统头文件 */
 #include <stdio.h>

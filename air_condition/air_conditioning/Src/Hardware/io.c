@@ -12,11 +12,14 @@ void device_ctrl(unsigned char devNo,unsigned char on_off)
 			case FAN_COOL:HAL_GPIO_WritePin(CTR_OUT2_GPIO_Port, CTR_OUT2_Pin,GPIO_PIN_SET);break;
 			case PUMP:  HAL_GPIO_WritePin(CTR_OUT3_GPIO_Port, CTR_OUT3_Pin,GPIO_PIN_SET);break;
 			case HUMID: HAL_GPIO_WritePin(PWM_GPIO_Port, PWM_Pin,GPIO_PIN_SET);break;
+			case GATE : HAL_GPIO_WritePin(CTR_OUT4_GPIO_Port, CTR_OUT3_Pin,GPIO_PIN_SET);break;
+
       case DEV_ALL:
 			HAL_GPIO_WritePin(CTR_OUT1_GPIO_Port, CTR_OUT1_Pin,GPIO_PIN_SET);
 			HAL_GPIO_WritePin(CTR_OUT2_GPIO_Port, CTR_OUT2_Pin,GPIO_PIN_SET);
 			HAL_GPIO_WritePin(CTR_OUT3_GPIO_Port, CTR_OUT3_Pin,GPIO_PIN_SET);
-			HAL_GPIO_WritePin(PWM_GPIO_Port, PWM_Pin,GPIO_PIN_SET);break;
+			HAL_GPIO_WritePin(PWM_GPIO_Port, PWM_Pin,GPIO_PIN_SET);
+			HAL_GPIO_WritePin(CTR_OUT4_GPIO_Port, CTR_OUT3_Pin,GPIO_PIN_SET);break;
 			
 
 		}
@@ -29,12 +32,15 @@ void device_ctrl(unsigned char devNo,unsigned char on_off)
 			case FAN_COOL:HAL_GPIO_WritePin(CTR_OUT2_GPIO_Port, CTR_OUT2_Pin,GPIO_PIN_RESET);break;
 			case PUMP:HAL_GPIO_WritePin(CTR_OUT3_GPIO_Port, CTR_OUT3_Pin,GPIO_PIN_RESET);break;
 			case HUMID:HAL_GPIO_WritePin(PWM_GPIO_Port, PWM_Pin,GPIO_PIN_RESET);break;
+			case GATE: HAL_GPIO_WritePin(CTR_OUT4_GPIO_Port, CTR_OUT4_Pin,GPIO_PIN_RESET);break;
 
             case DEV_ALL:
 			HAL_GPIO_WritePin(CTR_OUT1_GPIO_Port, CTR_OUT1_Pin,GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(CTR_OUT2_GPIO_Port, CTR_OUT2_Pin,GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(CTR_OUT3_GPIO_Port, CTR_OUT3_Pin,GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(PWM_GPIO_Port, PWM_Pin,GPIO_PIN_RESET);break;	
+			HAL_GPIO_WritePin(PWM_GPIO_Port, PWM_Pin,GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(CTR_OUT4_GPIO_Port, CTR_OUT4_Pin,GPIO_PIN_RESET);
+			break;	
 		}
 	}
 		#if DEBUG_USER

@@ -26,7 +26,7 @@
 #include "GSM.h"
 #include "uart1.h"  
 #include "uart3.h" 
-
+#include "bsp.h"
 #include "Protocal.h"
 Uart_Types uart_str;
 extern  Flow_stru Flow;
@@ -173,6 +173,7 @@ INTERRUPT_HANDLER(EXTI0_IRQHandler, 8)
   /* In order to detect unexpected events during development,
   it is recommended to set a breakpoint on the following instruction.
   */
+  LED_TOG();
     ExeIntFlag = 1;
   EXTI_ClearITPendingBit(EXTI_IT_Pin0);
 }
@@ -403,23 +404,23 @@ INTERRUPT_HANDLER(TIM1_CC_IRQHandler, 24)
   
   
 
-  static float num2;
-
-  if(TIM1_GetITStatus(TIM1_IT_CC1) != RESET) //如果CH1边沿触发  
-  {  
-    Flow.cal_flag = 1;
-    Flow.pulse_period = TIM1_GetCapture1();  
-    TIM1_ClearITPendingBit(TIM1_IT_CC1);    //清除标志位  
-  }  
-  else if(TIM1_GetITStatus(TIM1_IT_CC2) != RESET) //如果CH2边沿触发  
-  {  
-    num2 = TIM1_GetCapture2();             //
-    TIM1_ClearITPendingBit(TIM1_IT_CC2);    //清除标志位  
-    // num = (uint16_t)((num2 / num1) * 100.0); //计算占空比
-    
-    
-  }
-  
+  //static float num2;
+//
+//  if(TIM1_GetITStatus(TIM1_IT_CC1) != RESET) //如果CH1边沿触发  
+//  {  
+//    Flow.cal_flag = 1;
+//    Flow.pulse_period = TIM1_GetCapture1();  
+//    TIM1_ClearITPendingBit(TIM1_IT_CC1);    //清除标志位  
+//  }  
+//  else if(TIM1_GetITStatus(TIM1_IT_CC2) != RESET) //如果CH2边沿触发  
+//  {  
+//    num2 = TIM1_GetCapture2();             //
+//    TIM1_ClearITPendingBit(TIM1_IT_CC2);    //清除标志位  
+//    // num = (uint16_t)((num2 / num1) * 100.0); //计算占空比
+//    
+//    
+//  }
+//  
   
   
   
@@ -478,27 +479,13 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
     uart1_interrupt_handler();
     
   }
-  //UsartReceiveData[0] = GetModuleParams()->ADDH;
-  //UsartReceiveData[1] =  GetModuleParams()->ADDL;
-  
-  /* if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
+  else
   {
-  //uart_str.receive_flag =1;
-  //	uart_str.receive_flag ++;
-  USART_ClearITPendingBit(USART1, USART_FLAG_RXNE);//清除中断标志
-  uart_str.UsartReceiveData[j] = USART_ReceiveData8(USART1);
-  j++;  
-}
-  
-  
-  if(uart_str.receive_flag==1) {
-  // uart_str.
-  // usart_i = j-1 ;
-  uart_str.rx_len = uart_str.rx_len + j;
-  uart_str.real_index = uart_str.real_index + j;
-  j = 0; 
-  //	uart_str.receive_flag =0;
-}*/
+    unsigned char t;
+    t = USART1->SR;
+    t = USART1->DR;//IDLE清零需要依次读SR 和DR 寄存器
+  }
+
   
 }
 
