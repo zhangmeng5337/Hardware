@@ -9,12 +9,6 @@
 #define Network_Thres    30
 unsigned char one_net_key[]="*296832#571498701#json*";//284261：产品编号；abab：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
-
-
-
-
-
-
 unsigned char	NET_STAUS=SIMCOM_NET_NOT;//网络链接状态信息标志
 uint32_t  SIMCOM_TimeOut_Count;
 unsigned char Get_Network_status(void)
@@ -59,7 +53,7 @@ void SIMCOM_Register_Network()
         SIMCOM_TimeOut_Count = 0;
         NET_STAUS = SIMCOM_NET_NOT;
         GSM_HardwareInit(ON);                   //复位重启
-       // GSM_HardwareInit(ON);
+        // GSM_HardwareInit(ON);
         NET_STAUS=SIMCOM_POWER_ON;       //状态机复位
       }
     }
@@ -121,7 +115,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_Connect_Platform:
     {
-        static unsigned char tx_count;
+      static unsigned char tx_count;
       
       if (sendCommand("*296832#571498701#json*", "received", 140000, 1) == Success)
       {
@@ -132,10 +126,10 @@ void SIMCOM_Register_Network()
         tx_count++;
         if(tx_count>=100)
         {
-            NET_STAUS=SIMCOM_NET_OK;
-           tx_count = 0;        
+          NET_STAUS=SIMCOM_NET_OK;
+          tx_count = 0;        
         }
-
+        
       }
     }
     break;
@@ -154,7 +148,7 @@ void SIMCOM_Register_Network()
   case SIMCOM_NET_ERROR:
     {
       GSM_HardwareInit(ON);                   //复位重启
-     // GSM_HardwareInit(ON);
+      // GSM_HardwareInit(ON);
       NET_STAUS=SIMCOM_POWER_ON;       //状态机复位
     }
     break;

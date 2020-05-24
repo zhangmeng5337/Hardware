@@ -816,7 +816,10 @@ void run_process()
     if( mode.status == WORK_ON)//Æô¶¯Õý³£
     {
         machine_mode_control(mode.modeNo);
-		
+		    if(HAL_GPIO_ReadPin(GPIOA,SW1_Pin)==1)
+					device_ctrl(GATE,ON);
+				else
+					device_ctrl(GATE,OFF);				
     }
 	else
 	{

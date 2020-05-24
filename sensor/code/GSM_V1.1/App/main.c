@@ -12,14 +12,14 @@ uint32_t tick = 0;
 // extern  unsigned int wakeupcount;
 void main(void)
 {
-	
-
+  
+  
   HardwareInit();
-   GSMInit();
+  GSMInit();
   module_prams_init();
   RtcWakeUp = 1;
   LCD_Congfig();
-
+  
   while(1)
   {
     if(RtcWakeUp == 1)
@@ -27,9 +27,9 @@ void main(void)
       
       parseGpsBuffer();
       module_process(); 
-    //GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
-   // GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
+      //GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
+      // GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
     }
-
+    
   }
 }
