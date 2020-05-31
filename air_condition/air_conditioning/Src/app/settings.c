@@ -146,6 +146,7 @@ unsigned char command_tx_time_loop(unsigned char umode)
         mode.flag_mark = 1;
         gettime = HAL_GetTick();
         mode.last_mode_no  = umode;
+		return 0;
     }
 
     if((HAL_GetTick() -gettime)>=FAN_RUN_TIME&&mode.flag_mark==1)
@@ -802,9 +803,9 @@ void write_dipay_ram(unsigned char umode)
 void run_process()
 {
 
-
-    work_mode_process();
-    adc_process();
+    /**************************************设备控制*************************************************/
+    work_mode_process();//按键处理
+    adc_process();//模拟量采集
     get_io();
     settings_params.tar_env_temper =adc_io.adc_result[1];
     settings_params.equip_env_temper = adc_io.adc_result[2];
@@ -815,11 +816,11 @@ void run_process()
     // if( adc_io.fault_status ==0&&mode.status == WORK_ON)//启动正常
     if( mode.status == WORK_ON)//启动正常
     {
-        machine_mode_control(mode.modeNo);
-		    if(HAL_GPIO_ReadPin(GPIOA,SW1_Pin)==1)
-					device_ctrl(GATE,ON);
-				else
-					device_ctrl(GATE,OFF);				
+		machine_mode_control(mode.modeNo);
+		if(HAL_GPIO_ReadPin(GPIOA,SW1_Pin)==1)
+			device_ctrl(GATE,ON);
+		else
+			device_ctrl(GATE,OFF);				
     }
 	else
 	{
@@ -828,7 +829,7 @@ void run_process()
 		device_ctrl(DEV_ALL,OFF);
 
 	}
-
+/*****************************************显示控制******************************************************/
     if(get_params_mode()->mode ==NORMAL&&get_params_mode()->status >=WORK_OFF)//正常模式
     {
         /*if( adc_io.fault_status!=0)

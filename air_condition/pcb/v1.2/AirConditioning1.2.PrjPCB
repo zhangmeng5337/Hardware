@@ -159,90 +159,170 @@ DocumentPath=Project Outputs for AirConditioning\Design Rule Check - PCB1.html
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for AirConditioning\PCB1-RoundHoles.TXT
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1-RoundHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for AirConditioning\PCB1-SlotHoles.TXT
+DocumentPath=Project Outputs for AirConditioning\PCB1-RoundHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for AirConditioning\PCB1.DRL
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1-SlotHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs for AirConditioning\PCB1.DRR
+DocumentPath=Project Outputs for AirConditioning\PCB1-SlotHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Project Outputs for AirConditioning\PCB1.EXTREP
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.DRL
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBL
+DocumentPath=Project Outputs for AirConditioning\PCB1.DRL
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBO
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBP
+DocumentPath=Project Outputs for AirConditioning\PCB1.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBS
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GKO
+DocumentPath=Project Outputs for AirConditioning\PCB1.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GM1
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GPB
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GPT
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTL
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTO
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTP
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTS
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument21]
-DocumentPath=Project Outputs for AirConditioning\PCB1.LDP
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument22]
-DocumentPath=..\..\..\sensor\pcb\gprs\v1.2\PCB1.PcbDoc.htm
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument23]
-DocumentPath=Project Outputs for AirConditioning\PCB1.REP
+DocumentPath=Project Outputs for AirConditioning\PCB1.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument24]
-DocumentPath=Project Outputs for AirConditioning\PCB1.RUL
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GM1
 DItemRevisionGUID=
 
 [GeneratedDocument25]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GM1
+DItemRevisionGUID=
+
+[GeneratedDocument26]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GPB
+DItemRevisionGUID=
+
+[GeneratedDocument27]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GPB
+DItemRevisionGUID=
+
+[GeneratedDocument28]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GPT
+DItemRevisionGUID=
+
+[GeneratedDocument29]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GPT
+DItemRevisionGUID=
+
+[GeneratedDocument30]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument31]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument32]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument33]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument34]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument35]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument36]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument37]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument38]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument39]
+DocumentPath=Project Outputs for AirConditioning\PCB1.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument40]
+DocumentPath=..\..\..\sensor\pcb\gprs\v1.2\PCB1.PcbDoc.htm
+DItemRevisionGUID=
+
+[GeneratedDocument41]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.REP
+DItemRevisionGUID=
+
+[GeneratedDocument42]
+DocumentPath=Project Outputs for AirConditioning\PCB1.REP
+DItemRevisionGUID=
+
+[GeneratedDocument43]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument44]
+DocumentPath=Project Outputs for AirConditioning\PCB1.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument45]
 DocumentPath=Project Outputs for AirConditioning\PCB1.xls
 DItemRevisionGUID=
 
@@ -1039,7 +1119,7 @@ SelectedOnly=0
 PartTypes=0
 
 [Comparison Options]
-ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
+ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=0|UseName=-1|InclAllRules=0
 ComparisonOptions1=Kind=Net Class|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
 ComparisonOptions2=Kind=Component Class|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
 ComparisonOptions3=Kind=Rule|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
