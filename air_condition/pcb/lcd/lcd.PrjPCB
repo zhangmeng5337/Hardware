@@ -56,6 +56,36 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
+[Document3]
+DocumentPath=LCD_CAMtastic1.Cam
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[Document4]
+DocumentPath=LCD_CAMtastic2.Cam
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
 [GeneratedDocument1]
 DocumentPath=Project Outputs for AirConditioning\AirConditioning2.xls
 DItemRevisionGUID=
@@ -97,149 +127,225 @@ DocumentPath=Project Outputs for AirConditioning\PCB1.DRL
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.DRR
+DocumentPath=Project Outputs for lcd\PCB1.DRL
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs for AirConditioning\PCB1.DRR
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.EXTREP
+DocumentPath=Project Outputs for AirConditioning\PCB1.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs for AirConditioning\PCB1.EXTREP
+DocumentPath=Project Outputs for lcd\PCB1.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBL
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBL
+DocumentPath=Project Outputs for AirConditioning\PCB1.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBO
+DocumentPath=Project Outputs for lcd\PCB1.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBO
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBP
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBP
+DocumentPath=Project Outputs for lcd\PCB1.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument21]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBS
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument22]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GBS
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument23]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GKO
+DocumentPath=Project Outputs for lcd\PCB1.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument24]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GKO
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument25]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GM1
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument26]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GM1
+DocumentPath=Project Outputs for lcd\PCB1.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument27]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GPB
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument28]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GPB
+DocumentPath=Project Outputs for AirConditioning\PCB1.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument29]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GPT
+DocumentPath=Project Outputs for lcd\PCB1.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument30]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GPT
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument31]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTL
+DocumentPath=Project Outputs for AirConditioning\PCB1.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument32]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTL
+DocumentPath=Project Outputs for lcd\PCB1.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument33]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTO
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GM1
 DItemRevisionGUID=
 
 [GeneratedDocument34]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTO
+DocumentPath=Project Outputs for AirConditioning\PCB1.GM1
 DItemRevisionGUID=
 
 [GeneratedDocument35]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTP
+DocumentPath=Project Outputs for lcd\PCB1.GM1
 DItemRevisionGUID=
 
 [GeneratedDocument36]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTP
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GPB
 DItemRevisionGUID=
 
 [GeneratedDocument37]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTS
+DocumentPath=Project Outputs for AirConditioning\PCB1.GPB
 DItemRevisionGUID=
 
 [GeneratedDocument38]
-DocumentPath=Project Outputs for AirConditioning\PCB1.GTS
+DocumentPath=Project Outputs for lcd\PCB1.GPB
 DItemRevisionGUID=
 
 [GeneratedDocument39]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.LDP
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GPT
 DItemRevisionGUID=
 
 [GeneratedDocument40]
-DocumentPath=Project Outputs for AirConditioning\PCB1.LDP
+DocumentPath=Project Outputs for AirConditioning\PCB1.GPT
 DItemRevisionGUID=
 
 [GeneratedDocument41]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.REP
+DocumentPath=Project Outputs for lcd\PCB1.GPT
 DItemRevisionGUID=
 
 [GeneratedDocument42]
-DocumentPath=Project Outputs for AirConditioning\PCB1.REP
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument43]
-DocumentPath=Project Outputs for AirConditioning1.2\PCB1.RUL
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument44]
-DocumentPath=Project Outputs for AirConditioning\PCB1.RUL
+DocumentPath=Project Outputs for lcd\PCB1.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument45]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument46]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument47]
+DocumentPath=Project Outputs for lcd\PCB1.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument48]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument49]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument50]
+DocumentPath=Project Outputs for lcd\PCB1.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument51]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument52]
+DocumentPath=Project Outputs for AirConditioning\PCB1.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument53]
+DocumentPath=Project Outputs for lcd\PCB1.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument54]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument55]
+DocumentPath=Project Outputs for AirConditioning\PCB1.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument56]
+DocumentPath=Project Outputs for lcd\PCB1.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument57]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.REP
+DItemRevisionGUID=
+
+[GeneratedDocument58]
+DocumentPath=Project Outputs for AirConditioning\PCB1.REP
+DItemRevisionGUID=
+
+[GeneratedDocument59]
+DocumentPath=Project Outputs for lcd\PCB1.REP
+DItemRevisionGUID=
+
+[GeneratedDocument60]
+DocumentPath=Project Outputs for AirConditioning1.2\PCB1.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument61]
+DocumentPath=Project Outputs for AirConditioning\PCB1.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument62]
+DocumentPath=Project Outputs for lcd\PCB1.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument63]
+DocumentPath=Project Outputs for lcd\PCB1.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument64]
 DocumentPath=Project Outputs for AirConditioning\PCB1.xls
 DItemRevisionGUID=
 
 [OutputGroup1]
 Name=Netlist Outputs
 Description=
-TargetPrinter=OneNote for Windows 10
+TargetPrinter=HP LaserJet Pro MFP M126nw
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=CadnetixNetlist
 OutputName1=Cadnetix Netlist
@@ -370,7 +476,7 @@ OutputDefault25=0
 [OutputGroup2]
 Name=Simulator Outputs
 Description=
-TargetPrinter=OneNote for Windows 10
+TargetPrinter=HP LaserJet Pro MFP M126nw
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=AdvSimNetlist
 OutputName1=Mixed Sim
@@ -391,7 +497,7 @@ OutputDefault3=0
 [OutputGroup3]
 Name=Documentation Outputs
 Description=
-TargetPrinter=OneNote for Windows 10
+TargetPrinter=HP LaserJet Pro MFP M126nw
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Composite
 OutputName1=Composite Drawing
@@ -451,7 +557,7 @@ PageOptions9=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintS
 [OutputGroup4]
 Name=Assembly Outputs
 Description=
-TargetPrinter=OneNote for Windows 10
+TargetPrinter=HP LaserJet Pro MFP M126nw
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Assembly
 OutputName1=Assembly Drawings
@@ -473,55 +579,55 @@ OutputDefault3=0
 [OutputGroup5]
 Name=Fabrication Outputs
 Description=
-TargetPrinter=OneNote for Windows 10
+TargetPrinter=HP LaserJet Pro MFP M126nw
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
-OutputType1=ODB
-OutputName1=ODB++ Files
+OutputType1=Drill
+OutputName1=Drill Drawing/Guides
 OutputDocumentPath1=
 OutputVariantName1=
 OutputDefault1=0
-OutputType2=NC Drill
-OutputName2=NC Drill Files
+PageOptions1=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+OutputType2=Mask
+OutputName2=Solder/Paste Mask Prints
 OutputDocumentPath2=
 OutputVariantName2=
 OutputDefault2=0
-Configuration2_Name1=OutputConfigurationParameter1
-Configuration2_Item1=BoardEdgeRoutToolDia=2000000|GenerateBoardEdgeRout=False|GenerateDrilledSlotsG85=False|GenerateSeparatePlatedNonPlatedFiles=False|NumberOfDecimals=5|NumberOfUnits=2|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Record=DrillView|Units=Imperial|ZeroesMode=SuppressTrailingZeroes
-OutputType3=Test Points
-OutputName3=Test Point Report
+PageOptions2=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+OutputType3=Final
+OutputName3=Final Artwork Prints
 OutputDocumentPath3=
 OutputVariantName3=
 OutputDefault3=0
-OutputType4=Plane
-OutputName4=Power-Plane Prints
+PageOptions3=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+OutputType4=CompositeDrill
+OutputName4=Composite Drill Drawing
 OutputDocumentPath4=
 OutputVariantName4=
 OutputDefault4=0
 PageOptions4=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType5=Mask
-OutputName5=Solder/Paste Mask Prints
+OutputType5=NC Drill
+OutputName5=NC Drill Files
 OutputDocumentPath5=
 OutputVariantName5=
 OutputDefault5=0
-PageOptions5=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType6=Drill
-OutputName6=Drill Drawing/Guides
+Configuration5_Name1=OutputConfigurationParameter1
+Configuration5_Item1=BoardEdgeRoutToolDia=2000000|GenerateBoardEdgeRout=False|GenerateDrilledSlotsG85=False|GenerateSeparatePlatedNonPlatedFiles=False|NumberOfDecimals=5|NumberOfUnits=2|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Record=DrillView|Units=Imperial|ZeroesMode=SuppressTrailingZeroes
+OutputType6=ODB
+OutputName6=ODB++ Files
 OutputDocumentPath6=
 OutputVariantName6=
 OutputDefault6=0
-PageOptions6=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType7=CompositeDrill
-OutputName7=Composite Drill Drawing
+OutputType7=Plane
+OutputName7=Power-Plane Prints
 OutputDocumentPath7=
 OutputVariantName7=
 OutputDefault7=0
 PageOptions7=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType8=Final
-OutputName8=Final Artwork Prints
+OutputType8=Test Points
+OutputName8=Test Point Report
 OutputDocumentPath8=
 OutputVariantName8=
 OutputDefault8=0
-PageOptions8=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
 OutputType9=Gerber
 OutputName9=Gerber Files
 OutputDocumentPath9=
@@ -533,7 +639,7 @@ Configuration9_Item1=AddToAllPlots.Set=SerializeLayerHash.Version~2,ClassName~TL
 [OutputGroup6]
 Name=Report Outputs
 Description=
-TargetPrinter=OneNote for Windows 10
+TargetPrinter=HP LaserJet Pro MFP M126nw
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=BOM_PartType
 OutputName1=Bill of Materials
@@ -594,7 +700,7 @@ OutputDefault8=0
 [OutputGroup7]
 Name=Other Outputs
 Description=
-TargetPrinter=OneNote for Windows 10
+TargetPrinter=HP LaserJet Pro MFP M126nw
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Text Print
 OutputName1=Text Print
