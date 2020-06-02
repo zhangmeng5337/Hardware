@@ -13,6 +13,8 @@
 #include "settings.h"
 #include "machine.h"
 #include "display.h"
+#include "oled.h"
+#include "bmp.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -125,8 +127,8 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-		run_process();	
     /* USER CODE BEGIN 3 */
+		run_process();
   }
   /* USER CODE END 3 */
 }
@@ -409,8 +411,8 @@ static void MX_GPIO_Init(void)
                           |CTR_OUT4_Pin|CTR_OUT1_Pin|M74HC595_RCK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, M74HC595_SI_Pin|M74HC595_SCK_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOA, PWM_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, PWM_Pin|M74HC595_SI_Pin|M74HC595_SCK_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : led_status_Pin led_ctrl1_Pin */
   GPIO_InitStruct.Pin = led_status_Pin|led_ctrl1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
