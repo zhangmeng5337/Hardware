@@ -31,7 +31,7 @@ void delay_ms(uint32_t num)//不是很精确
 
 void GPIO_Initial(void)
 {
-/*#if module == smartbox
+  /*#if module == smartbox
   //GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
@@ -44,19 +44,20 @@ void GPIO_Initial(void)
   GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast ); 
 #elif module == sensor||module == DEGUG_SENSOR*/
   //GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
- // GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  // GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   //GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   //GPIO_Init( GPIOD, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
-
+  GPIO_Init( GPIOC, GPIO_Pin_4, GPIO_Mode_In_PU_No_IT );
+//GPIO_Init( GPIOC, GPIO_Pin_7, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( PORT_FLOW, PIN_FLOW, GPIO_Mode_Out_PP_Low_Fast );
-
+  
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
- 
+  
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
-  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_0, EXTI_Trigger_Rising);
-
-//#endif
+  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_FL_IT);
+  EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Rising_Falling);
+  
+  //#endif
   
   
   
@@ -80,22 +81,22 @@ void Init_Timer1(void)
   TIM1_CCxCmd(TIM1_Channel_1, ENABLE);                   //使能输入捕获通道1
   TIM1_CCxCmd(TIM1_Channel_2, ENABLE);                   //使能输入捕获通道2
   TIM1_Cmd(ENABLE);                                     //使能定时器
-
+  
 }
 
 
 void GSM_HardwareInit(unsigned char flag)
 {
-	GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast );
-	GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast ); 
-	GPIO_Init( GPIOC, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast ); 
-	GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );	
-
+  GPIO_Init( PORT_GNSS_PORT, PIN_GNSS, GPIO_Mode_Out_PP_Low_Fast );
+  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast ); 
+  //GPIO_Init( GPIOC, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast ); 
+  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Slow );	
+  
   
   if(flag == ON)
   {
-    GPIO_ResetBits( GPIOC, GPIO_Pin_2 );
-     //GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
+    // GPIO_ResetBits( GPIOC, GPIO_Pin_2 );
+    //GPIO_SetBits( PORT_POWER_ON, PIN_POWER_ON ); 
     //  GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
     //GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
@@ -108,8 +109,8 @@ void GSM_HardwareInit(unsigned char flag)
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );                
     delay_ms(2000);
     GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, SET);
-    GPIO_SetBits(GPIOD, GPIO_Pin_2);
-
+    // GPIO_SetBits(GPIOD, GPIO_Pin_2);
+    
     //delay_ms(3000);
     //delay_ms(4000);
     //delay_ms(4000);
@@ -119,15 +120,15 @@ void GSM_HardwareInit(unsigned char flag)
     //delay_ms(2000);
     //delay_ms(2000);
   }
-  //	else
-  //	{
-  //		GPIO_ResetBits( PORT_POWER_ON, PIN_POWER_ON ); 
-  //		delay_ms(2000);
-  //		GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN ); 
-  //		delay_ms(2000);
-  //		delay_ms(2000);
-  //
-  //	}
+  else
+  {
+    GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+    
+    GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+    delay_ms(1000);
+    GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+    //GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, RESET); 
+  }
   
 }
 void Sensor_HardwareInit(unsigned char flag)
@@ -151,29 +152,29 @@ void Sensor_HardwareInit(unsigned char flag)
 void FLOW_Ctrl(unsigned char flag)
 {
   
-
+  
   if(flag == ON)
   {
     GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
     delay_ms(50);
     GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
-	delay_ms(50);
-   // GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
+    delay_ms(50);
+    // GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
     
-
-  //  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );    
+    
+    //  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );    
   }
   else
   {
     
-  GPIO_SetBits( PORT_FLOW, PIN_FLOW );
-  delay_ms(50);
-  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );	
+    GPIO_SetBits( PORT_FLOW, PIN_FLOW );
     delay_ms(50);
-//  GPIO_SetBits( PORT_FLOW, PIN_FLOW );
-
-
-
+    GPIO_ResetBits( PORT_FLOW, PIN_FLOW );	
+    delay_ms(50);
+    //  GPIO_SetBits( PORT_FLOW, PIN_FLOW );
+    
+    
+    
     
   }
   
@@ -188,22 +189,22 @@ void RTC_Config(uint16_t time,unsigned char flag)
     CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_1); //选择RTC时钟源LSI 38K、2=19K
     while (CLK_GetFlagStatus(CLK_FLAG_LSIRDY) == RESET);
     
-    RTC_WakeUpCmd(DISABLE);
+    //RTC_WakeUpCmd(DISABLE);
     CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE); //允许RTC时钟
     RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
-    
+    RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断    
     RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值	
-    RTC_ITConfig(RTC_IT_WUT, ENABLE); //开启中断
-    RTC_ClearITPendingBit(RTC_IT_WUT);
+
+   // RTC_ClearITPendingBit(RTC_IT_WUT);
     RTC_WakeUpCmd(ENABLE);
     
   }
   else
   {
     RTC_WakeUpCmd(DISABLE);
-    CLK_PeripheralClockConfig(CLK_Peripheral_RTC, DISABLE); //允许RTC时钟
+   // CLK_PeripheralClockConfig(CLK_Peripheral_RTC, DISABLE); //允许RTC时钟
     //RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
-   // RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断
+    // RTC_ITConfig(RTC_IT_WUT, DISABLE); //开启中断
     //RTC_ClearITPendingBit(RTC_IT_WUT);
     // RTC_SetWakeUpCounter(time); //设置RTC Weakup计算器初值
     
@@ -218,75 +219,35 @@ extern u8 CurrentMode ;
 void EnterStopMode(void) 
 {
   disableInterrupts(); 
-  //  SX1276_LoRa_SetMode( LORA_MODE_SLEEP );//lora enter sleep mode
-  //  
-  //  //GPIOA
-  //  GPIO_Init( PORT_SX127X_TX_CTRL, PIN_SX127X_RX_CTRL|PIN_SX127X_TX_CTRL, GPIO_Mode_Out_PP_Low_Slow ); //lora tx and rx enbale signals 
-  //  GPIO_Init( GPIOA, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Slow );
-  //  GPIO_Init( GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Slow );
-  //  
-  //  //GPIOB
-  //  GPIO_Init(GPIOB, PIN_SX127X_AUX, GPIO_Mode_Out_PP_Low_Slow);
-  //  GPIO_Init(GPIOB, PIN_SX127X_M0, GPIO_Mode_Out_PP_Low_Slow);
-  //  GPIO_Init(GPIOB, PIN_SX127X_M1, GPIO_Mode_Out_PP_Low_Slow);
-  //  GPIO_SetBits( PORT_SX127X_CSN, PIN_SX127X_CSN ); 
-  //  
-  //  //GPIOC
-  //  GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
-  //  GPIO_Init( PORT_SX127X_DIO3, GPIO_Pin_0|PIN_SX127X_DIO3|PIN_SX127X_DIO4|PIN_SX127X_DIO5, GPIO_Mode_Out_PP_Low_Slow );  
-  //GPIO_Init( GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Slow );
-  //GPIOD
-  //GPIO_Init( GPIOD, GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_Out_PP_Low_Slow );   
-  
+  CLK_PeripheralClockConfig(CLK_Peripheral_USART1,DISABLE);
+  //  LCD_Cmd(DISABLE);                                 // 启用LCD控制器。
   GPIO_Init( GPIOA, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
-  
-  // GPIO_Mode_In_FL_No_IT      = (uint8_t)0x00,   /*!< Input floating, no external interrupt */
-  //GPIO_Mode_In_PU_No_IT      = (uint8_t)0x40,   /*!< Input pull-up, no external interrupt */
-  
-  // GPIO_Mode_Out_OD_Low_Fast  = (uint8_t)0xA0,   /*!< Output open-drain, low level, 10MHz */
-  //GPIO_Mode_Out_PP_Low_Fast  = (uint8_t)0xE0,   /*!< Output push-pull, low level, 10MHz */
-  // GPIO_Mode_Out_OD_Low_Slow  = (uint8_t)0x80,   /*!< Output open-drain, low level, 2MHz */
-  // GPIO_Mode_Out_PP_Low_Slow  = (uint8_t)0xC0,   /*!< Output push-pull, low level, 2MHz */
-  //  GPIO_Mode_Out_OD_HiZ_Fast  = (uint8_t)0xB0,   /*!< Output open-drain, high-impedance level, 10MHz */
-  //  GPIO_Mode_Out_PP_High_Fast = (uint8_t)0xF0,   /*!< Output push-pull, high level, 10MHz */
-  //  GPIO_Mode_Out_OD_HiZ_Slow  = (uint8_t)0x90,   /*!< Output open-drain, high-impedance level, 2MHz */
-  //  GPIO_Mode_Out_PP_High_Slow
-  
-  
+ /********************pa******************************************/
+      
   
   GPIO_Init( GPIOA,  GPIO_Pin_2, GPIO_Mode_In_FL_No_IT ); 
   GPIO_Init( GPIOA,  GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Fast );
-  GPIO_Init( GPIOA,  GPIO_Pin_4, GPIO_Mode_Out_OD_Low_Fast );   
-  GPIO_Init( GPIOA,  GPIO_Pin_5, GPIO_Mode_In_PU_No_IT ); 
+
   
-  GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
+  //GPIO_Init( GPIOB, GPIO_Pin_All, GPIO_Mode_In_PU_No_IT );
   GPIO_Init( GPIOC, GPIO_Pin_5|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4, GPIO_Mode_In_PU_No_IT );
-#if module == sensor
-  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast ); 
+  
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
-  GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_Out_PP_High_Fast ); 
-  GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
-  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast ); 
-  GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_In_FL_No_IT ); 
+  GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_In_FL_IT ); 
+  EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Rising_Falling);
+  //GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
+ // GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast ); 
+  //GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_In_FL_No_IT ); 
   GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_OD_Low_Slow );   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_High_Fast ); 
-  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
-  // GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-  GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );  
-#endif 
-  GPIO_Init( GPIOD,  GPIO_Pin_0|GPIO_Pin_2|GPIO_Pin_3, GPIO_Mode_In_PU_No_IT );
   
+  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_FL_IT);
+  GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+  
+  GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
+  GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, SET); 
 
   
-
-  
-  
-  //  delay_ms(2000);
-  // GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );	  
-  GPIO_ResetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
-  
-  GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_PU_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_0, EXTI_Trigger_Rising);
   /* Deinitialize DMA channels */
   DMA_GlobalDeInit();
   
@@ -298,13 +259,13 @@ void EnterStopMode(void)
   DMA_GlobalCmd(DISABLE);
   DMA_Cmd(USART_DMA_CHANNEL_RX, DISABLE);  
   CLK_PeripheralClockConfig(CLK_Peripheral_DMA1, DISABLE);
-  
-  
-  //close clk
+  TIM1_DeInit();  
   TIM2_DeInit();
   TIM3_DeInit();
   TIM4_DeInit();
   ADC_DeInit(ADC1);
+    while((TIM1->CR1 & TIM_CR1_CEN) != 0x00); 
+  CLK_PeripheralClockConfig(CLK_Peripheral_TIM1,DISABLE);
   CLK_PeripheralClockConfig(CLK_Peripheral_ADC1,DISABLE);
   while((TIM2->CR1 & TIM_CR1_CEN) != 0x00); 
   CLK_PeripheralClockConfig(CLK_Peripheral_TIM2,DISABLE);
@@ -316,15 +277,17 @@ void EnterStopMode(void)
   TIM4_Cmd(DISABLE); 
   while((TIM4->CR1 & TIM4_CR1_CEN) != 0x00);
   CLK_PeripheralClockConfig(CLK_Peripheral_TIM4,DISABLE);
-  
-  CLK_PeripheralClockConfig(CLK_Peripheral_USART1,DISABLE);
+ // LCD_DeInit();
+
+LCD_Cmd(DISABLE);
+  CLK_PeripheralClockConfig(CLK_Peripheral_LCD,DISABLE);   //启用或禁用指定的外围时钟
+
   CLK_PeripheralClockConfig(CLK_Peripheral_I2C1,DISABLE);
-  CLK_PeripheralClockConfig(CLK_Peripheral_SPI1,DISABLE);  
-  
+  CLK_PeripheralClockConfig(CLK_Peripheral_SPI1,DISABLE); 
   PWR_UltraLowPowerCmd(ENABLE); //low power enable
   PWR_FastWakeUpCmd(ENABLE);  //wake up enable
   
-
+  
 }
 
 extern _uart uart1;
@@ -369,29 +332,23 @@ void HardwareInit()
   SystemClock_Init();     // 系统时钟初始化
   GPIO_Initial(); 
   Uart1_Init(115200);// 初始化GPIO
-  Uart3_Init(9600);
+  Uart3_Init(115200);
   DMA_Config();
   //LED_Init();
   //delay_ms(5000);
   //调试LED初始化
   
- 
-#if module == DEGUG_SENSOR
+
   Sensor_HardwareInit(ON);
-  Init_Timer1();
-#elif module == sensor
-  Sensor_HardwareInit(ON);
-#endif
+
   enableInterrupts();
 }
 void GSMInit()
 {
-
-#if module == sensor
-	  GSM_HardwareInit(ON);
-	  set_NetStatus(SIMCOM_POWER_ON); 
-#endif
-
+  
+  GSM_HardwareInit(ON);
+  set_NetStatus(SIMCOM_POWER_ON); 
+  
 }
 void LED_Init(void)
 {
@@ -439,17 +396,6 @@ uint32_t adcGet(ADC_Channel_TypeDef num,unsigned int samplecount)
   /* Wait until End-Of-Convertion */
   tmp = 0;
   tmp3 = 0;
-  adcInit(ADC_Channel_Vrefint);
-    for(i=0;i<samplecount;i++)
-  { 
-      ADC_SoftwareStartConv(ADC1); //开启软件转换
-    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
-    {}
-    ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
-    /* Get conversion value */
-    tmp = ADC_GetConversionValue(ADC1);
-    tmp3=tmp3+tmp;
-  }
 
   ADC_RATIO= 3;//(1.225 * 4096)*samplecount/tmp3;
   
@@ -462,7 +408,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num,unsigned int samplecount)
   for(i=0;i<samplecount;i++)
   { 
     ADC_SoftwareStartConv(ADC1); //开启软件转换
-    delay_ms(1);
+    delay_ms(10);
     while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0)
     {}
     ADC_ClearFlag(ADC1,ADC_FLAG_EOC);//清除对应标志
@@ -478,7 +424,7 @@ uint32_t adcGet(ADC_Channel_TypeDef num,unsigned int samplecount)
     
     
   }
-  ADCdata = tmp2 /samplecount;
+  ADCdata = tmp2*1.0 /samplecount;
   ADC_DeInit(ADC1);
   
   /* Disable ADC1 clock */

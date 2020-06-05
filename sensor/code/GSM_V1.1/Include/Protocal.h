@@ -38,5 +38,6 @@ typedef struct {
   unsigned char cal_flag;
   unsigned int  pulse_period;
 }Flow_stru;
+void reapte_time(void);
 #endif
 

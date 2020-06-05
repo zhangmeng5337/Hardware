@@ -32,8 +32,8 @@ const uint8_t LCD_Tab[10] =
 /* Private variables ---------------------------------------------------------*/
 void LCD_Congfig()
 {
-  CLK_PeripheralClockConfig(CLK_Peripheral_LCD,ENABLE);   //启用或禁用指定的外围时钟
-  CLK_RTCClockConfig(CLK_RTCCLKSource_HSI,CLK_RTCCLKDiv_64);      //必须配置RTC时钟源,HSI选为RTC时钟
+  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI,CLK_RTCCLKDiv_1);      //必须配置RTC时钟源,HSI选为RTC时钟
+   CLK_PeripheralClockConfig(CLK_Peripheral_LCD,ENABLE);   //启用或禁用指定的外围时钟 
   /*lcd初始化，*/
   LCD_Init(LCD_Prescaler_8,LCD_Divider_16,LCD_Duty_1_4,LCD_Bias_1_3,LCD_VoltageSource_External );//LCD_VoltageSource_External,LCD_VoltageSource_Internal
   /*lcd端口的配置*/
@@ -62,6 +62,7 @@ void LCD_Congfig()
   LCD_WriteRAM(LCD_RAMRegister_11,0);
   LCD_WriteRAM(LCD_RAMRegister_12,0);
   LCD_WriteRAM(LCD_RAMRegister_13,0);
+
   
 }
 void LCD_RAM_WRITE(unsigned char RegisterNum,unsigned char bitset,unsigned int dat)
@@ -420,11 +421,11 @@ void LCD_DisplayNum(float number2)
     break;
   default:
     break;
-	
+    
   }
   
-  	if(Data_usr.vbatf/3700000>=1.0)
-	{
+  if(Data_usr.vbatf/3700000>=1.0)
+  {
     LCD_RAMX[LCD_RAMRegister_0] |=0x03 ;
     LCD_WriteRAM(LCD_RAMRegister_0,LCD_RAMX[LCD_RAMRegister_0]); //p5 p6
     LCD_RAMX[LCD_RAMRegister_3] |=0x10 ;
@@ -433,9 +434,9 @@ void LCD_DisplayNum(float number2)
     LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //p8  
     LCD_RAMX[LCD_RAMRegister_10] |=0x10 ;
     LCD_WriteRAM(LCD_RAMRegister_10,LCD_RAMX[LCD_RAMRegister_10]); //p9 
-	}
-	else if(Data_usr.vbatf/3700000>=0.55)
-	{
+  }
+  else if(Data_usr.vbatf/3700000>=0.55)
+  {
     LCD_RAMX[LCD_RAMRegister_0] |=0x03 ;
     LCD_WriteRAM(LCD_RAMRegister_0,LCD_RAMX[LCD_RAMRegister_0]); //p5 p6
     LCD_RAMX[LCD_RAMRegister_3] |=0x10 ;
@@ -444,9 +445,9 @@ void LCD_DisplayNum(float number2)
     LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //p8  
     LCD_RAMX[LCD_RAMRegister_10] &=~0x10 ;
     LCD_WriteRAM(LCD_RAMRegister_10,LCD_RAMX[LCD_RAMRegister_10]); //p9 
-	}
-	else if(Data_usr.vbatf/3700000>0.3)
-	{
+  }
+  else if(Data_usr.vbatf/3700000>0.3)
+  {
     LCD_RAMX[LCD_RAMRegister_0] |=0x03 ;
     LCD_WriteRAM(LCD_RAMRegister_0,LCD_RAMX[LCD_RAMRegister_0]); //p5 p6
     LCD_RAMX[LCD_RAMRegister_3] |=0x10 ;
@@ -455,9 +456,9 @@ void LCD_DisplayNum(float number2)
     LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //p8  
     LCD_RAMX[LCD_RAMRegister_10] &=~0x10 ;
     LCD_WriteRAM(LCD_RAMRegister_10,LCD_RAMX[LCD_RAMRegister_10]); //p9 
-	}
-	else if(Data_usr.vbatf/3700000>0.1)
-	{
+  }
+  else if(Data_usr.vbatf/3700000>0.1)
+  {
     LCD_RAMX[LCD_RAMRegister_0] |=0x03 ;
     LCD_WriteRAM(LCD_RAMRegister_0,LCD_RAMX[LCD_RAMRegister_0]); //p5 p6
     LCD_RAMX[LCD_RAMRegister_3] &=~0x10 ;
@@ -466,9 +467,9 @@ void LCD_DisplayNum(float number2)
     LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //p8  
     LCD_RAMX[LCD_RAMRegister_10] &=~0x10 ;
     LCD_WriteRAM(LCD_RAMRegister_10,LCD_RAMX[LCD_RAMRegister_10]); //p9 
-	}
-	else 
-	{
+  }
+  else 
+  {
     LCD_RAMX[LCD_RAMRegister_0] &=~0x01 ;
     LCD_WriteRAM(LCD_RAMRegister_0,LCD_RAMX[LCD_RAMRegister_0]); //p5 p6
     LCD_RAMX[LCD_RAMRegister_3] &=~0x10 ;
@@ -477,29 +478,50 @@ void LCD_DisplayNum(float number2)
     LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //p8  
     LCD_RAMX[LCD_RAMRegister_10] &=~0x10 ;
     LCD_WriteRAM(LCD_RAMRegister_10,LCD_RAMX[LCD_RAMRegister_10]); //p9 
-	}
+  }
 }
 void lcd_process(unsigned char flag)
 {
   if(flag==1) 
-  LCD_DisplayNum(Data_usr.deep_f);
-  else
-  {
-   LCD_WriteRAM(LCD_RAMRegister_0,00);
-  LCD_WriteRAM(LCD_RAMRegister_1,00);
-  
-  LCD_WriteRAM(LCD_RAMRegister_2,00);
-  LCD_WriteRAM(LCD_RAMRegister_3,0);
-  LCD_WriteRAM(LCD_RAMRegister_4,0);
-  LCD_WriteRAM(LCD_RAMRegister_5,0);
-  LCD_WriteRAM(LCD_RAMRegister_6,0);
-  LCD_WriteRAM(LCD_RAMRegister_7,0);
-  LCD_WriteRAM(LCD_RAMRegister_8,0);
-  LCD_WriteRAM(LCD_RAMRegister_9,0);
-  LCD_WriteRAM(LCD_RAMRegister_10,0);
-  LCD_WriteRAM(LCD_RAMRegister_11,0);
-  LCD_WriteRAM(LCD_RAMRegister_12,0);
-  LCD_WriteRAM(LCD_RAMRegister_13,0);
+    LCD_DisplayNum(Data_usr.deep_f);
+  else if(flag == 3)
+  { 
+    LCD_RAMX[LCD_RAMRegister_7] &=~0x08 ;
+    LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //T2
+    LCD_RAMX[LCD_RAMRegister_3] |=0x80 ;
+    LCD_WriteRAM(LCD_RAMRegister_3,LCD_RAMX[LCD_RAMRegister_3]); //T3 
   }
+  else if(flag == 4)
+  {  
+    LCD_RAMX[LCD_RAMRegister_7] |=0x08 ;
+    LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //T2
+    LCD_RAMX[LCD_RAMRegister_3] &=~0x80 ;
+    LCD_WriteRAM(LCD_RAMRegister_3,LCD_RAMX[LCD_RAMRegister_3]); //T3   
+  }
+  else if(flag == 5)
+  {  
+    LCD_RAMX[LCD_RAMRegister_7] &=~0x08 ;
+    LCD_WriteRAM(LCD_RAMRegister_7,LCD_RAMX[LCD_RAMRegister_7]); //T2
+    LCD_RAMX[LCD_RAMRegister_3] &=~0x80 ;
+    LCD_WriteRAM(LCD_RAMRegister_3,LCD_RAMX[LCD_RAMRegister_3]); //T3   
+  }
+  else if(flag == 0)
+  {
+    LCD_WriteRAM(LCD_RAMRegister_0,00);
+    LCD_WriteRAM(LCD_RAMRegister_1,00);
     
+    LCD_WriteRAM(LCD_RAMRegister_2,00);
+    LCD_WriteRAM(LCD_RAMRegister_3,0);
+    LCD_WriteRAM(LCD_RAMRegister_4,0);
+    LCD_WriteRAM(LCD_RAMRegister_5,0);
+    LCD_WriteRAM(LCD_RAMRegister_6,0);
+    LCD_WriteRAM(LCD_RAMRegister_7,0);
+    LCD_WriteRAM(LCD_RAMRegister_8,0);
+    LCD_WriteRAM(LCD_RAMRegister_9,0);
+    LCD_WriteRAM(LCD_RAMRegister_10,0);
+    LCD_WriteRAM(LCD_RAMRegister_11,0);
+    LCD_WriteRAM(LCD_RAMRegister_12,0);
+    LCD_WriteRAM(LCD_RAMRegister_13,0);
+  }
+  
 }

@@ -150,21 +150,19 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 		init_params();
-	  display_off();
-	led_ctrl(LED_ALL,OFF);
-				__HAL_UART_CLEAR_FLAG(&huart1,UART_IT_IDLE);	
+	__HAL_UART_CLEAR_FLAG(&huart1,UART_IT_IDLE);	
 	__HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_Receive_DMA(&huart1,Receive_data_temp,UART1_BUFFER_SIZE);
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
-	 //TIM1->CCR2 = 9999; 
-	 init_Pid();	
-	 	 Lcd_Init();			//初始化OLED  
-	
+	//TIM1->CCR2 = 9999; 
+	init_Pid();	
+	Lcd_Init();			//初始化OLED  
+
 	LCD_Clear(WHITE); //清屏
 	BACK_COLOR=BLACK;;POINT_COLOR=WHITE; 
 
 	xianshi(); //显示信息
-    showimage(); //显示40*40图片
+	showimage(); //显示40*40图片
 
   /* USER CODE END 2 */
 

@@ -26,7 +26,7 @@ void SIMCOM_ReConnect()
   if(SIMCOM_TimeOut_Count>=SIMCOM_TIME_OUT)
   {
     SIMCOM_TimeOut_Count=0;
-    NET_STAUS=SIMCOM_NET_ERROR;
+    NET_STAUS=SIMCOM_NET_NOT;
   }
   
 }
@@ -47,10 +47,10 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_NET_NOT:
     {     
-      SIMCOM_TimeOut_Count++;
-      if(SIMCOM_TimeOut_Count>=5000000)
+    //SIMCOM_TimeOut_Count++;
+     //if(SIMCOM_TimeOut_Count>=5000000)
       {
-        SIMCOM_TimeOut_Count = 0;
+      //  SIMCOM_TimeOut_Count = 0;
         NET_STAUS = SIMCOM_NET_NOT;
         GSM_HardwareInit(ON);                   //¸´Î»ÖØÆô
         // GSM_HardwareInit(ON);
@@ -60,8 +60,14 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_POWER_ON://SIMCOM_READY_YES:
     {
-      if (sendCommand("AT\r\n", "OK\r\n", 50, 1) == Success)
+      if (sendCommand("AT\r\n", "OK\r\n", 50000, 1) == Success)
         NET_STAUS = SIMCOM_READY_YES;
+      else
+      {
+        NET_STAUS = SIMCOM_NET_NOT;
+        SIMCOM_TimeOut_Count = 5000000;
+      }
+        
     }
     break;
   case SIMCOM_READY_YES:
@@ -79,7 +85,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_CARD_DET:
     {
-      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 30000, 1) == Success)
+      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 130000, 1) == Success)
       {
         
         NET_STAUS=SIMCOM_GPRS_READY;
@@ -126,7 +132,7 @@ void SIMCOM_Register_Network()
         tx_count++;
         if(tx_count>=100)
         {
-          NET_STAUS=SIMCOM_NET_OK;
+         // NET_STAUS=SIMCOM_NET_OK;
           tx_count = 0;        
         }
         

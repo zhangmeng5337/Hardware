@@ -346,9 +346,9 @@ void HardwareInit()
   LED_Init();
   //delay_ms(5000);
   //µ÷ÊÔLED³õÊ¼»¯
-#if !DEGUG_SENSOR 
+//#if !DEGUG_SENSOR 
   GSM_HardwareInit(ON);
-#endif
+//#endif
   Sensor_HardwareInit(ON);
   Init_Timer1();
 enableInterrupts();

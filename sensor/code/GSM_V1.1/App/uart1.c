@@ -5,8 +5,9 @@
 _uart uart1;
 void Uart1_Init(u32 boundrate)
 {
+
   CLK_PeripheralClockConfig(CLK_Peripheral_USART1,ENABLE);
-  
+   USART_DeInit(USART1);		//¸´Î»UART1 
   SYSCFG_REMAPDeInit();
 //#if module == smartbox
 //  //SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortC,ENABLE);
@@ -14,13 +15,13 @@ void Uart1_Init(u32 boundrate)
 //  GPIO_Init(GPIOC, GPIO_Pin_2, GPIO_Mode_In_PU_No_IT);//RXD
 //#else if module == sensor
   SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA,ENABLE);
-  GPIO_Init(GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast);//TXD
+ GPIO_Init(GPIOA, GPIO_Pin_2, GPIO_Mode_Out_PP_High_Fast);//TXD
   GPIO_Init(GPIOA, GPIO_Pin_3, GPIO_Mode_In_FL_No_IT);//RXD
 //#endif
   
+   
   
-  
-  USART_DeInit(USART1);		//¸´Î»UART1 
+
   
   
   USART_Init(USART1,boundrate, USART_WordLength_8b, USART_StopBits_1, 

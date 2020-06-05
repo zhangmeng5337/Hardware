@@ -5,22 +5,27 @@
 #include "stm8l15x_flash.h"
 #include "gps.h"
 #include "lcd_hal.h"
+
 extern _SaveData Save_Data;
-
-
 Data_Stru Data_usr;
 Flow_stru Flow;
 extern _uart uart1;
-
+unsigned char wakeup_flag;
 uint32_t timeout;
-unsigned int rtctime=10;//10:9s，修改休眠时间
+unsigned int rtctime=100;//10:9s，修改休眠时间
 //unsigned int RepeatTime=30;//10:9s，修改休眠时间
-float warn_setting = 3.5;//3.5m预警值
+float warn_setting = 0.5;//3.5m预警值
 unsigned int wakeupcount=1;
-#define SETTING_COUNT  3*rtctime/60
+unsigned int SETTING_COUNT;
+void reapte_time()
+{
+  SETTING_COUNT=2;
+  wakeupcount = SETTING_COUNT;
+}
 void module_prams_init()
 {
-  wakeupcount=SETTING_COUNT;
+  
+  //wakeupcount=SETTING_COUNT;
   Data_usr.id[0] = 0x01;  //id
   Data_usr.id[1] = 0x02;	//id
   Data_usr.len = 0x07;		//data pack length not include header and id
@@ -138,9 +143,10 @@ float  adc_tmp,adc_tmp2,adc_tmp3;
 extern unsigned char RtcWakeUp;
 void sensor_adc()
 {
- // static unsigned char  init_flag=0;
-  adc_tmp = (adcGet(ADC_BAT_CHANNEL,200));
-  adc_tmp = adc_tmp*2;
+  //GPIO_Init( GPIOC, GPIO_Pin_4, GPIO_Mode_In_PU_No_IT );
+  // static unsigned char  init_flag=0;
+  adc_tmp = (adcGet(ADC_BAT_CHANNEL,50));
+  adc_tmp = adc_tmp*2.0;
   Data_usr.vbatf = adc_tmp;
   Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000);
   Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
@@ -272,7 +278,7 @@ void data_tansmmit()
   
   while(len--)
     UART1_SendByte(p[i++]);
-// delay_ms(1000);
+  delay_ms(3000);
 }
 
 
@@ -280,10 +286,16 @@ void module_process()
 {
 #define VBAT_THRES    4900000          
   static unsigned char lcd_flag=1;
-  if(wakeupcount)
+  if(wakeupcount>=SETTING_COUNT)
+  {
     SIMCOM_Register_Network();
+  }
   
-  sensor_adc(); 
+  if(lcd_flag==1||Get_Network_status()==SIMCOM_NET_OK)
+  {
+    sensor_adc();   
+  }
+  
   if(ExeIntFlag)//wake up by key
   {
     ExeIntFlag = 0;
@@ -294,12 +306,34 @@ void module_process()
   }
   if(lcd_flag==1)
   {
-    lcd_flag = 0;
-    lcd_process(1);  //  
+    if(wakeupcount>=SETTING_COUNT)
+    {
+      if(Get_Network_status()==SIMCOM_NET_OK)
+        lcd_process(3);
+      else
+        lcd_process(4);    
+    }
+    else
+    {
+      lcd_process(5); 
+    }
+    
+    lcd_process(1);  // 
+    if(RtcWakeUp==0)
+    {
+      delay_ms(5000);
+      goto stop;
+    }
+      
   }
   else
   {
     lcd_process(0);
+    if(RtcWakeUp==0)
+    {
+      delay_ms(5000);
+      goto stop;
+    }
   }
   
   
@@ -310,35 +344,59 @@ void module_process()
     {
       
       RtcWakeUp = 0;
-        data_tansmmit(); 
-        while(timeout<250000)
+      data_tansmmit(); 
+      while(timeout<250000)
+      {
+        if(uart1.isGetData == 1)
         {
-          if(uart1.isGetData == 1)
+          
+          if(uart1.Uart_Buffer[0] == SERVER_TO_NODEH && uart1.Uart_Buffer[1] == SERVER_TO_NODEH && uart1.Uart_Buffer[4] == 0x01)	
           {
-            
-            if(uart1.Uart_Buffer[0] == SERVER_TO_NODEH && uart1.Uart_Buffer[1] == SERVER_TO_NODEH && uart1.Uart_Buffer[4] == 0x01)	
+            uart1.isGetData =0;
+            if(uart1.Uart_Buffer[6] == 0x6a)
             {
-              uart1.isGetData =0;
-              if(uart1.Uart_Buffer[6] == 0x6a)
-              {
-                FLOW_Ctrl(ON);
-              }
-              else if(uart1.Uart_Buffer[6] == 0xa6)
-                FLOW_Ctrl(OFF);
+              FLOW_Ctrl(ON);
             }
+            else if(uart1.Uart_Buffer[6] == 0xa6)
+              FLOW_Ctrl(OFF);
           }
-          timeout++;
         }
-        timeout = 0;
-        wakeupcount = 0;
-        // delay_ms(3000);
-        set_NetStatus(SIMCOM_POWER_ON);
-        GSM_HardwareInit(ON);
-      stop:   lcd_process(0);
-      EnterStopMode();
-      RTC_Config(rtctime,ON);//10:9s 
+        timeout++;
+      }
+      timeout = 0;
+      wakeupcount = 0;
+
+      // delay_ms(3000);
+      set_NetStatus(SIMCOM_POWER_ON);
+      GSM_HardwareInit(OFF);
+    stop:   lcd_process(0);
+    lcd_flag=0;
+      RtcWakeUp = 0;
+    GPIO_SetBits(PORT_LED, PIN_LED);
+    EnterStopMode();
+    RTC_Config(rtctime,ON);//10:9s 
+    enableInterrupts();
+    halt();	//enter stop mode
+    
+    if(ExeIntFlag)//wake up by key
+    {
+      wakeup_flag=1;
+      ExeIntFlag = 0;
+      if(lcd_flag==1)
+        lcd_flag = 0;
+      else 
+        lcd_flag=1;
+      disableInterrupts(); 
+      RTC_Config(1,OFF);//10:9s
+      HardwareInit();
+      LCD_Congfig();
+      module_prams_init();
       enableInterrupts();
-      halt();	//enter stop mode
+    }
+    else//wake up by rtc
+    {
+      wakeup_flag = 1;
+      wakeupcount++;  
       //wakeupcount++;
       if(wakeupcount>=SETTING_COUNT)//定时发送数据
       {
@@ -354,14 +412,14 @@ void module_process()
       }
       else //周期检测
       {
-        wakeupcount++;
+        
         disableInterrupts(); 
         RTC_Config(1,OFF);//10:9s
         HardwareInit();
         LCD_Congfig();
         module_prams_init();
         enableInterrupts();
-        // sensor_adc(); 
+        sensor_adc(); 
         if(Data_usr.status == 1)
         {
           GSMInit();
@@ -369,11 +427,14 @@ void module_process()
         }
         else
         {
-          goto stop;
+          if(lcd_flag==0)
+            goto stop;
         } 
-      }
+      }   
     }
     
- }
+    
+    }
+    
+  }
 }
-  

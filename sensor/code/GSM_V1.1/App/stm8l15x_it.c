@@ -173,9 +173,7 @@ INTERRUPT_HANDLER(EXTI0_IRQHandler, 8)
   /* In order to detect unexpected events during development,
   it is recommended to set a breakpoint on the following instruction.
   */
-  LED_TOG();
-    ExeIntFlag = 1;
-  EXTI_ClearITPendingBit(EXTI_IT_Pin0);
+
 }
 
 /**
@@ -257,7 +255,9 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
   /* In order to detect unexpected events during development,
   it is recommended to set a breakpoint on the following instruction.
   */
-  
+    LED_TOG();
+    ExeIntFlag = 1;
+  EXTI_ClearITPendingBit(EXTI_IT_Pin6);
 }
 
 /**
@@ -479,8 +479,9 @@ INTERRUPT_HANDLER(USART1_RX_TIM5_CC_IRQHandler, 28)
     uart1_interrupt_handler();
     
   }
-  else
+  else if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET)
   {
+    USART_ClearITPendingBit(USART1,  USART_FLAG_RXNE);
     unsigned char t;
     t = USART1->SR;
     t = USART1->DR;//IDLE清零需要依次读SR 和DR 寄存器

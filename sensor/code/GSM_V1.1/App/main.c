@@ -4,8 +4,8 @@
 #include "lcd.h"
 #include "Protocal.h"
 #include "gprs_app.h"
+extern unsigned char wakeup_flag;
 extern unsigned char RtcWakeUp;
-
 uint32_t tick = 0;
 
 
@@ -16,19 +16,23 @@ void main(void)
   
   HardwareInit();
   GSMInit();
+  reapte_time();
   module_prams_init();
+  wakeup_flag = 1;
   RtcWakeUp = 1;
   LCD_Congfig();
   
   while(1)
   {
-    if(RtcWakeUp == 1)
+    if(wakeup_flag == 1)
     {
-      
+//      GSM_HardwareInit(OFF);
+//      EnterStopMode();
+//      RTC_Config(30,ON);//10:9s 
+//      enableInterrupts();
+//      halt();	    
       parseGpsBuffer();
-      module_process(); 
-      //GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
-      // GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
+      module_process();  
     }
     
   }

@@ -59,14 +59,14 @@
 //  #define ADC_SENSOR_CHANNEL      ADC_Channel_3
 //
 //#elif module == sensor||module == DEGUG_SENSOR
-  #define PORT_FLOW        GPIOC
-  #define PIN_FLOW         GPIO_Pin_1
+  #define PORT_FLOW        GPIOD
+  #define PIN_FLOW         GPIO_Pin_7
 
   #define PORT_LED        GPIOB
   #define PIN_LED         GPIO_Pin_6
 
-  #define PORT_KEY        GPIOC
-  #define PIN_KEY         GPIO_Pin_0
+  #define PORT_KEY        GPIOD
+  #define PIN_KEY         GPIO_Pin_6
 
   #define PORT_GNSS_PORT        GPIOD
   #define PIN_GNSS         GPIO_Pin_5
