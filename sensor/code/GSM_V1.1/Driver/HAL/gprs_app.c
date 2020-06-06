@@ -50,7 +50,7 @@ void SIMCOM_Register_Network()
     //SIMCOM_TimeOut_Count++;
      //if(SIMCOM_TimeOut_Count>=5000000)
       {
-      //  SIMCOM_TimeOut_Count = 0;
+        SIMCOM_TimeOut_Count = 0;
         NET_STAUS = SIMCOM_NET_NOT;
         GSM_HardwareInit(ON);                   //∏¥Œª÷ÿ∆Ù
         // GSM_HardwareInit(ON);
@@ -60,7 +60,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_POWER_ON://SIMCOM_READY_YES:
     {
-      if (sendCommand("AT\r\n", "OK\r\n", 50000, 1) == Success)
+      if (sendCommand("AT\r\n", "OK\r\n", 500, 1) == Success)
         NET_STAUS = SIMCOM_READY_YES;
       else
       {
@@ -72,20 +72,20 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_READY_YES:
     {
-      if (sendCommand("ATE0\r\n", "OK\r\n", 50, 1) == Success)
+      if (sendCommand("ATE0\r\n", "OK\r\n", 500, 1) == Success)
         NET_STAUS = SIMCOM_CLOSE_ECHO;  
     }
     break;
     
   case SIMCOM_CLOSE_ECHO:
     {
-      if (sendCommand("AT+CPIN?\r\n", "READY", 50, 1) == Success)
+      if (sendCommand("AT+CPIN?\r\n", "READY", 500, 1) == Success)
         NET_STAUS = SIMCOM_CARD_DET; 
     }
     break;
   case SIMCOM_CARD_DET:
     {
-      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 130000, 1) == Success)
+      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 1300, 1) == Success)
       {
         
         NET_STAUS=SIMCOM_GPRS_READY;
@@ -101,13 +101,13 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_NET_CLOSE:
     {
-      if (sendCommand("AT+CIPMODE=1\r\n", "OK", 3000, 1) == Success)
+      if (sendCommand("AT+CIPMODE=1\r\n", "OK", 300, 1) == Success)
         NET_STAUS = SIMCOM_NET_PASS_THROUGH; 
     }
     break;
   case SIMCOM_NET_PASS_THROUGH:
     {
-      if (sendCommand((char*)Establish_TCP_Connection, "OK", 30000, 1) == Success)
+      if (sendCommand((char*)Establish_TCP_Connection, "OK", 50000, 1) == Success)
       {
 #if debug 
         NET_STAUS=SIMCOM_Connect_Platform;

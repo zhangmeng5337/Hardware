@@ -5,11 +5,6 @@
 #include "Protocal.h"
 #include "gprs_app.h"
 extern unsigned char wakeup_flag;
-extern unsigned char RtcWakeUp;
-uint32_t tick = 0;
-
-
-// extern  unsigned int wakeupcount;
 void main(void)
 {
   
@@ -18,8 +13,6 @@ void main(void)
   GSMInit();
   reapte_time();
   module_prams_init();
-  wakeup_flag = 1;
-  RtcWakeUp = 1;
   LCD_Congfig();
   
   while(1)

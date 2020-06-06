@@ -5,7 +5,7 @@
 //常量
 #define Success 1U
 #define Failure 0U
-#define SIMCOM_TIME_OUT					80
+#define SIMCOM_TIME_OUT					100
 
 #define	SIMCOM_NET_NOT 						0    	//开机未完成
 #define	SIMCOM_POWER_ON                                         1

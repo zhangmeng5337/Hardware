@@ -5,11 +5,13 @@
 #include "stm8l15x_flash.h"
 #include "gps.h"
 #include "lcd_hal.h"
-
+extern _uart uart1;
 extern _SaveData Save_Data;
+extern  unsigned char ExeIntFlag;
+extern unsigned char RtcWakeUp;
 Data_Stru Data_usr;
 Flow_stru Flow;
-extern _uart uart1;
+
 unsigned char wakeup_flag;
 uint32_t timeout;
 unsigned int rtctime=100;//10:9s，修改休眠时间
@@ -18,23 +20,22 @@ float warn_setting = 0.5;//3.5m预警值
 unsigned int wakeupcount=1;
 unsigned int SETTING_COUNT;
 void reapte_time()
-{
-  SETTING_COUNT=2;
+{ 
+   RtcWakeUp = 1;
+  rtctime=100;
+  SETTING_COUNT=2; //定时发送数据时间，SETTING_COUNT=2*rtctime
   wakeupcount = SETTING_COUNT;
 }
 void module_prams_init()
 {
   
-  //wakeupcount=SETTING_COUNT;
+  wakeup_flag = 1;
+  
+
   Data_usr.id[0] = 0x01;  //id
   Data_usr.id[1] = 0x02;	//id
   Data_usr.len = 0x07;		//data pack length not include header and id
   Data_usr.checksum = 0x00;
-  //Data_usr.deepth [0] = 0x01;
-  //Data_usr.deepth[1] = 0x02;	
-  // Data_usr.deepth_percent = 0;
-  // Data_usr.vbat[0] = 0;
-  // Data_usr.vbat[1] = 0;
   Data_usr.status = 0;
   Data_usr.deepth_calibration = SENSOR_FACTOR;
   Data_usr.Warn_Thres =warn_setting;
@@ -75,7 +76,7 @@ unsigned char xorCheck(unsigned char *pbuffer,unsigned char len)
   }
   return result;
 }
-extern  unsigned char ExeIntFlag;
+
 void flash_operation(uint32_t addr,unsigned char *p,unsigned char size)
 {
   unsigned char i;
@@ -139,10 +140,11 @@ void OilCalibration()
 
 
 unsigned char p[64];
-float  adc_tmp,adc_tmp2,adc_tmp3;
-extern unsigned char RtcWakeUp;
+
+
 void sensor_adc()
 {
+  float  adc_tmp,adc_tmp2,adc_tmp3;
   //GPIO_Init( GPIOC, GPIO_Pin_4, GPIO_Mode_In_PU_No_IT );
   // static unsigned char  init_flag=0;
   adc_tmp = (adcGet(ADC_BAT_CHANNEL,50));
@@ -160,7 +162,7 @@ void sensor_adc()
   }
   else
   {
-    adc_tmp2 = (adcGet(ADC_SENSOR_CHANNEL,200));
+    adc_tmp2 = (adcGet(ADC_SENSOR_CHANNEL,50));
     adc_tmp2 = adc_tmp2/ VOLTAGE_FACTOR;
     //adc_tmp2 = adc_tmp2 -Data_usr.voltage_calibration_value ;  
   }
@@ -284,7 +286,7 @@ void data_tansmmit()
 
 void module_process()
 {
-#define VBAT_THRES    4900000          
+//#define VBAT_THRES    4900000          
   static unsigned char lcd_flag=1;
   if(wakeupcount>=SETTING_COUNT)
   {
@@ -377,7 +379,13 @@ void module_process()
     RTC_Config(rtctime,ON);//10:9s 
     enableInterrupts();
     halt();	//enter stop mode
-    
+	disableInterrupts(); 
+	RTC_Config(1,OFF);//10:9s
+	HardwareInit();
+	LCD_Congfig();
+	module_prams_init();
+	enableInterrupts();
+
     if(ExeIntFlag)//wake up by key
     {
       wakeup_flag=1;
@@ -386,39 +394,47 @@ void module_process()
         lcd_flag = 0;
       else 
         lcd_flag=1;
-      disableInterrupts(); 
-      RTC_Config(1,OFF);//10:9s
-      HardwareInit();
-      LCD_Congfig();
-      module_prams_init();
-      enableInterrupts();
+     // disableInterrupts(); 
+     // RTC_Config(1,OFF);//10:9s
+     // HardwareInit();
+     // LCD_Congfig();
+     // module_prams_init();
+     // enableInterrupts();
     }
     else//wake up by rtc
     {
       wakeup_flag = 1;
       wakeupcount++;  
+	  //disableInterrupts(); 
+	 // RTC_Config(1,OFF);//10:9s
+	 // HardwareInit();
+	 // LCD_Congfig();
+	 // module_prams_init();
+	 // enableInterrupts();
+
       //wakeupcount++;
       if(wakeupcount>=SETTING_COUNT)//定时发送数据
       {
         //wakeupcount = 0;
-        disableInterrupts(); 
-        RTC_Config(1,OFF);//10:9s
-        HardwareInit();
+       
+// disableInterrupts(); 
+      //  RTC_Config(1,OFF);//10:9s
+      //  HardwareInit();
         GSMInit();
-        LCD_Congfig();
-        module_prams_init();
-        enableInterrupts();
+       // LCD_Congfig();
+       // module_prams_init();
+       // enableInterrupts();
         
       }
       else //周期检测
       {
         
-        disableInterrupts(); 
-        RTC_Config(1,OFF);//10:9s
-        HardwareInit();
-        LCD_Congfig();
-        module_prams_init();
-        enableInterrupts();
+        //disableInterrupts(); 
+       // RTC_Config(1,OFF);//10:9s
+       // HardwareInit();
+       // LCD_Congfig();
+       // module_prams_init();
+       // enableInterrupts();
         sensor_adc(); 
         if(Data_usr.status == 1)
         {

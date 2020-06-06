@@ -416,14 +416,10 @@ uint32_t adcGet(ADC_Channel_TypeDef num,unsigned int samplecount)
     tmp = ADC_GetConversionValue(ADC1);
     
     /* Calculate voltage value in uV over capacitor  C67 for IDD measurement*/
-    tmp2 = tmp2 + ((uint32_t)tmp*ADC_RATIO*244.14);
-    /* Waiting Delay 200ms */
-    
-    
-    /* DeInitialize ADC1 */
-    
+    tmp2 = tmp2 + tmp;
     
   }
+   tmp2 = tmp2 *ADC_RATIO*244.14;
   ADCdata = tmp2*1.0 /samplecount;
   ADC_DeInit(ADC1);
   
