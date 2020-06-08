@@ -5,7 +5,7 @@
 #include "oledfont.h"  	 
 //#include "delay.h"
 
-u16 BACK_COLOR, POINT_COLOR;   //背景色，画笔色
+u16 BACK_COLOR, POINT_COLOR=YELLOW;   //背景色，画笔色
 void LCD_Writ_Bus(char dat)   //串行数据写入
 {	
 	u8 i;			  
@@ -137,7 +137,7 @@ LCD_WR_REG(0xC7);    //VCM control2
 LCD_WR_DATA8(0XC1); 
  
 LCD_WR_REG(0x36);    // Memory Access Control 
-LCD_WR_DATA8(0x08); 
+LCD_WR_DATA8(0x68); //10101000   00101000   01101000 11101000
  
 LCD_WR_REG(0x3A);   
 LCD_WR_DATA8(0x55); 
@@ -218,7 +218,7 @@ void LCD_Clear(u16 Color)
 
 //在指定位置显示一个汉字(32*33大小)
 //dcolor为内容颜色，gbcolor为背静颜色
-void showhanzi(unsigned int x,unsigned int y,unsigned char index)	
+void showhanzi(unsigned int x,unsigned int y,unsigned char index,u16 color)	
 {  
 	unsigned char i,j;
 	unsigned char *temp=hanzi;    
@@ -230,7 +230,7 @@ void showhanzi(unsigned int x,unsigned int y,unsigned char index)
 		{ 		     
 		 	if((*temp&(1<<i))!=0)
 			{
-				LCD_WR_DATA(POINT_COLOR);
+				LCD_WR_DATA(color);
 			} 
 			else
 			{
@@ -240,12 +240,34 @@ void showhanzi(unsigned int x,unsigned int y,unsigned char index)
 		temp++;
 	 }
 }
+void showhanzi16X16(unsigned int x,unsigned int y,unsigned char index,u16 color)	
+{  
+	unsigned char i,j;
+	unsigned char *temp=hanzi16x16;    
+    Address_set(x,y,x+23,y+23); //设置区域      
+	temp+=index*72;	
+	for(j=0;j<72;j++)
+	{
+		for(i=0;i<8;i++)
+		{ 		     
+		 	if((*temp&(1<<i))!=0)
+			{
+				LCD_WR_DATA(color);
+			} 
+			else
+			{
+				LCD_WR_DATA(BACK_COLOR);
+			}   
+		}
+		temp++;
+	 }
+ }
 //画点
 //POINT_COLOR:此点的颜色
 void LCD_DrawPoint(u16 x,u16 y)
 {
 	Address_set(x,y,x,y);//设置光标位置 
-	LCD_WR_DATA(POINT_COLOR); 	    
+	LCD_WR_DATA(YELLOW); 	    
 } 	 
 //画一个大点
 //POINT_COLOR:此点的颜色
@@ -351,27 +373,34 @@ void Draw_Circle(u16 x0,u16 y0,u8 r)
 //num:要显示的字符:" "--->"~"
 
 //mode:叠加方式(1)还是非叠加方式(0)
-void LCD_ShowChar(u16 x,u16 y,u8 num,u8 mode)
+u8 kk;
+u8 ttemp;
+u8 size=16;
+void LCD_ShowChar(u16 x,u16 y,u8 num,u8 mode,u16 color)
 {
-    u8 temp;
+    
     u8 pos,t;
 	u16 x0=x;
-	u16 colortemp=POINT_COLOR;      
-    if(x>LCD_W-16||y>LCD_H-16)return;	    
+	u16 colortemp=color;      
+    if(x>LCD_W-size||y>LCD_H-size)return;	    
 	//设置窗口		   
 	num=num-' ';//得到偏移后的值
-	Address_set(x,y,x+8-1,y+16-1);      //设置光标位置 
+	kk = num;
+	
+	u8 csize=(size/8+((size%8)?1:0))*(size/2); //得到字体一个字符对应点阵集所占的字节数 
+	Address_set(x,y,x+size/2-1,y+size-1);      //设置光标位置 
 	if(!mode) //非叠加方式
 	{
-		for(pos=0;pos<16;pos++)
+		for(pos=0;pos<csize;pos++)
 		{ 
-			temp=asc2_1608[(u16)num*16+pos];		 //调用1608字体
+			ttemp=asc2_1608[(u16)num*size+pos];		 //调用1608字体
 			for(t=0;t<8;t++)
 		    {                 
-		        if(temp&0x01)POINT_COLOR=colortemp;
+		        if(ttemp&0x01)
+							POINT_COLOR=colortemp;
 				else POINT_COLOR=BACK_COLOR;
 				LCD_WR_DATA(POINT_COLOR);	
-				temp>>=1; 
+				ttemp>>=1; 
 				x++;
 		    }
 			x=x0;
@@ -379,13 +408,13 @@ void LCD_ShowChar(u16 x,u16 y,u8 num,u8 mode)
 		}	
 	}else//叠加方式
 	{
-		for(pos=0;pos<16;pos++)
+		for(pos=0;pos<csize;pos++)
 		{
-		    temp=asc2_1608[(u16)num*16+pos];		 //调用1608字体
+		    ttemp=asc2_1608[(u16)num*csize+pos];		 //调用1608字体
 			for(t=0;t<8;t++)
 		    {                 
-		        if(temp&0x01)LCD_DrawPoint(x+t,y+pos);//画一个点     
-		        temp>>=1; 
+		        if(ttemp&0x01)LCD_DrawPoint(x+t,y+pos);//画一个点     
+		        ttemp>>=1; 
 		    }
 		}
 	}
@@ -402,50 +431,52 @@ u32 mypow(u8 m,u8 n)
 //x,y :起点坐标	 
 //len :数字的位数
 //color:颜色
-//num:数值(0~4294967295);	
-void LCD_ShowNum(u16 x,u16 y,u32 num,u8 len)
-{         	
-	u8 t,temp;
+//num:数值(0~4294967295)
+u8 t,temp1;
 	u8 enshow=0;
+//u8 size=16;
+void LCD_ShowNum(u16 x,u16 y,u32 num,u8 len,u16 color)
+{         	
+
 	num=(u16)num;
 	for(t=0;t<len;t++)
 	{
-		temp=(num/mypow(10,len-t-1))%10;
+		temp1=(num/mypow(10,len-t-1))%10;
 		if(enshow==0&&t<(len-1))
 		{
-			if(temp==0)
+			if(temp1==0)
 			{
-				LCD_ShowChar(x+8*t,y,' ',0);
+				LCD_ShowChar(x+size/2*t,y,' ',0,color);
 				continue;
 			}else enshow=1; 
 		 	 
 		}
-	 	LCD_ShowChar(x+8*t,y,temp+48,0); 
+	 	LCD_ShowChar(x+size/2*t,y,temp1+48,0,color); 
 	}
 } 
 //显示2个数字
 //x,y:起点坐标
 //num:数值(0~99);	 
-void LCD_Show2Num(u16 x,u16 y,u16 num,u8 len)
-{         	
-	u8 t,temp;						   
-	for(t=0;t<len;t++)
-	{
-		temp=(num/mypow(10,len-t-1))%10;
-	 	LCD_ShowChar(x+8*t,y,temp+'0',0); 
-	}
-} 
+//void LCD_Show2Num(u16 x,u16 y,u16 num,u8 len)
+//{         	
+//	u8 t,temp;						   
+//	for(t=0;t<len;t++)
+//	{
+//		temp=(num/mypow(10,len-t-1))%10;
+//	 	LCD_ShowChar(x+8*t,y,temp+'0',0); 
+//	}
+//} 
 //显示字符串
 //x,y:起点坐标  
 //*p:字符串起始地址
 //用16字体
-void LCD_ShowString(u16 x,u16 y,const u8 *p)
+void LCD_ShowString(u16 x,u16 y,const u8 *p,u16 color)
 {         
     while(*p!='\0')
     {       
-        if(x>LCD_W-16){x=0;y+=16;}
-        if(y>LCD_H-16){y=x=0;LCD_Clear(RED);}
-        LCD_ShowChar(x,y,*p,0);
+        if(x>LCD_W-24){x=0;y+=24;}
+        if(y>LCD_H-24){y=x=0;LCD_Clear(RED);}
+        LCD_ShowChar(x,y,*p,0,color);
         x+=8;
         p++;
     }  

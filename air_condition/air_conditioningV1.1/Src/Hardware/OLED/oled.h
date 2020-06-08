@@ -32,8 +32,8 @@
 #define __OLED_H			  	 
 #include "main.h"
 #include "stdlib.h"	   
-#define LCD_W 240
-#define LCD_H 320
+#define LCD_W 320
+#define LCD_H 240
 #define	u8 unsigned char
 #define	u16 unsigned int
 #define	u32 unsigned long
@@ -87,13 +87,13 @@ void Draw_Circle(u16 x0,u16 y0,u8 r);
 void LCD_DrawLine(u16 x1, u16 y1, u16 x2, u16 y2);
 void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2);		   
 void LCD_Fill(u16 xsta,u16 ysta,u16 xend,u16 yend,u16 color);
-void LCD_ShowChar(u16 x,u16 y,u8 num,u8 mode);//显示一个字符
-void LCD_ShowNum(u16 x,u16 y,u32 num,u8 len);//显示数字
-void LCD_Show2Num(u16 x,u16 y,u16 num,u8 len);//显示2个数字
-void LCD_ShowString(u16 x,u16 y,const u8 *p);		 //显示一个字符串,16字体
+void LCD_ShowChar(u16 x,u16 y,u8 num,u8 mode,u16 color);//显示一个字符
+void LCD_ShowNum(u16 x,u16 y,u32 num,u8 len,u16 color);//显示数字
+void LCD_Show2Num(u16 x,u16 y,u16 num,u8 len,u16 color);//显示2个数字
+void LCD_ShowString(u16 x,u16 y,const u8 *p,u16 color);		 //显示一个字符串,16字体
  
-void showhanzi(unsigned int x,unsigned int y,unsigned char index);
-
+void showhanzi(unsigned int x,unsigned int y,unsigned char index,u16 color);
+void showhanzi16X16(unsigned int x,unsigned int y,unsigned char index,u16 color);	
 
 
 //画笔颜色
@@ -123,6 +123,7 @@ void showhanzi(unsigned int x,unsigned int y,unsigned char index);
 
 #define LGRAYBLUE        0XA651 //浅灰蓝色(中间层颜色)
 #define LBBLUE           0X2B12 //浅棕蓝色(选择条目的反色)
+
 
 
 					  		 

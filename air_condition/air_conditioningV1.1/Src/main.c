@@ -77,21 +77,21 @@ extern unsigned char Receive_data[UART1_BUFFER_SIZE],Receive_data_temp[UART1_BUF
 u8 ref=0;//刷新显示
 u16 vx=15542,vy=11165;  //比例因子，此值除以1000之后表示多少个AD值代表一个像素点
 u16 chx=140,chy=146;//默认像素点坐标为0时的AD起始值
-void xianshi()//显示信息
-{   
-	u16 lx,ly;
-	BACK_COLOR=WHITE;
-	POINT_COLOR=RED;	
-	showhanzi(10,0,0);  //中
-	showhanzi(45,0,1);  //景
-	showhanzi(80,0,2);  //园
-	showhanzi(115,0,3);  //电
-	showhanzi(150,0,4);  //子
-  LCD_ShowString(10,35,"2.4 TFT SPI 240*320");
-	LCD_ShowString(10,55,"LCD_W:");	LCD_ShowNum(70,55,LCD_W,3);
-	LCD_ShowString(110,55,"LCD_H:");LCD_ShowNum(160,55,LCD_H,3);	
-	lx=10;ly=75;			
-}
+//void xianshi()//显示信息
+//{   
+//	u16 lx,ly;
+//	BACK_COLOR=WHITE;
+//	POINT_COLOR=RED;	
+//	showhanzi(10,0,0,LIGHTBLUE);  //中
+//	showhanzi(45,0,1,LIGHTBLUE);  //景
+//	showhanzi(80,0,2,LIGHTBLUE);  //园
+//	showhanzi(115,0,3,LIGHTBLUE);  //电
+//	showhanzi(150,0,4,LIGHTBLUE);  //子
+//  LCD_ShowString(10,35,"2.4 TFT SPI 240*320");
+//	LCD_ShowString(10,55,"LCD_W:");	LCD_ShowNum(70,55,LCD_W,3);
+//	LCD_ShowString(110,55,"LCD_H:");LCD_ShowNum(160,55,LCD_H,3);	
+//	lx=10;ly=75;			
+//}
 
 
 
@@ -158,11 +158,42 @@ int main(void)
 	init_Pid();	
 	Lcd_Init();			//初始化OLED  
 
-	LCD_Clear(WHITE); //清屏
+	LCD_Clear(BLACK); //清屏
 	BACK_COLOR=BLACK;;POINT_COLOR=WHITE; 
 
-	xianshi(); //显示信息
-	showimage(); //显示40*40图片
+	//xianshi(); //显示信息
+	 //LCD_DrawPoint(10,0);
+	//  LCD_Fill(10,0,319,10,DARKBLUE);
+	unsigned int index;
+	index = 5;
+	showhanzi16X16(index,18,0,LIGHTBLUE);	
+	showhanzi16X16(index+3+24,18,1,LIGHTBLUE);	
+		showhanzi16X16(index+3+24*4,18,2,LIGHTBLUE);	
+	showhanzi16X16(index+3+24*5,18,3,LIGHTBLUE);
+	showhanzi16X16(index+24*8+3,18,4,LIGHTBLUE);	
+	showhanzi16X16(index+24*9+3,18,5,LIGHTBLUE);
+showhanzi(0+32*0,62+3+20,0,LIGHTBLUE);	
+showhanzi(0+32*1,62+3+20,1,LIGHTBLUE);	
+showhanzi(0+32*0,62+3+32+20,2,LIGHTBLUE);
+showhanzi(0+32*1,62+3+32+20,3,LIGHTBLUE);
+
+showhanzi(index+32*5+3,62+3+20,4,LIGHTBLUE);	
+showhanzi(index+32*6+3,62+3+20,5,LIGHTBLUE);	
+showhanzi(index+32*5+3,62+3+32+20,2,LIGHTBLUE);
+showhanzi(index+32*6+3,62+3+32+20,3,LIGHTBLUE);
+
+	showhanzi16X16(0,180+3,4,LIGHTBLUE);	
+	showhanzi16X16(0,180+3+24,5,LIGHTBLUE);
+
+	//LCD_ShowNum(index+24*10+3,18,19,2,LIGHTBLUE);
+	//LCD_ShowString(14*10+3,36,"LCD_W:",LIGHTBLUE);
+	LCD_DrawLine(0, 60,320, 60);//****************************
+	LCD_DrawLine(0, 61,320, 61);
+	LCD_DrawLine(0, 62,320, 62);	
+	LCD_DrawLine(0, 180,320, 180);//******************************
+	LCD_DrawLine(0, 181,320, 181);
+	LCD_DrawLine(0, 182,320, 182);
+	//showimage(); //显示40*40图片
 
   /* USER CODE END 2 */
 

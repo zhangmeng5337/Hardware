@@ -34,6 +34,7 @@ void SIMCOM_ReConnect()
 void set_NetStatus(unsigned char flag)
 {
   NET_STAUS = flag;
+  SIMCOM_TimeOut_Count = 0;
 }
 
 void SIMCOM_Register_Network()
@@ -60,7 +61,7 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_POWER_ON://SIMCOM_READY_YES:
     {
-      if (sendCommand("AT\r\n", "OK\r\n", 500, 1) == Success)
+      if (sendCommand("AT\r\n", "OK\r\n", 1500, 1) == Success)
         NET_STAUS = SIMCOM_READY_YES;
       else
       {
@@ -103,6 +104,7 @@ void SIMCOM_Register_Network()
     {
       if (sendCommand("AT+CIPMODE=1\r\n", "OK", 300, 1) == Success)
         NET_STAUS = SIMCOM_NET_PASS_THROUGH; 
+      SIMCOM_TimeOut_Count = 0;
     }
     break;
   case SIMCOM_NET_PASS_THROUGH:

@@ -23,7 +23,7 @@ void reapte_time()
 { 
    RtcWakeUp = 1;
   rtctime=100;
-  SETTING_COUNT=2; //定时发送数据时间，SETTING_COUNT=2*rtctime
+  SETTING_COUNT=2; //定时发送数据时间，SETTING_COUNT=n*rtctime
   wakeupcount = SETTING_COUNT;
 }
 void module_prams_init()
@@ -277,9 +277,15 @@ void data_tansmmit()
   
   Data_usr.checksum = xorCheck(p+2,len-2);
   memcpy(p+CHECKSUM_INDEX,&Data_usr.checksum ,1);
-  
-  while(len--)
-    UART1_SendByte(p[i++]);
+  unsigned char k=0;
+  k= 2;
+  while(k--)
+  {
+    i=0;
+    while(len--)
+      UART1_SendByte(p[i++]);  
+  }
+
   delay_ms(3000);
 }
 
@@ -347,7 +353,7 @@ void module_process()
       
       RtcWakeUp = 0;
       data_tansmmit(); 
-      while(timeout<250000)
+      while(timeout<350000)
       {
         if(uart1.isGetData == 1)
         {

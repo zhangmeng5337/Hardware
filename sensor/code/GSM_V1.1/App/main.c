@@ -25,6 +25,7 @@ void main(void)
 //      enableInterrupts();
 //      halt();	    
       parseGpsBuffer();
+       //SIMCOM_Register_Network();
       module_process();  
     }
     
