@@ -5,8 +5,8 @@
 #define MIN_TEMPER  0
 #define TEMPERATURE 0x00
 #define HUMIDTYPE   0x01
-typedef unsigned char u8;
-typedef unsigned int u16;
+//typedef unsigned char u8;
+//typedef unsigned int u16;
 
 typedef struct{
 	float adc_result[5];

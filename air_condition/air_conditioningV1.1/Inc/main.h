@@ -36,6 +36,9 @@ extern "C" {
 #define OFF    0
 	#define SHORT_HIT		1000
 #define LONG_HIT		3000
+#define	u8 unsigned char
+#define	u16 unsigned int
+#define	u32 unsigned long
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

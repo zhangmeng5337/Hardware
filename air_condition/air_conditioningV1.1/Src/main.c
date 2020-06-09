@@ -13,8 +13,9 @@
 #include "settings.h"
 #include "machine.h"
 #include "display.h"
-#include "oled.h"
-#include "bmp.h"
+#include "lcd_init.h"
+#include "lcd.h"
+#include "pic.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,47 +74,6 @@ int fputc(int ch, FILE *f)
 }
 extern unsigned char Receive_data[UART1_BUFFER_SIZE],Receive_data_temp[UART1_BUFFER_SIZE];
 
-
-u8 ref=0;//刷新显示
-u16 vx=15542,vy=11165;  //比例因子，此值除以1000之后表示多少个AD值代表一个像素点
-u16 chx=140,chy=146;//默认像素点坐标为0时的AD起始值
-//void xianshi()//显示信息
-//{   
-//	u16 lx,ly;
-//	BACK_COLOR=WHITE;
-//	POINT_COLOR=RED;	
-//	showhanzi(10,0,0,LIGHTBLUE);  //中
-//	showhanzi(45,0,1,LIGHTBLUE);  //景
-//	showhanzi(80,0,2,LIGHTBLUE);  //园
-//	showhanzi(115,0,3,LIGHTBLUE);  //电
-//	showhanzi(150,0,4,LIGHTBLUE);  //子
-//  LCD_ShowString(10,35,"2.4 TFT SPI 240*320");
-//	LCD_ShowString(10,55,"LCD_W:");	LCD_ShowNum(70,55,LCD_W,3);
-//	LCD_ShowString(110,55,"LCD_H:");LCD_ShowNum(160,55,LCD_H,3);	
-//	lx=10;ly=75;			
-//}
-
-
-
-void showimage() //显示40*40图片
-{
-  	int i,j,k; 
-
-	for(k=3;k<8;k++)
-	{
-	   	for(j=0;j<6;j++)
-		{	
-			Address_set(40*j,40*k,40*j+39,40*k+39);		//坐标设置
-		    for(i=0;i<1600;i++)
-			 { 	
-				 		
-			  	 LCD_WR_DATA8(image[i*2+1]);	 
-				 LCD_WR_DATA8(image[i*2]);				
-			 }	
-		 }
-	}
-	ref=0;				
-}
 /* USER CODE END 0 */
 
 /**
@@ -123,7 +83,8 @@ void showimage() //显示40*40图片
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	u8 i,j;
+	float t=0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -156,45 +117,59 @@ int main(void)
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);	//使能空闲中断
 	//TIM1->CCR2 = 9999; 
 	init_Pid();	
-	Lcd_Init();			//初始化OLED  
-
-	LCD_Clear(BLACK); //清屏
-	BACK_COLOR=BLACK;;POINT_COLOR=WHITE; 
+	LCD_Init();//LCD初始化
+	LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
 
 	//xianshi(); //显示信息
 	 //LCD_DrawPoint(10,0);
 	//  LCD_Fill(10,0,319,10,DARKBLUE);
 	unsigned int index;
 	index = 5;
-	showhanzi16X16(index,18,0,LIGHTBLUE);	
-	showhanzi16X16(index+3+24,18,1,LIGHTBLUE);	
-		showhanzi16X16(index+3+24*4,18,2,LIGHTBLUE);	
-	showhanzi16X16(index+3+24*5,18,3,LIGHTBLUE);
-	showhanzi16X16(index+24*8+3,18,4,LIGHTBLUE);	
-	showhanzi16X16(index+24*9+3,18,5,LIGHTBLUE);
-showhanzi(0+32*0,62+3+20,0,LIGHTBLUE);	
-showhanzi(0+32*1,62+3+20,1,LIGHTBLUE);	
-showhanzi(0+32*0,62+3+32+20,2,LIGHTBLUE);
-showhanzi(0+32*1,62+3+32+20,3,LIGHTBLUE);
+//	showhanzi16X16(index,18,0,LIGHTBLUE);	
+//	showhanzi16X16(index+3+24,18,1,LIGHTBLUE);	
+//		showhanzi16X16(index+3+24*4,18,2,LIGHTBLUE);	
+//	showhanzi16X16(index+3+24*5,18,3,LIGHTBLUE);
+//	showhanzi16X16(index+24*8+3,18,4,LIGHTBLUE);	
+//	showhanzi16X16(index+24*9+3,18,5,LIGHTBLUE);
+//showhanzi(0+32*0,62+3+20,0,LIGHTBLUE);	
+//showhanzi(0+32*1,62+3+20,1,LIGHTBLUE);	
+//showhanzi(0+32*0,62+3+32+20,2,LIGHTBLUE);
+//showhanzi(0+32*1,62+3+32+20,3,LIGHTBLUE);
 
-showhanzi(index+32*5+3,62+3+20,4,LIGHTBLUE);	
-showhanzi(index+32*6+3,62+3+20,5,LIGHTBLUE);	
-showhanzi(index+32*5+3,62+3+32+20,2,LIGHTBLUE);
-showhanzi(index+32*6+3,62+3+32+20,3,LIGHTBLUE);
+//showhanzi(index+32*5+3,62+3+20,4,LIGHTBLUE);	
+//showhanzi(index+32*6+3,62+3+20,5,LIGHTBLUE);	
+//showhanzi(index+32*5+3,62+3+32+20,2,LIGHTBLUE);
+//showhanzi(index+32*6+3,62+3+32+20,3,LIGHTBLUE);
 
-	showhanzi16X16(0,180+3,4,LIGHTBLUE);	
-	showhanzi16X16(0,180+3+24,5,LIGHTBLUE);
+//	showhanzi16X16(0,180+3,4,LIGHTBLUE);	
+//	showhanzi16X16(0,180+3+24,5,LIGHTBLUE);
 
-	//LCD_ShowNum(index+24*10+3,18,19,2,LIGHTBLUE);
-	//LCD_ShowString(14*10+3,36,"LCD_W:",LIGHTBLUE);
-	LCD_DrawLine(0, 60,320, 60);//****************************
-	LCD_DrawLine(0, 61,320, 61);
-	LCD_DrawLine(0, 62,320, 62);	
-	LCD_DrawLine(0, 180,320, 180);//******************************
-	LCD_DrawLine(0, 181,320, 181);
-	LCD_DrawLine(0, 182,320, 182);
+//	//LCD_ShowNum(index+24*10+3,18,19,2,LIGHTBLUE);
+//	//LCD_ShowString(14*10+3,36,"LCD_W:",LIGHTBLUE);
+//	LCD_DrawLine(0, 60,320, 60);//****************************
+//	LCD_DrawLine(0, 61,320, 61);
+//	LCD_DrawLine(0, 62,320, 62);	
+//	LCD_DrawLine(0, 180,320, 180);//******************************
+//	LCD_DrawLine(0, 181,320, 181);
+//	LCD_DrawLine(0, 182,320, 182);
 	//showimage(); //显示40*40图片
-
+		LCD_ShowChinese(0,0,"中景园电子",RED,WHITE,32,0);
+		LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
+		LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
+		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+		LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
+		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+		LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
+		LCD_ShowFloatNum1(128,70,t,4,RED,WHITE,16);
+		t+=0.11;
+		for(j=0;j<5;j++)
+		{
+			for(i=0;i<6;i++)
+			{
+				LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
+			}
+		}
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
