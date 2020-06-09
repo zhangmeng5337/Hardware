@@ -318,17 +318,20 @@ void LCD_ShowChinese32x32(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
 ******************************************************************************/
 void LCD_ShowChar(u16 x,u16 y,u8 num,u16 fc,u16 bc,u8 sizey,u8 mode)
 {
-	u8 temp,sizex,t;
+	u8 temp,sizex,t,m=0;
 	u16 i,TypefaceNum;//一个字符所占字节大小
 	u16 x0=x;
 	sizex=sizey/2;
-	TypefaceNum=sizex/8*sizey;
+	TypefaceNum=(sizex/8+((sizex%8)?1:0))*sizey;
 	num=num-' ';    //得到偏移后的值
 	LCD_Address_Set(x,y,x+sizex-1,y+sizey-1);  //设置光标位置 
 	for(i=0;i<TypefaceNum;i++)
 	{ 
-		if(sizey==16)temp=ascii_1608[num][i];		       //调用8x16字体
+		if(sizey==12)temp=ascii_1206[num][i];		       //调用6x12字体
+		else if(sizey==16)temp=ascii_1608[num][i];		 //调用8x16字体
+		else if(sizey==24)temp=ascii_2412[num][i];		 //调用12x24字体
 		else if(sizey==32)temp=ascii_3216[num][i];		 //调用16x32字体
+		//else if(sizey==48)temp=ascii_4824[num][i];		 //调用16x32字体
 		else return;
 		for(t=0;t<8;t++)
 		{
@@ -336,6 +339,12 @@ void LCD_ShowChar(u16 x,u16 y,u8 num,u16 fc,u16 bc,u8 sizey,u8 mode)
 			{
 				if(temp&(0x01<<t))LCD_WR_DATA(fc);
 				else LCD_WR_DATA(bc);
+				m++;
+				if(m%sizex==0)
+				{
+					m=0;
+					break;
+				}
 			}
 			else//叠加模式
 			{

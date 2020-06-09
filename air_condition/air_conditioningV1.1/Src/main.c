@@ -118,7 +118,7 @@ int main(void)
 	//TIM1->CCR2 = 9999; 
 	init_Pid();	
 	LCD_Init();//LCD初始化
-	LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+	LCD_Fill(0,0,LCD_W,LCD_H,BLACK);
 
 	//xianshi(); //显示信息
 	 //LCD_DrawPoint(10,0);
@@ -153,23 +153,56 @@ int main(void)
 //	LCD_DrawLine(0, 181,320, 181);
 //	LCD_DrawLine(0, 182,320, 182);
 	//showimage(); //显示40*40图片
-		LCD_ShowChinese(0,0,"中景园电子",RED,WHITE,32,0);
-		LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
-		LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
-		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
-		LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
-		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
-		LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
-		LCD_ShowFloatNum1(128,70,t,4,RED,WHITE,16);
-		t+=0.11;
-		for(j=0;j<5;j++)
-		{
-			for(i=0;i<6;i++)
-			{
-				LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
-			}
-		}
+
+	LCD_ShowChinese(index,18,"风速",LIGHTBLUE,BLACK,24,0);
+	LCD_ShowChinese(index+24*3,18,"定速",LIGHTBLUE,BLACK,24,0);
+	LCD_ShowChinese(index+24*7,18,"水温",LIGHTBLUE,BLACK,24,0);
+	LCD_ShowIntNum(index+24*10,14,26,2,LIGHTBLUE,BLACK,32);
+	LCD_ShowChinese(index+24*11+10,14,"℃",LIGHTBLUE,BLACK,32,0);
+
+	LCD_ShowChinese(index,62+23,"设定",LIGHTBLUE,BLACK,32,0);
+	LCD_ShowChinese(index,62+23+32*1,"温度",LIGHTBLUE,BLACK,32,0);
+	LCD_ShowIntNum(index+24*3,62+42,26,2,YELLOW,BLACK,32);
+	LCD_ShowChinese(index+24*4+12,62+42,"℃",YELLOW,BLACK,32,0);
+
+	LCD_ShowChinese(index+32*5,62+23,"当前",LIGHTBLUE,BLACK,32,0);
+	LCD_ShowChinese(index+32*5,62+23+32*1,"温度",LIGHTBLUE,BLACK,32,0);
+	LCD_ShowIntNum(index+24*10,62+42,26,2,YELLOW,BLACK,32);
+	LCD_ShowChinese(index+24*11+10,62+42,"℃",YELLOW,BLACK,32,0);
+
+	LCD_ShowChinese(index+10,183+10,"模式",LIGHTBLUE,BLACK,24,0);
+	LCD_ShowChinese(index+10+24*3,183+10,"定速",LIGHTBLUE,BLACK,24,0);
+	LCD_ShowChinese(index+24*7,183+10,"定时开",LIGHTBLUE,BLACK,24,0);
+	LCD_ShowIntNum(index+24*10,183+10,26,2,LIGHTBLUE,BLACK,32);
+	LCD_ShowChinese(index+24*11+10,183+10,"℃",LIGHTBLUE,BLACK,32,0);
+
+	LCD_DrawLine(0,60,320,0,YELLOW);//**************************************
+	LCD_DrawLine(0,61,320,0,YELLOW);
+	LCD_DrawLine(0,62,320,0,YELLOW);
 	
+	LCD_DrawLine(0,180,320,0,YELLOW);//***************************************
+	LCD_DrawLine(0,181,320,0,YELLOW);
+	LCD_DrawLine(0,182,320,0,YELLOW);		
+  
+	
+	
+//		LCD_ShowChinese(0,0,"中景园电子",RED,WHITE,32,0);
+//		LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
+//		LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,24);
+//		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+//		LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
+//		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+//		LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
+//		LCD_ShowFloatNum1(128,70,t,4,RED,WHITE,16);
+//		t+=0.11;
+//		for(j=0;j<5;j++)
+//		{
+//			for(i=0;i<6;i++)
+//			{
+//				LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
+//			}
+//		}
+//	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -179,7 +212,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		run_process();
+		//run_process();
   }
   /* USER CODE END 3 */
 }
