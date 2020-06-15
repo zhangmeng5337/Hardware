@@ -64,12 +64,12 @@ Generating : Bottom Layer
 
 Used DCodes :
     D10
-    D16
+    D11
     D17
     D26
     D27
     D28
-    D30
+    D29
     D31
     D32
     D33
@@ -101,9 +101,9 @@ Generating : Bottom Pad Master
 
 Used DCodes :
     D10
-    D16
+    D11
     D17
-    D28
+    D26
     D33
     D34
     D35
@@ -144,7 +144,7 @@ Used DCodes :
     D23
     D24
     D25
-    D28
+    D26
     D33
     D34
     D35
@@ -166,8 +166,8 @@ Generating : Top Overlay
 
 
 Used DCodes :
-    D28
-    D30
+    D26
+    D27
     D47
     D48
     D49
@@ -204,7 +204,7 @@ Used DCodes :
     D23
     D24
     D25
-    D28
+    D26
 *************************************************************
 
 *************************************************************
@@ -221,7 +221,7 @@ Generating : Top Solder
 
 
 Used DCodes :
-    D28
+    D26
     D51
     D52
     D53
@@ -263,9 +263,9 @@ Generating : Bottom Solder
 
 
 Used DCodes :
-    D28
+    D26
     D51
-    D57
+    D52
     D58
     D67
     D68
@@ -294,9 +294,9 @@ Generating : Bottom Paste
 
 Used DCodes :
     D10
-    D16
+    D11
     D17
-    D28
+    D26
     D46
 *************************************************************
 
@@ -310,7 +310,7 @@ Generating : Bottom Overlay
 
 
 Used DCodes :
-    D28
+    D26
     D47
 *************************************************************
 
@@ -324,7 +324,7 @@ Generating : Mechanical 1
 
 
 Used DCodes :
-    D28
+    D26
 *************************************************************
 
 *************************************************************
@@ -337,6 +337,6 @@ Generating : Keep-Out Layer
 
 
 Used DCodes :
-    D28
+    D26
 *************************************************************
 
