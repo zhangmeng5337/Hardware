@@ -1,0 +1,13 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [°şÆ¤Æ÷20200624.PrjPCB]
+   Generated File[°şÆ¤Æ÷20200614.TXT]
+   Generated File[°şÆ¤Æ÷20200614.DRL]
+   Generated File[°şÆ¤Æ÷20200614.LDP]
+   Generated File[°şÆ¤Æ÷20200614.DRR]
+
+
+Files Generated   : 4
+Documents Printed : 0
+
+Finished Output Generation At 17:20:53 On 2020/6/27
