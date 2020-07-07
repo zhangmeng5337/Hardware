@@ -24,7 +24,7 @@ void reapte_time()
    RtcWakeUp = 1;
   rtctime=100;//周期检测时间
   SETTING_COUNT=2; 
-  wakeupcount = SETTING_COUNT//定时发送数据时间，wakeupcount=n*rtctime;
+  wakeupcount = SETTING_COUNT;//定时发送数据时间，wakeupcount=n*rtctime;
 }
 void module_prams_init()
 {
@@ -242,17 +242,20 @@ void data_tansmmit()
   memcpy(p+len,&Data_usr.checksum ,1);//check sum
   len = len + 1;
   unsigned char deepth_mm;
-  deepth_mm = (unsigned char)(Data_usr.deep_f*1000/1000);
-  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  unsigned int tmp;
+  
+  tmp=Data_usr.deep_f*1000.0;
+  deepth_mm = (unsigned char)(tmp/1000);
+  memcpy(p+len,&deepth_mm ,1);//deepth unit:m
   len = len + 1;
-  deepth_mm = ((unsigned int)(Data_usr.deep_f*1000))%1000/100);
-  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  deepth_mm = tmp%1000/100;
+  memcpy(p+len,&deepth_mm ,1);//deepth unit:m
   len = len + 1;
-  deepth_mm = ((unsigned int)(Data_usr.deep_f*1000))%100/10);
-  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  deepth_mm = tmp%100/10;
+  memcpy(p+len,&deepth_mm ,1);//deepth unit:m
   len = len + 1;
-  deepth_mm = ((unsigned int)(Data_usr.deep_f*1000))%10);
-  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  deepth_mm = tmp%10;
+  memcpy(p+len,&deepth_mm,1);//deepth unit:m
   len = len + 1;
 
   //memcpy(p+len,Data_usr.deepth  ,2);//deepth unit:m
