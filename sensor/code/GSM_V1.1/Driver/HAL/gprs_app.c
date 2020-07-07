@@ -7,7 +7,7 @@
 #include "stdlib.h"
 
 #define Network_Thres    30
-unsigned char one_net_key[]="*296832#571498701#json*";//284261：产品编号；abab：鉴权码；json：脚本
+unsigned char one_net_key[]="*296832#571498701#json*";//296832：产品编号；571498701：鉴权码；json：脚本
 unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 unsigned char	NET_STAUS=SIMCOM_NET_NOT;//网络链接状态信息标志
 uint32_t  SIMCOM_TimeOut_Count;
