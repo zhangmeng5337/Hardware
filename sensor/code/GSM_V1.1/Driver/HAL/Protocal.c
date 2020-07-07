@@ -14,17 +14,17 @@ Flow_stru Flow;
 
 unsigned char wakeup_flag;
 uint32_t timeout;
+#define SETTING_THRES    0.2//两次检测阈值单位：m
 unsigned int rtctime=100;//10:9s，修改休眠时间
-//unsigned int RepeatTime=30;//10:9s，修改休眠时间
-float warn_setting = 0.5;//3.5m预警值
+float warn_setting = 0.5;//阈值超限
 unsigned int wakeupcount=1;
 unsigned int SETTING_COUNT;
 void reapte_time()
 { 
    RtcWakeUp = 1;
-  rtctime=100;
-  SETTING_COUNT=2; //定时发送数据时间，SETTING_COUNT=n*rtctime
-  wakeupcount = SETTING_COUNT;
+  rtctime=100;//周期检测时间
+  SETTING_COUNT=2; 
+  wakeupcount = SETTING_COUNT//定时发送数据时间，wakeupcount=n*rtctime;
 }
 void module_prams_init()
 {
@@ -241,8 +241,22 @@ void data_tansmmit()
   Data_usr.checksum = 0;
   memcpy(p+len,&Data_usr.checksum ,1);//check sum
   len = len + 1;
-  memcpy(p+len,Data_usr.deepth  ,2);//deepth unit:m
-  len = len + 2;
+  unsigned char deepth_mm;
+  deepth_mm = (unsigned char)(Data_usr.deep_f*1000/1000);
+  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  len = len + 1;
+  deepth_mm = ((unsigned int)(Data_usr.deep_f*1000))%1000/100);
+  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  len = len + 1;
+  deepth_mm = ((unsigned int)(Data_usr.deep_f*1000))%100/10);
+  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  len = len + 1;
+  deepth_mm = ((unsigned int)(Data_usr.deep_f*1000))%10);
+  memcpy(p+len,deepth_mm  ,1);//deepth unit:m
+  len = len + 1;
+
+  //memcpy(p+len,Data_usr.deepth  ,2);//deepth unit:m
+ // len = len + 2;
   memcpy(p+len,&Data_usr.deepth_percent  ,1);//deepth unit:percent
   len = len + 1;
   memcpy(p+len,Data_usr.vbat  ,2);//vbat 
