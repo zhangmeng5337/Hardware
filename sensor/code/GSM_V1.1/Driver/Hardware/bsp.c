@@ -127,7 +127,7 @@ void GSM_HardwareInit(unsigned char flag)
     GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
     delay_ms(1000);
     GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-    //GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, RESET); 
+    GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, RESET); 
   }
   
 }
@@ -245,7 +245,7 @@ void EnterStopMode(void)
   GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
   
   GPIO_SetBits( PORT_SENSOR_EN, PIN_SENSOR_EN );
-  GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, SET); 
+  GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, RESET); 
 
   
   /* Deinitialize DMA channels */

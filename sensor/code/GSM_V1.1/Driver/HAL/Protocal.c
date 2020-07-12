@@ -156,8 +156,9 @@ void sensor_adc()
   
   
   
-  if(Data_usr.calibration_done ==0)
+  if(Data_usr.calibration_done ==0||ExeIntFlag==2)
   {
+    ExeIntFlag = 0;
     OilCalibration();
   }
   else
@@ -171,10 +172,12 @@ void sensor_adc()
   //adc_tmp3 = adc_tmp2-2;
   //  if(adc_tmp2>=vol_offset)
   //    adc_tmp2= adc_tmp2 - vol_offset;
-  
+ adc_tmp2 = adc_tmp2-Data_usr.voltage_calibration_value; 
   adc_tmp2 = adc_tmp2*Data_usr.deepth_calibration;
   Data_usr.deep_f = adc_tmp2;
-  
+  if(Data_usr.deep_f<=0.035)
+    
+  Data_usr.deep_f = 0;
   
   if((Data_usr.deep_f*1.05)>Data_usr.Warn_Thres)
     Data_usr.status = 1;

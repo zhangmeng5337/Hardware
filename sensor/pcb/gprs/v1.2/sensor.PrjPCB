@@ -185,10 +185,6 @@ DItemRevisionGUID=
 DocumentPath=Project Outputs for sensor\PCB1.TXT
 DItemRevisionGUID=
 
-[GeneratedDocument22]
-DocumentPath=Project Outputs for sensor\sensor.xls
-DItemRevisionGUID=
-
 [OutputGroup1]
 Name=Netlist Outputs
 Description=
