@@ -39,7 +39,7 @@ void module_prams_init()
   Data_usr.status = 0;
   Data_usr.deepth_calibration = SENSOR_FACTOR;
   Data_usr.Warn_Thres =warn_setting;
-  
+  Data_usr.gate_status = 1;
   
   
   if(FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS)==0x5a)
@@ -269,9 +269,11 @@ void data_tansmmit()
   len = len + 2;
   memcpy(p+len,&Data_usr.status  ,1);
   len = len + 1;     
-  /*memcpy(p+len,Data_usr.flow  ,4);
+  memcpy(p+len,Data_usr.flow  ,4);
   len = len + 4;
-  memcpy(p+len,&Data_usr.flow_status  ,1);
+  memcpy(p+len,Data_usr.gate_status  ,1);//gate
+  len = len + 1;
+ /* memcpy(p+len,&Data_usr.flow_status  ,1);
   len = len + 1;  */
   if(Save_Data.isUsefull == true)
   {
@@ -384,9 +386,12 @@ void module_process()
             if(uart1.Uart_Buffer[6] == 0x6a)
             {
               FLOW_Ctrl(ON);
+	      Data_usr.gate_status=0;
+              
             }
             else if(uart1.Uart_Buffer[6] == 0xa6)
               FLOW_Ctrl(OFF);
+              Data_usr.gate_status = 1;
           }
         }
         timeout++;

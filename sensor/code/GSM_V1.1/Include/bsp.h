@@ -105,7 +105,7 @@ void USART_SenByte(unsigned char *Str,unsigned char len) ;
 uint32_t adcGet(ADC_Channel_TypeDef num,unsigned int samplecount);
 void delay_ms(uint32_t num);//不是很精确
 void DMA_START_RX(void);
-void FLOW_Ctrl(unsigned char flag);
+unsigned char FLOW_Ctrl(unsigned char flag);
 void GSMInit(void);
 void EnterStopMode(void); 
 #endif //_BSP_H_

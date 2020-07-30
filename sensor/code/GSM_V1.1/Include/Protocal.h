@@ -21,6 +21,7 @@ typedef struct{
   unsigned char deepth_percent;
   unsigned char vbat[2];
   unsigned char status;
+  unsigned char gate_status;
   float deepth_calibration;
   float Warn_Thres;
   float voltage_calibration_value;

@@ -149,7 +149,7 @@ void Sensor_HardwareInit(unsigned char flag)
   }
   
 }
-void FLOW_Ctrl(unsigned char flag)
+unsigned char FLOW_Ctrl(unsigned char flag)
 {
   
   
@@ -160,7 +160,7 @@ void FLOW_Ctrl(unsigned char flag)
     GPIO_SetBits( PORT_FLOW, PIN_FLOW );  
     delay_ms(50);
     // GPIO_ResetBits( PORT_FLOW, PIN_FLOW );
-    
+    return 0;
     
     //  GPIO_ResetBits( PORT_FLOW, PIN_FLOW );    
   }
@@ -173,7 +173,7 @@ void FLOW_Ctrl(unsigned char flag)
     delay_ms(50);
     //  GPIO_SetBits( PORT_FLOW, PIN_FLOW );
     
-    
+    return 1;
     
     
   }
