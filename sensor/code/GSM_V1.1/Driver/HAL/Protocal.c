@@ -271,7 +271,7 @@ void data_tansmmit()
   len = len + 1;     
   memcpy(p+len,Data_usr.flow  ,4);
   len = len + 4;
-  memcpy(p+len,Data_usr.gate_status  ,1);//gate
+  memcpy(p+len,&Data_usr.gate_status  ,1);//gate
   len = len + 1;
  /* memcpy(p+len,&Data_usr.flow_status  ,1);
   len = len + 1;  */
