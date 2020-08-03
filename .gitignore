@@ -26,9 +26,6 @@ Debug/
 *.opj
 *.DRC
 ####################iar#############
-*.ewd
-*.ewt
-*.ewp
 settings/
 *.edp
 *.ewt
