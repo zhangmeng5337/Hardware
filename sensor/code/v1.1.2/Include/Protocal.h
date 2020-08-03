@@ -7,9 +7,11 @@
 #define NODE_TO_SERVERL  0xAB
 #define SERVER_TO_NODEH  0xAA
 #define SERVER_TO_NODEL  0xAA
-
+#define SENSOR_RANGE    70
+#define HEIGHT_RANGE    3.5
+#define MIN_OFFSET      0.035
 #define CHECKSUM_INDEX   0x05
-#define SENSOR_FACTOR	 0.05
+#define SENSOR_FACTOR	 SENSOR_RANGE/HEIGHT_RANGE
 #define VOLTAGE_FACTOR	22275
 #define vol_offset	60.6
 typedef struct{

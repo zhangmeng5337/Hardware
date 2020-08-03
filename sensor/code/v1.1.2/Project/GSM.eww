@@ -2,7 +2,7 @@
 
 <workspace>
   <project>
-    <path>$WS_DIR$\GSM.ewp</path>
+    <path>$WS_DIR$\gsm.ewp</path>
   </project>
   <batchBuild/>
 </workspace>

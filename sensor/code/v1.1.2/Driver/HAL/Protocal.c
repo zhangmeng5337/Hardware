@@ -58,9 +58,9 @@ void module_prams_init()
     
   }
   else
-    Data_usr.Warn_Thres = 3.5;	
+    Data_usr.Warn_Thres = HEIGHT_RANGE;	
   if(Data_usr.Warn_Thres<=0)
-    Data_usr.Warn_Thres = 3.5;
+    Data_usr.Warn_Thres = HEIGHT_RANGE;
   uart1.isGetData = 0;  
   
 }
@@ -175,7 +175,7 @@ void sensor_adc()
  adc_tmp2 = adc_tmp2-Data_usr.voltage_calibration_value; 
   adc_tmp2 = adc_tmp2*Data_usr.deepth_calibration;
   Data_usr.deep_f = adc_tmp2;
-  if(Data_usr.deep_f<=0.035)
+  if(Data_usr.deep_f<=MIN_OFFSET)
     
   Data_usr.deep_f = 0;
   
@@ -193,8 +193,8 @@ void sensor_adc()
     Data_usr.status = 1;
   }
   Data_usr.deep_f_last=Data_usr.deep_f;
-  if(Data_usr.deep_f>3.5)
-    adc_tmp2 = 3.5;
+  if(Data_usr.deep_f>HEIGHT_RANGE)
+    adc_tmp2 = HEIGHT_RANGE;
   adc_tmp3=adc_tmp2*10;
   Data_usr.deepth[0] = (unsigned char)(adc_tmp3/10 );
   if(adc_tmp3<10)
