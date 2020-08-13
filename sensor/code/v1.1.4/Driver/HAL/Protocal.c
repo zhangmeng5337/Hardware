@@ -139,7 +139,6 @@ void OilCalibration()
 
 
 
-unsigned char p[64];
 
 
 void sensor_adc()
@@ -229,7 +228,8 @@ unsigned char len;
 void data_tansmmit()
 {
   unsigned char i;
-  
+  unsigned char *p;
+ p=malloc(sizeof(unsigned char) * 64);  
   i=0;
   p[0] = NODE_TO_SERVERH;
   p[1] = NODE_TO_SERVERL;
@@ -302,6 +302,7 @@ void data_tansmmit()
   while(len--)
     UART1_SendByte(p[i++]);  
   delay_ms(3000);
+  free(p);
 }
 static unsigned char lcd_flag=1;
 void stop_mode()
@@ -396,7 +397,7 @@ void data_process()
       
       // delay_ms(3000);
     set_NetStatus(SIMCOM_POWER_ON);
-   stop_mode();
+    stop_mode();
     disableInterrupts(); 
     RTC_Config(1,OFF);//10:9s
     HardwareInit();

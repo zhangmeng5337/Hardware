@@ -155,9 +155,8 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_NET_ERROR:
     {
-      GSM_HardwareInit(ON);                   //复位重启
-      // GSM_HardwareInit(ON);
-      NET_STAUS=SIMCOM_POWER_ON;       //状态机复位
+      //GSM_HardwareInit(ON);                   //复位重启
+      NET_STAUS=SIMCOM_NET_NOT;       //状态机复位
     }
     break;
   default : break;
