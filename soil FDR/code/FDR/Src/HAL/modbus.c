@@ -449,8 +449,8 @@ void Modbus_03_Solve(void)
             {
                 if(i<1)
                 {
-                    modbus_usr.RS485_TX_BUFF[3+i*2]=modbus_usr.RS485_Baudrate;//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    //modbus_usr.RS485_TX_BUFF[4+i*2]=(sensor_usr.temperature)&&0xff;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+                    modbus_usr.RS485_TX_BUFF[3+i*2]=(modbus_usr.RS485_Baudrate>>8)&&0xff;//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
+                    modbus_usr.RS485_TX_BUFF[4+i*2]=modbus_usr.RS485_Baudrate&&0xff;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
             }
         }

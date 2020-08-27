@@ -28,5 +28,6 @@ void params_init()
 	
 void app_loop()
 {
-RS485_Service();
+	Get_Adc_Average(50);
+	RS485_Service();
 }
