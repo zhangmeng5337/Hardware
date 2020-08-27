@@ -1,0 +1,3 @@
+NBIOT:sim7060g/BC20
+Cpu:stm32f405
+Lora:E22-230f22s
