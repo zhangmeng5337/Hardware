@@ -1,6 +1,6 @@
 [Design]
 Version=1.0
-HierarchyMode=0
+HierarchyMode=3
 ChannelRoomNamingStyle=0
 OutputPath=
 LogFolderPath=
@@ -27,6 +27,96 @@ PushECOToAnnotationFile=1
 DItemRevisionGUID=
 
 [Document1]
+DocumentPath=CPU.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[Document2]
+DocumentPath=LORA.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=2
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[Document3]
+DocumentPath=nbiot&gps.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=3
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[Document4]
+DocumentPath=POWER.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=4
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[Document5]
+DocumentPath=CONNECTOR.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=0
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[Document6]
+DocumentPath=rs485.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=5
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[Document7]
 DocumentPath=GateWay.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -41,100 +131,14 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
-[Document2]
-DocumentPath=CPU.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-
-[Document3]
-DocumentPath=LORA.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-
-[Document4]
-DocumentPath=nbiot&gps.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-
-[Document5]
-DocumentPath=POWER.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-
-[Document6]
-DocumentPath=CONNECTOR.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-
-[Document7]
-DocumentPath=rs485.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
+[GeneratedDocument1]
+DocumentPath=Project Outputs for GateWay\Design Rule Check - GateWay.html
 DItemRevisionGUID=
 
 [OutputGroup1]
 Name=Netlist Outputs
 Description=
-TargetPrinter=HP LaserJet Pro MFP M126nw
+TargetPrinter=OneNote for Windows 10
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=CadnetixNetlist
 OutputName1=Cadnetix Netlist
@@ -265,7 +269,7 @@ OutputDefault25=0
 [OutputGroup2]
 Name=Simulator Outputs
 Description=
-TargetPrinter=HP LaserJet Pro MFP M126nw
+TargetPrinter=OneNote for Windows 10
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=AdvSimNetlist
 OutputName1=Mixed Sim
@@ -286,7 +290,7 @@ OutputDefault3=0
 [OutputGroup3]
 Name=Documentation Outputs
 Description=
-TargetPrinter=HP LaserJet Pro MFP M126nw
+TargetPrinter=OneNote for Windows 10
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Composite
 OutputName1=Composite Drawing
@@ -346,7 +350,7 @@ PageOptions9=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintS
 [OutputGroup4]
 Name=Assembly Outputs
 Description=
-TargetPrinter=HP LaserJet Pro MFP M126nw
+TargetPrinter=OneNote for Windows 10
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Assembly
 OutputName1=Assembly Drawings
@@ -368,7 +372,7 @@ OutputDefault3=0
 [OutputGroup5]
 Name=Fabrication Outputs
 Description=
-TargetPrinter=HP LaserJet Pro MFP M126nw
+TargetPrinter=OneNote for Windows 10
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=CompositeDrill
 OutputName1=Composite Drill Drawing
@@ -424,7 +428,7 @@ OutputDefault9=0
 [OutputGroup6]
 Name=Report Outputs
 Description=
-TargetPrinter=HP LaserJet Pro MFP M126nw
+TargetPrinter=OneNote for Windows 10
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=BOM_PartType
 OutputName1=Bill of Materials
@@ -473,7 +477,7 @@ OutputDefault8=0
 [OutputGroup7]
 Name=Other Outputs
 Description=
-TargetPrinter=HP LaserJet Pro MFP M126nw
+TargetPrinter=OneNote for Windows 10
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Text Print
 OutputName1=Text Print
@@ -761,7 +765,7 @@ Type5=2
 Type6=2
 Type7=1
 Type8=1
-Type9=1
+Type9=2
 Type10=1
 Type11=2
 Type12=2
@@ -809,9 +813,9 @@ Type53=1
 Type54=1
 Type55=1
 Type56=2
-Type57=1
+Type57=2
 Type58=1
-Type59=0
+Type59=2
 Type60=1
 Type61=2
 Type62=2
