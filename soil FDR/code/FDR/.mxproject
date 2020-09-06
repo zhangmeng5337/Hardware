@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=F:/code/FDR/Inc
+HeaderPath=F:/projects/git/Hardware/soil FDR/code/FDR/Inc
 HeaderFiles=stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=F:/code/FDR/Src
+SourcePath=F:/projects/git/Hardware/soil FDR/code/FDR/Src
 SourceFiles=stm32f1xx_it.c;stm32f1xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

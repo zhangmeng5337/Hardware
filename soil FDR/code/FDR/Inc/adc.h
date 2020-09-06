@@ -7,4 +7,5 @@ typedef struct{
 	unsigned int rh;
 	unsigned int temperature;
 }sensor_stru;
+void Get_Adc_Average(unsigned char times);
 #endif

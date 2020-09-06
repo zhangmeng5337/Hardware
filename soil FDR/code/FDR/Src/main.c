@@ -101,7 +101,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	 params_init();
    RS485_Init();
-	 
+   HAL_GPIO_WritePin(GPIOA, PWR_EN_Pin, GPIO_PIN_SET);	 
    HAL_TIM_Base_Start_IT(&htim2);
 
   /* USER CODE END 2 */
@@ -113,6 +113,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
+		 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 		 app_loop();
   }
   /* USER CODE END 3 */
@@ -196,7 +198,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_55CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();

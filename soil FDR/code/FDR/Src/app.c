@@ -1,6 +1,7 @@
 #include "app.h"
 #include "modbus.h"
 #include "eeprom.h"
+#include "adc.h"
 extern modbus_stru modbus_usr;
 void params_init()
 {   
@@ -29,5 +30,5 @@ void params_init()
 void app_loop()
 {
 	Get_Adc_Average(50);
-	RS485_Service();
+	//RS485_Service();
 }

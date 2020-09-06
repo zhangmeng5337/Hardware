@@ -1,6 +1,7 @@
 #include "adc.h"
 extern ADC_HandleTypeDef hadc1;
 float tmp;
+float temperature;
 sensor_stru sensor_usr;
 void Get_Adc_Average(unsigned char times)
 {
@@ -39,13 +40,21 @@ void Get_Adc_Average(unsigned char times)
 
 
 
-	#if DEBUG_USER
-		printf("  osc vol:   %d",sensor_usr.sensor[0]);
-		printf("  fa vol:   %d",sensor_usr.sensor[1]);
-		printf("  fb vol:   %d",sensor_usr.sensor[2]);
-		printf("  ta vol:   %d",sensor_usr.sensor[3]);
-		printf("  tb vol:   %d\n",sensor_usr.sensor[4]);
+	#if DEBUG_USER 
+		printf("  osc vol:   %f        fa vol:   %f           fb vol:   %f        ta vol:          tb vol:   %f\n",sensor_usr.sensor[0],sensor_usr.sensor[1]
+	,sensor_usr.sensor[2],sensor_usr.sensor[3],sensor_usr.sensor[4]);
+		//printf("  fa vol:   %f",sensor_usr.sensor[1]);
+		//printf("  fb vol:   %f",sensor_usr.sensor[2]);
+		//printf("  ta vol:   %f",sensor_usr.sensor[3]);
+		//printf("  tb vol:   %f\n",sensor_usr.sensor[4]);
 
+	//temperature = sensor_usr.sensor[3]-sensor_usr.sensor[4];
+	float tmp2,tmp3;
+	tmp2=(sensor_usr.sensor[4]/3.3);
+	tmp3= (sensor_usr.sensor[3]-sensor_usr.sensor[4]);
+	tmp3= 2.8048*tmp3;	
+	temperature =tmp3 /tmp2*1000-287.22;	
+	
 		#endif
 	
 	//return &adc_io.adc_result[0];
