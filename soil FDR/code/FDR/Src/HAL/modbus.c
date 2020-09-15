@@ -126,25 +126,26 @@ void RS485_SendData(u8 *buff,u8 len)
     //while(USART_GetFlagStatus(USART2,USART_FLAG_TC)==RESET);//等待发送完成
 }
 
+unsigned char count;
+uint32_t Tick4ms;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     u8 err;
     if(huart->Instance == USART1)
     {
+			 count++;
         if(HAL_UART_GetError(&huart1)) err=1;//检测到噪音、帧错误或校验错误
         else err=0;
         if((modbus_usr.RS485_RX_CNT<2047)&&(err==0))
         {
             modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT]=res;
             modbus_usr.RS485_RX_CNT++;
-			modbus_usr.RS485_FrameFlag=1;//置位帧结束标记
-
-            __HAL_TIM_GET_FLAG(&htim2,TIM_FLAG_UPDATE);
-            __HAL_TIM_SET_COUNTER(&htim2,0); 			 //当接收到一个新的字节，将定时器7复位为0，重新计时（相当于喂狗）
-            HAL_TIM_Base_Start_IT(&htim2);//开始计时
-        }
+						modbus_usr.RS485_FrameFlag=1;//置位帧结束标记
+            Tick4ms =HAL_GetTick();			 //当接收到一个新的字节，将定时器7复位为0，重新计时（相当于喂狗）
+						//开始计时
+        }            
         HAL_UART_Receive_IT(&huart1, &res, 1); 	  // 重新注册一次，要不然下次收不到了
-        led_ctrl(2);
+//        //led_ctrl(2);
     }
 
 
@@ -155,24 +156,25 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //用定时器2判断接收空闲时间，当空闲时间大于指定时间，认为一帧结束
 //定时器2中断服务程序
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+void timCallback()
 {
-    if(htim->Instance == TIM2)
-    {
+
         //编写回调逻辑，即定时器1定时1MS后的逻辑
-        __HAL_TIM_GET_FLAG(&htim2,TIM_FLAG_UPDATE);
         HAL_TIM_Base_Stop_IT(&htim2);  //停止定时器的时候调用这个函数关闭
         modbus_usr.RS485_TX_EN=1;//停止接收，切换为发送状态
-        HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
 		if(modbus_usr.RS485_FrameFlag==1)
 		{
+			if((HAL_GetTick()-Tick4ms)>=4)
 			modbus_usr.RS485_FrameFlag=2;//置位帧结束标记
 
 		}
-		else 
-			modbus_usr.RS485_FrameFlag=3;//置位帧结束标记
+		else if(modbus_usr.RS485_FrameFlag)
+		{
+			Tick4ms =HAL_GetTick();
+			modbus_usr.RS485_FrameFlag=3;//置位帧结束标记		
+		}
 
-    }
+
 }
 /////////////////////////////////////////////////////////////////////////////////////
 //RS485服务程序，用于处理接收到的数据(请在主函数中循环调用)
@@ -207,6 +209,7 @@ void RS485_Service(void)
                         {
                         case 03: //读多个寄存器
                         {
+													  Get_Adc_Average(50);
                             Modbus_03_Solve();
                             break;
                         }
@@ -248,11 +251,18 @@ void RS485_Service(void)
                 RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
             }
         }
-        HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+       
         modbus_usr.RS485_FrameFlag=0;//复位帧结束标志
         modbus_usr.RS485_RX_CNT=0;//接收计数器清零
         modbus_usr.RS485_TX_EN=0;//开启接收模式
     }
+		if( modbus_usr.RS485_FrameFlag==3)
+		{
+        modbus_usr.RS485_FrameFlag=0;//复位帧结束标志
+        modbus_usr.RS485_RX_CNT=0;//接收计数器清零
+        modbus_usr.RS485_TX_EN=0;//开启接收模式
+		}
+		HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
 }
 
 //Modbus功能码02处理程序/////////////////////////////////////////////////////程序已验证OK -----必须先配置PE4 PE3 PE2 PA0 初始化按键才可以OK    KEY_Init();
@@ -488,7 +498,10 @@ void Modbus_06_Solve(void)
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
-        modbus_usr.RS485_TX_BUFF[2]=RegNum*2;
+        modbus_usr.RS485_TX_BUFF[2]=startRegAddr>>8;
+        modbus_usr.RS485_TX_BUFF[3]=startRegAddr;			
+        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];	
+        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];			
         for(i=0; i<RegNum; i++)
         {
 
@@ -534,10 +547,10 @@ void Modbus_06_Solve(void)
             flash_write(2,modbus_usr.RS485_Baudrate,1);
             flash_write(3,modbus_usr.RS485_Parity,1);
         }
-        //  calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,RegNum*2+3);
-        //modbus_usr.RS485_TX_BUFF[RegNum*2+3]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
-        //modbus_usr.RS485_TX_BUFF[RegNum*2+4]=(calCRC)&0xFF;
-        // RS485_SendData(modbus_usr.RS485_TX_BUFF,RegNum*2+5);
+          calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
+        modbus_usr.RS485_TX_BUFF[6]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
+        modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
+         RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
     }
     else//寄存器地址+数量超出范围
     {

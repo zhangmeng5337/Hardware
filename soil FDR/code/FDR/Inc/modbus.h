@@ -22,5 +22,5 @@ u16 RS485_TX_CNT;//·¢ËÍ¼ÆÊýÆ÷
 
 void RS485_Init(void);
 void RS485_Service(void);
-
+void timCallback(void);
 #endif
