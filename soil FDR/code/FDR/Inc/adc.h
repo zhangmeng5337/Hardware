@@ -1,7 +1,7 @@
 #ifndef ADC_H
 #define ADC_H
 #include "main.h"
-#define ADC_COUNT  5
+#define ADC_COUNT  1
 typedef struct{
 	float sensor[5];
 	unsigned int rh;

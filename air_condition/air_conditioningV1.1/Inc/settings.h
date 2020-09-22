@@ -46,7 +46,7 @@
 
 
 #define FAN_RUN_TIME       2000
-#define TX_COMMAND_TIME    6*1000
+#define TX_COMMAND_TIME    2*1000
 
 
 typedef struct {

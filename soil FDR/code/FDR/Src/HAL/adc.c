@@ -3,6 +3,10 @@ extern ADC_HandleTypeDef hadc1;
 float tmp;
 float temperature;
 sensor_stru sensor_usr;
+float value;
+unsigned char stop_flag ;
+ uint32_t freq_last; 
+extern uint32_t	freq_count;
 void Get_Adc_Average(unsigned char times)
 {
 
@@ -37,7 +41,14 @@ void Get_Adc_Average(unsigned char times)
 	{
 	  sensor_usr.sensor[i] = 3.3*sensor_usr.sensor[i]/4095;
 	}
-
+  if(sensor_usr.sensor[0]>value)
+	{
+		value=sensor_usr.sensor[0];
+		freq_last = freq_count;
+		stop_flag = 0;
+	}
+	else
+		stop_flag = 1;
 
 
 	#if DEBUG_USER 

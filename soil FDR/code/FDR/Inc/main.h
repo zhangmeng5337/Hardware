@@ -53,6 +53,8 @@ typedef unsigned int u16 ;
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -61,8 +63,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define PWR_EN_Pin GPIO_PIN_4
-#define PWR_EN_GPIO_Port GPIOA
+#define PWR_EN_Pin GPIO_PIN_0
+#define PWR_EN_GPIO_Port GPIOD
 #define LED_Pin GPIO_PIN_13
 #define LED_GPIO_Port GPIOB
 #define RS485_EN1_Pin GPIO_PIN_8

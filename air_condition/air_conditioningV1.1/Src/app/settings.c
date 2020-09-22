@@ -31,6 +31,7 @@ mode_stru *get_params_mode()
 
     return tmp;
 }
+
 void airMachine_ctrl(unsigned char umode)
 {
 /*
@@ -361,16 +362,26 @@ void work_mode_process()
             }
             else
             {
-                mode.mode = NORMAL;	 //normal mode
+							  mode.modeNo = COLD;
+                //mode.mode = NORMAL;	 //normal mode
                 mode.last_mode_no = mode.modeNo;
-                mode.modeNo = COLD;
+                
             }
 
         }
         else if(mode.status == WORK_ON)//开机状态并且系统运行时可以查询参数
         {
-            if(mode.manual == 0&&mode.modeNo != RECYCLE_DISPLAY)
-                mode.manual = 1;
+            if(mode.modeNo<(MAX_MODE_NO-1))
+            {
+                mode.modeNo = mode.modeNo + 1;
+                mode.last_mode_no = mode.modeNo;
+            }
+            else
+            {
+                mode.mode = NORMAL;	 //normal mode
+                mode.last_mode_no = mode.modeNo;
+                mode.modeNo = COLD;
+            }
         }
     }
     else if(key_tmp->key_status == 0x02)
@@ -859,9 +870,16 @@ void run_process()
     }
 	else
 	{
+		static uint32_t getTickTime;
 	   mode.flag_mark = 0;
-		 airMachine_ctrl(OFF);
-		 device_ctrl(DEV_ALL,OFF);
+		 device_ctrl(DEV_ALL,OFF);	
+		if((HAL_GetTick() -getTickTime)>=TX_COMMAND_TIME)
+		{
+			airMachine_ctrl(OFF);
+			getTickTime = HAL_GetTick();
+				
+		}
+
 
 	}
 /*****************************************显示控制******************************************************/
