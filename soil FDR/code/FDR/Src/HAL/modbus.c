@@ -4,6 +4,7 @@
 #include "bsp.h"
 #include "adc.h"
 #include "eeprom.h"
+#include "filter.h"
 void Modbus_01_Solve(void);
 void Modbus_02_Solve(void);
 void Modbus_03_Solve(void);
@@ -182,6 +183,7 @@ void timCallback()
 void RS485_Service(void)
 {
     u16 recCRC;
+	 Get_Adc_Average(N);
     if(modbus_usr.RS485_FrameFlag==2)
     {
         if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//地址正确
@@ -209,7 +211,8 @@ void RS485_Service(void)
                         {
                         case 03: //读多个寄存器
                         {
-													  Get_Adc_Average(50);
+													  Get_Adc_Average(N);
+													
                             Modbus_03_Solve();
                             break;
                         }

@@ -65,7 +65,7 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t freq,adc_value,tickTime,freq_count;
+uint32_t freq,tickTime,freq_count;
 extern unsigned char stop_flag ;
 /* USER CODE END 0 */
 
@@ -113,28 +113,26 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */  
-                                
+    /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
 		// HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
 		HAL_Delay(1000);
 		 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-		Get_Adc_Average(10);
+//		Get_Adc_Average(10);
 
-		if((HAL_GetTick()-tickTime)>=5000&&stop_flag == 1)
+		if((HAL_GetTick()-tickTime)>=1000)
 		{
 			tickTime=HAL_GetTick();		
-			freq_count = freq_count +1;
-			freq=1/freq_count*1000-1;
-		__HAL_TIM_SET_PRESCALER(&htim2,freq);
+			//app_loop();
 		}
-		else
-		{
-		Get_Adc_Average(10);
-		}
+//		else
+//		{
+//		Get_Adc_Average(10);
+//		}
 			
-
-		 //app_loop();
+     //if(HAL_Get_Tick())
+		 app_loop();
   }
   /* USER CODE END 3 */
 }
@@ -202,21 +200,46 @@ static void MX_ADC1_Init(void)
   /** Common config 
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.DiscontinuousConvMode = ENABLE;
+  hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 4;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
   }
   /** Configure Regular Channel 
   */
-  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Channel = ADC_CHANNEL_VREFINT;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_8;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_7;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
