@@ -183,7 +183,7 @@ void timCallback()
 void RS485_Service(void)
 {
     u16 recCRC;
-	 //Get_Adc_Average(N);
+	 Get_Adc_Average(N);
     if(modbus_usr.RS485_FrameFlag==2)
     {
         if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//地址正确
@@ -211,7 +211,7 @@ void RS485_Service(void)
                         {
                         case 03: //读多个寄存器
                         {
-													  Get_Adc_Average(N);
+													  
 													
                             Modbus_03_Solve();
                             break;
@@ -435,7 +435,7 @@ void Modbus_03_Solve(void)
                 {
 									  tmp = sensor_usr.rh;
                     modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((tmp>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp)&&0xff;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
                 else if(i<2)
                 {
@@ -449,7 +449,7 @@ void Modbus_03_Solve(void)
                 if(i<1)
                 {
                     modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((sensor_usr.temperature>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(sensor_usr.temperature)&&0xff;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(sensor_usr.temperature);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
             }
             else if(startRegAddr == DEV_ADDR)
@@ -457,7 +457,7 @@ void Modbus_03_Solve(void)
                 if(i<1)
                 {
                     modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((modbus_usr.RS485_Addr>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(modbus_usr.RS485_Addr)&&0xff;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(modbus_usr.RS485_Addr);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
             }
             else if(startRegAddr == RATE_ADDR)
@@ -465,7 +465,7 @@ void Modbus_03_Solve(void)
                 if(i<1)
                 {
                     modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((modbus_usr.RS485_Baudrate>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)modbus_usr.RS485_Baudrate&&0xff;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)modbus_usr.RS485_Baudrate;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
             }
         }

@@ -126,6 +126,7 @@ int main(void)
 			tickTime=HAL_GetTick();		
 			//app_loop();
 		}
+		
 		 app_loop();
   }
   /* USER CODE END 3 */
