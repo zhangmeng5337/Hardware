@@ -21,7 +21,10 @@ void params_init()
       modbus_usr.RS485_Parity=p[3];	
 			factor_usr.a0 = p[4];
 			factor_usr.a1 = p[5];
-			factor_usr.a2 = p[6];				 
+			factor_usr.a2 = p[6];	
+			 factor_usr.a0 = -2874.1;
+				factor_usr.a1 = 9204.2;
+				factor_usr.a2 = -7340.6;			 
 		 }
 		 else
 		 {
@@ -30,9 +33,7 @@ void params_init()
 			 flash_write(addr++,modbus_usr.RS485_Baudrate,1); 
 			 flash_write(addr++,modbus_usr.RS485_Parity,1);
 
-				factor_usr.a0 = 1;
-				factor_usr.a1 = 1;
-				factor_usr.a2 = 1;	
+	
 				flash_write(addr++,factor_usr.a0,1);	
 				flash_write(addr++,factor_usr.a1,1);	
 				flash_write(addr++,factor_usr.a2,1);	 		 

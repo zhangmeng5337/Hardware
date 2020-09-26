@@ -4,17 +4,49 @@
 factor_stru factor_usr;
 float SoilHumid(unsigned char status,float AdcValueVol)
 {
+	static unsigned char index;
+	unsigned int result;
+	float tmp3;
+	static float last_temp;
 	if(status == CALIBRATION)
 	{
-		factor_usr.humid=factor_usr.a0+factor_usr.a1*AdcValueVol;
-		factor_usr.humid=factor_usr.humid+factor_usr.a2*AdcValueVol*factor_usr.a1;
+		factor_usr.humid=factor_usr.a0*AdcValueVol*AdcValueVol+factor_usr.a2;
+		factor_usr.humid=factor_usr.humid+factor_usr.a1*AdcValueVol;	
 	}
 	else
 	{
-		factor_usr.humid=factor_usr.a0+factor_usr.a1*AdcValueVol;
-		factor_usr.humid=factor_usr.humid+factor_usr.a2*AdcValueVol*factor_usr.a1;	
+		factor_usr.humid=factor_usr.a0*AdcValueVol*AdcValueVol+factor_usr.a2;
+		factor_usr.humid=factor_usr.humid+factor_usr.a1*AdcValueVol;	
 	}
-	return (unsigned int) (factor_usr.humid*10);
+	if(AdcValueVol<1.515)
+	{
+		factor_usr.humid = 0;
+	   last_temp = 0;
+  }
+	last_temp = last_temp +factor_usr.humid;
+	index++;
+
+	/************滤波去抖动，防止数据过于频繁跳动****************/
+	if(index<48)
+	{
+		tmp3 = last_temp/index;
+	}
+	else
+	{
+		tmp3 = last_temp/index;
+    index = 0;	
+		last_temp = 0;		
+	}
+   
+	if(tmp3<0)
+	{
+		result = (unsigned int)(tmp3);
+		result = ~result+1;
+	}
+	else 
+		result = (unsigned int)(tmp3*10);
+	factor_usr.humid = result;
+	return (unsigned int) (factor_usr.humid);
 }
 
 /*
@@ -34,8 +66,8 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 	//AdcValueVol1 = ((uint32_t)(AdcValueVol1*1000))/1000.0;
 //	AdcValueVol2 = ((uint32_t)(AdcValueVol2*1000))/1000.0;
 	resistor = (AdcValueVol1*499/AdcValueVol2)-499;
-	resistor = ((uint32_t)(resistor*100));
-	resistor=resistor/100.0;
+	resistor = ((uint32_t)(resistor*10000));
+	resistor=resistor/10000.0;
 
 	
 	
@@ -57,7 +89,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
     index = 0;	
 		last_temp = 0;		
 	}
-   
+   tmp3 = tmp3 -30;
 	if(tmp3<0)
 	{
 		result = (unsigned int)(tmp3);
@@ -65,5 +97,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 	}
 	else 
 		result = (unsigned int)(tmp3);
+	
+	
 	return result;
 }

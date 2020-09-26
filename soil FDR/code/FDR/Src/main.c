@@ -126,12 +126,6 @@ int main(void)
 			tickTime=HAL_GetTick();		
 			//app_loop();
 		}
-//		else
-//		{
-//		Get_Adc_Average(10);
-//		}
-			
-     //if(HAL_Get_Tick())
 		 app_loop();
   }
   /* USER CODE END 3 */

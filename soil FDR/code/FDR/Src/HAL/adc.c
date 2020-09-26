@@ -49,14 +49,14 @@ void Get_Adc_Average(unsigned char times)
 	ref = filter(0);
 	/***************************filter adc value*************************************/
 	adc_value = filter(1);
-	sensor_usr.sensor[0] = 3.3*adc_value/4095;
+	sensor_usr.sensor[0] = ADC_REF*adc_value/4095;
 	//free(adcBuf_humid);
 	adc_value = filter(2);
 	//free(adcBuf_ta);
-	sensor_usr.sensor[1] = 3.3*adc_value/4095;	
+	sensor_usr.sensor[1] = ADC_REF*adc_value/4095;	
 	adc_value = filter(3);
 	//	free(adcBuf_tb);
-	sensor_usr.sensor[2] = 3.3*adc_value/4095;
+	sensor_usr.sensor[2] = ADC_REF*adc_value/4095;
 	/****************************calculate humid and temperature*********************/
 	sensor_usr.rh = SoilHumid(MEASURE,sensor_usr.sensor[0]);
 	sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2]);
@@ -75,22 +75,22 @@ void Get_Adc_Average(unsigned char times)
 //		stop_flag = 1;
 
 
-	#if DEBUG_USER 
-		printf("  osc vol:   %f        fa vol:   %f           fb vol:   %f        ta vol:          tb vol:   %f\n",sensor_usr.sensor[0],sensor_usr.sensor[1]
-	,sensor_usr.sensor[2],sensor_usr.sensor[3],sensor_usr.sensor[4]);
-		//printf("  fa vol:   %f",sensor_usr.sensor[1]);
+//	#if DEBUG_USER 
+	//	printf("  osc vol:   %f        fa vol:   %f           fb vol:   %f        ta vol:          tb vol:   %f\n",sensor_usr.sensor[0],sensor_usr.sensor[1]
+	//,sensor_usr.sensor[2],sensor_usr.sensor[3],sensor_usr.sensor[4]);
+	//	printf("  fa vol:   %f\n",sensor_usr.sensor[0]);
 		//printf("  fb vol:   %f",sensor_usr.sensor[2]);
 		//printf("  ta vol:   %f",sensor_usr.sensor[3]);
 		//printf("  tb vol:   %f\n",sensor_usr.sensor[4]);
 
 	//temperature = sensor_usr.sensor[3]-sensor_usr.sensor[4];
-	float tmp2,tmp3;
+/*	float tmp2,tmp3;
 	tmp2=(sensor_usr.sensor[4]/3.3);
 	tmp3= (sensor_usr.sensor[3]-sensor_usr.sensor[4]);
 	tmp3= 2.8048*tmp3;	
 	temperature =tmp3 /tmp2*1000-287.22;	
 	
-		#endif
+		#endif*/
 	
 	//return &adc_io.adc_result[0];
 } 
