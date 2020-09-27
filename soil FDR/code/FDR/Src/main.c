@@ -116,18 +116,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		// HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-		HAL_Delay(1000);
-		 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-//		Get_Adc_Average(10);
-
+		//HAL_Delay(1000);
+		
 		if((HAL_GetTick()-tickTime)>=1000)
 		{
+			 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 			tickTime=HAL_GetTick();		
-			//app_loop();
 		}
-		
-		 app_loop();
+		app_loop();
   }
   /* USER CODE END 3 */
 }

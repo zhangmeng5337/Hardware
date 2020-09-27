@@ -22,12 +22,17 @@ void params_init()
 			factor_usr.a0 = p[4];
 			factor_usr.a1 = p[5];
 			factor_usr.a2 = p[6];	
-			 factor_usr.a0 = -2874.1;
-				factor_usr.a1 = 9204.2;
-				factor_usr.a2 = -7340.6;			 
+			 //初始参数
+			factor_usr.a0 = -2874.1;
+			factor_usr.a1 = 9204.2;
+			factor_usr.a2 = -7340.6;			 
 		 }
 		 else
 		 {
+			  //初始参数
+			factor_usr.a0 = -2874.1;
+			factor_usr.a1 = 9204.2;
+			factor_usr.a2 = -7340.6;	 
 			 flash_write(addr++,0x5a,1); 
 			 flash_write(addr++,modbus_usr.RS485_Addr,1); 
 			 flash_write(addr++,modbus_usr.RS485_Baudrate,1); 

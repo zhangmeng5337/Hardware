@@ -2,7 +2,7 @@
 #define ADC_H
 #include "main.h"
 #define ADC_COUNT  1
-#define ADC_REF   3.29
+#define ADC_REF   3.295
 typedef struct{
 	float sensor[5];
 	unsigned int rh;

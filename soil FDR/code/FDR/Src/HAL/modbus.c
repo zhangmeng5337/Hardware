@@ -183,7 +183,7 @@ void timCallback()
 void RS485_Service(void)
 {
     u16 recCRC;
-	 Get_Adc_Average(N);
+	  Get_Adc_Average(N);
     if(modbus_usr.RS485_FrameFlag==2)
     {
         if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//地址正确
@@ -209,7 +209,7 @@ void RS485_Service(void)
                         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         switch(modbus_usr.RS485_RX_BUFF[1])//根据不同的功能码进行处理
                         {
-                        case 03: //读多个寄存器
+                        case 03: //读寄存器
                         {
 													  
 													

@@ -2,24 +2,19 @@
 #include "filter.h"
 #include "FdrAlgorithm.h"
 extern ADC_HandleTypeDef hadc1;
-float tmp;
-float temperature;
+
+
 sensor_stru sensor_usr;
-float value;
-unsigned char stop_flag ;
- uint32_t freq_last; 
 extern uint32_t	freq_count;
 float adc_value;
-unsigned int adcBuf_ref[N];	
-	unsigned int adcBuf_humid[N];	
-	unsigned int adcBuf_ta[N];
-	unsigned int adcBuf_tb[N];
+unsigned int adcBuf_ref[N];	//参考电压缓冲区
+unsigned int adcBuf_humid[N];	//湿度电压缓冲区
+unsigned int adcBuf_ta[N];//温度a电压缓冲区
+unsigned int adcBuf_tb[N];//温度b电压缓冲区
 void Get_Adc_Average(unsigned char times)
 {
 
 	uint32_t temp_val=0;
-	
-	float ref;
 	unsigned char i,t;
  
 
@@ -46,7 +41,6 @@ void Get_Adc_Average(unsigned char times)
 	
 	
 	HAL_ADC_Stop(&hadc1);
-	ref = filter(0);
 	/***************************filter adc value*************************************/
 	adc_value = filter(1);
 	sensor_usr.sensor[0] = ADC_REF*adc_value/4095;
