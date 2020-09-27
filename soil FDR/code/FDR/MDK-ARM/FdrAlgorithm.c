@@ -27,7 +27,7 @@ float SoilHumid(unsigned char status,float AdcValueVol)
 	index++;
 
 	/************滤波去抖动，防止数据过于频繁跳动****************/
-	if(index<48)
+	if(index<SAMPLE_COUNT)
 	{
 		tmp3 = last_temp/index;
 	}
@@ -79,7 +79,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 	last_temp = last_temp +tmp3;
 	index++;
 	/************滤波去抖动，防止数据过于频繁跳动****************/
-	if(index<48)
+	if(index<SAMPLE_COUNT)
 	{
 		tmp3 = last_temp/index;
 	}

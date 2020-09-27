@@ -182,8 +182,16 @@ void timCallback()
 
 void RS485_Service(void)
 {
+	static uint32_t tickTime_adc;
     u16 recCRC;
-	  Get_Adc_Average(N);
+		if((HAL_GetTick()-tickTime_adc)>=200)
+		{
+			 Get_Adc_Average(N);
+			tickTime_adc=HAL_GetTick();		
+		}
+		else
+			tickTime_adc=tickTime_adc;
+	  
     if(modbus_usr.RS485_FrameFlag==2)
     {
         if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//µØÖ·ÕýÈ·
