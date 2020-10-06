@@ -61,6 +61,13 @@ void Get_Adc_Average(unsigned char times)
 	{		
 		adcBuf[t]=adcBuf[t]/times;
 	}
+	for(t=0;t<adc_count-1;t++)
+	{		
+		tmp=(3.295-adcBuf[t]);
+	  tmp=(100000*adcBuf[t])/tmp;
+    adcBuf[t]=tmp;
+	}
+	
   tmp = 1.2*4095/adcBuf[6];
 //	for(t=0;t<(adc_count-1);t++)//基于内部参考电压补偿
 //	{		
@@ -74,7 +81,7 @@ void Get_Adc_Average(unsigned char times)
 		//else
 			//adc_io.adc_result[t]=(float)(get_temperature(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));			
 	}
-	adc_io.adc_result[0]=(float)(get_sensor_restult(adcBuf[0],HUMIDTYPE,adc_io.adc_result[1]));
+	adc_io.adc_result[0]=(float)(get_sensor_restult(adcBuf[0]/10000,HUMIDTYPE,adc_io.adc_result[1]));
 
 	#if DEBUG_USER
 		printf("adcBuf[%d] is:   %d\n",i,adcBuf[i]);
