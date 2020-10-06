@@ -3,7 +3,7 @@
 #define CALIBRATION	1
 #define MEASURE     0
 #define PT					100
-#define SAMPLE_COUNT		24
+#define SAMPLE_COUNT		100
 typedef struct{
 	float a0;
 	float a1;

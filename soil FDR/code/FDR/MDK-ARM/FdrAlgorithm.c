@@ -59,7 +59,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 	float A = 0.0012;
 	float B = 2.3162;
 	float C = -243.61;	
-	float tmp1,tmp2,tmp3;
+	float tmp1,tmp2,tmp3,tmp4;
 	static float last_temp;
 	static unsigned char index;
 	unsigned int result;
@@ -76,6 +76,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 	tmp3 = tmp1 + tmp2;
   tmp3 = tmp3 + C;
 	tmp3 = tmp3*10;
+	tmp1 = tmp3;
 	last_temp = last_temp +tmp3;
 	index++;
 	/************滤波去抖动，防止数据过于频繁跳动****************/
@@ -90,6 +91,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 		last_temp = 0;		
 	}
    tmp3 = tmp3 -30;
+	
 	if(tmp3<0)
 	{
 		result = (unsigned int)(tmp3);

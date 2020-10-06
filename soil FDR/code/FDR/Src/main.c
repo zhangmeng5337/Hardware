@@ -121,7 +121,8 @@ int main(void)
 		if((HAL_GetTick()-tickTime)>=1000)
 		{
 			 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-			tickTime=HAL_GetTick();		
+			 tickTime=HAL_GetTick();
+       				
 		}
 		app_loop();
   }
