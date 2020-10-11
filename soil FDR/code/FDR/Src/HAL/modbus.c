@@ -191,7 +191,7 @@ void RS485_Service(void)
 			 Get_Adc_Average(N);
 			tickTime_adc=HAL_GetTick();
 			tick_1s++;			
-			if(TesetFlag==1&&tick_1s>=5)
+			if(TesetFlag==1&&tick_1s>=15)
 			{
 				  tick_1s = 0;
 					Modbus_07_Solve();
@@ -639,65 +639,68 @@ void Modbus_16_Solve(void)
 void Modbus_07_Solve(void)
 {
     u8 i;
-    RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
-    if((startRegAddr+RegNum)<1000)//寄存器地址+数量在范围内
-    {
-        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
-        modbus_usr.RS485_TX_BUFF[2]=RegNum*2;
-        for(i=0; i<RegNum; i++)
-        {
-            unsigned int tmp;
-            if(startRegAddr == RH_ADDR)
-            {
-                if(i<1)
-                {
-									  tmp = sensor_usr.rh;
-                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((tmp>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
-                }
-                else if(i<2)
-                {
-									  tmp = sensor_usr.temperature;
-                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((tmp>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
-                }
-            }
-            else if(startRegAddr == TE_ADDR)
-            {
-                if(i<1)
-                {
-                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((sensor_usr.temperature>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(sensor_usr.temperature);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
-                }
-            }
-            else if(startRegAddr == DEV_ADDR)
-            {
-                if(i<1)
-                {
-                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((modbus_usr.RS485_Addr>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(modbus_usr.RS485_Addr);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
-                }
-            }
-            else if(startRegAddr == RATE_ADDR)
-            {
-                if(i<1)
-                {
-                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((modbus_usr.RS485_Baudrate>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
-                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)modbus_usr.RS485_Baudrate;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
-                }
-            }
-        }
-        calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,RegNum*2+3);
-        modbus_usr.RS485_TX_BUFF[RegNum*2+3]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
-        modbus_usr.RS485_TX_BUFF[RegNum*2+4]=(calCRC)&0xFF;
-        RS485_SendData(modbus_usr.RS485_TX_BUFF,RegNum*2+5);
-    }
-    else//寄存器地址+数量超出范围
-    {
-        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-    }
+	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
+	   printf("RH  TE1  TE2 Voltage:   %f   %f   %f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2]);
+	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+//    RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
+//    if((startRegAddr+RegNum)<1000)//寄存器地址+数量在范围内
+//    {
+//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
+//        modbus_usr.RS485_TX_BUFF[2]=RegNum*2;
+//        for(i=0; i<RegNum; i++)
+//        {
+//            unsigned int tmp;
+//            if(startRegAddr == RH_ADDR)
+//            {
+//                if(i<1)
+//                {
+//									  tmp = sensor_usr.rh;
+//                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((tmp>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
+//                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+//                }
+//                else if(i<2)
+//                {
+//									  tmp = sensor_usr.temperature;
+//                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((tmp>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
+//                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+//                }
+//            }
+//            else if(startRegAddr == TE_ADDR)
+//            {
+//                if(i<1)
+//                {
+//                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((sensor_usr.temperature>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
+//                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(sensor_usr.temperature);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+//                }
+//            }
+//            else if(startRegAddr == DEV_ADDR)
+//            {
+//                if(i<1)
+//                {
+//                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((modbus_usr.RS485_Addr>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
+//                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(modbus_usr.RS485_Addr);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+//                }
+//            }
+//            else if(startRegAddr == RATE_ADDR)
+//            {
+//                if(i<1)
+//                {
+//                    modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((modbus_usr.RS485_Baudrate>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
+//                    modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)modbus_usr.RS485_Baudrate;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
+//                }
+//            }
+//        }
+//        calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,RegNum*2+3);
+//        modbus_usr.RS485_TX_BUFF[RegNum*2+3]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
+//        modbus_usr.RS485_TX_BUFF[RegNum*2+4]=(calCRC)&0xFF;
+//        RS485_SendData(modbus_usr.RS485_TX_BUFF,RegNum*2+5);
+//    }
+//    else//寄存器地址+数量超出范围
+//    {
+//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
+//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
+//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+//    }
 }
