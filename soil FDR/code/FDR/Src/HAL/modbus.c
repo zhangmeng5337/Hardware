@@ -99,7 +99,7 @@ void RS485_Init(void)
     HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     modbus_usr.RS485_TX_EN=0;//默认为接收模式
     HAL_UART_Receive_IT(&huart1, &res, 1);
-    modbus_usr.RS485_Baudrate = 9600;
+  //  modbus_usr.RS485_Baudrate = 9600;
 
 
     // Timer7_Init();//定时器7初始化，用于监视空闲时间
@@ -524,6 +524,7 @@ void Modbus_06_Solve(void)
 //        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];
 //        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];
     unsigned char i;
+	RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
     if((startRegAddr+RegNum)<1000)//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
