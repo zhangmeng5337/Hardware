@@ -130,7 +130,7 @@
 #define ADDR_FLASH_PAGE_125   ((uint32_t)0x0801F400) /* Base @ of Page 125, 1 Kbytes */
 #define ADDR_FLASH_PAGE_126   ((uint32_t)0x0801F800) /* Base @ of Page 126, 1 Kbytes */
 #define ADDR_FLASH_PAGE_127   ((uint32_t)0x0801FC00) /* Base @ of Page 127, 1 Kbytes */
-#define FLASH_USER_START_ADDR   ADDR_FLASH_PAGE_123   /* Start @ of user Flash area */
+#define FLASH_USER_START_ADDR   ADDR_FLASH_PAGE_110   /* Start @ of user Flash area */
 #define FLASH_USER_END_ADDR     ADDR_FLASH_PAGE_123 + FLASH_PAGE_SIZE   /* End @ of user Flash area */
 
 void flash_read(uint32_t addr,uint32_t *pbuffer,uint16_t numtoread)			;

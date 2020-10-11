@@ -20,9 +20,9 @@ void params_init()
       modbus_usr.RS485_Addr=p[1];
       modbus_usr.RS485_Baudrate=p[2];
       modbus_usr.RS485_Parity=p[3];	
-//			factor_usr.a0 = DataMinusProc(&p[4],4);
-//			factor_usr.a1 =  DataMinusProc(&p[8],4);
-//			factor_usr.a2 =  DataMinusProc(&p[12],4);	
+			factor_usr.a0 = DataMinusProc(&p[4],1);
+			factor_usr.a1 =  DataMinusProc(&p[5],1);
+			factor_usr.a2 =  DataMinusProc(&p[6],1);	
 			 //初始参数
 //			factor_usr.a0 = -2874.1;
 //			factor_usr.a1 = 9204.2;
@@ -31,6 +31,7 @@ void params_init()
 		 else
 		 {
 			  //初始参数
+			 flash_init();
 				factor_usr.a0 = -2874.1;
 				factor_usr.a1 = 9204.2;
 				factor_usr.a2 = -7340.6;	 

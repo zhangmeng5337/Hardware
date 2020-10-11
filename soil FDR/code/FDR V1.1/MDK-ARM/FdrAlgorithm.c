@@ -178,7 +178,30 @@ tmp3=GlideFilterAD(tmp3,index);
 }
 
 
-float DataMinusProc(unsigned char *p,unsigned char len)
+float DataMinusProc(uint32_t *p,unsigned char len)
+{
+						uint32_t tmp;
+	          unsigned char i;
+						float tmp2;
+//            for(i=0;i<len;i++)
+//            {
+//						  tmp= tmp+p[i]<<(i*(len-1));
+//						}	
+	          tmp = p[0];
+						if(tmp&0x80000000)
+						{
+								tmp = ~tmp+1;
+							  tmp2 = tmp*(-1.0);
+							  tmp2 = tmp2/10.0;
+						}
+						else
+						{
+							  tmp2 = tmp;
+							  tmp2 = tmp2/10.0;
+						}
+						return tmp2;
+}
+float DataMinusProc2(unsigned char *p,unsigned char len)
 {
 						uint32_t tmp;
 	          unsigned char i;
@@ -207,7 +230,7 @@ uint32_t FloatToCharProc(float p)
 						float tmp2;
 						if(p<0)
 						{
-								tmp2 = p*10;
+								tmp2 = p*(-10);
 							  tmp =(uint32_t)tmp2;
 							  tmp = ~tmp +1;
 						}
@@ -216,5 +239,5 @@ uint32_t FloatToCharProc(float p)
 								tmp2 = p*10;
 							  tmp =(uint32_t)tmp2;
 						}
-						return tmp2;
+						return tmp;
 }
