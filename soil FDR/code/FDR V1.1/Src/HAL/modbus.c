@@ -188,12 +188,12 @@ void RS485_Service(void)
 	static uint32_t tickTime_adc;
 	static unsigned char tick_1s;
     u16 recCRC;
-		if((HAL_GetTick()-tickTime_adc)>=200)
+		if((HAL_GetTick()-tickTime_adc)>=100)
 		{
 			 Get_Adc_Average(N);
 			tickTime_adc=HAL_GetTick();
 			tick_1s++;			
-			if(TesetFlag==1&&tick_1s>=15)
+			if(TesetFlag==1&&tick_1s>=30)
 			{
 				  tick_1s = 0;
 					Modbus_07_Solve();
@@ -208,7 +208,8 @@ void RS485_Service(void)
     {
         if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//地址正确
         {
-            if((modbus_usr.RS485_RX_BUFF[1]==03)||(modbus_usr.RS485_RX_BUFF[1]==06)||(modbus_usr.RS485_RX_BUFF[1]==07))//功能码正确
+            if((modbus_usr.RS485_RX_BUFF[1]==03)||(modbus_usr.RS485_RX_BUFF[1]==06)||(modbus_usr.RS485_RX_BUFF[1]==07)
+							||(modbus_usr.RS485_RX_BUFF[1]==8))//功能码正确
             {
                 startRegAddr=(((u16)modbus_usr.RS485_RX_BUFF[2])<<8)|modbus_usr.RS485_RX_BUFF[3];//获取寄存器起始地址
                 if(startRegAddr<1000)//寄存器地址在范围内

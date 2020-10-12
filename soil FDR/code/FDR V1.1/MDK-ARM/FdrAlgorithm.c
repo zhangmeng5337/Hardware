@@ -167,9 +167,25 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 
 float DataMinusProc(uint32_t *p,unsigned char len)
 {
-		uint32_t tmp;
+		uint32_t tmp,tmp3;
 		float tmp2;
-		tmp = p[0];
+		tmp = 0;
+
+		tmp3= (unsigned char)p[0];
+		tmp3= tmp3<<24;	
+		tmp = tmp + tmp3;
+
+		tmp3=(unsigned char) p[1];
+		tmp3= tmp3<<16;	
+		tmp = tmp + tmp3;
+
+		tmp3= (unsigned char)p[2];
+		tmp3= tmp3<<8;	
+		tmp = tmp + tmp3;
+
+		tmp3=(unsigned char) p[3];
+		tmp = tmp + tmp3;
+	
 		if(tmp&0x80000000)
 		{
 				tmp = ~tmp+1;
@@ -185,13 +201,27 @@ float DataMinusProc(uint32_t *p,unsigned char len)
 }
 float DataMinusProc2(unsigned char *p,unsigned char len)
 {
-						uint32_t tmp;
+						uint32_t tmp,tmp3;
 	          unsigned char i;
 						float tmp2;
-            for(i=0;i<len;i++)
-            {
-						  tmp= tmp+p[i]<<(i*(len-1));
-						}	
+	          tmp = 0;
+	 
+						tmp3= p[0];
+						tmp3= tmp3<<24;	
+	          tmp = tmp + tmp3;
+	
+						tmp3= p[1];
+						tmp3= tmp3<<16;	
+	          tmp = tmp + tmp3;
+	
+						tmp3= p[2];
+						tmp3= tmp3<<8;	
+	          tmp = tmp + tmp3;
+	
+						tmp3= p[3];
+	          tmp = tmp + tmp3;
+	
+
 						if(tmp&0x80000000)
 						{
 								tmp = ~tmp+1;
