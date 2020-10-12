@@ -7,7 +7,7 @@ float GlideFilterAD(float val,unsigned char val2)
 {
 	static unsigned char FilterI;
   static float value2_buf[SAMPLE_COUNT];	
-	unsigned char	count;
+	//unsigned char	count;
 	static unsigned char flag;
 	float	sum=0;
 	value2_buf[FilterI++]=val;
@@ -36,7 +36,7 @@ float GlideFilterAD2(float val,unsigned char val2)
 {
 	static unsigned char FilterI;
   static float value2_buf[SAMPLE_COUNT];	
-	unsigned char	count;
+	//unsigned char	count;
 	static unsigned char flag;
 	float	sum=0;
 	value2_buf[FilterI++]=val;
@@ -124,47 +124,36 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 	float A = 0.0012;
 	float B = 2.3162;
 	float C = -243.61;	
-	float tmp1,tmp2,tmp3,tmp4;
+	float tmp1,tmp2,tmp3;
 
-	 unsigned char index,index2;
+	unsigned char index,index2;
 	unsigned int result;
-	unsigned char i;
+	//	unsigned char i;
 	//AdcValueVol1 = ((uint32_t)(AdcValueVol1*1000))/1000.0;
-//	AdcValueVol2 = ((uint32_t)(AdcValueVol2*1000))/1000.0;
+	//	AdcValueVol2 = ((uint32_t)(AdcValueVol2*1000))/1000.0;
 	resistor = (AdcValueVol1*499/AdcValueVol2)-499;
 	resistor = ((uint32_t)(resistor*10000));
 	resistor=resistor/10000.0;
 
-	
-	
+
+
 	tmp1 = A*resistor*resistor;
 	tmp2 = B*resistor;
 	tmp3 = tmp1 + tmp2;
-  tmp3 = tmp3 + C;
+	tmp3 = tmp3 + C;
 	tmp3 = tmp3*10;
 	tmp1 = tmp3;
-//	last_temp[index2] = tmp3;
+	//	last_temp[index2] = tmp3;
 	index2++;
 	index++;
 	/************滤波去抖动，防止数据过于频繁跳动****************/
-
-//	else
-//	{
-//		for(i=0;i<SAMPLE_COUNT;i++)
-//			tmp3 = tmp3+last_temp[i];
-//		tmp3 = tmp3/SAMPLE_COUNT;
-//		//tmp3 = last_temp/index;
-//    index = SAMPLE_COUNT;	
-//		if(index2>=SAMPLE_COUNT)
-//		index2 = 0;		
-//	}
-tmp3=GlideFilterAD(tmp3,index);
+	tmp3=GlideFilterAD(tmp3,index);
 	if(index>=SAMPLE_COUNT)
 	{
-     index =0;
+		index =0;
 	}
-   tmp3 = tmp3 -30;
-	
+	tmp3 = tmp3 -30;
+
 	if(tmp3<0)
 	{
 		result = (unsigned int)(tmp3);
@@ -172,34 +161,27 @@ tmp3=GlideFilterAD(tmp3,index);
 	}
 	else 
 		result = (unsigned int)(tmp3);
-	
-	
 	return result;
 }
 
 
 float DataMinusProc(uint32_t *p,unsigned char len)
 {
-						uint32_t tmp;
-	          unsigned char i;
-						float tmp2;
-//            for(i=0;i<len;i++)
-//            {
-//						  tmp= tmp+p[i]<<(i*(len-1));
-//						}	
-	          tmp = p[0];
-						if(tmp&0x80000000)
-						{
-								tmp = ~tmp+1;
-							  tmp2 = tmp*(-1.0);
-							  tmp2 = tmp2/10.0;
-						}
-						else
-						{
-							  tmp2 = tmp;
-							  tmp2 = tmp2/10.0;
-						}
-						return tmp2;
+		uint32_t tmp;
+		float tmp2;
+		tmp = p[0];
+		if(tmp&0x80000000)
+		{
+				tmp = ~tmp+1;
+				tmp2 = tmp*(-1.0);
+				tmp2 = tmp2/10.0;
+		}
+		else
+		{
+				tmp2 = tmp;
+				tmp2 = tmp2/10.0;
+		}
+		return tmp2;
 }
 float DataMinusProc2(unsigned char *p,unsigned char len)
 {
@@ -226,7 +208,7 @@ float DataMinusProc2(unsigned char *p,unsigned char len)
 uint32_t FloatToCharProc(float p)
 {
 						uint32_t tmp;
-	          unsigned char i;
+	         // unsigned char i;
 						float tmp2;
 						if(p<0)
 						{
