@@ -4,7 +4,7 @@
 
 
 extern ADC_HandleTypeDef hadc1;
-float get_sensor_restult(uint16_t data,unsigned char SensorTypes,float env_temper);
+float get_sensor_restult(uint32_t data,unsigned char SensorTypes,float env_temper);
 
 //获得ADC值
 //ch: 通道值 0~16，取值范围为：ADC_CHANNEL_0~ADC_CHANNEL_16
@@ -66,7 +66,12 @@ void Get_Adc_Average(unsigned char times)
 	for(t=0;t<adc_count-1;t++)
 	{		
 		tmp2 = (adcBuf[t])*3.295/4095;//传感器电压值
+		if(tmp2>=3.295)
+			tmp2 = 3.295;
 		tmp=(3.295-tmp2);//分压电阻电压
+		if(tmp <=0)
+		tmp = 10000;
+		else
 	  tmp=(100000*tmp2)/tmp;//传感器电阻值放大10000倍，单位千欧
     AdcVoltage[t]=tmp;
 	}
@@ -98,7 +103,7 @@ void Get_Adc_Average(unsigned char times)
 	//return &adc_io.adc_result[0];
 } 
 //查表函数
-u8 look_up_table(u16 *a,u8 ArrayLong,u16 data)
+u8 look_up_table(u16 *a,u8 ArrayLong,uint32_t data)
 {    
     u16 begin,end,middle ;  
     u8 i ;  
@@ -141,7 +146,7 @@ float num_to_temperature(u8 num,u8 types)
 float t1,tx;
 
 
-float get_sensor_restult(uint16_t data,unsigned char SensorTypes,float env_temper)
+float get_sensor_restult(uint32_t data,unsigned char SensorTypes,float env_temper)
 {
     unsigned int num,index;
 	if(SensorTypes == TEMPERATURE)

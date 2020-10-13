@@ -44,13 +44,18 @@ void Get_Adc_Average(unsigned char times)
 	/***************************filter adc value*************************************/
 	adc_value = filter(1);
 	sensor_usr.sensor[0] = ADC_REF*adc_value/4095;
-	//free(adcBuf_humid);
+  sensor_usr.sensor[0]=DigitRound(sensor_usr.sensor[0],2);
+
 	adc_value = filter(2);
 	//free(adcBuf_ta);
 	sensor_usr.sensor[1] = ADC_REF*adc_value/4095;	
+  sensor_usr.sensor[1]=DigitRound(sensor_usr.sensor[1],4);
+	
+	
 	adc_value = filter(3);
 	//	free(adcBuf_tb);
 	sensor_usr.sensor[2] = ADC_REF*adc_value/4095;
+  sensor_usr.sensor[2]=DigitRound(sensor_usr.sensor[2],4);
 	/****************************calculate humid and temperature*********************/
 	sensor_usr.rh = SoilHumid(MEASURE,sensor_usr.sensor[0]);
 	sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2]);

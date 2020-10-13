@@ -253,3 +253,23 @@ uint32_t FloatToCharProc(float p)
 						}
 						return tmp;
 }
+float DigitRound(float p,unsigned char digit)
+{
+	uint32_t tmp,tmp3;
+	float tmp2;
+	switch(digit)
+	{
+		case 0:tmp3 = 10;break;
+		case 1:tmp3 = 100;break;		
+		case 2:tmp3 = 1000;break;		
+		case 3:tmp3 = 10000;break;
+		case 4:tmp3 = 10000;break;		
+	}
+	tmp = (uint32_t)(p*tmp3); 
+	if(tmp%10>=5)
+		tmp = tmp+10;
+	tmp2 = tmp/1.0/tmp3;
+	tmp = (uint32_t)(tmp2*(tmp3/10)); 
+	tmp2 = tmp/(tmp3/10.0);
+	return tmp2;
+}
