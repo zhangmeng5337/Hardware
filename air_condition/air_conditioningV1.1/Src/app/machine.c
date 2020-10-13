@@ -4,7 +4,7 @@ unsigned char Receive_data[UART1_BUFFER_SIZE],Receive_data_temp[UART1_BUFFER_SIZ
 unsigned char  Uart1_Receive_flag;
 unsigned char inByte,temp,Receive_item;
 
-//本程序是 Arduino 的示例程序，其他 MCU 请移植。
+//其他 MCU 请移植。
 void Receive_command(unsigned char revdat)
 {
 	//unsigned char Receive_data_temp[UART1_BUFFER_SIZE];
@@ -45,20 +45,28 @@ void Receive_command(unsigned char revdat)
 		//	HAL_UART_Receive_DMA(&huart1,Receive_data_temp,UART1_BUFFER_SIZE);
 }
 uint32_t tx_count;
+/************************************************************************
+功能描述：发送控制命令到压缩机
+参数：
+     pspeed:压缩机速度
+     sw:
+        0关机
+        1开机
+************************************************************************/
 void TransmitCommand(unsigned int pspeed,unsigned char sw)
 {
    unsigned char p[16],i;
    unsigned char tmp,tmp2;
    
-   tmp = 0xaa;
+   tmp = 0xaa;//数据包头
 	i=0;
    p[i++] =tmp;
    
    //memcpy((p+i),&tmp,1);i++;
-   tmp = 0x00;
+   tmp = 0x00;//地址
    p[i++] =tmp;
   // memcpy((p+i),&tmp,1);i++;
-	tmp = sw;
+	tmp = sw;//开关机
   p[i++] =tmp;
    //memcpy((p+i),&tmp);i++;
    tmp = (unsigned char)(pspeed&0x00ff);
@@ -80,18 +88,7 @@ void TransmitCommand(unsigned int pspeed,unsigned char sw)
 	p[i++] =tmp2;
 	p[i++] =tmp2;
 	p[i++] =tmp;
-
-   //memcpy((p+i),&tmp2,1);i++;
-/*	memcpy((p+i),&tmp2,1);i++;
-	memcpy((p+i),&tmp2,1);i++;
-	memcpy((p+i),&tmp2,1);i++;
-	memcpy((p+i),&tmp2,1);i++;
-	memcpy((p+i),&tmp2,1);i++;
-	memcpy((p+i),&tmp2,1);i++;
-	memcpy((p+i),&tmp2,1);i++;
-	memcpy((p+i),&tmp2,1);i++;
-   memcpy((p+i),&tmp,1); i++;*/
-   tmp = 0x55;
+   tmp = 0x55;//数据包尾
    	p[i++] =tmp;
 		tx_count++;
    //memcpy((p+i),&tmp,1);  i++;

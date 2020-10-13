@@ -6,14 +6,17 @@
 #include "pid.h"
 #include "EEPROM.h"
 #include "machine.h"
-params_stru settings_params;
-extern adc_io_str adc_io;
-mode_stru mode;
+
+params_stru settings_params;//设置参数
+extern adc_io_str adc_io;//adc模拟量采集
+mode_stru mode;//工作模式
 PID xPID, yPID;
 
 void write_dipay_ram(unsigned char mode);
 
-
+/*********************************************************************************
+功能描述： 初始化pid参数
+**********************************************************************************/
 void init_Pid()
 {
    xPID.Kp = 30;
@@ -32,18 +35,14 @@ mode_stru *get_params_mode()
     return tmp;
 }
 
+/*********************************************************************************
+功能描述： 压缩机控制，包括pid算法控制量计算，发送压缩机控制命令
+参数：
+    umode：ON开机；OFF关机
+    
+**********************************************************************************/
 void airMachine_ctrl(unsigned char umode)
 {
-/*
-adc_io.adc_result[0];//humid
-adc_io.adc_result[1];//tar_env_temper
-adc_io.adc_result[2];//equip_env_temper
-adc_io.adc_result[3];//water temperature
-adc_io.adc_result[4];machine_air_temper
-adc_io.adc_result[5];target_wind_temper
-adc_io.adc_result[6];
-
-*/
 
     settings_params.tar_env_temper =adc_io.adc_result[1];
     settings_params.equip_env_temper = adc_io.adc_result[2];
@@ -58,7 +57,7 @@ adc_io.adc_result[6];
     int16_t xPWM, yPWM;
 	if(umode == ON)
 	{
-		 if(mode.modeNo == COLD)
+		 if(mode.modeNo == COLD)//制冷模式误差计算
 		 {
 			ca = settings_params.tar_env_temper-settings_params.tar_set_temper[0];
 			cb = settings_params.target_wind_temper-settings_params.tar_set_temper[0];		 
@@ -82,14 +81,14 @@ adc_io.adc_result[6];
 		xError = ca;
 		
 		yError = cb;
-		xPWM = calcPID(&xPID, xError);
+		xPWM = calcPID(&xPID, xError);//pid控制量计算
 		yPWM = calcPID(&yPID, yError);
 		
 		if(ca>=5)
 		{
 			if(cb<=1)
 			{
-				TransmitCommand(xPWM,umode);
+				TransmitCommand(xPWM,umode);//发送压缩机控制命令
 			}
 			else if(cb>=2)
 			{
@@ -155,6 +154,13 @@ adc_io.adc_result[6];
 
 
 }
+/*********************************************************************************
+功能描述： 周期发送控制命令
+参数：
+    umode：无
+    
+**********************************************************************************/
+
 unsigned char command_tx_time_loop(unsigned char umode)
 {
     static uint32_t gettime;
@@ -180,6 +186,17 @@ unsigned char command_tx_time_loop(unsigned char umode)
     }
 
 }
+/*********************************************************************************
+功能描述： 压缩机控制逻辑，对压缩机，风扇等设备进行调度
+参数：
+    umode：
+          cold为制冷模式；
+          hot为加热模式；
+          COLD_HUM_COLD为制冷加湿模式；
+          FAST_COLD快速制冷模式
+    
+**********************************************************************************/
+
 void machine_mode_control(unsigned char umode)
 {
 
@@ -193,16 +210,16 @@ void machine_mode_control(unsigned char umode)
             if(mode.last_mode_no == COLD)
             {
 
-                device_ctrl(FAN_COOL,ON);
-							  unsigned char tmp;
-							  tmp = command_tx_time_loop(umode);
-                if(tmp==1||tmp==2)
+                device_ctrl(FAN_COOL,ON);//启动制冷风扇
+				unsigned char tmp;
+			    tmp = command_tx_time_loop(umode);//检测发送时间是否到达
+                if(tmp==1||tmp==2)//周期性发送控制命令
                 {
-									tmp = 0;
+					tmp = 0;
                    // mode.flag_mark==2;
                     settings_params.present_status = 0x02;
-                    airMachine_ctrl(ON);
-                    device_ctrl(FAN_HOT,ON);
+                    airMachine_ctrl(ON);//启动压缩机
+                    device_ctrl(FAN_HOT,ON);//启动加热风扇
 					
                 }
                 if(command_tx_time_loop(umode)==2)
@@ -297,6 +314,12 @@ void machine_mode_control(unsigned char umode)
 
 unsigned char tar_set_temper[6];//0:target cold temp;1:target hot temp;2:target cold and humid temp;3:fast colde temp;
 unsigned char tar_env_temper[4];//4:target cold and humid humid 5:fast humid
+/*********************************************************************************
+功能描述： 参数 保存
+参数：
+    
+**********************************************************************************/
+
 void write_params()
 {
    flash_init();
@@ -311,11 +334,16 @@ void write_params()
 	}
 
 }
+/*********************************************************************************
+功能描述： 初始化设备参数
+
+**********************************************************************************/
+
 void init_params()
 {
   uint32_t p[7];
     flash_read(0,p,7); 
-	if(p[0]==0x5a)
+	if(p[0]==0x5a)//参数保存过
 	{
 		mode.modeNo =  p[1];
 		mode.last_mode_no =  p[2];
@@ -324,7 +352,7 @@ void init_params()
 		settings_params.tar_set_temper[2]=p[5];
 		settings_params.tar_set_temper[3]=p[6];
 	}
-	else
+	else//参数未被保存过
 	{
 		mode.modeNo =  COLD;
 		mode.last_mode_no =  COLD;
@@ -626,225 +654,7 @@ void work_mode_process()
 
 }
 
-//void recycle_dis_deal(unsigned char mode_sel,unsigned char cycle_flag)
-//{
-//    unsigned char tmp[5];
-//    switch(cycle_flag)
-//    {
-//    case 0:
-//        if(mode_sel ==COLD)
-//        {
-//            tmp[0] = SET_ST;
-//            display_dat_deal(settings_params.tar_set_temper[0],tmp,3);
-//        }
-//        else if(mode_sel ==HOT)
-//        {
-//            tmp[0] = SET_ST;
-//            display_dat_deal(settings_params.tar_set_temper[1],tmp,3);
-//        }
-//        else if(mode_sel ==COLD_HUM_COLD||mode_sel ==COLD_HUM_HUM)
-//        {
-//            tmp[0] = SET_ST;
-//            display_dat_deal(settings_params.tar_set_temper[2],tmp,3);
-//        }
-//        else if(mode_sel ==FAST_COLD||mode_sel ==FAST_COLD_HUM)
-//        {
-//            tmp[0] = SET_ST;
-//            display_dat_deal(settings_params.tar_set_temper[3],tmp,3);
-//        }
-//        break;
-//    case 1:
-//        if(mode_sel ==COLD)
-//        {
-//            tmp[0] = SET_AT;
-//            display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//        }
-//        else if(mode_sel ==HOT)
-//        {
-//            tmp[0] = SET_AT;
-//            display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//        }
-//        else if(mode_sel ==COLD_HUM_COLD||mode_sel ==COLD_HUM_HUM)
-//        {
-//            tmp[0] = SET_AT;
-//            display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//        }
-//        else if(mode_sel ==FAST_COLD||mode_sel ==FAST_COLD_HUM)
-//        {
-//            tmp[0] = SET_AT;
-//            display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//        }
-//        break;
-//    case 2:
-//        tmp[0] = SET_AT;
-//        display_dat_deal(settings_params.machine_air_temper,tmp,3);
-//        break;
-//    case 3:
-//        tmp[0] = SET_AT;
-//        display_dat_deal(settings_params.speed,tmp,1);
-//        break;
-//    case 4:
-//        tmp[0] = SET_I;
-//        display_dat_deal(settings_params.current,tmp,3);
-//        break;
 
-//    }
-//}
-//void write_dipay_ram(unsigned char umode)
-//{
-//   static uint32_t gettime;
-//    unsigned char tmp[4];
-//    unsigned char tcode[9]= { SET_CM, SET_CHM,SET_HM,SET_FHM,SET_H,SET_ST,SET_WL,SET_I,SET_AT};
-//    static unsigned char toggle_flag=0;
-
-//    if(umode == 0)
-//    {
-//        if((HAL_GetTick()-gettime)>=RECYCLE_TIME)
-//        {
-
-//            gettime = HAL_GetTick();
-//            switch(mode.modeNo)
-//            {
-
-//            case STAND_MODE:
-//                tmp[0]=SEG_R;
-//                tmp[1]=SEG_E;
-//                tmp[2]=SEG_A;
-//                tmp[3]=SEG_D;
-//                display_dat_deal(settings_params.tar_env_temper,tmp,4);
-//                break;
-//            case COLD:
-//                tmp[0]=SET_AT;
-//                display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//                break;
-//            case HOT:
-//                tmp[0]=SET_AT;
-//                display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//                break;
-//            case COLD_HUM_COLD:
-//            case COLD_HUM_HUM:
-//                if(toggle_flag ==0)
-//                {
-//                    tmp[0] = SET_AT;
-//                    display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//                }
-//                else
-//                {
-//                    tmp[0] = SET_H;
-//                    display_dat_deal(settings_params.humid[0],tmp,3);
-//                }
-//                toggle_flag = ~toggle_flag;
-//                break;
-
-//            case FAST_COLD:
-//            case FAST_COLD_HUM:
-//                if(toggle_flag ==0)
-//                {
-//                    tmp[0] = SET_AT;
-//                    display_dat_deal(settings_params.tar_env_temper,tmp,3);
-//                }
-//                else
-//                {
-//                    tmp[0] = SET_H;
-//                    display_dat_deal(settings_params.humid[1],tmp,3);
-//                }
-//                toggle_flag = ~toggle_flag;
-//                break;
-
-//            }
-
-//        }
-
-//    }
-//    else if(umode == 1)
-//    {
-//        if((HAL_GetTick()-gettime)>=RECYCLE_TIME)
-//        {
-//            if(mode.manual == 1)
-//                mode.manual = 0;
-//            gettime = HAL_GetTick();
-//            switch(mode.last_mode_no)
-//            {
-//            case STAND_MODE:
-//                recycle_dis_deal(COLD,toggle_flag);
-//                toggle_flag = toggle_flag +1;
-//                break;
-
-//            case COLD:
-//                recycle_dis_deal(COLD,toggle_flag);
-//                toggle_flag = toggle_flag +1;
-//                break;
-//            case HOT:
-//                recycle_dis_deal(HOT,toggle_flag);
-//                toggle_flag = toggle_flag +1;
-//                break;
-//            case COLD_HUM_COLD:
-//            case COLD_HUM_HUM:
-//                recycle_dis_deal(COLD_HUM_COLD,toggle_flag);
-//                toggle_flag = toggle_flag +1;
-//                break;
-
-
-//            case FAST_COLD:
-//            case FAST_COLD_HUM:
-//                recycle_dis_deal(FAST_COLD,toggle_flag);
-//                toggle_flag = toggle_flag +1;
-//                break;
-
-//            }
-//            if(toggle_flag>=5)
-//                toggle_flag = 0;
-
-//        }
-
-//    }
-//    else if(umode == 2)
-//    {
-//        if((HAL_GetTick()-gettime)>=RECYCLE_TIME)
-//        {
-//            gettime = HAL_GetTick();
-//            switch(mode.modeNo)
-//            {
-//            case STAND_MODE:
-//                display_dat_deal(settings_params.tar_set_temper[0],&tcode[0],3);
-//                break;
-//            case COLD:
-//                display_dat_deal(settings_params.tar_set_temper[0],&tcode[0],3);
-//                break;
-//            case HOT:
-//                display_dat_deal(settings_params.tar_set_temper[1],&tcode[2],3);
-//                break;
-//            case COLD_HUM_COLD:
-//                display_dat_deal(settings_params.tar_set_temper[2],&tcode[1],3);
-//                break;
-//            case COLD_HUM_HUM:
-//                display_dat_deal(settings_params.humid[0],&tcode[4],3);
-//                break;
-//            case FAST_COLD:
-//                display_dat_deal(settings_params.tar_set_temper[3],&tcode[3],3);
-//                break;
-//            case FAST_COLD_HUM:
-//                display_dat_deal(settings_params.humid[1],&tcode[4],3);
-//                break;
-//            case RECYCLE_DISPLAY:
-//                break;
-//                //case COLD:i=0;break;
-//            }
-
-//        }
-
-//    }
-//    else if(umode == 3)
-//    {
-//        tmp[0] = MINUS;
-//        tmp[1] = MINUS;
-//        tmp[2] = MINUS;
-//        tmp[3] = MINUS;
-
-//        display_dat_deal(settings_params.tar_env_temper,tmp,4);
-
-//    }
-//}
 void run_process()
 {
 
@@ -857,9 +667,8 @@ void run_process()
     settings_params.machine_air_temper = adc_io.adc_result[3];
     settings_params.target_wind_temper =adc_io.adc_result[4];
     settings_params.water_temper =adc_io.adc_result[5];	
-	   settings_params.humid[0] = adc_io.adc_result[0];
- 	  settings_params.humid[1] = adc_io.adc_result[0];	
-    // if( adc_io.fault_status ==0&&mode.status == WORK_ON)//启动正常
+	settings_params.humid[0] = adc_io.adc_result[0];
+ 	settings_params.humid[1] = adc_io.adc_result[0];	
     if( mode.status == WORK_ON)//启动正常
     {
 			machine_mode_control(mode.modeNo);
