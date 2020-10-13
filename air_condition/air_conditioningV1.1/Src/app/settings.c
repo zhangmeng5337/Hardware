@@ -60,8 +60,8 @@ adc_io.adc_result[6];
 	{
 		 if(mode.modeNo == COLD)
 		 {
-			ca = settings_params.tar_set_temper[0]-settings_params.tar_env_temper;
-			cb = settings_params.tar_set_temper[0]-settings_params.target_wind_temper;		 
+			ca = settings_params.tar_env_temper-settings_params.tar_set_temper[0];
+			cb = settings_params.target_wind_temper-settings_params.tar_set_temper[0];		 
 		 }
 		 else if(mode.modeNo == HOT)
 		 {
@@ -70,13 +70,13 @@ adc_io.adc_result[6];
 		 }
 		 else if(mode.modeNo == COLD_HUM_COLD)
 		 {
-			ca = settings_params.tar_set_temper[2]-settings_params.tar_env_temper;
-			cb = settings_params.tar_set_temper[2]-settings_params.target_wind_temper;
+			ca = settings_params.tar_env_temper-settings_params.tar_set_temper[2];
+			cb = settings_params.target_wind_temper-settings_params.tar_set_temper[2];
 		 }			 
 		 else if(mode.modeNo == FAST_COLD)
 		 {
-			ca = settings_params.tar_set_temper[3]-settings_params.tar_env_temper;
-			cb = settings_params.tar_set_temper[3]-settings_params.target_wind_temper;		 
+			ca = settings_params.tar_env_temper-settings_params.tar_set_temper[3];
+			cb = settings_params.target_wind_temper-settings_params.tar_set_temper[3];		 
 		 }
 		// PID calculation
 		xError = ca;

@@ -35,6 +35,7 @@ void Get_Adc_Average(unsigned char times)
 {
     #define adc_count 7
 	uint32_t temp_val=0,adcBuf[adc_count];
+	float AdcVoltage[adc_count];
 	unsigned char i,t;
 
 	for(t=0;t<adc_count;t++)
@@ -61,27 +62,34 @@ void Get_Adc_Average(unsigned char times)
 	{		
 		adcBuf[t]=adcBuf[t]/times;
 	}
+	float tmp2;
 	for(t=0;t<adc_count-1;t++)
 	{		
-		tmp=(3.295-adcBuf[t]);
-	  tmp=(100000*adcBuf[t])/tmp;
-    adcBuf[t]=tmp;
+		tmp2 = (adcBuf[t])*3.295/4095;//传感器电压值
+		tmp=(3.295-tmp2);//分压电阻电压
+	  tmp=(100000*tmp2)/tmp;//传感器电阻值放大10000倍，单位千欧
+    AdcVoltage[t]=tmp;
 	}
-	
   tmp = 1.2*4095/adcBuf[6];
 //	for(t=0;t<(adc_count-1);t++)//基于内部参考电压补偿
 //	{		
 //		adcBuf[t]=adcBuf[t]+(uint32_t)(1.2*4095/adcBuf[6]*adcBuf[adc_count-1]-4095);
 //	}
 
-
 	for(t=1;t<(adc_count-1);t++)
 	{
-			adc_io.adc_result[t]=(float)(get_sensor_restult(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));
+			adc_io.adc_result[t]=(float)(get_sensor_restult(AdcVoltage[t],TEMPERATURE,adc_io.adc_result[1]));
 		//else
 			//adc_io.adc_result[t]=(float)(get_temperature(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));			
 	}
-	adc_io.adc_result[0]=(float)(get_sensor_restult(adcBuf[0]/10000,HUMIDTYPE,adc_io.adc_result[1]));
+	adc_io.adc_result[0]=(float)(get_sensor_restult(AdcVoltage[0]/10000,HUMIDTYPE,adc_io.adc_result[1]));
+//	for(t=1;t<(adc_count-1);t++)
+//	{
+//			adc_io.adc_result[t]=(float)(get_sensor_restult(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));
+//		//else
+//			//adc_io.adc_result[t]=(float)(get_temperature(adcBuf[t],TEMPERATURE,adc_io.adc_result[1]));			
+//	}
+//	adc_io.adc_result[0]=(float)(get_sensor_restult(adcBuf[0],HUMIDTYPE,adc_io.adc_result[1]));
 
 	#if DEBUG_USER
 		printf("adcBuf[%d] is:   %d\n",i,adcBuf[i]);
