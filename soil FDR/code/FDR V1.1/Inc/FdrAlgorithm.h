@@ -16,4 +16,5 @@ float SoilHumid(unsigned char status,float AdcValueVol);
 float DataMinusProc(uint32_t *p,unsigned char len);
 float DataMinusProc2(unsigned char *p,unsigned char len);
 uint32_t FloatToCharProc(float p);
+float DigitRound(float p,unsigned char digit);
 #endif
