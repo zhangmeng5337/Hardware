@@ -158,7 +158,7 @@
           <Type>0</Type>
           <LineNumber>683</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134232226</Address>
+          <Address>134232208</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -174,7 +174,7 @@
           <Type>0</Type>
           <LineNumber>104</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134238312</Address>
+          <Address>134238256</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -184,6 +184,38 @@
           <Filename>../Src/main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\code\../Src/main.c\104</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>460</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134231160</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\HAL\modbus.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code\../Src/HAL/modbus.c\460</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>470</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134231208</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\HAL\modbus.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code\../Src/HAL/modbus.c\470</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

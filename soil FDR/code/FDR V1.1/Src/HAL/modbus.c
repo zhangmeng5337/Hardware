@@ -455,7 +455,7 @@ void Modbus_03_Solve(void)
 {
     u8 i;
     RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
-    if((startRegAddr+RegNum)<1000)//寄存器地址+数量在范围内
+    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x02||startRegAddr==0x03||startRegAddr==0x0100||startRegAddr==0x0101))//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
@@ -508,13 +508,13 @@ void Modbus_03_Solve(void)
         modbus_usr.RS485_TX_BUFF[RegNum*2+4]=(calCRC)&0xFF;
         RS485_SendData(modbus_usr.RS485_TX_BUFF,RegNum*2+5);
     }
-    else//寄存器地址+数量超出范围
-    {
-        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-    }
+//    else//寄存器地址+数量超出范围
+//    {
+//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
+//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
+//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+//    }
 }
 
 
@@ -534,7 +534,7 @@ void Modbus_06_Solve(void)
 //        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];
     unsigned char i;
 	RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
-    if((startRegAddr+RegNum)<1000)//寄存器地址+数量在范围内
+    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x02||startRegAddr==0x03||startRegAddr==0x0100||startRegAddr==0x0101))//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
@@ -604,13 +604,13 @@ void Modbus_06_Solve(void)
         modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
          RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
     }
-    else//寄存器地址+数量超出范围
-    {
-        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-    }
+//    else//寄存器地址+数量超出范围
+//    {
+//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
+//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
+//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+//    }
 
 
 
@@ -659,7 +659,7 @@ void Modbus_16_Solve(void)
 
 void Modbus_07_Solve(void)
 {
-    u8 i;
+
 	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
 	   printf("RH TE1 TE2 Voltage:   %f   %f   %f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2]);
 	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
@@ -669,9 +669,8 @@ void Modbus_07_Solve(void)
 
 void Modbus_08_Solve(void)
 {
-    unsigned char i;
-	 RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
-    if((startRegAddr+RegNum)<1000&&(startRegAddr+RegNum)>=12)//寄存器地址+数量在范围内
+    RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
+    if((startRegAddr+RegNum)<1000&&(startRegAddr+RegNum)>=12&&(startRegAddr==0x02||startRegAddr==0x03||startRegAddr==0x0100||startRegAddr==0x0101))//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
@@ -699,12 +698,12 @@ void Modbus_08_Solve(void)
         modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
          RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
     }
-    else//寄存器地址+数量超出范围
-    {
-        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-    }
+//    else//寄存器地址+数量超出范围
+//    {
+//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
+//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
+//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+//    }
 
 }
