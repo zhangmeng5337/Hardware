@@ -188,7 +188,7 @@ void RS485_Service(void)
 	static uint32_t tickTime_adc;
 	static unsigned char tick_1s;
     u16 recCRC;
-		if((HAL_GetTick()-tickTime_adc)>=100)
+		if((HAL_GetTick()-tickTime_adc)>=50)
 		{
 			 Get_Adc_Average(N);
 			tickTime_adc=HAL_GetTick();
@@ -670,7 +670,8 @@ void Modbus_07_Solve(void)
 void Modbus_08_Solve(void)
 {
     unsigned char i;
-    if((startRegAddr+RegNum)<1000)//寄存器地址+数量在范围内
+	 RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
+    if((startRegAddr+RegNum)<1000&&(startRegAddr+RegNum)>=12)//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
