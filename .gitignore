@@ -56,7 +56,8 @@ sourceinsight/!*.siproj
 /output
 /output/!*.hex
 /output/*.bin
-
+*.hex
+*.bin
 
 #########keil##############
 *.crf
