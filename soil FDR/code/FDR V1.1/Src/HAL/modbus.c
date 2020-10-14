@@ -5,6 +5,7 @@
 #include "adc.h"
 #include "eeprom.h"
 #include "filter.h"
+#include "app.h"
 #include "FdrAlgorithm.h"
 void Modbus_01_Solve(void);
 void Modbus_02_Solve(void);
@@ -13,7 +14,7 @@ void Modbus_05_Solve(void);
 void Modbus_06_Solve(void);
 void Modbus_07_Solve(void);
 void Modbus_08_Solve(void);
-void Modbus_15_Solve(void);
+void Modbus_09_Solve(void);
 void Modbus_16_Solve(void);
 extern factor_stru factor_usr;
 u16 startRegAddr;
@@ -209,7 +210,7 @@ void RS485_Service(void)
         if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//地址正确
         {
             if((modbus_usr.RS485_RX_BUFF[1]==03)||(modbus_usr.RS485_RX_BUFF[1]==06)||(modbus_usr.RS485_RX_BUFF[1]==07)
-							||(modbus_usr.RS485_RX_BUFF[1]==8))//功能码正确
+							||(modbus_usr.RS485_RX_BUFF[1]==8)||(modbus_usr.RS485_RX_BUFF[1]==9))//功能码正确
             {
                 startRegAddr=(((u16)modbus_usr.RS485_RX_BUFF[2])<<8)|modbus_usr.RS485_RX_BUFF[3];//获取寄存器起始地址
                 if(startRegAddr<1000)//寄存器地址在范围内
@@ -254,6 +255,12 @@ void RS485_Service(void)
                         {
 													 
                             Modbus_08_Solve();
+                            break;
+                        }
+                        case 9: //测试模式，连续输出数据 0x01	0x08	0x0002	0x0002	0x940b
+                        {
+													 
+                            Modbus_09_Solve();
                             break;
                         }
                         default:TesetFlag = 0;
@@ -542,6 +549,43 @@ void Modbus_08_Solve(void)
         modbus_usr.RS485_TX_BUFF[18]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
         modbus_usr.RS485_TX_BUFF[19]=(calCRC)&0xFF;
          RS485_SendData(modbus_usr.RS485_TX_BUFF,20);
+    }
+//    else//寄存器地址+数量超出范围
+//    {
+//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
+//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
+//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+//    }
+
+}
+void Modbus_09_Solve(void)
+{
+    RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
+    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0104))//寄存器地址+数量在范围内
+    {
+			modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+			modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
+			modbus_usr.RS485_TX_BUFF[2]=startRegAddr>>8;
+			modbus_usr.RS485_TX_BUFF[3]=startRegAddr;			
+			modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];	
+			modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];			
+			modbus_usr.RS485_TX_BUFF[6]=modbus_usr.RS485_RX_BUFF[6];	
+
+			unsigned char addr;
+			addr = 0;	
+			flash_init();
+			flash_write(addr++,0x5a,1);
+			flash_write(addr++,modbus_usr.RS485_Addr,1);
+			flash_write(addr++,modbus_usr.RS485_Baudrate,1);
+			flash_write(addr++,modbus_usr.RS485_Parity,1);
+			fator_save_proc(addr);
+			flash_write(addr+12,modbus_usr.RS485_RX_BUFF[6],1);			
+      sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[6];
+			calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,7);
+			modbus_usr.RS485_TX_BUFF[7]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
+			modbus_usr.RS485_TX_BUFF[8]=(calCRC)&0xFF;
+			RS485_SendData(modbus_usr.RS485_TX_BUFF,9);
     }
 //    else//寄存器地址+数量超出范围
 //    {

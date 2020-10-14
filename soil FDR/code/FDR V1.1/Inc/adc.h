@@ -7,6 +7,8 @@ typedef struct{
 	float sensor[5];
 	unsigned int rh;
 	unsigned int temperature;
+	unsigned char CalibrationT;
+	unsigned char CalibrationR;	
 }sensor_stru;
 void Get_Adc_Average(unsigned char times);
 #endif

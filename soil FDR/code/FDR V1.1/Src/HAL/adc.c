@@ -58,7 +58,12 @@ void Get_Adc_Average(unsigned char times)
   sensor_usr.sensor[2]=DigitRound(sensor_usr.sensor[2],4);
 	/****************************calculate humid and temperature*********************/
 	sensor_usr.rh = SoilHumid(MEASURE,sensor_usr.sensor[0]);
-	sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2]);
+	unsigned char tmp;
+	if(sensor_usr.CalibrationT&0x80)
+		tmp = ~sensor_usr.CalibrationT+1;
+	else
+			tmp = sensor_usr.CalibrationT;	
+	sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2])+tmp;
 
 //	for(i=0;i<ADC_COUNT;i++)
 //	{
