@@ -1,4 +1,5 @@
 #include "adc.h"
+#include "app.h"
 #include "filter.h"
 #include "FdrAlgorithm.h"
 extern ADC_HandleTypeDef hadc1;
@@ -43,14 +44,28 @@ void Get_Adc_Average(unsigned char times)
 	HAL_ADC_Stop(&hadc1);
 	/***************************filter adc value*************************************/
 	static float tmp_ref;
-	adc_value = filter(0);
-	if(tmp_ref==0)
-		tmp_ref = adc_value;
-	if(tmp_ref>adc_value)
-		tmp_ref = adc_value;
-	adc_value = 4096*1.2/adc_value;
-  adc_value = DigitRound(adc_value,4);	
-	sensor_usr.ADC_REF = adc_value;
+
+	if(sensor_usr.CalibrationVref!=0&&sensor_usr.sensor[1]!=0)
+	{
+		
+		sensor_usr.ADC_REF=sensor_usr.CalibrationVref*sensor_usr.ADC_REF/sensor_usr.sensor[1];
+		sensor_usr.CalibrationVref=0;
+					unsigned char addr;
+			addr = 0;	
+     params_save();
+	}
+	else if(sensor_usr.CalibrationVref==0&&sensor_usr.ADC_REF==0)
+	{
+		adc_value = filter(0);
+		if(tmp_ref==0)
+			tmp_ref = adc_value;
+		if(tmp_ref>adc_value)
+			tmp_ref = adc_value;
+		 adc_value = 4096*1.2/adc_value;
+		adc_value = DigitRound(adc_value,4);	
+		sensor_usr.ADC_REF = adc_value;	
+	}
+	
 	adc_value = filter(1);
 	sensor_usr.sensor[0] = sensor_usr.ADC_REF*adc_value/4096;
   sensor_usr.sensor[0]=DigitRound(sensor_usr.sensor[0],2);
@@ -65,14 +80,22 @@ void Get_Adc_Average(unsigned char times)
 	//	free(adcBuf_tb);
 	sensor_usr.sensor[2] = sensor_usr.ADC_REF*adc_value/4096;
   sensor_usr.sensor[2]=DigitRound(sensor_usr.sensor[2],4);
+
 	/****************************calculabute humid and temperature*********************/
 	sensor_usr.rh = SoilHumid(MEASURE,sensor_usr.sensor[0]);
 	unsigned char tmp;
 	if(sensor_usr.CalibrationT&0x80)
+	{
 		tmp = ~sensor_usr.CalibrationT+1;
+		sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2])-tmp;
+	}
 	else
-			tmp = sensor_usr.CalibrationT;	
-	sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2])+tmp;
+	{
+		tmp = sensor_usr.CalibrationT;	
+	  sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2])+tmp;
+	}	
+			
+	
 
 //	for(i=0;i<ADC_COUNT;i++)
 //	{

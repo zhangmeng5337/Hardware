@@ -455,14 +455,14 @@ void Modbus_06_Solve(void)
             flash_write(addr++,modbus_usr.RS485_Addr,1);
             flash_write(addr++,modbus_usr.RS485_Baudrate,1);
             flash_write(addr++,modbus_usr.RS485_Parity,1);
-						
-							      uint32_t tmp;
-			  tmp = FloatToCharProc(factor_usr.a0);
-				flash_write(addr++,tmp,1);	
-			  tmp = FloatToCharProc(factor_usr.a1);
-				flash_write(addr++,tmp,1);	
-			  tmp = FloatToCharProc(factor_usr.a2);
-				flash_write(addr++,tmp,1);
+            fator_save_proc(addr);
+//							      uint32_t tmp;
+//			  tmp = FloatToCharProc(factor_usr.a0,10);
+//				flash_write(addr++,tmp,1);	
+//			  tmp = FloatToCharProc(factor_usr.a1);
+//				flash_write(addr++,tmp,1);	
+//			  tmp = FloatToCharProc(factor_usr.a2);
+//				flash_write(addr++,tmp,1);
            // flash_write_bytes(addr++,&(modbus_usr.RS485_RX_BUFF[6]),12);	
         }
           calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
@@ -511,7 +511,8 @@ void Modbus_07_Solve(void)
 void Modbus_08_Solve(void)
 {
     RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
-    if((startRegAddr+RegNum)<1000&&(startRegAddr+RegNum)>=12&&(startRegAddr==0x0102))//寄存器地址+数量在范围内
+    if((startRegAddr+RegNum)<1000&&(startRegAddr+RegNum)>=12&&(startRegAddr==0x0102)
+			&&(RegNum==0x000c))//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
@@ -532,9 +533,9 @@ void Modbus_08_Solve(void)
         modbus_usr.RS485_TX_BUFF[16]=modbus_usr.RS485_RX_BUFF[16];
         modbus_usr.RS485_TX_BUFF[17]=modbus_usr.RS485_RX_BUFF[17];
 			
-						factor_usr.a0 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4);
-						factor_usr.a1 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4);
-						factor_usr.a2 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[14]),4);
+						factor_usr.a0 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,10);
+						factor_usr.a1 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4,10);
+						factor_usr.a2 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[14]),4,10);
 					
              unsigned char addr;
             addr = 0;	
@@ -543,6 +544,11 @@ void Modbus_08_Solve(void)
             flash_write(addr++,modbus_usr.RS485_Addr,1);
             flash_write(addr++,modbus_usr.RS485_Baudrate,1);
             flash_write(addr++,modbus_usr.RS485_Parity,1);
+						if(sensor_usr.CalibrationVref!=0)
+						{
+							fator_save_proc(addr);
+						}
+						else
             flash_write_bytes(addr++,&(modbus_usr.RS485_RX_BUFF[6]),12);			
             calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,18);
 			
@@ -562,7 +568,7 @@ void Modbus_08_Solve(void)
 void Modbus_09_Solve(void)
 {
     RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
-    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0104))//寄存器地址+数量在范围内
+    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0104)&&(RegNum==0x0005))//寄存器地址+数量在范围内
     {
 			modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
 			modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
@@ -571,21 +577,21 @@ void Modbus_09_Solve(void)
 			modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];	
 			modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];			
 			modbus_usr.RS485_TX_BUFF[6]=modbus_usr.RS485_RX_BUFF[6];	
+			modbus_usr.RS485_TX_BUFF[7]=modbus_usr.RS485_RX_BUFF[7];
+			modbus_usr.RS485_TX_BUFF[8]=modbus_usr.RS485_RX_BUFF[8];
+			modbus_usr.RS485_TX_BUFF[9]=modbus_usr.RS485_RX_BUFF[9];
+			modbus_usr.RS485_TX_BUFF[10]=modbus_usr.RS485_RX_BUFF[10];
+       
+      if(modbus_usr.RS485_RX_BUFF[6]!=0||modbus_usr.RS485_RX_BUFF[7]!=0||modbus_usr.RS485_RX_BUFF[8]!=0||modbus_usr.RS485_RX_BUFF[9]!=0)			
+			sensor_usr.CalibrationVref = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,1000);
+			else
+				params_save();
+			sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[10];;
 
-			unsigned char addr;
-			addr = 0;	
-			flash_init();
-			flash_write(addr++,0x5a,1);
-			flash_write(addr++,modbus_usr.RS485_Addr,1);
-			flash_write(addr++,modbus_usr.RS485_Baudrate,1);
-			flash_write(addr++,modbus_usr.RS485_Parity,1);
-			fator_save_proc(addr);
-			flash_write(addr+12,modbus_usr.RS485_RX_BUFF[6],1);			
-      sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[6];
-			calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,7);
-			modbus_usr.RS485_TX_BUFF[7]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
-			modbus_usr.RS485_TX_BUFF[8]=(calCRC)&0xFF;
-			RS485_SendData(modbus_usr.RS485_TX_BUFF,9);
+			calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,11);
+			modbus_usr.RS485_TX_BUFF[11]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
+			modbus_usr.RS485_TX_BUFF[12]=(calCRC)&0xFF;
+			RS485_SendData(modbus_usr.RS485_TX_BUFF,13);
     }
 //    else//寄存器地址+数量超出范围
 //    {

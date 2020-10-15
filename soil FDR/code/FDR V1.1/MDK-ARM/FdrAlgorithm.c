@@ -60,10 +60,11 @@ float GlideFilterAD2(float val,unsigned char val2)
 
 
 }
+unsigned int result;
 float SoilHumid(unsigned char status,float AdcValueVol)
 {
 	static unsigned char index;
-	unsigned int result;
+	
 	float tmp3;
 	static float last_temp;
 	if(status == CALIBRATION)
@@ -103,12 +104,19 @@ float SoilHumid(unsigned char status,float AdcValueVol)
    
 	if(tmp3<0)
 	{
-		result = (unsigned int)(tmp3);
-		result = ~result+1;
+		result = (unsigned int)(tmp3*10);
+		//result = ~result+1;
 	}
 	else 
 		result = (unsigned int)(tmp3*10);
 	factor_usr.humid = result;
+	if(factor_usr.humid>=1000)
+		factor_usr.humid = 1000;
+		if(AdcValueVol<=0.3)
+	{
+		factor_usr.humid = 0;
+	   last_temp = 0;
+  }
 	return (unsigned int) (factor_usr.humid);
 }
 
@@ -165,7 +173,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 }
 
 
-float DataMinusProc(uint32_t *p,unsigned char len)
+float DataMinusProc(uint32_t *p,unsigned char len,unsigned int times)
 {
 		uint32_t tmp,tmp3;
 		float tmp2;
@@ -190,16 +198,16 @@ float DataMinusProc(uint32_t *p,unsigned char len)
 		{
 				tmp = ~tmp+1;
 				tmp2 = tmp*(-1.0);
-				tmp2 = tmp2/10.0;
+				tmp2 = tmp2/1.0/times;
 		}
 		else
 		{
 				tmp2 = tmp;
-				tmp2 = tmp2/10.0;
+				tmp2 = tmp2/1.0/times;
 		}
 		return tmp2;
 }
-float DataMinusProc2(unsigned char *p,unsigned char len)
+float DataMinusProc2(unsigned char *p,unsigned char len,unsigned int times)
 {
 						uint32_t tmp,tmp3;
 	          unsigned char i;
@@ -226,29 +234,29 @@ float DataMinusProc2(unsigned char *p,unsigned char len)
 						{
 								tmp = ~tmp+1;
 							  tmp2 = tmp*(-1.0);
-							  tmp2 = tmp2/10.0;
+							  tmp2 = tmp2/1.0/times;
 						}
 						else
 						{
 							  tmp2 = tmp;
-							  tmp2 = tmp2/10.0;
+							  tmp2 = tmp2/1.0/times;
 						}
 						return tmp2;
 }
-uint32_t FloatToCharProc(float p)
+uint32_t FloatToCharProc(float p,unsigned int times)
 {
 						uint32_t tmp;
 	         // unsigned char i;
 						float tmp2;
 						if(p<0)
 						{
-								tmp2 = p*(-10);
+								tmp2 = times*p*(-1);
 							  tmp =(uint32_t)tmp2;
 							  tmp = ~tmp +1;
 						}
 						else
 						{
-								tmp2 = p*10;
+								tmp2 = p*times;
 							  tmp =(uint32_t)tmp2;
 						}
 						return tmp;
