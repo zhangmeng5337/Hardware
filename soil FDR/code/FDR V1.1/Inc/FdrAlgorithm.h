@@ -3,8 +3,8 @@
 #include "main.h"
 #define CALIBRATION	1
 #define MEASURE     0
-#define PT					100
-#define SAMPLE_COUNT		100
+//#define PT					100
+#define SAMPLE_COUNT		200
 typedef struct{
 	float a0;
 	float a1;
