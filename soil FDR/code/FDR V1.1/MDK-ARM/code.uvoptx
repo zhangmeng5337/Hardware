@@ -101,7 +101,9 @@
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
         <bEvRecOn>1</bEvRecOn>
-        <nTsel>6</nTsel>
+        <bSchkAxf>0</bSchkAxf>
+        <bTchkAxf>0</bTchkAxf>
+        <nTsel>4</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -112,19 +114,11 @@
         <tDlgDll></tDlgDll>
         <tDlgPa></tDlgPa>
         <tIfile></tIfile>
-        <pMon>STLink\ST-LINKIII-KEIL_SWO.dll</pMon>
+        <pMon>Segger\JL2CM3.dll</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
-<<<<<<< HEAD
-          <Key>DLGUARM</Key>
-          <Name>(105=-1,-1,-1,-1,0)</Name>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
-=======
->>>>>>> 88102a0ebb10b0a63dd2da494b5bbe767625102b
           <Key>JL2CM3</Key>
           <Name>-U63600317 -O78 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO23 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
         </SetRegEntry>
@@ -158,12 +152,7 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-<<<<<<< HEAD
-          <LineNumber>104</LineNumber>
-<<<<<<< Updated upstream
-=======
           <LineNumber>51</LineNumber>
->>>>>>> 88102a0ebb10b0a63dd2da494b5bbe767625102b
           <EnabledFlag>1</EnabledFlag>
           <Address>134221664</Address>
           <ByteObject>0</ByteObject>
@@ -179,13 +168,7 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-<<<<<<< HEAD
-          <LineNumber>564</LineNumber>
-=======
->>>>>>> Stashed changes
-=======
           <LineNumber>104</LineNumber>
->>>>>>> 88102a0ebb10b0a63dd2da494b5bbe767625102b
           <EnabledFlag>1</EnabledFlag>
           <Address>134239660</Address>
           <ByteObject>0</ByteObject>
@@ -352,6 +335,10 @@
       <pszMrule></pszMrule>
       <pSingCmds></pSingCmds>
       <pMultCmds></pMultCmds>
+      <pMisraNamep></pMisraNamep>
+      <pszMrulep></pszMrulep>
+      <pSingCmdsp></pSingCmdsp>
+      <pMultCmdsp></pMultCmdsp>
       <DebugDescription>
         <Enable>1</Enable>
         <EnableLog>0</EnableLog>
