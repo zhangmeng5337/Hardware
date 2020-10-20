@@ -62,24 +62,24 @@ void Get_Adc_Average(unsigned char times)
 		if(tmp_ref>adc_value)
 			tmp_ref = adc_value;
 		 adc_value = 4096*1.2/adc_value;
-		adc_value = DigitRound(adc_value,4);	
+	//	adc_value = DigitRound(adc_value,4);	
 		sensor_usr.ADC_REF = adc_value;	
 	}
 	
 	adc_value = filter(1);
 	sensor_usr.sensor[0] = sensor_usr.ADC_REF*adc_value/4096;
-  sensor_usr.sensor[0]=DigitRound(sensor_usr.sensor[0],2);
+ // sensor_usr.sensor[0]=DigitRound(sensor_usr.sensor[0],2);
 
 	adc_value = filter(2);
 	//free(adcBuf_ta);
 	sensor_usr.sensor[1] = sensor_usr.ADC_REF*adc_value/4096;	
-  sensor_usr.sensor[1]=DigitRound(sensor_usr.sensor[1],4);
+ // sensor_usr.sensor[1]=DigitRound(sensor_usr.sensor[1],4);
 	
 	
 	adc_value = filter(3);
 	//	free(adcBuf_tb);
 	sensor_usr.sensor[2] = sensor_usr.ADC_REF*adc_value/4096;
-  sensor_usr.sensor[2]=DigitRound(sensor_usr.sensor[2],4);
+  //sensor_usr.sensor[2]=DigitRound(sensor_usr.sensor[2],4);
 
 	/****************************calculabute humid and temperature*********************/
 	sensor_usr.rh = SoilHumid(MEASURE,sensor_usr.sensor[0]);
