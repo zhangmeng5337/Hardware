@@ -31,15 +31,22 @@ void fator_save_proc(unsigned char addr)
 				flash_write(addr++,tmp>>24,1);
 				flash_write(addr++,(tmp>>16&0x000000ff),1);
 				flash_write(addr++,(tmp>>8&0x000000ff),1);
-				flash_write(addr++,(tmp&0x000000ff),1);	
+				flash_write(addr++,(tmp&0x000000ff),1);
+				
+			  tmp = FloatToCharProc(sensor_usr.CalibrationProbeVref,1000);
+				flash_write(addr++,tmp>>24,1);
+				flash_write(addr++,(tmp>>16&0x000000ff),1);
+				flash_write(addr++,(tmp>>8&0x000000ff),1);
+				flash_write(addr++,(tmp&0x000000ff),1);
+
 }
 void params_init()
 {   
-	  uint32_t p[21];
+	  uint32_t p[25];
 	
 	unsigned char addr;
 	   addr = 0;
-     flash_read(addr,p,21);
+     flash_read(addr,p,25);
 			 modbus_usr.RS485_Addr =0x01; 
 			 modbus_usr.RS485_Baudrate = 9600; 
 			 modbus_usr.RS485_Parity = 0;
@@ -53,16 +60,15 @@ void params_init()
 			 
 			factor_usr.a0 = DataMinusProc(&p[4],1,10);
 			factor_usr.a1 =  DataMinusProc(&p[8],1,10);
-			factor_usr.a2 =  DataMinusProc(&p[12],1,10);	
-			if(p[20]!=0xffffffff)
-				sensor_usr.CalibrationT = p[20];
-			if(p[20]!=0xffffffff)
+			factor_usr.a2 =  DataMinusProc(&p[12],1,10);
+			 if(p[16]!=0xffffffff)
 				sensor_usr.ADC_REF = DataMinusProc(&p[16],1,1000);	
-			
-			 //初始参数
-//			factor_usr.a0 = -2874.1;
-//			factor_usr.a1 = 9204.2;
-//			factor_usr.a2 = -7340.6;			 
+			if(p[20]!=0xffffffff)
+				sensor_usr.CalibrationProbeVref = DataMinusProc(&p[20],1,1000);		
+			if(p[24]!=0xffffffff)
+				sensor_usr.CalibrationT = p[24];
+
+						 
 		 }
 		 else
 		 {
@@ -77,25 +83,8 @@ void params_init()
 			 flash_write(addr++,modbus_usr.RS485_Baudrate,1); 
 			 flash_write(addr++,modbus_usr.RS485_Parity,1);
        fator_save_proc(addr);
-//	      uint32_t tmp;
-//			  tmp = FloatToCharProc(factor_usr.a0);
-//				flash_write(addr++,tmp>>24,1);
-//				flash_write(addr++,(tmp>>16&0x000000ff),1);
-//				flash_write(addr++,(tmp>>8&0x000000ff),1);
-//				flash_write(addr++,(tmp&0x000000ff),1);	
-//			 
-//			  tmp = FloatToCharProc(factor_usr.a1);
-//				flash_write(addr++,tmp>>24,1);
-//				flash_write(addr++,(tmp>>16&0x000000ff),1);
-//				flash_write(addr++,(tmp>>8&0x000000ff),1);
-//				flash_write(addr++,(tmp&0x000000ff),1);	
-//				
-//			  tmp = FloatToCharProc(factor_usr.a2);
-//				flash_write(addr++,tmp>>24,1);
-//				flash_write(addr++,(tmp>>16&0x000000ff),1);
-//				flash_write(addr++,(tmp>>8&0x000000ff),1);
-//				flash_write(addr++,(tmp&0x000000ff),1);					
-				flash_write(addr+12+4,sensor_usr.CalibrationT,1);			 		 
+					
+			flash_write(addr+12+4+4,sensor_usr.CalibrationT,1);			 		 
 		 }
 
 
@@ -110,7 +99,7 @@ void params_save()
 			flash_write(addr++,modbus_usr.RS485_Baudrate,1);
 			flash_write(addr++,modbus_usr.RS485_Parity,1);
 			fator_save_proc(addr);
-			flash_write(addr+12+4,modbus_usr.RS485_RX_BUFF[10],1);		//温度校准
+			flash_write(addr+12+4+4,sensor_usr.CalibrationT,1);		//温度校准
 }
 void app_loop()
 {

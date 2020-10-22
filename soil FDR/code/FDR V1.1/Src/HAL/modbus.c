@@ -219,6 +219,7 @@ void RS485_Service(void)
                     recCRC=modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-1]|(((u16)modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-2])<<8);//接收到的CRC(低字节在前，高字节在后)
                     if(calCRC==recCRC)//CRC校验正确
                     {
+											TesetFlag = 0;
                         ///////////显示用
 
                         //LCD_ShowxNum(10,230,modbus_usr.RS485_RX_BUFF[0],3,16,0X80);//显示数据
@@ -234,14 +235,14 @@ void RS485_Service(void)
                         case 3: //读寄存器
                         {
 													  
-													TesetFlag = 0;
+													
                             Modbus_03_Solve();
                             break;
                         }
 
                         case 6: //写单个寄存器
                         {
-													  TesetFlag = 0;
+													 
                             Modbus_06_Solve();
                             break;
                         }
@@ -251,13 +252,13 @@ void RS485_Service(void)
                            // Modbus_07_Solve();
                             break;
                         }
-                        case 8: //测试模式，连续输出数据 0x01	0x08	0x0002	0x0002	0x940b
+                        case 8: //湿度校准系数
                         {
 													 
                             Modbus_08_Solve();
                             break;
                         }
-                        case 9: //测试模式，连续输出数据 0x01	0x08	0x0002	0x0002	0x940b
+                        case 9: //参考电压、温度补偿、湿度电压补偿
                         {
 													 
                             Modbus_09_Solve();
@@ -581,17 +582,27 @@ void Modbus_09_Solve(void)
 			modbus_usr.RS485_TX_BUFF[8]=modbus_usr.RS485_RX_BUFF[8];
 			modbus_usr.RS485_TX_BUFF[9]=modbus_usr.RS485_RX_BUFF[9];
 			modbus_usr.RS485_TX_BUFF[10]=modbus_usr.RS485_RX_BUFF[10];
-       
+			modbus_usr.RS485_TX_BUFF[11]=modbus_usr.RS485_RX_BUFF[11];
+			modbus_usr.RS485_TX_BUFF[12]=modbus_usr.RS485_RX_BUFF[12];
+			modbus_usr.RS485_TX_BUFF[13]=modbus_usr.RS485_RX_BUFF[13];
+			modbus_usr.RS485_TX_BUFF[14]=modbus_usr.RS485_RX_BUFF[14];
+			
+			sensor_usr.CalibrationProbeVref =  DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4,1000);	//探针空测电压放大1000倍	
+			sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[11];//温度补偿
       if(modbus_usr.RS485_RX_BUFF[6]!=0||modbus_usr.RS485_RX_BUFF[7]!=0||modbus_usr.RS485_RX_BUFF[8]!=0||modbus_usr.RS485_RX_BUFF[9]!=0)			
-			sensor_usr.CalibrationVref = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,1000);
+			{	
+				sensor_usr.CalibrationVref = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,1000);//参考电压
+			}
 			else
-				params_save();
-			sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[10];;
-
+			{
+				
+				params_save();			
+			}
+			
 			calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,11);
-			modbus_usr.RS485_TX_BUFF[11]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
-			modbus_usr.RS485_TX_BUFF[12]=(calCRC)&0xFF;
-			RS485_SendData(modbus_usr.RS485_TX_BUFF,13);
+			modbus_usr.RS485_TX_BUFF[15]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
+			modbus_usr.RS485_TX_BUFF[16]=(calCRC)&0xFF;
+			RS485_SendData(modbus_usr.RS485_TX_BUFF,17);
     }
 //    else//寄存器地址+数量超出范围
 //    {

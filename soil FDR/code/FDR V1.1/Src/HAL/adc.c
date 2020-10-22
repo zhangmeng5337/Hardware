@@ -47,11 +47,9 @@ void Get_Adc_Average(unsigned char times)
 
 	if(sensor_usr.CalibrationVref!=0&&sensor_usr.sensor[1]!=0)
 	{
-		
-		sensor_usr.ADC_REF=sensor_usr.CalibrationVref*sensor_usr.ADC_REF/sensor_usr.sensor[1];
+		sensor_usr.ADC_REF=sensor_usr.CalibrationVref;		
+		//sensor_usr.ADC_REF=sensor_usr.CalibrationVref*sensor_usr.ADC_REF/sensor_usr.sensor[1];
 		sensor_usr.CalibrationVref=0;
-					unsigned char addr;
-			addr = 0;	
      params_save();
 	}
 	else if(sensor_usr.CalibrationVref==0&&sensor_usr.ADC_REF==0)
@@ -82,6 +80,16 @@ void Get_Adc_Average(unsigned char times)
   //sensor_usr.sensor[2]=DigitRound(sensor_usr.sensor[2],4);
 
 	/****************************calculabute humid and temperature*********************/
+	float vprobeTmp;
+	if(sensor_usr.CalibrationProbeVref<=2)
+	{
+	
+		vprobeTmp = VPROBE - sensor_usr.CalibrationProbeVref;
+		
+	}
+	else
+		vprobeTmp = 0;	
+	sensor_usr.sensor[0] = sensor_usr.sensor[0] + vprobeTmp;
 	sensor_usr.rh = SoilHumid(MEASURE,sensor_usr.sensor[0]);
 	unsigned char tmp;
 	if(sensor_usr.CalibrationT&0x80)
