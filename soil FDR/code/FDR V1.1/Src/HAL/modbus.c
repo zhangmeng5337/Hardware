@@ -569,7 +569,7 @@ void Modbus_08_Solve(void)
 void Modbus_09_Solve(void)
 {
     RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
-    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0104)&&(RegNum==0x0005))//寄存器地址+数量在范围内
+    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0104)&&(RegNum==0x0009))//寄存器地址+数量在范围内
     {
 			modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
 			modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];

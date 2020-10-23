@@ -81,7 +81,7 @@ void Get_Adc_Average(unsigned char times)
 
 	/****************************calculabute humid and temperature*********************/
 	float vprobeTmp;
-	if(sensor_usr.CalibrationProbeVref<=2)
+	if(sensor_usr.CalibrationProbeVref<=2&&sensor_usr.CalibrationProbeVref>0)
 	{
 	
 		vprobeTmp = VPROBE - sensor_usr.CalibrationProbeVref;
