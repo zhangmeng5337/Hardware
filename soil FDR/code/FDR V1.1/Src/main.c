@@ -118,12 +118,12 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		//HAL_Delay(1000);
 		
-		if((HAL_GetTick()-tickTime)>=1000)
+		if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
 		{
 			 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 			 tickTime=HAL_GetTick();  				
 		}
-		app_loop();
+		app_loop();//主程序
   }
   /* USER CODE END 3 */
 }

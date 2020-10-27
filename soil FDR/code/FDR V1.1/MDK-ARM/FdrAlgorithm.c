@@ -172,7 +172,9 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 	return result;
 }
 
-
+/************************************************************
+整数转浮点数
+*************************************************************/
 float DataMinusProc(uint32_t *p,unsigned char len,unsigned int times)
 {
 		uint32_t tmp,tmp3;
@@ -243,6 +245,10 @@ float DataMinusProc2(unsigned char *p,unsigned char len,unsigned int times)
 						}
 						return tmp2;
 }
+
+/**********************************************
+浮点转整型
+**********************************************/
 uint32_t FloatToCharProc(float p,unsigned int times)
 {
 						uint32_t tmp;
