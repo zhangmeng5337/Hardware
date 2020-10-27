@@ -12,6 +12,9 @@ unsigned int adcBuf_ref[N];	//参考电压缓冲区
 unsigned int adcBuf_humid[N];	//湿度电压缓冲区
 unsigned int adcBuf_ta[N];//温度a电压缓冲区
 unsigned int adcBuf_tb[N];//温度b电压缓冲区
+/*********************************************************
+            adc采集探针，温度传感器电压
+*********************************************************/
 void Get_Adc_Average(unsigned char times)
 {
 

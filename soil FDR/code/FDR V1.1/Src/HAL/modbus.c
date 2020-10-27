@@ -17,62 +17,21 @@ void Modbus_08_Solve(void);
 void Modbus_09_Solve(void);
 void Modbus_16_Solve(void);
 extern factor_stru factor_usr;
-u16 startRegAddr;
-u16 RegNum;
-u16 calCRC;
+u16 startRegAddr;//寄存器地址
+u16 RegNum;//寄存器数量
+u16 calCRC;//crc
 unsigned char TesetFlag;
 extern sensor_stru sensor_usr;
-
-///////////////////////////////////////////////////////////
-//u32 RS485_Baudrate=9600;//通讯波特率
-//u8 modbus_usr.RS485_Parity=0;//0无校验；1奇校验；2偶校验
-//u8 modbus_usr.RS485_Addr=1;//从机地址
-//u16 modbus_usr.RS485_Frame_Distance=4;//数据帧最小间隔（ms),超过此时间则认为是下一帧
-
-//u8 modbus_usr.RS485_RX_BUFF[2048];//接收缓冲区2048字节
-//u16 modbus_usr.RS485_RX_CNT=0;//接收计数器
-//u8 modbus_usr.RS485_FrameFlag=0;//帧结束标记
-//u8 modbus_usr.RS485_TX_BUFF[2048];//发送缓冲区
-//u16 modbus_usr.RS485_TX_CNT=0;//发送计数器
 modbus_stru modbus_usr;
 extern TIM_HandleTypeDef htim2;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Modbus寄存器和单片机寄存器的映射关系
-//vu32 *Modbus_InputIO[100];//输入开关量寄存器指针(这里使用的是位带操作)
-//vu32 *Modbus_OutputIO[100];//输出开关量寄存器指针(这里使用的是位带操作)
-//u16 *Modbus_HoldReg[1000];//保持寄存器指针
-//u32 testData1=1201,testData2=1002,testData3=2303,testData4=8204;
-//void Modbus_RegMap(void)
-//{
-
-
-//         //输入开关量寄存器指针指向
-//        Modbus_InputIO[0]=(vu32*)&PEin(4);//KEY0     //&PEin(4)：取PE4的地址，(vu32*)&PEin(4)将PE4地址强制转换为uw32类型的地址，Modbus_InputIO[0]=(vu32*)&PEin(4); 将转换好的地址送给地址指针Modbus_InputIO[0]；
-//        Modbus_InputIO[1]=(vu32*)&PEin(3);//KEY1     //*Modbus_InputIO[0] 取出地址中的内容。
-//        Modbus_InputIO[2]=(vu32*)&PEin(2);//KEY2
-//        Modbus_InputIO[3]=(vu32*)&PAin(0);//KEY3
-
-//        //输出开关量寄存器指针指向
-//        Modbus_OutputIO[0]=(vu32*)&PBout(5);//LED0
-//        Modbus_OutputIO[1]=(vu32*)&PEout(5);//LED1
-
-//        //保持寄存器指针指向
-//        Modbus_HoldReg[0]=(u16*)&testData1;//测试数据1
-//        Modbus_HoldReg[1]=(u16*)&testData2;//((u16*)&testData1)+1;//测试数据1
-//        Modbus_HoldReg[2]=(u16*)&testData3;//(u16*)&testData2;//测试数据2
-//        Modbus_HoldReg[3]=(u16*)&testData4;//((u16*)&testData2)+1;//测试数据2
-//        Modbus_HoldReg[4]=(u16*)&testData1;
-//        Modbus_HoldReg[5]=(u16*)&testData2;
-//        Modbus_HoldReg[6]=(u16*)&testData3;
-//}
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 extern UART_HandleTypeDef huart1;
 //初始化USART2
 
 unsigned char res;
+/********************************************
+					485串口初始化操作
+********************************************/
 void RS485_Init(void)
 {
     huart1.Instance = USART1;
@@ -102,37 +61,26 @@ void RS485_Init(void)
     HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     modbus_usr.RS485_TX_EN=0;//默认为接收模式
     HAL_UART_Receive_IT(&huart1, &res, 1);
-   // modbus_usr.RS485_Baudrate = 9600;
-
-
-    // Timer7_Init();//定时器7初始化，用于监视空闲时间
-    // Modbus_RegMap();//Modbus寄存器映射
 }
-
-//定时器7初始化
-
-
 
 
 //////////////////////////////////////////////////////////////////////////////
-//发送n个字节数据
 //buff:发送区首地址
 //len：发送的字节数
 void RS485_SendData(u8 *buff,u8 len)
 {
-    HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-    modbus_usr.RS485_TX_EN=1;//切换为发送模式
-    //  while(len--)
+    HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);//切换为发送模式
+    modbus_usr.RS485_TX_EN=1;
     {
         HAL_UART_Transmit(&huart1,buff,len,100);
-        //while(USART_GetFlagStatus(USART2,USART_FLAG_TXE)==RESET);//等待发送区为空
-        // USART_SendData(USART2,*(buff++));
     }
-    //while(USART_GetFlagStatus(USART2,USART_FLAG_TC)==RESET);//等待发送完成
 }
 
 unsigned char count;
 uint32_t Tick4ms;
+/*************************************************************
+				485串口接收中断回调函数
+*************************************************************/
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     u8 err;
@@ -150,17 +98,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 						//开始计时
         }            
         HAL_UART_Receive_IT(&huart1, &res, 1); 	  // 重新注册一次，要不然下次收不到了
-//        //led_ctrl(2);
     }
-
-
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
-//用定时器2判断接收空闲时间，当空闲时间大于指定时间，认为一帧结束
-//定时器2中断服务程序
-
+//用定时器判断接收空闲时间，当空闲时间大于指定时间，认为一帧结束
+//定时器中断服务程序
 void timCallback()
 {
 
@@ -189,7 +133,7 @@ void RS485_Service(void)
 	static uint32_t tickTime_adc;
 	static unsigned char tick_1s;
     u16 recCRC;
-		if((HAL_GetTick()-tickTime_adc)>=50)
+		if((HAL_GetTick()-tickTime_adc)>=50)//周期性采集模拟电压，50ms一次
 		{
 			 Get_Adc_Average(N);
 			tickTime_adc=HAL_GetTick();
@@ -202,10 +146,7 @@ void RS485_Service(void)
 		}
 		else
 			tickTime_adc=tickTime_adc;
-	  
-
-		
-    if(modbus_usr.RS485_FrameFlag==2)
+    if(modbus_usr.RS485_FrameFlag==2)//收到一完整数据包
     {
         if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//地址正确
         {
@@ -220,54 +161,37 @@ void RS485_Service(void)
                     if(calCRC==recCRC)//CRC校验正确
                     {
 											TesetFlag = 0;
-                        ///////////显示用
-
-                        //LCD_ShowxNum(10,230,modbus_usr.RS485_RX_BUFF[0],3,16,0X80);//显示数据
-                        //  LCD_ShowxNum(42,230,modbus_usr.RS485_RX_BUFF[1],3,16,0X80);//显示数据
-                        // LCD_ShowxNum(74,230,modbus_usr.RS485_RX_BUFF[2],3,16,0X80);//显示数据
-                        // LCD_ShowxNum(106,230,modbus_usr.RS485_RX_BUFF[3],3,16,0X80);//显示数据
-                        // LCD_ShowxNum(138,230,modbus_usr.RS485_RX_BUFF[4],3,16,0X80);//显示数据
-                        // LCD_ShowxNum(170,230,modbus_usr.RS485_RX_BUFF[5],3,16,0X80);//显示数据
-///////////////////////
                         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         switch(modbus_usr.RS485_RX_BUFF[1])//根据不同的功能码进行处理
                         {
                         case 3: //读寄存器
-                        {
-													  
-													
+                        {		
                             Modbus_03_Solve();
                             break;
                         }
 
                         case 6: //写单个寄存器
                         {
-													 
                             Modbus_06_Solve();
                             break;
                         }
                         case 7: //测试模式，连续输出数据 0x01	0x07	0x0002	0x0002	0x940b
                         {
 													  TesetFlag = 1;
-                           // Modbus_07_Solve();
                             break;
                         }
                         case 8: //湿度校准系数
-                        {
-													 
+                        {													 
                             Modbus_08_Solve();
                             break;
                         }
                         case 9: //参考电压、温度补偿、湿度电压补偿
-                        {
-													 
+                        {													 
                             Modbus_09_Solve();
                             break;
                         }
                         default:TesetFlag = 0;
                             ;
-
-
                         }
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     }
@@ -375,13 +299,6 @@ void Modbus_03_Solve(void)
         modbus_usr.RS485_TX_BUFF[RegNum*2+4]=(calCRC)&0xFF;
         RS485_SendData(modbus_usr.RS485_TX_BUFF,RegNum*2+5);
     }
-//    else//寄存器地址+数量超出范围
-//    {
-//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-//    }
 }
 
 
@@ -390,15 +307,7 @@ void Modbus_03_Solve(void)
 
 void Modbus_06_Solve(void)
 {
-    ;//*Modbus_HoldReg[startRegAddr]=modbus_usr.RS485_RX_BUFF[4]<<8;//高字节在前                    ////////修改为高字节在前，低字节在后
-    ;//*Modbus_HoldReg[startRegAddr]|=((u16)modbus_usr.RS485_RX_BUFF[5]);//低字节在后
 
-//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
-//        modbus_usr.RS485_TX_BUFF[2]=modbus_usr.RS485_RX_BUFF[2];
-//        modbus_usr.RS485_TX_BUFF[3]=modbus_usr.RS485_RX_BUFF[3];
-//        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];
-//        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];
     unsigned char i;
 	   RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0100||startRegAddr==0x0101))//寄存器地址+数量在范围内
@@ -457,34 +366,12 @@ void Modbus_06_Solve(void)
             flash_write(addr++,modbus_usr.RS485_Baudrate,1);
             flash_write(addr++,modbus_usr.RS485_Parity,1);
             fator_save_proc(addr);
-//							      uint32_t tmp;
-//			  tmp = FloatToCharProc(factor_usr.a0,10);
-//				flash_write(addr++,tmp,1);	
-//			  tmp = FloatToCharProc(factor_usr.a1);
-//				flash_write(addr++,tmp,1);	
-//			  tmp = FloatToCharProc(factor_usr.a2);
-//				flash_write(addr++,tmp,1);
-           // flash_write_bytes(addr++,&(modbus_usr.RS485_RX_BUFF[6]),12);	
         }
           calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
         modbus_usr.RS485_TX_BUFF[6]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
         modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
          RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
     }
-//    else//寄存器地址+数量超出范围
-//    {
-//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-//    }
-
-
-
-    //calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
-    // modbus_usr.RS485_TX_BUFF[6]=(calCRC>>8)&0xFF;
-    // modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
-    // RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
 }
 
 
@@ -557,13 +444,6 @@ void Modbus_08_Solve(void)
         modbus_usr.RS485_TX_BUFF[19]=(calCRC)&0xFF;
          RS485_SendData(modbus_usr.RS485_TX_BUFF,20);
     }
-//    else//寄存器地址+数量超出范围
-//    {
-//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-//    }
 
 }
 void Modbus_09_Solve(void)
@@ -604,12 +484,4 @@ void Modbus_09_Solve(void)
 			modbus_usr.RS485_TX_BUFF[16]=(calCRC)&0xFF;
 			RS485_SendData(modbus_usr.RS485_TX_BUFF,17);
     }
-//    else//寄存器地址+数量超出范围
-//    {
-//        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-//        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
-//        modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-//        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
-//    }
-
 }

@@ -247,7 +247,7 @@ float DataMinusProc2(unsigned char *p,unsigned char len,unsigned int times)
 }
 
 /**********************************************
-浮点转整型
+            浮点转整型
 **********************************************/
 uint32_t FloatToCharProc(float p,unsigned int times)
 {

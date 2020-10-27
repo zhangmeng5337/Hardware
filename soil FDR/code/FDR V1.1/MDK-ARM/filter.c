@@ -4,11 +4,15 @@ extern  unsigned int adcBuf_ref[N];
 extern	unsigned int adcBuf_humid[N];	
 extern	unsigned int adcBuf_ta[N];
 extern	unsigned int adcBuf_tb[N];
+
+/****************************************
+¾ùÖµÂË²¨
+*****************************************/
 uint32_t filter(uint32_t seq)  
 {  
-   unsigned char count,i,j;  
+   unsigned char count;  
      
-   uint32_t  sum=0,temp=0;  
+   uint32_t  sum=0;  
 			switch(seq)
 			{
 				case 0: value_buf=adcBuf_ref;break;
