@@ -18,7 +18,8 @@ typedef struct
 	unsigned char reg2;	
 	unsigned char reg3;
 	unsigned char crptH;
-	unsigned char crptL;	
+	unsigned char crptL;
+  unsigned char buffer[9];	
 }LORA_Params_stru;
 typedef struct{
 	unsigned char mode;
@@ -38,5 +39,6 @@ typedef struct{
 	unsigned char crptH;
 	unsigned char crptL;
 }lora_usr_stru;
-
+void loraModeConfig(unsigned char lora_num,unsigned char mode,unsigned char startaddr,unsigned char len,unsigned char wr);
+void LoraParamsAnaly(LORA_Params_stru p);
 #endif
