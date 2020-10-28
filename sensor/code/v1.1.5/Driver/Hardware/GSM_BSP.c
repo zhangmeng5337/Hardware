@@ -103,4 +103,3 @@ void modulePowerOn(unsigned char pwr_ctrl)
   }
    
 }
-

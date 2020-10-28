@@ -165,7 +165,3 @@ void SIMCOM_Register_Network()
   SIMCOM_ReConnect();
   free(p);
 }
-
-
-
-

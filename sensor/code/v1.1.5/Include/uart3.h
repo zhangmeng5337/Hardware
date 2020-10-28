@@ -32,4 +32,3 @@ void UART3_SendStr(u8 *str);
 u8 UART3_ReceiveByte(void);
 void uart3_interrupt_handler(void);
 #endif
-

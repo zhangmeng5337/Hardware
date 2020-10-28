@@ -429,5 +429,3 @@ uint32_t adcGet(ADC_Channel_TypeDef num,unsigned int samplecount)
   
   
 }
-
-

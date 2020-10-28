@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * @file    stm8l15x_gpio.h
+* @file    stm8l15x_gpio.h
   * @author  MCD Application Team
   * @version V1.6.1
   * @date    30-September-2014

@@ -146,4 +146,3 @@ void uart3_interrupt_handler()
       point1 = USART_REC_LEN;
     }	
 }
-

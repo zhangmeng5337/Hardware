@@ -26,7 +26,7 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
   USARTX_RX_BUF =uart1.Uart_Buffer;
   unsigned char n;
   //USART1_CLR_Buf();
-  if(TimeOutFlag == 0)
+  if(TimeOutFlag == 0||TimeOutFlag == 2)
   {
     if(RetryCount<=Retry)
     {
@@ -34,13 +34,14 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
         UART1_SendStr(Command); 		//·¢ËÍGPRSÖ¸Áî  
       RetryCount = RetryCount +1;
       Time_Cont = 0;
+	  TimeOutFlag = 1;
     }
     else
     {
         RetryCount = 0;
-        
+        TimeOutFlag = 2;
     }
-    TimeOutFlag = 1;
+    
   }
   
   if(TimeOutFlag==1)
@@ -63,7 +64,17 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
     } 
   }
   else
-    return Failure;
+  {
+	  if (strstr(USARTX_RX_BUF, Response) == NULL)
+	  { 
+	   Time_Cont = 0;
+       TimeOutFlag = 2;
+		USART1_CLR_Buf();
+		return Failure;
+	  }
+
+  }
+    
   
   
   
@@ -111,6 +122,7 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
 //  USART1_CLR_Buf();
 //  return Failure;
 }
+
 
 
 
