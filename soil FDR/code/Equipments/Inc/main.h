@@ -47,11 +47,9 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define LORA_BUFFER_SIZE   256
-#define NB_SIZE						1024
 typedef unsigned char u8;
 typedef unsigned int u16;
-typedef uint32_t u32;
+typedef uint32_t  u32;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/

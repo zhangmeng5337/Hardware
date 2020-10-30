@@ -19,6 +19,16 @@ u8 RS485_FrameFlag;//帧结束标记
 u8 RS485_TX_BUFF[MODBUS_BSIZE];//发送缓冲区
 u16 RS485_TX_CNT;//发送计数器
 }modbus_stru;
+typedef struct{
+
+u8 RS485_Addr;//从机地址
+u8 func;
+u16 startaddr;
+u16 regnum;
+u16 crc;
+}modbus_pack_stru;
+void Modbus_Pack(modbus_pack_stru p);
+unsigned char *modbusRxResult(void);
 
 void RS485_Init(void);
 void RS485_Service(void);
