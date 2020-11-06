@@ -10,7 +10,7 @@
 #define CONFIG_MODE   2
 #define SLEEP_MODE   	3
 
-typedef struct
+/*typedef struct
 {
   unsigned char addH;
 	unsigned char addL;
@@ -22,7 +22,7 @@ typedef struct
 	unsigned char crptH;
 	unsigned char crptL;
   unsigned char *pb;	
-}LORA_Params_stru;
+}LORA_Params_stru;*/
 
 typedef struct{
 	unsigned char mode;

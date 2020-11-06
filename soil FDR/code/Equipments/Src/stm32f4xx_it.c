@@ -20,16 +20,19 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "modbus.h"
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "loraHAL.h"
+#include "loraHW.h"
+#include "gps.h"
+#include "modbus.h"
+#include "nbiotHW.h"
+#include "rtc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+unsigned char MODE_STAUS;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -58,6 +61,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern RTC_HandleTypeDef hrtc;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart2_rx;
 extern DMA_HandleTypeDef hdma_usart3_rx;
@@ -208,6 +212,24 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles RTC wake-up interrupt through EXTI line 22.
+  */
+void RTC_WKUP_IRQHandler(void)
+{
+  /* USER CODE BEGIN RTC_WKUP_IRQn 0 */
+
+  /* USER CODE END RTC_WKUP_IRQn 0 */
+  HAL_RTCEx_WakeUpTimerIRQHandler(&hrtc);
+  /* USER CODE BEGIN RTC_WKUP_IRQn 1 */
+   RTC_STRU *tmp;
+  tmp = getRtcStatus();
+  tmp->RtcWakeUP = 1;
+  //  RtcWakeUp = 1;
+ // RTC_ClearITPendingBit(RTC_IT_WUT);
+  /* USER CODE END RTC_WKUP_IRQn 1 */
+}
+
+/**
   * @brief This function handles DMA1 stream1 global interrupt.
   */
 void DMA1_Stream1_IRQHandler(void)
@@ -245,7 +267,8 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
- RS485_RxCpltCallback();
+	if(ROLE == 1||MODE_STAUS == 1)
+		Nbiot_RxCpltCallback();
   /* USER CODE END USART1_IRQn 1 */
 }
 
@@ -259,7 +282,7 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-
+  Lora_RxCpltCallback(2);
   /* USER CODE END USART2_IRQn 1 */
 }
 
@@ -273,7 +296,7 @@ void USART3_IRQHandler(void)
   /* USER CODE END USART3_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
   /* USER CODE BEGIN USART3_IRQn 1 */
-
+  Gps_RxCpltCallback();
   /* USER CODE END USART3_IRQn 1 */
 }
 
@@ -287,7 +310,7 @@ void UART5_IRQHandler(void)
   /* USER CODE END UART5_IRQn 0 */
   HAL_UART_IRQHandler(&huart5);
   /* USER CODE BEGIN UART5_IRQn 1 */
-
+	RS485_RxCpltCallback();
   /* USER CODE END UART5_IRQn 1 */
 }
 
@@ -301,7 +324,7 @@ void DMA2_Stream1_IRQHandler(void)
   /* USER CODE END DMA2_Stream1_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_usart6_rx);
   /* USER CODE BEGIN DMA2_Stream1_IRQn 1 */
-Lora_RxCpltCallback(2);
+
   /* USER CODE END DMA2_Stream1_IRQn 1 */
 }
 
@@ -329,7 +352,7 @@ void USART6_IRQHandler(void)
   /* USER CODE END USART6_IRQn 0 */
   HAL_UART_IRQHandler(&huart6);
   /* USER CODE BEGIN USART6_IRQn 1 */
-Lora_RxCpltCallback(6);
+   Lora_RxCpltCallback(6);
   /* USER CODE END USART6_IRQn 1 */
 }
 

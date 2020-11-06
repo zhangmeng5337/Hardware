@@ -12,6 +12,7 @@ typedef struct
 {
 	unsigned char addrH;
 	unsigned char addrL;
+	unsigned char netid;
 	unsigned char reg0;
 	unsigned char reg1;	
 	unsigned char reg2;
@@ -31,4 +32,12 @@ typedef struct
 }LORAHW_stru;
 unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len);
 unsigned char loraGpioset(LORAHW_stru *p);
+void loraset(unsigned char num,unsigned char *p,unsigned char len);
+void LoraSetPayloadPackTx(unsigned cmd,unsigned char startaddr,unsigned char len);
+void ParamsSave(void);
+void loraModuleInit(void);
+void LoraTest(void);
+void Lora_RxCpltCallback(unsigned char uartNo);
+
+
 #endif

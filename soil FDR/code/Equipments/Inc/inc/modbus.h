@@ -29,8 +29,13 @@ u16 crc;
 }modbus_pack_stru;
 void Modbus_Pack(modbus_pack_stru p);
 unsigned char *modbusRxResult(void);
+void RS485_RxCpltCallback(void);
 
 void RS485_Init(void);
 void RS485_Service(void);
 void timCallback(void);
+void sensorModbusRate(unsigned int p,unsigned char num);
+unsigned char *modbusBuffer(void);
+unsigned char *modbusFrameStatus(void);
+
 #endif

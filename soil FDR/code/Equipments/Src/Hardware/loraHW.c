@@ -1,7 +1,88 @@
 #include "loraHW.h"
 #include "loraHAL.h"
+#include "register.h"
+#include "EEPROM.h"
 extern loraUart_stru loraUart;
+extern LORAHW_stru lorahw;;
+extern uint32_t last_addr;
+void ParamsSave(void)
+{
+   unsigned char *p;
+   unsigned char tmp;
+   REG_val_stru *q;
+   uint32_t addr;
+   addr = 0;
+   flash_read(0,p,1);
+   if(p[0]!=0x5a)
+   {
+     p[0] = 0x5a;
+	 register_init();
+	 q =  getRegAddr();
+	 loraModuleInit();
+	 flash_write(addr++,p,1);
+	 flash_write(addr++,&(q->bindCount),1);
+	 
+	 tmp = (u8)(last_addr>>8);
+	 flash_write(addr++,&(tmp),1);	
+	 tmp = (u8)(last_addr);
+	 flash_write(addr++,&(tmp),1);
+	 
+	 flash_write(addr,q->value,2048);
+	 addr = addr +2048;
+	 loraset(4,p,9);
+    
+   }
+   else
+   	{
+	     p[0] = 0x5a;
+		 q =  getRegAddr();
+		 flash_read(addr++,&(q->bindCount),1);	
+		 
+		 flash_read(addr++,&(tmp),1);
+		 last_addr = tmp<<8;
+		 flash_read(addr++,&(tmp),1);
+		 last_addr =last_addr+ tmp;
 
+		 flash_read(addr,q->value,2048);	
+		 loraset(4,p,9);	
+   }
+}
+
+
+void LoraUartInit()
+{
+	UART_HandleTypeDef huart2;
+	__HAL_UART_CLEAR_IDLEFLAG(&huart2);
+	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+	HAL_UART_DMAStop(&huart2);
+	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
+	HAL_UART_Receive_DMA(&huart2,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
+}
+void Lora_RxCpltCallback(unsigned char uartNo)
+{
+    unsigned char temp;
+	if(uartNo == 2)
+	{
+		UART_HandleTypeDef huart2;
+		DMA_HandleTypeDef hdma_usart2_rx;
+
+		temp=__HAL_UART_GET_FLAG(&huart2,UART_FLAG_IDLE);
+		if((temp!=RESET))
+		{
+			__HAL_UART_CLEAR_IDLEFLAG(&huart2);
+			temp=huart2.Instance->SR;
+			temp=huart2.Instance->DR;
+
+			loraUart.receivedFlag1 = 1;
+			HAL_UART_DMAStop(&huart2);
+			HAL_UART_Receive_DMA(&huart2,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
+		}
+	}
+	else if(uartNo == 6)
+	{
+		loraUart.receivedFlag2 = 1;
+	}
+}
 
 void loraUartInterrupt(LORAHW_stru *p)
 {
@@ -224,6 +305,148 @@ unsigned char  loraGpioset(LORAHW_stru *p)
 		return 1;		
 	}
 }
+extern LORA_Params_stru loraParams;
+
+void loraset(unsigned char num,unsigned char *p,unsigned char len)
+{
+
+	if(num == 0)//1 地址设置
+	{
+		loraParams.addrH = p[0]; 
+		loraParams.addrL = p[1];
+
+	}
+	else if(num == 1)//1 功率设置
+	{
+	    loraParams.reg1 = loraParams.reg1 &0xfc;
+	    if(p[1]>=0x01&&p[1]<=0x03)
+			loraParams.reg1 = loraParams.reg1 |0x03;
+	    else if(p[1]>=0x04&&p[1]<=0x05)
+			loraParams.reg1 = loraParams.reg1 |0x02;		
+	    else if(p[1]>=0x06&&p[1]<=0x07)
+			loraParams.reg1 = loraParams.reg1 |0x01;
+	    else if(p[1]>=0x08&&p[1]<=0x10)
+			loraParams.reg1 = loraParams.reg1 |0x00;
+		
+	}
+	else if(num == 2)//2 空中速率
+	{
+
+	    loraParams.reg0 = loraParams.reg0 &0xf8;
+		switch(p[1])
+		{
+			case 1:loraParams.reg0 = loraParams.reg1 |0x00;
+			case 2:loraParams.reg0 = loraParams.reg1 |0x00;
+			case 3:loraParams.reg0 = loraParams.reg1 |0x00;break;
+			case 4:loraParams.reg0 = loraParams.reg1 |0x01;break;
+			case 5:loraParams.reg0 = loraParams.reg1 |0x02;break;
+			case 6:loraParams.reg0 = loraParams.reg1 |0x03;break;
+			case 7:loraParams.reg0 = loraParams.reg1 |0x04;break;
+			case 8:loraParams.reg0 = loraParams.reg1 |0x05;break;
+			case 9:loraParams.reg0 = loraParams.reg1 |0x06;break;
+			case 10:loraParams.reg0 = loraParams.reg1 |0x07;break;
+		}		
+	} 
+	else if(num == 3)//3 lora信道0-127
+	{
+	    loraParams.reg2 = p[1]/1.5;
+	} 
+	else if(num == 4)
+	{	
+		unsigned char *q;
+		q=ReadRegister(0xf00b); 
+		loraParams.addrH = q[0];
+		loraParams.addrL = q[1]; 
+		
+		loraParams.netid = 0;
+		
+		loraParams.reg0 =loraParams.reg0 &0x1f;
+		loraParams.reg0 = loraParams.reg0|0x60;//波特率设置，bit7,6,
+		
+		loraParams.reg0 = loraParams.reg0 &0xe7;
+		loraParams.reg0 = loraParams.reg0|0x00;//校验位设置bit4,3
+		
+		q = ReadRegister(0x1203);//空速
+		loraParams.reg0 = loraParams.reg0 &0xf8;
+		switch(q[1])
+		{
+			case 1:loraParams.reg0 = loraParams.reg0 |0x00;
+			case 2:loraParams.reg0 = loraParams.reg0 |0x00;
+			case 3:loraParams.reg0 = loraParams.reg0 |0x00;break;
+			case 4:loraParams.reg0 = loraParams.reg0 |0x01;break;
+			case 5:loraParams.reg0 = loraParams.reg0 |0x02;break;
+			case 6:loraParams.reg0 = loraParams.reg0 |0x03;break;
+			case 7:loraParams.reg0 = loraParams.reg0 |0x04;break;
+			case 8:loraParams.reg0 = loraParams.reg0 |0x05;break;
+			case 9:loraParams.reg0 = loraParams.reg0 |0x06;break;
+			case 10:loraParams.reg0 = loraParams.reg0 |0x07;break;
+		}//空中速度设置bit2,1,0
+		
+		loraParams.reg1=loraParams.reg1 &0x3f;
+		loraParams.reg1 = loraParams.reg1|00;//分包长度，bit7,6
+		
+		loraParams.reg1 =loraParams.reg1 &0xdf;
+		loraParams.reg1 = loraParams.reg1&0;//环境噪声，bit5
+
+        q = ReadRegister(0xf005);//功率
+		loraParams.reg1 = loraParams.reg1 &0xfc;
+	    if(q[1]>=0x01&&q[1]<=0x03)
+			loraParams.reg1 = loraParams.reg1 |0x03;
+	    else if(q[1]>=0x04&&q[1]<=0x05)
+			loraParams.reg1 = loraParams.reg1 |0x02;		
+	    else if(q[1]>=0x06&&q[1]<=0x07)
+			loraParams.reg1 = loraParams.reg1 |0x01;
+	    else if(q[1]>=0x08&&q[1]<=0x10)
+			loraParams.reg1 = loraParams.reg1 |0x00;
+		
+		q = ReadRegister(0x1204);
+		loraParams.reg2 = q[1]/1.5;//信道
+		
+		loraParams.reg3 = loraParams.reg3&0x7f;//rssi,bit7
+		loraParams.reg3 = loraParams.reg3|00;//rssi,bit7
+
+		
+		loraParams.reg3 = loraParams.reg3&0xbf;
+		loraParams.reg3 = loraParams.reg3|0x40;//定点传输,bit6
+		
+		loraParams.reg3 = loraParams.reg3&0xdf;//中继功能传输,bit5		
+		loraParams.reg3 = loraParams.reg3|0;//中继功能传输,bit5
+		
+		loraParams.reg3 = loraParams.reg3&0xef;//中继功能传输,bit5				
+		loraParams.reg3 = loraParams.reg3|0x10;//lbt,bit4
+			
+	    loraParams.reg3 = loraParams.reg3&0xf7;//wor接收,bit3
+	    loraParams.reg3 = loraParams.reg3|0;//wor接收,bit3
+	
+		loraParams.reg3 = loraParams.reg3&0xf8;//wor周期,bit2,1,0
+		loraParams.reg3 = loraParams.reg3|0;//wor周期,bit2,1,0	
+		
+		loraParams.cryptH = 0x64;//秘钥高字节
+		loraParams.cryptL = 0x46;//秘钥低字节
+
+	}
+	else if(num == 6)
+	{
+		loraParams.addrH = p[0]; 
+		loraParams.addrL = p[1];
+		loraParams.netid = p[2];
+		loraParams.reg0 = p[3];
+		loraParams.reg1 = p[4];
+		loraParams.reg2 = p[5];
+		loraParams.reg3 = p[6];
+		loraParams.cryptH = p[7];
+		loraParams.cryptL = p[8];
+	}
+	if(num<6)
+	{
+		lorahw.mode = 2;
+		LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
+
+	}
+
+
+}
+
 /*******************************************************
 功能描述：lora发送数据
 参数:
@@ -244,16 +467,146 @@ unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 		if(loraGpioset(p) == 0)
 		{
 			HAL_UART_Transmit(&huart2,buffer,len,1000);
+			return 0;
 		}
-		return 0;
+		else 
+			return 1;
 	}
 	else
 	{
-			if(loraGpioset(p) == 0)
+		if(loraGpioset(p) == 0)
 		{
 			HAL_UART_Transmit(&huart6,buffer,len,1000);
+			return 0;
 		}
-		return 0;
+		else 
+			return 1;
+		
 	}
-	return 1;
 }
+
+
+unsigned char *LoraPayloadToArray()
+{
+	unsigned char *q;
+	*q++ = loraParams.addrH;
+	*q++ = loraParams.addrL;
+	*q++ = loraParams.netid;
+	*q++ = loraParams.reg0;
+	*q++ = loraParams.reg1;
+	*q++ = loraParams.reg2;
+	*q++ = loraParams.reg3;
+	*q++ = loraParams.cryptH;
+	*q++ = loraParams.cryptL;
+	return q;
+}
+void LoraSetPayloadPackTx(unsigned cmd,unsigned char startaddr,unsigned char len)
+{ 
+    unsigned char *p;
+	unsigned char *q;
+	unsigned char tmp;
+	q = LoraPayloadToArray();
+
+	*p++ = cmd;
+	*p++ = startaddr;
+	*p++ = len;	
+	if(cmd == 0xc0)
+	{
+		memcpy(p,q+startaddr,len);
+        tmp = len +3;
+	}
+	else
+	{
+		tmp = 3;
+	}
+
+	 
+	 LORAHW_stru lorahw;
+	 lorahw.loraNo = 0;
+	 loraSend(&lorahw,p,tmp);
+}
+void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len)
+{ 
+    unsigned char *p;
+	unsigned char *q;  
+	 q = ReadRegister(0x1202);
+	*p++ = q[0];
+	*p++ = q[1];
+	 q = ReadRegister(0x1204);
+	*p++ = q[1];
+	 memcpy(p,buffer,len);
+	 LORAHW_stru lorahw;
+	 lorahw.loraNo = 0;
+	 lorahw.mode = 0;	 
+	 loraSend(&lorahw,p,len+3);
+}
+
+void loraModuleInit()
+{
+    unsigned char *p;
+	p = ReadRegister(0xf00b);
+	loraParams.addrH = p[0]; 
+	loraParams.addrL = p[1];
+	
+	loraParams.netid = 0;
+	
+	loraParams.reg0 = loraParams.reg0 &0x1f;
+	loraParams.reg0 = loraParams.reg0|0x60;//波特率设置，bit7,6,
+	
+	loraParams.reg0 = loraParams.reg0 &0xe7;
+	loraParams.reg0 = loraParams.reg0|0x00;//校验位设置bit4,3
+	
+	loraParams.reg0 =loraParams.reg0 &0xf8;	
+	loraParams.reg0 = loraParams.reg0|0x04;//空中速度设置bit2,1,0
+	
+	loraParams.reg1 = loraParams.reg1 &0x3f;
+	loraParams.reg1 = loraParams.reg1|0x00;//分包长度，bit7,6
+	
+	loraParams.reg1 = loraParams.reg1 &0xdf;
+	loraParams.reg1 = loraParams.reg1&0x00;//环境噪声，bit5
+	
+	loraParams.reg1 = loraParams.reg1 &0xfc;
+	loraParams.reg1 = loraParams.reg1&0x00;//发射功率，bit1,0
+	
+	loraParams.reg2 = 0x00;//信道
+	
+	loraParams.reg3 = loraParams.reg3&0x7f;//rssi,bit7
+	loraParams.reg3 = loraParams.reg3|00;//rssi,bit7
+	
+	loraParams.reg3 = loraParams.reg3&0xbf;//rssi,bit6	
+	loraParams.reg3 = loraParams.reg3|0x40;//定点传输,bit6
+	
+	loraParams.reg3 = loraParams.reg3&0xdf;//中继功能传输,bit5
+	loraParams.reg3 = loraParams.reg3|0x00;//定点传输,bit5	
+	
+	loraParams.reg3 = loraParams.reg3&0xef;//lbt,bit4
+	loraParams.reg3 = loraParams.reg3|0x10;//lbt,bit4
+	
+	loraParams.reg3 = loraParams.reg3&0xf7;//wor接收,bit3
+	loraParams.reg3 = loraParams.reg3|0;//wor接收,bit3	
+	
+	loraParams.reg3 = loraParams.reg3&0xf8;//wor周期,bit2,1,0
+	loraParams.reg3 = loraParams.reg3|0x00;//wor周期,bit2,1,0	
+	
+	loraParams.cryptH = 0x64;//秘钥高字节
+	loraParams.cryptL = 0x46;//秘钥低字节
+
+
+	//LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
+	//LoraSetPayloadPackTx(0xc1,0,9);//度lora模块参数
+	lorahw.mode = 2;
+
+	
+}
+void LoraTest()
+{
+	loraModuleInit();
+	LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
+	unsigned char *p,i;
+	for(i=0;i<240;i++)
+		p[i] = i+1;
+	LoraSendPayloadPackTx(p,240);
+}
+
+
+

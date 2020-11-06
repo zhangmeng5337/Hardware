@@ -4,6 +4,8 @@
 #include "main.h"
 #include "loraHW.h"
 
+
+
 #define ADDR_SIZE			0x08
 #define START_ADDR_SIZE		0x02
 #define PAYLOAD_SIZE		280
@@ -18,7 +20,8 @@
 enum FUNC_CODE
 {
 	gateway_Rcmd = 0x17,
-	pc_cmd = 0x18,	
+	pc_cmd = 0x18,
+	PC_readFrame = 0x30,
 	auto_report_cmd = 0x51
 };
 
@@ -128,10 +131,21 @@ typedef struct
   unsigned char payloadLenL; 
   unsigned char payload[PAYLOAD_SIZE];
 }Proctocol_C_stru;
+typedef struct
+{
+  unsigned char timoutFLag;
+  unsigned char tickFlag;
+  uint32_t tickCount;
+}loraModuleTimeout_stru;
 
-unsigned char read_equipment(void);
+void get_equipmentData(void);
 unsigned char protocolCAnaly(unsigned char  *p);
-void sendProtocolCData(LORAHW_stru *loraNo);
+void WrRead_equipment(LORAHW_stru *loraNo);
+void equipmentProcess(void);
+void wirelessTimoutStart(unsigned char p);
+Proctocol_C_stru *protocolCstru(void);
+unsigned char *ackmodeStatus(void);
+
 
 #endif
 

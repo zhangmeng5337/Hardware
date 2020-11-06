@@ -1,36 +1,33 @@
 #include "Protocol_C.h"
 #include "crc.h"
-#include "modbus.h"
-#include "adc.h"
-#include "rtc.h"
 #include "register.h"
 #include "loraHW.h"
+#include "sensor.h"
+#include "rtc.h"
+#include "nbiotHAL.h"
+#include "modbus.h"
 
+extern unsigned char MODE_STAUS;
+
+void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode);
+unsigned char autoReportMode(void);
 /******************************************************************************
 数据结构：
         地址    设备地址编码          功能码     起始地址      字节计数      数组0定义         数组0数值 ...crc1       crc2
 bytes   16        1              1       2        1          2             2           2      2
 *******************************************************************************/
-unsigned char array_comp(unsigned char *p1,unsigned char *p2,unsigned char len)
-{
-	unsigned char i;
-	unsigned char result;
-	result = 0;
-	for(i=0;i<len;i++)
-	{
-		if(p1[i]!=p2[i])
-		{
-			result = 1;
-			break;
-		}
-		else
-			result = 0;
-	}
-	return result;
-}
+unsigned char ackmode;
 Proctocol_C_stru protocolC;
 unsigned char dev_code;
-extern unsigned char modbus_role;
+Proctocol_C_stru *protocolCstru(void)
+{
+	return &protocolC;
+}
+unsigned char *ackmodeStatus(void)
+{
+	return &ackmode;
+}
+
 unsigned char getPackLen(unsigned char  *p)
 {
 	unsigned int len;
@@ -62,7 +59,7 @@ void packAnaly(unsigned char  *p)
 	   
 		protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
 		protocolC.payloadLenH = 0;
-		payload_len =((u16)(p[PAYLOAD_LEN_INDEX]))<<8+p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+		payload_len =(((u16)(p[PAYLOAD_LEN_INDEX]))<<8) + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
 		memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);	
 	}
 	else
@@ -75,13 +72,12 @@ void packAnaly(unsigned char  *p)
 }
 unsigned char protocolCAnaly(unsigned char  *p)
 {
-    unsigned char calCRC;
+  unsigned char calCRC;
 	unsigned char recCRC;
 	unsigned int len;
-	unsigned int payload_len;
 	unsigned char result;
 	result = 0;
-	memcpy(protocolC.DesAddr ,p,ADDR_SIZE);//目标地址
+	memcpy(protocolC.DesAddr ,p+ADDR_SIZE,ADDR_SIZE);//目标地址
 	//memcpy(protocolC.SrcAddr,&(p[ADDR_SIZE]),ADDR_SIZE);//源地址
 
 	if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
@@ -129,84 +125,18 @@ unsigned char protocolCAnaly(unsigned char  *p)
 	}
 	else
 		result = 4;
-
-	return result;
-}
-unsigned char *getSensorData(unsigned char paramsType)
-{
-	
-	unsigned char sensor_params;
-    modbus_pack_stru p;
-	unsigned char timeout;
-	unsigned char i;
-	unsigned char *result,*tmp;
-	sensor_params = paramsType;
-	if(paramsType == rh||sensor_params == temperature)
-	{	
-	   p.RS485_Addr = 1;
-	   while(p.RS485_Addr<=4)
-	   	{
-	   
-		   p.RS485_Addr ++;
-   satrt:  p.func = 0x03;
-		   p.regnum = 0x0002;
-		   p.startaddr = 0x0002;
-		   modbus_role = 1;
-		   Modbus_Pack(p);
-		   timeout = HAL_GetTick();
-		   while(modbus_role!=2)
-		   	{
-				if((HAL_GetTick()-timeout)>=3000)
-				{
-					if(i<3)
-					{
-						i++;
-						goto satrt;
-					}
-					else
-					{
-						i=0;
-						result[p.RS485_Addr] = 0;
-						result[p.RS485_Addr+1] = 0;	
-						result[p.RS485_Addr+2] = 0;
-						result[p.RS485_Addr+3] = 0;
-						break;
-					}
-				}
-					
-		   }
-		   tmp=modbusRxResult();
-		   result[p.RS485_Addr] =   tmp[5];
-		   result[p.RS485_Addr+1] = tmp[6];
-		   result[p.RS485_Addr+2] = tmp[3];
-		   result[p.RS485_Addr+3] = tmp[4];
-
-
-		  // memcpy(p,)
-		   
-
-	   }
-
-		modbus_role = 0;
+    if(result)
+    {
+       ackmode = 4;
+	   LORAHW_stru loraNo;
+	   loraNo.loraNo = 0;
+	   loraNo.mode =  TransmitMode;
+	   SendPayloadPack(&loraNo,4);
 	}
-	else if(sensor_params== quantity)
-	{
-		result = getadc(quantity);
-	}
-	else if(sensor_params >= year_month&&sensor_params <= min_sec)
-	{
-		result = getRTC();
-	}
-
-	else if(sensor_params == auto_report_time)
-	{
-		result = getRegisterProc(auto_report_time);
-	}
-
 	return result;
 }
 
-unsigned char read_equipment()
+void get_equipmentData()
 {
 	//enum FUNC_CODE fun_code;
 	unsigned int reg_addr,start_addr;
@@ -249,7 +179,7 @@ unsigned char read_equipment()
                     reg_addr = start_addr-reg_soil_temp_5;
 					if(start_addr >= reg_soil_temp_5&&start_addr <= reg_soil_rh_1)
 					{
-							p=getSensorData(rh);//
+							p=ReadRegister(start_addr);//
 							for(j=0;j<len;j=j+2)  
 							{
 							    if(j%2 == 0)
@@ -281,10 +211,10 @@ unsigned char read_equipment()
 				else  if(dev_code ==pressure_DEV);
 				else  if(dev_code ==flow_DEV);
 				else  if(dev_code ==gateway_DEV);
-				else if(sensor_params== quantity)
+				 if(sensor_params== quantity)
 				{
 				    reg_addr = reg_quantity-start_addr;
-							p=getSensorData(sensor_params);//
+							p=ReadRegister(start_addr);//
 							for(j=0;j<len;j=j+2)	
 							{
 								protocolC.payload[index++] = sensor_params++;										
@@ -293,9 +223,9 @@ unsigned char read_equipment()
 								index =index +2;					
 							}		
 			}
-			else if(sensor_params >=year_month&&sensor_params<=min_sec)
+			 if(sensor_params >=year_month&&sensor_params<=min_sec)
 			{
-				p=getSensorData(sensor_params);//
+				p=ReadRegister(start_addr);//
 				for(j=0;j<len;j=j+2)	
 				{
 					protocolC.payload[index++] = sensor_params++;										
@@ -305,9 +235,9 @@ unsigned char read_equipment()
 				}
 		
 		    }
-			else if(sensor_params == auto_report_time)
+			 if(sensor_params == auto_report_time)
 			{
-				p=getSensorData(sensor_params);//
+				p=ReadRegister(start_addr);//
 				for(j=0;j<len;j=j+2)	
 				{
 					protocolC.payload[index++] = sensor_params++;										
@@ -320,40 +250,226 @@ unsigned char read_equipment()
 		}	
    
 }
-void sendProtocolCData(LORAHW_stru *loraNo)
+void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
 {
     unsigned char *p;
 	unsigned int calCRC;
 	unsigned int len;
-	len = 0;
-	if(protocolC.funCode == gateway_Rcmd)
+	 memcpy(p,protocolC.DesAddr,ADDR_SIZE);
+	 p=p+ADDR_SIZE;
+	 len = len +ADDR_SIZE;
+	 memcpy(p,protocolC.SrcAddr,ADDR_SIZE);	
+	 p=p+ADDR_SIZE;	
+	 len = len +ADDR_SIZE;
+	 *(p++) = protocolC.devCode;
+	 *(p++) = protocolC.funCode;
+	 len = len +2;
+	 if(ackMode == 0)
+	 {
+	  memcpy(p,protocolC.startAddr ,2);	
+	  p=p+2;
+	  len = len +2;
+	  *(p++) =protocolC.payloadLenH;
+	  *(p++) =protocolC.payloadLenL; 
+	  len = len +2;
+	  memcpy(p,protocolC.payload,((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL );	
+	  len = len +((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL;
+	 }
+	 else if(ackMode == 1)
+	 {
+		*(p++)  = 0x01;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 2)
+	 {
+		*(p++)  = 0x02;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 3)
+	 {
+		*(p++)  = 0x03;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 4)
+	 {
+		*(p++)  = 0x04;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 5)
+	 {
+		*(p++)  = 0x05;//功能码错误
+		len = len + 1;
+	 }
+	  calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
+	   *(p++) =(u8)(calCRC>>8);
+	   *(p++) =(u8)(calCRC);
+	  calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
+	   *(p++) =(u8)(calCRC>>8);
+	   *(p++) =(u8)(calCRC);
+	   unsigned char *fameStatus;
+	   fameStatus = modbusFrameStatus();
+    if(*fameStatus== 2)//数据来自串口
+    {
+       *fameStatus = 0;
+		RS485_SendData(p, len+4);
+
+	}
+	else
 	{
-	     memcpy(p,protocolC.DesAddr,ADDR_SIZE);
-		 p=p+ADDR_SIZE;
-		 len = len +ADDR_SIZE;
-	     memcpy(p,protocolC.SrcAddr,ADDR_SIZE);	
-		 p=p+ADDR_SIZE;	
-		 len = len +ADDR_SIZE;
-		 *(p++) = protocolC.devCode;
-		 *(p++) = protocolC.funCode;
-		 len = len +2;
-		  memcpy(p,protocolC.startAddr ,2);	
-		  p=p+2;
-		  len = len +2;
-		  memcpy(p,protocolC.startAddr ,2);	
-		  len = len +2;
-		  *(p++) =protocolC.payloadLenH;
-		  *(p++) =protocolC.payloadLenL; 
-		  len = len +2;
-		  memcpy(p,protocolC.payload,((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL );	
-		  len = len +((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL;
-		  calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
-		   *(p++) =(u8)(calCRC>>8);
-		   *(p++) =(u8)(calCRC);
-		  calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
-		   *(p++) =(u8)(calCRC>>8);
-		   *(p++) =(u8)(calCRC);	
-		   
-		  loraSend(loraNo,p,len+4);
+    	while(loraSend(loraNo,p,len+4))
+		;
+
+	}
+
+}
+void WrRead_equipment(LORAHW_stru *loraNo)
+{
+	unsigned int len;
+	unsigned int addr;
+    unsigned char *tmp,i;
+	len = 0;
+    ackmode = 0;
+
+	if(protocolC.funCode == gateway_Rcmd||protocolC.funCode == pc_cmd||protocolC.funCode == auto_report_cmd)//判断功能码是否正确
+	{
+		len = ((u16)(protocolC.payloadLenH))<<8+ protocolC.payloadLenL;  //数据长度
+		addr = ((u16)(protocolC.startAddr[0]))<<8+protocolC.startAddr[1];//起始寄存器地址
+		
+		if(*ReadRegister(addr)!=NULL&&((addr+len)<=x1_ADDR_END||(addr+len)<=x12_ADDR_END||
+			(addr+len)<=x4_ADDR_END||(addr+len)<=x44_ADDR_END||(addr+len)<=xE_ADDR_END
+			||(addr+len)<=xF_ADDR_END))//判断寄存器地址是否正确
+			;
+		else
+			ackmode = 2;
+		if(len<1||len>=0x0010)//判断数据长度是否正确
+			ackmode = 3;
+		
+		if(protocolC.funCode == gateway_Rcmd)//读寄存器
+		{
+		     get_equipmentData();//获取设备数据
+	         SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+		}
+		else if(protocolC.funCode == pc_cmd)//写寄存器
+		{
+			
+			for(i = 2;i<len;i = i+2)//负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
+			{
+				memcpy(tmp+i,&(protocolC.payload[i]),2);
+			}
+			
+			if(WriteRegisteSet(addr,tmp ,len)==0)//写入寄存器数据
+			{
+				 equip_set();//与硬件相关的写操作
+				 
+				 SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+			}	
+			else
+			{
+				 SendPayloadPack(loraNo, 5);//向网关返回数据或者发送到终端
+			}
+			ParamsSave();
+
+		}
+		else if(protocolC.funCode == auto_report_cmd||autoReportMode()==1)//自动上报
+		{
+		    get_equipmentData();//获取设备数据
+		   // WriteRegisteSet(addr,tmp ,len);
+			SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+			
+		}
+		}
+	else//功能码不正确
+	{
+      ackmode = 1;
+	  SendPayloadPack(loraNo, ackmode);//向网关返回数据
+	}
+
+}
+unsigned char autoReportMode()
+{
+    unsigned char *tmp;
+	tmp = ReadRegister(0xf00e);
+	return tmp[1];
+}
+loraModuleTimeout_stru loraModuleTimeout;
+void wirelessTimoutStart(unsigned char p)
+{
+	loraModuleTimeout.tickFlag = 1;
+}
+unsigned char wirelessTimoutProcess()
+{
+	static unsigned int timeoutCount;
+  unsigned char result;
+	result = 0;
+	if(loraModuleTimeout.tickFlag == 1)
+	{   
+
+		timeoutCount = uchar2uint( ReadRegister(0xf004));
+	    loraModuleTimeout.tickFlag = 2;
+		loraModuleTimeout.tickCount = HAL_GetTick();
+	}
+	if(loraModuleTimeout.tickFlag == 2)
+	{   
+	    if((HAL_GetTick()-loraModuleTimeout.tickCount) >= timeoutCount)
+	    {
+	        loraModuleTimeout.tickFlag =0;
+			result = 0;
+		}
+		else
+		{
+			result = 1;
+		}
+	}
+	return result;
+}
+
+void equipmentProcess(void)
+{  	
+	getRH_T();
+	getvbat();
+	getRTC();
+	getGPS();
+   
+	 MODE_STAUS = getModeStatus();
+	if(MODE_STAUS == 0x02||ROLE == 1)//带nbiot
+	{
+		SIMCOM_Register_Network();
+	}
+	else
+	{  
+		if(ROLE == 0)//终端模式应答modbus命令
+		{
+			RS485_Service();
+		}
+
+		if(autoReportMode()==1)
+		{
+			if(wirelessTimoutProcess() == 0)
+			{
+					;//休眠
+			}
+			else
+			{
+				   ;//等待接收命令
+			}
+			if(getRtcStatus()->RtcWakeUP == 1)//休眠时间到主动上报
+			{
+
+				protocolC.devCode = soilRH_DEV;
+				protocolC.startAddr[0] = 0x10;
+				protocolC.startAddr[1] = 0x01 ;
+				protocolC.payloadLenH =0x00;
+				protocolC.payloadLenL = 20;	 
+				LORAHW_stru loraNo;
+				loraNo.loraNo = 0;
+				loraNo.mode =  TransmitMode;
+			    get_equipmentData();//获取设备数据
+	            SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
+	            getRtcStatus()->RtcWakeUP = 0;
+			}
+				
+				
+		}
+
 	}
 }

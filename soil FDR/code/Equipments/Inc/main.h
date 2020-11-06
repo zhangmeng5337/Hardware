@@ -56,6 +56,7 @@ typedef uint32_t  u32;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+#define ROLE				0//0:ÖÕ¶Ë£»1£ºÍø¹Ø
 
 /* USER CODE END EFP */
 
@@ -109,6 +110,8 @@ void Error_Handler(void);
 #define LORA_M02_Pin GPIO_PIN_8
 #define LORA_M02_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
+#define ON   1
+#define OFF  0
 
 /* USER CODE END Private defines */
 

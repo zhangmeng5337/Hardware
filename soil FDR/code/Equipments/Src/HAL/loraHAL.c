@@ -1,41 +1,86 @@
 #include "loraHAL.h"
 #include "loraHW.h"
 #include "Protocol_C.h"
+#include "register.h"
+#include "nbiotHAL.h"
+#include "nbiotHW.h"
+#include "modbus.h"
+#include "gateway.h"
 
 loraUart_stru loraUart;
 LORAHW_stru lorahw;
 LORA_Params_stru loraParams;
-
-unsigned char Lora_Params_set()
+void ParamsInit()
 {
-	
-}
-void Lora_RxCpltCallback(unsigned char uartNo)
-{
-	if(uartNo == 2)
+    unsigned char *p;
+	unsigned int tmp;
+	ParamsSave();//参数保存
+	p = ReadRegister(0x1205);
+	if(ROLE == 1||getModeStatus()== 0x02)
 	{
-		loraUart.receivedFlag1 = 1;
+		NbiotUartInit();
+		ServerIP_Pack(p);
+		nbiot_HardwareInit(ON);
 	}
-	else if(uartNo == 6)
-	{
-		loraUart.receivedFlag2 = 1;
-	}
+	p = ReadRegister(0xf00c);
+	tmp = uchar2uint(p);
+	sensorModbusRate(tmp,0);
 }
-void Lora_Process()
+void EquipGateway_Process()
 {  
 	LORAHW_stru loraNo;
-
 	if(loraUart.receivedFlag1 == 1)
-	{
-		if(protocolCAnaly(loraUart.lora1RxBuffer)  == 0)
-		{   
-		     loraNo.loraNo = 0;
-			 loraNo.mode =  TransmitMode;
-			 read_equipment();
-			 sendProtocolCData(&loraNo);
-		}
+	{	
+	     if(lorahw.mode ==2)//配置模式收到数据不做协议解析
+	     {
+	        loraset(6,&(loraUart.lora1RxBuffer[3]),9);
+			ParamsSave();
+			lorahw.mode = 0;
+		 }
+		 else//式收到数据做协议解析
+		 {
+			 if(protocolCAnaly(loraUart.lora1RxBuffer)	== 0)//校验成功
+			 {	 
+				  loraNo.loraNo = 0;
+				  loraNo.mode =  TransmitMode;
+				  wirelessTimoutStart(1);//主动上报模式超时计时标志位
+				  WrRead_equipment(&loraNo);//读写寄存器操作
+			 }
+
+		 }
+
+		loraUart.receivedFlag1 = 0;
 		  
 	}
+    if(ROLE == 1)//网关模式
+    {
+         unsigned char *fameStatus;
+		 fameStatus = modbusFrameStatus();
+		if(*fameStatus== 2)
+		{
+			 if(protocolCAnaly(modbusBuffer())	== 0)//校验成功
+			 {	 
+				  loraNo.loraNo = 0;
+				  loraNo.mode =  TransmitMode;
+				  wirelessTimoutStart(1);//主动上报模式超时计时标志位
+				  WrRead_equipment(&loraNo);//读写寄存器操作
+				  
+			 }	
+			 *fameStatus = 0;
+		}
+		if(NbiotFrameStatus()== 1)
+		{
+			 if(protocolCAnaly(NbiotFrameBuffer())	== 0)//校验成功
+			 {	 
+				  loraNo.loraNo = 0;
+				  loraNo.mode =  TransmitMode;
+				  wirelessTimoutStart(1);//主动上报模式超时计时标志位
+				  WrRead_equipment(&loraNo);//读写寄存器操作 
+			 }	
+		}
+		Gateway_Process();
+	}
+	equipmentProcess();//设备调度
 	if(loraUart.receivedFlag2 == 1)
 	{
 		

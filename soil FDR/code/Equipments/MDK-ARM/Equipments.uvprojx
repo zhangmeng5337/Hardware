@@ -392,9 +392,14 @@
           <GroupName>Hardware</GroupName>
           <Files>
             <File>
-              <FileName>bsp.c</FileName>
+              <FileName>rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Src\Hardware\bsp.c</FilePath>
+              <FilePath>..\Src\HAL\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>nbiotHW.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Hardware\nbiotHW.c</FilePath>
             </File>
             <File>
               <FileName>loraHW.c</FileName>
@@ -427,19 +432,44 @@
               <FilePath>..\Src\HAL\Protocol_C.c</FilePath>
             </File>
             <File>
+              <FileName>register.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\register.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>gps.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\gps.c</FilePath>
+            </File>
+            <File>
+              <FileName>gprs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\gprs.c</FilePath>
+            </File>
+            <File>
+              <FileName>nbiotHAL.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\nbiotHAL.c</FilePath>
+            </File>
+            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\HAL\adc.c</FilePath>
             </File>
             <File>
-              <FileName>rtc.c</FileName>
+              <FileName>eeprom.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Src\HAL\rtc.c</FilePath>
+              <FilePath>..\Src\HAL\eeprom.c</FilePath>
             </File>
             <File>
-              <FileName>register.c</FileName>
+              <FileName>gateway.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Src\HAL\register.c</FilePath>
+              <FilePath>..\Src\HAL\gateway.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -540,6 +570,16 @@
               <FileName>stm32f4xx_hal_exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_rtc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_hal_tim.c</FileName>
