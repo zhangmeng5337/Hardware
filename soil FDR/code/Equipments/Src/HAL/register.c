@@ -252,6 +252,32 @@ void equip_bind(unsigned char *p)
 		
 
 }
+unsigned char equip_bind_analy(unsigned char *p)
+{
+    unsigned int i,j;
+	unsigned char result;
+	result = 0;
+	
+
+        for(i=0;i<register_map.bindCount;i++)
+        {
+            for(j=i;j<8;j++)
+            {
+				if(array_comp(p,register_map.value+j*8,8) == 0)
+				{
+					result = 1;
+					break;
+				}
+				else
+					result = 0;
+			}
+			if(result == 1)
+				break;
+		}
+		return result;
+
+}
+
 void register_init()
 {
     

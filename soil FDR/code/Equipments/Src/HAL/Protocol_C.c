@@ -38,12 +38,12 @@ unsigned char getPackLen(unsigned char  *p)
 		len = len+START_ADDR_SIZE + 1+4;
 	
 	}
-	else
+	/*else
 	{
 		len =((u16)(p[PAYLOAD_LEN_INDEX]))<<8+p[PAYLOAD_LEN_INDEX+1];//payload长度
 		len = len + 2*ADDR_SIZE+1+1;//
 		len = len+START_ADDR_SIZE + 1+1+4;			
-	}
+	}*/
 	return len;
 
 }
@@ -79,36 +79,34 @@ unsigned char protocolCAnaly(unsigned char  *p)
 	result = 0;
 	memcpy(protocolC.DesAddr ,p+ADDR_SIZE,ADDR_SIZE);//目标地址
 	//memcpy(protocolC.SrcAddr,&(p[ADDR_SIZE]),ADDR_SIZE);//源地址
-
-	if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
-	{
-		getPackLen(p);
+	len = getPackLen(p);
 
 	
 		calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
 		recCRC=p[len-1]|(((u16)p[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
-		if(calCRC==recCRC)//CRC校验正确
+		if(calCRC==recCRC)//CRC校验正确，整个数据包校验正确
 		{
 		
-			calCRC=CRC_Compute(&p[ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
+			calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);
 			recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
-			if(calCRC==recCRC)
+			if(calCRC==recCRC)//目的地址正确以及数据校验正确
 			{
-		
-				packAnaly(p);
-
-				result = 0;
+			 	packAnaly(p);
+				if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致		  
+					result = 0;
+				else
+					result = 4;
 			}
 			else
 			{
-				result = 1;
+				result = 1;//目的地址校验错误
 			}
 		}
-		else
+		/*else
 		{
 			calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
 			recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
-			if(calCRC==recCRC)
+			if(calCRC==recCRC)//16字节地址校验不正确
 			{
 
 			  packAnaly(p);
@@ -120,12 +118,21 @@ unsigned char protocolCAnaly(unsigned char  *p)
 				result = 3;
 			}
 		
+		}*/
+	if(result == 4)
+	{
+		if(equip_bind_analy(protocolC.DesAddr)==0)
+		{
+			LORAHW_stru loraNo;
+			loraNo.loraNo = 0;
+			loraNo.mode =  TransmitMode;
+			SendLoraData(&loraNo,p);
+
 		}
 
 	}
-	else
-		result = 4;
-    if(result)
+		
+    if(result == 1)
     {
        ackmode = 4;
 	   LORAHW_stru loraNo;
@@ -282,22 +289,22 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
 	 }
 	 else if(ackMode == 2)
 	 {
-		*(p++)  = 0x02;//功能码错误
+		*(p++)  = 0x02;//addr错误
 		len = len + 1;
 	 }
 	 else if(ackMode == 3)
 	 {
-		*(p++)  = 0x03;//功能码错误
+		*(p++)  = 0x03;//数据个数错误
 		len = len + 1;
 	 }
 	 else if(ackMode == 4)
 	 {
-		*(p++)  = 0x04;//功能码错误
+		*(p++)  = 0x04;//多个寄存器错误
 		len = len + 1;
 	 }
 	 else if(ackMode == 5)
 	 {
-		*(p++)  = 0x05;//功能码错误
+		*(p++)  = 0x05;//预留
 		len = len + 1;
 	 }
 	  calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
@@ -322,6 +329,78 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
 	}
 
 }
+
+
+void SendLoraData(LORAHW_stru *loraNo,unsigned char *q)
+{
+    unsigned char *p;
+	unsigned int calCRC;
+	unsigned int len;
+	 memcpy(p,protocolC.DesAddr,ADDR_SIZE);
+	 p=p+ADDR_SIZE;
+	 len = len +ADDR_SIZE;
+	 memcpy(p,protocolC.SrcAddr,ADDR_SIZE);	
+	 p=p+ADDR_SIZE;	
+	 len = len +ADDR_SIZE;
+	 *(p++) = protocolC.devCode;
+	 *(p++) = protocolC.funCode;
+	 len = len +2;
+	  memcpy(p,protocolC.startAddr ,2);	
+	  p=p+2;
+	  len = len +2;
+	  *(p++) =protocolC.payloadLenH;
+	  *(p++) =protocolC.payloadLenL; 
+	  len = len +2;
+	  memcpy(p,protocolC.payload,((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL );	
+	  len = len +((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL;
+	/* else if(ackMode == 1)
+	 {
+		*(p++)  = 0x01;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 2)
+	 {
+		*(p++)  = 0x02;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 3)
+	 {
+		*(p++)  = 0x03;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 4)
+	 {
+		*(p++)  = 0x04;//功能码错误
+		len = len + 1;
+	 }
+	 else if(ackMode == 5)
+	 {
+		*(p++)  = 0x05;//功能码错误
+		len = len + 1;
+	 }*/
+	  calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
+	   *(p++) =(u8)(calCRC>>8);
+	   *(p++) =(u8)(calCRC);
+	  calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
+	   *(p++) =(u8)(calCRC>>8);
+	   *(p++) =(u8)(calCRC);
+	   unsigned char *fameStatus;
+	   fameStatus = modbusFrameStatus();
+    if(*fameStatus== 2)//数据来自串口
+    {
+       *fameStatus = 0;
+		RS485_SendData(p, len+4);
+
+	}
+	else
+	{
+    	while(loraSend(loraNo,p,len+4))
+		;
+
+	}
+
+}
+
 void WrRead_equipment(LORAHW_stru *loraNo)
 {
 	unsigned int len;

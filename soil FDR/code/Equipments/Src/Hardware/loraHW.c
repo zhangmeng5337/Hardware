@@ -30,7 +30,6 @@ void ParamsSave(void)
 	 flash_write(addr,q->value,2048);
 	 addr = addr +2048;
 	 loraset(4,p,9);
-    
    }
    else
    	{

@@ -145,6 +145,8 @@ void equipmentProcess(void);
 void wirelessTimoutStart(unsigned char p);
 Proctocol_C_stru *protocolCstru(void);
 unsigned char *ackmodeStatus(void);
+void SendLoraData(LORAHW_stru *loraNo,unsigned char *p );
+void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode);
 
 
 #endif
