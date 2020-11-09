@@ -5,6 +5,8 @@
 extern loraUart_stru loraUart;
 extern LORAHW_stru lorahw;;
 extern uint32_t last_addr;
+extern LORA_Params_stru loraParams;
+
 void ParamsSave(void)
 {
    unsigned char *p;
@@ -43,6 +45,17 @@ void ParamsSave(void)
 		 last_addr =last_addr+ tmp;
 
 		 flash_read(addr,q->value,2048);	
+
+		 flash_write(addr++,p,1);
+		 flash_write(addr++,&(q->bindCount),1);
+		 
+		 tmp = (u8)(last_addr>>8);
+		 flash_write(addr++,&(tmp),1);	
+		 tmp = (u8)(last_addr);
+		 flash_write(addr++,&(tmp),1);
+		 
+		 flash_write(addr,q->value,2048);
+		 addr = addr +2048;
 		 loraset(4,p,9);	
    }
 }
@@ -304,7 +317,7 @@ unsigned char  loraGpioset(LORAHW_stru *p)
 		return 1;		
 	}
 }
-extern LORA_Params_stru loraParams;
+
 
 void loraset(unsigned char num,unsigned char *p,unsigned char len)
 {
@@ -460,12 +473,16 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
 unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 {
 	UART_HandleTypeDef huart2,huart6;
-	
+	unsigned char *q;
+	q[0] =  loraParams.addrH;
+	q[1] =  loraParams.addrL;	
+	q[2] =  loraParams.reg2;
+	memcpy(&q[3],buffer,len);
 	if(p->loraNo == 0)
 	{
 		if(loraGpioset(p) == 0)
 		{
-			HAL_UART_Transmit(&huart2,buffer,len,1000);
+			HAL_UART_Transmit(&huart2,q,len+3,1000);
 			return 0;
 		}
 		else 
@@ -475,7 +492,7 @@ unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 	{
 		if(loraGpioset(p) == 0)
 		{
-			HAL_UART_Transmit(&huart6,buffer,len,1000);
+			HAL_UART_Transmit(&huart6,q,len+3,1000);
 			return 0;
 		}
 		else 

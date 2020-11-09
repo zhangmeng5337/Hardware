@@ -82,9 +82,9 @@ void Nbiot_RxCpltCallback()
 		}
 	}
 }
-unsigned char NbiotFrameStatus(void)
+unsigned char *NbiotFrameStatus(void)
 {
-	return nbiotUart.receivedFlag;
+	return &(nbiotUart.receivedFlag);
 }
 unsigned char *NbiotFrameBuffer(void)
 {

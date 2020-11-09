@@ -6,7 +6,7 @@
 #include "rtc.h"
 #include "nbiotHAL.h"
 #include "modbus.h"
-
+#include "nbiotHW.h"
 extern unsigned char MODE_STAUS;
 
 void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode);
@@ -393,7 +393,7 @@ void SendLoraData(LORAHW_stru *loraNo,unsigned char *q)
 
 	}
 	else
-	{
+	{ 
     	while(loraSend(loraNo,p,len+4))
 		;
 
@@ -469,6 +469,15 @@ unsigned char autoReportMode()
     unsigned char *tmp;
 	tmp = ReadRegister(0xf00e);
 	return tmp[1];
+}
+void SnedToNbiot(unsigned char *p)
+{
+    unsigned char len;
+	unsigned char *q;
+	q[0] = 
+	len = ((u16)protocolC.payloadLenH)<<8+protocolC.payloadLenL;
+	Nbiot_SendData(p,len);
+
 }
 loraModuleTimeout_stru loraModuleTimeout;
 void wirelessTimoutStart(unsigned char p)

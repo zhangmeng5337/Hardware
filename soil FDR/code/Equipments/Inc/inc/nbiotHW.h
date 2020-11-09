@@ -15,9 +15,9 @@ void NbiotUart_SendStr(u8 *str);
 void nbiot_HardwareInit(unsigned char flag);
 void NbiotUartInit(void);
 void Nbiot_RxCpltCallback(void);
-unsigned char NbiotFrameStatus(void);
 unsigned char *NbiotFrameBuffer(void);
 void Nbiot_SendData(u8 *buff,u8 len);
+unsigned char *NbiotFrameStatus(void);
 
 #endif
 
