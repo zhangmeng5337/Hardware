@@ -56,6 +56,6 @@ unsigned char array_comp(unsigned char *p1,unsigned char *p2,unsigned char len);
 REG_val_stru *getRegAddr(void);
 void register_init(void);
 unsigned char equip_bind_analy(unsigned char *p);
-
+void loratestInit(void);
 #endif
 

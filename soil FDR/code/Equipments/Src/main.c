@@ -28,7 +28,7 @@
 #include "nbiotHW.h"
 #include "sensor.h"
 #include "rtc.h"
-
+#include "register.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -81,7 +81,8 @@ static void MX_USART6_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+		  extern loraUart_stru loraUart;
+		  extern  LORAHW_stru lorahw;
 /* USER CODE END 0 */
 
 /**
@@ -125,8 +126,19 @@ int main(void)
    RTC_Init();
    LoraUartInit();
 	ParamsInit();
+	loratestInit();
+  loraModuleInit();
+	if(LORA_TX == 0)
+	{
 
-
+			while(loraUart.receivedFlag1 == 0)
+				;
+		 {
+			loraUart.receivedFlag1 = 0;
+			 lorahw.mode =WorMOde;
+			loraGpioset(&lorahw);
+		 }
+	}
 
 
    
@@ -140,9 +152,21 @@ int main(void)
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
 		unsigned char buffer[12]={0xc0,00,9,00,00,0,0x64,0,0,0x50,0x64,0x46},i;
-	
-//	LoraTest();
+	if(LORA_TX == 1)
+	{
+		LoraTest();	
+		HAL_Delay(3000);
+	} 
+	else 
+	{
+			if(loraUart.receivedFlag1 ==1)
+			{
+				loraUart.receivedFlag1 = 0;
+				 LoraTest();
+			}
+	}
   i++;
+		
 	//EquipGateway_Process();
   }
   /* USER CODE END 3 */

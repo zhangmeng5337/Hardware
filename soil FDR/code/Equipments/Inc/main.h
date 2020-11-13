@@ -113,7 +113,7 @@ void Error_Handler(void);
 #define ON   1
 #define OFF  0
 void MX_RTC_Init(void);
-
+#define LORA_TX	0
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

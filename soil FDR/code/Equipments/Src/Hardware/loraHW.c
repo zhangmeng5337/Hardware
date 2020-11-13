@@ -100,8 +100,6 @@ void Lora_RxCpltCallback(unsigned char uartNo)
 			HAL_UART_DMAStop(&huart2);
 			HAL_UART_DMAResume(&huart2);
 			HAL_UART_Receive_DMA(&huart2,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
-			lorahw.mode =TransmitMode;
-			loraGpioset(&lorahw);
 		}
 	}
 	else if(uartNo == 6)

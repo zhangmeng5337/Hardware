@@ -319,5 +319,25 @@ REG_val_stru *getRegAddr()
 {
 	return &register_map;
 }
+void loratestInit()
+{
+	unsigned char *q;
+	  if(LORA_TX == 0)
+		{
+			WriteOneRegister(0xf00a,2);//本地节点地址低2字节LORA物理地址
+			q = ReadRegister(0xf00a);
+			WriteOneRegister(0xf00b,((u16)(q[0])<<8)+q[1]);//LORA本地地址
+			WriteOneRegister(0x1202,1);//目标地址
+			WriteOneRegister(0x1204,1);//信道		
+		}
+		else
+		{
+			WriteOneRegister(0xf00a,1);//本地节点地址低2字节LORA物理地址
+			q = ReadRegister(0xf00a);
+			WriteOneRegister(0xf00b,((u16)(q[0])<<8)+q[1]);//LORA本地地址
+			WriteOneRegister(0x1202,2);//目标地址
+			WriteOneRegister(0x1204,1);//信道			
+		}
 
+}
 
