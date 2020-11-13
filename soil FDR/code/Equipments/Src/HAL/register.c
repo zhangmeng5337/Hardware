@@ -25,34 +25,32 @@ unsigned char array_comp(unsigned char *p1,unsigned char *p2,unsigned char len)
 
 unsigned int RegisterAddrCal(unsigned int p,unsigned char num)
 {
-	unsigned int x1,x12,x4,x44,xe,xf;
-	unsigned char flag;
+	static uint32_t x1,x12,x4,x44,xe,xf;
+	static unsigned char flag;
 	if(flag == 0)
 	{
 		flag = 1;
 		x1 = x1_ADDR_START;
-		x12 = x12_ADDR_START+x1_ADDR_START-x1_ADDR_END;
-		x4 = x4_ADDR_START+x1_ADDR_START-x1_ADDR_END-x12_ADDR_SIZE;
-		x44 = x44_ADDR_START-x1_ADDR_SIZE-x12_ADDR_SIZE+x4_ADDR_SIZE;
-		xe = xE_ADDR_START-x1_ADDR_SIZE-x12_ADDR_SIZE-x4_ADDR_SIZE+x44_ADDR_SIZE;
-		xf = xF_ADDR_START+x1_ADDR_START+x12_ADDR_START+x4_ADDR_START-x1_ADDR_END-x12_ADDR_END;
-		xf = xf-x4_ADDR_END-x44_ADDR_SIZE-xE_ADDR_SIZE;
-
+		x12 = x1_ADDR_SIZE;
+		x4 = x1_ADDR_SIZE+x12_ADDR_SIZE;
+		x44 = x1_ADDR_SIZE+x12_ADDR_SIZE+x4_ADDR_SIZE;
+		xe = x1_ADDR_SIZE+x12_ADDR_SIZE+x4_ADDR_SIZE+x44_ADDR_SIZE;
+		xf = x1_ADDR_SIZE+x12_ADDR_SIZE+x4_ADDR_SIZE+x44_ADDR_SIZE+xE_ADDR_SIZE;		
 	}
 	switch(num)
 	{
 		case 1:return p-x1;
-		case 2:return p-x12;		
-		case 3:return p-x4;
-		case 4:return p-x44;
-		case 5:return p-xe;
-		case 6:return p-xf;
+		case 2:return p+x12-x12_ADDR_START;		
+		case 3:return p+x4-x4_ADDR_START;
+		case 4:return p+x44-x44_ADDR_START;
+		case 5:return p+xe-xE_ADDR_START;
+		case 6:return p+xf-xF_ADDR_START;
 		case 7:return p+x1;
-		case 8:return p+x12;	
-		case 9:return p+x4;
-		case 10:return p+x44;
-		case 11:return p+xe;
-		case 12:return p+xf;		
+		case 8:return p+x12_ADDR_START-x12;	
+		case 9:return p+x4_ADDR_START-x4;
+		case 10:return p+x44_ADDR_START-x44;
+		case 11:return p+xE_ADDR_START-xe;
+		case 12:return p+xF_ADDR_START-xf;		
 	}
 
 }
@@ -88,7 +86,7 @@ unsigned char *ReadRegister(unsigned int p)
 	else
 		tmp = 0xffff;
 	if(tmp != 0xffff)
-		return &(register_map.value[tmp]);
+		return &(register_map.value[2*tmp]);
 	else
 		return NULL;
 
@@ -203,12 +201,12 @@ void WriteOneRegister(unsigned int p,unsigned int regVal)
 	{   
 
 		
-		register_map.value[tmp] = (u8)(regVal>>8);	 
-		register_map.value[tmp+1] = (u8)(regVal);			
+		register_map.value[tmp*2] = (u8)(regVal>>8);	 
+		register_map.value[tmp*2+1] = (u8)(regVal);			
 	}
 
 }
-unsigned int uchar2uint(unsigned char *p)
+unsigned int uchar2uint(unsigned char *p)//0   0 1   1  2 3   2  4 5
 {
     unsigned int tmp;
 	tmp = ((u16)(p[0])<<8)+p[1];
@@ -280,36 +278,42 @@ unsigned char equip_bind_analy(unsigned char *p)
 
 void register_init()
 {
-    
-	WriteOneRegister(0xf001,0x0001);//01H：非密集监测周期 0H：密集监测周期
-	WriteOneRegister(0xf002,0);//10-1000min设置	
-	WriteOneRegister(0xf003,0);//10-120min设置
-	WriteOneRegister(0xf004,0);//0-60s设置;设置无线模组激活超时时间
-	WriteOneRegister(0xf005,0);//无线模组功耗设置
-//								01H：10%最大功率设置
-//								02H：20%最大功率设置
-//								03H：30%最大功率设置
-//								04H：40%最大功率设置
-//								05H：50%最大功率设置
-//								06H：60%最大功率设置
-//								07H：70%最大功率设置
-//								08H：80%最大功率设置
-//								09H：90%最大功率设置
-//								10H：满功率输出
-    WriteOneRegister(0xf006,0);//0-100 对应 0%-100%电量
-	WriteOneRegister(0xf007,0);//节点地址高2字节
-	WriteOneRegister(0xf008,0);//
-	WriteOneRegister(0xf009,0);//
-	WriteOneRegister(0xf00a,0);//本地节点地址低2字节LORA物理地址
-	WriteOneRegister(0xf00b,0);//LORA本地物理地址,与0xf00a相同
-	WriteOneRegister(0xf00c,0);//农业采集控制终端与传感器通信的Modbus波特率
-	                          //波特率(2400/4800/9600)0x00-2400;0x01-4800;
-	                          //0x02-9600;0x03-115200
+    unsigned char *q;
+		WriteOneRegister(0xf001,0x0001);//01H：非密集监测周期 0H：密集监测周期
+		WriteOneRegister(0xf002,0);//10-1000min设置	
+		WriteOneRegister(0xf003,0);//10-120min设置
+		WriteOneRegister(0xf004,0);//0-60s设置;设置无线模组激活超时时间
+		WriteOneRegister(0xf005,0);//无线模组功耗设置
+		//								01H：10%最大功率设置
+		//								02H：20%最大功率设置
+		//								03H：30%最大功率设置
+		//								04H：40%最大功率设置
+		//								05H：50%最大功率设置
+		//								06H：60%最大功率设置
+		//								07H：70%最大功率设置
+		//								08H：80%最大功率设置
+		//								09H：90%最大功率设置
+		//								10H：满功率输出
+		WriteOneRegister(0xf006,0);//0-100 对应 0%-100%电量
+		WriteOneRegister(0xf007,0);//节点地址高2字节
+		WriteOneRegister(0xf008,0);//
+		WriteOneRegister(0xf009,0);//
+		WriteOneRegister(0xf00a,2);//本地节点地址低2字节LORA物理地址
+		q = ReadRegister(0xf00a);
+		WriteOneRegister(0xf00b,((u16)(q[0])<<8)+q[1]);//LORA本地物理地址,与0xf00a相同
+		WriteOneRegister(0xf00c,0);//农业采集控制终端与传感器通信的Modbus波特率
+		//波特率(2400/4800/9600)0x00-2400;0x01-4800;
+		//0x02-9600;0x03-115200
 
-    WriteOneRegister(0xf00d,0);//农业采集控制终端与电脑连接，配置寄存器的Modbus波特率
-							//波特率(2400/4800/9600)0x00-2400;0x01-4800;
-							//0x02-9600;0x03-115200
-    WriteOneRegister(0xf00e,0);//主动上报
+		WriteOneRegister(0xf00d,0);//农业采集控制终端与电脑连接，配置寄存器的Modbus波特率
+		//波特率(2400/4800/9600)0x00-2400;0x01-4800;
+		//0x02-9600;0x03-115200
+		WriteOneRegister(0xf00e,0);//主动上报
+		WriteOneRegister(0x1001,55);//主动上报
+		WriteOneRegister(0x1006,57);//主动上报
+		WriteOneRegister(0x1202,2);//主动上报
+		WriteOneRegister(0x1204,1);//主动上报
+		//WriteOneRegister(0x1006,57);//主动上报
 }
 REG_val_stru *getRegAddr()
 {

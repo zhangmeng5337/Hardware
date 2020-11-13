@@ -59,6 +59,7 @@ void SIMCOM_ReConnect()
   
 }
 #define debug  1
+static uint32_t count = 0;
 void set_NetStatus(unsigned char flag)
 {
   NET_STAUS = flag;
@@ -84,32 +85,32 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_POWER_ON://SIMCOM_READY_YES:
     {
-      if (sendCommand("AT\r\n", "OK\r\n", 1500, 1) == Success)
+      if (sendCommand("AT\r\n", "OK\r\n", 5000, 1) == Success)
         NET_STAUS = SIMCOM_READY_YES;
       else
       {
         NET_STAUS = SIMCOM_NET_NOT;
-        SIMCOM_TimeOut_Count = SIMCOM_TIME_OUT;
+        
       }
         
     }
     break;
   case SIMCOM_READY_YES:
     {
-      if (sendCommand("ATE0\r\n", "OK\r\n", 500, 1) == Success)
+      if (sendCommand("ATE0\r\n", "OK\r\n", 5000, 1) == Success)
         NET_STAUS = SIMCOM_CLOSE_ECHO;  
     }
     break;
     
   case SIMCOM_CLOSE_ECHO:
     {
-      if (sendCommand("AT+CPIN?\r\n", "READY", 500, 1) == Success)
+      if (sendCommand("AT+CPIN?\r\n", "READY", 5000, 1) == Success)
         NET_STAUS = SIMCOM_CARD_DET; 
     }
     break;
   case SIMCOM_CARD_DET:
     {
-      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 1300, 1) == Success)
+      if (sendCommand("AT+CGATT?\r\n", "+CGATT: 1", 1300000, 1) == Success)
       {
         
         NET_STAUS=SIMCOM_GPRS_READY;
@@ -119,29 +120,29 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_GPRS_READY:
     {
-      if (sendCommand("AT+CIPSHUT\r\n", "OK", 300, 1) == Success)
+      if (sendCommand("AT+CIPSHUT\r\n", "OK", 3000, 1) == Success)
         NET_STAUS = SIMCOM_NET_CLOSE; 
     }
     break;
   case SIMCOM_NET_CLOSE:
     {
-      if (sendCommand("AT+CIPMODE=1\r\n", "OK", 300, 1) == Success)
+      if (sendCommand("AT+CIPMODE=1\r\n", "OK", 3000, 1) == Success)
         NET_STAUS = SIMCOM_NET_PASS_THROUGH; 
       SIMCOM_TimeOut_Count = 0;
     }
     break;
   case SIMCOM_NET_PASS_THROUGH:
     {
-      if (sendCommand((char*)Establish_TCP_Connection, "OK", 50000, 1) == Success)
+      if (sendCommand((char*)Establish_TCP_Connection, "OK", 500000, 1) == Success)
       {
 
         NET_STAUS=SIMCOM_NET_OK;
-     
+     NET_STAUS=SIMCOM_Connect_Platform;
       } 
       
     }
     break;
-  /*case SIMCOM_Connect_Platform:
+  case SIMCOM_Connect_Platform:
     {
       static unsigned char tx_count;
       
@@ -160,7 +161,7 @@ void SIMCOM_Register_Network()
         
       }
     }
-    break;*/
+    break;
     
     
   case SIMCOM_NET_OK:

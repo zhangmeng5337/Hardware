@@ -116,7 +116,7 @@ FLASH_ProcessTypeDef pFlash;
 static void   FLASH_Program_DoubleWord(uint32_t Address, uint64_t Data);
 static void   FLASH_Program_Word(uint32_t Address, uint32_t Data);
 static void   FLASH_Program_HalfWord(uint32_t Address, uint16_t Data);
-//static void   FLASH_Program_Byte(uint32_t Address, uint8_t Data);
+static void   FLASH_Program_Byte(uint32_t Address, uint8_t Data);
 static void   FLASH_SetErrorCode(void);
 
 HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout);

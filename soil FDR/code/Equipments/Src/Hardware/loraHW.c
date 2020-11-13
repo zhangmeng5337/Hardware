@@ -6,22 +6,25 @@ extern loraUart_stru loraUart;
 extern LORAHW_stru lorahw;;
 extern uint32_t last_addr;
 extern LORA_Params_stru loraParams;
-
+extern UART_HandleTypeDef huart2,huart6;
+extern DMA_HandleTypeDef hdma_usart2_rx;
 void ParamsSave(void)
 {
-   unsigned char *p;
+   unsigned char p;
    unsigned char tmp;
    REG_val_stru *q;
    uint32_t addr;
    addr = 0;
-   flash_read(0,p,1);
-   if(p[0]!=0x5a)
+   flash_read(0,&p,1);
+   if(p!=0x5a)
    {
-     p[0] = 0x5a;
-	 register_init();
+	
+     p = 0x5a;
+	 
 	 q =  getRegAddr();
 	 loraModuleInit();
-	 flash_write(addr++,p,1);
+		 flash_init();
+	 flash_write(addr++,&p,1);
 	 flash_write(addr++,&(q->bindCount),1);
 	 
 	 tmp = (u8)(last_addr>>8);
@@ -31,11 +34,12 @@ void ParamsSave(void)
 	 
 	 flash_write(addr,q->value,2048);
 	 addr = addr +2048;
-	 loraset(4,p,9);
+	// loraset(4,p,9);
    }
    else
    	{
-	     p[0] = 0x5a;
+   	    
+	     p = 0x5a;
 		 q =  getRegAddr();
 		 flash_read(addr++,&(q->bindCount),1);	
 		 
@@ -46,7 +50,7 @@ void ParamsSave(void)
 
 		 flash_read(addr,q->value,2048);	
 
-		 flash_write(addr++,p,1);
+		 flash_write(addr++,&p,1);
 		 flash_write(addr++,&(q->bindCount),1);
 		 
 		 tmp = (u8)(last_addr>>8);
@@ -56,27 +60,34 @@ void ParamsSave(void)
 		 
 		 flash_write(addr,q->value,2048);
 		 addr = addr +2048;
-		 loraset(4,p,9);	
+		 //loraset(4,&p,9);	
    }
+		register_init();
+		loraModuleInit();
 }
 
 
 void LoraUartInit()
 {
-	UART_HandleTypeDef huart2;
+	
 	__HAL_UART_CLEAR_IDLEFLAG(&huart2);
 	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart2);
 	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_Receive_DMA(&huart2,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
+	
+//		__HAL_UART_CLEAR_IDLEFLAG(&huart6);
+//	//__HAL_UART_DISABLE_IT(&huart6, UART_IT_IDLE);	//使能空闲中断
+//	//HAL_UART_DMAStop(&huart6);
+//	__HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE);	//使能空闲中断
+//	HAL_UART_Receive_DMA(&huart6,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
 }
 void Lora_RxCpltCallback(unsigned char uartNo)
 {
     unsigned char temp;
 	if(uartNo == 2)
 	{
-		UART_HandleTypeDef huart2;
-		DMA_HandleTypeDef hdma_usart2_rx;
+
 
 		temp=__HAL_UART_GET_FLAG(&huart2,UART_FLAG_IDLE);
 		if((temp!=RESET))
@@ -87,7 +98,10 @@ void Lora_RxCpltCallback(unsigned char uartNo)
 
 			loraUart.receivedFlag1 = 1;
 			HAL_UART_DMAStop(&huart2);
+			HAL_UART_DMAResume(&huart2);
 			HAL_UART_Receive_DMA(&huart2,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
+			lorahw.mode =TransmitMode;
+			loraGpioset(&lorahw);
 		}
 	}
 	else if(uartNo == 6)
@@ -279,6 +293,7 @@ unsigned char  loraGpioset(LORAHW_stru *p)
 							break;
       				
 		 }
+			
 		 return 0;
 		}
     else  
@@ -472,31 +487,37 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
 *********************************************************/
 unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 {
-	UART_HandleTypeDef huart2,huart6;
-	unsigned char *q;
-	q[0] =  loraParams.addrH;
-	q[1] =  loraParams.addrL;	
-	q[2] =  loraParams.reg2;
-	memcpy(&q[3],buffer,len);
+	
+	//unsigned char *q;
+
+	//memcpy(q,buffer,len);
 	if(p->loraNo == 0)
 	{
 		if(loraGpioset(p) == 0)
 		{
-			HAL_UART_Transmit(&huart2,q,len+3,1000);
+			HAL_Delay(50);
+			HAL_UART_Transmit(&huart2,buffer,len,1000);
+			
 			return 0;
 		}
 		else 
+		{
 			return 1;
+		}
 	}
 	else
 	{
 		if(loraGpioset(p) == 0)
 		{
-			HAL_UART_Transmit(&huart6,q,len+3,1000);
+			HAL_Delay(50);
+			HAL_UART_Transmit(&huart6,buffer,len,1000);
 			return 0;
 		}
 		else 
+		{
 			return 1;
+		}
+			
 		
 	}
 }
@@ -504,31 +525,33 @@ unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 
 unsigned char *LoraPayloadToArray()
 {
-	unsigned char *q;
-	*q++ = loraParams.addrH;
-	*q++ = loraParams.addrL;
-	*q++ = loraParams.netid;
-	*q++ = loraParams.reg0;
-	*q++ = loraParams.reg1;
-	*q++ = loraParams.reg2;
-	*q++ = loraParams.reg3;
-	*q++ = loraParams.cryptH;
-	*q++ = loraParams.cryptL;
+	 unsigned char q[9];
+	unsigned char i;
+	i=0;
+	q[i++] = loraParams.addrH;
+	q[i++] = loraParams.addrL;
+	q[i++] = loraParams.netid;
+	q[i++] = loraParams.reg0;
+	q[i++] = loraParams.reg1;
+	q[i++] = loraParams.reg2;
+	q[i++] = loraParams.reg3;
+	q[i++] = loraParams.cryptH;
+	q[i++] = loraParams.cryptL;
 	return q;
 }
 void LoraSetPayloadPackTx(unsigned cmd,unsigned char startaddr,unsigned char len)
 { 
-    unsigned char *p;
+    unsigned char p[255];
 	unsigned char *q;
 	unsigned char tmp;
 	q = LoraPayloadToArray();
 
-	*p++ = cmd;
-	*p++ = startaddr;
-	*p++ = len;	
+	p[0] = cmd;
+	p[1] = startaddr;
+	p[2] = len;	
 	if(cmd == 0xc0)
 	{
-		memcpy(p,q+startaddr,len);
+		memcpy(&p[3],q+startaddr,len);
         tmp = len +3;
 	}
 	else
@@ -539,21 +562,23 @@ void LoraSetPayloadPackTx(unsigned cmd,unsigned char startaddr,unsigned char len
 	 
 	 LORAHW_stru lorahw;
 	 lorahw.loraNo = 0;
+	 lorahw.mode = ConfigMOde;
 	 loraSend(&lorahw,p,tmp);
 }
 void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len)
 { 
-    unsigned char *p;
+    unsigned char p[512];
 	unsigned char *q;  
-	 q = ReadRegister(0x1202);
-	*p++ = q[0];
-	*p++ = q[1];
-	 q = ReadRegister(0x1204);
-	*p++ = q[1];
-	 memcpy(p,buffer,len);
+	 q = ReadRegister(0x1202);//目标lora地址
+	 
+	p[0] = q[0];
+	p[1] = q[1];
+	 q = ReadRegister(0x1204);//信道
+	p[2] = q[1];
+	 memcpy(p+3,buffer,len);
 	 LORAHW_stru lorahw;
 	 lorahw.loraNo = 0;
-	 lorahw.mode = 0;	 
+	 lorahw.mode = WorMOde;	 
 	 loraSend(&lorahw,p,len+3);
 }
 
@@ -583,8 +608,8 @@ void loraModuleInit()
 	
 	loraParams.reg1 = loraParams.reg1 &0xfc;
 	loraParams.reg1 = loraParams.reg1&0x00;//发射功率，bit1,0
-	
-	loraParams.reg2 = 0x00;//信道
+	p = ReadRegister(0x1204);
+	loraParams.reg2 = p[1];//信道
 	
 	loraParams.reg3 = loraParams.reg3&0x7f;//rssi,bit7
 	loraParams.reg3 = loraParams.reg3|00;//rssi,bit7
@@ -608,7 +633,7 @@ void loraModuleInit()
 	loraParams.cryptL = 0x46;//秘钥低字节
 
 
-	//LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
+	LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
 	//LoraSetPayloadPackTx(0xc1,0,9);//度lora模块参数
 	lorahw.mode = 2;
 
@@ -616,12 +641,12 @@ void loraModuleInit()
 }
 void LoraTest()
 {
-	loraModuleInit();
-	LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
-	unsigned char *p,i;
-	for(i=0;i<240;i++)
+	//loraModuleInit();
+	//LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
+	unsigned char p[240],i;
+	for(i=0;i<210;i++)
 		p[i] = i+1;
-	LoraSendPayloadPackTx(p,240);
+	LoraSendPayloadPackTx(p,210);
 }
 
 

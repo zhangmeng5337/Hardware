@@ -261,9 +261,9 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
     while(GPIO_ReadInputDataBit( PORT_KEY, PIN_KEY )==0)
     {
       count2++  ;
-      if( count2>=500000)
+      if( count2>=350000)
       {
-        if(GPIO_ReadInputDataBit( PORT_KEY, PIN_KEY )==1)
+        //if(GPIO_ReadInputDataBit( PORT_KEY, PIN_KEY )==1)
         {
           //count2=0;
           ExeIntFlag = 2;

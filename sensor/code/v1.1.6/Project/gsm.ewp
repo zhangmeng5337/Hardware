@@ -17,7 +17,7 @@
         <debug>1</debug>
         <option>
           <name>GenDeviceSelectMenu</name>
-          <state>UnspecifiedSTM8	STM8 - Unspecified</state>
+          <state>STM8L152C6	STM8L152C6</state>
         </option>
         <option>
           <name>GenCodeModel</name>
@@ -608,7 +608,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\config\lnkstm8.icf</state>
+          <state>$TOOLKIT_DIR$\config\lnkstm8l151c6.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>

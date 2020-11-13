@@ -59,7 +59,7 @@ void GPIO_Initial(void)
   
   GPIO_Init( PORT_SENSOR_EN, PIN_SENSOR_EN, GPIO_Mode_Out_PP_Low_Fast ); 
   GPIO_Init(PORT_KEY,PIN_KEY,GPIO_Mode_In_FL_IT);
-  EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Rising_Falling);
+  EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Falling);
   
   
 }
@@ -102,13 +102,13 @@ void GSM_HardwareInit(unsigned char flag)
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
     //GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-    GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
+    //GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
     
     GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );
-    delay_ms(1000);
+    delay_ms(2000);
     GPIO_ResetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );		
     //GPIO_SetBits( PORT_PWRKEY_IN, PIN_PWRKEY_IN );                
-    delay_ms(2000);
+    delay_ms(100);
     GPIO_WriteBit(PORT_GNSS_PORT, PIN_GNSS, SET);
     // GPIO_SetBits(GPIOD, GPIO_Pin_2);
     
@@ -206,7 +206,7 @@ void EnterStopMode(void)
   
   GPIO_Init( PORT_LED, PIN_LED, GPIO_Mode_Out_PP_High_Fast );
   GPIO_Init( PORT_KEY, PIN_KEY, GPIO_Mode_In_FL_IT ); 
-  EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Rising_Falling);
+  EXTI_SetPinSensitivity(EXTI_Pin_6, EXTI_Trigger_Falling);
   //GPIO_Init( PORT_POWER_ON, PIN_POWER_ON, GPIO_Mode_Out_PP_High_Fast );     
  // GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_Out_PP_Low_Fast ); 
   //GPIO_Init( PORT_PWRKEY_IN, PIN_PWRKEY_IN, GPIO_Mode_In_FL_No_IT ); 

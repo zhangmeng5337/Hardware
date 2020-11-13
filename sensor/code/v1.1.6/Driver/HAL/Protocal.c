@@ -23,7 +23,7 @@ void reapte_time()
 { 
   RtcWakeUp = 1;
   rtctime=100;//周期检测时间
-  SETTING_COUNT=50; 
+  SETTING_COUNT=5; 
   wakeupcount = SETTING_COUNT;//定时发送数据时间，wakeupcount=n*rtctime;
 }
 void module_prams_init()
@@ -40,10 +40,10 @@ void module_prams_init()
   Data_usr.deepth_calibration = SENSOR_FACTOR;
   Data_usr.Warn_Thres =warn_setting;
   
-    if(motor_ctrl(CLOSE)==0)
-  		Data_usr.gate_status = 0xa6;
-	else
-  		Data_usr.gate_status = 0x6a;		
+  if(motor_ctrl(CLOSE)==0)
+    Data_usr.gate_status = 0xa6;
+  else
+    Data_usr.gate_status = 0x6a;		
   if(FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS)==0x5a)
   {
     Data_usr.Warn_Thres = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+1)+
@@ -52,8 +52,8 @@ void module_prams_init()
     if(Data_usr.calibration_done ==1)
     {
       Data_usr.voltage_calibration_value = FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+4)+
-      FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+5)/10.0+
-      FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+6)/100.0;                 
+        FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+5)/10.0+
+          FLASH_ReadByte(FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS+6)/100.0;                 
     }
     
     
@@ -111,7 +111,7 @@ void OilCalibration()
   
   // for(i=0;i<samplecount;i++)
   {
-    adc_tmp = (adcGet(ADC_SENSOR_CHANNEL,500));
+    adc_tmp = (adcGet(ADC_SENSOR_CHANNEL,100));
     // adc_sum = adc_sum + adc_tmp;
   }
   // adc_sum = adc_sum /samplecount;
@@ -147,13 +147,13 @@ unsigned char p[64];
 void sensor_adc()
 {
   float  adc_tmp,adc_tmp2,adc_tmp3;
-
+  
   adc_tmp = (adcGet(ADC_BAT_CHANNEL,50));
   adc_tmp = adc_tmp*2.0;
   Data_usr.vbatf = adc_tmp;
   Data_usr.vbat[0] = (unsigned char)(adc_tmp/1000/1000);
   Data_usr.vbat[1] =((unsigned char)(adc_tmp/1000/100)%10);
-   
+  
   
   if(Data_usr.calibration_done ==0||ExeIntFlag==2)
   {
@@ -164,7 +164,7 @@ void sensor_adc()
   {
     adc_tmp2 = (adcGet(ADC_SENSOR_CHANNEL,50));
     adc_tmp2 = adc_tmp2/ VOLTAGE_FACTOR;
-  
+    
   }
   
   adc_tmp2 = adc_tmp2-Data_usr.voltage_calibration_value; 
@@ -293,7 +293,7 @@ void data_tansmmit()
   i=0;
   while(len--)
     UART1_SendByte(p[i++]);  
-  delay_ms(3000);
+  delay_ms(1000);
 }
 
 
@@ -306,44 +306,54 @@ process:
   {
     SIMCOM_Register_Network();
   }
-  
+  else
+  {
+    RtcWakeUp==0;
+    if(lcd_flag==0)
+      goto stop;
+  }
   if(lcd_flag==1||Get_Network_status()==SIMCOM_NET_OK)//采集数据
   {
-    sensor_adc();  
-	if(lcd_flag==1)//屏幕唤醒标志位
-	{
-		if(wakeupcount>=SETTING_COUNT)
-		{
-			if(Get_Network_status()==SIMCOM_NET_OK)
-				lcd_process(3);
-			else
-				lcd_process(4);    
-		}
-		else
-		{
-			lcd_process(5); 
-		}
-
-		lcd_process(1);  // 
-		if(RtcWakeUp==0)
-		{
-			delay_ms(1000);
-			goto stop;
-		}
-
-	}
-	else
-	{
-		lcd_process(0);
-		if(RtcWakeUp==0)
-		{
-			delay_ms(1000);
-			goto stop;
-		}
-	}
+    sensor_adc();
   }
+  if(lcd_flag==1)//采集数据
+  {
+    //sensor_adc();  
+    if(lcd_flag==1)//屏幕唤醒标志位
+    {
+      if(wakeupcount>=SETTING_COUNT)
+      {
+        if(Get_Network_status()==SIMCOM_NET_OK)
+          lcd_process(3);
+        else
+          lcd_process(4);    
+      }
+      else
+      {
+        lcd_process(5); 
+      }
+      
+      lcd_process(1);  // 
+      if(RtcWakeUp==0)
+      {
+        delay_ms(5000);
+        goto stop;
+      }
+      
+    }
+    else
+    {
+      lcd_process(0);
+      if(RtcWakeUp==0)
+      {
+        delay_ms(5000);
+        goto stop;
+      }
+    }
+  }
+  else
+    lcd_process(0);
   
-
   
   
   if(RtcWakeUp==1||Data_usr.status == 1)
@@ -355,12 +365,12 @@ process:
       if(timeout == 0||Data_usr.status == 1)
         data_tansmmit(); 
       Data_usr.status = 0;
-      if(timeout<350000)
+      if(timeout<10)
       {
         if(ExeIntFlag)
-		{
-		   timeout = 0;
-			goto process;
+        {
+          timeout = 0;
+          goto process2;
         }
         if(uart1.isGetData == 1)
         {
@@ -370,13 +380,17 @@ process:
             uart1.isGetData =0;
             if(uart1.Uart_Buffer[6] == 0x6a)//开阀门
             {
-               if(motor_ctrl(OPEN)==0)
-	      		Data_usr.gate_status=0x6a;
-			   	
+              if(motor_ctrl(OPEN)==0)
+                Data_usr.gate_status=0x6a;
+              else
+                Data_usr.gate_status=0x6b;                
+              
             }
             else if(uart1.Uart_Buffer[6] == 0xa6)//关阀门
-				if(motor_ctrl(CLOSE)==0)
-            		Data_usr.gate_status = 0xa6;
+              if(motor_ctrl(CLOSE)==0)
+                Data_usr.gate_status = 0xa6;
+              else
+                Data_usr.gate_status=0x6b; 
           }
         }
         timeout++;
@@ -395,8 +409,8 @@ process:
     RTC_Config(rtctime,ON);//10:9s 
     enableInterrupts();
     halt();	//enter stop mode
-
-	
+    
+    
     disableInterrupts(); 
     RTC_Config(1,OFF);//10:9s
     HardwareInit();
@@ -416,11 +430,13 @@ process:
     else//wake up by rtc
     {
       wakeup_flag = 1;
-      wakeupcount++;  
+      wakeupcount++;
+      
       if(wakeupcount>=SETTING_COUNT)//定时发送数据
       {
-        GSMInit();
-       
+        set_NetStatus(SIMCOM_POWER_ON);
+        GSMInit(); 
+        delay_ms(1500);
       }
       else //周期检测
       {
@@ -428,8 +444,10 @@ process:
         sensor_adc(); 
         if(Data_usr.status == 1)
         {
+          set_NetStatus(SIMCOM_POWER_ON);
           GSMInit();
           wakeupcount=SETTING_COUNT;
+          delay_ms(1500);
         }
         else
         {
@@ -441,14 +459,16 @@ process:
     
     
     }
+
     
   }
-  if(ExeIntFlag)//wake up by key
-  {
-    ExeIntFlag = 0;
-    if(lcd_flag==1)
-      lcd_flag = 0;
-    else 
-      lcd_flag=1;
-  }
+process2: if(ExeIntFlag)//wake up by key
+{
+  ExeIntFlag = 0;
+  if(lcd_flag==1)
+    lcd_flag = 0;
+  else 
+    lcd_flag=1;
 }
+}
+

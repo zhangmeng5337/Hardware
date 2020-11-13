@@ -267,7 +267,7 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-	if(ROLE == 1||MODE_STAUS == 1)
+	if(ROLE == 1||MODE_STAUS == 2)
 		Nbiot_RxCpltCallback();
   /* USER CODE END USART1_IRQn 1 */
 }

@@ -112,6 +112,7 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 #define ON   1
 #define OFF  0
+void MX_RTC_Init(void);
 
 /* USER CODE END Private defines */
 

@@ -153,8 +153,18 @@ void LCD_DisplayNum(float number2)
   
   uint8_t cnts=0,tmp=0;
   uint8_t digit_flag;
+  static float number3;
   uint32_t number;
-  
+  //number2 = 11.111;
+//  if(number3 == 11.111)
+//    number3 = 55.555;
+//  else
+//   number3= 11.111;  
+   if(number2<0)
+  {
+    number2 = 0;
+
+  } 
   if(number2<10)
   {
     number = (uint32_t)(number2*10000.0);
@@ -266,6 +276,7 @@ void LCD_DisplayNum(float number2)
       {
         
         LCD_RAMX[LCD_RAMRegister_11]|=0x20;//digit4
+        LCD_RAMX[LCD_RAMRegister_11]&=0xbf;//digit4
         
       }
       else

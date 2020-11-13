@@ -3,9 +3,10 @@
 #include "uart1.h"
 #include "stm8l15x.h"
 //常量
+#define WAIT    2U
 #define Success 1U
 #define Failure 0U
-#define SIMCOM_TIME_OUT					1000
+#define SIMCOM_TIME_OUT					15000
 
 #define	SIMCOM_NET_NOT 						0    	//开机未完成
 #define	SIMCOM_POWER_ON                                         1
@@ -28,5 +29,6 @@ unsigned int sendCommand(char *Command, char *Response, unsigned long Timeout, u
 unsigned char Get_Network_status(void);
 void SIMCOM_Register_Network(void);
 void set_NetStatus(unsigned char flag);
+void cnt_init(void);
 #endif
 

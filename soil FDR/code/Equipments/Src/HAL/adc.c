@@ -1,5 +1,5 @@
 #include "adc.h"
-
+extern ADC_HandleTypeDef hadc1;
 float adc_value;
 
 unsigned char *Get_Adc_Average(unsigned char times)
@@ -8,10 +8,11 @@ unsigned char *Get_Adc_Average(unsigned char times)
 	uint32_t temp_val=0;
 	unsigned char t;
 	unsigned int adcVbat;	//µçÑ¹»º³åÇø
-	ADC_HandleTypeDef hadc1;
+	
 
 	for(t=0;t<times;t++)
 	{
+		
 		HAL_ADC_Start(&hadc1);
 		HAL_ADC_PollForConversion(&hadc1,0xffff);
 		temp_val = temp_val+HAL_ADC_GetValue(&hadc1); 	

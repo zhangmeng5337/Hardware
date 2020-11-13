@@ -38,6 +38,7 @@ void ParamsSave(void);
 void loraModuleInit(void);
 void LoraTest(void);
 void Lora_RxCpltCallback(unsigned char uartNo);
+void LoraUartInit(void);
 
 
 #endif
