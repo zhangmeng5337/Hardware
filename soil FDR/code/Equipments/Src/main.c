@@ -81,8 +81,9 @@ static void MX_USART6_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-		  extern loraUart_stru loraUart;
-		  extern  LORAHW_stru lorahw;
+extern loraUart_stru loraUart;
+extern  LORAHW_stru lorahw;
+unsigned char di;
 /* USER CODE END 0 */
 
 /**
@@ -125,18 +126,19 @@ int main(void)
   /* USER CODE BEGIN 2 */
    RTC_Init();
    LoraUartInit();
-	ParamsInit();
-	loratestInit();
+   ParamsInit();
+//	loratestInit();
   loraModuleInit();
-	if(LORA_TX == 0)
+//	if(LORA_TX == 0)
 	{
 
 			while(loraUart.receivedFlag1 == 0)
 				;
 		 {
 			loraUart.receivedFlag1 = 0;
-			 lorahw.mode =WorMOde;
-			loraGpioset(&lorahw);
+			 lorahw.mode =TransmitMode;
+			 loraGpioset(&lorahw);
+			 lorahw.mode =ConfigMOde;
 		 }
 	}
 
@@ -152,22 +154,22 @@ int main(void)
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
 		unsigned char buffer[12]={0xc0,00,9,00,00,0,0x64,0,0,0x50,0x64,0x46},i;
-	if(LORA_TX == 1)
-	{
-		LoraTest();	
-		HAL_Delay(3000);
-	} 
-	else 
-	{
-			if(loraUart.receivedFlag1 ==1)
-			{
-				loraUart.receivedFlag1 = 0;
-				 LoraTest();
-			}
-	}
-  i++;
-		
-	//EquipGateway_Process();
+//	if(LORA_TX == 1)
+//	{
+//		LoraTest();	
+//		HAL_Delay(3000);
+//	} 
+//	else 
+//	{
+//			if(loraUart.receivedFlag1 ==1)
+//			{
+//				loraUart.receivedFlag1 = 0;
+//				 LoraTest();
+//			}
+//	}
+ di++;
+		//HAL_UART_Transmit(&huart2,&di,1,5);
+	EquipGateway_Process();
   }
   /* USER CODE END 3 */
 }
@@ -552,8 +554,8 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, DTR_Pin|CTRL3__Pin|CTRL1__Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, EN_3_3V_Pin|SIM_PWR_Pin, GPIO_PIN_SET);
-
+  HAL_GPIO_WritePin(GPIOC, EN_3_3V_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_RESET);
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, RS485_EN1_Pin|CTRL2__Pin, GPIO_PIN_RESET);
 

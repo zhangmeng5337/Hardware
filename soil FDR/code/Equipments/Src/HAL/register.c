@@ -140,9 +140,10 @@ unsigned char WriteRegisteSet(unsigned int p,unsigned char *reg,unsigned char le
 		
 		for(i = 0;i<len;i++)
 		{
-		    if(ReadOnlyAddr(i+tmp)==1)
+		    if(ReadOnlyAddr(i+2*tmp)==1)
 				continue;
-			register_map.value[i+tmp] = reg[i];
+			register_map.value[i+2*tmp] = reg[i];
+			//register_map.value[i+2*tmp+1] = reg[i];
 		}	 
 		
 		reg_status.wrStatus = 1;
@@ -311,8 +312,8 @@ void register_init()
 		WriteOneRegister(0xf00e,0);//主动上报
 		WriteOneRegister(0x1001,55);//主动上报
 		WriteOneRegister(0x1006,57);//主动上报
-		WriteOneRegister(0x1202,2);//主动上报
-		WriteOneRegister(0x1204,1);//主动上报
+		WriteOneRegister(0x1202,3);//主动上报
+		WriteOneRegister(0x1204,30);//主动上报
 		//WriteOneRegister(0x1006,57);//主动上报
 }
 REG_val_stru *getRegAddr()
@@ -327,8 +328,8 @@ void loratestInit()
 			WriteOneRegister(0xf00a,2);//本地节点地址低2字节LORA物理地址
 			q = ReadRegister(0xf00a);
 			WriteOneRegister(0xf00b,((u16)(q[0])<<8)+q[1]);//LORA本地地址
-			WriteOneRegister(0x1202,1);//目标地址
-			WriteOneRegister(0x1204,1);//信道		
+			WriteOneRegister(0x1202,3);//目标地址
+			WriteOneRegister(0x1204,30);//信道		
 		}
 		else
 		{
@@ -336,7 +337,7 @@ void loratestInit()
 			q = ReadRegister(0xf00a);
 			WriteOneRegister(0xf00b,((u16)(q[0])<<8)+q[1]);//LORA本地地址
 			WriteOneRegister(0x1202,2);//目标地址
-			WriteOneRegister(0x1204,1);//信道			
+			WriteOneRegister(0x1204,30);//信道			
 		}
 
 }

@@ -15,15 +15,16 @@ void ParamsSave(void)
    REG_val_stru *q;
    uint32_t addr;
    addr = 0;
-   flash_read(0,&p,1);
+   flash_read(addr++,&p,1);
    if(p!=0x5a)
    {
 	
      p = 0x5a;
-	 
+	 register_init();
 	 q =  getRegAddr();
-	 loraModuleInit();
+	 //loraModuleInit();
 		 flash_init();
+		addr = 0;
 	 flash_write(addr++,&p,1);
 	 flash_write(addr++,&(q->bindCount),1);
 	 
@@ -41,6 +42,7 @@ void ParamsSave(void)
    	    
 	     p = 0x5a;
 		 q =  getRegAddr();
+			 addr = 1;
 		 flash_read(addr++,&(q->bindCount),1);	
 		 
 		 flash_read(addr++,&(tmp),1);
@@ -49,7 +51,8 @@ void ParamsSave(void)
 		 last_addr =last_addr+ tmp;
 
 		 flash_read(addr,q->value,2048);	
-
+      flash_init();
+			addr = 0;
 		 flash_write(addr++,&p,1);
 		 flash_write(addr++,&(q->bindCount),1);
 		 
@@ -62,8 +65,8 @@ void ParamsSave(void)
 		 addr = addr +2048;
 		 //loraset(4,&p,9);	
    }
-		register_init();
-		loraModuleInit();
+		
+		//loraModuleInit();
 }
 
 
@@ -73,6 +76,7 @@ void LoraUartInit()
 	__HAL_UART_CLEAR_IDLEFLAG(&huart2);
 	__HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_DMAStop(&huart2);
+	HAL_UART_DMAResume(&huart2);
 	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	//使能空闲中断
 	HAL_UART_Receive_DMA(&huart2,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
 	
@@ -265,8 +269,8 @@ unsigned char  loraGpioset(LORAHW_stru *p)
 
 	if(p->loraNo == 0)
 	{
-    if(loraIdle(p) == 0)
-		{
+		  while(loraIdle(p) == 1)
+				;
 			switch(p->mode)
 			{
 				case TransmitMode:
@@ -291,16 +295,14 @@ unsigned char  loraGpioset(LORAHW_stru *p)
 							break;
       				
 		 }
-			
-		 return 0;
-		}
-    else  
-      return 1;			
+		 
+		while(loraIdle(p) == 1)
+		return 1;	
+		HAL_Delay(2);
+		return 0;	
 	}
 	else
 	{
-    if(loraIdle(p) == 0)
-		{
 			switch(p->mode)
 			{
 				case TransmitMode:
@@ -324,11 +326,12 @@ unsigned char  loraGpioset(LORAHW_stru *p)
 							HAL_GPIO_WritePin(GPIOB, LORA_M02_Pin, GPIO_PIN_RESET);
 							break;			
 			}	
-			return 0;
-		}
-	else
-		return 1;		
-	}
+
+		while(loraIdle(p) == 1)
+		return 1;	
+		HAL_Delay(2);
+		return 0;
+	}		
 }
 
 
@@ -493,9 +496,10 @@ unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 	{
 		if(loraGpioset(p) == 0)
 		{
-			HAL_Delay(50);
-			HAL_UART_Transmit(&huart2,buffer,len,1000);
-			
+			//HAL_Delay(100);
+			//
+			HAL_UART_Transmit(&huart2,buffer,len,500);
+			//HAL_Delay(1000);
 			return 0;
 		}
 		else 
@@ -507,8 +511,9 @@ unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 	{
 		if(loraGpioset(p) == 0)
 		{
-			HAL_Delay(50);
-			HAL_UART_Transmit(&huart6,buffer,len,1000);
+			//HAL_Delay(50);
+			HAL_UART_Transmit(&huart6,buffer,len,5);
+			HAL_Delay(5);
 			return 0;
 		}
 		else 
@@ -576,7 +581,7 @@ void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len)
 	 memcpy(p+3,buffer,len);
 	 LORAHW_stru lorahw;
 	 lorahw.loraNo = 0;
-	 lorahw.mode = WorMOde;	 
+	 lorahw.mode = TransmitMode;	 
 	 loraSend(&lorahw,p,len+3);
 }
 

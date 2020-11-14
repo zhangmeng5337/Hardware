@@ -102,7 +102,7 @@ void EquipGateway_Process()
 		}
 		Gateway_Process();
 	}
-	equipmentProcess();//设备调度
+	//equipmentProcess();//设备调度
 	if(loraUart.receivedFlag2 == 1)
 	{
 		

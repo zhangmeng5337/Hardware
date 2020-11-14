@@ -211,6 +211,7 @@ HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t
           *SectorError = index;
           break;
         }
+				HAL_Delay(1);
       }
     }
     /* Flush the caches to be sure of the data consistency */

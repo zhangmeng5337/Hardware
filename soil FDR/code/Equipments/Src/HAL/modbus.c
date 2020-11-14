@@ -1,7 +1,7 @@
 #include "modbus.h"
 #include "main.h"
 #include "crc.h"
-
+extern UART_HandleTypeDef huart5;
 void Modbus_01_Solve(void);
 void Modbus_02_Solve(void);
 void Modbus_03_Solve(void);
@@ -66,7 +66,7 @@ void sensorModbusRate(unsigned int p,unsigned char num)
 
 void RS485_Init()
 {
-	  UART_HandleTypeDef huart5;
+	  
     huart5.Instance = UART5;
     huart5.Init.BaudRate = modbus_usr.RS485_Baudrate;
     huart5.Init.WordLength = UART_WORDLENGTH_8B;
@@ -81,13 +81,13 @@ void RS485_Init()
         huart5.Init.Parity=UART_PARITY_NONE;
         break;//无校验
     case 1:
-        huart1.Init.Parity=UART_PARITY_ODD;
+        huart5.Init.Parity=UART_PARITY_ODD;
         break;//奇校验
     case 2:
-        huart1.Init.Parity=UART_PARITY_EVEN;
+        huart5.Init.Parity=UART_PARITY_EVEN;
         break;//偶校验
     }
-    if (HAL_UART_Init(&huart1) != HAL_OK)
+    if (HAL_UART_Init(&huart5) != HAL_OK)
     {
         Error_Handler();
     }

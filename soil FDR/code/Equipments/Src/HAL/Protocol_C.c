@@ -59,21 +59,25 @@ void packAnaly(unsigned char  *p)
 	   
 		protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
 		protocolC.payloadLenH = 0;
-		payload_len =(((u16)(p[PAYLOAD_LEN_INDEX]))<<8) + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+		payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+		//payload_len =payload_len<<8 ;//payload长度
+		//payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
 		memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);	
 	}
 	else
 	{
 		protocolC.payloadLenH = p[PAYLOAD_LEN_INDEX];
 		protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX+1]; 
-		payload_len =((u16)(p[PAYLOAD_LEN_INDEX]))<<8+p[PAYLOAD_LEN_INDEX+1] ;//payload长度	
+		payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+	//	payload_len =payload_len<<8 ;//payload长度
+	//	payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
 	}
 
 }
 unsigned char protocolCAnaly(unsigned char  *p)
 {
-  unsigned char calCRC;
-	unsigned char recCRC;
+  unsigned int calCRC;
+	unsigned int recCRC;
 	unsigned int len;
 	unsigned char result;
 	result = 0;
@@ -259,60 +263,65 @@ void get_equipmentData()
 }
 void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
 {
-    unsigned char *p;
+    unsigned char p[256];
 	unsigned int calCRC;
 	unsigned int len;
+	unsigned char i;
+	i = 0;
+	 len = 0;
 	 memcpy(p,protocolC.DesAddr,ADDR_SIZE);
-	 p=p+ADDR_SIZE;
+	 i=i+ADDR_SIZE;
 	 len = len +ADDR_SIZE;
-	 memcpy(p,protocolC.SrcAddr,ADDR_SIZE);	
-	 p=p+ADDR_SIZE;	
+	 memcpy(p+i,protocolC.SrcAddr,ADDR_SIZE);	
+	 i=i+ADDR_SIZE;	
 	 len = len +ADDR_SIZE;
-	 *(p++) = protocolC.devCode;
-	 *(p++) = protocolC.funCode;
+	p[i++] = protocolC.devCode;
+	p[i++] = protocolC.funCode;
 	 len = len +2;
 	 if(ackMode == 0)
 	 {
-	  memcpy(p,protocolC.startAddr ,2);	
-	  p=p+2;
+	  memcpy(p+i,protocolC.startAddr ,2);	
+	  i=i+2;
 	  len = len +2;
-	  *(p++) =protocolC.payloadLenH;
-	  *(p++) =protocolC.payloadLenL; 
+	 p[i++] =protocolC.payloadLenH;
+	  p[i++] =protocolC.payloadLenL; 
 	  len = len +2;
-	  memcpy(p,protocolC.payload,((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL );	
-	  len = len +((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL;
+	  memcpy(p+i,protocolC.payload,((u16)(protocolC.payloadLenH))<<8+protocolC.payloadLenL );	
+	  //len = protocolC.payloadLenH;
+		// len = len <<8;
+		 len =len+protocolC.payloadLenL;
 	 }
 	 else if(ackMode == 1)
 	 {
-		*(p++)  = 0x01;//功能码错误
+		p[i++]  = 0x01;//功能码错误
 		len = len + 1;
 	 }
 	 else if(ackMode == 2)
 	 {
-		*(p++)  = 0x02;//addr错误
+		p[i++]  = 0x02;//addr错误
 		len = len + 1;
 	 }
 	 else if(ackMode == 3)
 	 {
-		*(p++)  = 0x03;//数据个数错误
+		p[i++]  = 0x03;//数据个数错误
 		len = len + 1;
 	 }
 	 else if(ackMode == 4)
 	 {
-		*(p++)  = 0x04;//多个寄存器错误
+		p[i++]  = 0x04;//多个寄存器错误
 		len = len + 1;
 	 }
 	 else if(ackMode == 5)
 	 {
-		*(p++)  = 0x05;//预留
+		p[i++]  = 0x05;//预留
 		len = len + 1;
 	 }
 	  calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
-	   *(p++) =(u8)(calCRC>>8);
-	   *(p++) =(u8)(calCRC);
+	   p[i++] =(u8)(calCRC>>8);
+	   p[i++] =(u8)(calCRC);
 	  calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
-	   *(p++) =(u8)(calCRC>>8);
-	   *(p++) =(u8)(calCRC);
+	   p[i++] =(u8)(calCRC>>8);
+	   p[i++] =(u8)(calCRC);
 	   unsigned char *fameStatus;
 	   fameStatus = modbusFrameStatus();
     if(*fameStatus== 2)//数据来自串口
@@ -323,7 +332,7 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
 	}
 	else
 	{
-    	while(loraSend(loraNo,p,len+4))
+    	LoraSendPayloadPackTx(p,len+4);
 		;
 
 	}
@@ -405,19 +414,22 @@ void WrRead_equipment(LORAHW_stru *loraNo)
 {
 	unsigned int len;
 	unsigned int addr;
-    unsigned char *tmp,i;
+    unsigned char tmp[256],i;
 	len = 0;
     ackmode = 0;
 
 	if(protocolC.funCode == gateway_Rcmd||protocolC.funCode == pc_cmd||protocolC.funCode == auto_report_cmd)//判断功能码是否正确
 	{
-		len = ((u16)(protocolC.payloadLenH))<<8+ protocolC.payloadLenL;  //数据长度
-		addr = ((u16)(protocolC.startAddr[0]))<<8+protocolC.startAddr[1];//起始寄存器地址
-		
-		if(*ReadRegister(addr)!=NULL&&((addr+len)<=x1_ADDR_END||(addr+len)<=x12_ADDR_END||
+		len = protocolC.payloadLenH;  //数据长度
+		len = len<<8;
+		len = len+ protocolC.payloadLenL;  //数据长度		
+		addr = protocolC.startAddr[0];//起始寄存器地址
+		addr = addr << 8;//起始寄存器地址
+		addr = addr+protocolC.startAddr[1];//起始寄存器地址		
+		if(((addr+len)<=x1_ADDR_END||(addr+len)<=x12_ADDR_END||
 			(addr+len)<=x4_ADDR_END||(addr+len)<=x44_ADDR_END||(addr+len)<=xE_ADDR_END
 			||(addr+len)<=xF_ADDR_END))//判断寄存器地址是否正确
-			;
+			ackmode = 0;
 		else
 			ackmode = 2;
 		if(len<1||len>=0x0010)//判断数据长度是否正确
@@ -433,10 +445,10 @@ void WrRead_equipment(LORAHW_stru *loraNo)
 			
 			for(i = 2;i<len;i = i+2)//负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
 			{
-				memcpy(tmp+i,&(protocolC.payload[i]),2);
+				memcpy(tmp+i/2-1,&(protocolC.payload[i]),2);
 			}
 			
-			if(WriteRegisteSet(addr,tmp ,len)==0)//写入寄存器数据
+			if(WriteRegisteSet(addr,tmp ,len/2)==0)//写入寄存器数据
 			{
 				 equip_set();//与硬件相关的写操作
 				 
@@ -513,10 +525,10 @@ unsigned char wirelessTimoutProcess()
 
 void equipmentProcess(void)
 {  	
-	getRH_T();
-	getvbat();
-	getRTC();
-	getGPS();
+//	getRH_T();
+//	getvbat();
+//	getRTC();
+//	getGPS();
    
 	 MODE_STAUS = getModeStatus();
 	if(MODE_STAUS == 0x02||ROLE == 1)//带nbiot
