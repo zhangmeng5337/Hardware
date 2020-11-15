@@ -80,9 +80,9 @@ void params_init()
 		 {
 			  //³õÊ¼²ÎÊý
 			 flash_init();
-				factor_usr.a0 = -2874.1;
-				factor_usr.a1 = 9204.2;
-				factor_usr.a2 = -7340.6;	
+				factor_usr.a0 = -188.11;
+				factor_usr.a1 = 396.42;
+				factor_usr.a2 = -139.68;	
 			 
 			 flash_write(addr++,0x5a,1); 
 			 flash_write(addr++,modbus_usr.RS485_Addr,1); 

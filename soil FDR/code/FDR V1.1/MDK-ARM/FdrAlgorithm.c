@@ -65,19 +65,25 @@ float SoilHumid(unsigned char status,float AdcValueVol)
 {
 	static unsigned char index;
 	
-	float tmp3;
+	float tmp3,v3,v2,v1;
 	static float last_temp;
+	v3 = AdcValueVol*AdcValueVol;
+	v3 = v3*AdcValueVol;
+	v2 = AdcValueVol*AdcValueVol;
+	v1= AdcValueVol;
 	if(status == CALIBRATION)
 	{
-		factor_usr.humid=factor_usr.a0*AdcValueVol*AdcValueVol+factor_usr.a2;
-		factor_usr.humid=factor_usr.humid+factor_usr.a1*AdcValueVol;	
+		factor_usr.humid=factor_usr.a0*v3;
+		factor_usr.humid=factor_usr.humid+factor_usr.a1*v2;	
+		factor_usr.humid=factor_usr.humid+factor_usr.a2*v1;
 	}
 	else
 	{
-		factor_usr.humid=factor_usr.a0*AdcValueVol*AdcValueVol+factor_usr.a2;
-		factor_usr.humid=factor_usr.humid+factor_usr.a1*AdcValueVol;	
+		factor_usr.humid=factor_usr.a0*v3;
+		factor_usr.humid=factor_usr.humid+factor_usr.a1*v2;	
+		factor_usr.humid=factor_usr.humid+factor_usr.a2*v1;	
 	}
-	if(AdcValueVol<1.515)
+	if(AdcValueVol<0.63)
 	{
 		factor_usr.humid = 0;
 	   last_temp = 0;

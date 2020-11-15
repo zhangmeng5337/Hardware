@@ -387,7 +387,7 @@ void Modbus_07_Solve(void)
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0103))//寄存器地址+数量在范围内
     {
 	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-	   printf("RH TE1 TE2 Voltage:   %f   %f   %f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2]);
+	   printf("RH TE1 TE2 Voltage:   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2]);
 	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     }
 	
@@ -432,12 +432,13 @@ void Modbus_08_Solve(void)
             flash_write(addr++,modbus_usr.RS485_Addr,1);
             flash_write(addr++,modbus_usr.RS485_Baudrate,1);
             flash_write(addr++,modbus_usr.RS485_Parity,1);
-						if(sensor_usr.CalibrationVref!=0)
+						//if(sensor_usr.CalibrationVref!=0)
 						{
 							fator_save_proc(addr);
+							flash_write(addr+12+4+4,sensor_usr.CalibrationT,1);	
 						}
-						else
-            flash_write_bytes(addr++,&(modbus_usr.RS485_RX_BUFF[6]),12);			
+						//else
+           // flash_write_bytes(addr++,&(modbus_usr.RS485_RX_BUFF[6]),12);			
             calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,18);
 			
         modbus_usr.RS485_TX_BUFF[18]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
@@ -468,7 +469,7 @@ void Modbus_09_Solve(void)
 			modbus_usr.RS485_TX_BUFF[14]=modbus_usr.RS485_RX_BUFF[14];
 			
 			sensor_usr.CalibrationProbeVref =  DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4,1000);	//探针空测电压放大1000倍	
-			sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[11];//温度补偿
+			sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[14];//温度补偿
       if(modbus_usr.RS485_RX_BUFF[6]!=0||modbus_usr.RS485_RX_BUFF[7]!=0||modbus_usr.RS485_RX_BUFF[8]!=0||modbus_usr.RS485_RX_BUFF[9]!=0)			
 			{	
 				sensor_usr.CalibrationVref = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,1000);//参考电压
@@ -479,7 +480,7 @@ void Modbus_09_Solve(void)
 				params_save();			
 			}
 			
-			calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,11);
+			calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,15);
 			modbus_usr.RS485_TX_BUFF[15]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
 			modbus_usr.RS485_TX_BUFF[16]=(calCRC)&0xFF;
 			RS485_SendData(modbus_usr.RS485_TX_BUFF,17);
