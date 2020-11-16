@@ -85,7 +85,7 @@ void SIMCOM_Register_Network()
       else
       {
         count++;
-        if(count>=30)
+        if(count>=35)
         {
         NET_STAUS = SIMCOM_NET_NOT;
         count = 0;        
@@ -151,7 +151,7 @@ void SIMCOM_Register_Network()
     {
       static unsigned char tx_count;
       
-      if (sendCommand((char*)one_net_key, "received", 100, 3) == Success)
+      if (sendCommand((char*)one_net_key, "received", 200, 3) == Success)
       {
         NET_STAUS=SIMCOM_NET_OK;          
       } 

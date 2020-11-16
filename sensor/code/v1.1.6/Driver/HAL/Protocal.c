@@ -361,10 +361,18 @@ process:
     
     if(Get_Network_status()==SIMCOM_NET_OK) 
     {
-      
+       static unsigned char status_reapte;
+      if(status_reapte == 1)
+      {
+        if(Data_usr.status == 1)
+          Data_usr.status = 0;
+      }
       if(timeout == 0||Data_usr.status == 1)
-        data_tansmmit(); 
-      Data_usr.status = 0;
+      {
+          status_reapte = 1;
+          data_tansmmit(); 
+      } 
+      Data_usr.status = 2;
       if(timeout<10)
       {
         if(ExeIntFlag)
@@ -396,6 +404,7 @@ process:
         timeout++;
         goto  process;
       }
+      status_reapte = 0;
       RtcWakeUp = 0;
       timeout = 0;
       wakeupcount = 0;
