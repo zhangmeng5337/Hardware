@@ -23,7 +23,7 @@ void reapte_time()
 { 
   RtcWakeUp = 1;
   rtctime=100;//周期检测时间
-  SETTING_COUNT=5; 
+  SETTING_COUNT=100; 
   wakeupcount = SETTING_COUNT;//定时发送数据时间，wakeupcount=n*rtctime;
 }
 void module_prams_init()

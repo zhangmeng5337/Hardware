@@ -138,6 +138,7 @@ void SIMCOM_Register_Network()
       {
 #if debug 
         NET_STAUS=SIMCOM_Connect_Platform;
+        
 #else
         NET_STAUS=SIMCOM_NET_OK;
 #endif    
@@ -150,7 +151,7 @@ void SIMCOM_Register_Network()
     {
       static unsigned char tx_count;
       
-      if (sendCommand((char*)one_net_key, "received", 10, 3) == Success)
+      if (sendCommand((char*)one_net_key, "received", 100, 3) == Success)
       {
         NET_STAUS=SIMCOM_NET_OK;          
       } 
