@@ -26,18 +26,18 @@ unsigned char getModeStatus()
 void getRH_T()//获取温湿度传感器数据
 {
    modbus_pack_stru p;
-	unsigned char timeout;
-	unsigned char i;
-	unsigned char *result,*tmp;
+	static uint32_t timeout;
+	unsigned char *tmp;
+		unsigned char result[4];
 	static unsigned char index;
 	index = 0;
 	
-	   p.RS485_Addr = 1;
+	   p.RS485_Addr = 0;
 	   while(p.RS485_Addr<=4)
 	   	{
-	   
+
 		   p.RS485_Addr ++;
-   satrt:  p.func = 0x03;
+       p.func = 0x03;
 		   p.regnum = 0x0002;
 		   p.startaddr = 0x0002;
 		   modbus_role = 1;
@@ -45,33 +45,32 @@ void getRH_T()//获取温湿度传感器数据
 		   timeout = HAL_GetTick();
 		   while(modbus_role!=2)
 		   	{
-				if((HAL_GetTick()-timeout)>=3000)
+				if((HAL_GetTick()-timeout)>=500)
 				{
-					if(i<3)
-					{
-						i++;
-						goto satrt;
-					}
-					else
-					{
-						i=0;
-						result[p.RS485_Addr] = 0;
-						result[p.RS485_Addr+1] = 0;	
-						result[p.RS485_Addr+2] = 0;
-						result[p.RS485_Addr+3] = 0;
+						result[0] = 0;
+						result[1] = 0;	
+						result[2] = 0;
+						result[3] = 0;
 						break;
-					}
 				}
 					
 		   }
-		   tmp=modbusRxResult();
-		   result[p.RS485_Addr] =   tmp[5];
-		   result[p.RS485_Addr+1] = tmp[6];
-		   result[p.RS485_Addr+2] = tmp[3];
-		   result[p.RS485_Addr+3] = tmp[4];
-		   index = index +p.RS485_Addr-1;
-           WriteRegisteSet(0x1001+index,result,4);
-		   index = index +4;	   
+		   if(modbus_role == 2)
+		   	{
+			   tmp=modbusRxResult();
+			   unsigned char *fameStatus;
+		       fameStatus = modbusFrameStatus();
+			   *fameStatus = 0;
+			   result[0] =	tmp[5];
+			   result[1] = tmp[6];
+			   result[2] = tmp[3];
+			   result[3] = tmp[4];
+			   WriteRegisteSet(0x1001+index,result,4);
+			   index = index + 2;
+
+		   }
+
+		  // index = index +4;	   
 
 	   }
 
@@ -89,38 +88,30 @@ void getvbat()
 
 void getGPS()//获取gps位置信息
 { 
-    unsigned char *p;
-	p =parseGpsBuffer();
-	if(p!=NULL)
-	WriteRegisteSet(0xe0000,p,8);
+    //unsigned char *p;
+	//p = (unsigned char *)malloc(60);
+	//p =parseGpsBuffer();
+	//if(p!=NULL)
+	//WriteRegisteSet(0xe0000,p,8);
+	//else
+	//	free(p);
+	//free(p);
 }
-void  actuator(unsigned int p)
+void  actuator(unsigned int p,unsigned char len)
 { 
     unsigned char *q;
-	q = ReadRegister(p);
-	switch(p)
+    unsigned char i;
+	modbus_pack_stru modbus;
+	
+	for(i = 0;i<len/2;i++)
 	{
-		case 0x1010:  
-           
-			if(q[1]==0x02)
-				HAL_GPIO_WritePin(GPIOC, CTRL1__Pin, GPIO_PIN_SET);
-			else
-				HAL_GPIO_WritePin(GPIOC, CTRL1__Pin, GPIO_PIN_RESET);
-			break;
-		case 0x1011:  
-            q = ReadRegister(p);
-			if(q[1]==0x02)
-				HAL_GPIO_WritePin(GPIOB, CTRL2__Pin, GPIO_PIN_SET);
-			else
-				HAL_GPIO_WritePin(GPIOB, CTRL2__Pin, GPIO_PIN_RESET);
-			break;
-		case 0x1012:  
-            q = ReadRegister(p);
-			if(q[1]==0x02)
-				HAL_GPIO_WritePin(GPIOC, CTRL3__Pin, GPIO_PIN_SET);
-			else
-				HAL_GPIO_WritePin(GPIOC, CTRL3__Pin, GPIO_PIN_RESET);
-			break;			
+		modbus.RS485_Addr = 0x01+i;
+		modbus.func = 0x06;
+		modbus.startaddr = p+i;
+		q = ReadRegister(p+i);
+		modbus.regnum = q[1];
+		Modbus_Pack(modbus);
+
 	}
 }
 
@@ -182,7 +173,7 @@ void equip_set()//网关写命令后，对相关指令进行具体的执行
 		}
 		else if(val->regAddr>=0x1010&&val->regAddr<=0x1012)//设置执行机构
 	    {
-	       actuator(val->regAddr);	
+	       actuator(val->regAddr,val->len);	
 		}
 		else if(val->regAddr>=0x1100&&val->regAddr<=0x1102)//设置时间
 	    {
