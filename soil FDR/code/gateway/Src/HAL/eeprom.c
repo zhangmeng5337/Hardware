@@ -123,13 +123,15 @@ input:addr is the address;
 *******************************************************************************/
 void flash_write(uint32_t addr,unsigned char *data,uint16_t numtowrite)	
 {
-	int i;
+	unsigned int i,k;
 	uint32_t Address;
 	
     
 	Address=FLASH_USER_START_ADDR+addr;
 	for(i=0;i<numtowrite;i++)
 	{
+		if(i>=2590)
+			k++;
 		FLASH_Program_Byte(Address,(uint8_t)(data[i]));	
 		Address =Address+1;
 	}
@@ -163,10 +165,12 @@ void flash_write_Data(uint32_t addr,unsigned char *data,uint16_t numtowrite)
 	Address=DATA_FLASH_USER_START_ADDR+addr;
 	for(i=0;i<numtowrite;i++)
 	{
-		FLASH_Program_Byte(Address,(uint8_t)(data[i]));	
+		FLASH_Program_Byte(Address,(data[i]));	
 		Address =Address+1;
+		FLASH_WaitForLastOperation(FLASH_WAITETIME);
 	}
-	HAL_FLASH_Lock();
+	
+	//HAL_FLASH_Lock();
 }
 
 /*******************************************************************************

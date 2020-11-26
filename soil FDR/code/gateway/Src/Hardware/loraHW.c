@@ -28,13 +28,23 @@ void ParamsSave(unsigned char datasrc)//参数保存
 		 flash_write(addr++,&(q->bindCount),1);//写入绑定设备数量
 		 
 		 dataInFlash = getDataFrameAddr();
-		 tmp = (u8)(dataInFlash->last_addr>>8);//数据帧上次读地址
+		 tmp = (u8)(dataInFlash->lastRead_addr>>8);//数据帧上次读地址
 		 flash_write(addr++,&(tmp),1);	
-		 tmp = (u8)(dataInFlash->last_addr);
+		 tmp = (u8)(dataInFlash->lastRead_addr);
 		 flash_write(addr++,&(tmp),1);
-		 flash_write(addr,q->value,2048);//寄存器数值
-		 addr = addr +2048;	
+
+		 tmp = (u8)(dataInFlash->lastWrite_addr>>24);//数据帧上次读地址
+		 flash_write(addr++,&(tmp),1);	
+		 tmp = (u8)(dataInFlash->lastWrite_addr>>16);
+		 flash_write(addr++,&(tmp),1);	
+		 tmp = (u8)(dataInFlash->lastWrite_addr>>8);//数据帧上次读地址
+		 flash_write(addr++,&(tmp),1);	
+		 tmp = (u8)(dataInFlash->lastWrite_addr);
+		 flash_write(addr++,&(tmp),1);		
 		 
+		 flash_write(addr,q->value,REG_SIZE_U);//寄存器数值
+		 addr = addr +REG_SIZE_U;	
+
 	}
 	else
 	{
@@ -57,7 +67,7 @@ void ParamsRead(void)
 	 last = getDataFrameAddr();
    addr = 0;
    flash_read(addr++,&p,1);
-   if(p!=0x5a)
+  // if(p!=0x5a)
    {
 	
      p = 0x5a;  //写入标志
@@ -69,42 +79,62 @@ void ParamsRead(void)
 	 flash_write(addr++,&p,1);//写入数据头
 	 flash_write(addr++,&(q->bindCount),1);//写入绑定设备数量
 
-	 tmp = (u8)((last->last_addr)>>8);//数据帧上次读地址
+	 tmp = (u8)((last->lastRead_addr)>>8);//数据帧上次写地址
 	 flash_write(addr++,&(tmp),1);	
-	 tmp = (u8)(last->last_addr);
+	 tmp = (u8)(last->lastRead_addr);
 	 flash_write(addr++,&(tmp),1);
-	 
-	 flash_write(addr,q->value,2048);//寄存器数值
-	 addr = addr +2048;
-   }
-   else
-   	{
-   	    
-	     p = 0x5a;
-		 q =  getRegAddr();
-		 addr = 1;
-		 flash_read(addr++,&(q->bindCount),1);	//读出绑定设备数量
-		 
-		 flash_read(addr++,&(tmp),1);//读出上次数据帧地址
-		 last->last_addr = tmp<<8;
-		 flash_read(addr++,&(tmp),1);
-		 last->last_addr =last->last_addr+ tmp;
 
-		 flash_read(addr,q->value,2048);	//寄存器数值
-        /* flash_init();
-			addr = 0;
-		 flash_write(addr++,&p,1);
-		 flash_write(addr++,&(q->bindCount),1);
-		 
-		 tmp = (u8)(last_addr>>8);
-		 flash_write(addr++,&(tmp),1);	
-		 tmp = (u8)(last_addr);
-		 flash_write(addr++,&(tmp),1);
-		 
-		 flash_write(addr,q->value,2048);
-		 addr = addr +2048;*/
-		 //loraset(4,&p,9);	
+	 tmp = (u8)(last->lastWrite_addr>>24);//数据帧上次读地址
+	 flash_write(addr++,&(tmp),1);	
+	 tmp = (u8)(last->lastWrite_addr>>16);
+	 flash_write(addr++,&(tmp),1);	
+	 tmp = (u8)(last->lastWrite_addr>>8);//数据帧上次读地址
+	 flash_write(addr++,&(tmp),1);	
+	 tmp = (u8)(last->lastWrite_addr);
+	 flash_write(addr++,&(tmp),1);	
+
+	 
+	 flash_write(addr,q->value,REG_SIZE_U);//寄存器数值
+	 addr = addr +REG_SIZE_U;
    }
+//   else
+//   	{
+//   	    
+//	     p = 0x5a;
+//		 q =  getRegAddr();
+//		 addr = 1;
+//		 flash_read(addr++,&(q->bindCount),1);	//读出绑定设备数量
+//		 
+//		 flash_read(addr++,&(tmp),1);//读出上次数据帧地址
+//		 last->lastRead_addr = tmp<<8;
+//		 flash_read(addr++,&(tmp),1);
+//		 last->lastRead_addr =last->lastRead_addr+ tmp;
+
+//		 flash_read(addr++,&(tmp),1);//读出上次数据帧地址
+//		 last->lastWrite_addr = tmp<<24;
+//		 flash_read(addr++,&(tmp),1);
+//		 last->lastWrite_addr =last->lastWrite_addr+ tmp<<16;
+//		 flash_read(addr++,&(tmp),1);
+//		 last->lastWrite_addr =last->lastWrite_addr+ tmp<<8;
+//		 flash_read(addr++,&(tmp),1);
+//		 last->lastWrite_addr =last->lastWrite_addr+ tmp;
+
+
+//		 flash_read(addr,q->value,REG_SIZE);	//寄存器数值
+//        /* flash_init();
+//			addr = 0;
+//		 flash_write(addr++,&p,1);
+//		 flash_write(addr++,&(q->bindCount),1);
+//		 
+//		 tmp = (u8)(last_addr>>8);
+//		 flash_write(addr++,&(tmp),1);	
+//		 tmp = (u8)(last_addr);
+//		 flash_write(addr++,&(tmp),1);
+//		 
+//		 flash_write(addr,q->value,2048);
+//		 addr = addr +2048;*/
+//		 //loraset(4,&p,9);	
+//   }
 		
 		//loraModuleInit();
 }
@@ -425,7 +455,11 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
 	else if(num == 4)
 	{	
 		unsigned char *q;
-		q=ReadRegister(0xf00b); 
+        if(ROLE !=GATEWAY)
+			p = ReadRegister(0xf00a);
+		else
+			p = ReadRegister(0x4409);
+ 
 		loraParams.addrH = q[0];
 		loraParams.addrL = q[1]; 
 		
@@ -436,8 +470,10 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
 		
 		loraParams.reg0 = loraParams.reg0 &0xe7;
 		loraParams.reg0 = loraParams.reg0|0x00;//校验位设置bit4,3
-		
-		q = ReadRegister(0x1204);//空速
+		 if(ROLE !=GATEWAY)
+			p = ReadRegister(0x1205);//空速
+		else
+			p = ReadRegister(0x44f1);
 		loraParams.reg0 = loraParams.reg0 &0xf8;
 		switch(q[1])
 		{
@@ -470,7 +506,11 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
 	    else if(q[1]>=0x08&&q[1]<=0x10)
 			loraParams.reg1 = loraParams.reg1 |0x00;
 		
-		q = ReadRegister(0x1205);
+        if(ROLE !=GATEWAY)
+			p = ReadRegister(0x1206);//信道
+		else
+			p = ReadRegister(0x44f2);
+
 		loraParams.reg2 = q[1]/1.5;//信道
 		
 		loraParams.reg3 = loraParams.reg3&0x7f;//rssi,bit7
@@ -614,12 +654,17 @@ void LoraSetPayloadPackTx(unsigned cmd,unsigned char startaddr,unsigned char len
 void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len)
 { 
     unsigned char p[512];
-	unsigned char *q;  
+	unsigned char *q; 
+	if(ROLE != GATEWAY)	
 	 q = ReadRegister(0x1203);//目标lora地址
-	 
+	else
+	 q = &buffer[6];//目标lora地址		
 	p[0] = q[0];
 	p[1] = q[1];
-	 q = ReadRegister(0x1205);//信道
+	if(ROLE != GATEWAY)
+	 q = ReadRegister(0x1206);//信道
+	else
+		 q = ReadRegister(0x44f2);//信道	
 	p[2] = q[1];
 	 memcpy(p+3,buffer,len);
 	 LORAHW_stru lorahw;
@@ -650,7 +695,11 @@ void loraModuleInit()
 
     unsigned char *p;
 	#if DEBUG 
-		p = ReadRegister(0xf00b);
+        if(ROLE !=GATEWAY)
+			p = ReadRegister(0xf00a);
+		else
+			p = ReadRegister(0x4409);
+
 		loraParams.addrH = p[0]; 
 		loraParams.addrL = p[1];
 		
@@ -661,9 +710,12 @@ void loraModuleInit()
 		
 		loraParams.reg0 = loraParams.reg0 &0xe7;
 		loraParams.reg0 = loraParams.reg0|0x00;//校验位设置bit4,3
-		
+        if(ROLE !=GATEWAY)
+			p = ReadRegister(0x1205);
+		else
+			p = ReadRegister(0x44f1);			
 		loraParams.reg0 =loraParams.reg0 &0xf8;	
-		loraParams.reg0 = loraParams.reg0|0x04;//空中速度设置bit2,1,0
+		loraParams.reg0 = loraParams.reg0|p[1];//空中速度设置bit2,1,0
 		
 		loraParams.reg1 = loraParams.reg1 &0x3f;
 		loraParams.reg1 = loraParams.reg1|0x00;//分包长度，bit7,6
@@ -673,8 +725,11 @@ void loraModuleInit()
 		
 		loraParams.reg1 = loraParams.reg1 &0xfc;
 		loraParams.reg1 = loraParams.reg1&0x00;//发射功率，bit1,0
-		p = ReadRegister(0x1205);
-		loraParams.reg2 = p[1];//信道
+        if(ROLE !=GATEWAY)
+			p = ReadRegister(0x1206);//信道
+		else
+			p = ReadRegister(0x44f2);
+		loraParams.reg2 = p[1];
 		
 		loraParams.reg3 = loraParams.reg3&0x7f;//rssi,bit7
 		loraParams.reg3 = loraParams.reg3|00;//rssi,bit7

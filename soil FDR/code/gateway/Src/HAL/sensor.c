@@ -88,9 +88,9 @@ void getvbat()
 
 void getGPS()//获取gps位置信息
 { 
-    unsigned char *p;
+    //unsigned char *p;
 	//p = (unsigned char *)malloc(60);
-	p =parseGpsBuffer();
+	//p =parseGpsBuffer();
 	//if(p!=NULL)
 	//WriteRegisteSet(0xe0000,p,8);
 	//else
@@ -119,18 +119,21 @@ void  actuator(unsigned int p,unsigned char len)
 void equip_set()//网关写命令后，对相关指令进行具体的执行
 {
 	REG_STATUS_stru *val;
-	unsigned char *p;
+	unsigned char *p,result;
 
+    result = 1;
     val = readRigsterStatus();
 	if(val->wrStatus == 1)//判断是否有寄存器写入
 	
 	{
 	    p = ReadRegister(val->regAddr);
 	    if(val->regAddr>=0xf001&&val->regAddr<=0xf003)
-	    {
+	    {  
+	       result = 0;
 			p = ReadRegister(0xf001);//设置休眠唤醒时间
 			if(p[1] == 0x01)
 			{
+			   
 				SetWakeUp(ReadRegister(0xf002));
 			}
 			else
@@ -138,51 +141,76 @@ void equip_set()//网关写命令后，对相关指令进行具体的执行
 		}
 		else if(val->regAddr==0xf004)//无线模组超时时间时间
 	    {
-	    		
+	    	 result = 0;	
 			;//loraset(0,p,val->len);
 		}
 		else if(val->regAddr==0xf005)//功率设置
 	    {
-	        
+	         result = 0;
 	    	loraset(1,p,val->len);
 		}
 		else if(val->regAddr>=0xf00c)//终端与传感器的modbus速率
 	    {
+	     result = 0;
 	       sensorModbusRate(uchar2uint(p),0);
           //loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len); 		
 
 		}
 		else if(val->regAddr>=0xf00d)//终端与电脑的modbus速率
 	    {
+	     result = 0;
 	       sensorModbusRate(uchar2uint(p),1);
           //loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len); 		
 
 		}
-		else if(val->regAddr==0x1203)//空中速率
+		else if(val->regAddr==0x1205)//空中速率
 	    {
+	        result = 0;
 	   		 loraset(2,p,val->len);
 		}
-		else if(val->regAddr==0x1204)//lora信道0-127
+
+		else if(val->regAddr==0x44f1)//w网关空中速率
 	    {
+	         result = 0;
+	   		 loraset(2,p,val->len);
+		}
+		else if(val->regAddr==0x1206)//lora信道0-127
+	    {
+	         result = 0;
 	    	loraset(3,p,val->len);
 		}
-		else if(val->regAddr>=0x1205&&val->regAddr<=0x1209)//设置ip地址
+		else if(val->regAddr==0x44f2)//网关lora信道0-127
 	    {
-	        
+	        result = 0;
+	    	loraset(3,p,val->len);
+		}
+
+		else if(val->regAddr>=0x1207&&val->regAddr<=0x120b)//设置ip地址
+	    {
+	         result = 0;
 	    	ServerIP_Pack(ReadRegister(val->regAddr));
 		}
+		else if(val->regAddr>=0x45f0&&val->regAddr<=0x45f4)//网关设置ip地址
+	    {
+	         result = 0;
+	    	ServerIP_Pack(ReadRegister(val->regAddr));
+		}
+
 		else if(val->regAddr>=0x1010&&val->regAddr<=0x1012)//设置执行机构
 	    {
+	       result = 0;
 	       actuator(val->regAddr,val->len);	
 		}
 		else if(val->regAddr>=0x1100&&val->regAddr<=0x1102)//设置时间
 	    {
-
+			 result = 0;
 			  setRtc(p, 3); 
 	       
 		}
+		
+			val->wrStatus = result;
  
-    val->wrStatus = 0;
+    
 	}
 }
 

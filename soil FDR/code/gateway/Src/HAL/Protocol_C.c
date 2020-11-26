@@ -8,6 +8,7 @@
 #include "modbus.h"
 #include "nbiotHW.h"
 #include "gateway.h"
+#include "nbiotHAL.h"
 extern unsigned char MODE_STAUS;
 
 
@@ -32,10 +33,22 @@ unsigned char *ackmodeStatus(void)
 void ProctocolInit()
 {
     unsigned char *p;
-	p=ReadRegister(0xf007);//发送端源地址
-	memcpy(protocolC.SrcAddr,p,ADDR_SIZE);//源地址
-	p=ReadRegister(0x1200);//发送端源地址
-	memcpy(protocolC.DesAddr,p,ADDR_SIZE);//源地址
+	if(ROLE == GATEWAY)
+	{
+		p=ReadRegister(0x4006);//发送端源地址
+		memcpy(protocolC.SrcAddr,p,ADDR_SIZE);//源地址
+		p=ReadRegister(0x1200);//发送端源地址
+	  memcpy(protocolC.DesAddr,p,ADDR_SIZE);//源地址
+
+	}
+	else
+	{
+		p=ReadRegister(0xf007);//发送端源地址
+		memcpy(protocolC.SrcAddr,p,ADDR_SIZE);//源地址
+		p=ReadRegister(0x1200);//发送端源地址
+		memcpy(protocolC.DesAddr,p,ADDR_SIZE);//源地址
+	}
+
 	
 
 }
@@ -43,22 +56,79 @@ unsigned char getPackLen(unsigned char  *p)
 {
 
 	unsigned int len;
-	if(p[17] == PC_readFrame||p[17]  == pc_cmd||p[17]  == auto_report_cmd)
+	len = 0;
+	if(p[17] == PC_readFrame||p[17]  == pc_cmd||p[17]  == auto_report_cmd||p[17]  == gateway_Rcmd)
 	{
-		len = p[PAYLOAD_LEN_INDEX];//payload长度
-		len = len + 2*ADDR_SIZE+1+1;//
-		len = len+START_ADDR_SIZE + 1+4;
-	
+		if(ROLE != GATEWAY)//终端设备
+		{
+			if(p[17]  != gateway_Rcmd)
+			{
+				len = p[PAYLOAD_LEN_INDEX];//payload长度
+				len = len + 2*ADDR_SIZE+1+1;//
+				len = len+START_ADDR_SIZE + 1+4;			
+			}
+			else
+			{
+				len =  2*ADDR_SIZE+1+1;//
+				len = len+START_ADDR_SIZE + 1+4;
+			}
+
+	  }
+	else  //网关
+	{
+	    if(*getDataSrc() == DAT_FROM_LORA)
+	    {
+	            unsigned int regaddr;
+				regaddr = uchar2uint(&p[18]);
+				if(regaddr!= 0x4001)
+				{
+					len = p[PAYLOAD_LEN_INDEX];//payload长度
+					len = len + 2*ADDR_SIZE+1+1;//
+					len = len+START_ADDR_SIZE + 1+4;			
+				}
+				else
+				{
+					len =  2*ADDR_SIZE+1+1;//
+					len = len+START_ADDR_SIZE + 1+4;
+				}	
+		}
+		else if(*getDataSrc() == DAT_FROM_NBIOT||*getDataSrc() == DAT_FROM_PC||*getDataSrc() == DAT_FROM_RELAY)
+		{
+			if(p[17]  != gateway_Rcmd)
+			{
+				len = p[PAYLOAD_LEN_INDEX];//payload长度
+				len = len + 2*ADDR_SIZE+1+1;//
+				len = len+START_ADDR_SIZE + 1+4;			
+			}
+			else
+			{
+				len =  2*ADDR_SIZE+1+1;//
+				len = len+START_ADDR_SIZE + 1+4;
+			}
+
+		}
+	}
 	}
 	else
 	{
-		//len =((u16)(p[PAYLOAD_LEN_INDEX]))<<8+p[PAYLOAD_LEN_INDEX+1];//payload长度
-		len =  2*ADDR_SIZE+1+1;//
-		len = len+START_ADDR_SIZE + 1+4;			
+		if(p[17]  != gateway_Rcmd)
+		{
+			len = p[PAYLOAD_LEN_INDEX];//payload长度
+			len = len + 2*ADDR_SIZE+1+1;//
+			len = len+START_ADDR_SIZE + 1+4;			
+		}
+		else
+		{
+			len =  2*ADDR_SIZE+1+1;//
+			len = len+START_ADDR_SIZE + 1+4;
+		}
+		
 	}
 	return len;
 
 }
+
+
 void packAnaly(unsigned char  *p)
 {
    unsigned int payload_len;
@@ -68,21 +138,47 @@ void packAnaly(unsigned char  *p)
 	protocolC.startAddr[1]=p[2*ADDR_SIZE+1+1+1];
 	if(p[2*ADDR_SIZE+1] !=0x17)
 	{
-	   
-		protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
-		protocolC.payloadLenH = 0;
-		payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
-		//payload_len =payload_len<<8 ;//payload长度
-		//payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
-		memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);	
+		  protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+		  protocolC.payloadLenH = 0;
+		  payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+		  //payload_len =payload_len<<8 ;//payload长度
+		  //payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+		  memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);	
 	}
 	else
 	{
-		protocolC.payloadLenH = 0;
-		protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX]; 
-		payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
-	//	payload_len =payload_len<<8 ;//payload长度
-	//	payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+	   if(ROLE != GATEWAY)
+	   	{
+		   protocolC.payloadLenH = 0;
+		   protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX]; 
+		   payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+	   //  payload_len =payload_len<<8 ;//payload长度
+	   //  payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+
+	   }
+	   else
+	   {
+		   if(*getDataSrc() == DAT_FROM_LORA)
+		   {
+			   protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+			   protocolC.payloadLenH = 0;
+			   payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+			   //payload_len =payload_len<<8 ;//payload长度
+			   //payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+			   memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);		   
+		   }
+		   else if(*getDataSrc() == DAT_FROM_NBIOT||*getDataSrc() == DAT_FROM_PC||*getDataSrc() == DAT_FROM_RELAY)
+		   {
+				   protocolC.payloadLenH = 0;
+				   protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX]; 
+				   payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+			   //  payload_len =payload_len<<8 ;//payload长度
+			   //  payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+
+		   
+		   }
+	  }
+
 	}
 
 }
@@ -97,9 +193,21 @@ unsigned char protocolCAnaly(unsigned char  *p)
 	//memcpy(protocolC.SrcAddr,&(p[ADDR_SIZE]),ADDR_SIZE);//源地址
 	len = getPackLen(p);
 
-	
+	  if(len<16)
+			return 5;
 		calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
 		recCRC=p[len-1]|(((u16)p[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
+		if(calCRC!=recCRC||(calCRC == 0))//CRC校验正确，整个数据包校验正确
+		{
+			calCRC=CRC_Compute(p,len-p[PAYLOAD_LEN_INDEX]-2);//计算所接收数据的CRC
+			recCRC=p[len-p[PAYLOAD_LEN_INDEX]-1]|(((u16)p[len-p[PAYLOAD_LEN_INDEX]-2])<<8);//接收到的CRC(低字节在前，高字节在后)	
+      if(calCRC==recCRC)//CRC校验正确，整个数据包校验正确
+			{
+				len = len - p[PAYLOAD_LEN_INDEX];
+			}
+      else
+        	result = 6;		
+		}			
 		if(calCRC==recCRC)//CRC校验正确，整个数据包校验正确
 		{
 		  memcpy(protocolC.DesAddr ,p,ADDR_SIZE);//目标地址
@@ -112,13 +220,13 @@ unsigned char protocolCAnaly(unsigned char  *p)
 				{
 					result = 0;//本机数据
 					WriteRegisteSet(0x1200,p+ADDR_SIZE,8);//发送端源地址
-	        memcpy(protocolC.DesAddr ,p+ADDR_SIZE,ADDR_SIZE);//目标地址
+	                memcpy(protocolC.DesAddr ,p+ADDR_SIZE,ADDR_SIZE);//目标地址
 				}
 				else
 				{
 					result = 4;//非本机数据
 					WriteRegisteSet(0x1200,p+ADDR_SIZE,8);
-	        memcpy(protocolC.DesAddr ,p+ADDR_SIZE,ADDR_SIZE);//发送端目的地址
+	                memcpy(protocolC.DesAddr ,p+ADDR_SIZE,ADDR_SIZE);//发送端目的地址
 
 				}	
 			}
@@ -159,7 +267,6 @@ unsigned char protocolCAnaly(unsigned char  *p)
 
 		}
 
-
 	}
 		
     /*if(result == 1)
@@ -187,38 +294,82 @@ void dev_params_pack(unsigned int start_addr,unsigned char sensors_prams,unsigne
 			sensors_prams = temperature;
 
 		 }
-	    
+	     data_in_flash_stru *data_in_f;
 	     //reg_addr = ReadRegisterOffsetAddr(start_addr);
 		 if(dataSrc == 0)
 		  p=ReadRegister(start_addr);//
 		 else
-		   getDataFrameAddr();
-		  
-		  for(j=0;j<len;j=j+4)	  
-		  {					  
+		   p = readDataFrame();
 
-			  unsigned char k;
-			  k = j/4;
-			  if(k%2)
-			  {
-			  
-				  if(sensors_prams == temperature)
-				  protocolC.payload[j] =rh;  
-				  else if(sensors_prams == rh)
-				  protocolC.payload[j] = temperature;
+		 if(start_addr == 0x4001)
+		 {
+		    unsigned int count;
+			unsigned char q[2];
+			count = p[0];
+			count = count << 8;
+			count = count + p[1];
+			if(count >= DATA_MAX_COUNT)
+			{
+				count = DATA_MAX_COUNT;
+				q[0] = (unsigned char)(count >> 8);
+				q[1] =(unsigned char) count ;
+
+			}
+			 for(j=0;j<len;j=j+4)	  
+			  {					  
+
+				  unsigned char k;
+				  k = j/4;
+				  if(k%2)
+				  {
+				  
+					  if(sensors_prams == temperature)
+					  protocolC.payload[j] =rh;  
+					  else if(sensors_prams == rh)
+					  protocolC.payload[j] = temperature;
+					  else
+					  protocolC.payload[j] = sensors_prams;				  	
+				  }
 				  else
-				  protocolC.payload[j] = sensors_prams;				  	
-			  }
-			  else
-			  {
-				  protocolC.payload[j] = sensors_prams;// 0 1 2 3	4 5 6 7 8 9 10 11
-			  }
+				  {
+					  protocolC.payload[j] = sensors_prams;// 0 1 2 3	4 5 6 7 8 9 10 11
+				  }
 
-			  protocolC.payload[j+1] = datatype;
-			  memcpy(&protocolC.payload[j+2],p+j/2,2);			  
-		  }   
+				  protocolC.payload[j+1] = datatype;
+				  memcpy(&protocolC.payload[j+2],q,2);			  	
+			  }   		
+		 }
+		 else
+		 {
+			 for(j=0;j<len;j=j+4)	 
+			 {					 
+			 
+				 unsigned char k;
+				 k = j/4;
+				 if(k%2)
+				 {
+				 
+					 if(sensors_prams == temperature)
+					 protocolC.payload[j] =rh;	
+					 else if(sensors_prams == rh)
+					 protocolC.payload[j] = temperature;
+					 else
+					 protocolC.payload[j] = sensors_prams;				   
+				 }
+				 else
+				 {
+					 protocolC.payload[j] = sensors_prams;// 0 1 2 3   4 5 6 7 8 9 10 11
+				 }
+			 
+				 protocolC.payload[j+1] = datatype;
+				 memcpy(&protocolC.payload[j+2],p+j/2,2);			   
+			 } 
+
+		 }
+
 
 }
+
 void get_equipmentData()
 {
 	//enum FUNC_CODE fun_code;
@@ -308,9 +459,6 @@ void get_equipmentData()
 				else  if(dev_code ==pressure_DEV);
 				else  if(dev_code ==flow_DEV);
 				else  if(dev_code ==gateway_DEV);
-				{
-					dev_params_pack(start_addr,sensor_params,len,0);
-				}
 				/*else if(sensor_params== quantity)
 				{
 				      reg_addr = start_addr-reg_quantity;
@@ -457,6 +605,10 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
 	   p[i++] =(u8)(calCRC);
 		}
 
+    unsigned char *nbiot_enable,*data_save;
+		
+	nbiot_enable = ReadRegister(0x45f5);//nbiot 485推肥使能
+	data_save = ReadRegister(0x45f6);//节点数据存储与否
 
 	unsigned char *datasrc;
 	datasrc = getDataSrc();
@@ -464,13 +616,15 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
     {
 		LoraSendPayloadPackTx(p,len+4);
 	}
-	else if(*datasrc== DAT_FROM_NBIOT)//数据来自串口
+	else if(*datasrc== DAT_FROM_NBIOT||nbiot_enable[1]==1)//数据来自nbiot
 	{
-    	SnedToNbiot(p,len+4);
+	    if(Get_Network_status()==SIMCOM_NET_OK)
+    		SnedToNbiot(p,len+4);
 	}
-	else if(*datasrc== DAT_FROM_PC)//数据来自pc
+	else if(*datasrc== DAT_FROM_PC||nbiot_enable[1]==2)//数据来自推肥系统
 	{
-    	RS485_SendData(p, len+4,1);
+	    if(data_save[1]==0)//实时传输
+    		RS485_SendData(p, len+4,1);
 	}
 	else if(*datasrc== DAT_FROM_LORA)//数据来自lora
 	{
@@ -568,10 +722,15 @@ void WrRead_equipment(LORAHW_stru *loraNo)
 	unsigned int len;
 	unsigned int addr;
     unsigned char tmp[256],i;
+	unsigned char *data_save,*nbiot_enable;
+	data_save = ReadRegister(0x45f6);//节点数据存储与否
+	nbiot_enable = ReadRegister(0x45f5);//nbiot 485推肥使能
+
 	len = 0;
     ackmode = 0;
 
-	if(protocolC.funCode == gateway_Rcmd||protocolC.funCode == pc_cmd||protocolC.funCode == auto_report_cmd)//判断功能码是否正确
+	if(protocolC.funCode == gateway_Rcmd||protocolC.funCode == pc_cmd||protocolC.funCode == auto_report_cmd||
+		protocolC.funCode == PC_readFrame)//判断功能码是否正确
 	{
 		len = protocolC.payloadLenH;  //数据长度
 		len = len<<8;
@@ -590,34 +749,98 @@ void WrRead_equipment(LORAHW_stru *loraNo)
 			ackmode = 3;
 		if(protocolC.funCode == gateway_Rcmd)//读寄存器
 		{
-		     get_equipmentData();//获取设备数据
+		     if(ROLE != GATEWAY)
+		     	get_equipmentData();//获取设备数据
+		     else
+		     {
+				 if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK)&&nbiot_enable[1]!=1)//节点数据存储
+				 {
+						for(i = 0;i<len/4;i++)//负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
+						{
+							memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
+						} 
+					 WriteRegisteSet(addr,tmp ,len/2);//写入寄存器数据
+					 DataFrameSave();	 //保存上报数据
+					 ParamsSave(0);
+				 }
+			 }
+
 	         SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
 		}
-		else if(protocolC.funCode == pc_cmd)//写寄存器
+		else if(protocolC.funCode == pc_cmd||protocolC.funCode == PC_readFrame)//写寄存器
 		{
 			
 			for(i = 0;i<len/4;i++)//负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
 			{
 				memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
 			}
-			
-			if(WriteRegisteSet(addr,tmp ,len/2)==0)//写入寄存器数据
+
+			if(addr!=0x4610&&addr!=0x4611)//
 			{
-				 equip_set();//与硬件相关的写操作
-				 
-				 SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
-			}	
-			else
-			{
-				 SendPayloadPack(loraNo, 5);//向网关返回数据或者发送到终端
+		    	if(addr != 0x4001)
+		    	{
+					if(WriteRegisteSet(addr,tmp ,len/2)==0)//写入寄存器数据
+					{
+					 
+						 equip_set();//与硬件相关的写操作
+						if(addr != 0x4002)
+							SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+					}	
+					else
+					{
+						 SendPayloadPack(loraNo, 5);//向网关返回数据或者发送到终端
+					}
+				}
+				else
+				{
+				    if(ROLE == GATEWAY)
+				    {
+						dev_params_pack(addr,rain,len,0);
+						SendPayloadPack(loraNo, ackmode);//
+
+					}
+
+				}
+
 			}
-			ParamsSave(0);
+			else//终端地址
+			{
+			   if(ROLE == GATEWAY)
+			   {
+				   if(addr==0x4610)//增加终端
+					{
+					   if(equip_bind_analy(tmp)==1)
+					   {
+						   equip_bind(tmp);
+					   }
+				   
+				   }
+				   if(addr==0x4611)//删除终端
+				   {
+					   if(equip_bind_analy(tmp)==0)
+					   {
+						  equip_bind_delete(tmp);
+					   }
+				   
+				   }
+
+			   }
+
+			}
+		   ParamsSave(0);
+
 
 		}
 		else if(protocolC.funCode == auto_report_cmd||autoReportMode()==1)//自动上报
 		{
-		    get_equipmentData();//获取设备数据
-		   // WriteRegisteSet(addr,tmp ,len);
+			if(ROLE != GATEWAY)
+		    	get_equipmentData();//获取设备数据
+		    	
+			if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK&&nbiot_enable[1]!=1))//节点数据存储
+			{
+				DataFrameSave();
+			}
+
 			SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
 			
 		}
@@ -625,6 +848,7 @@ void WrRead_equipment(LORAHW_stru *loraNo)
 	else//功能码不正确
 	{
       ackmode = 1;
+	  if(ROLE != GATEWAY)
 		get_equipmentData();//获取设备数据
 	  SendPayloadPack(loraNo, ackmode);//向网关返回数据
 	}
@@ -680,24 +904,26 @@ void PCDevice_Modbus_Process()
 	RS485_Service();//终端模式应答modbus命令
 
 }
-void equipmentProcess(unsigned char flag)
+void equipmentProcess(unsigned char p)
 {  	
    static uint32_t process_period;
    // process_period =HAL_GetTick();
 
 	if((HAL_GetTick()-process_period)>=EQUIP_PRO_PERIOD)
 	{
-	   if(ROLE !=GATEWAY)
+	   if(p ==0)
 		{
+		    if(ROLE != GATEWAY)
 			getRH_T();
-			getvbat();
 		}	
-		
+		getvbat();
 		getGPS();
-    	process_period =HAL_GetTick();
+    process_period =HAL_GetTick();
 	}
 	getRTC();
- 
+
+	if(ROLE != GATEWAY)
+	{
 		if(autoReportMode()==1)
 		{
 			if(wirelessTimoutProcess() == 0)
@@ -710,21 +936,24 @@ void equipmentProcess(unsigned char flag)
 			}
 			if(getRtcStatus()->RtcWakeUP == 1)//休眠时间到主动上报
 			{
-
+		
 				protocolC.devCode = soilRH_DEV;
 				protocolC.startAddr[0] = 0x10;
 				protocolC.startAddr[1] = 0x01 ;
 				protocolC.payloadLenH =0x00;
-				protocolC.payloadLenL = 40;	 
+				protocolC.payloadLenL = 40;  
 				LORAHW_stru loraNo;
 				loraNo.loraNo = 0;
 				loraNo.mode =  TransmitMode;
-			  get_equipmentData();//获取设备数据
+				get_equipmentData();//获取设备数据
 				setDataSrc(DAT_FROM_LORA);
-	      SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
-	      getRtcStatus()->RtcWakeUP = 0;
+				SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
+				getRtcStatus()->RtcWakeUP = 0;
 			}
 				
 				
 		}
+
+	}
+
 }

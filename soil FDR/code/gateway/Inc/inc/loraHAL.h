@@ -4,10 +4,10 @@
 #include "main.h"
 #define LORA_BUFFER_SIZE		512
 
-#define DAT_FROM_RELAY			1
+#define DAT_FROM_RELAY		1
 #define DAT_FROM_NBIOT      2
-#define DAT_FROM_PC				  3
-#define DAT_FROM_LORA			  4
+#define DAT_FROM_PC			3
+#define DAT_FROM_LORA		4
 typedef struct
 {
 	unsigned char receivedFlag1;

@@ -9,39 +9,111 @@
 
 #define Network_Thres    30
 unsigned char one_net_key[]="*296832#571202701#json*";//296832：产品编号；571498701：鉴权码；json：脚本
-unsigned char Establish_TCP_Connection[100]="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
+unsigned char Establish_TCP_Connection[100];//="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
+//unsigned char Establish_TCP_Connection2[100]="AT+CIPSTART=\"TCP\",\"192.168.1.3\",3\r";
 unsigned char	NET_STAUS=SIMCOM_NET_NOT;//网络链接状态信息标志
 uint32_t  SIMCOM_TimeOut_Count;
 unsigned char Get_Network_status(void)
 {
   return NET_STAUS;
 }
-void ServerIP_Pack(unsigned char *p)
+
+unsigned char uchar2ascii(unsigned char *p,unsigned char len,unsigned char *result,unsigned char *result_len)
 {
-    unsigned char i;
+	unsigned char i,j;
+	unsigned  tmp;
+	unsigned char q[20];
+	j = 0;
+	for(i= 0;i<len;i++)
+	{
+	    tmp = p[i];
+		tmp = tmp << 8;
+		tmp = tmp +p[i+1];
+		if(tmp<10)  //0-9
+		{
+			result[j++] = tmp+0x30;
+		}
+		else if(tmp<100)//10-99
+		{
+			result[j++] = tmp/10+0x30;
+			result[j++] = tmp%10+0x30;			
+		}	
+	else if(tmp<1000)//100-999
+	{
+		result[j++] = tmp/100+0x30;
+		result[j++] = tmp%100/10+0x30;	
+	    result[j++] = tmp%10+0x30;
+
+	}
+	else if(tmp<10000)//1000-9999 2221
+	{
+		result[j++] = tmp/1000+0x30;
+		result[j++] = tmp%1000/100+0x30;	
+	    result[j++] = tmp%100/10+0x30;
+	    result[j++] = tmp%10+0x30;
+
+	}
+	else if(tmp<100000)//10000-99999 2221
+	{
+		result[j++] = tmp/10000+0x30;
+		result[j++] = tmp%10000/1000+0x30;	
+	    result[j++] = tmp%1000/100+0x30;
+	    result[j++] = tmp%100/10+0x30;
+	    result[j++] = tmp%10+0x30;
+
+	}		
+ }
+	*result_len = j;
+	result = q;
+}
+void ServerIP_Pack(unsigned char *q)
+{
+    unsigned char i,*result_len,k;
+	unsigned char *p;
+	p = malloc(6);
+	result_len = malloc(1);
 	i = 0;
 	memcpy(Establish_TCP_Connection,TCP_ConnectCMD,sizeof(TCP_ConnectCMD)-1);
-	i = sizeof(TCP_ConnectCMD)-1;
-
-	Establish_TCP_Connection[i++]=p[0];
+	i = sizeof(TCP_ConnectCMD)-2;
+    uchar2ascii(q,1,p,result_len);
+	for(k= 0;k<*result_len;k++)
+	{
+		Establish_TCP_Connection[i++]=p[k];
+	}
 	Establish_TCP_Connection[i++] = '.';
 	
-	Establish_TCP_Connection[i++]=p[1];
+	uchar2ascii(q+2,1,p,result_len);
+	for(k= 0;k<*result_len;k++)
+	{
+		Establish_TCP_Connection[i++]=p[k];
+	}
 	Establish_TCP_Connection[i++] = '.';
 	
-	Establish_TCP_Connection[i++]=p[2];
+	uchar2ascii(q+4,1,p,result_len);
+	for(k= 0;k<*result_len;k++)
+	{
+		Establish_TCP_Connection[i++]=p[k];
+	}
 	Establish_TCP_Connection[i++] = '.';
 	
-	Establish_TCP_Connection[i++]=p[3];
-	Establish_TCP_Connection[i++] = '.';
-	
+	uchar2ascii(q+6,1,p,result_len);
+	for(k= 0;k<*result_len;k++)
+	{
+		Establish_TCP_Connection[i++]=p[k];
+	}
+	//Establish_TCP_Connection[i++] = '.';
 	Establish_TCP_Connection[i++] = '\"';
-	Establish_TCP_Connection[i++] = ',';
+	Establish_TCP_Connection[i++] = ',';	
 	
-	Establish_TCP_Connection[i++] = p[4];
-	
+	uchar2ascii(q+8,1,p,result_len);
+	for(k= 0;k<*result_len;k++)
+	{
+		Establish_TCP_Connection[i++]=p[k];
+	}
 	Establish_TCP_Connection[i++] = '\r';
-	Establish_TCP_Connection[i++] = '"';
+	//Establish_TCP_Connection[i++] = '"';	
+	
+
  
 }
 void SIMCOM_ReConnect()

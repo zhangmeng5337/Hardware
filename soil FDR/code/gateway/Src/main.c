@@ -133,10 +133,10 @@ int main(void)
    ProctocolInit();
 //	loratestInit();
   loraModuleInit();
-//	if(LORA_TX == 0)
-	{
 
-			while(loraUart.receivedFlag1 == 0)
+
+
+			while(loraUart.receivedFlag1 != 1)
 				;
 		 {
 			loraUart.receivedFlag1 = 0;
@@ -144,7 +144,8 @@ int main(void)
 			 loraGpioset(&lorahw);
 			 //lorahw.mode =TransmitMode;
 		 }
-	}
+
+
 
 
    

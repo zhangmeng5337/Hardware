@@ -30,33 +30,33 @@
                                                          
                                                          
                                                          
-#define  soilRH_DEV                     0x01   
-#define  soilCON_DEV                    0x02	 
-#define  co2_DEV	 					0x03   
-#define  con_DEV	 				    0x04   
-#define  sunShine_DEV					0x05   
-#define  pressure_DEV					0x08   
-#define  flow_DEV						0x09   
-#define  gateway_DEV 				    0xfd   
+#define  soilRH_DEV                      0x01   
+#define  soilCON_DEV                     0x02	 
+#define  co2_DEV	 						           0x03   
+#define  con_DEV	 						           0x04   
+#define  sunShine_DEV					    	     0x05   
+#define  pressure_DEV					    	     0x08   
+#define  flow_DEV						      	     0x09   
+#define  gateway_DEV 				      	     0xfd   
                                                          
                                                          
                                                          
-#define 	reg_period_set 	 			0xf001 
-#define 	reg_period_Hmin	 			0xf002 
-#define 	reg_period_Lmin	 			0xf003 
-#define 	reg_period_sec				0xf004 
-#define 	reg_power					0xf005 
-#define 	reg_quantity      			0xf006 
-#define 	reg_node_addr_H				0xf007 
-#define 	reg_node_addr_M				0xf008 
-#define 	reg_node_addr_LM 			0xf009 
-#define 	reg_node_addr_L				0xf00a 
-#define 	reg_lora_native_addr		0xf00b 
-#define 	reg_modbus_sensor_rate		0xf00c 
-#define 	reg_modbus_pc_rate			0xf00d 
-#define 	reg_longitude_H 			0xe000 
-#define 	reg_longitude_M 			0xe001 
-#define 	reg_longitude_LM 		    0xe002 
+#define 	reg_period_set 	 								0xf001 
+#define 	reg_period_Hmin	 								0xf002 
+#define 	reg_period_Lmin	 								0xf003 
+#define 	reg_period_sec									0xf004 
+#define 	reg_power												0xf005 
+#define 	reg_quantity      							0xf006 
+#define 	reg_node_addr_H									0xf007 
+#define 	reg_node_addr_M									0xf008 
+#define 	reg_node_addr_LM 								0xf009 
+#define 	reg_node_addr_L									0xf00a 
+#define 	reg_lora_native_addr			      0xf00b 
+#define 	reg_modbus_sensor_rate		      0xf00c 
+#define 	reg_modbus_pc_rate				      0xf00d 
+#define 	reg_longitude_H 					       	      0xe000 
+#define 	reg_longitude_M 					       	      0xe001 
+#define 	reg_longitude_LM 					       	      0xe002 
 #define 	reg_longitude_L 					       	      0xe003 
 #define 	reg_latitude_H 						       	      0xe008 
 #define 	reg_latitude_M 						       	      0xe009 

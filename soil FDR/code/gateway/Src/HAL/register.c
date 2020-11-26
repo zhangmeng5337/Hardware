@@ -22,7 +22,6 @@ unsigned char array_comp(unsigned char *p1,unsigned char *p2,unsigned char len)
 	}
 	return result;
 }
-
 unsigned int RegisterAddrCal(unsigned int p,unsigned char num)
 {
 	static uint32_t x1,x12,x4,x44,xe,xf;
@@ -39,12 +38,12 @@ unsigned int RegisterAddrCal(unsigned int p,unsigned char num)
 	}
 	switch(num)
 	{
-		case 1:return p-x1;
-		case 2:return p+x12-x12_ADDR_START;		
-		case 3:return p+x4-x4_ADDR_START;
-		case 4:return p+x44-x44_ADDR_START;
-		case 5:return p+xe-xE_ADDR_START;
-		case 6:return p+xf-xF_ADDR_START;
+		case 1:return p-x1;//1x1001-0x0x1102
+		case 2:return p+x12-x12_ADDR_START;		//0x1200-0x1209
+		case 3:return p+x4-x4_ADDR_START;//0x4001-0x43FC
+		case 4:return p+x44-x44_ADDR_START;//0x44f1-0x4610
+		case 5:return p+xe-xE_ADDR_START;//0xe000-0xe00F
+		case 6:return p+xf-xF_ADDR_START;//0xf001-0xf00e
 		case 7:return p+x1;
 		case 8:return p+x12_ADDR_START-x12;	
 		case 9:return p+x4_ADDR_START-x4;
@@ -361,55 +360,59 @@ REG_STATUS_stru *readRigsterStatus()//读取寄存器状态，如果有写操作，做相应的操作
 {
 	return &reg_status;
 }
-/*******************************************************
-功能：终端地址绑定
-参数：
-    @result:
-           0:代表地址已经在网关列表中绑定不需重新绑定
-           1：代表是新绑定终端，需要在网关列表中绑定
-*******************************************************/
 void equip_bind(unsigned char *p)
 {
     unsigned int i,j;
+	unsigned int k;
 	unsigned char result;
+	unsigned char tmp_id[8];
 	result = 0;
-	
+	memset(tmp_id,0,8);
+	k = 0;
 
-        for(i=0;i<register_map.bindCount;i++)
-        {
-            for(j=i;j<8;j++)
-            {
-				if(array_comp(p,register_map.value+j*8,8) == 0)
-				{
-					result = 0;
-					break;
-				}
-				else
-					result = 1;
-			}
-			if(result == 0)
+	for(i=0;i<200;i++)
+	{
+		for(j=i;j<8;j++)
+		{
+			if(array_comp(p,register_map.value+RegisterAddrCal(0x4010,3)*2+j*8,8) == 0)
+			{
+				result = 0;
 				break;
+			}
+			else
+				result = 1;
+
+			if(result == 1)
+			{
+				if(array_comp(tmp_id,register_map.value+RegisterAddrCal(0x4010,3)*2+j*8,8) == 0)//判断缓冲区是否为空
+				{
+					if((k&0x1000)==0)
+					{
+						k = i;
+						k = k|0x1000;
+					}
+
+					//break;
+				}
+			}		
 		}
+		if(result == 0)
+		break;
+	}
 		if(result == 1)
 		{
 			if(register_map.bindCount<200)
 			{
 				register_map.bindCount = register_map.bindCount+1;
-				memcpy(&register_map.value[register_map.bindCount*8+0x4010],p,8);
-			    memcpy(&register_map.value[register_map.bindCount*8+0x4010+8],&p[6],2);
-
+				k = k&0x0fff;
+				uint32_t tt;
+				tt = RegisterAddrCal(0x4010,3);
+				memcpy(&register_map.value[k*8+RegisterAddrCal(0x4010,3)*2],p,8);
 			}
-	     }
+	  }
 		
 
 }
-/*******************************************************
-功能：是否为绑定终端设备判断
-参数：
-    @result:
-           0:  代表是该网关所注册绑定的终端
-           1：代表不是该网关所注册绑定的终端
-*******************************************************/
 
 unsigned char equip_bind_analy(unsigned char *p)
 {
@@ -418,24 +421,56 @@ unsigned char equip_bind_analy(unsigned char *p)
 	result = 1;
 	
 
-        for(i=0;i<register_map.bindCount;i++)
-        {
-            for(j=i;j<8;j++)
-            {
-				if(array_comp(p,register_map.value+j*8,8) == 0)
-				{
-					result = 0;
-					break;
-				}
-				else
-					result = 1;
-			}
-			if(result == 0)
+	for(i=0;i<register_map.bindCount;i++)
+	{
+		for(j=i;j<8;j++)
+		{
+			if(array_comp(p,register_map.value+RegisterAddrCal(0x4010,3)*2+j*8,8) == 0)
+			{
+				result = 0;
 				break;
+			}
+			else
+				result = 1;
 		}
+		if(result == 0)
+			break;
+		//if(result == 1)
+		//	break;
+	}
 		return result;
 
 }
+
+unsigned char equip_bind_delete(unsigned char *p)
+{
+    unsigned int i,j;
+	unsigned char result;
+	result = 1;
+	
+
+	for(i=0;i<register_map.bindCount;i++)
+	{
+		for(j=i;j<8;j++)
+		{
+			if(array_comp(p,register_map.value+RegisterAddrCal(0x4010,3)*2+j*8,8) == 0)
+			{
+				result = 0;
+				memset(&register_map.value[RegisterAddrCal(0x4010,3)*2+j*8],0,8);
+				register_map.bindCount = register_map.bindCount -1;
+
+				break;
+			}
+			else
+				result = 1;
+		}
+		if(result == 0)
+		break;
+	}
+		return result;
+
+}
+
 
 void register_init()
 {
@@ -462,16 +497,6 @@ void register_init()
 		WriteOneRegisterForce(0xf00a,2);//本地节点地址低2字节LORA物理地址
 		q = ReadRegister(0xf00a);
 		WriteOneRegisterForce(0xf00b,((u16)(q[0])<<8)+q[1]);//LORA本地物理地址,与0xf00a相同
-		if(ROLE ==GATEWAY)
-		{
-			q = ReadRegister(0xf006);
-			WriteRegisteSet(0xf006,q,8);
-			WriteRegisteSet(0xf006,&q[6],2);			
-		}
-
-
-
-		
 		WriteOneRegisterForce(0xf00c,2);//农业采集控制终端与传感器通信的Modbus波特率
 		//波特率(2400/4800/9600)0x00-2400;0x01-4800;
 		//0x02-9600;0x03-115200
@@ -480,10 +505,7 @@ void register_init()
 		//波特率(2400/4800/9600)0x00-2400;0x01-4800;
 		//0x02-9600;0x03-115200
 		WriteOneRegisterForce(0xf00e,0);//主动上报
-		WriteOneRegisterForce(0x1001,55);//主动上报
-		WriteOneRegisterForce(0x1006,57);//主动上报
-		WriteOneRegisterForce(0x1202,3);//主动上报
-		WriteOneRegisterForce(0x1205,30);//信道
+
 
 		WriteOneRegisterForce(0x1001,30);//第5层温度
 		WriteOneRegisterForce(0x1002,40);//第5层湿度
@@ -496,23 +518,45 @@ void register_init()
 		WriteOneRegisterForce(0x1009,34);//第1层温度
 		WriteOneRegisterForce(0x100a,44);//第1层湿度
 
-		WriteOneRegisterForce(0xe000,44);//第1层湿度
-		WriteOneRegisterForce(0xe003,47);//第1层湿度
+		WriteOneRegisterForce(0xe000,44);//经度
+		WriteOneRegisterForce(0xe003,47);//纬度
 
 		WriteOneRegisterForce(0x1200,0);//目标网关
 		WriteOneRegisterForce(0x1201,0);//目标网关
 		WriteOneRegisterForce(0x1202,0);//目标网关
 		WriteOneRegisterForce(0x1203,3);//目标网关
-
-
-
-
+		WriteOneRegisterForce(0x1205,4);//空速
+		WriteOneRegisterForce(0x1206,30);//信道
 		
-		WriteOneRegisterForce(0x1206,31);//服务器ip H
-		WriteOneRegisterForce(0x120a,80);//主动上报
+		WriteOneRegisterForce(0x1207,192);//服务器ip H
+		WriteOneRegisterForce(0x1208,168);//服务器ip H
+		WriteOneRegisterForce(0x1209,1);//服务器ip H
+		WriteOneRegisterForce(0x120a,5);//服务器ip H
+		WriteOneRegisterForce(0x120b,80);//服务器端口号	
 
-		
-		//WriteOneRegister(0x1006,57);//主动上报
+		if(ROLE == GATEWAY)
+		{
+			WriteOneRegisterForce(0x4006,0);//网关
+			WriteOneRegisterForce(0x4007,0);//网关
+			WriteOneRegisterForce(0x4008,0);//网关
+			WriteOneRegisterForce(0x4009,2);//网关
+			WriteOneRegisterForce(0x400a,2);//网关
+			WriteOneRegisterForce(0x4409,2);//网关lora地址
+			WriteOneRegisterForce(0x44f1,4);//网关空速
+			WriteOneRegisterForce(0x44f2,30);//网关信道
+
+			WriteOneRegisterForce(0x45f0,192);//服务器ip
+			WriteOneRegisterForce(0x45f1,168);//服务器ip
+			WriteOneRegisterForce(0x45f2,1);//服务器ip
+			WriteOneRegisterForce(0x45f3,3);//服务器ip		
+			WriteOneRegisterForce(0x45f4,3);//服务器端口号	
+			WriteOneRegisterForce(0x45f5,1);//nbiot使能
+			WriteOneRegisterForce(0x45f6,1);//数据切换
+
+			//WriteOneRegister(0x1006,57);//主动上报
+
+		}
+
 }
 REG_val_stru *getRegAddr()
 {

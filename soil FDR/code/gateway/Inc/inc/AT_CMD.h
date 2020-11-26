@@ -27,7 +27,7 @@ const unsigned char Respond_IPR[]="+IPR: 9600";//
 
 
 
-const unsigned char TCP_ConnectCMD[]="AT+CIPSTART=\"TCP\",\"";
+const unsigned char TCP_ConnectCMD[]="AT+CIPSTART=\"TCP\",\"\"";
 
 const unsigned char TIMEOUT[]="AT+CIPTIMEOUT?\r\n";
 const unsigned char TO_DATA_MODE[]="ATO\r";//enter data transparent
