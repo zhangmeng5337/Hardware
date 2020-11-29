@@ -377,7 +377,7 @@ void Modbus_06_Solve(void)
 
 //Modbus功能码03处理程序///////////////////////////////////////////////////////////////////////////////////////已验证程序OK
 //读保持寄存器
-
+extern factor_stru factor_usr;
 void Modbus_07_Solve(void)
 {
 
@@ -387,7 +387,7 @@ void Modbus_07_Solve(void)
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0103))//寄存器地址+数量在范围内
     {
 	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-	   printf("RH TE1 TE2 Voltage:   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2]);
+	   printf("RH TE1 TE2 Voltage:   %10f   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid);
 	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     }
 	
