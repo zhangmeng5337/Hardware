@@ -67,7 +67,7 @@ void ParamsRead(void)
 	 last = getDataFrameAddr();
    addr = 0;
    flash_read(addr++,&p,1);
-  // if(p!=0x5a)
+   if(p!=0x5a)
    {
 	
      p = 0x5a;  //写入标志
@@ -97,44 +97,44 @@ void ParamsRead(void)
 	 flash_write(addr,q->value,REG_SIZE_U);//寄存器数值
 	 addr = addr +REG_SIZE_U;
    }
-//   else
-//   	{
-//   	    
-//	     p = 0x5a;
-//		 q =  getRegAddr();
-//		 addr = 1;
-//		 flash_read(addr++,&(q->bindCount),1);	//读出绑定设备数量
-//		 
-//		 flash_read(addr++,&(tmp),1);//读出上次数据帧地址
-//		 last->lastRead_addr = tmp<<8;
-//		 flash_read(addr++,&(tmp),1);
-//		 last->lastRead_addr =last->lastRead_addr+ tmp;
+   else
+   	{
+   	    
+	     p = 0x5a;
+		 q =  getRegAddr();
+		 addr = 1;
+		 flash_read(addr++,&(q->bindCount),1);	//读出绑定设备数量
+		 
+		 flash_read(addr++,&(tmp),1);//读出上次数据帧地址
+		 last->lastRead_addr = tmp<<8;
+		 flash_read(addr++,&(tmp),1);
+		 last->lastRead_addr =last->lastRead_addr+ tmp;
 
-//		 flash_read(addr++,&(tmp),1);//读出上次数据帧地址
-//		 last->lastWrite_addr = tmp<<24;
-//		 flash_read(addr++,&(tmp),1);
-//		 last->lastWrite_addr =last->lastWrite_addr+ tmp<<16;
-//		 flash_read(addr++,&(tmp),1);
-//		 last->lastWrite_addr =last->lastWrite_addr+ tmp<<8;
-//		 flash_read(addr++,&(tmp),1);
-//		 last->lastWrite_addr =last->lastWrite_addr+ tmp;
+		 flash_read(addr++,&(tmp),1);//读出上次数据帧地址
+		 last->lastWrite_addr = tmp<<24;
+		 flash_read(addr++,&(tmp),1);
+		 last->lastWrite_addr =last->lastWrite_addr+ tmp<<16;
+		 flash_read(addr++,&(tmp),1);
+		 last->lastWrite_addr =last->lastWrite_addr+ tmp<<8;
+		 flash_read(addr++,&(tmp),1);
+		 last->lastWrite_addr =last->lastWrite_addr+ tmp;
 
 
-//		 flash_read(addr,q->value,REG_SIZE);	//寄存器数值
-//        /* flash_init();
-//			addr = 0;
-//		 flash_write(addr++,&p,1);
-//		 flash_write(addr++,&(q->bindCount),1);
-//		 
-//		 tmp = (u8)(last_addr>>8);
-//		 flash_write(addr++,&(tmp),1);	
-//		 tmp = (u8)(last_addr);
-//		 flash_write(addr++,&(tmp),1);
-//		 
-//		 flash_write(addr,q->value,2048);
-//		 addr = addr +2048;*/
-//		 //loraset(4,&p,9);	
-//   }
+		 flash_read(addr,q->value,REG_SIZE_U);	//寄存器数值
+        /* flash_init();
+			addr = 0;
+		 flash_write(addr++,&p,1);
+		 flash_write(addr++,&(q->bindCount),1);
+		 
+		 tmp = (u8)(last_addr>>8);
+		 flash_write(addr++,&(tmp),1);	
+		 tmp = (u8)(last_addr);
+		 flash_write(addr++,&(tmp),1);
+		 
+		 flash_write(addr,q->value,2048);
+		 addr = addr +2048;*/
+		 //loraset(4,&p,9);	
+   }
 		
 		//loraModuleInit();
 }

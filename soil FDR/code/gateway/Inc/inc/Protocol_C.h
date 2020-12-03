@@ -5,6 +5,7 @@
 #include "loraHW.h"                                      
 #define EQUIP_PRO_PERIOD			15000
 
+
 #define PAYLOAD_MAX_LEN		         0x28                  
 #define PAYLOAD_MIN_LEN		         0x01                  
 #define AUTO_REPORT_SIZE			40                                                         

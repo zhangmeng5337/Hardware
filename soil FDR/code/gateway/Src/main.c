@@ -28,6 +28,8 @@
 #include "nbiotHW.h"
 #include "sensor.h"
 #include "rtc.h"
+#include "gps.h"
+
 #include "register.h"
 #include "Protocol_C.h"
 /* USER CODE END Includes */
@@ -131,8 +133,9 @@ int main(void)
    ParamsInit();
 	 RTC_Init();
    ProctocolInit();
-//	loratestInit();
   loraModuleInit();
+  gps_uart_Init();
+  
 
 
 
@@ -148,7 +151,7 @@ int main(void)
 
 
 
-   
+  // gps_powerON();
 
   /* USER CODE END 2 */
 
@@ -160,7 +163,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		sumtime++;
-	EquipGateway_Process();
+		//gps_powerON();
+		// gps_powerON();
+		//HAL_Delay(3000);
+	//	gps_powerON();
+	 EquipGateway_Process();
   }
   /* USER CODE END 3 */
 }

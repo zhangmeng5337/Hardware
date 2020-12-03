@@ -3,7 +3,7 @@
 #include "nbiotHW.h"
 
 extern nbiotUart_stru nbiotUart;;
-unsigned long  Time_Cont = 0;       //定时器计数器
+uint32_t  Time_Cont = 0;       //定时器计数器
 unsigned int count = 0;
 
 void phone(char *number)
@@ -19,7 +19,7 @@ void phone(char *number)
 }
 unsigned char TimeOutFlag=0;
 unsigned char RetryCount;
-unsigned int sendCommand(unsigned char *Command, char *Response, unsigned long Timeout, unsigned char Retry)
+unsigned int sendCommand(unsigned char *Command, char *Response, uint32_t Timeout, unsigned char Retry)
 {
   unsigned char *USARTX_RX_BUF;
   USARTX_RX_BUF =nbiotUart.nbiotRxBuffer;
@@ -66,7 +66,7 @@ unsigned int sendCommand(unsigned char *Command, char *Response, unsigned long T
   Time_Cont = 0;
 // printf("\r\n***************receive****************\r\n");
 // printf(USARTX_RX_BUF);
-NbiotUart_CLR_Buf();
+//NbiotUart_CLR_Buf();
 return Failure;
 }
 

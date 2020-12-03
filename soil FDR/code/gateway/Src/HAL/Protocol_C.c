@@ -225,8 +225,8 @@ unsigned char protocolCAnaly(unsigned char  *p)
 				else
 				{
 					result = 4;//非本机数据
-					WriteRegisteSet(0x1200,p+ADDR_SIZE,8);
-	                memcpy(protocolC.DesAddr ,p+ADDR_SIZE,ADDR_SIZE);//发送端目的地址
+					WriteRegisteSet(0x1200,p,8);
+	        memcpy(protocolC.DesAddr ,p,ADDR_SIZE);//发送端目的地址
 
 				}	
 			}
@@ -606,9 +606,13 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
 		}
 
     unsigned char *nbiot_enable,*data_save;
-		
-	nbiot_enable = ReadRegister(0x45f5);//nbiot 485推肥使能
-	data_save = ReadRegister(0x45f6);//节点数据存储与否
+	if(ROLE == GATEWAY)
+	{
+		nbiot_enable = ReadRegister(0x45f5);//nbiot 485推肥使能
+		data_save = ReadRegister(0x45f6);//节点数据存储与否
+	}		
+
+
 
 	unsigned char *datasrc;
 	datasrc = getDataSrc();
@@ -753,18 +757,21 @@ void WrRead_equipment(LORAHW_stru *loraNo)
 		     	get_equipmentData();//获取设备数据
 		     else
 		     {
-				 if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK)&&nbiot_enable[1]!=1)//节点数据存储
-				 {
-						for(i = 0;i<len/4;i++)//负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
-						{
-							memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
-						} 
-					 WriteRegisteSet(addr,tmp ,len/2);//写入寄存器数据
-					 DataFrameSave();	 //保存上报数据
-					 ParamsSave(0);
+					 if(*getDataSrc() == DAT_FROM_LORA)//
+					 {
+						 if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK)&&nbiot_enable[1]!=1)//节点数据存储
+						 {
+								for(i = 0;i<len/4;i++)//负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
+								{
+									memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
+								} 
+							 WriteRegisteSet(addr,tmp ,len/2);//写入寄存器数据
+							if(Get_Network_status()!=SIMCOM_NET_OK)
+							 DataFrameSave();	 //保存上报数据
+							 ParamsSave(0);
+						 }					 
+					 }
 				 }
-			 }
-
 	         SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
 		}
 		else if(protocolC.funCode == pc_cmd||protocolC.funCode == PC_readFrame)//写寄存器
@@ -904,6 +911,9 @@ void PCDevice_Modbus_Process()
 	RS485_Service();//终端模式应答modbus命令
 
 }
+
+
+
 void equipmentProcess(unsigned char p)
 {  	
    static uint32_t process_period;
@@ -955,5 +965,29 @@ void equipmentProcess(unsigned char p)
 		}
 
 	}
+	if(ROLE == GATEWAY)
+	{
+		if(Get_Network_status()==SIMCOM_NET_OK)
+		{
+		    unsigned char *p;
+			p = getHeartStatus(0);
+			if(*p == 1)//休眠时间到主动上报
+			{
+		        getHeartStatus(1);
+				protocolC.devCode = gateway_DEV;
+				protocolC.startAddr[0] = 0x46;
+				protocolC.startAddr[1] = 0x12 ;
+				protocolC.payloadLenH =0x00;
+				protocolC.payloadLenL = 4;  
+				LORAHW_stru loraNo;
+				loraNo.loraNo = 0;
+				loraNo.mode =  TransmitMode;
+				get_equipmentData();//获取设备数据
+				setDataSrc(DAT_FROM_NBIOT);
+				SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
+				//getRtcStatus()->RtcWakeUP = 0;
+			}
+		}
+	}	
 
 }

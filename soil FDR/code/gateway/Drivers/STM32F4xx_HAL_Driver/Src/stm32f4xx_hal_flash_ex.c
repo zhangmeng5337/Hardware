@@ -200,6 +200,7 @@ HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t
         FLASH_Erase_Sector(index, (uint8_t) pEraseInit->VoltageRange);
 
         /* Wait for last operation to be completed */
+				HAL_Delay(1);
         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
         
         /* If the erase operation is completed, disable the SER and SNB Bits */

@@ -26,15 +26,19 @@ void ParamsInit()
 	p = ReadRegister(0x1206);
 	else
 	p = ReadRegister(0x45f0);		
-	if(ROLE == 1||getModeStatus()== 0x02)
+	if(ROLE == GATEWAY||getModeStatus()== 0x02)
 	{
 		NbiotUartInit();
 		ServerIP_Pack(p);
 		nbiot_HardwareInit(ON);
 	}
-	p = ReadRegister(0xf00c);
-	tmp = uchar2uint(p);
-	sensorModbusRate(tmp,0);
+	if(ROLE != GATEWAY)
+	{
+		p = ReadRegister(0xf00c);
+		tmp = uchar2uint(p);
+		sensorModbusRate(tmp,0);	
+	}
+
 }
 
 
@@ -97,14 +101,18 @@ void EquipGateway_Process()
 
 	 MODE_STAUS = getModeStatus();
 	 unsigned char *nbiot_enable,*data_save;
-	 nbiot_enable = ReadRegister(0x45f5);//nbiot 485推肥使能
-	 data_save = ReadRegister(0x45f6);//节点数据存储与否
+	 if(ROLE == GATEWAY)
+	 {
+	    nbiot_enable = ReadRegister(0x45f5);//nbiot 485推肥使能
+	    data_save = ReadRegister(0x45f6);//节点数据存储与否
+	 }	
 	 
 	if(MODE_STAUS == 0x02||nbiot_enable[1]==1)//带nbiot或者网关数据处理
 	{
 		SIMCOM_Register_Network();
 			unsigned char *tmp,result;
 			tmp = NbiotFrameStatus();//nbiot接收数据标志位
+		  setDataSrc(DAT_FROM_NBIOT);//数据来自nbiot
 			if(tmp[0] == 1&&Get_Network_status()==SIMCOM_NET_OK)
 			{
 				result = protocolCAnaly(NbiotFrameBuffer());
@@ -114,7 +122,7 @@ void EquipGateway_Process()
 				    pcFLag = 1;
 					loraNo.loraNo = 0;
 					loraNo.mode =  TransmitMode;
-					setDataSrc(DAT_FROM_NBIOT);//数据来自nbiot
+					
 					Gateway_Process();//读数据帧寄存器操作
 					if(ROLE != GATEWAY)
 					  wirelessTimoutStart(1);//主动上报模式超时计时标志位

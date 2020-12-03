@@ -32,4 +32,6 @@ void errorLog(int num);
 unsigned char * parseGpsBuffer(void);
 void printGpsBuffer(void);
 void gps_uart_Init(void);
+void gps_powerON(void);
+
 #endif

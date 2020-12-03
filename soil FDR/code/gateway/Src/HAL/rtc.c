@@ -54,11 +54,11 @@ u8 RTC_Init(void)
     hrtc.Init.OutPutPolarity=RTC_OUTPUT_POLARITY_HIGH;
     hrtc.Init.OutPutType=RTC_OUTPUT_TYPE_OPENDRAIN;
     if(HAL_RTC_Init(&hrtc)!=HAL_OK) return 2;
-    //HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5051);
+   // HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5051);
     if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0X5050)//是否第一次配置
     { 
-        RTC_Set_Time(0x16,0x36,0,RTC_HOURFORMAT12_AM);	        //设置时间 ,根据实际时间修改
-		    RTC_Set_Date(0x20,0x11,0x19,0x04);		                    //设置日期
+        RTC_Set_Time(0x14,0x03,0,RTC_HOURFORMAT12_PM);	        //设置时间 ,根据实际时间修改
+		    RTC_Set_Date(0x20,0x12,0x03,0x04);		                    //设置日期
         HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5050);//标记已经初始化过了
   			HAL_RTC_GetTime(&hrtc, &stimestructure, RTC_FORMAT_BCD);
 	      HAL_RTC_GetDate(&hrtc, &sdatestructure, RTC_FORMAT_BCD);

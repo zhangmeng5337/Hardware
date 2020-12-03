@@ -1,6 +1,7 @@
 #ifndef NBIOTHW_H
 #define NBIOTHW_H
  #include "main.h"
+#define GATEWAY_HEART_PERIOD		90000
 
  #define NBIOT_BUFFER_SIZE		1024
 typedef struct
@@ -18,6 +19,7 @@ void Nbiot_RxCpltCallback(void);
 unsigned char *NbiotFrameBuffer(void);
 void Nbiot_SendData(u8 *buff,u8 len);
 unsigned char *NbiotFrameStatus(void);
+unsigned char *getHeartStatus(unsigned char p); 
 
 #endif
 

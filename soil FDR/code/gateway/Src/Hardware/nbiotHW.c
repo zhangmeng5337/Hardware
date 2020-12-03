@@ -1,4 +1,5 @@
 #include "nbiotHW.h"
+#include "nbiotHAL.h"
 nbiotUart_stru nbiotUart;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern UART_HandleTypeDef huart1;
@@ -46,10 +47,10 @@ void nbiot_HardwareInit(unsigned char flag)
 	HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_SET);
 	HAL_Delay(2000);
-	//HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_RESET);                
+	HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_RESET);                
 	//delay_ms(1500);
 	//HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_SET);
-
+   set_NetStatus(SIMCOM_POWER_ON);
 
   }
   else
@@ -79,7 +80,9 @@ void Nbiot_RxCpltCallback()
 			nbiotUart.receivedFlag = 1;
 			HAL_UART_DMAStop(&huart1);
 			HAL_UART_DMAResume(&huart1);
+			
 			HAL_UART_Receive_DMA(&huart1,nbiotUart.nbiotRxBuffer,NBIOT_BUFFER_SIZE);
+			getHeartStatus(1); 
 		}
 	}
 }
@@ -98,6 +101,27 @@ void Nbiot_SendData(u8 *buff,u8 len)
 
         HAL_UART_Transmit(&huart1,buff,len,500);
 
+}
+unsigned char heart;
+unsigned char *getHeartStatus(unsigned char p) 
+{
+	static uint32_t process_period;
+	// process_period =HAL_GetTick();
+	
+
+	 if(p == 1)
+	{
+	 	process_period =HAL_GetTick();
+	 }
+	if((HAL_GetTick()-process_period)>=GATEWAY_HEART_PERIOD)
+	{
+	   heart = 1;
+	   process_period =HAL_GetTick();
+	}
+	else
+		heart = 0;
+
+	return &heart;
 }
 
 

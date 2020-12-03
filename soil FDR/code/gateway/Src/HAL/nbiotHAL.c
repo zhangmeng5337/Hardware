@@ -8,8 +8,10 @@
 
 
 #define Network_Thres    30
-unsigned char one_net_key[]="*296832#571202701#json*";//296832：产品编号；571498701：鉴权码；json：脚本
-unsigned char Establish_TCP_Connection[100];//="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
+unsigned char one_net_key[]="*296832#838905307#json*";//296832：产品编号；571498701：鉴权码；json：脚本
+unsigned char Establish_TCP_Connection[]="AT+CAOPEN=0,0,\"TCP\",\"dtu.heclouds.com\",1811\r";
+
+//unsigned char Establish_TCP_Connection[100];//="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 //unsigned char Establish_TCP_Connection2[100]="AT+CIPSTART=\"TCP\",\"192.168.1.3\",3\r";
 unsigned char	NET_STAUS=SIMCOM_NET_NOT;//网络链接状态信息标志
 uint32_t  SIMCOM_TimeOut_Count;
@@ -156,11 +158,13 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_POWER_ON://SIMCOM_READY_YES:
     {
-      if (sendCommand("AT\r\n", "OK\r\n", 5000, 1) == Success)
+			
+      // if (sendCommand("AT+CGMR\r\n", "OK\r\n", 1000000, 1) == Success)
+     if (sendCommand("AT\r\n", "OK\r\n", 50000, 1) == Success)
         NET_STAUS = SIMCOM_READY_YES;
       else
       {
-        NET_STAUS = SIMCOM_NET_NOT;
+        ;//NET_STAUS = SIMCOM_NET_NOT;
         
       }
         
@@ -168,14 +172,15 @@ void SIMCOM_Register_Network()
     break;
   case SIMCOM_READY_YES:
     {
-      if (sendCommand("ATE0\r\n", "OK\r\n", 5000, 1) == Success)
+      if (sendCommand("ATE0\r\n", "OK\r\n", 10000, 1) == Success)
         NET_STAUS = SIMCOM_CLOSE_ECHO;  
     }
     break;
-    
+
+
   case SIMCOM_CLOSE_ECHO:
     {
-      if (sendCommand("AT+CPIN?\r\n", "READY", 5000, 1) == Success)
+      if (sendCommand("AT+CPIN?\r\n", "READY", 10000, 1) == Success)
         NET_STAUS = SIMCOM_CARD_DET; 
     }
     break;
@@ -191,29 +196,40 @@ void SIMCOM_Register_Network()
     
   case SIMCOM_GPRS_READY:
     {
-      if (sendCommand("AT+CIPSHUT\r\n", "OK", 3000, 1) == Success)
-        NET_STAUS = SIMCOM_NET_CLOSE; 
+      if (sendCommand("AT+CASSLCFG=0,\"SSL\",0\r\n", "OK", 10000, 1) == Success)
+        NET_STAUS = SIMCOM_NET_CONFIG; 
     }
     break;
-  case SIMCOM_NET_CLOSE:
+  case SIMCOM_NET_CONFIG:
     {
-      if (sendCommand("AT+CIPMODE=1\r\n", "OK", 3000, 1) == Success)
-        NET_STAUS = SIMCOM_NET_PASS_THROUGH; 
+      if (sendCommand("AT+CNACT=0,1\r\n", "ACTIVE", 20000, 1) == Success)
+        NET_STAUS = SIMCOM_NET_CLOSE; 
       SIMCOM_TimeOut_Count = 0;
     }
     break;
-  case SIMCOM_NET_PASS_THROUGH:
+
+
+  case SIMCOM_NET_CLOSE://SIMCOM_NET_PASS_THROUGH:
     {
       if (sendCommand(Establish_TCP_Connection, "OK", 500000, 1) == Success)
       {
 
         NET_STAUS=SIMCOM_NET_OK;
-     NET_STAUS=SIMCOM_Connect_Platform;
+        NET_STAUS=SIMCOM_Connect_Platform;
       } 
       
     }
     break;
-  case SIMCOM_Connect_Platform:
+	case SIMCOM_Connect_Platform:
+    {
+      if (sendCommand("AT+CASWITCH =0,1\r\n", "OK", 10000, 1) == Success)
+        NET_STAUS = SIMCOM_NET_PASS_THROUGH; 
+			else
+        NET_STAUS = SIMCOM_NET_PASS_THROUGH; 
+      SIMCOM_TimeOut_Count = 0;
+    }
+    break;
+  case SIMCOM_NET_PASS_THROUGH:
     {
       static unsigned char tx_count;
       

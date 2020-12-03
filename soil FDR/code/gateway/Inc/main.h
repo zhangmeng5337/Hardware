@@ -57,8 +57,8 @@ typedef uint32_t  u32;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-//#define ROLE				EQUIP//0:终端；1：网关
-#define ROLE				GATEWAY//0:终端；1：网关
+#define ROLE				EQUIP//0:终端；1：网关
+//#define ROLE				GATEWAY//0:终端；1：网关
 
 #define GATEWAY				1
 #define EQUIP				0
