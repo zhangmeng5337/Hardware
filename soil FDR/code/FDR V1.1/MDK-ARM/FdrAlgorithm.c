@@ -1,6 +1,8 @@
 #include "FdrAlgorithm.h"
 #include "EEPROM.h"
 #include "adc.h"
+#include "math.h"
+
 factor_stru factor_usr;
 
 
@@ -73,19 +75,29 @@ float SoilHumid(unsigned char status,float AdcValueVol)
 
     float tmp3,v3,v2,v1;
     static float last_temp;
-    float a0,a1,a2;
-    a0 = 82.93;
-    a1 = -27.688;
-    a2 = 12.822;
+    float a0,a1,a2,a3;
+    a0 = 439.7;
+    a1 = -1158.8;
+    a2 = 1103.7;
+    a3 = -319.75;
+
     v3 = AdcValueVol*AdcValueVol;
     v3 = v3*AdcValueVol;
     v2 = AdcValueVol*AdcValueVol;
     v1= AdcValueVol;
 
-	factor_usr.humid=a0*v3;//校准前湿度输出
-	factor_usr.humid=factor_usr.humid+a1*v2;
-	factor_usr.humid=factor_usr.humid+a2*v1;
+    factor_usr.humid=a0*v3;//校准前湿度输出
+    factor_usr.humid=factor_usr.humid+a1*v2;
+    factor_usr.humid=factor_usr.humid+a2*v1;
+    factor_usr.humid=factor_usr.humid+a3;
 
+    if(factor_usr.humid>=80)
+    {
+        a0 = 564.39;
+        a1 = 22.747;
+        factor_usr.humid=a0*log(exp(AdcValueVol));//校准前湿度输出
+        factor_usr.humid=factor_usr.humid+a1;
+    }
     if(factor_usr.status == CALIBRATION)//校准后湿度输出
     {
 
@@ -98,13 +110,13 @@ float SoilHumid(unsigned char status,float AdcValueVol)
         factor_usr.humid=factor_usr.humid+factor_usr.a1*v1;
         factor_usr.humid=factor_usr.humid+factor_usr.a2*v2;
     }
-    
 
-   /* if(AdcValueVol<0.63)
-    {
-        factor_usr.humid = 0;
-        last_temp = 0;
-    }*/
+
+    /* if(AdcValueVol<0.63)
+     {
+         factor_usr.humid = 0;
+         last_temp = 0;
+     }*/
 
     last_temp = last_temp +factor_usr.humid;
     index++;
