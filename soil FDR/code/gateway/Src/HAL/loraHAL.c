@@ -42,7 +42,7 @@ void ParamsInit()
 }
 
 
-void EquipGateway_Process()
+unsigned char EquipGateway_Process()
 {  
 	LORAHW_stru loraNo;
 	unsigned char * datasrcFlag;
@@ -138,9 +138,9 @@ void EquipGateway_Process()
 				tmp[0] = 0;
 			}
 	}
-	else if(nbiot_enable[1] == 2||ROLE != GATEWAY)//485推肥系统使能
+	else if(nbiot_enable[1] == 2)//485推肥系统使能
 	{
-	   if(data_save[1]==0&&ROLE == GATEWAY)
+	   if(data_save[1]==0&&ROLE == GATEWAY)//实时传输
 	   	{
 		   setDataSrc(DAT_FROM_PC);
 		   WrRead_equipment(&loraNo);//读写寄存器操作
@@ -152,7 +152,7 @@ void EquipGateway_Process()
 			 if(protocolCAnaly(modbusBuffer())	== 0)//校验成功,数据来自pc端
 			 {	 
 				  
-				  setDataSrc(3);//数据来自pc
+				  setDataSrc(DAT_FROM_PC);//数据来自pc
 				  loraNo.loraNo = 0;
 				  loraNo.mode =  TransmitMode;
 				  if(ROLE != GATEWAY)
@@ -172,7 +172,9 @@ void EquipGateway_Process()
 
 	}
 
-	equipmentProcess(pcFLag);//设备调度
+	if(equipmentProcess(pcFLag)==1)
+		return 1;//设备调度
+	else return 0;
 	if(loraUart.receivedFlag2 == 1)
 	{
 		

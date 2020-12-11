@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "modbus.h"
+#include "filter.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -226,6 +228,30 @@ void USART1_IRQHandler(void)
 //count2++;
 	
   /* USER CODE END USART1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+  getRatio()->calibrationFlag = 1;//校准开始标志
+  getRatio()->samplecount = 0;
+  
+  getRatio()->aF = 0;//F
+  getRatio()->aG =0;//G
+  getRatio()->aH = 0;//H
+  getRatio()->aI = 0;//I
+  getRatio()->aB =0;//B
+  getRatio()->aC = 0;//C
+  getRatio()->aD = 0;//D
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

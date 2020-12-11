@@ -878,12 +878,14 @@ loraModuleTimeout_stru loraModuleTimeout;
 void wirelessTimoutStart(unsigned char p)
 {
 	loraModuleTimeout.tickFlag = 1;
+	loraModuleTimeout.tickCount = HAL_GetTick();
+
 }
 unsigned char wirelessTimoutProcess()
 {
 	static unsigned int timeoutCount;
   unsigned char result;
-	result = 0;
+	result = 1;
 	if(loraModuleTimeout.tickFlag == 1)
 	{   
 
@@ -893,10 +895,10 @@ unsigned char wirelessTimoutProcess()
 	}
 	if(loraModuleTimeout.tickFlag == 2)
 	{   
-	    if((HAL_GetTick()-loraModuleTimeout.tickCount) >= timeoutCount)
+	    if((HAL_GetTick()-loraModuleTimeout.tickCount) >= timeoutCount*60000)
 	    {
 	        loraModuleTimeout.tickFlag =0;
-			result = 0;
+			    result = 0;
 		}
 		else
 		{
@@ -914,11 +916,11 @@ void PCDevice_Modbus_Process()
 
 
 
-void equipmentProcess(unsigned char p)
+unsigned char  equipmentProcess(unsigned char p)
 {  	
    static uint32_t process_period;
    // process_period =HAL_GetTick();
-
+  
 	if((HAL_GetTick()-process_period)>=EQUIP_PRO_PERIOD)
 	{
 	   if(p ==0)
@@ -934,11 +936,14 @@ void equipmentProcess(unsigned char p)
 
 	if(ROLE != GATEWAY)
 	{
+	    unsigned char result;
+		result = 0;
 		if(autoReportMode()==1)
 		{
 			if(wirelessTimoutProcess() == 0)
 			{
-				 EnterStop();//休眠
+			     
+				 result = EnterStop();//休眠
 			}
 			else
 			{
@@ -959,10 +964,12 @@ void equipmentProcess(unsigned char p)
 				setDataSrc(DAT_FROM_LORA);
 				SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
 				getRtcStatus()->RtcWakeUP = 0;
+				wirelessTimoutStart(1); 
 			}
 				
 				
 		}
+	return result;
 
 	}
 	if(ROLE == GATEWAY)
@@ -988,6 +995,8 @@ void equipmentProcess(unsigned char p)
 				//getRtcStatus()->RtcWakeUP = 0;
 			}
 		}
+		return 0;
 	}	
+	
 
 }

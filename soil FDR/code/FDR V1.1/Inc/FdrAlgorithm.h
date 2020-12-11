@@ -10,6 +10,7 @@ typedef struct{
 	float a1;
 	float a2;	
 	float humid;
+	unsigned char status;
 }factor_stru;
 float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2);
 float SoilHumid(unsigned char status,float AdcValueVol);
@@ -17,4 +18,6 @@ float DataMinusProc(uint32_t *p,unsigned char len,unsigned int times);
 float DataMinusProc2(unsigned char *p,unsigned char len,unsigned int times);
 uint32_t FloatToCharProc(float p,unsigned int times);
 float DigitRound(float p,unsigned char digit);
+factor_stru *getFactor(void);
+
 #endif

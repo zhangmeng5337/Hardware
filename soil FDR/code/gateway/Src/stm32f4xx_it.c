@@ -225,6 +225,11 @@ void RTC_WKUP_IRQHandler(void)
    RTC_STRU *tmp;
   tmp = getRtcStatus();
   tmp->RtcWakeUP = 1;
+		unsigned char p;
+	  p = 2;
+   // RS485_SendData(&p,1,0);
+	//SystemClock_Config();
+	//HAL_NVIC_SystemReset();
   //  RtcWakeUp = 1;
  // RTC_ClearITPendingBit(RTC_IT_WUT);
   /* USER CODE END RTC_WKUP_IRQn 1 */
@@ -297,7 +302,7 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-  Lora_RxCpltCallback(2);
+   Lora_RxCpltCallback(2);
   /* USER CODE END USART2_IRQn 1 */
 }
 

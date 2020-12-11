@@ -14,4 +14,6 @@ typedef struct{
 	unsigned char CalibrationR;	
 }sensor_stru;
 void Get_Adc_Average(unsigned char times);
+sensor_stru *getSensor(void);
+
 #endif

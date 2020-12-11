@@ -12,6 +12,12 @@ unsigned int adcBuf_ref[N];	//参考电压缓冲区
 unsigned int adcBuf_humid[N];	//湿度电压缓冲区
 unsigned int adcBuf_ta[N];//温度a电压缓冲区
 unsigned int adcBuf_tb[N];//温度b电压缓冲区
+
+sensor_stru *getSensor()
+{
+	return &sensor_usr;
+}
+
 /*********************************************************
             adc采集探针，温度传感器电压
 *********************************************************/
@@ -63,7 +69,6 @@ void Get_Adc_Average(unsigned char times)
 		if(tmp_ref>adc_value)
 			tmp_ref = adc_value;
 		 adc_value = 4096*1.2/adc_value;
-	//	adc_value = DigitRound(adc_value,4);	
 		sensor_usr.ADC_REF = adc_value;	
 	}
 	
@@ -106,38 +111,4 @@ void Get_Adc_Average(unsigned char times)
 	  sensor_usr.temperature = SoilTemperature(MEASURE,sensor_usr.sensor[1],sensor_usr.sensor[2])+tmp;
 	}	
 			
-	
-
-//	for(i=0;i<ADC_COUNT;i++)
-//	{
-//	  sensor_usr.sensor[i] = 3.3*sensor_usr.sensor[i]/4095;
-//	}
-//  if(sensor_usr.sensor[0]>value)
-//	{
-//		value=sensor_usr.sensor[0];
-//		freq_last = freq_count;
-//		stop_flag = 0;
-//	}
-//	else
-//		stop_flag = 1;
-
-
-//	#if DEBUG_USER 
-	//	printf("  osc vol:   %f        fa vol:   %f           fb vol:   %f        ta vol:          tb vol:   %f\n",sensor_usr.sensor[0],sensor_usr.sensor[1]
-	//,sensor_usr.sensor[2],sensor_usr.sensor[3],sensor_usr.sensor[4]);
-	//	printf("  fa vol:   %f\n",sensor_usr.sensor[0]);
-		//printf("  fb vol:   %f",sensor_usr.sensor[2]);
-		//printf("  ta vol:   %f",sensor_usr.sensor[3]);
-		//printf("  tb vol:   %f\n",sensor_usr.sensor[4]);
-
-	//temperature = sensor_usr.sensor[3]-sensor_usr.sensor[4];
-/*	float tmp2,tmp3;
-	tmp2=(sensor_usr.sensor[4]/3.3);
-	tmp3= (sensor_usr.sensor[3]-sensor_usr.sensor[4]);
-	tmp3= 2.8048*tmp3;	
-	temperature =tmp3 /tmp2*1000-287.22;	
-	
-		#endif*/
-	
-	//return &adc_io.adc_result[0];
 } 

@@ -62,6 +62,20 @@ void Error_Handler(void);
 
 #define GATEWAY				1
 #define EQUIP				0
+
+
+
+void SystemClock_Config(void);
+ void MX_GPIO_Init(void);
+ void MX_DMA_Init(void);
+ void MX_ADC1_Init(void);
+ void MX_UART5_Init(void);
+ void MX_USART1_UART_Init(void);
+ void MX_USART2_UART_Init(void);
+ void MX_USART3_UART_Init(void);
+ void MX_USART6_UART_Init(void);
+ void MX_RTC_Init(void);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

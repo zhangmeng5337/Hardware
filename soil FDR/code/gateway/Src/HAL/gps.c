@@ -12,9 +12,20 @@ extern UART_HandleTypeDef huart3;
 *************************************************************/
 void gps_uart_Init()
 {
+	unsigned char p;
+	  	 	p = 53;
+    RS485_SendData(&p,1,0);
+	
+    __HAL_UART_CLEAR_IDLEFLAG(&huart3);
+    __HAL_UART_DISABLE_IT(&huart3, UART_IT_RXNE);	//使能空闲中断
+
 	__HAL_UART_CLEAR_IDLEFLAG(&huart3);
 	__HAL_UART_ENABLE_IT(&huart3, UART_IT_RXNE);	//使能空闲中断
+	  	 	p = 53;
+    RS485_SendData(&p,1,0);
 	HAL_UART_Receive_IT(&huart3, &gps_res, 1); 	  // 重新注册一次，要不然下次收不到了
+	  	 	p = 53;
+    RS485_SendData(&p,1,0);
 }
  unsigned char gps_status;
 void gps_powerON()

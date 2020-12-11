@@ -26,6 +26,8 @@
 #include "modbus.h"
 #include "app.h"
 #include "adc.h"
+#include "filter.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,8 +103,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-	 params_init();//设备参数初始化
-   RS485_Init();//
+   params_init();//设备参数初始化
+   RS485_Init();//tur
    HAL_GPIO_WritePin(PWR_EN_GPIO_Port, PWR_EN_Pin, GPIO_PIN_RESET);	 
    HAL_TIM_Base_Start_IT(&htim2);
    HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
@@ -117,12 +119,25 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		//HAL_Delay(1000);
-		
-		if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
+		if(getRatio()->calibrationFlag == 1)
 		{
-			 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-			 tickTime=HAL_GetTick();  				
+			if((HAL_GetTick()-tickTime)>=300)//led指示灯闪烁
+			{
+				 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+				 tickTime=HAL_GetTick();  				
+			}
+
 		}
+		else
+		{
+			if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
+			{
+				 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+				 tickTime=HAL_GetTick();				
+			}
+
+		}
+
 		app_loop();//主程序
   }
   /* USER CODE END 3 */
@@ -377,8 +392,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PB14 */
+  GPIO_InitStruct.Pin = GPIO_PIN_14;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure peripheral I/O remapping */
   __HAL_AFIO_REMAP_PD01_ENABLE();
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 

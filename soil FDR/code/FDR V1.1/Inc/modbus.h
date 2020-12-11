@@ -6,6 +6,7 @@
 #define DEV_ADDR	0x0100
 #define RATE_ADDR	0x0101
 
+#define CALB_ADDR		0xfe
 #define MODBUS_BSIZE	1024
 typedef struct{
 u32 RS485_Baudrate;//通讯波特率

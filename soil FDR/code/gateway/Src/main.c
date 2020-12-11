@@ -29,7 +29,8 @@
 #include "sensor.h"
 #include "rtc.h"
 #include "gps.h"
-
+#include "loraHW.h"
+#include "rtc.h"
 #include "register.h"
 #include "Protocol_C.h"
 /* USER CODE END Includes */
@@ -69,7 +70,7 @@ DMA_HandleTypeDef hdma_usart6_rx;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+/*void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
@@ -78,7 +79,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USART6_UART_Init(void);
-static void MX_RTC_Init(void);
+static void MX_RTC_Init(void);*/
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -97,14 +98,14 @@ uint32_t sumtime;
 int main(void)
 {
   /* USER CODE BEGIN 1 */
- 
+
   
   /* USER CODE END 1 */
-
+   
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+  start:HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -128,28 +129,30 @@ int main(void)
   MX_USART6_UART_Init();
   //MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-   
+ 	unsigned char p;
+   gps_uart_Init(); 
    LoraUartInit();
    ParamsInit();
-	 RTC_Init();
+   RTC_Init();
    ProctocolInit();
-  loraModuleInit();
-  gps_uart_Init();
-  
+   loraModuleInit();
 
 
 
-			while(loraUart.receivedFlag1 != 1)
-				;
-		 {
-			loraUart.receivedFlag1 = 0;
-			 lorahw.mode =TransmitMode;
-			 loraGpioset(&lorahw);
-			 //lorahw.mode =TransmitMode;
-		 }
+
+	while(loraUart.receivedFlag1 != 1)
+	;
+	{
+		loraUart.receivedFlag1 = 0;
+		lorahw.mode =TransmitMode;
+//		loraGpioset(&lorahw);
+  	 	p = 52;
+    RS485_SendData(&p,1,0); 
+		//lorahw.mode =TransmitMode;
+	}
 
 
-
+ // HAL_Delay(8000);
 
   // gps_powerON();
 
@@ -167,7 +170,10 @@ int main(void)
 		// gps_powerON();
 		//HAL_Delay(3000);
 	//	gps_powerON();
-	 EquipGateway_Process();
+	if(EquipGateway_Process()==1)
+	 goto start;	
+	 //EnterStop();
+		
   }
   /* USER CODE END 3 */
 }
@@ -227,7 +233,7 @@ void SystemClock_Config(void)
   * @param None
   * @retval None
   */
-static void MX_ADC1_Init(void)
+ void MX_ADC1_Init(void)
 {
 
   /* USER CODE BEGIN ADC1_Init 0 */
@@ -278,7 +284,7 @@ static void MX_ADC1_Init(void)
   * @param None
   * @retval None
   */
-static void MX_RTC_Init(void)
+ void MX_RTC_Init(void)
 {
 
   /* USER CODE BEGIN RTC_Init 0 */
@@ -346,7 +352,7 @@ static void MX_RTC_Init(void)
   * @param None
   * @retval None
   */
-static void MX_UART5_Init(void)
+ void MX_UART5_Init(void)
 {
 
   /* USER CODE BEGIN UART5_Init 0 */
@@ -379,7 +385,7 @@ static void MX_UART5_Init(void)
   * @param None
   * @retval None
   */
-static void MX_USART1_UART_Init(void)
+ void MX_USART1_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART1_Init 0 */
@@ -412,7 +418,7 @@ static void MX_USART1_UART_Init(void)
   * @param None
   * @retval None
   */
-static void MX_USART2_UART_Init(void)
+ void MX_USART2_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART2_Init 0 */
@@ -445,7 +451,7 @@ static void MX_USART2_UART_Init(void)
   * @param None
   * @retval None
   */
-static void MX_USART3_UART_Init(void)
+ void MX_USART3_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART3_Init 0 */
@@ -478,7 +484,7 @@ static void MX_USART3_UART_Init(void)
   * @param None
   * @retval None
   */
-static void MX_USART6_UART_Init(void)
+ void MX_USART6_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART6_Init 0 */
@@ -509,7 +515,7 @@ static void MX_USART6_UART_Init(void)
 /** 
   * Enable DMA controller clock
   */
-static void MX_DMA_Init(void) 
+ void MX_DMA_Init(void) 
 {
 
   /* DMA controller clock enable */
@@ -540,7 +546,7 @@ static void MX_DMA_Init(void)
   * @param None
   * @retval None
   */
-static void MX_GPIO_Init(void)
+ void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 

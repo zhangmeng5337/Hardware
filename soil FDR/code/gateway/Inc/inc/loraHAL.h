@@ -17,7 +17,7 @@ typedef struct
 	unsigned char lora2RxBuffer[LORA_BUFFER_SIZE];	
 }loraUart_stru;
 
-void EquipGateway_Process(void);
+unsigned char EquipGateway_Process(void);
 void ParamsInit(void);
 loraUart_stru *getloraProcStatus(void);
 

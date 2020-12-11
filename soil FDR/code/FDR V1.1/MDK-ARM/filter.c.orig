@@ -1,0 +1,73 @@
+#include "filter.h"
+unsigned int *value_buf;
+extern  unsigned int adcBuf_ref[N];	
+extern	unsigned int adcBuf_humid[N];	
+extern	unsigned int adcBuf_ta[N];
+extern	unsigned int adcBuf_tb[N];
+ratio_stru ratio;
+/****************************************
+¾ùÖµÂË²¨
+*****************************************/
+uint32_t filter(uint32_t seq)  
+{  
+   unsigned char count;  
+     
+   uint32_t  sum=0;  
+			switch(seq)
+			{
+				case 0: value_buf=adcBuf_ref;break;
+				case 1: value_buf=adcBuf_humid;break;
+				case 2: value_buf=adcBuf_ta;break;
+				case 3: value_buf=adcBuf_tb;break;				
+			}
+//   for (j=0;j<N-1;j++)  
+//   {  
+//      for (i=0;i<N-j;i++)  
+//      {  
+//         if ( value_buf[i]>value_buf[i+1] )  
+//         {  
+//            temp = value_buf[i];  
+//            value_buf[i] = value_buf[i+1];   
+//             value_buf[i+1] = temp;  
+//         }  
+//      }  
+//   }  
+   for(count=0;count<N;count++)  
+      sum += value_buf[count];  
+   return (sum/(N));  
+}
+ratio_stru *getRatio()
+{
+	return &ratio;
+}
+ratio_stru *CalibrationRatio(float ahumid,float chumid)
+{
+    float c1,c2,c3,c4,humid;
+	static unsigned char samplecount;
+	c1 = chumid;
+	c2 = chumid*chumid;
+	c3 = c2*chumid;	
+	c4 = c3*chumid;	
+	ratio.status = 1;
+	if(samplecount < AN)
+	{
+	    samplecount ++;
+		ratio.aF = ratio.aF + c1;//F
+		ratio.aG = ratio.aG + c2;//G
+		ratio.aH = ratio.aH + c3;//H	
+		ratio.aI = ratio.aI + c4;//I
+		ratio.aB = ratio.aB + ahumid;//B
+		ratio.aC = ratio.aC + ahumid*c1;//C
+		ratio.aD = ratio.aD + ahumid*c2;//D
+		ratio.status = 1;
+	}
+	else
+	{
+		humid = ratio.a0 + ratio.a1*c1+ ratio.a2*c2;
+        samplecount = 0;
+		ratio.status = 0;
+		ratio.calibrationFlag = 0;
+	}
+
+	return &ratio;
+}

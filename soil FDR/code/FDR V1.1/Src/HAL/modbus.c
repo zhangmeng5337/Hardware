@@ -15,6 +15,8 @@ void Modbus_06_Solve(void);
 void Modbus_07_Solve(void);
 void Modbus_08_Solve(void);
 void Modbus_09_Solve(void);
+void Modbus_10_Solve(void);
+void Modbus_11_Solve(void);
 void Modbus_16_Solve(void);
 extern factor_stru factor_usr;
 u16 startRegAddr;//寄存器地址
@@ -86,17 +88,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     u8 err;
     if(huart->Instance == USART1)
     {
-			 count++;
+        count++;
         if(HAL_UART_GetError(&huart1)) err=1;//检测到噪音、帧错误或校验错误
         else err=0;
         if((modbus_usr.RS485_RX_CNT<2047)&&(err==0))
         {
             modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT]=res;
             modbus_usr.RS485_RX_CNT++;
-						modbus_usr.RS485_FrameFlag=1;//置位帧结束标记
+            modbus_usr.RS485_FrameFlag=1;//置位帧结束标记
             Tick4ms =HAL_GetTick();			 //当接收到一个新的字节，将定时器7复位为0，重新计时（相当于喂狗）
-						//开始计时
-        }            
+            //开始计时
+        }
         HAL_UART_Receive_IT(&huart1, &res, 1); 	  // 重新注册一次，要不然下次收不到了
     }
 }
@@ -108,20 +110,20 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 void timCallback()
 {
 
-        //编写回调逻辑，即定时器1定时1MS后的逻辑
-        HAL_TIM_Base_Stop_IT(&htim2);  //停止定时器的时候调用这个函数关闭
-        modbus_usr.RS485_TX_EN=1;//停止接收，切换为发送状态
-		if(modbus_usr.RS485_FrameFlag==1)
-		{
-			if((HAL_GetTick()-Tick4ms)>=4)
-			modbus_usr.RS485_FrameFlag=2;//置位帧结束标记
+    //编写回调逻辑，即定时器1定时1MS后的逻辑
+    HAL_TIM_Base_Stop_IT(&htim2);  //停止定时器的时候调用这个函数关闭
+    modbus_usr.RS485_TX_EN=1;//停止接收，切换为发送状态
+    if(modbus_usr.RS485_FrameFlag==1)
+    {
+        if((HAL_GetTick()-Tick4ms)>=4)
+            modbus_usr.RS485_FrameFlag=2;//置位帧结束标记
 
-		}
-		else if(modbus_usr.RS485_FrameFlag!=2)
-		{
-			Tick4ms =HAL_GetTick();
-			modbus_usr.RS485_FrameFlag=3;//置位帧结束标记		
-		}
+    }
+    else if(modbus_usr.RS485_FrameFlag!=2)
+    {
+        Tick4ms =HAL_GetTick();
+        modbus_usr.RS485_FrameFlag=3;//置位帧结束标记
+    }
 
 
 }
@@ -130,28 +132,29 @@ void timCallback()
 
 void RS485_Service(void)
 {
-	static uint32_t tickTime_adc;
-	static unsigned char tick_1s;
+    static uint32_t tickTime_adc;
+    static unsigned char tick_1s;
     u16 recCRC;
-		if((HAL_GetTick()-tickTime_adc)>=50)//周期性采集模拟电压，50ms一次
-		{
-			 Get_Adc_Average(N);
-			tickTime_adc=HAL_GetTick();
-			tick_1s++;			
-			if(TesetFlag==1&&tick_1s>=30)
-			{
-				  tick_1s = 0;
-					Modbus_07_Solve();
-			}	
-		}
-		else
-			tickTime_adc=tickTime_adc;
+    if((HAL_GetTick()-tickTime_adc)>=50)//周期性采集模拟电压，50ms一次
+    {
+        if(getRatio()->calibrationFlag == 0 )
+            Get_Adc_Average(N);
+        tickTime_adc=HAL_GetTick();
+        tick_1s++;
+        if(TesetFlag==1&&tick_1s>=30)
+        {
+            tick_1s = 0;
+            Modbus_07_Solve();
+        }
+    }
+    else
+        tickTime_adc=tickTime_adc;
     if(modbus_usr.RS485_FrameFlag==2)//收到一完整数据包
     {
-        if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr)//地址正确
+        if(modbus_usr.RS485_RX_BUFF[0]==modbus_usr.RS485_Addr||modbus_usr.RS485_RX_BUFF[0]==CALB_ADDR)//地址正确
         {
             if((modbus_usr.RS485_RX_BUFF[1]==03)||(modbus_usr.RS485_RX_BUFF[1]==06)||(modbus_usr.RS485_RX_BUFF[1]==07)
-							||(modbus_usr.RS485_RX_BUFF[1]==8)||(modbus_usr.RS485_RX_BUFF[1]==9))//功能码正确
+                    ||(modbus_usr.RS485_RX_BUFF[1]==8)||(modbus_usr.RS485_RX_BUFF[1]==9)||(modbus_usr.RS485_RX_BUFF[1]==10))//功能码正确
             {
                 startRegAddr=(((u16)modbus_usr.RS485_RX_BUFF[2])<<8)|modbus_usr.RS485_RX_BUFF[3];//获取寄存器起始地址
                 if(startRegAddr<1000)//寄存器地址在范围内
@@ -160,12 +163,12 @@ void RS485_Service(void)
                     recCRC=modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-1]|(((u16)modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-2])<<8);//接收到的CRC(低字节在前，高字节在后)
                     if(calCRC==recCRC)//CRC校验正确
                     {
-											TesetFlag = 0;
+                        TesetFlag = 0;
                         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         switch(modbus_usr.RS485_RX_BUFF[1])//根据不同的功能码进行处理
                         {
                         case 3: //读寄存器
-                        {		
+                        {
                             Modbus_03_Solve();
                             break;
                         }
@@ -177,20 +180,32 @@ void RS485_Service(void)
                         }
                         case 7: //测试模式，连续输出数据 0x01	0x07	0x0002	0x0002	0x940b
                         {
-													  TesetFlag = 1;
+                            TesetFlag = 1;
                             break;
                         }
                         case 8: //湿度校准系数
-                        {													 
+                        {
                             Modbus_08_Solve();
                             break;
                         }
                         case 9: //参考电压、温度补偿、湿度电压补偿
-                        {													 
+                        {
                             Modbus_09_Solve();
                             break;
                         }
-                        default:TesetFlag = 0;
+                        case 10: //启动校准
+                        {
+                            Modbus_10_Solve();
+                            break;
+                        }
+                        case 11: //校准
+                        {
+                            Modbus_11_Solve();
+                            break;
+                        }
+
+                        default:
+                            TesetFlag = 0;
                             ;
                         }
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,18 +235,18 @@ void RS485_Service(void)
                 RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
             }
         }
-       
+
         modbus_usr.RS485_FrameFlag=0;//复位帧结束标志
         modbus_usr.RS485_RX_CNT=0;//接收计数器清零
         modbus_usr.RS485_TX_EN=0;//开启接收模式
     }
-		if( modbus_usr.RS485_FrameFlag==3)
-		{
+    if( modbus_usr.RS485_FrameFlag==3)
+    {
         modbus_usr.RS485_FrameFlag=0;//复位帧结束标志
         modbus_usr.RS485_RX_CNT=0;//接收计数器清零
         modbus_usr.RS485_TX_EN=0;//开启接收模式
-		}
-		HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+    }
+    HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
 }
 
 
@@ -258,13 +273,13 @@ void Modbus_03_Solve(void)
             {
                 if(i<1)
                 {
-									  tmp = sensor_usr.rh;
+                    tmp = sensor_usr.rh;
                     modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((tmp>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
                     modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
                 else if(i<2)
                 {
-									  tmp = sensor_usr.temperature;
+                    tmp = sensor_usr.temperature;
                     modbus_usr.RS485_TX_BUFF[3+i*2]=(unsigned char)((tmp>>8)&&0xff);//(*Modbus_HoldReg[startRegAddr+i]>>8)&0xFF;//           /////////先发送高字节--在发送低字节
                     modbus_usr.RS485_TX_BUFF[4+i*2]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
@@ -309,15 +324,15 @@ void Modbus_06_Solve(void)
 {
 
     unsigned char i;
-	   RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
+    RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|modbus_usr.RS485_RX_BUFF[5];//获取寄存器数量
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0100||startRegAddr==0x0101))//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
         modbus_usr.RS485_TX_BUFF[2]=startRegAddr>>8;
-        modbus_usr.RS485_TX_BUFF[3]=startRegAddr;			
-        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];	
-        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];			
+        modbus_usr.RS485_TX_BUFF[3]=startRegAddr;
+        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];
+        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];
         for(i=0; i<RegNum; i++)
         {
 
@@ -358,19 +373,19 @@ void Modbus_06_Solve(void)
                     //modbus_usr.RS485_TX_BUFF[4+i*2]=(sensor_usr.temperature)&&0xff;//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
                 }
             }
-             unsigned char addr;
-            addr = 0;	
-			      flash_init();
+            unsigned char addr;
+            addr = 0;
+            flash_init();
             flash_write(addr++,0x5a,1);
             flash_write(addr++,modbus_usr.RS485_Addr,1);
             flash_write(addr++,modbus_usr.RS485_Baudrate,1);
             flash_write(addr++,modbus_usr.RS485_Parity,1);
             fator_save_proc(addr);
         }
-          calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
+        calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
         modbus_usr.RS485_TX_BUFF[6]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
         modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
-         RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
+        RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
     }
 }
 
@@ -382,16 +397,16 @@ void Modbus_07_Solve(void)
 {
 
 
-	
-   RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
+
+    RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0103))//寄存器地址+数量在范围内
     {
-	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-	   printf("RH TE1 TE2 Voltage:   %10f   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid);
-	   HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
+        printf("RH TE1 TE2 Voltage:   %10f   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid);
+        HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     }
-	
-	
+
+
 }
 //Modbus功能码06处理程序   //////////////////////////////////////////////////////////////////////////////////已验证程序OK
 //写单个保持寄存器
@@ -400,50 +415,50 @@ void Modbus_08_Solve(void)
 {
     RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
     if((startRegAddr+RegNum)<1000&&(startRegAddr+RegNum)>=12&&(startRegAddr==0x0102)
-			&&(RegNum==0x000c))//寄存器地址+数量在范围内
+            &&(RegNum==0x000c))//寄存器地址+数量在范围内
     {
         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
         modbus_usr.RS485_TX_BUFF[2]=startRegAddr>>8;
-        modbus_usr.RS485_TX_BUFF[3]=startRegAddr;			
-        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];	
-        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];			
-        modbus_usr.RS485_TX_BUFF[6]=modbus_usr.RS485_RX_BUFF[6];	
-        modbus_usr.RS485_TX_BUFF[7]=modbus_usr.RS485_RX_BUFF[7];	
-        modbus_usr.RS485_TX_BUFF[8]=modbus_usr.RS485_RX_BUFF[8];	
-        modbus_usr.RS485_TX_BUFF[9]=modbus_usr.RS485_RX_BUFF[9];	
-        modbus_usr.RS485_TX_BUFF[10]=modbus_usr.RS485_RX_BUFF[10];	
-        modbus_usr.RS485_TX_BUFF[11]=modbus_usr.RS485_RX_BUFF[11];	
-        modbus_usr.RS485_TX_BUFF[12]=modbus_usr.RS485_RX_BUFF[12];	
-        modbus_usr.RS485_TX_BUFF[13]=modbus_usr.RS485_RX_BUFF[13];	
-        modbus_usr.RS485_TX_BUFF[14]=modbus_usr.RS485_RX_BUFF[14];	
+        modbus_usr.RS485_TX_BUFF[3]=startRegAddr;
+        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];
+        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];
+        modbus_usr.RS485_TX_BUFF[6]=modbus_usr.RS485_RX_BUFF[6];
+        modbus_usr.RS485_TX_BUFF[7]=modbus_usr.RS485_RX_BUFF[7];
+        modbus_usr.RS485_TX_BUFF[8]=modbus_usr.RS485_RX_BUFF[8];
+        modbus_usr.RS485_TX_BUFF[9]=modbus_usr.RS485_RX_BUFF[9];
+        modbus_usr.RS485_TX_BUFF[10]=modbus_usr.RS485_RX_BUFF[10];
+        modbus_usr.RS485_TX_BUFF[11]=modbus_usr.RS485_RX_BUFF[11];
+        modbus_usr.RS485_TX_BUFF[12]=modbus_usr.RS485_RX_BUFF[12];
+        modbus_usr.RS485_TX_BUFF[13]=modbus_usr.RS485_RX_BUFF[13];
+        modbus_usr.RS485_TX_BUFF[14]=modbus_usr.RS485_RX_BUFF[14];
         modbus_usr.RS485_TX_BUFF[15]=modbus_usr.RS485_RX_BUFF[15];
         modbus_usr.RS485_TX_BUFF[16]=modbus_usr.RS485_RX_BUFF[16];
         modbus_usr.RS485_TX_BUFF[17]=modbus_usr.RS485_RX_BUFF[17];
-			
-						factor_usr.a0 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,10);
-						factor_usr.a1 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4,10);
-						factor_usr.a2 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[14]),4,10);
-					
-             unsigned char addr;
-            addr = 0;	
-			      flash_init();
-            flash_write(addr++,0x5a,1);
-            flash_write(addr++,modbus_usr.RS485_Addr,1);
-            flash_write(addr++,modbus_usr.RS485_Baudrate,1);
-            flash_write(addr++,modbus_usr.RS485_Parity,1);
-						//if(sensor_usr.CalibrationVref!=0)
-						{
-							fator_save_proc(addr);
-							flash_write(addr+12+4+4,sensor_usr.CalibrationT,1);	
-						}
-						//else
-           // flash_write_bytes(addr++,&(modbus_usr.RS485_RX_BUFF[6]),12);			
-            calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,18);
-			
+
+        factor_usr.a0 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,10);
+        factor_usr.a1 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4,10);
+        factor_usr.a2 = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[14]),4,10);
+
+        unsigned char addr;
+        addr = 0;
+        flash_init();
+        flash_write(addr++,0x5a,1);
+        flash_write(addr++,modbus_usr.RS485_Addr,1);
+        flash_write(addr++,modbus_usr.RS485_Baudrate,1);
+        flash_write(addr++,modbus_usr.RS485_Parity,1);
+        //if(sensor_usr.CalibrationVref!=0)
+        {
+            fator_save_proc(addr);
+            flash_write(addr+12+4+4,sensor_usr.CalibrationT,1);
+        }
+        //else
+        // flash_write_bytes(addr++,&(modbus_usr.RS485_RX_BUFF[6]),12);
+        calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,18);
+
         modbus_usr.RS485_TX_BUFF[18]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
         modbus_usr.RS485_TX_BUFF[19]=(calCRC)&0xFF;
-         RS485_SendData(modbus_usr.RS485_TX_BUFF,20);
+        RS485_SendData(modbus_usr.RS485_TX_BUFF,20);
     }
 
 }
@@ -452,37 +467,96 @@ void Modbus_09_Solve(void)
     RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0104)&&(RegNum==0x0009))//寄存器地址+数量在范围内
     {
-			modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
-			modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
-			modbus_usr.RS485_TX_BUFF[2]=startRegAddr>>8;
-			modbus_usr.RS485_TX_BUFF[3]=startRegAddr;			
-			modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];	
-			modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];			
-			modbus_usr.RS485_TX_BUFF[6]=modbus_usr.RS485_RX_BUFF[6];	
-			modbus_usr.RS485_TX_BUFF[7]=modbus_usr.RS485_RX_BUFF[7];
-			modbus_usr.RS485_TX_BUFF[8]=modbus_usr.RS485_RX_BUFF[8];
-			modbus_usr.RS485_TX_BUFF[9]=modbus_usr.RS485_RX_BUFF[9];
-			modbus_usr.RS485_TX_BUFF[10]=modbus_usr.RS485_RX_BUFF[10];
-			modbus_usr.RS485_TX_BUFF[11]=modbus_usr.RS485_RX_BUFF[11];
-			modbus_usr.RS485_TX_BUFF[12]=modbus_usr.RS485_RX_BUFF[12];
-			modbus_usr.RS485_TX_BUFF[13]=modbus_usr.RS485_RX_BUFF[13];
-			modbus_usr.RS485_TX_BUFF[14]=modbus_usr.RS485_RX_BUFF[14];
-			
-			sensor_usr.CalibrationProbeVref =  DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4,1000);	//探针空测电压放大1000倍	
-			sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[14];//温度补偿
-      if(modbus_usr.RS485_RX_BUFF[6]!=0||modbus_usr.RS485_RX_BUFF[7]!=0||modbus_usr.RS485_RX_BUFF[8]!=0||modbus_usr.RS485_RX_BUFF[9]!=0)			
-			{	
-				sensor_usr.CalibrationVref = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,1000);//参考电压
-			}
-			else
-			{
-				
-				params_save();			
-			}
-			
-			calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,15);
-			modbus_usr.RS485_TX_BUFF[15]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
-			modbus_usr.RS485_TX_BUFF[16]=(calCRC)&0xFF;
-			RS485_SendData(modbus_usr.RS485_TX_BUFF,17);
+        modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
+        modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1];
+        modbus_usr.RS485_TX_BUFF[2]=startRegAddr>>8;
+        modbus_usr.RS485_TX_BUFF[3]=startRegAddr;
+        modbus_usr.RS485_TX_BUFF[4]=modbus_usr.RS485_RX_BUFF[4];
+        modbus_usr.RS485_TX_BUFF[5]=modbus_usr.RS485_RX_BUFF[5];
+        modbus_usr.RS485_TX_BUFF[6]=modbus_usr.RS485_RX_BUFF[6];
+        modbus_usr.RS485_TX_BUFF[7]=modbus_usr.RS485_RX_BUFF[7];
+        modbus_usr.RS485_TX_BUFF[8]=modbus_usr.RS485_RX_BUFF[8];
+        modbus_usr.RS485_TX_BUFF[9]=modbus_usr.RS485_RX_BUFF[9];
+        modbus_usr.RS485_TX_BUFF[10]=modbus_usr.RS485_RX_BUFF[10];
+        modbus_usr.RS485_TX_BUFF[11]=modbus_usr.RS485_RX_BUFF[11];
+        modbus_usr.RS485_TX_BUFF[12]=modbus_usr.RS485_RX_BUFF[12];
+        modbus_usr.RS485_TX_BUFF[13]=modbus_usr.RS485_RX_BUFF[13];
+        modbus_usr.RS485_TX_BUFF[14]=modbus_usr.RS485_RX_BUFF[14];
+
+        sensor_usr.CalibrationProbeVref =  DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[10]),4,1000);	//探针空测电压放大1000倍
+        sensor_usr.CalibrationT = modbus_usr.RS485_RX_BUFF[14];//温度补偿
+        if(modbus_usr.RS485_RX_BUFF[6]!=0||modbus_usr.RS485_RX_BUFF[7]!=0||modbus_usr.RS485_RX_BUFF[8]!=0||modbus_usr.RS485_RX_BUFF[9]!=0)
+        {
+            sensor_usr.CalibrationVref = DataMinusProc2(&(modbus_usr.RS485_RX_BUFF[6]),4,1000);//参考电压
+        }
+        else
+        {
+
+            params_save();
+        }
+
+        calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,15);
+        modbus_usr.RS485_TX_BUFF[15]=(calCRC>>8)&0xFF;         //CRC高地位不对吗？  // 先高后低
+        modbus_usr.RS485_TX_BUFF[16]=(calCRC)&0xFF;
+        RS485_SendData(modbus_usr.RS485_TX_BUFF,17);
     }
 }
+void Modbus_10_Solve(void)
+{
+    RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
+    if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0105)&&(RegNum==0x0002))//寄存器地址+数量在范围内
+    {
+        getRatio()->calibrationFlag = 1;//校准开始标志
+        getRatio()->samplecount = 0;
+
+        getRatio()->aF = 0;//F
+        getRatio()->aG =0;//G
+        getRatio()->aH = 0;//H
+        getRatio()->aI = 0;//I
+        getRatio()->aB =0;//B
+        getRatio()->aC = 0;//C
+        getRatio()->aD = 0;//D
+
+    }
+
+}
+void Modbus_11_Solve(void)
+{
+    RegNum= ((modbus_usr.RS485_RX_BUFF[2]));//获取寄存器数量
+    if(RegNum==0x06)//寄存器地址+数量在范围内
+    {
+        float tmp1,tmp2;
+        uint32_t tmp3;
+        if(getRatio()->calibrationFlag == 1 )
+        {
+            Get_Adc_Average(N);
+
+            tmp1 = getSensor()->rh;
+            tmp1 = tmp1 / 10.0;
+            tmp3 = modbus_usr.RS485_RX_BUFF[3] >> 8;
+            tmp3 = tmp3 + modbus_usr.RS485_RX_BUFF[4];
+            tmp2 = tmp3 / 10.0;
+
+            if(CalibrationRatio(tmp1,tmp2)->status == 0)//进行校准，校准完成
+            {
+                getFactor()->a0 = getRatio()->a0; //更新校准系数
+                getFactor()->a1 = getRatio()->a1;
+                getFactor()->a2 = getRatio()->a2;
+                getFactor()->status = 1;//校准完成标志位
+                params_save();
+            }
+            else
+            {
+                getFactor()->a0 = 82.93;
+                getFactor()->a1 = -27.688;
+                getFactor()->a2 = 12.822;
+                getFactor()->status = 0;
+
+            }
+
+        }
+
+    }
+
+}
+

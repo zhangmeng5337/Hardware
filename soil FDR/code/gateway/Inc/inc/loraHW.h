@@ -46,7 +46,7 @@ void LoraTest(void);
 void Lora_RxCpltCallback(unsigned char uartNo);
 void LoraUartInit(void);
 void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len);
-void EnterStop(void);
+unsigned char EnterStop(void);
 void ParamsSave(unsigned char datasrc);//²ÎÊý±£´æ
 
 

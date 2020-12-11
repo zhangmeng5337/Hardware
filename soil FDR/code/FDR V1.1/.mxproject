@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/Administrator/Desktop/FDR V1.1/Inc
+HeaderPath=F:/code/FDR V1.1/Inc
 HeaderFiles=stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=C:/Users/Administrator/Desktop/FDR V1.1/Src
+SourcePath=F:/code/FDR V1.1/Src
 SourceFiles=stm32f1xx_it.c;stm32f1xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

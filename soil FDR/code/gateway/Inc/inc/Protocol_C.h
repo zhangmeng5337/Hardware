@@ -141,7 +141,7 @@ typedef struct
   unsigned char tickFlag;
   uint32_t tickCount;
 }loraModuleTimeout_stru;
-void equipmentProcess(unsigned char p);
+unsigned char equipmentProcess(unsigned char p);
 void get_equipmentData(void);
 unsigned char protocolCAnaly(unsigned char  *p);
 void WrRead_equipment(LORAHW_stru *loraNo);

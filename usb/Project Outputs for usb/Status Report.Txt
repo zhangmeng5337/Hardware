@@ -1,9 +1,14 @@
-Output: Bill of Materials
-Type  : BOM
+Output: NC Drill Files
+Type  : NC Drill
 From  : Project [usb.PrjPCB]
+   Generated File[PCB2-RoundHoles.TXT]
+   Generated File[PCB2-SlotHoles.TXT]
+   Generated File[PCB2.DRL]
+   Generated File[PCB2.LDP]
+   Generated File[PCB2.DRR]
 
 
-Files Generated   : 0
+Files Generated   : 5
 Documents Printed : 0
 
-Finished Output Generation At 10:41:40 On 2020/12/3
+Finished Output Generation At 14:14:11 On 2020/12/9

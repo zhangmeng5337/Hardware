@@ -1,6 +1,8 @@
 #include "rtc.h"
 #include "stdlib.h"
 #include "register.h"
+#include "modbus.h"
+
 extern RTC_HandleTypeDef hrtc;
  RTC_STRU rtc_usr;
 
@@ -45,6 +47,12 @@ HAL_StatusTypeDef RTC_Set_Date(u8 year,u8 month,u8 date,u8 week)
 //       2,进入初始化模式失败;
 u8 RTC_Init(void)
 {      
+   unsigned char ww;
+   HAL_RTC_MspDeInit(&hrtc);
+   HAL_RTC_MspInit(&hrtc);
+   __HAL_RCC_LSE_CONFIG(RCC_LSE_OFF);
+	__HAL_RCC_LSE_CONFIG(RCC_LSE_ON);
+
 
 	hrtc.Instance=RTC;
     hrtc.Init.HourFormat=RTC_HOURFORMAT_24;//RTC设置为24小时格式 
@@ -54,6 +62,7 @@ u8 RTC_Init(void)
     hrtc.Init.OutPutPolarity=RTC_OUTPUT_POLARITY_HIGH;
     hrtc.Init.OutPutType=RTC_OUTPUT_TYPE_OPENDRAIN;
     if(HAL_RTC_Init(&hrtc)!=HAL_OK) return 2;
+
    // HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5051);
     if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0X5050)//是否第一次配置
     { 
@@ -71,22 +80,28 @@ u8 RTC_Init(void)
     }
     unsigned char *p;
 	p = ReadRegister(0xf001);
+
 	if(p[1] == 0x01)
 	{
 	    p = ReadRegister(0xf002);
-		 // q[0] = p[0];
-		  //q[1] = p[1];		
+		  p[0] = p[0];
+		  p[1] = p[1];		
+		  /*rtc_usr.wakeup_period = p[0];
+		  rtc_usr.wakeup_period = rtc_usr.wakeup_period<<8;
+		  rtc_usr.wakeup_period = rtc_usr.wakeup_period + p[1];
+          rtc_usr.wakeup_period = rtc_usr.wakeup_period*60;*/
+
 		  rtc_usr.wakeup_period = p[0];
 		  rtc_usr.wakeup_period = rtc_usr.wakeup_period<<8;
 		  rtc_usr.wakeup_period = rtc_usr.wakeup_period + p[1];
-      rtc_usr.wakeup_period = rtc_usr.wakeup_period*60;
-		 // q[0] = (unsigned char)(rtc_usr.wakeup_period>>8);
-		  //q[1] = (unsigned char)(rtc_usr.wakeup_period);	
+		// rtc_usr.wakeup_period = rtc_usr.wakeup_period*20;
+		 rtc_usr.wakeup_period = rtc_usr.wakeup_period*60;
+
+		//HAL_RTCEx_SetWakeUpTimer_IT(&hrtc,  rtc_usr.wakeup_period, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+
+	
 	    SetWakeUp(p);
-//		if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 1, RTC_WAKEUPCLOCK_CK_SPRE_17BITS) != HAL_OK)
-//		 {
-//		   Error_Handler();
-//		 }
+
 
 	}
 	else if(p[1] == 0x02)
@@ -97,16 +112,18 @@ u8 RTC_Init(void)
 			rtc_usr.wakeup_period = p[0];
 			rtc_usr.wakeup_period = rtc_usr.wakeup_period<<8;
 			rtc_usr.wakeup_period = rtc_usr.wakeup_period + p[1];
-      rtc_usr.wakeup_period = rtc_usr.wakeup_period*60;
-			//q[0] = (unsigned char)(rtc_usr.wakeup_period>>8);
-		  //q[1] = (unsigned char)(rtc_usr.wakeup_period);	
+     // rtc_usr.wakeup_period = rtc_usr.wakeup_period*20;
+			rtc_usr.wakeup_period = rtc_usr.wakeup_period*60;
+		//HAL_RTCEx_SetWakeUpTimer_IT(&hrtc,  rtc_usr.wakeup_period, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+
 	    SetWakeUp(p);
-//			if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 1, RTC_WAKEUPCLOCK_CK_SPRE_17BITS) != HAL_OK)
-//			 {
-//			   Error_Handler();
-//			 }
+		ww = 55;
+		RS485_SendData(&ww,1,0);
+
 		
 		}
+	ww = 57;
+    RS485_SendData(&ww,1,0);
 
     return 0;
 }
