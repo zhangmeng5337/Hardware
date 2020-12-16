@@ -140,19 +140,19 @@ int main(void)
 
 
 
-	while(loraUart.receivedFlag1 != 1)
-	;
-	{
-		loraUart.receivedFlag1 = 0;
-		lorahw.mode =TransmitMode;
-//		loraGpioset(&lorahw);
-  	 	p = 52;
-    RS485_SendData(&p,1,0); 
-		//lorahw.mode =TransmitMode;
-	}
+//	while(loraUart.receivedFlag1 != 1)
+//	;
+//	{
+//		loraUart.receivedFlag1 = 0;
+//		lorahw.mode =TransmitMode;
+////		loraGpioset(&lorahw);
+//  	 	p = 52;
+//    RS485_SendData(&p,1,0); 
+//		//lorahw.mode =TransmitMode;
+//	}
 
 
- // HAL_Delay(8000);
+  HAL_Delay(8000);
 
   // gps_powerON();
 
@@ -170,9 +170,9 @@ int main(void)
 		// gps_powerON();
 		//HAL_Delay(3000);
 	//	gps_powerON();
-	if(EquipGateway_Process()==1)
-	 goto start;	
-	 //EnterStop();
+	//if(EquipGateway_Process()==1)
+	// goto start;	
+	 EnterStop();
 		
   }
   /* USER CODE END 3 */

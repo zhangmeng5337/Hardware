@@ -47,10 +47,15 @@ ratio_stru *CalibrationRatio(float ahumid,float chumid)
 {
     float c1,c2,c3,c4;
     c1 = chumid;
+    c1 = c1/100;  
     c2 = chumid*chumid;
+    c2 = c2/10000; 	
     c3 = c2*chumid;
+    c3 = c3/100;	
     c4 = c3*chumid;
+	    c4 = c4/100;
     ratio.status = 1;
+	   ratio.aN = AN;//F
     if(ratio.samplecount < AN)
     {
         ratio.samplecount ++;
@@ -58,14 +63,14 @@ ratio_stru *CalibrationRatio(float ahumid,float chumid)
         ratio.aG = ratio.aG + c2;//G
         ratio.aH = ratio.aH + c3;//H
         ratio.aI = ratio.aI + c4;//I
-        ratio.aB = ratio.aB + ahumid;//B
-        ratio.aC = ratio.aC + ahumid*c1;//C
-        ratio.aD = ratio.aD + ahumid*c2;//D
+        ratio.aB = ratio.aB + ahumid/100;//B
+        ratio.aC = ratio.aC + ahumid/100*c1;//C
+        ratio.aD = ratio.aD + ahumid/100*c2;//D
         ratio.status = 1;
     }
     else
     {
-          float K,tmp,L,M,P;
+      double  K,tmp,L,M,P;
 		  K = 0;
 		  L = 0;
 		  M = 0;

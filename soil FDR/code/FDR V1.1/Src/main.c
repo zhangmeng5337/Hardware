@@ -27,12 +27,13 @@
 #include "app.h"
 #include "adc.h"
 #include "filter.h"
+#include "FdrAlgorithm.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+extern sensor_stru sensor_usr;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -69,6 +70,7 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN 0 */
 uint32_t freq,tickTime,freq_count;
 extern unsigned char stop_flag ;
+uint32_t duticycle;
 /* USER CODE END 0 */
 
 /**
@@ -103,43 +105,82 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-   params_init();//设备参数初始化
-   RS485_Init();//tur
-   HAL_GPIO_WritePin(PWR_EN_GPIO_Port, PWR_EN_Pin, GPIO_PIN_RESET);	 
-   HAL_TIM_Base_Start_IT(&htim2);
-   HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
-	 tickTime=HAL_GetTick();	
+    params_init();//设备参数初始化
+    RS485_Init();//tur
+    HAL_GPIO_WritePin(PWR_EN_GPIO_Port, PWR_EN_Pin, GPIO_PIN_RESET);
+    HAL_TIM_Base_Start_IT(&htim2);
+    HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
+    tickTime=HAL_GetTick();
+
+    if(getFactor()->status == 0||getFactor()->dutycycle == 0)
+    {
+        while(1)//led指示灯闪烁
+        {
+            app_loop();//主程序
+            Get_Adc_Average(N);
+            if((HAL_GetTick()-tickTime)>=3000)//led指示灯闪烁
+            {
+
+                if(sensor_usr.sensor[0]/V_Nom>=1.04)
+                {
+                    //if(duticycle>0)
+                    getFactor()->dutycycle++;
+
+                }
+                else if((sensor_usr.sensor[0]/V_Nom)<0.97)
+                {
+                    if(getFactor()->dutycycle>0)
+                        getFactor()->dutycycle--;
+                }
+                else
+                {
+                    params_save();
+                    break;
+                }
+                __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getFactor()->dutycycle);
+                tickTime=HAL_GetTick();
+            }
+
+        }
+
+    }
+    else
+    {
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getFactor()->dutycycle);
+    }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    while (1)
+    {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		//HAL_Delay(1000);
-		if(getRatio()->calibrationFlag == 1)
-		{
-			if((HAL_GetTick()-tickTime)>=300)//led指示灯闪烁
-			{
-				 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-				 tickTime=HAL_GetTick();  				
-			}
+        //HAL_Delay(1000);
+        if(getRatio()->calibrationFlag == 1)
+        {
+            if((HAL_GetTick()-tickTime)>=200)//led指示灯闪烁
+            {
+                HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+                tickTime=HAL_GetTick();
+            }
 
-		}
-		else
-		{
-			if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
-			{
-				 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-				 tickTime=HAL_GetTick();				
-			}
+        }
+        else
+        {
+            if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
+            {
 
-		}
+                HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+                tickTime=HAL_GetTick();
+            }
 
-		app_loop();//主程序
-  }
+        }
+
+        app_loop();//主程序
+    }
   /* USER CODE END 3 */
 }
 
@@ -418,7 +459,7 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+    /* User can add his own implementation to report the HAL error return state */
 
   /* USER CODE END Error_Handler_Debug */
 }
@@ -434,8 +475,8 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

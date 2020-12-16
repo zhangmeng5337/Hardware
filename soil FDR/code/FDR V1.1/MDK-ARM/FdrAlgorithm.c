@@ -98,17 +98,22 @@ float SoilHumid(unsigned char status,float AdcValueVol)
         factor_usr.humid=a0*log(exp(AdcValueVol));//校准前湿度输出
         factor_usr.humid=factor_usr.humid+a1;
     }
+    factor_usr.humid=factor_usr.humid/100;
     if(factor_usr.status == CALIBRATION)//校准后湿度输出
     {
 
-
+        float humid_cal;
 
         v2 = factor_usr.humid*factor_usr.humid;
         v1= factor_usr.humid;
 
-        factor_usr.humid=factor_usr.a0;
-        factor_usr.humid=factor_usr.humid+factor_usr.a1*v1;
-        factor_usr.humid=factor_usr.humid+factor_usr.a2*v2;
+        humid_cal=factor_usr.a0;
+        humid_cal=humid_cal+factor_usr.a1*v1;
+        humid_cal=humid_cal+factor_usr.a2*v2;
+       // if(fabs(humid_cal/factor_usr.humid)>=2||fabs(factor_usr.humid/humid_cal)>=2)
+       //     factor_usr.humid = factor_usr.humid;
+       // else
+            factor_usr.humid = humid_cal;
     }
 
 
@@ -127,17 +132,15 @@ float SoilHumid(unsigned char status,float AdcValueVol)
     }
     /************滤波去抖动，防止数据过于频繁跳动****************/
 
-    if(tmp3<0)
-    {
-        result = (unsigned int)(tmp3*10);
-        //result = ~result+1;
-    }
-    else
-        result = (unsigned int)(tmp3*10);
+
+    result = (unsigned int)(tmp3*1000);
     factor_usr.humid = result;
     if(factor_usr.humid>=1000)
         factor_usr.humid = 1000;
-    if(AdcValueVol<=0.3)
+    if(factor_usr.humid<0)
+        factor_usr.humid = 0;
+    if(AdcValueVol/V_Nom<=1.03&&AdcValueVol/V_Nom>=0.97)
+		
     {
         factor_usr.humid = 0;
         last_temp = 0;

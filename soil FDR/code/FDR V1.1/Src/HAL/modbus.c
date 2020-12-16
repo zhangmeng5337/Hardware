@@ -157,12 +157,20 @@ void RS485_Service(void)
                     ||(modbus_usr.RS485_RX_BUFF[1]==8)||(modbus_usr.RS485_RX_BUFF[1]==9)||(modbus_usr.RS485_RX_BUFF[1]==10))//功能码正确
             {
                 startRegAddr=(((u16)modbus_usr.RS485_RX_BUFF[2])<<8)|modbus_usr.RS485_RX_BUFF[3];//获取寄存器起始地址
+							  if(modbus_usr.RS485_RX_BUFF[2] == 0x06)
+								{	
+									startRegAddr = 0x06;
+								}
                 if(startRegAddr<1000)//寄存器地址在范围内
                 {
                     calCRC=CRC_Compute(modbus_usr.RS485_RX_BUFF,modbus_usr.RS485_RX_CNT-2);//计算所接收数据的CRC
                     recCRC=modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-1]|(((u16)modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-2])<<8);//接收到的CRC(低字节在前，高字节在后)
                     if(calCRC==recCRC)//CRC校验正确
                     {
+												if(modbus_usr.RS485_RX_BUFF[2] == 0x06)
+												{	
+													modbus_usr.RS485_RX_BUFF[1] = 11;
+												}
                         TesetFlag = 0;
                         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         switch(modbus_usr.RS485_RX_BUFF[1])//根据不同的功能码进行处理
@@ -402,7 +410,7 @@ void Modbus_07_Solve(void)
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0103))//寄存器地址+数量在范围内
     {
         HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-        printf("RH TE1 TE2 Voltage:   %10f   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid);
+        printf("   %10f   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid);
         HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     }
 
@@ -527,15 +535,17 @@ void Modbus_11_Solve(void)
     {
         float tmp1,tmp2;
         uint32_t tmp3;
+			tmp3 = modbus_usr.RS485_RX_BUFF[3] << 8;
+            tmp3 = tmp3 + modbus_usr.RS485_RX_BUFF[4];
+            tmp2 = tmp3 / 10.0;
         if(getRatio()->calibrationFlag == 1 )
         {
-            Get_Adc_Average(N);
+            Get_Adc_Average(1);
 
             tmp1 = getSensor()->rh;
             tmp1 = tmp1 / 10.0;
-            tmp3 = modbus_usr.RS485_RX_BUFF[3] >> 8;
-            tmp3 = tmp3 + modbus_usr.RS485_RX_BUFF[4];
-            tmp2 = tmp3 / 10.0;
+
+
 
             if(CalibrationRatio(tmp1,tmp2)->status == 0)//进行校准，校准完成
             {
@@ -544,9 +554,16 @@ void Modbus_11_Solve(void)
                 getFactor()->a2 = getRatio()->a2;
                 getFactor()->status = 1;//校准完成标志位
                 params_save();
+				HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
+				printf("   %10f	 %10f	%10f\n",getFactor()->a0,getFactor()->a1,getFactor()->a2);
+				HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+
             }
             else
-            {
+            {			
+	            HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
+				printf("   %10f	 %10f	%10f\n",sensor_usr.sensor[0],tmp2,factor_usr.humid);
+				HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
                 getFactor()->a0 = 82.93;
                 getFactor()->a1 = -27.688;
                 getFactor()->a2 = 12.822;
@@ -555,6 +572,14 @@ void Modbus_11_Solve(void)
             }
 
         }
+		else
+		{
+		    Get_Adc_Average(N);
+			HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
+			printf("   %10f  %10f	%10f\n",sensor_usr.sensor[0],tmp2,factor_usr.humid);
+			HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+
+		}
 
     }
 

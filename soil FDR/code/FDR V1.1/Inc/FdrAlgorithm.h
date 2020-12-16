@@ -4,6 +4,7 @@
 #define CALIBRATION	1
 #define MEASURE     0
 //#define PT					100
+#define V_Nom				0.5
 #define SAMPLE_COUNT		200
 typedef struct{
 	float a0;
@@ -11,6 +12,7 @@ typedef struct{
 	float a2;	
 	float humid;
 	unsigned char status;
+	unsigned int dutycycle;
 }factor_stru;
 float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2);
 float SoilHumid(unsigned char status,float AdcValueVol);

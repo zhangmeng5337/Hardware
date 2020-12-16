@@ -4,7 +4,7 @@
 #include "main.h"
 
 #define N 48  
-#define AN 200 
+#define AN 200
 
 uint32_t filter(uint32_t seq);  
 typedef struct{
