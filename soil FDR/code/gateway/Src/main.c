@@ -152,7 +152,7 @@ int main(void)
 //	}
 
 
-  HAL_Delay(8000);
+  HAL_Delay(3000);
 
   // gps_powerON();
 

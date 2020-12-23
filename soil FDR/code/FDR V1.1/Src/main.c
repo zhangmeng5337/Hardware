@@ -112,10 +112,11 @@ int main(void)
     HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
     tickTime=HAL_GetTick();
 
-    if(getFactor()->status == 0||getFactor()->dutycycle == 0)
+    if(getFactor()->dutycycle == 0)//pwm空测电压未进行校准
     {
         while(1)//led指示灯闪烁
         {
+
             app_loop();//主程序
             Get_Adc_Average(N);
             if((HAL_GetTick()-tickTime)>=3000)//led指示灯闪烁
@@ -159,7 +160,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
         //HAL_Delay(1000);
-        if(getRatio()->calibrationFlag == 1)
+
+        if(getRatio()->calibrationFlag == 1)//校准过程
         {
             if((HAL_GetTick()-tickTime)>=200)//led指示灯闪烁
             {

@@ -76,10 +76,10 @@ float SoilHumid(unsigned char status,float AdcValueVol)
     float tmp3,v3,v2,v1;
     static float last_temp;
     float a0,a1,a2,a3;
-    a0 = 439.7;
-    a1 = -1158.8;
-    a2 = 1103.7;
-    a3 = -319.75;
+    a0 = 1110;
+    a1 = -2610;
+    a2 = 2091.9;
+    a3 = -519.5;
 
     v3 = AdcValueVol*AdcValueVol;
     v3 = v3*AdcValueVol;
@@ -91,13 +91,13 @@ float SoilHumid(unsigned char status,float AdcValueVol)
     factor_usr.humid=factor_usr.humid+a2*v1;
     factor_usr.humid=factor_usr.humid+a3;
 
-    if(factor_usr.humid>=80)
+    /*if(factor_usr.humid>=80)
     {
         a0 = 564.39;
         a1 = 22.747;
         factor_usr.humid=a0*log(exp(AdcValueVol));//校准前湿度输出
         factor_usr.humid=factor_usr.humid+a1;
-    }
+    }*/
     factor_usr.humid=factor_usr.humid/100;
     if(factor_usr.status == CALIBRATION)//校准后湿度输出
     {
@@ -125,7 +125,7 @@ float SoilHumid(unsigned char status,float AdcValueVol)
 
     last_temp = last_temp +factor_usr.humid;
     index++;
-    tmp3=GlideFilterAD2(factor_usr.humid,index);
+    tmp3= factor_usr.humid;//GlideFilterAD2(factor_usr.humid,index);
     if(index>=SAMPLE_COUNT)
     {
         index =0;
@@ -135,16 +135,20 @@ float SoilHumid(unsigned char status,float AdcValueVol)
 
     result = (unsigned int)(tmp3*1000);
     factor_usr.humid = result;
-    if(factor_usr.humid>=1000)
-        factor_usr.humid = 1000;
-    if(factor_usr.humid<0)
-        factor_usr.humid = 0;
-    if(AdcValueVol/V_Nom<=1.03&&AdcValueVol/V_Nom>=0.97)
-		
-    {
-        factor_usr.humid = 0;
-        last_temp = 0;
-    }
+		#if DEBUG == 0
+		{
+			if(factor_usr.humid>=1000)
+					factor_usr.humid = 1000;
+			if(factor_usr.humid<0)
+					factor_usr.humid = 0;
+			if(AdcValueVol/V_Nom<=1.03&&AdcValueVol/V_Nom>=0.97)
+			
+			{
+					factor_usr.humid = 0;
+					last_temp = 0;
+			}		
+		}
+    #endif
     return (unsigned int) (factor_usr.humid);
 }
 

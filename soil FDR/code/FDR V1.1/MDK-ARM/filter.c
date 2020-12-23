@@ -40,12 +40,12 @@ ratio_stru *getRatio()
 /************************************************************
 功能：设备出厂前校准
 输入参数：
-      ahumid:sensor校准前默认参数计算得到的湿度
-      chmid:建大样机通过485返回的湿度值
+				ahumid: sensor校准前默认参数计算得到的湿度
+				chmid:  建大样机通过485返回的湿度值
 ************************************************************/
 ratio_stru *CalibrationRatio(float ahumid,float chumid)
 {
-    float c1,c2,c3,c4;
+    static float c1,c2,c3,c4;
     c1 = chumid;
     c1 = c1/100;  
     c2 = chumid*chumid;
@@ -70,7 +70,7 @@ ratio_stru *CalibrationRatio(float ahumid,float chumid)
     }
     else
     {
-      double  K,tmp,L,M,P;
+      static double  K,tmp,L,M,P;
 		  K = 0;
 		  L = 0;
 		  M = 0;
@@ -115,7 +115,7 @@ ratio_stru *CalibrationRatio(float ahumid,float chumid)
 		  ratio.a0 = L/K;
 
    
-          tmp = ratio.aC*ratio.aG;
+      tmp = ratio.aC*ratio.aG;
 		  tmp = tmp*ratio.aG;//ratio.aC*ratio.aG^2
 		  M = M+ tmp;
 		  tmp = (-1)*ratio.aB;
@@ -133,10 +133,10 @@ ratio_stru *CalibrationRatio(float ahumid,float chumid)
 		  tmp = tmp*ratio.aI;
 		  tmp = tmp*ratio.aN;//- ratio.aC*ratio.aI*ratio.aN
 		  M = M + tmp;
-          tmp = ratio.aD*ratio.aH;
+      tmp = ratio.aD*ratio.aH;
 		  tmp = tmp*ratio.aN;//ratio.aD*ratio.aH*ratio.aN
 		  M = M + tmp;
-   		  ratio.a1 = M / K;		  
+   		ratio.a1 = M / K;		  
 
 		  tmp = ratio.aD*ratio.aF;
 		  tmp = tmp*ratio.aF;//ratio.aD*ratio.aF^2
@@ -149,7 +149,7 @@ ratio_stru *CalibrationRatio(float ahumid,float chumid)
 		  tmp = tmp*ratio.aH;
 		  tmp = tmp*ratio.aF;//- ratio.aB*ratio.aH*ratio.aF
 		  P = P + tmp;
-          tmp = ratio.aB*ratio.aG;
+      tmp = ratio.aB*ratio.aG;
 		  tmp = tmp*ratio.aG;//ratio.aB*ratio.aG^2
 		  P = P +tmp;
 		  tmp = - ratio.aD;

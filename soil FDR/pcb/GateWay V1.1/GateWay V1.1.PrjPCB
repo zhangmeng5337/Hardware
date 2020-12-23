@@ -181,86 +181,94 @@ DocumentPath=Project Outputs for GateWay\Design Rule Check - GateWay.html
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Project Outputs for GateWay\GateWay.DRL
+DocumentPath=Project Outputs for GateWay\Design Rule Check - GateWay V1.html
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Project Outputs for GateWay\GateWay.DRR
+DocumentPath=Project Outputs for GateWay\GateWay.DRL
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for GateWay\GateWay.EXTREP
+DocumentPath=Project Outputs for GateWay\GateWay.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for GateWay\GateWay.GBL
+DocumentPath=Project Outputs for GateWay\GateWay.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for GateWay\GateWay.GBO
+DocumentPath=Project Outputs for GateWay\GateWay.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs for GateWay\GateWay.GBP
+DocumentPath=Project Outputs for GateWay\GateWay.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Project Outputs for GateWay\GateWay.GBS
+DocumentPath=Project Outputs for GateWay\GateWay.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Project Outputs for GateWay\GateWay.GKO
+DocumentPath=Project Outputs for GateWay\GateWay.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Project Outputs for GateWay\GateWay.GM1
+DocumentPath=Project Outputs for GateWay\GateWay.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs for GateWay\GateWay.GM7
+DocumentPath=Project Outputs for GateWay\GateWay.GM1
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs for GateWay\GateWay.GPB
+DocumentPath=Project Outputs for GateWay\GateWay.GM7
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs for GateWay\GateWay.GPT
+DocumentPath=Project Outputs for GateWay\GateWay.GPB
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs for GateWay\GateWay.GTL
+DocumentPath=Project Outputs for GateWay\GateWay.GPT
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs for GateWay\GateWay.GTO
+DocumentPath=Project Outputs for GateWay\GateWay.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs for GateWay\GateWay.GTP
+DocumentPath=Project Outputs for GateWay\GateWay.GTO
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Project Outputs for GateWay\GateWay.GTS
+DocumentPath=Project Outputs for GateWay\GateWay.GTP
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Project Outputs for GateWay\GateWay.LDP
+DocumentPath=Project Outputs for GateWay\GateWay.GTS
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Project Outputs for GateWay\GateWay.REP
+DocumentPath=Project Outputs for GateWay\GateWay.LDP
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Project Outputs for GateWay\GateWay.RUL
+DocumentPath=Project Outputs for GateWay\GateWay.REP
 DItemRevisionGUID=
 
 [GeneratedDocument21]
-DocumentPath=Project Outputs for GateWay\GateWay.TXT
+DocumentPath=Project Outputs for GateWay\GateWay.RUL
 DItemRevisionGUID=
 
 [GeneratedDocument22]
+DocumentPath=Project Outputs for GateWay\GateWay.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument23]
+DocumentPath=Project Outputs for GateWay\GateWay V1.1.xls
+DItemRevisionGUID=
+
+[GeneratedDocument24]
 DocumentPath=C:\Users\Administrator\Desktop\v1.3\PCB1.PcbDoc.htm
 DItemRevisionGUID=
 
@@ -606,6 +614,8 @@ OutputDocumentPath1=
 OutputVariantName1=
 OutputDefault1=0
 PageOptions1=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+Configuration1_Name1=OutputConfigurationParameter1
+Configuration1_Item1=Record=BOMPrintView|ShowNoERC=True|ShowParamSet=True|ShowProbe=True|ShowBlanket=True|ExpandDesignator=True|ExpandNetLabel=False|ExpandPort=False|ExpandSheetNum=False|ExpandDocNum=False
 OutputType2=ComponentCrossReference
 OutputName2=Component Cross Reference Report
 OutputDocumentPath2=
@@ -1082,7 +1092,7 @@ SelectedOnly=0
 PartTypes=0
 
 [Comparison Options]
-ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
+ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=0|UseName=-1|InclAllRules=0
 ComparisonOptions1=Kind=Net Class|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
 ComparisonOptions2=Kind=Component Class|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0
 ComparisonOptions3=Kind=Rule|MinPercent=75|MinMatch=3|ShowMatch=-1|Confirm=-1|UseName=-1|InclAllRules=0

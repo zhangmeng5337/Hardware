@@ -841,30 +841,12 @@ unsigned char EnterStop(void)
 
     /* GPIO Ports Clock Enable */
 	__HAL_RCC_HSE_CONFIG(RCC_HSE_OFF);
-    __HAL_RCC_GPIOC_CLK_DISABLE();
-    __HAL_RCC_GPIOH_CLK_DISABLE();
-    __HAL_RCC_GPIOA_CLK_DISABLE();
-    __HAL_RCC_GPIOB_CLK_DISABLE();
-    __HAL_RCC_GPIOD_CLK_DISABLE();
-    __HAL_RCC_DMA1_CLK_DISABLE();
-    __HAL_RCC_DMA2_CLK_DISABLE();
-    __HAL_RCC_USART1_CLK_DISABLE();
-	__HAL_RCC_USART2_CLK_DISABLE();
-	__HAL_RCC_UART5_CLK_DISABLE();
-    __HAL_RCC_USART6_CLK_DISABLE();
-    __HAL_RCC_ADC1_CLK_DISABLE();
-	HAL_ADC_Stop(&hadc1);
-	 HAL_ADC_DeInit(&hadc1);
-    __HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	 //使能空闲中断
+	  __HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	 //使能空闲中断
     __HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	 //使能空闲中断
     __HAL_UART_DISABLE_IT(&huart3, UART_IT_IDLE);	 //使能空闲中断
     __HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	 //使能空闲中断
     __HAL_UART_DISABLE_IT(&huart6, UART_IT_IDLE);	 //使能空闲中断
     __HAL_UART_DISABLE_IT(&huart5, UART_IT_IDLE);	//使能空闲中断
-
-
-
-
   HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_RESET);
 
 
@@ -890,11 +872,15 @@ unsigned char EnterStop(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 
   GPIO_InitStruct.Pin = CTRL1OUT31_Pin|CTRL2OUT11_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 
@@ -902,7 +888,7 @@ unsigned char EnterStop(void)
   GPIO_InitStruct.Pin = CTRL2OUT21_Pin|CTRL2OUT31_Pin|CTRL3OUT11_Pin|CTRL3OUT21_Pin 
                           |CTRL3OUT31_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 
@@ -923,8 +909,26 @@ unsigned char EnterStop(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
 
+__HAL_RCC_GPIOC_CLK_DISABLE();
+__HAL_RCC_GPIOH_CLK_DISABLE();
+__HAL_RCC_GPIOA_CLK_DISABLE();
+//__HAL_RCC_GPIOB_CLK_DISABLE();
+__HAL_RCC_GPIOD_CLK_DISABLE();
+__HAL_RCC_DMA1_CLK_DISABLE();
+__HAL_RCC_DMA2_CLK_DISABLE();
+__HAL_RCC_USART1_CLK_DISABLE();
+__HAL_RCC_USART2_CLK_DISABLE();
+__HAL_RCC_UART5_CLK_DISABLE();
+__HAL_RCC_USART6_CLK_DISABLE();
+__HAL_RCC_ADC1_CLK_DISABLE();
+HAL_ADC_Stop(&hadc1);
+ HAL_ADC_DeInit(&hadc1);
 
 
 //****************************end gpio***************************************************
@@ -933,9 +937,13 @@ unsigned char EnterStop(void)
 	HAL_NVIC_DisableIRQ(USART3_IRQn);
 	HAL_NVIC_DisableIRQ(UART5_IRQn);
 	HAL_NVIC_DisableIRQ(USART6_IRQn);
+	HAL_SuspendTick();
+	//__HAL_RCC_AHB1_FORCE_RESET();
+	HAL_PWREx_EnableFlashPowerDown();	
 
     __HAL_RCC_PWR_CLK_ENABLE();
     HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+	//HAL_PWR_EnterSTANDBYMode();
 	 __HAL_RCC_HSE_CONFIG(RCC_HSE_ON);
 
      HAL_UART_DeInit(&huart2);

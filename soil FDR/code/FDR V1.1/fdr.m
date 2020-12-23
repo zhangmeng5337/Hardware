@@ -1,5 +1,5 @@
 clear all;
-a=load('C:\Users\Administrator\Desktop\data.txt');
+a=load('C:\Users\Administrator\Desktop\data2.txt');
 b=a(:,1);
 c=a(:,2);
 syms a0;

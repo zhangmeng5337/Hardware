@@ -103,11 +103,11 @@ void params_init()
     {
         //³õÊ¼²ÎÊý
         flash_init();
-        factor_usr.a0 = 82.93;
-        factor_usr.a1 = -27.688;
-        factor_usr.a2 = 12.822;
+        factor_usr.a0 = -3.5046;
+        factor_usr.a1 = 1.1752;
+        factor_usr.a2 = -0.0018;
         factor_usr.status = 0;
-        factor_usr.dutycycle = 9;
+        factor_usr.dutycycle = 0;
         flash_write(addr++,0x5a,1);
         flash_write(addr++,modbus_usr.RS485_Addr,1);
         flash_write(addr++,modbus_usr.RS485_Baudrate,1);

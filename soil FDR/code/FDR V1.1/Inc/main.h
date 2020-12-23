@@ -40,7 +40,7 @@ typedef unsigned int u16 ;
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+#define DEBUG		1
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
