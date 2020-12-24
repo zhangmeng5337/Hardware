@@ -28,7 +28,7 @@ u16 regnum;
 u16 crc;
 }modbus_pack_stru;
 void Modbus_Pack(modbus_pack_stru p);
-unsigned char *modbusRxResult(void);
+modbus_stru *modbusRxResult(void);
 void RS485_RxCpltCallback(void);
 
 void RS485_Init(void);

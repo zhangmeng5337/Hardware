@@ -3,7 +3,7 @@
                                                          
 #include "main.h"                                        
 #include "loraHW.h"                                      
-#define EQUIP_PRO_PERIOD			15000
+#define EQUIP_PRO_PERIOD			5000
 
 
 #define PAYLOAD_MAX_LEN		         0x28                  
