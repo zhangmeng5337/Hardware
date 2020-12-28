@@ -62,7 +62,7 @@ void Error_Handler(void);
 
 #define GATEWAY				1
 #define EQUIP				0
-
+#define DEBUG				0
 
 
 void SystemClock_Config(void);
@@ -115,6 +115,8 @@ void SystemClock_Config(void);
 #define CTRL3__GPIO_Port GPIOC
 #define CTRL1__Pin GPIO_PIN_9
 #define CTRL1__GPIO_Port GPIOC
+#define EN_5V_Pin GPIO_PIN_8
+#define EN_5V_GPIO_Port GPIOA
 #define LORA_AUX_Pin GPIO_PIN_3
 #define LORA_AUX_GPIO_Port GPIOB
 #define LORA_M1_Pin GPIO_PIN_4

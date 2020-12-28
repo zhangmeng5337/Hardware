@@ -8,7 +8,7 @@
 #define DAT_FROM_RELAY			1
 
 
-#define DEBUG			1
+//#define DEBUG			1
 #define TransmitMode	0
 #define WorMOde			1	
 #define ConfigMOde		2

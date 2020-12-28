@@ -18,6 +18,9 @@ void Modbus_09_Solve(void);
 void Modbus_10_Solve(void);
 void Modbus_11_Solve(void);
 void Modbus_16_Solve(void);
+
+
+
 extern factor_stru factor_usr;
 u16 startRegAddr;//寄存器地址
 u16 RegNum;//寄存器数量
@@ -127,6 +130,7 @@ void timCallback()
 
 
 }
+
 /////////////////////////////////////////////////////////////////////////////////////
 //RS485服务程序，用于处理接收到的数据(请在主函数中循环调用)
 
@@ -159,7 +163,7 @@ void RS485_Service(void)
                     ||(modbus_usr.RS485_RX_BUFF[1]==8)||(modbus_usr.RS485_RX_BUFF[1]==9)||(modbus_usr.RS485_RX_BUFF[1]==10))//功能码正确
             {
                 startRegAddr=(((u16)modbus_usr.RS485_RX_BUFF[2])<<8)|modbus_usr.RS485_RX_BUFF[3];//获取寄存器起始地址
-                if(modbus_usr.RS485_RX_BUFF[2] == 0x04)
+                if(modbus_usr.RS485_RX_BUFF[2] == 0x04||modbus_usr.RS485_RX_BUFF[2] == 0x06)
                 {
                     startRegAddr = 0x04;
                 }
@@ -169,10 +173,13 @@ void RS485_Service(void)
                     recCRC=modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-1]|(((u16)modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-2])<<8);//接收到的CRC(低字节在前，高字节在后)
                     if(calCRC==recCRC)//CRC校验正确
                     {
+											   
                         if(modbus_usr.RS485_RX_BUFF[2] == 0x04)
                         {
                             modbus_usr.RS485_RX_BUFF[1] = 11;
                         }
+												if(modbus_usr.RS485_RX_BUFF[1]!=10&&modbus_usr.RS485_RX_BUFF[1]!=11)
+													getRatio()->calibrationFlag = 0;//校准标志
                         TesetFlag = 0;
                         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         switch(modbus_usr.RS485_RX_BUFF[1])//根据不同的功能码进行处理
@@ -226,7 +233,9 @@ void RS485_Service(void)
                         modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
                         modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
                         modbus_usr.RS485_TX_BUFF[2]=0x04; //异常码
-                        RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+											  #if DEBUG
+													RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+											  #endif
                     }
                 }
                 else//寄存器地址超出范围
@@ -234,7 +243,9 @@ void RS485_Service(void)
                     modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
                     modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
                     modbus_usr.RS485_TX_BUFF[2]=0x02; //异常码
-                    RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+									#if DEBUG
+										RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+									#endif
                 }
             }
             else//功能码错误
@@ -242,7 +253,9 @@ void RS485_Service(void)
                 modbus_usr.RS485_TX_BUFF[0]=modbus_usr.RS485_RX_BUFF[0];
                 modbus_usr.RS485_TX_BUFF[1]=modbus_usr.RS485_RX_BUFF[1]|0x80;
                 modbus_usr.RS485_TX_BUFF[2]=0x01; //异常码
-                RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+								#if DEBUG
+									RS485_SendData(modbus_usr.RS485_TX_BUFF,3);
+								#endif
             }
         }
 
@@ -535,11 +548,12 @@ void Modbus_11_Solve(void)
     RegNum= ((modbus_usr.RS485_RX_BUFF[2]));//获取寄存器数量
     if(RegNum==0x04)//寄存器地址+数量在范围内
     {
-        float tmp1,tmp2;
+        float tmp1,tmp2,tmp4;
         uint32_t tmp3;
         tmp3 = modbus_usr.RS485_RX_BUFF[3] << 8;
         tmp3 = tmp3 + modbus_usr.RS485_RX_BUFF[4];
         tmp2 = tmp3 / 10.0;
+			  tmp4 =tmp3*1.0;
         if(getRatio()->calibrationFlag == 1 )
         {
             Get_Adc_Average(N);
@@ -562,7 +576,7 @@ void Modbus_11_Solve(void)
             else
             {
                 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-                printf("   %10f	 %10f	%10f\n",sensor_usr.sensor[0],tmp2,factor_usr.humid);
+                printf("   %10f	 %10f	%10f\n",sensor_usr.sensor[0],tmp4,factor_usr.humid);
                 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
                 getFactor()->a0 = 82.93;
                 getFactor()->a1 = -27.688;

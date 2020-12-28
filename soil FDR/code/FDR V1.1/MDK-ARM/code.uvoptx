@@ -152,25 +152,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>175</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134222790</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\filter.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\code\filter.c\175</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
           <LineNumber>75</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134243136</Address>
+          <Address>134243112</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -180,22 +164,6 @@
           <Filename>..\Src\app.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\code\../Src/app.c\75</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>176</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134222794</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\filter.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\code\filter.c\176</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -439,7 +407,7 @@
       <GroupNumber>3</GroupNumber>
       <FileNumber>8</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>../Src/main.c</PathWithFileName>

@@ -21,6 +21,7 @@ u8 RS485_TX_BUFF[MODBUS_BSIZE];//发送缓冲区
 u16 RS485_TX_CNT;//发送计数器
 }modbus_stru;
 
+
 void RS485_Init(void);
 void RS485_Service(void);
 void timCallback(void);
