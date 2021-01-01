@@ -552,7 +552,7 @@ void Modbus_11_Solve(void)
         uint32_t tmp3;
         tmp3 = modbus_usr.RS485_RX_BUFF[3] << 8;
         tmp3 = tmp3 + modbus_usr.RS485_RX_BUFF[4];
-        tmp2 = tmp3 / 10.0;
+        tmp2 = tmp3 / 1.0;
 			  tmp4 =tmp3*1.0;
         if(getRatio()->calibrationFlag == 1 )
         {
