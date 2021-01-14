@@ -1,4 +1,4 @@
-DRC Rules Export File for PCB: F:\PCB\1.1\PCB1.PcbDoc
+DRC Rules Export File for PCB: F:\projects\git\Hardware\soil FDR\pcb\1.2\PCB1.PcbDoc
 RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=4.00
 RuleKind=Width|RuleName=Width|Scope=Board|Minimum=6.00
 RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=5.00
