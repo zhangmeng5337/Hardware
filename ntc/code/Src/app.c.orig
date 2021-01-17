@@ -1,0 +1,167 @@
+#include "app.h"
+#include "adc.h"
+
+Params_stru Params;
+void app_process()
+{
+	static uint32_t tick;
+	unsigned char flag;
+
+    switch(getParams()->KeyStatus != 0)
+    {
+    case 0:
+        break;
+    case 1:
+    {
+
+
+        if(getParams()->mode == 0x01)
+        {
+            getParams()->mode == 0x00;
+        }
+        else
+            getParams()->mode == 0x01;
+    }
+    break;
+    case 2:
+    {
+        if(getParams()->mode == 0x02)
+        {
+            getParams()->mode == 0x00;
+        }
+        else
+            getParams()->mode == 0x02;
+    }
+    break;
+    default :
+        getParams()->mode == 0x00;
+        break;
+
+    }
+    getParams()->KeyStatus = 0;
+
+    if(getParams()->mode != 0)//运行模式
+    {
+        if(getParams()->temperature >= 50)//温度过高报警
+        {
+            if(getParams()->display_flag&0x20 == 0)
+            {
+                oled_process(6);//显示报警图标
+                getParams()->display_flag = 0x20;//0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80 0x100
+            }
+//******************************蜂鸣器控制******************************************
+
+            if(getParams()->fm_flag==0)		//当前状态是关闭状态且倒计时为0
+            {
+                if(flag == 0)
+                {
+                    getParams()->fm_period=(getParams()->temperature-50)*1000/50;		//将温度数值*10赋值给蜂鸣器鸣叫倒计时 最大1000
+                    tick = HAL_GetTick();
+                    flag = 1;
+                    FM_ON();
+                }
+
+            }
+            else
+            {
+
+                if(flag == 0)
+                {
+                    getParams()->fm_period=1000-(getParams()->temperature-50)*1000/50;
+                    tick = HAL_GetTick();
+                    flag = 1;
+
+
+                }
+
+
+            }
+            if((HAL_GetTick()-tick)>=getParams()->fm_period)
+            {
+                tick = HAL_GetTick();
+                flag = 0;
+                if(getParams()->fm_flag == 1)
+                {
+
+                    getParams()->fm_flag = 0;
+                    FM_OFF();
+
+                }
+                else
+                {
+                    getParams()->fm_flag = 1; //置位蜂鸣器标志位
+                }
+            }
+
+        }
+        else
+        {
+            if(flag == 1||getParams()->fm_flag == 1)
+			{
+			    flag = 0;
+				FM_OFF();
+            }
+
+			if(getParams()->display_flag&0x40 == 0)
+			{
+				oled_process(7);//冷水热模式显示运行图标
+				getParams()->display_flag = 0x40;//0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80 0x100
+			}
+
+        }
+
+    }
+	else //停止模式
+	{
+		if(getParams()->display_flag&0x80 == 0)
+		{
+		    //getParams()->display_flag = 0x80;
+			oled_process(8);//关闭模式显示停止图标
+			getParams()->display_flag = 0x80;//0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80 0x100
+		}
+
+	}
+	switch(getParams()->mode)
+	{
+		case 0:
+		{
+			if(getParams()->display_flag&0x04 == 0)
+			{
+				//getParams()->display_flag = 0x80;
+				oled_process(3);//
+				getParams()->display_flag = 0x04;//0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80 0x100
+			}
+
+		}break;
+		case 1:
+		{
+			if(getParams()->display_flag&0x08 == 0)
+			{
+				//getParams()->display_flag = 0x80;
+				oled_process(4);//
+				getParams()->display_flag = 0x08;//0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80 0x100
+			}
+
+		}break;
+			case 2:
+			{
+				if(getParams()->display_flag&0x10 == 0)
+				{
+					//getParams()->display_flag = 0x80;
+					oled_process(5);//
+					getParams()->display_flag = 0x10;//0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80 0x100
+				}
+			
+			}break;
+
+	}
+	if(HAL_GPIO_ReadPin(WATER_GPIO_Port, WATER_Pin)==1||getParams()->temperature>90)	
+	{
+		getParams()->mode = 0;
+
+	}
+	if(HAL_GPIO_ReadPin(WATER_GPIO_Port, WATER_Pin)==1)
+		FM_ON();
+    else
+		FM_OFF();		
+}

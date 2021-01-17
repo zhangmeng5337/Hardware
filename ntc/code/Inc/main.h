@@ -56,6 +56,24 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+#define T_PERIOD		500
+#define G_PERIOD		100
+
+typedef struct{
+	unsigned int temperature_period;
+	unsigned int gear_period;
+	unsigned int fm_period;
+	unsigned char fm_flag;
+	uint8_t temperature;
+	unsigned char mode;
+	int8_t gear;
+	float precent;
+	unsigned char KeyStatus;
+	unsigned int display_flag;
+	uint32_t duty;
+}Params_stru;
+
+
 
 /* USER CODE END EFP */
 
@@ -66,8 +84,10 @@ void Error_Handler(void);
 #define FM_GPIO_Port GPIOA
 #define KEY1_Pin GPIO_PIN_10
 #define KEY1_GPIO_Port GPIOA
+#define KEY1_EXTI_IRQn EXTI15_10_IRQn
 #define KEY2_Pin GPIO_PIN_11
 #define KEY2_GPIO_Port GPIOA
+#define KEY2_EXTI_IRQn EXTI15_10_IRQn
 #define WATER_Pin GPIO_PIN_12
 #define WATER_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
