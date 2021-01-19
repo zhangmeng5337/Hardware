@@ -243,14 +243,14 @@ void EXTI15_10_IRQHandler(void)
 	delay = 0;
   if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin)== 0)
   {
-		while(delay<400000)
+		while(delay<600000)
 			delay++;
 	  getParams()->KeyStatus = 0x01;
 		
   }
   if(HAL_GPIO_ReadPin(GPIOA, KEY2_Pin)== 0)
   {
-		while(delay<400000)
+		while(delay<600000)
 			delay++;
 	  getParams()->KeyStatus = 0x02;
 

@@ -242,9 +242,11 @@ void gear_process(void)
             SCR_OFF();
         }
         float tmp;
-        Params.precent=Get_Precent();		  //获取调节旋钮调节的百分比值
-        tmp=1-getParams()->precent;
-        tmp=tmp*700;
+      //  Params.precent=Get_Precent();		  //获取调节旋钮调节的百分比值
+        //tmp=1-getParams()->precent;
+        tmp=getParams()->precent;
+
+        tmp=tmp*900;
         getParams()->duty=round(tmp);	//计算对应的比较寄存器值 700为电机刚能被驱动时对应的比较寄存器值
         __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getParams()->duty);
         __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, getParams()->duty);
@@ -253,8 +255,8 @@ void gear_process(void)
     else					//如果模式为停止模式 则电机停止
     {
         SCR_OFF();	//停止模式关闭晶闸管
-        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 1000-1);
-        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 1000-1);
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 1);
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 1);
 
     }
 
