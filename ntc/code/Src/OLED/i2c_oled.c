@@ -366,8 +366,7 @@ void OLED_DrawBMP(unsigned char x0,unsigned char y0,unsigned char x1,unsigned ch
 }
 void OLED_Show_Unit(void)
 {
-	OLED_DrawBMP(100,0,127,3,BMP_UNIT);
-
+	  OLED_DrawBMP(30,0,46,3,BMP_UNIT);
 }
 void OLED_Show_STOP(void)
 {

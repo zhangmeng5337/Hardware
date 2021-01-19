@@ -239,18 +239,24 @@ void EXTI15_10_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_11);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+	static uint32_t delay;
+	delay = 0;
   if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin)== 0)
   {
-	getParams()->KeyStatus = 0x01;
+		while(delay<400000)
+			delay++;
+	  getParams()->KeyStatus = 0x01;
+		
   }
   if(HAL_GPIO_ReadPin(GPIOA, KEY2_Pin)== 0)
   {
+		while(delay<400000)
+			delay++;
 	  getParams()->KeyStatus = 0x02;
 
   }
 
   /* USER CODE END EXTI15_10_IRQn 1 */
-
 }
 
 /* USER CODE BEGIN 1 */
