@@ -11,6 +11,8 @@ void SetWakeUp(unsigned char *p);
 RTC_STRU *getRtcStatus(void);
 void MX_RTC_Init2(void);
 u8 RTC_Init(void);              		//RTC≥ı ºªØ
+void RtcIT_ctrl(unsigned char flag);
+void RTC_WAKEUP_Init(void);
 
 #endif
 

@@ -81,14 +81,13 @@ static void MX_USART3_UART_Init(void);
 static void MX_USART6_UART_Init(void);
 static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
-
+extern loraUart_stru loraUart;
+extern  LORAHW_stru lorahw;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-extern loraUart_stru loraUart;
-extern  LORAHW_stru lorahw;
-uint32_t sumtime;
+
 /* USER CODE END 0 */
 
 /**
@@ -99,7 +98,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-  start:
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -127,57 +126,80 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   MX_USART6_UART_Init();
-  //MX_RTC_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
- 
-   gps_uart_Init(); 
-   LoraUartInit();
-   ParamsInit();
-   RTC_Init();
-   ProctocolInit();
-   loraModuleInit();
- #if DEBUG == 1
-   wirelessTimoutStart(1);//主动上报模式超时计时标志位
-  #endif
-  #if DEBUG == 0
- 	while(loraUart.receivedFlag1 != 1)
-	;
-	{
-		loraUart.receivedFlag1 = 0;
-		lorahw.mode =TransmitMode;
-		loraGpioset(&lorahw);
-  	// 	p = 52;
-    //RS485_SendData(&p,1,0); 
-		lorahw.mode =TransmitMode;
-	}
-  #endif
 
-  HAL_Delay(3000);
+    gps_uart_Init();
+    LoraUartInit();
+    
+    ParamsInit();
+    RTC_Init();
+    ProctocolInit();
+    loraModuleInit();
+#if DEBUG == 1
 
-  // gps_powerON();
+#endif
+#if DEBUG == 0
+    while(loraUart.receivedFlag1 != 1)
+        ;
+    {
+        loraUart.receivedFlag1 = 0;
+        lorahw.mode =TransmitMode;
+        loraGpioset(&lorahw);
+        lorahw.mode =TransmitMode;
+    }
+		HAL_Delay(5000);
+    if(ROLE != GATEWAY)
+    {
+        //test();
+        equipCtrlNbiot();
+    }
+
+    wirelessTimoutStart(1);//主动上报模式超时计时标志位
+#endif
+#if DEBUG == 1
+    HAL_Delay(3000);
+#endif
+
+
+    // gps_powerON();
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    while (1)
+    {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		sumtime++;
-		//gps_powerON();
-		// gps_powerON();
-		//HAL_Delay(3000);
-	//	gps_powerON();
-	#if DEBUG == 0
-	if(EquipGateway_Process()==1)
-	 goto start;	
-	#endif
-	 #if DEBUG == 1
-	   EnterStop();
-		#endif
-  }
+#if DEBUG == 0
+        EquipGateway_Process();
+        static  uint32_t tick;
+        if(ROLE == GATEWAY)
+        {
+            if((HAL_GetTick()-tick)>=300)
+            {
+                tick = HAL_GetTick();
+                HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
+            }
+        }
+        else
+        {
+            if((HAL_GetTick()-tick)>=1000)
+            {
+                tick = HAL_GetTick();
+                HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
+            }
+        }
+
+
+#endif
+        //#if DEBUG == 1
+        //  EnterStop();
+        //	 goto start;
+        //#endif
+    }
   /* USER CODE END 3 */
 }
 
@@ -315,7 +337,7 @@ static void MX_RTC_Init(void)
   }
 
   /* USER CODE BEGIN Check_RTC_BKUP */
-    
+
   /* USER CODE END Check_RTC_BKUP */
 
   /** Initialize RTC and set the Time and Date 
@@ -567,7 +589,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(EN_3_3V_GPIO_Port, EN_3_3V_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RS485_EN1_Pin|CTRL2__Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RS485_EN1_Pin|CTRL2__Pin|GPIO_PIN_9, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(EN_5V_GPIO_Port, EN_5V_Pin, GPIO_PIN_SET);
@@ -605,9 +627,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : RS485_EN1_Pin CTRL2__Pin LORA_M1_Pin LORA_M12_Pin 
-                           LORA_M0_Pin LORA_M02_Pin */
+                           LORA_M0_Pin LORA_M02_Pin PB9 */
   GPIO_InitStruct.Pin = RS485_EN1_Pin|CTRL2__Pin|LORA_M1_Pin|LORA_M12_Pin 
-                          |LORA_M0_Pin|LORA_M02_Pin;
+                          |LORA_M0_Pin|LORA_M02_Pin|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -639,7 +661,7 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+    /* User can add his own implementation to report the HAL error return state */
 
   /* USER CODE END Error_Handler_Debug */
 }
@@ -655,8 +677,8 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

@@ -25,12 +25,12 @@
 #define xF_ADDR_START    0xf001
 #define xF_ADDR_END      0xf00e
 
-#define x1_ADDR_SIZE      x1_ADDR_END-x1_ADDR_START+1
-#define x12_ADDR_SIZE     x12_ADDR_END-x12_ADDR_START+1
-#define x4_ADDR_SIZE      x44_ADDR_END-x44_ADDR_START+1
-#define x44_ADDR_SIZE     x44_ADDR_END-x44_ADDR_START+1
-#define xE_ADDR_SIZE      xE_ADDR_END-xE_ADDR_START+1
-#define xF_ADDR_SIZE      xF_ADDR_END-xF_ADDR_START+1
+#define x1_ADDR_SIZE      x1_ADDR_END-x1_ADDR_START+1   //0x101
+#define x12_ADDR_SIZE     x12_ADDR_END-x12_ADDR_START+1 //0x0b
+#define x4_ADDR_SIZE      x44_ADDR_END-x44_ADDR_START+1 //0x3fb
+#define x44_ADDR_SIZE     x44_ADDR_END-x44_ADDR_START+1 //0x120
+#define xE_ADDR_SIZE      xE_ADDR_END-xE_ADDR_START+1  //0x0f
+#define xF_ADDR_SIZE      xF_ADDR_END-xF_ADDR_START+1 //0x0d
 
 typedef struct{
  unsigned char value[REG_SIZE_U];

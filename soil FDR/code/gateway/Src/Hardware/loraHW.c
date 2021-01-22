@@ -3,6 +3,9 @@
 #include "gateway.h"
 #include "register.h"
 #include "EEPROM.h"
+#include "config.h"
+#include "rtc.h"
+extern RTC_HandleTypeDef hrtc;
 extern loraUart_stru loraUart;
 extern LORAHW_stru lorahw;;
 extern uint32_t last_addr;
@@ -46,6 +49,73 @@ void ParamsSave(unsigned char datasrc)//参数保存
         flash_write(addr,q->value,REG_SIZE_U);//寄存器数值
         addr = addr +REG_SIZE_U;
 
+
+        unsigned char *tmp;
+
+        if(ROLE == GATEWAY)
+        {
+
+            tmp = ReadRegister(0x4006);//
+            getConfig()->srcaddr[0] = tmp[0];
+            getConfig()->srcaddr[1] = tmp[1];
+            getConfig()->srcaddr[2] = tmp[2];
+            getConfig()->srcaddr[3] = tmp[3];
+            getConfig()->srcaddr[4] = tmp[4];
+            getConfig()->srcaddr[5] = tmp[5];
+            getConfig()->srcaddr[6] = tmp[6];
+            getConfig()->srcaddr[7] = tmp[7];
+
+            tmp = ReadRegister(0x44f1);//节点地址高2字节
+            getConfig()->airrate = tmp[1];
+            getConfig()->channel = tmp[3];
+
+            tmp = ReadRegister(0x45f0);//
+            getConfig()->TcpServer[0] = tmp[1];
+            getConfig()->TcpServer[1] = tmp[3];
+            getConfig()->TcpServer[2] = tmp[5];
+            getConfig()->TcpServer[3] = tmp[7];
+            getConfig()->TcpServerPort = ((u16)(tmp[8])<<8)+tmp[9];
+
+            //WriteOneRegister(0x1006,57);//主动上报
+
+        }
+        else
+        {
+            tmp = ReadRegister(0xf007);//
+            getConfig()->srcaddr[0] = tmp[0];
+            getConfig()->srcaddr[1] = tmp[1];
+            getConfig()->srcaddr[2] = tmp[2];
+            getConfig()->srcaddr[3] = tmp[3];
+            getConfig()->srcaddr[4] = tmp[4];
+            getConfig()->srcaddr[5] = tmp[5];
+            getConfig()->srcaddr[6] = tmp[6];
+            getConfig()->srcaddr[7] = tmp[7];
+
+            tmp = ReadRegister(0x1200);//
+            getConfig()->destaddr[0] = tmp[0];
+            getConfig()->destaddr[1] = tmp[1];
+            getConfig()->destaddr[2] = tmp[2];
+            getConfig()->destaddr[3] = tmp[3];
+            getConfig()->destaddr[4] = tmp[4];
+            getConfig()->destaddr[5] = tmp[5];
+            getConfig()->destaddr[6] = tmp[6];
+            getConfig()->destaddr[7] = tmp[7];
+
+            tmp = ReadRegister(0x1205);//节点地址高2字节
+            getConfig()->airrate = tmp[1];
+            getConfig()->channel = tmp[3];
+
+            tmp = ReadRegister(0x1207);//
+            getConfig()->TcpServer[0] = tmp[1];
+            getConfig()->TcpServer[1] = tmp[3];
+            getConfig()->TcpServer[2] = tmp[5];
+            getConfig()->TcpServer[3] = tmp[7];
+            getConfig()->TcpServerPort = ((u16)(tmp[8])<<8)+tmp[9];
+
+        }
+        //free(tmp);
+
+
     }
     else
     {
@@ -72,6 +142,7 @@ void ParamsRead(void)
     {
 
         p = 0x5a;  //写入标志
+        configInit();
         register_init();//寄存器初始化
         q =  getRegAddr();
 
@@ -122,6 +193,74 @@ void ParamsRead(void)
 
 
         flash_read(addr,q->value,REG_SIZE_U);	//寄存器数值
+
+
+
+
+
+        unsigned char *tmp;
+        if(ROLE == GATEWAY)
+        {
+
+            tmp = ReadRegister(0x4006);//
+            getConfig()->srcaddr[0] = tmp[0];
+            getConfig()->srcaddr[1] = tmp[1];
+            getConfig()->srcaddr[2] = tmp[2];
+            getConfig()->srcaddr[3] = tmp[3];
+            getConfig()->srcaddr[4] = tmp[4];
+            getConfig()->srcaddr[5] = tmp[5];
+            getConfig()->srcaddr[6] = tmp[6];
+            getConfig()->srcaddr[7] = tmp[7];
+
+            tmp = ReadRegister(0x44f1);//节点地址高2字节
+            getConfig()->airrate = tmp[1];
+            getConfig()->channel = tmp[3];
+
+            tmp = ReadRegister(0x45f0);//
+            getConfig()->TcpServer[0] = tmp[1];
+            getConfig()->TcpServer[1] = tmp[3];
+            getConfig()->TcpServer[2] = tmp[5];
+            getConfig()->TcpServer[3] = tmp[7];
+            getConfig()->TcpServerPort = ((u16)(tmp[8])<<8)+tmp[9];
+
+            //WriteOneRegister(0x1006,57);//主动上报
+
+        }
+        else
+        {
+            tmp = ReadRegister(0xf007);//
+            getConfig()->srcaddr[0] = tmp[0];
+            getConfig()->srcaddr[1] = tmp[1];
+            getConfig()->srcaddr[2] = tmp[2];
+            getConfig()->srcaddr[3] = tmp[3];
+            getConfig()->srcaddr[4] = tmp[4];
+            getConfig()->srcaddr[5] = tmp[5];
+            getConfig()->srcaddr[6] = tmp[6];
+            getConfig()->srcaddr[7] = tmp[7];
+
+            tmp = ReadRegister(0x1200);//
+            getConfig()->destaddr[0] = tmp[0];
+            getConfig()->destaddr[1] = tmp[1];
+            getConfig()->destaddr[2] = tmp[2];
+            getConfig()->destaddr[3] = tmp[3];
+            getConfig()->destaddr[4] = tmp[4];
+            getConfig()->destaddr[5] = tmp[5];
+            getConfig()->destaddr[6] = tmp[6];
+            getConfig()->destaddr[7] = tmp[7];
+
+            tmp = ReadRegister(0x1205);//节点地址高2字节
+            getConfig()->airrate = tmp[1];
+            getConfig()->channel = tmp[3];
+
+            tmp = ReadRegister(0x1207);//
+            getConfig()->TcpServer[0] = tmp[1];
+            getConfig()->TcpServer[1] = tmp[3];
+            getConfig()->TcpServer[2] = tmp[5];
+            getConfig()->TcpServer[3] = tmp[7];
+            getConfig()->TcpServerPort = ((u16)(tmp[8])<<8)+tmp[9];
+
+        }
+        free(tmp);
         /* flash_init();
         	addr = 0;
          flash_write(addr++,&p,1);
@@ -157,9 +296,11 @@ void LoraUartInit()
 //	__HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE);	//使能空闲中断
 //	HAL_UART_Receive_DMA(&huart6,loraUart.lora1RxBuffer,LORA_BUFFER_SIZE);
 }
+uint32_t cn;
 void Lora_RxCpltCallback(unsigned char uartNo)
 {
     unsigned char temp;
+
     if(uartNo == 2)
     {
 
@@ -170,7 +311,7 @@ void Lora_RxCpltCallback(unsigned char uartNo)
             __HAL_UART_CLEAR_IDLEFLAG(&huart2);
             temp=huart2.Instance->SR;
             temp=huart2.Instance->DR;
-
+            loraUart.rxSize = LORA_BUFFER_SIZE -hdma_usart2_rx.Instance->NDTR;
             loraUart.receivedFlag1 = 1;
             HAL_UART_DMAStop(&huart2);
             HAL_UART_DMAResume(&huart2);
@@ -467,17 +608,17 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
             break;
         }
     }
-    else if(num == 3)//3 lora信道0-127
+    else if(num == 3)//3 lora信道0-83
     {
-        loraParams.reg2 = p[1]/1.5;
+        loraParams.reg2 = p[1];
     }
     else if(num == 4)
     {
         unsigned char *q;
         if(ROLE !=GATEWAY)
-            p = ReadRegister(0xf00a);
+            q = ReadRegister(0xf00a);
         else
-            p = ReadRegister(0x4409);
+            q = ReadRegister(0x4409);
 
         loraParams.addrH = q[0];
         loraParams.addrL = q[1];
@@ -490,10 +631,11 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
         loraParams.reg0 = loraParams.reg0 &0xe7;
         loraParams.reg0 = loraParams.reg0|0x00;//校验位设置bit4,3
         if(ROLE !=GATEWAY)
-            p = ReadRegister(0x1205);//空速
+            q = ReadRegister(0x1205);//空速
         else
-            p = ReadRegister(0x44f1);
+            q = ReadRegister(0x44f1);
         loraParams.reg0 = loraParams.reg0 &0xf8;
+
         switch(q[1])
         {
         case 1:
@@ -544,11 +686,11 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
             loraParams.reg1 = loraParams.reg1 |0x00;
 
         if(ROLE !=GATEWAY)
-            p = ReadRegister(0x1206);//信道
+            q = ReadRegister(0x1206);//信道
         else
-            p = ReadRegister(0x44f2);
+            q = ReadRegister(0x44f2);
 
-        loraParams.reg2 = q[1]/1.5;//信道
+        loraParams.reg2 = q[1];//信道
 
         loraParams.reg3 = loraParams.reg3&0x7f;//rssi,bit7
         loraParams.reg3 = loraParams.reg3|00;//rssi,bit7
@@ -606,40 +748,55 @@ void loraset(unsigned char num,unsigned char *p,unsigned char len)
         0：切换成功
 				1:切换不成功
 *********************************************************/
+
 unsigned char loraSend(LORAHW_stru *p,unsigned char *buffer,unsigned int len)
 {
-
+    unsigned char txbuffer[255];
     //unsigned char *q;
-
+    static unsigned char tmp;
     //memcpy(q,buffer,len);
     if(p->loraNo == 0)
     {
         if(loraGpioset(p) == 0)
         {
+
+            memcpy(txbuffer,buffer,len);
             HAL_Delay(100);
             //
-            HAL_UART_Transmit(&huart2,buffer,len,500);
-            //HAL_Delay(1000);
-            return 0;
+            if(tmp == 0)
+            {
+                tmp = 1;
+
+
+                HAL_UART_Transmit(&huart2,txbuffer,len,200);
+            }
+            else
+            {
+                //HAL_UART_DeInit(&huart2);
+            HAL_UART_Transmit(&huart2,txbuffer,len,200);
         }
-        else
-        {
-            return 1;
-        }
+
+        //HAL_Delay(1000);
+        return 0;
     }
     else
     {
-        if(loraGpioset(p) == 0)
-        {
-            //HAL_Delay(50);
-            HAL_UART_Transmit(&huart6,buffer,len,5);
-            HAL_Delay(5);
-            return 0;
-        }
-        else
-        {
-            return 1;
-        }
+        return 1;
+    }
+}
+else
+{
+    if(loraGpioset(p) == 0)
+    {
+        //HAL_Delay(50);
+        HAL_UART_Transmit(&huart6,buffer,len,5);
+        HAL_Delay(5);
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
 
 
     }
@@ -687,10 +844,13 @@ void LoraSetPayloadPackTx(unsigned cmd,unsigned char startaddr,unsigned char len
     lorahw.loraNo = 0;
     lorahw.mode = ConfigMOde;
     loraSend(&lorahw,p,tmp);
+	wirelessTimoutStart(1);
 }
+static uint32_t loraTimeout;
 void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len)
 {
-    unsigned char p[512];
+
+    unsigned char p[255];
     unsigned char *q;
     if(ROLE != GATEWAY)
         q = ReadRegister(0x1203);//目标lora地址
@@ -709,8 +869,37 @@ void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len)
     lorahw.mode = TransmitMode;
     loraSend(&lorahw,p,len+3);
     getloraProcStatus()->ack = 1;
+    loraTimeout = HAL_GetTick();
+    wirelessTimoutStart(1);
+    //free(p);
+}
+unsigned char loraReapte(void)
+{
+    static unsigned char TimeoutCount;
+    if(getloraProcStatus()->ack ==1)
+    {
+        if((HAL_GetTick()-loraTimeout)>=5000)
+        {
+            if(TimeoutCount <3)
+            {
+                TimeoutCount = TimeoutCount + 1;
+                getloraProcStatus()->ack =0;
+                return 0;
+            }
+            else
+            {
+                TimeoutCount = 0;
+                getloraProcStatus()->ack =0;
+                return 1;
 
-
+            }
+        }
+    }
+    else
+        loraTimeout = HAL_GetTick();
+    if(getloraProcStatus()->ack ==2)
+        TimeoutCount = 0;
+    return 1;
 }
 //unsigned char loraSendRery()
 //{
@@ -730,7 +919,7 @@ void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len)
 void loraModuleInit()
 {
 
-    unsigned char *p,ww;
+
 
 #if DEBUG
     if(ROLE !=GATEWAY)
@@ -754,7 +943,41 @@ void loraModuleInit()
         p = ReadRegister(0x44f1);
 
     loraParams.reg0 =loraParams.reg0 &0xf8;
-    loraParams.reg0 = loraParams.reg0|p[1];//空中速度设置bit2,1,0
+    switch(p[1])//空中速度
+    {
+    case 1:
+        loraParams.reg0 = loraParams.reg1 |0x00;
+    case 2:
+        loraParams.reg0 = loraParams.reg1 |0x00;
+    case 3:
+        loraParams.reg0 = loraParams.reg1 |0x00;
+        break;
+    case 4:
+        loraParams.reg0 = loraParams.reg1 |0x01;
+        break;
+    case 5:
+        loraParams.reg0 = loraParams.reg1 |0x02;
+        break;
+    case 6:
+        loraParams.reg0 = loraParams.reg1 |0x03;
+        break;
+    case 7:
+        loraParams.reg0 = loraParams.reg1 |0x04;
+        break;
+    case 8:
+        loraParams.reg0 = loraParams.reg1 |0x05;
+        break;
+    case 9:
+        loraParams.reg0 = loraParams.reg1 |0x06;
+        break;
+    case 10:
+        loraParams.reg0 = loraParams.reg1 |0x07;
+        break;
+    }
+
+
+
+
 
     loraParams.reg1 = loraParams.reg1 &0x3f;
     loraParams.reg1 = loraParams.reg1|0x00;//分包长度，bit7,6
@@ -811,10 +1034,10 @@ void LoraTest()
 {
     //loraModuleInit();
     //LoraSetPayloadPackTx(0xc0,0,9);//写lora模块
-    unsigned char p[240],i;
+   /* unsigned char p[240],i;
     for(i=0; i<210; i++)
         p[i] = i+1;
-    LoraSendPayloadPackTx(p,210);
+    LoraSendPayloadPackTx(p,210);*/
 }
 
 unsigned char EnterStop(void)
@@ -846,65 +1069,97 @@ unsigned char EnterStop(void)
     /*Configure GPIO pins : DTR_Pin EN_3_3V_Pin SIM_PWR_Pin CTRL3__Pin
                              CTRL1__Pin */
     GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|
-		                      GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|
-		                      GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+                          GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|
+                          GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_PULLDOWN;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);		
-		
-	
-    GPIO_InitStruct.Pin =GPIO_PIN_All;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+
+    GPIO_InitStruct.Pin =GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_PULLDOWN;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);	
-	
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+
+    GPIO_InitStruct.Pin = GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+
+    GPIO_InitStruct.Pin =GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+
+    GPIO_InitStruct.Pin = GPIO_PIN_10;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_11;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET);
+
     GPIO_InitStruct.Pin = GPIO_PIN_All;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_PULLDOWN;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-	
 
-	GPIO_InitStruct.Pin = RS485_EN1_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-	GPIO_InitStruct.Pin = GPIO_PIN_All;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-  GPIO_InitStruct.Pin =GPIO_PIN_All;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-	
-  GPIO_InitStruct.Pin =GPIO_PIN_All;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
-	
-  GPIO_InitStruct.Pin =GPIO_PIN_All;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(GPIOC, EN_3_3V_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_RESET);
+    GPIO_InitStruct.Pin = GPIO_PIN_11;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
 
-	
+
+
+
+
+
+
+    GPIO_InitStruct.Pin =GPIO_PIN_All;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+
+
+    HAL_GPIO_WritePin(GPIOC, EN_3_3V_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_RESET);
+
+
 
     __HAL_RCC_GPIOC_CLK_DISABLE();
     __HAL_RCC_GPIOH_CLK_DISABLE();
     __HAL_RCC_GPIOA_CLK_DISABLE();
-   __HAL_RCC_GPIOB_CLK_DISABLE();
+    __HAL_RCC_GPIOB_CLK_DISABLE();
     __HAL_RCC_GPIOD_CLK_DISABLE();
     __HAL_RCC_DMA1_CLK_DISABLE();
     __HAL_RCC_DMA2_CLK_DISABLE();
@@ -914,23 +1169,28 @@ unsigned char EnterStop(void)
     __HAL_RCC_USART6_CLK_DISABLE();
     __HAL_RCC_ADC1_CLK_DISABLE();
     HAL_PWREx_EnableFlashPowerDown();
+
+    RTC_WAKEUP_Init();
+
     __HAL_RCC_PWR_CLK_ENABLE();
-  //  HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+    HAL_SuspendTick();
+    __HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
+    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+    //   HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
     HAL_PWR_EnterSTANDBYMode();
-    __HAL_RCC_HSE_CONFIG(RCC_HSE_ON);
+    __HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
+    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+    HAL_ResumeTick();
+//	system_config();
+//	HAL_Delay(5000);
+//	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
+//	HAL_Delay(1000);
+    // __HAL_RTC_WAKEUPTIMER_DISABLE_IT(&hrtc,RTC_IT_WUT);
 
-    HAL_UART_DeInit(&huart2);
-    HAL_UART_DeInit(&huart3);
-    __HAL_RCC_DMA1_CLK_ENABLE();
-    __HAL_RCC_DMA2_CLK_ENABLE();
-
-    unsigned char ww;
-    ww = 1;
     result = 1;
-    RS485_SendData(&ww,1,0);
-    p.loraNo = 0;
-    p.mode =  ConfigMOde;
-    loraGpioset(&p);
+
+    //__set_FAULTMASK(1);
+    //NVIC_SystemReset();
     return result;
 
 }

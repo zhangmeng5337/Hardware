@@ -222,6 +222,7 @@ void RTC_WKUP_IRQHandler(void)
   /* USER CODE END RTC_WKUP_IRQn 0 */
   HAL_RTCEx_WakeUpTimerIRQHandler(&hrtc);
   /* USER CODE BEGIN RTC_WKUP_IRQn 1 */
+  __HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
    RTC_STRU *tmp;
   tmp = getRtcStatus();
   tmp->RtcWakeUP = 1;
@@ -287,7 +288,9 @@ void USART1_IRQHandler(void)
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 	if(ROLE == GATEWAY||MODE_STAUS == 2)
-		Nbiot_RxCpltCallback();
+		Nbiot_RxCpltCallback(1);
+  else
+		Nbiot_RxCpltCallback(0);		
   /* USER CODE END USART1_IRQn 1 */
 }
 

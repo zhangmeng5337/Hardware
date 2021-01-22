@@ -123,7 +123,7 @@ void gatewayDataFrame(unsigned char len)
 	LORAHW_stru loraNo;
 	unsigned int q;
 	proc_tmp = protocolCstru();
-	if(proc_tmp->funCode == PC_readFrame)
+	if(proc_tmp->funCode == pc_cmd)
 	{   
 	    ackMode = ackmodeStatus();
 		 if(*ackMode == 0)
@@ -136,6 +136,7 @@ void gatewayDataFrame(unsigned char len)
 				protocolCstru()->payloadLenL = 40*len;
 				loraNo.loraNo = 0;
 				loraNo.mode =  TransmitMode;
+				proc_tmp->funCode == PC_readFrame;
 				SendPayloadPack(&loraNo,*ackMode);
 				
 				p = ReadRegister(0x4003);//数据读完后数据帧清零

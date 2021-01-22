@@ -157,6 +157,7 @@ void RS485_RxCpltCallback()
 //			//开始计时
 //		}            
 //		HAL_UART_Receive_IT(&huart5, &res, 1); 	  // 重新注册一次，要不然下次收不到了
+	    
 			modbus_usr.RS485_FrameFlag=2;//置位帧结束标记
 			HAL_UART_DMAStop(&huart5);
 			HAL_UART_DMAResume(&huart5);

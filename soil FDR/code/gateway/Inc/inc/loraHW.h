@@ -48,6 +48,7 @@ void LoraUartInit(void);
 void LoraSendPayloadPackTx(unsigned char *buffer,unsigned char len);
 unsigned char EnterStop(void);
 void ParamsSave(unsigned char datasrc);//²ÎÊý±£´æ
+unsigned char loraReapte(void);
 
 
 #endif

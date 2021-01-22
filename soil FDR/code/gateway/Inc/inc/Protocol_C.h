@@ -23,10 +23,10 @@
                                                          
                                                          
                                                          
-#define  gateway_Rcmd	 			  0x17    
-#define  pc_cmd 					  0x18    
-#define  PC_readFrame				  0x30    
-#define  auto_report_cmd 			  0x51    
+#define  gateway_Rcmd	 			  0x17    //读数据
+#define  pc_cmd 					  0x18    //写数据
+#define  PC_readFrame				  0x30    //读网关数据帧
+#define  auto_report_cmd 			  0x51    //终端自动上报
                                                          
                                                          
                                                          
@@ -134,6 +134,7 @@ typedef struct
   unsigned char payloadLenH;
   unsigned char payloadLenL; 
   unsigned char payload[PAYLOAD_SIZE];
+	unsigned char dataType;
 }Proctocol_C_stru;
 typedef struct
 {
@@ -158,6 +159,9 @@ void setDataSrc(unsigned char p);
 unsigned char *getDataSrc(void);
 void dev_params_pack(unsigned int start_addr,unsigned char sensors_prams,unsigned char len,unsigned char dataSrc);
 void ProctocolInit(void);
+void test(void);
+void autoreport(void);
 
+unsigned char getTxmode(void);
 #endif
 

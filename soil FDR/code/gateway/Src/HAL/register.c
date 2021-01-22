@@ -1,6 +1,6 @@
 #include "register.h"
 #include "Protocol_C.h"
-
+#include "config.h"
 static REG_val_stru register_map;
 REG_STATUS_stru reg_status;
 
@@ -27,11 +27,17 @@ unsigned int RegisterAddrCal(unsigned int p,unsigned char num)
 	static uint32_t x1,x12,x4,x44,xe,xf;
 	static unsigned char flag;
 	if(flag == 0)
-	{
+	{ 
+	/*#define x1_ADDR_SIZE      x1_ADDR_END-x1_ADDR_START+1   //0x101
+	#define x12_ADDR_SIZE     x12_ADDR_END-x12_ADDR_START+1 //0x0b
+	#define x4_ADDR_SIZE      x44_ADDR_END-x44_ADDR_START+1 //0x3fb
+	#define x44_ADDR_SIZE     x44_ADDR_END-x44_ADDR_START+1 //0x120
+	#define xE_ADDR_SIZE      xE_ADDR_END-xE_ADDR_START+1  //0x0f
+	#define xF_ADDR_SIZE      xF_ADDR_END-xF_ADDR_START+1 //0x0d */                 
 		flag = 1;
-		x1 = x1_ADDR_START;
-		x12 = x1_ADDR_SIZE;
-		x4 = x1_ADDR_SIZE+x12_ADDR_SIZE;
+		x1 = x1_ADDR_START;//0x1001
+		x12 = x1_ADDR_SIZE;//0x101
+		x4 = x1_ADDR_SIZE+x12_ADDR_SIZE;//0x10c
 		x44 = x1_ADDR_SIZE+x12_ADDR_SIZE+x4_ADDR_SIZE;
 		xe = x1_ADDR_SIZE+x12_ADDR_SIZE+x4_ADDR_SIZE+x44_ADDR_SIZE;
 		xf = x1_ADDR_SIZE+x12_ADDR_SIZE+x4_ADDR_SIZE+x44_ADDR_SIZE+xE_ADDR_SIZE;		
@@ -476,8 +482,8 @@ void register_init()
         unsigned char *q;
 	    WriteOneRegisterForce(0xf001,0x0001);//01H：非密集监测周期 02H：密集监测周期
 		WriteOneRegisterForce(0xf002,3);//10-1000min设置	
-		WriteOneRegisterForce(0xf003,2);//10-120min设置
-		WriteOneRegisterForce(0xf004,1);//0-60s设置;设置无线模组激活超时时间
+		WriteOneRegisterForce(0xf003,4);//10-120min设置
+		WriteOneRegisterForce(0xf004,60);//0-60s设置;设置无线模组激活超时时间
 		WriteOneRegisterForce(0xf005,8);//无线模组功耗设置
 		//								01H：10%最大功率设置
 		//								02H：20%最大功率设置
@@ -489,11 +495,13 @@ void register_init()
 		//								08H：80%最大功率设置
 		//								09H：90%最大功率设置
 		//								10H：满功率输出
+
+
 		WriteOneRegisterForce(0xf006,10);//0-100 对应 0%-100%电量
-		WriteOneRegisterForce(0xf007,0);//节点地址高2字节
-		WriteOneRegisterForce(0xf008,0);//
-		WriteOneRegisterForce(0xf009,0);//
-		WriteOneRegisterForce(0xf00a,2);//本地节点地址低2字节LORA物理地址
+		WriteOneRegisterForce(0xf007,((u16)(getConfig()->srcaddr[0])<<8)+getConfig()->srcaddr[1]);//节点地址高2字节
+		WriteOneRegisterForce(0xf008,((u16)(getConfig()->srcaddr[2])<<8)+getConfig()->srcaddr[3]);//
+		WriteOneRegisterForce(0xf009,((u16)(getConfig()->srcaddr[4])<<8)+getConfig()->srcaddr[5]);//
+		WriteOneRegisterForce(0xf00a,((u16)(getConfig()->srcaddr[6])<<8)+getConfig()->srcaddr[7]);//本地节点地址低2字节LORA物理地址
 		q = ReadRegister(0xf00a);
 		WriteOneRegisterForce(0xf00b,((u16)(q[0])<<8)+q[1]);//LORA本地物理地址,与0xf00a相同
 		WriteOneRegisterForce(0xf00c,2);//农业采集控制终端与传感器通信的Modbus波特率
@@ -520,35 +528,41 @@ void register_init()
 		WriteOneRegisterForce(0xe000,44);//经度
 		WriteOneRegisterForce(0xe003,47);//纬度
 
-		WriteOneRegisterForce(0x1200,0);//目标网关
-		WriteOneRegisterForce(0x1201,0);//目标网关
-		WriteOneRegisterForce(0x1202,0);//目标网关
-		WriteOneRegisterForce(0x1203,3);//目标网关
-		WriteOneRegisterForce(0x1205,4);//空速
-		WriteOneRegisterForce(0x1206,30);//信道
-		
-		WriteOneRegisterForce(0x1207,192);//服务器ip H
-		WriteOneRegisterForce(0x1208,168);//服务器ip H
-		WriteOneRegisterForce(0x1209,1);//服务器ip H
-		WriteOneRegisterForce(0x120a,5);//服务器ip H
-		WriteOneRegisterForce(0x120b,80);//服务器端口号	
+		WriteOneRegisterForce(0x1200,((u16)(getConfig()->destaddr[0])<<8)+getConfig()->destaddr[1]);//目标网关
+		WriteOneRegisterForce(0x1201,((u16)(getConfig()->destaddr[2])<<8)+getConfig()->destaddr[3]);//目标网关
+		WriteOneRegisterForce(0x1202,((u16)(getConfig()->destaddr[4])<<8)+getConfig()->destaddr[5]);//目标网关
+		WriteOneRegisterForce(0x1203,((u16)(getConfig()->destaddr[6])<<8)+getConfig()->destaddr[7]);//目标网关
+		WriteOneRegisterForce(0x1205,getConfig()->airrate);//空速
+		WriteOneRegisterForce(0x1206,getConfig()->channel);//信道
+	
+	
+		WriteOneRegisterForce(0x1207,getConfig()->TcpServer[0]);//服务器ip H
+		WriteOneRegisterForce(0x1208,getConfig()->TcpServer[1]);//服务器ip H
+		WriteOneRegisterForce(0x1209,getConfig()->TcpServer[2]);//服务器ip H
+		WriteOneRegisterForce(0x120a,getConfig()->TcpServer[3]);//服务器ip H
+		WriteOneRegisterForce(0x120b,getConfig()->TcpServerPort);//服务器端口号	
 
 		if(ROLE == GATEWAY)
 		{
-			WriteOneRegisterForce(0x4006,0);//网关
-			WriteOneRegisterForce(0x4007,0);//网关
-			WriteOneRegisterForce(0x4008,0);//网关
-			WriteOneRegisterForce(0x4009,2);//网关
-			WriteOneRegisterForce(0x400a,2);//网关
-			WriteOneRegisterForce(0x4409,2);//网关lora地址
-			WriteOneRegisterForce(0x44f1,4);//网关空速
-			WriteOneRegisterForce(0x44f2,30);//网关信道
+			WriteOneRegisterForce(0x1200,((u16)(getConfig()->srcaddr[0])<<8)+getConfig()->srcaddr[1]);//目标网关
+			WriteOneRegisterForce(0x1201,((u16)(getConfig()->srcaddr[2])<<8)+getConfig()->srcaddr[3]);//目标网关
+			WriteOneRegisterForce(0x1202,((u16)(getConfig()->srcaddr[4])<<8)+getConfig()->srcaddr[5]);//目标网关
+			WriteOneRegisterForce(0x1203,((u16)(getConfig()->srcaddr[6])<<8)+getConfig()->srcaddr[7]);//目标网关
 
-			WriteOneRegisterForce(0x45f0,192);//服务器ip
-			WriteOneRegisterForce(0x45f1,168);//服务器ip
-			WriteOneRegisterForce(0x45f2,1);//服务器ip
-			WriteOneRegisterForce(0x45f3,3);//服务器ip		
-			WriteOneRegisterForce(0x45f4,3);//服务器端口号	
+			WriteOneRegisterForce(0x4006,((u16)(getConfig()->srcaddr[0])<<8)+getConfig()->destaddr[1]);//网关
+			WriteOneRegisterForce(0x4007,((u16)(getConfig()->srcaddr[2])<<8)+getConfig()->destaddr[3]);//网关
+			WriteOneRegisterForce(0x4008,((u16)(getConfig()->srcaddr[4])<<8)+getConfig()->destaddr[5]);//网关
+			WriteOneRegisterForce(0x4009,((u16)(getConfig()->srcaddr[6])<<8)+getConfig()->destaddr[7]);//网关
+			WriteOneRegisterForce(0x400a,((u16)(getConfig()->srcaddr[6])<<8)+getConfig()->destaddr[7]);//网关
+			WriteOneRegisterForce(0x4409,((u16)(getConfig()->srcaddr[6])<<8)+getConfig()->destaddr[7]);//网关lora地址
+			WriteOneRegisterForce(0x44f1,getConfig()->airrate);//网关空速
+			WriteOneRegisterForce(0x44f2,getConfig()->channel);//网关信道
+
+			WriteOneRegisterForce(0x45f0,getConfig()->TcpServer[0]);//服务器ip
+			WriteOneRegisterForce(0x45f1,getConfig()->TcpServer[1]);//服务器ip
+			WriteOneRegisterForce(0x45f2,getConfig()->TcpServer[2]);//服务器ip
+			WriteOneRegisterForce(0x45f3,getConfig()->TcpServer[3]);//服务器ip		
+			WriteOneRegisterForce(0x45f4,getConfig()->TcpServerPort);//服务器端口号	
 			WriteOneRegisterForce(0x45f5,1);//nbiot使能
 			WriteOneRegisterForce(0x45f6,1);//数据切换
 

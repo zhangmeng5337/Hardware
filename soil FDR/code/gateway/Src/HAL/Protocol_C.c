@@ -9,8 +9,9 @@
 #include "nbiotHW.h"
 #include "gateway.h"
 #include "nbiotHAL.h"
+#include "loraHAL.h"
 extern unsigned char MODE_STAUS;
-
+unsigned char txmode;
 
 void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode);
 unsigned char autoReportMode(void);
@@ -52,16 +53,66 @@ void ProctocolInit()
 
 
 }
+/****************************************************
+功能：根据功能码判断数据长度
+****************************************************/
 unsigned char getPackLen(unsigned char  *p)
 {
+    /*#define  gateway_Rcmd	 			  0x17    //读数据
+    #define  pc_cmd 					  0x18    //写数据
+    #define  PC_readFrame				  0x30    //读网关数据帧
+    #define  auto_report_cmd 			  0x51    //终端自动上报*/
 
     unsigned int len;
     len = 0;
-    if(p[17] == PC_readFrame||p[17]  == pc_cmd||p[17]  == auto_report_cmd||p[17]  == gateway_Rcmd)
+    if(ROLE != GATEWAY)//终端设备
     {
-        if(ROLE != GATEWAY)//终端设备
+        if(*getDataSrc() == DAT_FROM_LORA)//终端正常只能接收lora数据
         {
-            if(p[17]  != gateway_Rcmd)
+            if(p[17]  == pc_cmd||p[17]  == auto_report_cmd)
+            {
+                len = p[PAYLOAD_LEN_INDEX];//payload长度
+                len = len + 2*ADDR_SIZE+1+1;//
+                len = len+START_ADDR_SIZE + 1+4;
+            }
+            else if(p[17]  == gateway_Rcmd)
+            {
+                len =  2*ADDR_SIZE+1+1;//
+                len = len+START_ADDR_SIZE + 1+4;
+            }
+            else if(p[17] !=PC_readFrame)//错误功能码
+            {
+                len = 0;
+            }
+        }
+        else if(*getDataSrc() == DAT_FROM_NBIOT||*getDataSrc() == DAT_FROM_PC)//终端带有nbiot或者其他接口
+        {
+            /*#define  gateway_Rcmd	 			  0x17    //读数据
+            #define  pc_cmd 					  0x18    //写数据
+            #define  PC_readFrame				  0x30    //读网关数据帧
+            #define  auto_report_cmd 			  0x51    //终端自动上报*/
+            if(p[17]  == pc_cmd||p[17]  == auto_report_cmd)
+            {
+                len = p[PAYLOAD_LEN_INDEX];//payload长度
+                len = len + 2*ADDR_SIZE+1+1;//
+                len = len+START_ADDR_SIZE + 1+4;
+            }
+            else if(p[17]  == gateway_Rcmd)
+            {
+                len =  2*ADDR_SIZE+1+1;//
+                len = len+START_ADDR_SIZE + 1+4;
+            }
+            else if(p[17] !=PC_readFrame)//
+                len = 0;
+
+        }
+
+    }
+    else  //*********************网关******************************
+    {
+        if(*getDataSrc() == DAT_FROM_LORA)//接收终端的数据，lora只能接收终端数据
+        {
+            if(p[17]  == pc_cmd||p[17]  == auto_report_cmd||p[17]  == PC_readFrame)
             {
                 len = p[PAYLOAD_LEN_INDEX];//payload长度
                 len = len + 2*ADDR_SIZE+1+1;//
@@ -69,119 +120,224 @@ unsigned char getPackLen(unsigned char  *p)
             }
             else
             {
+                len = 0;//
+            }
+
+
+            /* unsigned int regaddr;
+             regaddr = uchar2uint(&p[18]);
+             if(regaddr!= 0x4001)
+             {
+                 len = p[PAYLOAD_LEN_INDEX];//payload长度
+                 len = len + 2*ADDR_SIZE+1+1;//
+                 len = len+START_ADDR_SIZE + 1+4;
+             }
+             else
+             {
+                 len =  2*ADDR_SIZE+1+1;//
+                 len = len+START_ADDR_SIZE + 1+4;
+             }*/
+        }
+        else if(*getDataSrc() == DAT_FROM_NBIOT||*getDataSrc() == DAT_FROM_PC||*getDataSrc() == DAT_FROM_RELAY)
+        {
+            /*#define  gateway_Rcmd	 			  0x17    //读数据
+            #define  pc_cmd 					  0x18    //写数据
+            #define  PC_readFrame				  0x30    //读网关数据帧
+            #define  auto_report_cmd 			  0x51    //终端自动上报*/
+            if(p[17]  == pc_cmd||p[17]  == auto_report_cmd)//p[17]  == PC_readFrame||
+            {
+                len = p[PAYLOAD_LEN_INDEX];//payload长度
+                len = len + 2*ADDR_SIZE+1+1;//
+                len = len+START_ADDR_SIZE + 1+4;
+            }
+            else if(p[17]  == gateway_Rcmd||p[17]  == PC_readFrame)
+            {
                 len =  2*ADDR_SIZE+1+1;//
                 len = len+START_ADDR_SIZE + 1+4;
             }
+            else
+                len = 0;
 
-        }
-        else  //网关
-        {
-            if(*getDataSrc() == DAT_FROM_LORA)
-            {
-                unsigned int regaddr;
-                regaddr = uchar2uint(&p[18]);
-                if(regaddr!= 0x4001)
-                {
-                    len = p[PAYLOAD_LEN_INDEX];//payload长度
-                    len = len + 2*ADDR_SIZE+1+1;//
-                    len = len+START_ADDR_SIZE + 1+4;
-                }
-                else
-                {
-                    len =  2*ADDR_SIZE+1+1;//
-                    len = len+START_ADDR_SIZE + 1+4;
-                }
-            }
-            else if(*getDataSrc() == DAT_FROM_NBIOT||*getDataSrc() == DAT_FROM_PC||*getDataSrc() == DAT_FROM_RELAY)
-            {
-                if(p[17]  != gateway_Rcmd)
-                {
-                    len = p[PAYLOAD_LEN_INDEX];//payload长度
-                    len = len + 2*ADDR_SIZE+1+1;//
-                    len = len+START_ADDR_SIZE + 1+4;
-                }
-                else
-                {
-                    len =  2*ADDR_SIZE+1+1;//
-                    len = len+START_ADDR_SIZE + 1+4;
-                }
-
-            }
-        }
-    }
-    else
-    {
-        if(p[17]  != gateway_Rcmd)
-        {
-            len = p[PAYLOAD_LEN_INDEX];//payload长度
-            len = len + 2*ADDR_SIZE+1+1;//
-            len = len+START_ADDR_SIZE + 1+4;
-        }
-        else
-        {
-            len =  2*ADDR_SIZE+1+1;//
-            len = len+START_ADDR_SIZE + 1+4;
         }
 
     }
+
     return len;
 
 }
 
-
-void packAnaly(unsigned char  *p)
+/*result = 8;//数据校验正确
+result = 3;//功能码错误,数据包格式正确
+result = 7;//错误应答数据包，数据包无起始地址
+result = 6;//功能码不对，且为读命令数据包格式
+#define  gateway_Rcmd	 			  0x17    //读数据
+#define  pc_cmd 					  0x18    //写数据
+#define  PC_readFrame				  0x30    //读网关数据帧
+#define  auto_report_cmd 			  0x51    //终端自动上报*/
+void packAnaly(unsigned char  *p,unsigned char result,unsigned int len)
 {
     unsigned int payload_len;
     protocolC.devCode = p[2*ADDR_SIZE];
     protocolC.funCode = p[2*ADDR_SIZE+1];
-    protocolC.startAddr[0]=p[2*ADDR_SIZE+1+1];
-    protocolC.startAddr[1]=p[2*ADDR_SIZE+1+1+1];
-    if(p[2*ADDR_SIZE+1] !=0x17)
+    if(result == 8||result == 3||result == 6)
     {
-        protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
-        protocolC.payloadLenH = 0;
-        payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
-        //payload_len =payload_len<<8 ;//payload长度
-        //payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
-        memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
+        protocolC.startAddr[0]=p[2*ADDR_SIZE+1+1];
+        protocolC.startAddr[1]=p[2*ADDR_SIZE+1+1+1];
     }
-    else
+    else//错误应答数据包，数据包无起始地址
     {
-        if(ROLE != GATEWAY)
+        protocolC.startAddr[0]=0;
+        protocolC.startAddr[1]=0;
+    }
+
+    if(ROLE != GATEWAY)
+    {
+        if(result == 6||result == 3)
         {
+            protocolC.dataType = 2;//应答错误帧
+            protocolC.funCode = 0x17;
+            protocolC.payloadLenL = 0;
             protocolC.payloadLenH = 0;
-            protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
-            payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
-            //  payload_len =payload_len<<8 ;//payload长度
-            //  payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
-
+            payload_len = protocolC.payloadLenL ;//payload长度
+            memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1],payload_len);
         }
-        else
+        else if(result == 7 )
         {
-            if(*getDataSrc() == DAT_FROM_LORA)
-            {
-                protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
-                protocolC.payloadLenH = 0;
-                payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
-                //payload_len =payload_len<<8 ;//payload长度
-                //payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
-                memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
-            }
-            else if(*getDataSrc() == DAT_FROM_NBIOT||*getDataSrc() == DAT_FROM_PC||*getDataSrc() == DAT_FROM_RELAY)
-            {
-                protocolC.payloadLenH = 0;
-                protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
-                payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
-                //  payload_len =payload_len<<8 ;//payload长度
-                //  payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+            protocolC.dataType = 1;//应答错误帧
+            protocolC.payloadLenL = 1;
+            protocolC.payloadLenH = 0;
+            payload_len =protocolC.payloadLenL ;//payload长度
+            memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1],payload_len);
 
-
-            }
         }
+        else if(result == 8)
+        {
+            protocolC.dataType = 0;//应答错误帧
+            protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+            protocolC.payloadLenH = 0;
+            payload_len =protocolC.payloadLenL ;//payload长度
+            if(len<payload_len)
+            {
+                payload_len = len - 2*ADDR_SIZE - 1 - 1;
+                payload_len =payload_len - START_ADDR_SIZE -1;
+                payload_len = payload_len - 4;
+                //memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
+            }
+
+            memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
+
+        }
+
 
     }
+    else   /*****************************网关*************************************************/
+    {
+        /*result = 8;//数据校验正确
+        result = 3;//功能码错误,数据包格式正确
+        result = 7;//错误应答数据包，数据包无起始地址
+        result = 6;//功能码不对，且为读命令数据包格式
+        #define  gateway_Rcmd	 			  0x17    //读数据
+        #define  pc_cmd 					  0x18    //写数据
+        #define  PC_readFrame				  0x30    //读网关数据帧
+        #define  auto_report_cmd 			  0x51    //终端自动上报*/
+
+        if(result == 6||result == 3)
+        {
+            protocolC.dataType = 2;//应答错误帧
+            protocolC.funCode = 0x17;
+            protocolC.payloadLenL = 0;
+            protocolC.payloadLenH = 0;
+            payload_len = protocolC.payloadLenL ;//payload长度
+            memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1],payload_len);
+
+        }
+        else if(result == 7 )
+        {
+            // protocolC.funCode = 0x17;
+            protocolC.dataType = 1;//应答错误帧
+            protocolC.payloadLenL = 1;
+            protocolC.payloadLenH = 0;
+            payload_len =protocolC.payloadLenL ;//payload长度
+            memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1],payload_len);
+
+        }
+        else if(result == 8)
+        {
+            protocolC.dataType = 0;//应答错误帧
+            protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+            protocolC.payloadLenH = 0;
+            payload_len =protocolC.payloadLenL ;//payload长度
+            if(len<payload_len)
+            {
+                payload_len = len - 2*ADDR_SIZE - 1 - 1;
+                payload_len =payload_len - START_ADDR_SIZE -1;
+                payload_len = payload_len - 4;
+                //memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
+            }
+
+            memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
+
+        }
+
+
+    }
+    /* if(result <6)
+     {
+         if(p[2*ADDR_SIZE+1] !=gateway_Rcmd)
+         {
+             protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+             protocolC.payloadLenH = 0;
+             payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+             //payload_len =payload_len<<8 ;//payload长度
+             //payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+             memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
+         }
+         else
+         {
+             if(ROLE != GATEWAY)
+             {
+                 protocolC.payloadLenH = 0;
+                 protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+                 payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+                 //  payload_len =payload_len<<8 ;//payload长度
+                 //  payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+
+             }
+             else
+             {
+                 if(*getDataSrc() == DAT_FROM_LORA)
+                 {
+                     protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+                     protocolC.payloadLenH = 0;
+                     payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+                     //payload_len =payload_len<<8 ;//payload长度
+                     //payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+                     memcpy(protocolC.payload,&p[ADDR_SIZE+ADDR_SIZE+1+1+2+1],payload_len);
+                 }
+                 else if(*getDataSrc() == DAT_FROM_NBIOT||*getDataSrc() == DAT_FROM_PC||*getDataSrc() == DAT_FROM_RELAY)
+                 {
+                     protocolC.payloadLenH = 0;
+                     protocolC.payloadLenL = p[PAYLOAD_LEN_INDEX];
+                     payload_len =p[PAYLOAD_LEN_INDEX] ;//payload长度
+                     //  payload_len =payload_len<<8 ;//payload长度
+                     //  payload_len =payload_len + p[PAYLOAD_LEN_INDEX+1] ;//payload长度
+
+
+                 }
+             }
+
+         }
+     }*/
+
 
 }
+
+/***************************************************
+功能：数据包协议解析
+参数：p待解析数据包
+      len: 为0代表数据不合法或者有错误功能码
+      result:0为解析成功数据；4为需要转发数据非本机数据
+ ****************************************************/
 unsigned char protocolCAnaly(unsigned char  *p)
 {
     unsigned int calCRC;
@@ -192,66 +348,218 @@ unsigned char protocolCAnaly(unsigned char  *p)
 
     //memcpy(protocolC.SrcAddr,&(p[ADDR_SIZE]),ADDR_SIZE);//源地址
     len = getPackLen(p);
-
-    if(len<16)
+    if(len<=16&&len>0)//数据小于等于16为非法数据
+    {
         return 5;
-    calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
-    recCRC=p[len-1]|(((u16)p[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
-    if(calCRC!=recCRC||(calCRC == 0))//CRC校验正确，整个数据包校验正确
-    {
-        calCRC=CRC_Compute(p,len-p[PAYLOAD_LEN_INDEX]-2);//计算所接收数据的CRC
-        recCRC=p[len-p[PAYLOAD_LEN_INDEX]-1]|(((u16)p[len-p[PAYLOAD_LEN_INDEX]-2])<<8);//接收到的CRC(低字节在前，高字节在后)
-        if(calCRC==recCRC)//CRC校验正确，整个数据包校验正确
-        {
-            len = len - p[PAYLOAD_LEN_INDEX];
-        }
-        else
-            result = 6;
     }
-    if(calCRC==recCRC)//CRC校验正确，整个数据包校验正确
+    else if(len == 0)//功能码错误或者是
     {
-        memcpy(protocolC.DesAddr,p,ADDR_SIZE); //目标地址
-        calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);
-        recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
-        if(calCRC==recCRC)//目的地址正确以及数据校验正确
+        len = p[PAYLOAD_LEN_INDEX];//payload长度
+        len = len + 2*ADDR_SIZE+1+1;//
+        len = len+START_ADDR_SIZE + 1+4;
+
+        calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
+        recCRC=p[len-1]|(((u16)p[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
+        if(calCRC!=recCRC||(calCRC == 0))//CRC校验错误
         {
-            packAnaly(p);
-            if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
+
+            len =  2*ADDR_SIZE+1+1;//
+            len = len+START_ADDR_SIZE + 1+4;
+
+            calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);
+            recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
+            if(calCRC==recCRC&&calCRC!=0)//负载数据校验正确
             {
-                result = 0;//本机数据
-                WriteRegisteSet(0x1200,p+ADDR_SIZE,8);//发送端源地址
-                memcpy(protocolC.DesAddr,p+ADDR_SIZE,ADDR_SIZE); //目标地址
+                memcpy(protocolC.DesAddr,p,ADDR_SIZE); //目标地址
+                result = 6;//功能码不对，且为读命令数据包格式
+                packAnaly(p,result,len);
+                if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
+                {
+                    result = 0;//本机数据
+                    WriteRegisteSet(0x1200,p+ADDR_SIZE,8);//发送端源地址
+                    memcpy(protocolC.DesAddr,p+ADDR_SIZE,ADDR_SIZE); //目标地址
+                }
+                else
+                {
+                    result = 4;//非本机数据
+                    WriteRegisteSet(0x1200,p,8);
+                    memcpy(protocolC.DesAddr,p,ADDR_SIZE); //发送端目的地址
+
+                }
             }
             else
             {
-                result = 4;//非本机数据
-                WriteRegisteSet(0x1200,p,8);
-                memcpy(protocolC.DesAddr,p,ADDR_SIZE); //发送端目的地址
+                len =  2*ADDR_SIZE+1+1;//
+                len = len+ 1+4;
 
+                calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);
+                recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
+                if(calCRC==recCRC&&calCRC!=0)//负载数据校验正确
+                {
+                    memcpy(protocolC.DesAddr,p,ADDR_SIZE); //目标地址
+                    result = 7;//错误应答数据包，数据包无起始地址
+                    packAnaly(p,result,len);
+                    if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
+                    {
+                        result = 0;//本机数据
+                        WriteRegisteSet(0x1200,p+ADDR_SIZE,8);//发送端源地址
+                        memcpy(protocolC.DesAddr,p+ADDR_SIZE,ADDR_SIZE); //目标地址
+                    }
+                    else
+                    {
+                        result = 4;//非本机数据
+                        WriteRegisteSet(0x1200,p,8);
+                        memcpy(protocolC.DesAddr,p,ADDR_SIZE); //发送端目的地址
+
+                    }
+                }
+                else
+                    result = 2;//数据错误
             }
         }
-        else
+        else if(calCRC==recCRC&&calCRC!=0)//CRC校验正确，整个数据包校验正确
         {
-            result = 1;//目的地址校验错误
+            memcpy(protocolC.DesAddr,p,ADDR_SIZE); //目标地址
+            calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);
+            recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
+            if(calCRC==recCRC)//负载数据校验正确
+            {
+                if(len > 25)
+                    result = 8;
+                else
+                    result = 3;//功能码错误，数据包格式正确
+                packAnaly(p,result,len);
+                if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
+                {
+                    result = 0;//本机数据
+                    WriteRegisteSet(0x1200,p+ADDR_SIZE,8);//发送端源地址
+                    memcpy(protocolC.DesAddr,p+ADDR_SIZE,ADDR_SIZE); //目标地址
+                }
+                else
+                {
+                    result = 4;//非本机数据
+                    WriteRegisteSet(0x1200,p,8);
+                    memcpy(protocolC.DesAddr,p,ADDR_SIZE); //发送端目的地址
+
+                }
+            }
         }
     }
     else
     {
-        calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
-        recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
-        if(calCRC==recCRC)//16字节地址校验不正确
+        calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
+        recCRC=p[len-1]|(((u16)p[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
+        if(calCRC!=recCRC||(calCRC == 0))//CRC校验错误
         {
-
-            packAnaly(p);
-
-            result = 2;
+            result = 2;//数据校验错误
         }
-        else
+        if(calCRC==recCRC&&calCRC!=0)//CRC校验正确，整个数据包校验正确
         {
-            result = 3;
-        }
+            memcpy(protocolC.DesAddr,p,ADDR_SIZE); //目标地址
+            calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);
+            recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
+            if(calCRC==recCRC)//负载数据校验正确
+            {
+                result = 8;//数据校验正确
+                packAnaly(p,result,len);
+                if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
+                {
+                    result = 0;//本机数据
+                    WriteRegisteSet(0x1200,p+ADDR_SIZE,8);//发送端源地址
+                    memcpy(protocolC.DesAddr,p+ADDR_SIZE,ADDR_SIZE); //目标地址
+                }
+                else
+                {
+                    result = 4;//非本机数据
+                    WriteRegisteSet(0x1200,p,8);
+                    memcpy(protocolC.DesAddr,p,ADDR_SIZE); //发送端目的地址
 
+                }
+            }
+            else
+            {
+                result = 1;//负载数据校验错误
+            }
+        }
     }
+    /* calCRC=CRC_Compute(p,len-2);//计算所接收数据的CRC
+     recCRC=p[len-1]|(((u16)p[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
+     if(calCRC!=recCRC||(calCRC == 0))//CRC校验正确，整个数据包校验正确
+     {
+         unsigned int tmp;
+
+         if((p[PAYLOAD_LEN_INDEX]+2)>len)
+             result = 7;
+         else
+         {
+
+
+
+             calCRC=CRC_Compute(p,len-p[PAYLOAD_LEN_INDEX]-2);//计算所接收数据的CRC
+             recCRC=p[len-p[PAYLOAD_LEN_INDEX]-1]|(((u16)p[len-p[PAYLOAD_LEN_INDEX]-2])<<8);//接收到的CRC(低字节在前，高字节在后)
+         }
+
+         if(calCRC==recCRC&&calCRC!=0)//CRC校验正确，整个数据包校验正确
+         {
+             len = len - p[PAYLOAD_LEN_INDEX];
+             result = 8;
+         }
+         else
+         {
+             calCRC=CRC_Compute(p,len-p[PAYLOAD_LEN_INDEX]-2-START_ADDR_SIZE);//计算所接收数据的CRC
+             recCRC=p[len-p[PAYLOAD_LEN_INDEX]-1-START_ADDR_SIZE]|(((u16)p[len-p[PAYLOAD_LEN_INDEX]-2-START_ADDR_SIZE])<<8);//接收到的CRC(低字节在前，高字节在后)
+             if(calCRC==recCRC)//CRC校验正确，整个数据包校验正确
+             {
+                 len = len - p[PAYLOAD_LEN_INDEX]-START_ADDR_SIZE;
+             }
+             result = 6;
+         }
+
+     }
+     if(calCRC==recCRC&&calCRC!=0)//CRC校验正确，整个数据包校验正确
+     {
+         memcpy(protocolC.DesAddr,p,ADDR_SIZE); //目标地址
+         calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);
+         recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
+         if(calCRC==recCRC)//目的地址正确以及数据校验正确
+         {
+             packAnaly(p,result);
+             if(array_comp(protocolC.DesAddr,protocolC.SrcAddr,ADDR_SIZE) == 0)//判断地址是否一致
+             {
+                 result = 0;//本机数据
+                 WriteRegisteSet(0x1200,p+ADDR_SIZE,8);//发送端源地址
+                 memcpy(protocolC.DesAddr,p+ADDR_SIZE,ADDR_SIZE); //目标地址
+             }
+             else
+             {
+                 result = 4;//非本机数据
+                 WriteRegisteSet(0x1200,p,8);
+                 memcpy(protocolC.DesAddr,p,ADDR_SIZE); //发送端目的地址
+
+             }
+         }
+         else
+         {
+             result = 1;//目的地址校验错误
+         }
+     }
+     else
+     {
+         calCRC=CRC_Compute(&p[ADDR_SIZE+ADDR_SIZE],len-4-ADDR_SIZE-ADDR_SIZE);//计算所接收数据的CRC
+         recCRC=p[len-3]|(((u16)p[len-4])<<8);//接收到的CRC(低字节在前，高字节在后)
+         if(calCRC==recCRC)//16字节地址校验不正确
+         {
+
+             packAnaly(p,result);
+
+             result = 2;
+         }
+         else
+         {
+             result = 3;
+         }
+
+     }*/
     if(result == 4)//转发数据
     {
         if(ROLE == GATEWAY)//设备为网关，做数据转发
@@ -261,8 +569,13 @@ unsigned char protocolCAnaly(unsigned char  *p)
                 LORAHW_stru loraNo;
                 loraNo.loraNo = 0;
                 loraNo.mode =  TransmitMode;
-                SendLoraData(&loraNo,p);
-
+                if(protocolC.startAddr[0]==0&&protocolC.startAddr[1]==0)
+                    ;
+                else
+                {
+                    SendLoraData(&loraNo,p);
+                    txmode = 1;
+                }
             }
 
         }
@@ -278,6 +591,10 @@ unsigned char protocolCAnaly(unsigned char  *p)
        SendPayloadPack(&loraNo,4);
     }*/
     return result;
+}
+unsigned char getTxmode()
+{
+    return txmode;
 }
 void dev_params_pack(unsigned int start_addr,unsigned char sensors_prams,unsigned char len,unsigned char dataSrc)
 {
@@ -311,10 +628,11 @@ void dev_params_pack(unsigned int start_addr,unsigned char sensors_prams,unsigne
         if(count >= DATA_MAX_COUNT)
         {
             count = DATA_MAX_COUNT;
-            q[0] = (unsigned char)(count >> 8);
-            q[1] =(unsigned char) count ;
+
 
         }
+        q[0] = (unsigned char)(count >> 8);
+        q[1] =(unsigned char) count ;
         for(j=0; j<len; j=j+4)
         {
 
@@ -407,6 +725,10 @@ void get_equipmentData()
         {
             sensor_params = quantity;
         }
+        else if(start_addr == 0x4001)
+        {
+            sensor_params = 0x7a;
+        }
         else if(start_addr >= reg_period_set&&start_addr <= reg_period_sec)
         {
             sensor_params = auto_report_time;
@@ -414,42 +736,8 @@ void get_equipmentData()
 
         if(dev_code ==soilRH_DEV)
         {
-            // if(sensor_params<=rh)//读温湿度参数
-            {
-                //reg_addr = start_addr-reg_soil_temp_5;
+            if(ROLE !=GATEWAY)
                 dev_params_pack(start_addr,sensor_params,len,0);
-                /*if(start_addr >= reg_soil_temp_5&&start_addr <= reg_soil_rh_1)
-                {
-                	p=ReadRegister(start_addr);//
-                	for(j=0;j<len;j=j+4)
-                	{
-                		unsigned char k;
-                		k = j/4;
-                		if(k%2)
-                		{
-
-                			if(sensor_params == temperature)
-                			protocolC.payload[j] =rh;
-                			else
-                			protocolC.payload[j] = temperature;
-                		}
-                		else
-                		{
-                			protocolC.payload[j] = sensor_params;// 0 1 2 3   4 5 6 7 8 9 10 11
-                		}
-                		protocolC.payload[j+1] = SIGN_DOT1;
-                		memcpy(&protocolC.payload[j+2],p+reg_addr+j/2,2);
-                		index =index +2;
-                		if(j>=40)//0 8 16 24 32
-                			break;
-
-                	}
-
-                }*/
-
-            }
-
-
         }
         else  if(dev_code ==soilCON_DEV)
             ;
@@ -458,7 +746,11 @@ void get_equipmentData()
         else  if(dev_code ==sunShine_DEV);
         else  if(dev_code ==pressure_DEV);
         else  if(dev_code ==flow_DEV);
-        else  if(dev_code ==gateway_DEV);
+        else  if(dev_code ==gateway_DEV)
+        {
+            if(ROLE ==GATEWAY)
+                dev_params_pack(start_addr,sensor_params,len,0);
+        }
         /*else if(sensor_params== quantity)
         {
               reg_addr = start_addr-reg_quantity;
@@ -548,17 +840,33 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
         memcpy(p+i,protocolC.startAddr,2);
         i=i+2;
         len = len +2;
-        // p[i++] =protocolC.payloadLenH;
         p[i++] =protocolC.payloadLenL;
-        //len_payload = protocolC.payloadLenH;
-        //len_payload = len_payload<<8;
         len_payload = protocolC.payloadLenL;
         len = len +1;
-        memcpy(p+i,protocolC.payload,len_payload );
-        //len = protocolC.payloadLenH;
-        // len = len <<8;
-        i = i+len_payload;
-        len =len+len_payload;
+        if(ROLE == GATEWAY)
+        {
+            if(((protocolC.devCode == gateway_DEV)&&(protocolC.funCode == gateway_Rcmd||protocolC.funCode == pc_cmd))||*getDataSrc() == DAT_FROM_LORA)
+            {
+                memcpy(p+i,protocolC.payload,len_payload );
+                i = i+len_payload;
+                len =len+len_payload;
+            }
+            else
+            {
+
+            }
+        }
+        else
+        {
+            // if(protocolC.devCode != gateway_DEV&&protocolC.funCode == gateway_Rcmd)
+            {
+                memcpy(p+i,protocolC.payload,len_payload );
+                //len = protocolC.payloadLenH;
+                // len = len <<8;
+                i = i+len_payload;
+                len =len+len_payload;
+            }
+        }
     }
     else if(ackMode == 1)
     {
@@ -619,23 +927,117 @@ void SendPayloadPack(LORAHW_stru *loraNo,unsigned char ackMode)
     if(*datasrc== DAT_FROM_RELAY)//数据转发
     {
         LoraSendPayloadPackTx(p,len+4);
+        txmode = 1;
     }
-    else if(*datasrc== DAT_FROM_NBIOT||nbiot_enable[1]==1)//数据来自nbiot
+    else if(*datasrc== DAT_FROM_NBIOT)
     {
-        if(Get_Network_status()==SIMCOM_NET_OK)
-            SnedToNbiot(p,len+4);
+        if(ROLE == GATEWAY)//网关
+        {
+            if(protocolC.devCode == soilRH_DEV)//数据走nbiot
+            {
+                LoraSendPayloadPackTx(p,len+4);
+                txmode = 1;
+            }
+            else
+            {
+                if(Get_Network_status()==SIMCOM_NET_OK)
+                    SnedToNbiot(p,len+4);
+                txmode = 2;
+            }
+        }
+        else //终端
+        {
+            if(nbiot_enable[1]==1)
+            {
+                //if(protocolC.funCode == auto_report_cmd||protocolC.devCode == gateway_DEV)
+                {
+                    if(Get_Network_status()==SIMCOM_NET_OK)
+                        SnedToNbiot(p,len+4);
+                    txmode = 2;
+                }
+            }
+        }
+    }
+    else if(*datasrc==DAT_FROM_LORA)
+    {
+        if(ROLE == GATEWAY)//网关
+        {
+            //if(protocolC.funCode == auto_report_cmd||protocolC.devCode == gateway_DEV)//数据走nbiot
+            {
+                if(Get_Network_status()==SIMCOM_NET_OK)
+                    SnedToNbiot(p,len+4);
+                txmode = 2;
+            }
+        }
+        else //终端
+        {
+            if(nbiot_enable[1]==1)
+            {
+                //if(protocolC.funCode == auto_report_cmd||protocolC.devCode == gateway_DEV)
+                {
+                    if(Get_Network_status()==SIMCOM_NET_OK)
+                        SnedToNbiot(p,len+4);
+                    txmode = 2;
+                }
+            }
+            else
+            {
+                //if(protocolC.funCode == auto_report_cmd||protocolC.devCode == gateway_DEV)
+                {
+                    LoraSendPayloadPackTx(p,len+4);
+                    txmode = 1;
+                }
+            }
+        }
     }
     else if(*datasrc== DAT_FROM_PC||nbiot_enable[1]==2)//数据来自推肥系统
     {
         if(data_save[1]==0)//实时传输
             RS485_SendData(p, len+4,1);
-    }
-    else if(*datasrc== DAT_FROM_LORA)//数据来自lora
-    {
-        LoraSendPayloadPackTx(p,len+4);
-
+        txmode = 3;
     }
     *datasrc = 0;
+//    else if(*datasrc== DAT_FROM_NBIOT||*datasrc==DAT_FROM_LORA)//数据来自nbiot
+//    {
+//			  if(ROLE == GATEWAY||nbiot_enable[1]==1)//网关
+//				{
+//					if(protocolC.funCode == auto_report_cmd||protocolC.devCode == gateway_DEV)//数据走nbiot
+//					{
+//					if(Get_Network_status()==SIMCOM_NET_OK)
+//							SnedToNbiot(p,len+4);
+//					}
+//					else
+//				}
+//				else if(ROLE != GATEWAY)
+//				{
+//					if(nbiot_enable[1]==1)
+//					{
+//						if(protocolC.funCode == auto_report_cmd)
+//						{
+//							if(Get_Network_status()==SIMCOM_NET_OK)
+//									SnedToNbiot(p,len+4);
+//						}
+//
+//					}
+//					else
+//					{
+//						if(*datasrc==DAT_FROM_LORA)
+//							LoraSendPayloadPackTx(p,len+4);
+//					}
+//				}
+
+//    }
+//    else if(*datasrc== DAT_FROM_PC||nbiot_enable[1]==2)//数据来自推肥系统
+//    {
+//        if(data_save[1]==0)//实时传输
+//            RS485_SendData(p, len+4,1);
+//    }
+//
+//    else if((*datasrc== DAT_FROM_LORA||protocolC.funCode == auto_report_cmd)&&ROLE != GATEWAY)//数据来自lora
+//    {
+//        LoraSendPayloadPackTx(p,len+4);
+//    }
+//    *datasrc = 0;
 
 }
 
@@ -656,15 +1058,24 @@ void SendLoraData(LORAHW_stru *loraNo,unsigned char *q)
     p[i++] = protocolC.devCode;
     p[i++] = protocolC.funCode;
     len = len +2;
-    memcpy(p+i,protocolC.startAddr,2);
-    i=i+2;
-    len = len +2;
+    //if(protocolC.startAddr[0]!=0&&protocolC.startAddr[1]!=0)
+    {
+        memcpy(p+i,protocolC.startAddr,2);
+        i=i+2;
+        len = len +2;
+
+    }
+
     // *(p++) =protocolC.payloadLenH;
     p[i++] =protocolC.payloadLenL;
     len = len +1;
-    memcpy(p+i,protocolC.payload,protocolC.payloadLenL );
-    len = len +protocolC.payloadLenL;
-    i = i+protocolC.payloadLenL;
+    if(protocolC.devCode != gateway_DEV&&protocolC.funCode != gateway_Rcmd)
+    {
+        memcpy(p+i,protocolC.payload,protocolC.payloadLenL );
+        len = len +protocolC.payloadLenL;
+        i = i+protocolC.payloadLenL;
+    }
+
     /* else if(ackMode == 1)
      {
     	*(p++)  = 0x01;//功能码错误
@@ -732,132 +1143,215 @@ void WrRead_equipment(LORAHW_stru *loraNo)
 
     len = 0;
     ackmode = 0;
-
-    if(protocolC.funCode == gateway_Rcmd||protocolC.funCode == pc_cmd||protocolC.funCode == auto_report_cmd||
-            protocolC.funCode == PC_readFrame)//判断功能码是否正确
+    //if((protocolC.devCode <=flow_DEV&&protocolC.devCode>0)||protocolC.devCode == gateway_DEV)
     {
-        len = protocolC.payloadLenH;  //数据长度
-        len = len<<8;
-        len = len+ protocolC.payloadLenL;  //数据长度
-        addr = protocolC.startAddr[0];//起始寄存器地址
-        addr = addr << 8;//起始寄存器地址
-        addr = addr+protocolC.startAddr[1];//起始寄存器地址
-        if(((addr+len)<=x1_ADDR_END||(addr+len)<=x12_ADDR_END||
-                (addr+len)<=x4_ADDR_END||(addr+len)<=x44_ADDR_END||(addr+len)<=xE_ADDR_END
-                ||(addr+len)<=xF_ADDR_END))//判断寄存器地址是否正确
-            ackmode = 0;
-        else
-            ackmode = 2;
-
-        if(len<PAYLOAD_MIN_LEN||len>PAYLOAD_MAX_LEN)//判断数据长度是否正确
-            ackmode = 3;
-        if(protocolC.funCode == gateway_Rcmd)//读寄存器
+        if(protocolC.funCode == gateway_Rcmd||protocolC.funCode == pc_cmd||protocolC.funCode == auto_report_cmd||
+                protocolC.funCode == PC_readFrame)//判断功能码是否正确
         {
-            if(ROLE != GATEWAY)
-                get_equipmentData();//获取设备数据
+            len = protocolC.payloadLenH;  //数据长度
+            len = len<<8;
+            len = len+ protocolC.payloadLenL;  //数据长度
+            addr = protocolC.startAddr[0];//起始寄存器地址
+            addr = addr << 8;//起始寄存器地址
+            addr = addr+protocolC.startAddr[1];//起始寄存器地址
+
+            if(((addr+len)<=x1_ADDR_END||(addr+len)<=x12_ADDR_END||
+                    (addr+len)<=x4_ADDR_END||(addr+len)<=x44_ADDR_END||(addr+len)<=xE_ADDR_END
+                    ||(addr+len)<=xF_ADDR_END))//判断寄存器地址是否正确
+                ackmode = 0;
             else
+                ackmode = 2;//地址错误
+            if(addr == 0)
+                ackmode = 1;//功能码错误
+            if(len<PAYLOAD_MIN_LEN||len>PAYLOAD_MAX_LEN)//判断数据长度是否正确
+                ackmode = 3;//数据长度错误
+            if(ackmode != 0)
+                protocolC.funCode = gateway_Rcmd;//数据有错误，功能码改为gateway_Rcmd ，0x17
+
+
+            /* p[i++]  = 0x01;//功能码错误
+             p[i++]  = 0x02;//addr错误
+             p[i++]  = 0x03;//数据个数错误
+             p[i++]  = 0x04;//多个寄存器错误
+            */
+
+            if(protocolC.dataType == 1)//作为网关时接收到终端的错误应答数据
             {
-                if(*getDataSrc() == DAT_FROM_LORA)//
+                switch(protocolC.payload[0])
                 {
-                    if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK)&&nbiot_enable[1]!=1)//节点数据存储
+                case 1:
+                    ackmode = 1;
+                    break;
+                case 2:
+                    ackmode = 2;
+                    break;
+                case 3:
+                    ackmode = 3;
+                    break;
+                case 4:
+                    ackmode = 4;
+                    break;
+                }
+            }
+
+
+            if(protocolC.funCode == gateway_Rcmd)//读寄存器
+            {
+                if(ackmode == 0)
+                    get_equipmentData();//获取设备数据
+                if(ROLE != GATEWAY)
+                {
+                    ; //;if(ackmode == 0)
+                    //   get_equipmentData();//获取设备数据
+                }
+                else //******************网关数据处理************************************
+                {
+                    if(*getDataSrc() == DAT_FROM_LORA&&(ackmode == 0))//
                     {
-                        for(i = 0; i<len/4; i++) //负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
+                        if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK)&&nbiot_enable[1]!=1)//节点数据存储
                         {
-                            memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
+                            for(i = 0; i<len/4; i++) //负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
+                            {
+                                memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
+                            }
+                            WriteRegisteSet(addr,tmp,len/2); //写入寄存器数据
+                            if(Get_Network_status()!=SIMCOM_NET_OK)
+                                DataFrameSave();	 //保存上报数据
+                            ParamsSave(0);
                         }
-                        WriteRegisteSet(addr,tmp,len/2); //写入寄存器数据
-                        if(Get_Network_status()!=SIMCOM_NET_OK)
-                            DataFrameSave();	 //保存上报数据
-                        ParamsSave(0);
                     }
                 }
+                SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
             }
-            SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
-        }
-        else if(protocolC.funCode == pc_cmd||protocolC.funCode == PC_readFrame)//写寄存器
-        {
-
-            for(i = 0; i<len/4; i++) //负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
+            else if(protocolC.funCode == pc_cmd||protocolC.funCode == PC_readFrame)//写寄存器
             {
-                memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
-            }
 
-            if(addr!=0x4610&&addr!=0x4611)//
-            {
-                if(addr != 0x4001)
+
+                for(i = 0; i<len/4; i++) //负载数据提取，数据从2开始，因为数组定义中前两个字节分别是名称和格式
                 {
-                    if(WriteRegisteSet(addr,tmp,len/2)==0) //写入寄存器数据
-                    {
-
-                        equip_set();//与硬件相关的写操作
-                        if(addr != 0x4002)
-                            SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
-                    }
-                    else
-                    {
-                        SendPayloadPack(loraNo, 5);//向网关返回数据或者发送到终端
-                    }
+                    memcpy(tmp+i*2,&(protocolC.payload[i*4+2]),2);
                 }
-                else
+                if((addr!=0x4610)&&(addr!=0x4611))//非绑定终端地址操作
+                {
+                    if(ackmode == 0)
+                    {
+                        if(ROLE == GATEWAY)//************网关数据处理*************************
+                        {
+                            if(addr != 0x4001)
+                            {
+                                //gateway_DEV
+                                // soilRH_DEV
+                                if(protocolC.devCode == gateway_DEV)//网关数据写入
+                                {
+                                    if(WriteRegisteSet(addr,tmp,len/2)==0) //写入寄存器数据
+                                    {
+
+                                        equip_set();//与硬件相关的写操作
+                                        if(addr != 0x4002)
+                                            SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+                                    }
+                                    else
+                                    {
+                                        SendPayloadPack(loraNo, 5);//向网关返回数据或者发送到终端
+                                    }
+                                }
+                                else if(protocolC.devCode == soilRH_DEV)//网关数据写入
+                                {
+                                    if(addr != 0x4002)
+                                        SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+                                }
+
+                            }
+                            else
+                            {
+                                if(ROLE == GATEWAY)
+                                {
+                                    dev_params_pack(addr,rain,len,0);
+                                    SendPayloadPack(loraNo, ackmode);//
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //gateway_DEV
+                            // soilRH_DEV
+                            if(protocolC.devCode == soilRH_DEV)//网关数据写入
+                            {
+                                if(WriteRegisteSet(addr,tmp,len/2)==0) //写入寄存器数据
+                                {
+
+                                    equip_set();//与硬件相关的写操作
+                                    if(addr != 0x4002)
+                                        SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+                                }
+                                else
+                                {
+                                    SendPayloadPack(loraNo, 5);//向网关返回数据或者发送到终端
+                                }
+                            }
+                            /* else if(protocolC.devCode == soilRH_DEV)//网关数据写入
+                             {
+                                 if(addr != 0x4002)
+                                     SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+                             }*/
+
+                        }
+                    }
+
+
+
+                }
+                else//终端地址
                 {
                     if(ROLE == GATEWAY)
                     {
-                        dev_params_pack(addr,rain,len,0);
-                        SendPayloadPack(loraNo, ackmode);//
+                        if(addr==0x4610)//增加终端
+                        {
+                            if(equip_bind_analy(tmp)==1)
+                            {
+                                equip_bind(tmp);
+                            }
+
+                        }
+                        if(addr==0x4611)//删除终端
+                        {
+                            if(equip_bind_analy(tmp)==0)
+                            {
+                                equip_bind_delete(tmp);
+                            }
+
+                        }
 
                     }
 
                 }
+                ParamsSave(0);
+
 
             }
-            else//终端地址
+            else if(protocolC.funCode == auto_report_cmd||autoReportMode()==1)//自动上报
             {
-                if(ROLE == GATEWAY)
+                if((ROLE != GATEWAY)&&(ackmode == 0))
+                    get_equipmentData();//获取设备数据
+
+                if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK&&nbiot_enable[1]!=1))//节点数据存储
                 {
-                    if(addr==0x4610)//增加终端
-                    {
-                        if(equip_bind_analy(tmp)==1)
-                        {
-                            equip_bind(tmp);
-                        }
-
-                    }
-                    if(addr==0x4611)//删除终端
-                    {
-                        if(equip_bind_analy(tmp)==0)
-                        {
-                            equip_bind_delete(tmp);
-                        }
-
-                    }
-
+                    if(ackmode == 0)
+                        DataFrameSave();
                 }
 
+                SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
+
             }
-            ParamsSave(0);
-
-
         }
-        else if(protocolC.funCode == auto_report_cmd||autoReportMode()==1)//自动上报
+        else//功能码不正确
         {
-            if(ROLE != GATEWAY)
-                get_equipmentData();//获取设备数据
-
-            if(data_save[1]==1||(Get_Network_status()!=SIMCOM_NET_OK&&nbiot_enable[1]!=1))//节点数据存储
-            {
-                DataFrameSave();
-            }
-
-            SendPayloadPack(loraNo, ackmode);//向网关返回数据或者发送到终端
-
+            ackmode = 1;
+            protocolC.funCode = gateway_Rcmd;
+//        if(ROLE != GATEWAY)
+//            get_equipmentData();//获取设备数据
+            SendPayloadPack(loraNo, ackmode);//向网关返回数据
         }
-    }
-    else//功能码不正确
-    {
-        ackmode = 1;
-        if(ROLE != GATEWAY)
-            get_equipmentData();//获取设备数据
-        SendPayloadPack(loraNo, ackmode);//向网关返回数据
     }
 
 }
@@ -869,6 +1363,7 @@ unsigned char autoReportMode()
 }
 void SnedToNbiot(unsigned char *p,unsigned int len)
 {
+    getHeartStatus(1);
 
     //tmp = ((u16)protocolC.payloadLenH)<<8+protocolC.payloadLenL;
     Nbiot_SendData(p,len);
@@ -877,13 +1372,24 @@ void SnedToNbiot(unsigned char *p,unsigned int len)
 loraModuleTimeout_stru loraModuleTimeout;
 void wirelessTimoutStart(unsigned char p)
 {
-    loraModuleTimeout.tickFlag = 1;
-    loraModuleTimeout.tickCount = HAL_GetTick();
+    if(p == 1)
+    {
+        loraModuleTimeout.tickFlag = 1;
+        loraModuleTimeout.tickCount = HAL_GetTick();
+
+    }
+    else
+    {
+        loraModuleTimeout.tickFlag = 2;
+        loraModuleTimeout.tickCount = HAL_GetTick();
+
+    }
+
 
 }
 unsigned char wirelessTimoutProcess()
 {
-    static unsigned int timeoutCount;
+    static uint32_t timeoutCount;
     unsigned char result;
     result = 1;
     if(loraModuleTimeout.tickFlag == 1)
@@ -895,16 +1401,22 @@ unsigned char wirelessTimoutProcess()
     }
     if(loraModuleTimeout.tickFlag == 2)
     {
-        if((HAL_GetTick()-loraModuleTimeout.tickCount) >= timeoutCount*60000)
+        if((HAL_GetTick()-loraModuleTimeout.tickCount) >= timeoutCount*1000)
         {
             loraModuleTimeout.tickFlag =0;
             result = 0;
+            loraModuleTimeout.tickCount = HAL_GetTick();
         }
         else
         {
             result = 1;
         }
     }
+//    if(loraModuleTimeout.tickFlag == 0)
+//    {
+//          loraModuleTimeout.tickFlag =0;
+//          result = 1;
+//    }
     return result;
 }
 
@@ -915,10 +1427,11 @@ void PCDevice_Modbus_Process()
 }
 
 
+uint32_t process_period;
 
 unsigned char  equipmentProcess(unsigned char p)
 {
-    static uint32_t process_period;
+    
     // process_period =HAL_GetTick();
 
     if((HAL_GetTick()-process_period)>=EQUIP_PRO_PERIOD)
@@ -926,7 +1439,7 @@ unsigned char  equipmentProcess(unsigned char p)
         if(p ==0)
         {
             if(ROLE != GATEWAY)
-                getRH_T();
+                 getRH_T();
         }
         getvbat();
         getGPS();
@@ -936,41 +1449,40 @@ unsigned char  equipmentProcess(unsigned char p)
 
     if(ROLE != GATEWAY)
     {
-        unsigned char result;
-        result = 0;
-        if(autoReportMode()==1)
+        static unsigned char result;
+       // result = 0;
+        if(autoReportMode())
         {
-            if(wirelessTimoutProcess() == 0)
+            unsigned char tt;
+            if(getRtcStatus()->RtcWakeUP == 1)
             {
 
+                wirelessTimoutStart(1);
+                getRtcStatus()->RtcWakeUP = 0;
+
+
+            }
+            if(wirelessTimoutProcess() == 0)//休眠时间到主动上报
+            {
+                result = 0;
                 result = EnterStop();//休眠
+                // while(getRtcStatus()->RtcWakeUP == 0)
+                ;
             }
             else
             {
+                if( result == 0)
+                {
+                    autoreport();
+                    result = 1;
+
+                }
                 ;//等待接收命令
             }
-            if(getRtcStatus()->RtcWakeUP == 1)//休眠时间到主动上报
-            {
-
-                protocolC.devCode = soilRH_DEV;
-                protocolC.startAddr[0] = 0x10;
-                protocolC.startAddr[1] = 0x01 ;
-                protocolC.payloadLenH =0x00;
-                protocolC.payloadLenL = 40;
-                LORAHW_stru loraNo;
-                loraNo.loraNo = 0;
-                loraNo.mode =  TransmitMode;
-                get_equipmentData();//获取设备数据
-                setDataSrc(DAT_FROM_LORA);
-                SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
-                getRtcStatus()->RtcWakeUP = 0;
-                wirelessTimoutStart(1);
-            }
 
 
+            return result;
         }
-        return result;
-
     }
     if(ROLE == GATEWAY)
     {
@@ -978,14 +1490,15 @@ unsigned char  equipmentProcess(unsigned char p)
         {
             unsigned char *p;
             p = getHeartStatus(0);
-            if(*p == 1)//休眠时间到主动上报
+            if(*p == 1)//发送心跳
             {
                 getHeartStatus(1);
                 protocolC.devCode = gateway_DEV;
                 protocolC.startAddr[0] = 0x46;
                 protocolC.startAddr[1] = 0x12 ;
                 protocolC.payloadLenH =0x00;
-                protocolC.payloadLenL = 4;
+                protocolC.payloadLenL = 0;
+
                 LORAHW_stru loraNo;
                 loraNo.loraNo = 0;
                 loraNo.mode =  TransmitMode;
@@ -998,5 +1511,35 @@ unsigned char  equipmentProcess(unsigned char p)
         return 0;
     }
 
+}
+void test()
+{
+    protocolC.devCode = 0x54;
+    protocolC.funCode = auto_report_cmd;
+    protocolC.startAddr[0] = 0x10;
+    protocolC.startAddr[1] = 0x01 ;
+    protocolC.payloadLenH =0x00;
+    protocolC.payloadLenL = 40;
+    LORAHW_stru loraNo;
+    loraNo.loraNo = 0;
+    loraNo.mode =  TransmitMode;
+    get_equipmentData();//获取设备数据
+    setDataSrc(DAT_FROM_LORA);
+    SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
+}
+void autoreport(void)
+{
+    protocolC.devCode = soilRH_DEV;
+    protocolC.funCode = auto_report_cmd;
+    protocolC.startAddr[0] = 0x10;
+    protocolC.startAddr[1] = 0x01 ;
+    protocolC.payloadLenH =0x00;
+    protocolC.payloadLenL = 40;
+    LORAHW_stru loraNo;
+    loraNo.loraNo = 0;
+    loraNo.mode =  TransmitMode;
+    get_equipmentData();//获取设备数据
+    setDataSrc(DAT_FROM_LORA);
+    SendPayloadPack(&loraNo, 0);//向网关返回数据或者发送到终端
 
 }

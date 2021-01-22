@@ -26,14 +26,17 @@ void ParamsInit()
         p = ReadRegister(0x1206);
     else
         p = ReadRegister(0x45f0);
+    NbiotUartInit();
     if(ROLE == GATEWAY||getModeStatus()== 0x02)
     {
-        NbiotUartInit();
+
+
         ServerIP_Pack(p);
         nbiot_HardwareInit(ON);
     }
     if(ROLE != GATEWAY)
     {
+        //  nbiot_HardwareInit(OFF);
         p = ReadRegister(0xf00c);
         tmp = uchar2uint(p);
         sensorModbusRate(tmp,0);
@@ -66,7 +69,7 @@ unsigned char EquipGateway_Process()
             setDataSrc(DAT_FROM_LORA);//数据来自lora
             if(protocolCAnaly(loraUart.lora1RxBuffer)	== 0)//校验成功
             {
-                if(datasrcFlag[0] == 0||DAT_FROM_LORA)
+                if(datasrcFlag[0] == 0||datasrcFlag[0] ==DAT_FROM_LORA)
                 {
                     loraNo.loraNo = 0;
                     setDataSrc(DAT_FROM_LORA);//数据来自lora
@@ -112,10 +115,16 @@ unsigned char EquipGateway_Process()
         SIMCOM_Register_Network();
         unsigned char *tmp,result;
         tmp = NbiotFrameStatus();//nbiot接收数据标志位
-        setDataSrc(DAT_FROM_NBIOT);//数据来自nbiot
+
         if(tmp[0] == 1&&Get_Network_status()==SIMCOM_NET_OK)
         {
+            setDataSrc(DAT_FROM_NBIOT);//数据来自nbiot
             result = protocolCAnaly(NbiotFrameBuffer());
+            if(result == 0 ||result == 4)//数据正确，result =0数据发送给设备本身，result=4时，作为网关需要转发数据，
+                                            //转发操作在 protocolCAnaly(NbiotFrameBuffer());中实现
+                setDataSrc(DAT_FROM_NBIOT);//数据来自nbiot
+            else
+                setDataSrc(0);//数据来自nbiot
             if(result	== 0)//校验成功
             {
 
@@ -123,11 +132,11 @@ unsigned char EquipGateway_Process()
                 loraNo.loraNo = 0;
                 loraNo.mode =  TransmitMode;
 
-                Gateway_Process();//读数据帧寄存器操作
+
                 if(ROLE != GATEWAY)
                     wirelessTimoutStart(1);//主动上报模式超时计时标志位
                 WrRead_equipment(&loraNo);//读写寄存器操作
-
+                Gateway_Process();//读数据帧寄存器操作
                 pcFLag =  0;
             }
             else if(result == 4)//作为网关进行数据转发给终端,数据已经转发完成
@@ -136,6 +145,7 @@ unsigned char EquipGateway_Process()
                     setDataSrc(DAT_FROM_RELAY);
             }
             tmp[0] = 0;
+            NbiotUart_CLR_Buf();
         }
     }
     else if(nbiot_enable[1] == 2||ROLE != GATEWAY)//485推肥系统使能
@@ -168,6 +178,22 @@ unsigned char EquipGateway_Process()
 
             Gateway_Process();//读数据帧寄存器操作
             *fameStatus = 0;
+        }
+
+    }
+    if((getTxmode() ==1)&&ROLE == GATEWAY)//lora数据多次重发机制
+    {
+        if(loraReapte()== 0)
+        {
+            loraNo.loraNo = 0;
+            //setDataSrc(DAT_FROM_LORA);//数据来自lora
+            loraNo.mode =  TransmitMode;
+            if(ROLE != GATEWAY)
+                wirelessTimoutStart(1);//主动上报模式超时计时标志位
+            //SendLoraData(&loraNo,p);
+            WrRead_equipment(&loraNo);//读写寄存器操作
+            Gateway_Process();//测试
+
         }
 
     }

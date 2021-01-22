@@ -10,6 +10,7 @@
 #define DAT_FROM_LORA		4
 typedef struct
 {
+	uint32_t rxSize;
 	unsigned char receivedFlag1;
 	unsigned char receivedFlag2;
 	unsigned char ack;

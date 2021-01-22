@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=F:/code/gateway/Inc
+HeaderPath=F:/code/gateway 1.2/Inc
 HeaderFiles=stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;
-SourcePath=F:/code/gateway/Src
+SourcePath=F:/code/gateway 1.2/Src
 SourceFiles=stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

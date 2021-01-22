@@ -31,6 +31,7 @@ unsigned char Get_Network_status(void);
 void SIMCOM_Register_Network(void);
 void set_NetStatus(unsigned char flag);
 void ServerIP_Pack(unsigned char *p);
+void equipCtrlNbiot(void);
 
 #endif
 
