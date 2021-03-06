@@ -318,7 +318,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
-
+#include "main.h"
 /** @addtogroup STM32F1xx_HAL_Driver
   * @{
   */
@@ -7108,6 +7108,7 @@ static void I2C_DMAAbort(DMA_HandleTypeDef *hdma)
   * @param  Tickstart Tick start value
   * @retval HAL status
   */
+uint32_t error_count;
 static HAL_StatusTypeDef I2C_WaitOnFlagUntilTimeout(I2C_HandleTypeDef *hi2c, uint32_t Flag, FlagStatus Status, uint32_t Timeout, uint32_t Tickstart)
 {
   /* Wait until flag is set */
@@ -7125,7 +7126,10 @@ static HAL_StatusTypeDef I2C_WaitOnFlagUntilTimeout(I2C_HandleTypeDef *hi2c, uin
 
         /* Process Unlocked */
         __HAL_UNLOCK(hi2c);
-
+				error_count++;
+        hi2c->Instance->CR1 |= I2C_CR1_STOP;
+				 HAL_I2C_DeInit(hi2c);
+				MX_I2C1_Init();
         return HAL_ERROR;
       }
     }

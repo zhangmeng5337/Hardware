@@ -112,43 +112,43 @@ int main(void)
     HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
     tickTime=HAL_GetTick();
 
-    if(getFactor()->dutycycle == 0)//pwm空测电压未进行校准
-    {
-        while(1)//led指示灯闪烁
-        {
+//    if(getFactor()->dutycycle == 0)//pwm空测电压未进行校准
+//    {
+//        while(1)//led指示灯闪烁
+//        {
 
-            app_loop();//主程序
-            Get_Adc_Average(N);
-            if((HAL_GetTick()-tickTime)>=3000)//led指示灯闪烁
-            {
+//            app_loop();//主程序
+//            Get_Adc_Average(N);
+//            if((HAL_GetTick()-tickTime)>=3000)//led指示灯闪烁
+//            {
 
-                if(sensor_usr.sensor[0]/V_Nom>=1.04)
-                {
-                    //if(duticycle>0)
-                    getFactor()->dutycycle++;
+//                if(sensor_usr.sensor[0]/V_Nom>=1.04)
+//                {
+//                    //if(duticycle>0)
+//                    getFactor()->dutycycle++;
 
-                }
-                else if((sensor_usr.sensor[0]/V_Nom)<0.97)
-                {
-                    if(getFactor()->dutycycle>0)
-                        getFactor()->dutycycle--;
-                }
-                else
-                {
-                    params_save();
-                    break;
-                }
-                __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getFactor()->dutycycle);
-                tickTime=HAL_GetTick();
-            }
+//                }
+//                else if((sensor_usr.sensor[0]/V_Nom)<0.97)
+//                {
+//                    if(getFactor()->dutycycle>0)
+//                        getFactor()->dutycycle--;
+//                }
+//                else
+//                {
+//                    params_save();
+//                    break;
+//                }
+//                __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getFactor()->dutycycle);
+//                tickTime=HAL_GetTick();
+//            }
 
-        }
+//        }
 
-    }
-    else
-    {
-        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getFactor()->dutycycle);
-    }
+//    }
+//    else
+//    {
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 5);
+//    }
 
   /* USER CODE END 2 */
 

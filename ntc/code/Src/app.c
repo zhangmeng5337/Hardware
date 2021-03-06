@@ -245,7 +245,11 @@ void gear_process(void)
       //  Params.precent=Get_Precent();		  //获取调节旋钮调节的百分比值
         //tmp=1-getParams()->precent;
         tmp=getParams()->precent;
-
+        if(tmp <=0.5&&tmp>=0.1)
+        {
+			tmp=360+tmp*200;
+		}
+		else
         tmp=tmp*900;
         getParams()->duty=round(tmp);	//计算对应的比较寄存器值 700为电机刚能被驱动时对应的比较寄存器值
         __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getParams()->duty);

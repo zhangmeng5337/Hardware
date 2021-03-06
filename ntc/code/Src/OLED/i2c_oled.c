@@ -2,6 +2,8 @@
 #include "codetab.h"
 #include "adc.h"
 #include "app.h"
+#include "iic.h"
+
 extern I2C_HandleTypeDef hi2c1;
 static __IO uint32_t  I2CTimeout = I2CT_LONG_TIMEOUT;   
 
@@ -49,7 +51,8 @@ uint8_t I2C_OLED_WriteByte(uint8_t control,uint8_t data)
 
 	p[0] = control;
 	p[1] = data;
-	HAL_I2C_Master_Transmit(&hi2c1,OLED_ADDRESS,p,2,0x1000);
+	//I2C_WriteByte(OLED_ADDRESS,p[1],p[0]);
+	HAL_I2C_Master_Transmit(&hi2c1,OLED_ADDRESS,p,2,500);
 	/*//ÅÐ¶ÏÖ÷ÏßÊÇ·ñÃ¦
 	I2CTimeout = I2CT_LONG_TIMEOUT;
 	while(I2C_GetFlagStatus(I2C_x, I2C_FLAG_BUSY) == 1)

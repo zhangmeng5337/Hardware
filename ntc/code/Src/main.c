@@ -62,7 +62,7 @@ static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM2_Init(void);
-static void MX_I2C1_Init(void);
+// void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 
@@ -231,7 +231,7 @@ static void MX_ADC1_Init(void)
   * @param None
   * @retval None
   */
-static void MX_I2C1_Init(void)
+ void MX_I2C1_Init(void)
 {
 
     /* USER CODE BEGIN I2C1_Init 0 */
@@ -371,6 +371,17 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /*Configure GPIO pins : KEY1_Pin KEY2_Pin */
+    GPIO_InitStruct.Pin = GPIO_PIN_6;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+    GPIO_InitStruct.Pin = GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);	
 
     /*Configure GPIO pin : WATER_Pin */
     GPIO_InitStruct.Pin = WATER_Pin;

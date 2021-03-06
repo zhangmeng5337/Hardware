@@ -42,7 +42,7 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+ void MX_I2C1_Init(void);
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -72,6 +72,8 @@ typedef struct{
 	unsigned int display_flag;
 	uint32_t duty;
 }Params_stru;
+typedef unsigned char u8;
+typedef unsigned int u16;
 
 
 
