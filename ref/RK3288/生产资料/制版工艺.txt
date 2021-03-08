@@ -1,0 +1,7 @@
+板材:     FR-4
+板厚：    1.2mm
+板子颜色：绿色
+丝印：    白色
+过孔：    塞绿油阻焊
+铜厚：    内层铜厚1oz
+叠层顺序：top-gnd1-sig1-power1-gnd2-sig2-gnd3-bottom
