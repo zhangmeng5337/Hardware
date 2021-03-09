@@ -70,7 +70,24 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void KEY_Scan()
+{
+	static uint8_t key_flag=1;
+	if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin)== 0||HAL_GPIO_ReadPin(GPIOA, KEY2_Pin)== 0)
+		 HAL_Delay(10);
+  if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin)== 0)
+  {
 
+	  getParams()->KeyStatus = 0x01;
+		
+  }
+  if(HAL_GPIO_ReadPin(GPIOA, KEY2_Pin)== 0)
+  {
+
+	  getParams()->KeyStatus = 0x02;
+
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -124,6 +141,7 @@ int main(void)
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
+			KEY_Scan();
         app_process();
     }
     /* USER CODE END 3 */
@@ -368,7 +386,7 @@ static void MX_GPIO_Init(void)
 
     /*Configure GPIO pins : KEY1_Pin KEY2_Pin */
     GPIO_InitStruct.Pin = KEY1_Pin|KEY2_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -390,8 +408,8 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(WATER_GPIO_Port, &GPIO_InitStruct);
 
     /* EXTI interrupt init*/
-    HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+    //HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+   // HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 

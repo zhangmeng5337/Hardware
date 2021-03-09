@@ -7128,8 +7128,10 @@ static HAL_StatusTypeDef I2C_WaitOnFlagUntilTimeout(I2C_HandleTypeDef *hi2c, uin
         __HAL_UNLOCK(hi2c);
 				error_count++;
         hi2c->Instance->CR1 |= I2C_CR1_STOP;
+		HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
 				 HAL_I2C_DeInit(hi2c);
 				MX_I2C1_Init();
+		HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
         return HAL_ERROR;
       }
     }
