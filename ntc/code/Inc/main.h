@@ -32,7 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+void MX_I2C1_Init(void);
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

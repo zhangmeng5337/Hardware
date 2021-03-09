@@ -252,8 +252,8 @@ void gear_process(void)
 		else
         tmp=tmp*900;
         getParams()->duty=round(tmp);	//计算对应的比较寄存器值 700为电机刚能被驱动时对应的比较寄存器值
-        //__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getParams()->duty);
-       // __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, getParams()->duty);
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getParams()->duty);
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, getParams()->duty);
 
     }
     else					//如果模式为停止模式 则电机停止

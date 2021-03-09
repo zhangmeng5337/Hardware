@@ -29,7 +29,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+uint32_t key_hit_flag,delay;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -61,7 +61,7 @@
 extern DMA_HandleTypeDef hdma_adc1;
 extern ADC_HandleTypeDef hadc1;
 /* USER CODE BEGIN EV */
-
+unsigned char key1_count,key2_count;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -189,7 +189,39 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
+   if(key_hit_flag == 1)
+	 {
+		  if(delay>=100)
+      {   
+				 
+				  delay = 0;
+				  key_hit_flag = 0;
+					if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin)== 0)
+					{
+					//HAL_Delay(10);
+					//while(delay<600000)
+					//	delay++;
+					getParams()->KeyStatus = 0x01;
+					key1_count++;
+					}
+					if(HAL_GPIO_ReadPin(GPIOA, KEY2_Pin)== 0)
+					{
+					//while(delay<600000)
+					//	delay++;
+					getParams()->KeyStatus = 0x02;
+					key2_count++;
+					}			
+			}
+			else
+			{
+				delay++;
+			}
 
+	 }
+	 else
+		 delay = 0;
+	 if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin)== 1&&HAL_GPIO_ReadPin(GPIOA, KEY2_Pin)== 1)
+		 key_hit_flag = 0;
   /* USER CODE END SysTick_IRQn 1 */
 }
 
@@ -239,24 +271,8 @@ void EXTI15_10_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_11);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-	static uint32_t delay;
-	delay = 0;
-	 HAL_Delay(100);
-  if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin)== 0)
-  {
-        //HAL_Delay(10);
-		//while(delay<600000)
-		//	delay++;
-	  getParams()->KeyStatus = 0x01;
-		
-  }
-  if(HAL_GPIO_ReadPin(GPIOA, KEY2_Pin)== 0)
-  {
-		//while(delay<600000)
-		//	delay++;
-	  getParams()->KeyStatus = 0x02;
-
-  }
+  key_hit_flag = 1;
+  
 
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
