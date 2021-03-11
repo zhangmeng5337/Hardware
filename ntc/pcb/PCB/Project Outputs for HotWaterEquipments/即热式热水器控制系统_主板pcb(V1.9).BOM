@@ -1,0 +1,44 @@
+Bill of Material for 即热式热水器控制系统_主板pcb(V1.9).PcbDoc
+On 2021/3/10 at 16:49:36
+
+ Comment             Pattern     Quantity  Components
+------------------------------------------------------------------------------
+ 0.1uF/275V          CBB 10*12*8      2    C10, C11                     CBB电容              
+ 0R                  R 0805_M         1    R15                          贴片电阻             
+ 100R                RS 1W            1    R9                           直插色环电阻         
+ 102                 C 0603_M         1    C14                          无极性贴片电容       
+ 104                 C 0603_M         9    C1, C2, C3, C4, C7, C8, C9   无极性贴片电容       
+                                           C12, C13
+ 10K                 R 0603_M         4    R2, R10, R11, R12            贴片电阻             
+ 10uH                L 0805           1    L2                           小功率贴片电感       
+ 1K                  RS 1W            1    R7                           直插色环电阻         
+ 20pF                C 0603_M         2    C5, C6                       无极性贴片电容       
+ 220uF/16V           CAP 2.5*6.3*11.2    1    E1                           直插电解电容         
+ 220uF/25V           CAP 2.5*6.3*11.2 - BK    2    E2, E3                       直插电解电容         
+ 33uH                CDRH74           1    L1                           功率屏蔽电感         
+ 4K7                 R 0603_M         2    R1, R3                       贴片电阻             
+ 510R                R 0603_M         2    R6, R8                       贴片电阻             
+ 5x20/30A            FU BLX-A         1    F1                           5*20保险丝           
+ 680uF/35V           CAP 5.0*10*16    1    E4                           直插电解电容         
+ 8MHz                OSC 5032-2P      1    X1                           2脚无源脚晶振        
+ A4950               SOIC_8_EP        2    U1, U3                       全桥DMOS             
+ AC电源端子          KF2EDGK5.08-LI-2P    1    JP8                          2P接插件             
+ AO3401A             SOT23-3M         1    Q1                           P沟道场效应管        
+ BTA41               TOP-3            1    U5                           双向可控硅           
+ DB3                 DO-35            1    B1                           双向触发二极管       
+ DC3V                BEEP 5x9x5.5     1    LS1                          蜂鸣器               
+ HDR-1X2             PH2.0-LS-2P      1    JP1                          2P接插件             
+ HDR-1X2             VH3.96-LI-2P     2    JP2, JP12                    2P接插件             
+ HDR-1X2             XH2.54-LI-2P     3    JP6, JP7, JP10               2P接插件             
+ HDR-1X3             MX 1.25-LS-3P    1    JP3                          3P接插件             
+ HDR-1X3             XH2.54-LI-3P     1    JP4                          3P接插件             
+ HDR-1X4             MX 1.25-LS-4P    2    JP5, JP11                    4P接?                
+ LM2596-3.3V         TO263-5A         1    IC1                          DC降压芯片           
+ MOC3022             DIP6-300         1    U4                           光可控硅             
+ REF3030             SOT23-3N         1    U6                           电压基准芯片         
+ SS34                SMA              1    D1                           肖特基二极管         
+ SS8050              SOT23-3N         2    Q2, Q3                       高频放大-NPN型       
+ STM32F103C8         LQFP48 7X7_N     1    U2                           Flaah:64/RAM:20/IO:36 
+ 电热丝              KF2EDGK5.08-LI-2P    1    JP9                          2P接插件             
+ 红色                LED 0805R        1    LED1                         贴片LED              
+ 散热片              SRP12-34-25-P    1    S1                           散热片               
