@@ -1,14 +1,9 @@
-Output: NC Drill Files
-Type  : NC Drill
+Output: Bill of Materials
+Type  : BOM
 From  : Project [HotWaterEquipments.PRJPCB]
-   Generated File[即热式热水器控制系统_主板pcb(V1-RoundHoles.TXT]
-   Generated File[即热式热水器控制系统_主板pcb(V1-SlotHoles.TXT]
-   Generated File[即热式热水器控制系统_主板pcb(V1.9).DRL]
-   Generated File[即热式热水器控制系统_主板pcb(V1.9).LDP]
-   Generated File[即热式热水器控制系统_主板pcb(V1.9).DRR]
 
 
-Files Generated   : 5
+Files Generated   : 0
 Documents Printed : 0
 
-Finished Output Generation At 15:34:59 On 2021/3/12
+Finished Output Generation At 20:08:48 On 2021/3/12
