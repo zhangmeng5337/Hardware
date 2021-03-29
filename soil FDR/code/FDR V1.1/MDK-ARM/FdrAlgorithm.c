@@ -46,25 +46,84 @@ float GlideFilterAD2(float val,unsigned char val2)
     static float value2_buf[SAMPLE_COUNT];
     //unsigned char	count;
     static unsigned char flag;
-    float	sum=0;
-    value2_buf[FilterI++]=val;
+    float	sum=0,temp;
+	
+	
+	
+	  unsigned char count,i,j;  
+  	value2_buf[FilterI++]=val;
     if(FilterI==SAMPLE_COUNT)
     {
         flag = 1;
         FilterI=0; //先进先出，再求平均值
     }
-    if(flag == 1)
-    {
-        for(int count=0; count<SAMPLE_COUNT; count++)
-            sum+=value2_buf[count];
-        return (sum/SAMPLE_COUNT);
-    }
+		if(flag == 1)
+		{
+			for (j=0;j<SAMPLE_COUNT-1;j++)  //中值滤波+均值滤波
+
+			 {  
+
+					for (i=0;i<SAMPLE_COUNT-j;i++)  
+
+					{  
+
+						 if ( value2_buf[i]>value2_buf[i+1] )  
+
+						 {  
+
+								temp = value2_buf[i];  
+
+								value2_buf[i] = value2_buf[i+1];   
+
+								 value2_buf[i+1] = temp;  
+
+						 }  
+
+					}  
+
+			 }  
+
+			 for(count=1;count<SAMPLE_COUNT-1;count++)  
+
+					sum += value2_buf[count];  
+
+			 return (sum/(SAMPLE_COUNT-2)); 			
+		}
     else
-    {
+		{
         for(int count=0; count<FilterI; count++)
             sum+=value2_buf[count];
         return (sum/FilterI);
-    }
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//    value2_buf[FilterI++]=val;
+//    if(FilterI==SAMPLE_COUNT)
+//    {
+//        flag = 1;
+//        FilterI=0; //先进先出，再求平均值
+//    }
+//    if(flag == 1)
+//    {
+//        for(int count=0; count<SAMPLE_COUNT; count++)
+//            sum+=value2_buf[count];
+//        return (sum/SAMPLE_COUNT);
+//    }
+//    else
+//    {
+//        for(int count=0; count<FilterI; count++)
+//            sum+=value2_buf[count];
+//        return (sum/FilterI);
+//    }
 
 
 }

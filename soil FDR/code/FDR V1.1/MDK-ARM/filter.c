@@ -1,37 +1,84 @@
 #include "filter.h"
-unsigned int *value_buf;
+uint32_t *value_buf;
 extern  unsigned int adcBuf_ref[N];
 extern	unsigned int adcBuf_humid[N];
 extern	unsigned int adcBuf_ta[N];
 extern	unsigned int adcBuf_tb[N];
 ratio_stru ratio;
+
+uint32_t average_filter(uint32_t *pb)  //中值滤波+均值滤波
+
+{  
+
+  unsigned char count,i,j;  
+  uint32_t  sum=0,temp;
+	value_buf = pb;
+  for (j=0;j<N-1;j++)  
+
+   {  
+
+      for (i=0;i<N-j;i++)  
+
+      {  
+
+         if ( value_buf[i]>value_buf[i+1] )  
+
+         {  
+
+            temp = value_buf[i];  
+
+            value_buf[i] = value_buf[i+1];   
+
+             value_buf[i+1] = temp;  
+
+         }  
+
+      }  
+
+   }  
+
+   for(count=1;count<N-1;count++)  
+
+      sum += value_buf[count];  
+
+   return (sum/(N-2));    
+
+}  
+
+
 /****************************************
 均值滤波
 *****************************************/
 uint32_t filter(uint32_t seq)
 {
-    unsigned char count;
+    unsigned char count,j,i;
 
-    uint32_t  sum=0;
+    uint32_t  sum=0,temp;
     switch(seq)
     {
     case 0:
-        value_buf=adcBuf_ref;
+       // value_buf=adcBuf_ref;
+				average_filter(adcBuf_ref);
         break;
     case 1:
         value_buf=adcBuf_humid;
+				average_filter(adcBuf_humid);
         break;
     case 2:
         value_buf=adcBuf_ta;
+				average_filter(adcBuf_ta);
         break;
     case 3:
         value_buf=adcBuf_tb;
+				average_filter(adcBuf_tb);
         break;
     }
 
-    for(count=0; count<N; count++)
-        sum += value_buf[count];
-    return (sum/(N));
+//    for(count=0; count<N; count++)
+//        sum += value_buf[count];
+//    return (sum/(N));
+		
+			
 }
 ratio_stru *getRatio()
 {

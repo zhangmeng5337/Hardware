@@ -25,6 +25,6 @@ typedef struct{
 }ratio_stru;
 ratio_stru *CalibrationRatio(float ahumid,float chumid);
 ratio_stru *getRatio(void);
-
+uint32_t average_filter(uint32_t *pb) ;
 #endif
 
