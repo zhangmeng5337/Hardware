@@ -68,7 +68,7 @@ void Get_Adc_Average(unsigned char times)
 			tmp_ref = adc_value;
 		if(tmp_ref>adc_value)
 			tmp_ref = adc_value;
-		 adc_value = 4096*1.2/adc_value;
+		 adc_value = 4096*3.0/adc_value;
 		sensor_usr.ADC_REF = adc_value;	
 	}
 	

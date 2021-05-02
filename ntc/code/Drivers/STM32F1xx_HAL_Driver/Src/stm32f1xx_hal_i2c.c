@@ -7125,9 +7125,9 @@ static HAL_StatusTypeDef I2C_WaitOnFlagUntilTimeout(I2C_HandleTypeDef *hi2c, uin
 
         /* Process Unlocked */
         __HAL_UNLOCK(hi2c);
-        hi2c->Instance->CR1 |= I2C_CR1_STOP;
-				 HAL_I2C_DeInit(hi2c);
-				MX_I2C1_Init();
+			hi2c->Instance->CR1 |= I2C_CR1_STOP;
+			HAL_I2C_DeInit(hi2c);
+			MX_I2C1_Init();
         return HAL_ERROR;
       }
     }

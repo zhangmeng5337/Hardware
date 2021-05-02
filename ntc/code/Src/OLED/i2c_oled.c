@@ -6,7 +6,7 @@
 
 extern I2C_HandleTypeDef hi2c1;
 static __IO uint32_t  I2CTimeout = I2CT_LONG_TIMEOUT;   
-
+extern uint32_t sysTick_Count;
 
 //OLED引脚初始化
 void OLED_GPIO_Config(void)
@@ -418,51 +418,60 @@ void oled_test(void)
 }
 void oled_process(unsigned char num)
 {
-    if(num == 0x01)
-    {
-		OLED_Show_Value(getParams()->temperature);//温度显示
+   if(sysTick_Count>=50)
+   	{
+		sysTick_Count = 0;
+				 OLED_Show_Unit();		 //显示温度
 		
+		}
 
-	}
-	else if(num == 0x02)
-	{
-		OLED_Show_Gear(getParams()->gear);	  //档位显示
+		if(num == 0x01)
+			{
+				OLED_Show_Value(getParams()->temperature);//温度显示
+				
+		
+			}
+			else if(num == 0x02)
+			{
+				OLED_Show_Gear(getParams()->gear);	  //档位显示
+		
+			}
+			else if(num == 0x03)
+			{
+				OLED_Show_NO();   //档位显示
+		
+			}
+			else if(num == 0x04)
+			{
+				OLED_Show_Cold();	  //冷热显示
+		
+			}
+			else if(num == 0x05)
+			{
+				OLED_Show_Hot();	  //冷热显示
+		
+			}
+			else if(num == 0x06)
+			{
+				OLED_Show_Alarm();	//显示报警图标
+			}
+			else if(num == 0x07)
+			{
+				OLED_Show_Run();		//冷水热模式显示运行图标
+		
+			}
+			else if(num == 0x08)
+			{
+				OLED_Show_STOP();		//关闭模式显示停止图标
+		
+			}
+			else if(num == 0x09)
+			{
+				OLED_Show_Unit();		//显示温度
+		
+			}
 
-	}
-	else if(num == 0x03)
-	{
-		OLED_Show_NO();	  //档位显示
-
-	}
-	else if(num == 0x04)
-	{
-		OLED_Show_Cold();	  //档位显示
-
-	}
-	else if(num == 0x05)
-	{
-		OLED_Show_Hot();	  //档位显示
-
-	}
-    else if(num == 0x06)
-    {
-		OLED_Show_Alarm();	//显示报警图标
-	}
-	else if(num == 0x07)
-	{
-		OLED_Show_Run();		//冷水热模式显示运行图标
-
-	}
-	else if(num == 0x08)
-	{
-		OLED_Show_STOP();		//关闭模式显示停止图标
-
-	}
-	else if(num == 0x09)
-	{
-		OLED_Show_Unit();		//关闭模式显示停止图标
-
-	}
+    
 
 }
 
