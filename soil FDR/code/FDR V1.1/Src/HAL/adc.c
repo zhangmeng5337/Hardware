@@ -8,10 +8,10 @@ extern ADC_HandleTypeDef hadc1;
 sensor_stru sensor_usr;
 extern uint32_t	freq_count;
 float adc_value;
-unsigned int adcBuf_ref[N];	//参考电压缓冲区
-unsigned int adcBuf_humid[N];	//湿度电压缓冲区
-unsigned int adcBuf_ta[N];//温度a电压缓冲区
-unsigned int adcBuf_tb[N];//温度b电压缓冲区
+uint32_t adcBuf_ref[N];	//参考电压缓冲区
+uint32_t adcBuf_humid[N];	//湿度电压缓冲区
+uint32_t adcBuf_ta[N];//温度a电压缓冲区
+uint32_t adcBuf_tb[N];//温度b电压缓冲区
 
 sensor_stru *getSensor()
 {
@@ -28,11 +28,11 @@ void Get_Adc_Average(unsigned char times)
 	unsigned char i,t;
  
 
-
+	HAL_ADCEx_Calibration_Start(&hadc1);
 	for(i=0;i<N;i++)
 	{                               //开启ADC
-		HAL_ADCEx_Calibration_Start(&hadc1);
-		for(t=0;t<4;t++)
+	
+		for(t=1;t<4;t++)
 		{
 			
 			HAL_ADC_Start(&hadc1);
@@ -41,16 +41,16 @@ void Get_Adc_Average(unsigned char times)
 			
 			switch(t)
 			{
-				case 0: adcBuf_ref[i]=temp_val;break;
+				//case 0: adcBuf_ref[i]=temp_val;break;
 				case 1: adcBuf_humid[i]=temp_val;break;
 				case 2: adcBuf_ta[i]=temp_val;break;
 				case 3: adcBuf_tb[i]=temp_val;break;				
 			}
-		}
+		}	
 	}
 	
-	
 	HAL_ADC_Stop(&hadc1);
+
 	/***************************filter adc value*************************************/
 	static float tmp_ref;
 
@@ -63,7 +63,7 @@ void Get_Adc_Average(unsigned char times)
 	}
 	else if(sensor_usr.CalibrationVref==0&&sensor_usr.ADC_REF==0)
 	{
-		adc_value = filter(0);
+	//	adc_value = filter(0);
 		if(tmp_ref==0)
 			tmp_ref = adc_value;
 		if(tmp_ref>adc_value)
@@ -71,20 +71,26 @@ void Get_Adc_Average(unsigned char times)
 		 adc_value = 4096*3.0/adc_value;
 		sensor_usr.ADC_REF = adc_value;	
 	}
-	
+	sensor_usr.ADC_REF = 3;
 	adc_value = filter(1);
-	sensor_usr.sensor[0] = sensor_usr.ADC_REF*adc_value/4096;
+	//sensor_usr.sensor[0] = sensor_usr.ADC_REF*adc_value/4096;
+	sensor_usr.sensor[0] = sensor_usr.sensor[0] +sensor_usr.ADC_REF*adc_value/4096;
+	sensor_usr.sensor[0] = sensor_usr.sensor[0]/2;
  // sensor_usr.sensor[0]=DigitRound(sensor_usr.sensor[0],2);
 
 	adc_value = filter(2);
 	//free(adcBuf_ta);
-	sensor_usr.sensor[1] = sensor_usr.ADC_REF*adc_value/4096;	
+	//sensor_usr.sensor[1] = sensor_usr.ADC_REF*adc_value/4096;	
+		sensor_usr.sensor[1] = sensor_usr.sensor[1] +sensor_usr.ADC_REF*adc_value/4096;
+	sensor_usr.sensor[1] = sensor_usr.sensor[1]/2;
  // sensor_usr.sensor[1]=DigitRound(sensor_usr.sensor[1],4);
 	
 	
 	adc_value = filter(3);
 	//	free(adcBuf_tb);
-	sensor_usr.sensor[2] = sensor_usr.ADC_REF*adc_value/4096;
+	//sensor_usr.sensor[2] = sensor_usr.ADC_REF*adc_value/4096;
+	sensor_usr.sensor[2] = sensor_usr.sensor[2] +sensor_usr.ADC_REF*adc_value/4096;
+	sensor_usr.sensor[2] = sensor_usr.sensor[2]/2;
   //sensor_usr.sensor[2]=DigitRound(sensor_usr.sensor[2],4);
 
 	/****************************calculabute humid and temperature*********************/

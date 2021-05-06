@@ -1,23 +1,30 @@
 #include "filter.h"
-uint32_t *value_buf;
-extern  unsigned int adcBuf_ref[N];
-extern	unsigned int adcBuf_humid[N];
-extern	unsigned int adcBuf_ta[N];
-extern	unsigned int adcBuf_tb[N];
+
+extern  uint32_t adcBuf_ref[N];
+extern	uint32_t adcBuf_humid[N];
+extern	uint32_t adcBuf_ta[N];
+extern	uint32_t adcBuf_tb[N];
 ratio_stru ratio;
 
-uint32_t average_filter(uint32_t *pb)  //中值滤波+均值滤波
+uint32_t average_filter(uint32_t *pb,unsigned int sampleCount)  //中值滤波+均值滤波
 
 {  
-
+uint32_t value_buf[100];
   unsigned char count,i,j;  
   uint32_t  sum=0,temp;
-	value_buf = pb;
-  for (j=0;j<N-1;j++)  
+
+	//value_buf = pb;
+	unsigned char ik;
+	for (ik = 0;ik<100;ik++)
+	value_buf[ik]=0;
+	for (ik = 0;ik<sampleCount;ik++)
+	value_buf[ik]=pb[ik];
+	//memmove(value_buf,pb,48);
+  for (j=0;j<sampleCount-1;j++)  
 
    {  
 
-      for (i=0;i<N-j;i++)  
+      for (i=0;i<sampleCount-j;i++)  
 
       {  
 
@@ -37,14 +44,80 @@ uint32_t average_filter(uint32_t *pb)  //中值滤波+均值滤波
 
    }  
 
-   for(count=1;count<N-1;count++)  
+//   for(count=1;count<sampleCount-1;count++)  
 
-      sum += value_buf[count];  
+//      sum += value_buf[count];  
 
-   return (sum/(N-2));    
+//   return (sum/(sampleCount-2));    
+  if(sampleCount<=4)
+	{
+	   for(count=0;count<sampleCount;count++)  
+
+      sum += value_buf[count];
+		 return (sum/(sampleCount)); 	  
+	}
+	else  if(sampleCount>2)
+	{
+	   for(count=2;count<sampleCount-2;count++)  
+
+      sum += value_buf[count];
+		 return (sum/(sampleCount-4)); 	  
+	}
+}  
+float average_filterFloat(float *pb,unsigned int sampleCount)  //中值滤波+均值滤波
+
+{  
+float value_buf[100];
+  unsigned char count,i,j;  
+  uint32_t  sum=0,temp;
+
+	unsigned char ik;
+	for (ik = 0;ik<100;ik++)
+	value_buf[ik]=0;
+	for (ik = 0;ik<sampleCount;ik++)
+	value_buf[ik]=pb[ik];
+  for (j=0;j<sampleCount-1;j++)  
+
+   {  
+
+      for (i=0;i<sampleCount-j;i++)  
+
+      {  
+
+         if ( value_buf[i]>value_buf[i+1] )  
+
+         {  
+
+            temp = value_buf[i];  
+
+            value_buf[i] = value_buf[i+1];   
+
+             value_buf[i+1] = temp;  
+
+         }  
+
+      }  
+
+   }  
+   
+  
+  if(sampleCount<=4)
+	{
+	   for(count=0;count<sampleCount;count++)  
+
+      sum += value_buf[count];
+		 return (sum/(sampleCount)); 	  
+	}
+else  if(sampleCount>2)
+	{
+	   for(count=2;count<sampleCount-2;count++)  
+
+      sum += value_buf[count];
+		 return (sum/(sampleCount-4)); 	  
+	}
+    
 
 }  
-
 
 /****************************************
 均值滤波
@@ -58,19 +131,19 @@ uint32_t filter(uint32_t seq)
     {
     case 0:
        // value_buf=adcBuf_ref;
-				average_filter(adcBuf_ref);
+				average_filter(adcBuf_ref,N);
         break;
     case 1:
-        value_buf=adcBuf_humid;
-				average_filter(adcBuf_humid);
+        //value_buf=adcBuf_humid;
+				average_filter(adcBuf_humid,N);
         break;
     case 2:
-        value_buf=adcBuf_ta;
-				average_filter(adcBuf_ta);
+       // value_buf=adcBuf_ta;
+				average_filter(adcBuf_ta,N);
         break;
     case 3:
-        value_buf=adcBuf_tb;
-				average_filter(adcBuf_tb);
+        //value_buf=adcBuf_tb;
+				average_filter(adcBuf_tb,N);
         break;
     }
 

@@ -4,7 +4,7 @@
 #include "main.h"
 
 #define N 48  
-#define AN 200
+#define AN 50
 
 uint32_t filter(uint32_t seq);  
 typedef struct{
@@ -25,6 +25,8 @@ typedef struct{
 }ratio_stru;
 ratio_stru *CalibrationRatio(float ahumid,float chumid);
 ratio_stru *getRatio(void);
-uint32_t average_filter(uint32_t *pb) ;
+//uint32_t average_filter(uint32_t *pb) ;
+uint32_t average_filter(uint32_t *pb,unsigned int count);  //中值滤波+均值滤波
+float average_filterFloat(float *pb,unsigned int sampleCount);  //中值滤波+均值滤波;
 #endif
 

@@ -112,43 +112,44 @@ int main(void)
     HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
     tickTime=HAL_GetTick();
 
-//    if(getFactor()->dutycycle == 0)//pwm空测电压未进行校准
-//    {
-//        while(1)//led指示灯闪烁
-//        {
+    if(getFactor()->dutycycle == 0)//pwm空测电压未进行校准
+    {
+        while(1)//led指示灯闪烁
+        {
 
-//            app_loop();//主程序
-//            Get_Adc_Average(N);
-//            if((HAL_GetTick()-tickTime)>=3000)//led指示灯闪烁
-//            {
+            app_loop();//主程序
+            Get_Adc_Average(N);
+            if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
+            {
+							HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
-//                if(sensor_usr.sensor[0]/V_Nom>=1.04)
-//                {
-//                    //if(duticycle>0)
-//                    getFactor()->dutycycle++;
+                if(sensor_usr.sensor[0]/V_Nom>=1.04)
+                {
+                   // if(getFactor()->dutycycle>0)
+                    getFactor()->dutycycle++;
 
-//                }
-//                else if((sensor_usr.sensor[0]/V_Nom)<0.97)
-//                {
-//                    if(getFactor()->dutycycle>0)
-//                        getFactor()->dutycycle--;
-//                }
-//                else
-//                {
-//                    params_save();
-//                    break;
-//                }
-//                __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getFactor()->dutycycle);
-//                tickTime=HAL_GetTick();
-//            }
+                }
+                else if((sensor_usr.sensor[0]/V_Nom)<0.97)
+                {
+                    if(getFactor()->dutycycle>0)
+                        getFactor()->dutycycle--;
+                }
+                else
+                {
+                    params_save();
+                    break;
+                }
+                __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, getFactor()->dutycycle);
+                tickTime=HAL_GetTick();
+            }
 
-//        }
+        }
 
-//    }
-//    else
-//    {
-        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 5);
-//    }
+    }
+    else
+    {
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,getFactor()->dutycycle);
+    }
 
   /* USER CODE END 2 */
 
@@ -255,24 +256,16 @@ static void MX_ADC1_Init(void)
   hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 4;
+  hadc1.Init.NbrOfConversion = 3;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
   }
   /** Configure Regular Channel 
   */
-  sConfig.Channel = ADC_CHANNEL_VREFINT;
-  sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Configure Regular Channel 
-  */
   sConfig.Channel = ADC_CHANNEL_6;
-  sConfig.Rank = ADC_REGULAR_RANK_2;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -280,7 +273,7 @@ static void MX_ADC1_Init(void)
   /** Configure Regular Channel 
   */
   sConfig.Channel = ADC_CHANNEL_8;
-  sConfig.Rank = ADC_REGULAR_RANK_3;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -288,7 +281,7 @@ static void MX_ADC1_Init(void)
   /** Configure Regular Channel 
   */
   sConfig.Channel = ADC_CHANNEL_7;
-  sConfig.Rank = ADC_REGULAR_RANK_4;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -348,6 +341,10 @@ static void MX_TIM2_Init(void)
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
   }

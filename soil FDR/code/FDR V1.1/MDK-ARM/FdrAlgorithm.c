@@ -2,7 +2,7 @@
 #include "EEPROM.h"
 #include "adc.h"
 #include "math.h"
-
+#include "filter.h"
 factor_stru factor_usr;
 
 
@@ -10,11 +10,11 @@ factor_stru *getFactor()
 {
     return &factor_usr;
 }
-
+  static float value2_buf[SAMPLE_COUNT];
 float GlideFilterAD(float val,unsigned char val2)
 {
     static unsigned char FilterI;
-    static float value2_buf[SAMPLE_COUNT];
+ 
     //unsigned char	count;
     static unsigned char flag;
     float	sum=0;
@@ -26,12 +26,15 @@ float GlideFilterAD(float val,unsigned char val2)
     }
     if(flag == 1)
     {
+			  //average_filterFloat(value2_buf,SAMPLE_COUNT);
+			
         for(int count=0; count<SAMPLE_COUNT; count++)
             sum+=value2_buf[count];
         return (sum/SAMPLE_COUNT);
     }
     else
     {
+			  //average_filterFloat(value2_buf,FilterI);
         for(int count=0; count<FilterI; count++)
             sum+=value2_buf[count];
         return (sum/FilterI);
@@ -225,7 +228,7 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
     float C = -243.61;
     float tmp1,tmp2,tmp3;
 
-    unsigned char index,index2;
+    static unsigned int index3,index2;
     unsigned int result;
     //	unsigned char i;
     //AdcValueVol1 = ((uint32_t)(AdcValueVol1*1000))/1000.0;
@@ -244,14 +247,14 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
     tmp1 = tmp3;
     //	last_temp[index2] = tmp3;
     index2++;
-    index++;
+    index3++;
     /************滤波去抖动，防止数据过于频繁跳动****************/
-    tmp3=GlideFilterAD(tmp3,index);
-    if(index>=SAMPLE_COUNT)
+    tmp3=GlideFilterAD(tmp3,index3);
+    if(index3>=SAMPLE_COUNT)
     {
-        index =0;
+        index3 =0;
     }
-    tmp3 = tmp3 -30;
+   // tmp3 = tmp3 -30;
 
     if(tmp3<0)
     {

@@ -7,7 +7,7 @@
 #define RATE_ADDR	0x0101
 
 #define CALB_ADDR		0xfe
-#define MODBUS_BSIZE	1024
+#define MODBUS_BSIZE	512
 typedef struct{
 u32 RS485_Baudrate;//通讯波特率
 u8 RS485_Parity;//0无校验；1奇校验；2偶校验

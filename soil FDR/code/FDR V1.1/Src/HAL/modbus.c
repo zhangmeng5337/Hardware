@@ -146,7 +146,7 @@ void RS485_Service(void)
         tickTime_adc=HAL_GetTick();
         tick_1s++;
 				#if DEBUG == 1
-					if(TesetFlag==1&&tick_1s>=30)
+					if(TesetFlag==1&&tick_1s>=20)
 					{
 							tick_1s = 0;
 							Modbus_07_Solve();
@@ -425,7 +425,7 @@ void Modbus_07_Solve(void)
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0103))//寄存器地址+数量在范围内
     {
         HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-        printf("   %10f   %10f   %10f   %10f\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid);
+        printf("   %10f   %10f   %10f   %10f   %d\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid,sensor_usr.temperature);
         HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     }
 
