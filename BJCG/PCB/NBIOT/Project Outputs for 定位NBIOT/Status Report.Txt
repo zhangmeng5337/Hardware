@@ -1,9 +1,13 @@
-Output: Bill of Materials
-Type  : BOM
+Output: NC Drill Files
+Type  : NC Drill
 From  : Project [¶¨Î»NBIOT.PrjPCB]
+   Generated File[PCB1.TXT]
+   Generated File[PCB1.2.DRL]
+   Generated File[PCB1.2.LDP]
+   Generated File[PCB1.2.DRR]
 
 
-Files Generated   : 0
+Files Generated   : 4
 Documents Printed : 0
 
-Finished Output Generation At 16:48:00 On 2021/5/2
+Finished Output Generation At 14:25:45 On 2021/5/7

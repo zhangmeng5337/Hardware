@@ -26,7 +26,7 @@ float GlideFilterAD(float val,unsigned char val2)
     }
     if(flag == 1)
     {
-			  //average_filterFloat(value2_buf,SAMPLE_COUNT);
+			  average_filterFloat(value2_buf,SAMPLE_COUNT);
 			
         for(int count=0; count<SAMPLE_COUNT; count++)
             sum+=value2_buf[count];
@@ -34,7 +34,7 @@ float GlideFilterAD(float val,unsigned char val2)
     }
     else
     {
-			  //average_filterFloat(value2_buf,FilterI);
+			  average_filterFloat(value2_buf,FilterI);
         for(int count=0; count<FilterI; count++)
             sum+=value2_buf[count];
         return (sum/FilterI);
@@ -230,9 +230,12 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
 
     static unsigned int index3,index2;
     unsigned int result;
+	  static unsigned int result_last;
     //	unsigned char i;
     //AdcValueVol1 = ((uint32_t)(AdcValueVol1*1000))/1000.0;
     //	AdcValueVol2 = ((uint32_t)(AdcValueVol2*1000))/1000.0;
+	  //AdcValueVol1 = DigitRound(AdcValueVol1,3);
+	  //AdcValueVol2 = DigitRound(AdcValueVol2,3);	
     resistor = (AdcValueVol1*499/AdcValueVol2)-499;
     resistor = ((uint32_t)(resistor*10000));
     resistor=resistor/10000.0;
@@ -263,7 +266,10 @@ float SoilTemperature(unsigned char status,float AdcValueVol1,float AdcValueVol2
     }
     else
         result = (unsigned int)(tmp3);
-    return result;
+  
+return result;		
+
+    
 }
 
 /************************************************************

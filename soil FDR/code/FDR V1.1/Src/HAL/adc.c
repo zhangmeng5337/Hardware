@@ -2,6 +2,7 @@
 #include "app.h"
 #include "filter.h"
 #include "FdrAlgorithm.h"
+#include "calman.h"
 extern ADC_HandleTypeDef hadc1;
 
 
@@ -72,6 +73,7 @@ void Get_Adc_Average(unsigned char times)
 		sensor_usr.ADC_REF = adc_value;	
 	}
 	sensor_usr.ADC_REF = 3;
+	//Claman(adcBuf_ta,0.01,10);
 	adc_value = filter(1);
 	//sensor_usr.sensor[0] = sensor_usr.ADC_REF*adc_value/4096;
 	sensor_usr.sensor[0] = sensor_usr.sensor[0] +sensor_usr.ADC_REF*adc_value/4096;

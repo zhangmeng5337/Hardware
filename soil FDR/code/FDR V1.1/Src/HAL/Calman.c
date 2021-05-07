@@ -1,44 +1,104 @@
 #include "math.h"
-double frand()
+#include "filter.h"
+#include "calman.h"
+extern  uint32_t adcBuf_ref[N];
+extern	uint32_t adcBuf_humid[N];
+extern	uint32_t adcBuf_ta[N];
+extern	uint32_t adcBuf_tb[N];
+#define RAND_MAX  0.5
+/************************************************
+r参数调整滤波后的曲线与实测曲线的相近程度，r越小越接近。
+
+q参数调滤波后的曲线平滑程度，q越小越平滑。
+*-***********************************************/
+void Claman(uint32_t *pb,float sq,float sr,unsigned char seq)
 {
-  ;//  return 2*((rand()/(double)RAND_MAX) - 0.5);  //随机噪声
- }
-void Claman()
-{
-    float x_last=0;
-    float p_last=0.02;
-    float Q=0.018;
-    float R=0.542;
-    float kg;
-    float x_mid;
-    float x_now;
-    float p_mid;
-    float p_now;
-    float z_real=0.56;//0.56
-    float z_measure;
-    float sumerror_kalman=0;
-    float sumerror_measure=0;
-    int i;
-    x_last=z_real+frand()*0.03;
-    x_mid=x_last;
-    for(i=0; i<20; i++)
+    float x_k1_k1,x_k_k1;
+    static float ADC_OLD_Value;
+    float Z_k;
+    static float P_k1_k1;
+
+    float Q = 0.008;  // Q = 0.0003;
+    float R = 10;
+    static float Kg = 0;
+    static float P_k_k1 = 1,P_k_k2,P_k_k3,P_k_k4;
+
+    static float kalman_adc,kalman_adc2,kalman_adc3,kalman_adc4;
+    static float kalman_adc_old=1;
+    unsigned int i;
+    Q = sq;
+    R = sr;
+    //kalman_adc_old = adcBuf_humid[0];
+    for(i=0; i<N; i++)
     {
-        x_mid=x_last;    //x_last=x(k-1|k-1),x_mid=x(k|k-1)
-        p_mid=p_last+Q;  //p_mid=p(k|k-1),p_last=p(k-1|k-1),Q=噪声
-        kg=p_mid/(p_mid+R); //kg为kalman filter，R为噪声
-        z_measure=z_real+frand()*0.03;//测量值
-        x_now=x_mid+kg*(z_measure-x_mid);//估计出的最优值
-        p_now=(1-kg)*p_mid;//最优值对应的covariance
-      //  printf("Real     position: %6.3f \n",z_real);  //显示真值
-     //   printf("Mesaured position: %6.3f [diff:%.3f]\n",z_measure,fabs(z_real-z_measure));  //显示测量值以及真值与测量值之间的误差
-      //  printf("Kalman   position: %6.3f [diff:%.3f]\n",x_now,fabs(z_real - x_now));  //显示kalman估计值以及真值和卡尔曼估计值的误差
-        sumerror_kalman += fabs(z_real - x_now);  //kalman估计值的累积误差
-        sumerror_measure += fabs(z_real-z_measure);  //真值与测量值的累积误差
-        p_last = p_now;  //更新covariance值
-        x_last = x_now;  //更新系统状态值
+
+        Z_k =pb[i];//测量值
+        switch(seq)
+        {
+        case 1:
+            kalman_adc = kalman_adc2;
+            kalman_adc_old = kalman_adc2;
+            P_k1_k1 = P_k_k2;
+            break;
+        case 2:
+            kalman_adc = kalman_adc3;
+            kalman_adc_old = kalman_adc3;
+            P_k1_k1 = P_k_k3;
+            break;
+        case 3:
+            kalman_adc = kalman_adc4;
+            kalman_adc_old = kalman_adc4;
+            P_k1_k1 = P_k_k4;
+            break;
+        }
+        if (abs(kalman_adc_old-pb[i])>=10)
+        {
+            x_k1_k1= pb[i]*0.382 + kalman_adc_old*0.618;
+        }
+        else
+        {
+            x_k1_k1 = kalman_adc_old;
+        }
+        x_k1_k1 = kalman_adc_old;
+
+        x_k_k1 = x_k1_k1;
+        P_k_k1 = P_k1_k1 + Q;
+
+        Kg = P_k_k1/(P_k_k1 + R);
+
+        kalman_adc = x_k_k1 + Kg * (Z_k - kalman_adc_old);
+        P_k1_k1 = (1 - Kg)*P_k_k1;
+        P_k_k1 = P_k1_k1;
+
+        ADC_OLD_Value = pb[i];//pb[i];
+        kalman_adc_old = kalman_adc;
+        switch(seq)
+        {
+        case 1:
+            kalman_adc2 = kalman_adc ;
+            P_k_k2 = P_k1_k1;
+            break;
+        case 2:
+            kalman_adc3 = kalman_adc;
+            P_k_k3 = P_k1_k1;
+            break;
+        case 3:
+            kalman_adc4 = kalman_adc;
+            P_k_k4 = P_k1_k1;
+            break;
+        }
+        float error;
+        error = ADC_OLD_Value - kalman_adc;
+        pb[i] = kalman_adc;
+        //printf("%f             %f\n",ADC_OLD_Value,kalman_adc);  //输出测量累积误差
+
     }
-  //  printf("总体测量误差      : %f\n",sumerror_measure);  //输出测量累积误差
-   // printf("总体卡尔曼滤波误差: %f\n",sumerror_kalman);   //输出kalman累积误差
-   // printf("卡尔曼误差所占比例: %d%% \n",100-(int)((sumerror_kalman/sumerror_measure)*100));
+
 }
+
+
+// printf("总体测量误差      : %f\n",sumerror_measure);  //输出测量累积误差
+// printf("总体卡尔曼滤波误差: %f\n",sumerror_kalman);   //输出kalman累积误差
+// printf("卡尔曼误差所占比例: %d%% \n",100-(int)((sumerror_kalman/sumerror_measure)*100));
+
 
