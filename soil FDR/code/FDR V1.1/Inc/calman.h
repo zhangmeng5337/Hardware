@@ -3,6 +3,6 @@
 
 #include "main.h"
 
-void Claman(uint32_t *pb,float sq,float sr,unsigned char seq);
+void Claman(float *pb,float sq,float sr,unsigned char seq);
 #endif
 

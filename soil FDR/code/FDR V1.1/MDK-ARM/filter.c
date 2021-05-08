@@ -1,17 +1,18 @@
 #include "filter.h"
 #include "calman.h"
-extern  uint32_t adcBuf_ref[N];
-extern	uint32_t adcBuf_humid[N];
-extern	uint32_t adcBuf_ta[N];
-extern	uint32_t adcBuf_tb[N];
+extern  float adcBuf_ref[N];
+extern	float adcBuf_humid[N];
+extern	float adcBuf_ta[N];
+extern	float adcBuf_tb[N];
 ratio_stru ratio;
 
-uint32_t average_filter(uint32_t *pb,unsigned int sampleCount)  //ÖĞÖµÂË²¨+¾ùÖµÂË²¨
+float average_filter(float *pb,unsigned int sampleCount)  //ÖĞÖµÂË²¨+¾ùÖµÂË²¨
 
 {
-    uint32_t value_buf[100];
+    float value_buf[100];
+	 unsigned int countS;
     unsigned char count,i,j;
-    uint32_t  sum=0,temp;
+    float  sum=0,temp;
 
     //value_buf = pb;
     unsigned char ik;
@@ -61,7 +62,9 @@ uint32_t average_filter(uint32_t *pb,unsigned int sampleCount)  //ÖĞÖµÂË²¨+¾ùÖµÂ
         for(count=2; count<sampleCount-2; count++)
 
             sum += value_buf[count];
-        return (sum/(sampleCount-4));
+			countS = sampleCount-4;
+			sum =sum/countS;
+        return (sum);
     }
 }
 float average_filterFloat(float *pb,unsigned int sampleCount)  //ÖĞÖµÂË²¨+¾ùÖµÂË²¨
@@ -122,38 +125,38 @@ float average_filterFloat(float *pb,unsigned int sampleCount)  //ÖĞÖµÂË²¨+¾ùÖµÂË
 /****************************************
 ¾ùÖµÂË²¨
 *****************************************/
-uint32_t filter(uint32_t seq)
+float filter(uint32_t seq)
 {
     unsigned char count,j,i;
-
-    uint32_t  sum=0,temp;
+    float sum;
+    uint32_t  temp;
     switch(seq)
     {
     case 0:
         // value_buf=adcBuf_ref;
-        Claman(adcBuf_ref,0.01,10,0);
-        average_filter(adcBuf_ref,N);
+   		Claman(adcBuf_ref,0.01,10,0);
+        sum = average_filter(adcBuf_ref,N);
         break;
     case 1:
         //value_buf=adcBuf_humid;
-        Claman(adcBuf_humid,0.01,10,1);
-        average_filter(adcBuf_humid,N);
+        Claman(adcBuf_humid,0.004,10,1);
+        sum = average_filter(adcBuf_humid,N);
         break;
     case 2:
         // value_buf=adcBuf_ta;
         Claman(adcBuf_ta,0.008,10,2);
-        average_filter(adcBuf_ta,N);
+        sum = average_filter(adcBuf_ta,N);
         break;
     case 3:
         //value_buf=adcBuf_tb;
         Claman(adcBuf_tb,0.008,10,3);
-        average_filter(adcBuf_tb,N);
+        sum = average_filter(adcBuf_tb,N);
         break;
     }
 
 //    for(count=0; count<N; count++)
 //        sum += value_buf[count];
-//    return (sum/(N));
+    return (sum);
 
 
 }

@@ -119,17 +119,17 @@ int main(void)
 
             app_loop();//主程序
             Get_Adc_Average(N);
-            if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
+            if((HAL_GetTick()-tickTime)>=500)//led指示灯闪烁
             {
 							HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
-                if(sensor_usr.sensor[0]/V_Nom>=1.04)
+                if(sensor_usr.sensor[0]/V_Nom>=1.02)
                 {
                    // if(getFactor()->dutycycle>0)
                     getFactor()->dutycycle++;
 
                 }
-                else if((sensor_usr.sensor[0]/V_Nom)<0.97)
+                else if((sensor_usr.sensor[0]/V_Nom)<0.98)
                 {
                     if(getFactor()->dutycycle>0)
                         getFactor()->dutycycle--;
@@ -265,7 +265,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();

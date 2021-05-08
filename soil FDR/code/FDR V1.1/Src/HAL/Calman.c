@@ -1,21 +1,23 @@
 #include "math.h"
 #include "filter.h"
 #include "calman.h"
-extern  uint32_t adcBuf_ref[N];
-extern	uint32_t adcBuf_humid[N];
-extern	uint32_t adcBuf_ta[N];
-extern	uint32_t adcBuf_tb[N];
+//extern  float adcBuf_ref[N];
+//extern	float adcBuf_humid[N];
+//extern	float adcBuf_humidf[N];
+
+//extern	float adcBuf_ta[N];
+//extern	float adcBuf_tb[N];
 #define RAND_MAX  0.5
 /************************************************
 r参数调整滤波后的曲线与实测曲线的相近程度，r越小越接近。
 
 q参数调滤波后的曲线平滑程度，q越小越平滑。
 *-***********************************************/
-void Claman(uint32_t *pb,float sq,float sr,unsigned char seq)
+void Claman(float *pb,float sq,float sr,unsigned char seq)
 {
     float x_k1_k1,x_k_k1;
     static float ADC_OLD_Value;
-    float Z_k;
+    float Z_k,pbf;
     static float P_k1_k1;
 
     float Q = 0.008;  // Q = 0.0003;
@@ -31,14 +33,18 @@ void Claman(uint32_t *pb,float sq,float sr,unsigned char seq)
     //kalman_adc_old = adcBuf_humid[0];
     for(i=0; i<N; i++)
     {
-
-        Z_k =pb[i];//测量值
+			  //Z_k = 0;
+        //Z_k = adcBuf_humid[i];
+      //  Z_k =pb[i];//测量值
+        pbf = pb[i]*3.0/4096;
+		Z_k = pbf;
         switch(seq)
         {
         case 1:
             kalman_adc = kalman_adc2;
             kalman_adc_old = kalman_adc2;
             P_k1_k1 = P_k_k2;
+			//Z_k = adcBuf_humidf[i];	//湿度电压缓冲区
             break;
         case 2:
             kalman_adc = kalman_adc3;
@@ -51,7 +57,7 @@ void Claman(uint32_t *pb,float sq,float sr,unsigned char seq)
             P_k1_k1 = P_k_k4;
             break;
         }
-        if (abs(kalman_adc_old-pb[i])>=10)
+        if (abs(kalman_adc_old-pbf)>=10)
         {
             x_k1_k1= pb[i]*0.382 + kalman_adc_old*0.618;
         }
@@ -70,7 +76,7 @@ void Claman(uint32_t *pb,float sq,float sr,unsigned char seq)
         P_k1_k1 = (1 - Kg)*P_k_k1;
         P_k_k1 = P_k1_k1;
 
-        ADC_OLD_Value = pb[i];//pb[i];
+        ADC_OLD_Value = pbf;//pb[i];
         kalman_adc_old = kalman_adc;
         switch(seq)
         {
@@ -90,7 +96,7 @@ void Claman(uint32_t *pb,float sq,float sr,unsigned char seq)
         float error;
         error = ADC_OLD_Value - kalman_adc;
         pb[i] = kalman_adc;
-        //printf("%f             %f\n",ADC_OLD_Value,kalman_adc);  //输出测量累积误差
+       // printf("%f             %f\n",ADC_OLD_Value,kalman_adc);  //输出测量累积误差
 
     }
 
