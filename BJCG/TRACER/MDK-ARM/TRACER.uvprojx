@@ -10,8 +10,7 @@
       <TargetName>TRACER</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32L412RBTx</Device>
@@ -324,7 +323,6 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -337,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L412xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32L4xx_HAL_Driver/Inc; ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32L4xx/Include; ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -387,9 +385,6 @@
               <FilePath>startup_stm32l412xx.s</FilePath>
             </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
           <GroupName>Application/User</GroupName>
@@ -550,6 +545,54 @@
               <FilePath>../Src/system_stm32l4xx.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>Hardware</GroupName>
+          <Files>
+            <File>
+              <FileName>LteHardware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Hardware\LteHardware.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6ds3tr_c_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Hardware\lsm6ds3tr_c_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>lis2mdl_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Hardware\lis2mdl_reg.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>HAL</GroupName>
+          <Files>
+            <File>
+              <FileName>LteHal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\LteHal.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6ds3tr_c_read_data_polling.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\lsm6ds3tr_c_read_data_polling.c</FilePath>
+            </File>
+            <File>
+              <FileName>lis2mdl_read_data_polling.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\lis2mdl_read_data_polling.c</FilePath>
+            </File>
+            <File>
+              <FileName>BMP388.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\BMP388.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
     </Target>

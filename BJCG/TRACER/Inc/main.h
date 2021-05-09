@@ -34,6 +34,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #define ON    1
 #define OFF   0
+#define ROLE  0
+typedef  unsigned char u8;
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -5,6 +5,7 @@
 #define LTE_NBIOT	1
 #define GPS     	2
 
-void LtePowerManage(unsigned char moduleType,unsigned char powerCtrl)£»
+void LtePowerManage(unsigned char moduleType,unsigned char powerCtrl);
+void LteUart_SendStr(unsigned char moduleType,u8 *str);
 
 #endif 
