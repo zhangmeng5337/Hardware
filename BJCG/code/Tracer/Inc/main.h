@@ -32,7 +32,12 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#define ON    1
+#define OFF   0
+#define ROLE  0
+typedef uint32_t u32;
+typedef unsigned int u16;
+typedef  unsigned char u8;
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -66,6 +71,7 @@ void Error_Handler(void);
 #define MDTR_GPIO_Port GPIOA
 #define MRI_Pin GPIO_PIN_6
 #define MRI_GPIO_Port GPIOA
+#define MRI_EXTI_IRQn EXTI9_5_IRQn
 #define WP_Pin GPIO_PIN_7
 #define WP_GPIO_Port GPIOA
 #define SPI_RESET_Pin GPIO_PIN_2
@@ -82,8 +88,8 @@ void Error_Handler(void);
 #define CS_GPIO_Port GPIOA
 #define POWER_CTRL_GPS_Pin GPIO_PIN_11
 #define POWER_CTRL_GPS_GPIO_Port GPIOC
-#define LED_Pin GPIO_PIN_9
-#define LED_GPIO_Port GPIOB
+#define led_Pin GPIO_PIN_9
+#define led_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

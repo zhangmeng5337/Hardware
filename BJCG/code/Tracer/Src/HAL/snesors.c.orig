@@ -1,0 +1,94 @@
+#include "sensor.h"
+#include "lis2mdl.h"
+#include "lsm6ds3tr.h"
+#include "calman.h"
+#include "BMP388.h"
+#include "sys.h"
+sensors_stru *sensorsp;
+AccAng_stru *AccAng_usrp;
+bmp3_data   *comp_datap;
+#define N		12
+float pb[N];//滤波后的imu数据
+void sensors_Init(void)
+{
+	  if(BMP388_Init()==1)
+	  	printf("BMP388 Init Failure\n");  //输出测量累积误差
+	  if(lis2mdl_init()==1)
+	  	printf("lis2mdl Init Failure\n");  //输出测量累积误差
+	  if(lsm6ds3tr_init()==1)
+	  	printf("lsm6ds3tr Init Failure\n");  //输出测量累积误差
+
+}
+void sensors_sample(void)
+{
+	 BMP388_Get_PaT();	
+	 lis2mdl_read_data_simple();
+	 lsm6ds3tr_c_read_data_polling();
+	  	
+
+}
+
+void snesors_process(void)
+{
+	float pbt[12];
+
+    unsigned char len;
+	len = 0;
+
+sensors_sample();
+	
+	sensorsp = GetMagnetic();
+	AccAng_usrp = GetAccAngtic();
+	comp_datap = GetPressure();
+	memcpy(pb,AccAng_usrp->acceleration_mg,3);len =len +3;
+	memcpy(pb+len,AccAng_usrp->angular_rate_mdps,3);len =len +3;	
+	memcpy(pb+len,AccAng_usrp->temperature_degC,1);len =len +1;
+	memcpy(pb+len,sensorsp->magnetic_mG,3);len =len +3;
+	memcpy(pb+len,comp_datap->pressure,1);len =len +1;	
+	memcpy(pb+len,comp_datap->temperature,1);len =len +1;		
+//	
+
+	len = 0;
+	memcpy(pbt,AccAng_usrp->acceleration_mg,3);len =len +3;
+	memcpy(pbt+len,AccAng_usrp->angular_rate_mdps,3);len =len +3;	
+	memcpy(pbt+len,AccAng_usrp->temperature_degC,1);len =len +1;
+	memcpy(pbt+len,sensorsp->magnetic_mG,3);len =len +3;
+	memcpy(pbt+len,comp_datap->pressure,1);len =len +1;	
+	memcpy(pbt+len,comp_datap->temperature,1);len =len +1;
+
+	/***********************************************************
+                      数据滤波处理
+	************************************************************/
+	unsigned char i;
+	i = 0;
+	for(i = 0;i<N;i++)
+	{
+		pb[i++] = Claman(&(pb[i]),0.008,10,1);
+
+	}
+	/*pb[i++] = Claman(&(AccAng_usrp->acceleration_mg[0]),0.008,10,1);
+	pb[i++] = Claman(&(AccAng_usrp->acceleration_mg[1]),0.008,10,1);
+	pb[i++] =Claman(&(AccAng_usrp->acceleration_mg[2]),0.008,10,1);
+
+	pb[i++]= Claman(&(AccAng_usrp->angular_rate_mdps[0]),0.008,10,1);
+	pb[i++]= Claman(&(AccAng_usrp->angular_rate_mdps[1]),0.008,10,1);
+	pb[i++]= Claman(&(AccAng_usrp->angular_rate_mdps[2]),0.008,10,1);
+
+	pb[i++]= Claman(&(sensorsp->magnetic_mG[0]),0.008,10,1);
+	pb[i++]= Claman(&(sensorsp->magnetic_mG[1]),0.008,10,1);
+	pb[i++]= Claman(&(sensorsp->magnetic_mG[2]),0.008,10,1);
+	pb[i++]= Claman(&(AccAng_usrp->temperature_degC),0.008,10,1);
+    pb[i++]= Claman(&(AccAng_usrp->temperature_degC),0.008,10,1);
+ 	pb[i++]= Claman(&(AccAng_usrp->temperature_degC),0.008,10,1);*/
+
+ for(i =0;i<(N-1);i++)
+ {
+ 	printf("       %f             %f     ",pb[i],pbt[i]);  //输出测量累积误差
+
+ }
+	printf("	   %f			  %f	 \n",pb[i],pbt[i]);  //输出测量累积误差
+
+
+
+}
+

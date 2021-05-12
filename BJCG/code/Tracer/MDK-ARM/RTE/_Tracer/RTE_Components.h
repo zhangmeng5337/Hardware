@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'Tracer' 
- * Target:  'Tracer' 
+ * Project: 'TRACER' 
+ * Target:  'TRACER' 
  */
 
 #ifndef RTE_COMPONENTS_H

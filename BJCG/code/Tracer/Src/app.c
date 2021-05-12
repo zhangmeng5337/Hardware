@@ -1,0 +1,209 @@
+#include "app.h"
+#include "sensors.h"
+#include "LteHal.h"
+#include "LteHardware.h"
+#include  "MX25_CMD.h"
+#include "EEPROM.h"
+#include "stdlib.h"
+#include "crc.h"
+systemParams_stru systemParams_usr;
+
+extern float FilterData[SN];//滤波后的imu数据
+void HardwareInit()
+{
+    LteUartConfig();
+#if ROLE == 0
+    LtePowerManage(LTE_4G,ON);
+#else
+    LtePowerManage(LTE_NBIOT,ON);
+#endif
+    sensors_Init();
+}
+void ParamsInit()
+{
+
+    uint32_t p;
+    unsigned char tmp;
+    uint32_t addr;
+    FLashData_stru *FLashData_usr2;
+    addr = 0;
+    FLashData_usr2 = GetFLashStatus();
+    flash_read(addr++,&p,1);
+    if(p!=0x5a)
+    {
+        systemParams_usr.period = 120000;
+        p = 0x5a;  //写入标志
+        flash_init(0);
+        addr = 0;
+        flash_write(addr++, &p,1);
+        flash_write( addr++,&(FLashData_usr2->LastWriteAddr),1);
+        flash_write( addr++,&(FLashData_usr2->SumLen),1);
+        flash_write( addr++,&(systemParams_usr.period),1);
+
+    }
+    else
+    {
+
+        addr = 0;
+        flash_read( addr++, &p,1);
+        flash_read( addr++, &(FLashData_usr2->LastWriteAddr),1);
+        flash_read( addr++,  &(FLashData_usr2->SumLen),1);
+        flash_read( addr++,  &(systemParams_usr.period),1);
+
+    }
+
+}
+void systmeReconfig()
+{
+    uint32_t p;
+    uint32_t addr;
+    p = 0x5a;
+    flash_init(0);
+    flash_write(addr++, &p,1);
+    flash_write( addr++,&(GetFLashStatus()->LastWriteAddr),1);
+    flash_write( addr++,&(GetFLashStatus()->SumLen),1);
+    flash_write( addr++,&(systemParams_usr.period),1);
+
+
+}
+unsigned char  LteAnaly(void)
+{
+    unsigned int recCRC,calCRC;
+    uint32_t len;
+    unsigned char result;
+    uint8_t *pb;
+    pb = malloc(GetLteStru()->rxSize);
+    result = 0;
+    if(GetLteStru()->lterxbuffer[0]==SERVER_HEADER)
+    {
+        memcpy(pb,&(GetLteStru()->lterxbuffer[1]),GetLteStru()->rxSize-HEADDER_LEN);
+        len = *(uint32_t *)GetLteStru()->lterxbuffer[LENINDEX]+DEVID_LEN+PAYLOAD_LEN;
+        calCRC=CRC_Compute(pb,len-2);//计算所接收数据的CRC
+        recCRC=pb[len-1]|(((u16)pb[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
+        if(calCRC!=recCRC||(calCRC == 0))//CRC校验错误
+        {
+            result = 1;
+        }
+        else
+        {
+            switch(pb[16])
+            {
+            case 0x60:
+
+                break;
+            case 0x61:
+                if(pb[17] == 0x31)
+                {
+                    systemParams_usr.period = *(uint32_t *)pb[18];
+                    systmeReconfig();
+                }
+                break;
+            }
+            result = 0;
+        }
+    }
+    free(pb);
+}
+
+void payloadpack(unsigned char *p,uint32_t size)
+{
+    unsigned char *pb;
+    unsigned int calCRC;
+    uint32_t len;
+    pb = malloc(size+12+4+2);
+    pb[0] = NODE_HEADER;
+    len = 1;
+    memcpy(&(pb[1]),0,12);//dev id
+    len = len +12;
+    len = len +4;//paylaod len length
+    memcpy(pb+len,p,size);//gps+imu
+    len = len +size;
+    len = len +2;//crc
+    pb[13] = (unsigned char)len;
+    pb[14] = (unsigned char)(len>>8);
+    pb[15] = (unsigned char)(len>>16);
+    pb[16] = (unsigned char)(len>>24);
+    calCRC=CRC_Compute(pb+1,len-1);//计算所接收数据的CRC
+    pb[125] = (unsigned char)calCRC;
+    pb[126] = (unsigned char)(calCRC>>8);
+    LteUart_SendByte(LTE_4G,pb,len);
+    free(pb);
+   
+}
+void app_main()
+{
+
+    uint32_t tick;
+    unsigned char *pb;
+    uint32_t len;
+    SIMCOM_Register_Network();
+    if(GetLteStru()->NetStatus == SIMCOM_NET_OK)
+    {
+        if(GetLteStru()->LteReceivedFlag)
+        {
+            GetLteStru()->LteReceivedFlag = 0;
+            LteAnaly();//解析服务端命令
+        }
+    }
+    if((HAL_GetTick()-tick)>=systemParams_usr.period)//周期上报数据
+    {
+        tick = HAL_GetTick();
+        snesors_process();
+        if(GetLteStru()->RetryConnectCount>MAX_CONNECT_COUNT )//断网数据存储
+        {
+
+            FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,12);
+
+        }
+
+        if(GetLteStru()->NetStatus == SIMCOM_NET_OK)
+        {
+            if(GetFLashStatus()->SumLen !=0)//数据断网续传
+            {
+                uint32_t i,len,len2,k;
+                uint8_t *pb;
+                pb = malloc(1400);
+                len = GetFLashStatus()->SumLen;
+                if(len<=1400)
+                {
+                    for(i=0; i<GetFLashStatus()->SumLen; i++)
+                    {
+                        FlashRead4bytes((GetFLashStatus()->LastWriteAddr+i),pb,GetFLashStatus()->SumLen);
+
+                    }
+                    payloadpack(pb,GetFLashStatus()->SumLen);
+
+                }
+                else  //分包续传
+                {
+                    k = len/1400;
+                    len2 = k *1400;
+                    for(i=0; i<k; i++)
+                    {
+                        FlashRead4bytes((GetFLashStatus()->LastWriteAddr+i),pb,1400);
+                        payloadpack(pb,1400);
+                    }
+
+                    FlashRead4bytes((GetFLashStatus()->LastWriteAddr+i),pb,len-len2);
+                    payloadpack(pb,len-len2);
+                    GetFLashStatus()->LastWriteAddr = 0;
+                    GetFLashStatus()->SumLen = 0;
+                }
+
+                free(pb);
+            }
+            else //定期上传
+            {
+                pb = malloc(60+12);//每组数据包含60个gps数据，12个imu数据
+                memcpy(pb+len,getGPS(),60);
+                len = len +60;
+                memcpy(pb+len,FilterData,12);
+                payloadpack(pb,72);
+                free(pb);
+
+            }
+        }
+    }
+
+
+}
