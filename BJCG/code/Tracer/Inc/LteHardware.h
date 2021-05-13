@@ -8,4 +8,5 @@ void LteUart_SendByte(unsigned char moduleType,uint8_t *str,uint32_t len);
 void LtePowerManage(unsigned char moduleType,unsigned char powerCtrl);
 void LteUart_SendStr(unsigned char moduleType,u8 *str);
 void USART1_CLR_Buf(void);
+void LteUartConfig(void);
 #endif 

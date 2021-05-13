@@ -104,7 +104,7 @@ void LteUart_SendByte(unsigned char moduleType,uint8_t *str,uint32_t len)
 
 }
 
-void LteUartConfig()
+void LteUartConfig(void)
 {
     __HAL_UART_CLEAR_IDLEFLAG(&huart1);
     __HAL_UART_DISABLE_IT(&huart1, UART_IT_IDLE);	//Ê¹ÄÜ¿ÕÏÐÖÐ¶Ï

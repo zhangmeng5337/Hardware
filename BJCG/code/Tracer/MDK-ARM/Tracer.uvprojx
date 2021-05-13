@@ -586,6 +586,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\Hardware\eeprom.c</FilePath>
             </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Hardware\rtc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

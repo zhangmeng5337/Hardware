@@ -6,6 +6,7 @@
 #include "EEPROM.h"
 #include "stdlib.h"
 #include "crc.h"
+#include "rtc.h"
 systemParams_stru systemParams_usr;
 
 extern float FilterData[SN];//滤波后的imu数据
@@ -19,11 +20,10 @@ void HardwareInit()
 #endif
     sensors_Init();
 }
-void ParamsInit()
+void ParamsInit(void)
 {
 
     uint32_t p;
-    unsigned char tmp;
     uint32_t addr;
     FLashData_stru *FLashData_usr2;
     addr = 0;
@@ -38,7 +38,18 @@ void ParamsInit()
         flash_write(addr++, &p,1);
         flash_write( addr++,&(FLashData_usr2->LastWriteAddr),1);
         flash_write( addr++,&(FLashData_usr2->SumLen),1);
-        flash_write( addr++,&(systemParams_usr.period),1);
+
+        systemParams_usr.DayPeriod = 1;
+        systemParams_usr.NightPeriod = 10;
+        systemParams_usr.Dhours = 6;
+        systemParams_usr.Nhours = 18;
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.DayPeriod),1);
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.NightPeriod),1);
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.Dhours),1);
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.Nhours),1);
+
+
+
 
     }
     else
@@ -48,7 +59,11 @@ void ParamsInit()
         flash_read( addr++, &p,1);
         flash_read( addr++, &(FLashData_usr2->LastWriteAddr),1);
         flash_read( addr++,  &(FLashData_usr2->SumLen),1);
-        flash_read( addr++,  &(systemParams_usr.period),1);
+
+        flash_read( addr++,  (uint32_t *)&(systemParams_usr.DayPeriod),1);
+        flash_read( addr++, (uint32_t *) &(systemParams_usr.NightPeriod),1);
+        flash_read( addr++,  (uint32_t *)&(systemParams_usr.Dhours),1);
+        flash_read( addr++,  (uint32_t *)&(systemParams_usr.Nhours),1);
 
     }
 
@@ -57,12 +72,17 @@ void systmeReconfig()
 {
     uint32_t p;
     uint32_t addr;
-    p = 0x5a;
-    flash_init(0);
-    flash_write(addr++, &p,1);
-    flash_write( addr++,&(GetFLashStatus()->LastWriteAddr),1);
-    flash_write( addr++,&(GetFLashStatus()->SumLen),1);
-    flash_write( addr++,&(systemParams_usr.period),1);
+	p = 0x5a;  //写入标志
+	flash_init(0);
+	addr = 0;
+	flash_write(addr++, &p,1);
+	flash_write( addr++,&(GetFLashStatus()->LastWriteAddr),1);
+	flash_write( addr++,&(GetFLashStatus()->SumLen),1);
+	
+	flash_write( addr++,(uint32_t *)&(systemParams_usr.DayPeriod),1);
+	flash_write( addr++,(uint32_t *)&(systemParams_usr.NightPeriod),1);
+	flash_write( addr++,(uint32_t *)&(systemParams_usr.Dhours),1);
+	flash_write( addr++,(uint32_t *)&(systemParams_usr.Nhours),1);
 
 
 }
@@ -86,15 +106,18 @@ unsigned char  LteAnaly(void)
         }
         else
         {
-            switch(pb[16])
+            switch(pb[17])
             {
             case 0x60:
 
                 break;
             case 0x61:
-                if(pb[17] == 0x31)
+                if(pb[18] == 0x31)
                 {
-                    systemParams_usr.period = *(uint32_t *)pb[18];
+					systemParams_usr.Dhours= pb[20];
+					systemParams_usr.DayPeriod = pb[21];
+					systemParams_usr.Nhours= pb[23];
+					systemParams_usr.NightPeriod= pb[24];
                     systmeReconfig();
                 }
                 break;
@@ -103,6 +126,7 @@ unsigned char  LteAnaly(void)
         }
     }
     free(pb);
+		return result;
 }
 
 void payloadpack(unsigned char *p,uint32_t size)
@@ -128,7 +152,146 @@ void payloadpack(unsigned char *p,uint32_t size)
     pb[126] = (unsigned char)(calCRC>>8);
     LteUart_SendByte(LTE_4G,pb,len);
     free(pb);
-   
+
+}
+void powersleep(void)
+{
+
+
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
+	
+		/* GPIO Ports Clock Enable */
+	
+	
+	
+		/*Configure GPIO pins : DTR_Pin EN_3_3V_Pin SIM_PWR_Pin CTRL3__Pin
+								 CTRL1__Pin */
+		GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|
+							  GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|
+							  GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	
+		GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	
+	
+	
+		GPIO_InitStruct.Pin =GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+	
+		GPIO_InitStruct.Pin = GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+		GPIO_InitStruct.Pin = GPIO_PIN_9;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+	
+		GPIO_InitStruct.Pin =GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+	
+		GPIO_InitStruct.Pin = GPIO_PIN_10;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+		GPIO_InitStruct.Pin = GPIO_PIN_11;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET);
+	
+		GPIO_InitStruct.Pin = GPIO_PIN_All;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+	
+		GPIO_InitStruct.Pin = GPIO_PIN_11;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLUP;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
+	
+	
+	
+	
+	
+	
+	
+		GPIO_InitStruct.Pin =GPIO_PIN_All;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+	
+	
+		//HAL_GPIO_WritePin(GPIOC, EN_3_3V_Pin, GPIO_PIN_RESET);
+		//HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_RESET);
+	
+	
+	
+		__HAL_RCC_GPIOC_CLK_DISABLE();
+		__HAL_RCC_GPIOH_CLK_DISABLE();
+		__HAL_RCC_GPIOA_CLK_DISABLE();
+		__HAL_RCC_GPIOB_CLK_DISABLE();
+		__HAL_RCC_GPIOD_CLK_DISABLE();
+		__HAL_RCC_DMA1_CLK_DISABLE();
+		__HAL_RCC_DMA2_CLK_DISABLE();
+		__HAL_RCC_USART1_CLK_DISABLE();
+		__HAL_RCC_USART2_CLK_DISABLE();
+		__HAL_RCC_USART3_CLK_DISABLE();
+
+	
+		 RTC_WAKEUP_Init(systemParams_usr.period);
+	
+		__HAL_RCC_PWR_CLK_ENABLE();
+		HAL_SuspendTick();
+		__HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
+		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+		//	 HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+		HAL_PWR_EnterSTANDBYMode();
+		__HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
+		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+		HAL_ResumeTick();
+
+}
+void DataUploadPeriod()
+{
+    unsigned char *p;
+    p = getRTC();
+    if(p[3] < systemParams_usr.Nhours&&p[3]>=systemParams_usr.Dhours)  //23.00-18.0
+    {
+        systemParams_usr.period = systemParams_usr.DayPeriod;
+    }
+    else
+    {
+        systemParams_usr.period = systemParams_usr.NightPeriod;
+    }
+
 }
 void app_main()
 {
@@ -137,23 +300,27 @@ void app_main()
     unsigned char *pb;
     uint32_t len;
     SIMCOM_Register_Network();
-    if(GetLteStru()->NetStatus == SIMCOM_NET_OK)
+    DataUploadPeriod();//数据上传周期控制
+
+    if(GetLteStru()->NetStatus == SIMCOM_NET_OK)//解析服务器指令
     {
+
+        RTC_Calibration(GetLteTime());//时间校准
         if(GetLteStru()->LteReceivedFlag)
         {
             GetLteStru()->LteReceivedFlag = 0;
             LteAnaly();//解析服务端命令
         }
     }
-    if((HAL_GetTick()-tick)>=systemParams_usr.period)//周期上报数据
+    if((HAL_GetTick()-tick)>=(systemParams_usr.period*60000))//周期上报数据
     {
         tick = HAL_GetTick();
-        snesors_process();
+        snesors_process();//imu参数采集
         if(GetLteStru()->RetryConnectCount>MAX_CONNECT_COUNT )//断网数据存储
         {
 
             FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,12);
-
+            powersleep();
         }
 
         if(GetLteStru()->NetStatus == SIMCOM_NET_OK)
@@ -164,7 +331,7 @@ void app_main()
                 uint8_t *pb;
                 pb = malloc(1400);
                 len = GetFLashStatus()->SumLen;
-                if(len<=1400)
+                if(len<=1400)//数据分包
                 {
                     for(i=0; i<GetFLashStatus()->SumLen; i++)
                     {
@@ -202,6 +369,7 @@ void app_main()
                 free(pb);
 
             }
+            powersleep();
         }
     }
 

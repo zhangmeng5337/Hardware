@@ -46,6 +46,7 @@ unsigned char NetStatus;
 void SIMCOM_Register_Network(void);
 
 lte_stru *GetLteStru(void);
+unsigned char *GetLteTime(void);
 
 #endif
 

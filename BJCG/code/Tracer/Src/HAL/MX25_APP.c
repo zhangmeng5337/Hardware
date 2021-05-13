@@ -33,7 +33,7 @@ void flash_process()
     FLASH_INIT();
     //Initial_Spi();
     FlashID_Test( QPI_Enable );    // Simple test : flash ID
-    FlashReadWrite_Test( QPI_Enable );   // Simple test : flash read / write
+   // FlashReadWrite_Test( QPI_Enable );   // Simple test : flash read / write
     FLASH_Operation_End();
 }
 FLashData_stru *GetFLashStatus(void)
@@ -205,6 +205,10 @@ uint8 FlashRead4bytes(uint32_t addr,uint8 *pb,uint32_t len)
 
     /* Assign initial condition */
  
+	
+	 FLASH_INIT();
+	 //Initial_Spi();
+	
 
 
     /* Mmarked these code when not using quad IO mode (except QPI mode)
@@ -219,6 +223,7 @@ uint8 FlashRead4bytes(uint32_t addr,uint8 *pb,uint32_t len)
     if( (st_reg & FLASH_QE_MASK) != FLASH_QE_MASK )
         Error_inc( error_cnt );
         CMD_READ( addr, pb, len, &flash_state );
+	FLASH_Operation_End();
 
     if( error_cnt != 0 )
         return FALSE;
@@ -240,10 +245,11 @@ unsigned char FlashDataStore(uint32_t addr,uint32_t *pb,uint32_t len)
     if((addr*4)<DATA_MAX_ADDR)//地址合法性验证
     {
 
+		FLASH_INIT();
 
         swap = malloc(DATA_4K_SIZE);
         memset(swap,0,DATA_4K_SIZE);
-
+       
 
         tmp = addr/1024*4096;//计算扇区首地址
         tmp2 = addr*4-tmp;//不需要覆盖数据长度
@@ -279,6 +285,7 @@ unsigned char FlashDataStore(uint32_t addr,uint32_t *pb,uint32_t len)
 	   flash_write(eeprom_addr++,&tmp4,1);//写入数据头
 	   flash_write(eeprom_addr++,&FLashData_usr.LastWriteAddr,1);//
 	   flash_write(eeprom_addr++,&FLashData_usr.SumLen,1);//
+	    FLASH_Operation_End();
        return 0;
 	   free(swap);
     }

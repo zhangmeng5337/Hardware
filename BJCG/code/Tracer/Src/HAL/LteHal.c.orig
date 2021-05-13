@@ -21,7 +21,7 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
 {
     unsigned char *USARTX_RX_BUF;
 
-
+    static  unsigned char TimeOutFlag=0;
     static unsigned char RetryCount;
     static uint32_t timeout;
     if(moduleType == LTE_4G)
@@ -44,7 +44,7 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
                 LteUart_SendStr( moduleType,Command);
                 RetryCount = RetryCount +1;
                 timeout = HAL_GetTick();
-                
+                TimeOutFlag = 1;
 
             }
 
@@ -53,8 +53,8 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
         if (strstr(USARTX_RX_BUF, Response) != NULL)
         {
             RetryCount = 0;
-            if(eflag == 0)
-                USART1_CLR_Buf();
+			if(eflag == 0)
+            USART1_CLR_Buf();
             return Success;
         }
         else
@@ -69,8 +69,8 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
         if (strstr(USARTX_RX_BUF, Response) != NULL)
         {
             RetryCount = 0;
-            if(eflag == 0)
-                USART1_CLR_Buf();
+			if(eflag == 0)
+            USART1_CLR_Buf();
             return Success;
         }
         else
@@ -106,10 +106,10 @@ void set_NetStatus(unsigned char flag)
 }
 unsigned char * GetLteTime()
 {
-    if (sendCommand(LTE_4G,"AT+CCLK\r\n", "AT+CCLK=", 50000, 3,1) == Success)
-    {
-        return lte_usr.lterxbuffer;
-    }
+	if (sendCommand(LTE_4G,"AT+CCLK\r\n", "AT+CCLK=", 50000, 3,1) == Success)
+	{
+		return lte_usr.lterxbuffer;
+	}
 
 }
 void SIMCOM_Register_Network()
@@ -176,22 +176,22 @@ void SIMCOM_Register_Network()
 
     case SIMCOM_GPRS_READY:
     {
-#if ROLE == 0
-        if (sendCommand(moduleType,"AT+CIPSHUT\r", "OK", 10000, 1,0) == Success)
+    #if ROLE == 0
+					if (sendCommand(moduleType,"AT+CIPSHUT\r", "OK", 10000, 1,0) == Success)
 #else
-        if (sendCommand(moduleType,"AT+CASSLCFG=0,\"SSL\",0\r\n", "OK", 10000, 1,0) == Success)
+					if (sendCommand(moduleType,"AT+CASSLCFG=0,\"SSL\",0\r\n", "OK", 10000, 1,0) == Success)
 #endif
-            lte_usr.NetStatus = SIMCOM_NET_CLOSE;
+                    lte_usr.NetStatus = SIMCOM_NET_CLOSE;
     }
     break;
     case SIMCOM_NET_CLOSE:
     {
-#if ROLE == 0
+    #if ROLE == 0
 
-#else
+	#else
         if (sendCommand(moduleType,"AT+CNACT=0,1\r\n", "ACTIVE", 20000, 1,0) == Success)
-#endif
-        lte_usr.NetStatus = SIMCOM_NET_CONFIG;
+			#endif
+            lte_usr.NetStatus = SIMCOM_NET_CONFIG;
         SIMCOM_TimeOut_Count = 0;
     }
     break;

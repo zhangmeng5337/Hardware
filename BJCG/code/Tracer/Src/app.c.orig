@@ -6,6 +6,7 @@
 #include "EEPROM.h"
 #include "stdlib.h"
 #include "crc.h"
+#include "rtc.h"
 systemParams_stru systemParams_usr;
 
 extern float FilterData[SN];//滤波后的imu数据
@@ -19,7 +20,7 @@ void HardwareInit()
 #endif
     sensors_Init();
 }
-void ParamsInit()
+void ParamsInit(void)
 {
 
     uint32_t p;
@@ -38,7 +39,18 @@ void ParamsInit()
         flash_write(addr++, &p,1);
         flash_write( addr++,&(FLashData_usr2->LastWriteAddr),1);
         flash_write( addr++,&(FLashData_usr2->SumLen),1);
-        flash_write( addr++,&(systemParams_usr.period),1);
+			
+	    systemParams_usr.DayPeriod = 1;
+		systemParams_usr.NightPeriod = 10;
+		systemParams_usr.Dhours = 6;
+		systemParams_usr.Nhours = 18;		
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.DayPeriod),1);
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.NightPeriod),1);
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.Dhours),1);
+        flash_write( addr++,(uint32_t *)&(systemParams_usr.Nhours),1);
+
+
+			
 
     }
     else
@@ -48,7 +60,11 @@ void ParamsInit()
         flash_read( addr++, &p,1);
         flash_read( addr++, &(FLashData_usr2->LastWriteAddr),1);
         flash_read( addr++,  &(FLashData_usr2->SumLen),1);
-        flash_read( addr++,  &(systemParams_usr.period),1);
+
+		flash_read( addr++,  (uint32_t *)&(systemParams_usr.DayPeriod),1);
+		flash_read( addr++, (uint32_t *) &(systemParams_usr.NightPeriod),1);	
+		flash_read( addr++,  (uint32_t *)&(systemParams_usr.Dhours),1);
+		flash_read( addr++,  (uint32_t *)&(systemParams_usr.Nhours),1);
 
     }
 
@@ -105,22 +121,20 @@ unsigned char  LteAnaly(void)
     free(pb);
 }
 
-unsigned char payloadpack(unsigned char *p,uint32_t size)
+void payloadpack(unsigned char *p,uint32_t size)
 {
     unsigned char *pb;
     unsigned int calCRC;
     uint32_t len;
-    pb = malloc(60+12+1+12+4+2);
+    pb = malloc(size+12+4+2);
     pb[0] = NODE_HEADER;
     len = 1;
     memcpy(&(pb[1]),0,12);//dev id
     len = len +12;
     len = len +4;//paylaod len length
-    memcpy(pb+len,p,60);//gps
-    len = len +60;
-    memcpy(pb+len,p+60,12);
-    len = len +12;
-    len = len +2;
+    memcpy(pb+len,p,size);//gps+imu
+    len = len +size;
+    len = len +2;//crc
     pb[13] = (unsigned char)len;
     pb[14] = (unsigned char)(len>>8);
     pb[15] = (unsigned char)(len>>16);
@@ -132,21 +146,43 @@ unsigned char payloadpack(unsigned char *p,uint32_t size)
     free(pb);
 
 }
+void powersleep(void)
+{
+
+}
+void DataUploadPeriod()
+{
+ unsigned char *p;
+ p = getRTC();
+	if(p[3] < systemParams_usr.Nhours&&p[3]>=systemParams_usr.Dhours)  //23.00-18.0
+	{
+		systemParams_usr.period = systemParams_usr.DayPeriod;
+	}
+	else
+	{
+		systemParams_usr.period = systemParams_usr.NightPeriod;
+	}
+
+}
 void app_main()
 {
-    float *p;
+
     uint32_t tick;
     unsigned char *pb;
     uint32_t len;
     SIMCOM_Register_Network();
-	        if(GetLteStru()->NetStatus == SIMCOM_NET_OK)
+	DataUploadPeriod();
+
+    if(GetLteStru()->NetStatus == SIMCOM_NET_OK)//解析服务器指令
+    {
+        
+        RTC_Calibration(GetLteTime());
+        if(GetLteStru()->LteReceivedFlag)
         {
-            if(GetLteStru()->LteReceivedFlag)
-            {
-                GetLteStru()->LteReceivedFlag = 0;
-                LteAnaly();//解析服务端命令
-            }
-	        	}
+            GetLteStru()->LteReceivedFlag = 0;
+            LteAnaly();//解析服务端命令
+        }
+    }
     if((HAL_GetTick()-tick)>=systemParams_usr.period)//周期上报数据
     {
         tick = HAL_GetTick();
@@ -160,13 +196,13 @@ void app_main()
 
         if(GetLteStru()->NetStatus == SIMCOM_NET_OK)
         {
-         if(GetFLashStatus()->SumLen !=0)//数据断网续传
+            if(GetFLashStatus()->SumLen !=0)//数据断网续传
             {
                 uint32_t i,len,len2,k;
                 uint8_t *pb;
                 pb = malloc(1400);
                 len = GetFLashStatus()->SumLen;
-                if(len<=1400)
+                if(len<=1400)//数据分包
                 {
                     for(i=0; i<GetFLashStatus()->SumLen; i++)
                     {
@@ -196,7 +232,7 @@ void app_main()
             }
             else //定期上传
             {
-                pb = malloc(60+12);
+                pb = malloc(60+12);//每组数据包含60个gps数据，12个imu数据
                 memcpy(pb+len,getGPS(),60);
                 len = len +60;
                 memcpy(pb+len,FilterData,12);
@@ -204,6 +240,7 @@ void app_main()
                 free(pb);
 
             }
+            powersleep();
         }
     }
 
