@@ -139,7 +139,7 @@ void RS485_Service(void)
     static uint32_t tickTime_adc;
     static unsigned char tick_1s;
     u16 recCRC;
-    if((HAL_GetTick()-tickTime_adc)>=50)//周期性采集模拟电压，50ms一次
+    if((HAL_GetTick()-tickTime_adc)>=SAMPLE_FRIOD)//周期性采集模拟电压，50ms一次
     {
         if(getRatio()->calibrationFlag == 0 )
             Get_Adc_Average(N);
@@ -413,19 +413,20 @@ void Modbus_06_Solve(void)
 }
 
 
-//Modbus功能码03处理程序///////////////////////////////////////////////////////////////////////////////////////已验证程序OK
+//Modbus功能码03处理程序///////////////////////////////////////////////////////////////////////////////////////已验证程序OK sensor_usr
 //读保持寄存器
 extern factor_stru factor_usr;
 void Modbus_07_Solve(void)
 {
 
 
+	
 
     RegNum= (((u16)modbus_usr.RS485_RX_BUFF[4])<<8)|((modbus_usr.RS485_RX_BUFF[5]));//获取寄存器数量
     if((startRegAddr+RegNum)<1000&&(startRegAddr==0x0103))//寄存器地址+数量在范围内
     {
         HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);
-        printf("   %10f   %10f   %10f   %10f   %d\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid,sensor_usr.temperature);
+        printf("   %10f   %10f   %10f   %10f   %d   %d   %d\n",sensor_usr.sensor[0],sensor_usr.sensor[1],sensor_usr.sensor[2],factor_usr.humid,sensor_usr.last_humid ,sensor_usr.temperatureOri ,sensor_usr.last_Temp);
         HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
     }
 

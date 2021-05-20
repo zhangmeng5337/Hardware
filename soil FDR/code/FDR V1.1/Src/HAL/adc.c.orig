@@ -22,7 +22,7 @@ sensor_stru *getSensor()
 {
     return &sensor_usr;
 }
-    static unsigned int rhbuf[10],rh_index,tempbuf[10];
+
 /*********************************************************
             adc采集探针，温度传感器电压
 *********************************************************/
@@ -69,6 +69,18 @@ void Get_Adc_Average(unsigned char times)
 
     /***************************filter adc value*************************************/
     static float tmp_ref;
+//  for(i=0;i<N;i++)
+//	{
+
+//		adcBuf_humid[i]=adcBuf_humid[i]*3.0;
+//		adcBuf_humid[i]=adcBuf_humid[i]/4096;
+
+//		adcBuf_ta[i]=adcBuf_ta[i]*3.0;
+//		adcBuf_ta[i]=adcBuf_ta[i]/4096;
+
+//		adcBuf_tb[i]=adcBuf_tb[i]*3.0;
+//		adcBuf_tb[i]=adcBuf_tb[i]/4096;
+//	}
     if(sensor_usr.CalibrationVref!=0&&sensor_usr.sensor[1]!=0)
     {
         sensor_usr.ADC_REF=sensor_usr.CalibrationVref;
@@ -122,24 +134,60 @@ void Get_Adc_Average(unsigned char times)
     }
     /**************************稳定数据，防止频繁跳动*******************/
     static uint32_t repeatTick;
-
-    unsigned int tmp2,tmp3;
-
-    unsigned char k,j;
-
-    static unsigned char flag;   
-	sensor_usr.temperatureOri = sensor_usr.temperature;
-
-	rhbuf[rh_index] = sensor_usr.rh;
-    tempbuf[rh_index] = sensor_usr.temperature; 
-		sensor_usr.rh = 0;
-    sensor_usr.temperature = 0;
+    static unsigned int rhbuf[10],rh_index,te_index,tempbuf[10];
+	unsigned int tmp2,tmp3;
+    rhbuf[rh_index] = sensor_usr.rh;
+    tempbuf[rh_index] = sensor_usr.temperature;
     rh_index++;
-		 if(flag == 1)
-		 {
-			 seq_fileter(rhbuf,10);
-			 seq_fileter(tempbuf,10);		 
-		 }
+    unsigned char k,j;
+    sensor_usr.rh = 0;
+    sensor_usr.temperature = 0;
+		tmp2 = 0;
+		tmp3 = 0;
+    static unsigned char flag;
+    if(flag==1)
+    {
+        for (j=0; j<9; j++)
+
+        {
+
+            for (i=0; i<10-j; i++)
+
+            {
+
+                if ( rhbuf[i]>rhbuf[i+1] )
+
+                {
+
+                    tmp2 = rhbuf[i];
+
+                    rhbuf[i] = rhbuf[i+1];
+
+                    rhbuf[i+1] = tmp2;
+
+                }
+								tmp3 = 0;
+                if ( tempbuf[i]>tempbuf[i+1] )
+
+                {
+
+                    tmp3 = tempbuf[i];
+
+                    tempbuf[i] = tempbuf[i+1];
+
+                    tempbuf[i+1] = tmp3;
+
+                }
+
+
+            }
+
+        }
+
+    }
+
+
+
 
 
     if(rh_index>=3||flag == 1)
@@ -187,6 +235,7 @@ void Get_Adc_Average(unsigned char times)
     if(rh_index>=10)
     {
         rh_index	= 0;
+        te_index	= 0;
         flag = 1;
     }
 

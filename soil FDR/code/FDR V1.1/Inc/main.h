@@ -42,6 +42,11 @@ typedef unsigned int u16 ;
 /* USER CODE BEGIN ET */
 #define DEBUG		1
 #define FILTER_F 1
+#define SAMPLE_FREQ  15
+#define SAMPLE_FRIOD  1000/SAMPLE_FREQ
+#define TERROR		5
+#define RHERROR		3
+#define FRESH		3000
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

@@ -136,13 +136,13 @@ float SoilHumid(unsigned char status,float AdcValueVol)
     static unsigned char index;
 
     float tmp3,v3,v2,v1;
-    static float last_temp;
+    static float last_temp,kk;
     float a0,a1,a2,a3;
     a0 = 1110;
     a1 = -2610;
     a2 = 2091.9;
     a3 = -519.5;
-
+   AdcValueVol =DigitRound(AdcValueVol,3);
     v3 = AdcValueVol*AdcValueVol;
     v3 = v3*AdcValueVol;
     v2 = AdcValueVol*AdcValueVol;

@@ -11,6 +11,8 @@ typedef struct{
 	float a1;
 	float a2;	
 	float humid;
+	float last_humid;
+
 	unsigned char status;
 	unsigned int dutycycle;
 }factor_stru;

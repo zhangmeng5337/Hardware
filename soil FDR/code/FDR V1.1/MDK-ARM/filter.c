@@ -6,6 +6,38 @@ extern	float adcBuf_ta[N];
 extern	float adcBuf_tb[N];
 ratio_stru ratio;
 
+void seq_fileter(unsigned int *pb,unsigned int sampleCount)
+{
+    unsigned char i,j;
+    unsigned int temp,tmp1,tmp2;
+
+    for (j=0; j<sampleCount-1; j++)
+
+    {
+
+        for (i=0; i<sampleCount-j-1; i++)
+
+        {
+					  tmp1 = pb[i];
+					  tmp2 = pb[i+1];
+            if ( tmp1>tmp2 )
+            {
+                 
+                temp = pb[i];
+
+                pb[i] = pb[i+1];
+
+                pb[i+1] = temp;
+
+            }
+
+        }
+
+    }
+
+
+
+}
 float average_filter(float *pb,unsigned int sampleCount)  //中值滤波+均值滤波
 
 {

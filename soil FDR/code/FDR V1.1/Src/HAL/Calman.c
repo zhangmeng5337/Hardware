@@ -1,6 +1,7 @@
 #include "math.h"
 #include "filter.h"
 #include "calman.h"
+#include <jansson.h>
 //extern  float adcBuf_ref[N];
 //extern	float adcBuf_humid[N];
 //extern	float adcBuf_humidf[N];
@@ -8,6 +9,8 @@
 //extern	float adcBuf_ta[N];
 //extern	float adcBuf_tb[N];
 #define RAND_MAX  0.5
+void jansson_pack_test(void);
+;void jansson_unpack_test(void);
 /************************************************
 r参数调整滤波后的曲线与实测曲线的相近程度，r越小越接近。
 
@@ -93,18 +96,13 @@ void Claman(float *pb,float sq,float sr,unsigned char seq)
             P_k_k4 = P_k1_k1;
             break;
         }
-        float error;
-        error = ADC_OLD_Value - kalman_adc;
         pb[i] = kalman_adc;
+				
+				//jansson_pack_test();
        // printf("%f             %f\n",ADC_OLD_Value,kalman_adc);  //输出测量累积误差
 
     }
 
 }
-
-
-// printf("总体测量误差      : %f\n",sumerror_measure);  //输出测量累积误差
-// printf("总体卡尔曼滤波误差: %f\n",sumerror_kalman);   //输出kalman累积误差
-// printf("卡尔曼误差所占比例: %d%% \n",100-(int)((sumerror_kalman/sumerror_measure)*100));
 
 
