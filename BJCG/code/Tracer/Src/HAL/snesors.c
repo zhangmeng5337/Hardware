@@ -2,7 +2,7 @@
 #include "lis2mdl.h"
 #include "lsm6ds3tr.h"
 #include "calman.h"
-#include "BMP388.h"
+#include "BMP3882.h"
 #include "sys.h"
 #include "gps.h"
 sensors_stru *sensorsp;
@@ -48,7 +48,7 @@ unsigned char* getGPS()//获取gps位置信息
 void snesors_process(void)
 {
     float pbt[12];
-
+    unsigned char i,j;
     unsigned char len;
     len = 0;
 
@@ -57,42 +57,83 @@ void snesors_process(void)
     sensorsp = GetMagnetic();
     AccAng_usrp = GetAccAngtic();
     comp_datap = GetPressure();
-    memcpy(FilterData,AccAng_usrp->acceleration_mg,3);
-    len =len +3;
-    memcpy(FilterData+len,AccAng_usrp->angular_rate_mdps,3);
-    len =len +3;
-   // memcpy(FilterData+len,AccAng_usrp->temperature_degC,1);
-    //len =len +1;
-    memcpy(FilterData+len,sensorsp->magnetic_mG,3);
-    len =len +3;
-//    memcpy(FilterData+len,comp_datap->pressure,1);
-//    len =len +1;
-//    memcpy(FilterData+len,comp_datap->temperature,1);
-//    len =len +1;
 
-
-    len = 0;
-    memcpy(pbt,AccAng_usrp->acceleration_mg,3);
+	  for(i = 0;i<3;i++)
+		{
+			FilterData[i+len]=AccAng_usrp->acceleration_mg[i];	
+		}
     len =len +3;
-    memcpy(pbt+len,AccAng_usrp->angular_rate_mdps,3);
+	  for(i = 0;i<3;i++)
+		{
+			FilterData[i+len]=AccAng_usrp->angular_rate_mdps[i];	
+		}
     len =len +3;
-    //memcpy(pbt+len,AccAng_usrp->temperature_degC,1);
-   // len =len +1;
-    memcpy(pbt+len,sensorsp->magnetic_mG,3);
-    len =len +3;
-//    memcpy(pbt+len,comp_datap->pressure,1);
-//    len =len +1;
-    //memcpy(pbt+len,comp_datap->temperature,1);
+    FilterData[len]=AccAng_usrp->temperature_degC;
     len =len +1;
+	  for(i = 0;i<3;i++)
+		{
+			FilterData[i+len]=sensorsp->magnetic_mG[i];	
+		}
+   // memcpy(FilterData+len,sensorsp->magnetic_mG,3);
+    len =len +3;
+    //memcpy(FilterData+len,&comp_datap->pressure,1);
+    FilterData[len]=comp_datap->pressure;
+    len =len +1;
+   // memcpy(FilterData+len,&comp_datap->temperature,1);
+    FilterData[len]=comp_datap->temperature;
+    len =len +1;
+
+		
+		
+		len = 0;
+	  for(i = 0;i<3;i++)
+		{
+			pbt[i+len]=AccAng_usrp->acceleration_mg[i];	
+		}
+    len =len +3;
+	  for(i = 0;i<3;i++)
+		{
+			pbt[i+len]=AccAng_usrp->angular_rate_mdps[i];	
+		}
+    len =len +3;
+    pbt[len]=AccAng_usrp->temperature_degC;
+    len =len +1;
+	  for(i = 0;i<3;i++)
+		{
+			pbt[i+len]=sensorsp->magnetic_mG[i];	
+		}
+   // memcpy(FilterData+len,sensorsp->magnetic_mG,3);
+    len =len +3;
+    //memcpy(FilterData+len,&comp_datap->pressure,1);
+    pbt[len]=comp_datap->pressure;
+    len =len +1;
+   // memcpy(FilterData+len,&comp_datap->temperature,1);
+    pbt[len]=comp_datap->temperature;
+    len =len +1;
+		
+		
+//    len = 0;
+//    memcpy(pbt,AccAng_usrp->acceleration_mg,3);
+//    len =len +3;
+//    memcpy(pbt+len,AccAng_usrp->angular_rate_mdps,3);
+//    len =len +3;
+//    memcpy(pbt+len,&AccAng_usrp->temperature_degC,1);
+//    len =len +1;
+//    memcpy(pbt+len,sensorsp->magnetic_mG,3);
+//    len =len +3;
+//    memcpy(pbt+len,&comp_datap->pressure,1);
+//    len =len +1;
+//    memcpy(pbt+len,&comp_datap->temperature,1);
+//    len =len +1;
 
     /***********************************************************
                       数据滤波处理
     ************************************************************/
-    unsigned char i;
-    i = 0;
-    for(i = 0; i<SN; i++)
+
+ 
+    for(j = 0; j<SN; j++)
     {
-        FilterData[i++] = Claman(&(FilterData[i]),0.008,10,1);
+        FilterData[j] = Claman(&(FilterData[j]),0.004,10,j+1);
 
     }
     /*pb[i++] = Claman(&(AccAng_usrp->acceleration_mg[0]),0.008,10,1);
@@ -110,12 +151,12 @@ void snesors_process(void)
     pb[i++]= Claman(&(AccAng_usrp->temperature_degC),0.008,10,1);
     pb[i++]= Claman(&(AccAng_usrp->temperature_degC),0.008,10,1);*/
 
-    for(i =0; i<(SN-1); i++)
+    for(j =0; j<(SN/2-1); j++)
     {
-        printf("       %f             %f     ",FilterData[i],pbt[i]);  //输出测量累积误差
+        printf("   %f    %f  ",pbt[j],FilterData[j]);  //输出测量累积误差
 
     }
-    printf("	   %f			  %f	 \n",FilterData[i],pbt[i]);  //输出测量累积误差
+    printf("	%f	 %f\n",pbt[j],FilterData[j]);  //输出测量累积误差
 
 
 

@@ -119,7 +119,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-	ParamsInit();
+//	ParamsInit();
     HardwareInit();
    
 
@@ -132,8 +132,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	
- 		app_main();
+	    test();
+ 		//app_main();
   }
   /* USER CODE END 3 */
 }

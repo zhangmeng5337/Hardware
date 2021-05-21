@@ -1,6 +1,6 @@
 #include "math.h"
 #include "calman.h"
-
+#include "sensors.h"
 //extern  float adcBuf_ref[N];
 //extern	float adcBuf_humid[N];
 //extern	float adcBuf_humidf[N];
@@ -25,9 +25,9 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
     float Q = 0.008;  // Q = 0.0003;
     float R = 10;
     static float Kg = 0;
-    static float P_k_k1 = 1,P_k_k2,P_k_k3,P_k_k4;
+    static float P_k_k1 = 1,P_k_k2[SN],P_k_k3,P_k_k4;
 
-    static float kalman_adc,kalman_adc2,kalman_adc3,kalman_adc4;
+    static float kalman_adc,kalman_adc2[SN],kalman_adc3,kalman_adc4;
     static float kalman_adc_old=1;
     unsigned int i;
     Q = sq;
@@ -38,30 +38,15 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
 			  //Z_k = 0;
         //Z_k = adcBuf_humid[i];
       //  Z_k =pb[i];//测量值
-        pbf = pb[i]*3.0/4096;
+        pbf = (pb[0]);//*3.0/4096;
 		Z_k = pbf;
-        switch(seq)
-        {
-        case 1:
-            kalman_adc = kalman_adc2;
-            kalman_adc_old = kalman_adc2;
-            P_k1_k1 = P_k_k2;
-			//Z_k = adcBuf_humidf[i];	//湿度电压缓冲区
-            break;
-        case 2:
-            kalman_adc = kalman_adc3;
-            kalman_adc_old = kalman_adc3;
-            P_k1_k1 = P_k_k3;
-            break;
-        case 3:
-            kalman_adc = kalman_adc4;
-            kalman_adc_old = kalman_adc4;
-            P_k1_k1 = P_k_k4;
-            break;
-        }
+
+            kalman_adc = kalman_adc2[seq-1];
+            kalman_adc_old = kalman_adc2[seq-1];
+            P_k1_k1 = P_k_k2[seq-1];
         if (abs(kalman_adc_old-pbf)>=10)
         {
-            x_k1_k1= pb[i]*0.382 + kalman_adc_old*0.618;
+            x_k1_k1= pb[0]*0.382 + kalman_adc_old*0.618;
         }
         else
         {
@@ -80,21 +65,10 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
 
         ADC_OLD_Value = pbf;//pb[i];
         kalman_adc_old = kalman_adc;
-        switch(seq)
-        {
-        case 1:
-            kalman_adc2 = kalman_adc ;
-            P_k_k2 = P_k1_k1;
-            break;
-        case 2:
-            kalman_adc3 = kalman_adc;
-            P_k_k3 = P_k1_k1;
-            break;
-        case 3:
-            kalman_adc4 = kalman_adc;
-            P_k_k4 = P_k1_k1;
-            break;
-        }
+				
+        kalman_adc2[seq-1] = kalman_adc  ;
+        P_k_k2[seq-1]= P_k1_k1 ;
+
         float error;
         error = ADC_OLD_Value - kalman_adc;
         //pb[i] = kalman_adc;

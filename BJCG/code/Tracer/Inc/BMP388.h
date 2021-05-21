@@ -43,8 +43,8 @@ struct bmp3_uncomp_data {
 };
 
 typedef struct  {
-    int64_t temperature;
-    uint64_t pressure;
+    float temperature;
+    float pressure;
 }bmp3_data;
 
 

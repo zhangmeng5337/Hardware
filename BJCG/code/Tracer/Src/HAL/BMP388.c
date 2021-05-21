@@ -4,11 +4,11 @@ extern I2C_HandleTypeDef hi2c1;
 
 struct bmp3_calib_data  calib_data;
 struct bmp3_uncomp_data uncomp_data;
- bmp3_data      comp_data;
+bmp3_data      comp_data;
 
- bmp3_data  *GetPressure(void)
+bmp3_data  *GetPressure(void)
 {
-	return &comp_data; 
+    return &comp_data;
 
 }
 
@@ -171,8 +171,6 @@ u8 BMP388_Read_Byte(u8 addr)
     IIC_Stop();*/
     HAL_I2C_Mem_Read(&hi2c1, BMP388_Addr, addr,
                      I2C_MEMADD_SIZE_8BIT, &BMP388_Recive, 1, 1000);
-
-
     return BMP388_Recive;
 }
 
@@ -275,6 +273,7 @@ void compensate_temperature()
     partial_data6 = partial_data5 / 4294967296;
     calib_data.t_lin = partial_data6;               /* 存储这个data6为t_lin因为计算气压要用到 */
     comp_temp = (int64_t)((partial_data6 * 25)  / 16384);
+    //comp_data.temperature = comp_temp;
     comp_data.temperature = comp_temp;
 }
 
@@ -314,7 +313,9 @@ void compensate_pressure()
     partial_data3 = (partial_data2 * uncomp_data.pressure) / 128;
     partial_data4 = (offset / 4) + partial_data1 + partial_data5 + partial_data3;
     comp_press = (((uint64_t)partial_data4 * 25) / (uint64_t)1099511627776);
-    comp_data.pressure = comp_press;
+    //comp_data.pressure = comp_press;
+    comp_data.pressure = comp_press/1000.0;
+
 }
 
 

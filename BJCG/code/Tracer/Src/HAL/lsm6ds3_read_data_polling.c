@@ -61,7 +61,7 @@
 
 
 /* Includes ------------------------------------------------------------------*/
-#include "lsm6ds3tr_c_reg.h"
+#include "lsm6ds3_reg.h"
 #include <string.h>
 #include <stdio.h>
 #include "main.h"
@@ -87,21 +87,19 @@ extern I2C_HandleTypeDef hi2c1;
 //#endif
 
 /* Private macro -------------------------------------------------------------*/
-#define    BOOT_TIME            15 //ms
-#define    TX_BUF_DIM         1000
+#define    BOOT_TIME   20 //ms
 
 /* Private variables ---------------------------------------------------------*/
 AccAng_stru AccAng_usr;
 
 static uint8_t whoamI, rst;
-static uint8_t tx_buffer[TX_BUF_DIM];
+//static uint8_t tx_buffer[TX_BUF_DIM];
 
 /* Extern variables ----------------------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
 
-/*
- *   WARNING:
+/*   WARNING:
  *   Functions declare in this section are defined at the end of this file
  *   and are strictly related to the hardware platform used.
  *
@@ -135,95 +133,81 @@ unsigned char lsm6ds3tr_init()
 	 // platform_delay(BOOT_TIME);
 	  /* Check device ID */
 	  whoamI = 0;
-	  lsm6ds3tr_c_device_id_get(&dev_ctx, &whoamI);
-	
-	  if ( whoamI != LSM6DS3TR_ID )
-		while (1); /*manage here device not found */
-	
-	  /* Restore default configuration */
-	  lsm6ds3tr_c_reset_set(&dev_ctx, PROPERTY_ENABLE);
-	
-	  do {
-		lsm6ds3tr_c_reset_get(&dev_ctx, &rst);
-	  } while (rst);
-	
-	  /* Enable Block Data Update */
-	  lsm6ds3tr_c_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
-	  /* Set Output Data Rate */
-	  lsm6ds3tr_c_xl_data_rate_set(&dev_ctx, LSM6DS3TR_C_XL_ODR_12Hz5);
-	  lsm6ds3tr_c_gy_data_rate_set(&dev_ctx, LSM6DS3TR_C_GY_ODR_12Hz5);
-	  /* Set full scale */
-	  lsm6ds3tr_c_xl_full_scale_set(&dev_ctx, LSM6DS3TR_C_2g);
-	  lsm6ds3tr_c_gy_full_scale_set(&dev_ctx, LSM6DS3TR_C_2000dps);
-	  /* Configure filtering chain(No aux interface) */
-	  /* Accelerometer - analog filter */
-	  lsm6ds3tr_c_xl_filter_analog_set(&dev_ctx,
-									   LSM6DS3TR_C_XL_ANA_BW_400Hz);
-	  /* Accelerometer - LPF1 path ( LPF2 not used )*/
-	  //lsm6ds3tr_c_xl_lp1_bandwidth_set(&dev_ctx, LSM6DS3TR_C_XL_LP1_ODR_DIV_4);
-	  /* Accelerometer - LPF1 + LPF2 path */
-	  lsm6ds3tr_c_xl_lp2_bandwidth_set(&dev_ctx,
-									   LSM6DS3TR_C_XL_LOW_NOISE_LP_ODR_DIV_100);
-	  /* Accelerometer - High Pass / Slope path */
-	  //lsm6ds3tr_c_xl_reference_mode_set(&dev_ctx, PROPERTY_DISABLE);
-	  //lsm6ds3tr_c_xl_hp_bandwidth_set(&dev_ctx, LSM6DS3TR_C_XL_HP_ODR_DIV_100);
-	  /* Gyroscope - filtering chain */
-	  lsm6ds3tr_c_gy_band_pass_set(&dev_ctx,
-								   LSM6DS3TR_C_HP_260mHz_LP1_STRONG);
-	  return 0;
+  lsm6ds3_device_id_get(&dev_ctx, &whoamI);
 
+  if (whoamI != LSM6DS3_ID)
+     return 1;
+
+  /* Restore default configuration */
+  lsm6ds3_reset_set(&dev_ctx, PROPERTY_ENABLE);
+
+  do {
+    lsm6ds3_reset_get(&dev_ctx, &rst);
+  } while (rst);
+
+  /*  Enable Block Data Update */
+  lsm6ds3_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
+  /* Set full scale */
+  lsm6ds3_xl_full_scale_set(&dev_ctx, LSM6DS3_2g);
+  lsm6ds3_gy_full_scale_set(&dev_ctx, LSM6DS3_2000dps);
+  /* Set Output Data Rate for Acc and Gyro */
+  lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_12Hz5);
+  lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_12Hz5);
+	return 0;
 }
-void lsm6ds3tr_c_read_data_polling(void)
+  void lsm6ds3tr_c_read_data_polling(void)
 {
 
-
   /* Read samples in polling mode (no int) */
- // while (1) 
-		{
+  //while (1) 
+  {
+    uint8_t reg;
     /* Read output only if new value is available */
-    lsm6ds3tr_c_reg_t reg;
-    lsm6ds3tr_c_status_reg_get(&dev_ctx, &reg.status_reg);
+    lsm6ds3_xl_flag_data_ready_get(&dev_ctx, &reg);
 
-    if (reg.status_reg.xlda) {
-      /* Read magnetic field data */
+    if (reg) {
+      /* Read acceleration field data */
       memset(AccAng_usr.data_raw_acceleration, 0x00, 3 * sizeof(int16_t));
-      lsm6ds3tr_c_acceleration_raw_get(&dev_ctx,
-                                       AccAng_usr.data_raw_acceleration);
-      AccAng_usr.acceleration_mg[0] = lsm6ds3tr_c_from_fs2g_to_mg(
-                             AccAng_usr.data_raw_acceleration[0]);
-      AccAng_usr.acceleration_mg[1] = lsm6ds3tr_c_from_fs2g_to_mg(
-                             AccAng_usr.data_raw_acceleration[1]);
-      AccAng_usr.acceleration_mg[2] = lsm6ds3tr_c_from_fs2g_to_mg(
-                             AccAng_usr.data_raw_acceleration[2]);
+      lsm6ds3_acceleration_raw_get(&dev_ctx, AccAng_usr.data_raw_acceleration);
+      AccAng_usr.acceleration_mg[0] =
+        lsm6ds3_from_fs2g_to_mg(AccAng_usr.data_raw_acceleration[0]);
+      AccAng_usr.acceleration_mg[1] =
+        lsm6ds3_from_fs2g_to_mg(AccAng_usr.data_raw_acceleration[1]);
+      AccAng_usr.acceleration_mg[2] =
+        lsm6ds3_from_fs2g_to_mg(AccAng_usr.data_raw_acceleration[2]);
      /* sprintf((char *)tx_buffer,
               "Acceleration [mg]:%4.2f\t%4.2f\t%4.2f\r\n",
               acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
       tx_com( tx_buffer, strlen( (char const *)tx_buffer ) );*/
     }
 
-    if (reg.status_reg.gda) {
-      /* Read magnetic field data */
+    lsm6ds3_gy_flag_data_ready_get(&dev_ctx, &reg);
+
+    if (reg) {
+      /* Read angular rate field data */
       memset(AccAng_usr.data_raw_angular_rate, 0x00, 3 * sizeof(int16_t));
-      lsm6ds3tr_c_angular_rate_raw_get(&dev_ctx,
-                                       AccAng_usr.data_raw_angular_rate);
-      AccAng_usr.angular_rate_mdps[0] = lsm6ds3tr_c_from_fs2000dps_to_mdps(
-                               AccAng_usr.data_raw_angular_rate[0]);
-      AccAng_usr.angular_rate_mdps[1] = lsm6ds3tr_c_from_fs2000dps_to_mdps(
-                               AccAng_usr.data_raw_angular_rate[1]);
-      AccAng_usr.angular_rate_mdps[2] = lsm6ds3tr_c_from_fs2000dps_to_mdps(
-                               AccAng_usr.data_raw_angular_rate[2]);
+      lsm6ds3_angular_rate_raw_get(&dev_ctx, AccAng_usr.data_raw_angular_rate);
+      AccAng_usr.angular_rate_mdps[0] =
+        lsm6ds3_from_fs2000dps_to_mdps(AccAng_usr.data_raw_angular_rate[0]);
+      AccAng_usr.angular_rate_mdps[1] =
+        lsm6ds3_from_fs2000dps_to_mdps(AccAng_usr.data_raw_angular_rate[1]);
+      AccAng_usr.angular_rate_mdps[2] =
+        lsm6ds3_from_fs2000dps_to_mdps(AccAng_usr.data_raw_angular_rate[2]);
      /* sprintf((char *)tx_buffer,
               "Angular rate [mdps]:%4.2f\t%4.2f\t%4.2f\r\n",
               angular_rate_mdps[0], angular_rate_mdps[1], angular_rate_mdps[2]);
       tx_com( tx_buffer, strlen( (char const *)tx_buffer ) );*/
     }
 
-    if (reg.status_reg.tda) {
+    lsm6ds3_temp_flag_data_ready_get(&dev_ctx, &reg);
+
+    if (reg) {
       /* Read temperature data */
       memset(&AccAng_usr.data_raw_temperature, 0x00, sizeof(int16_t));
-      lsm6ds3tr_c_temperature_raw_get(&dev_ctx, &AccAng_usr.data_raw_temperature);
-      AccAng_usr.temperature_degC = lsm6ds3tr_c_from_lsb_to_celsius(
-                           AccAng_usr.data_raw_temperature );
+      lsm6ds3_temperature_raw_get(&dev_ctx, &AccAng_usr.data_raw_temperature);
+      AccAng_usr.temperature_degC =
+        lsm6ds3_from_lsb_to_celsius(AccAng_usr.data_raw_temperature);
+     // sprintf((char *)tx_buffer,
       /*sprintf((char *)tx_buffer, "Temperature [degC]:%6.2f\r\n",
               temperature_degC );
       tx_com( tx_buffer, strlen( (char const *)tx_buffer ) );*/
@@ -245,7 +229,7 @@ static int32_t platform_write2(void *handle, uint8_t reg,
                               uint8_t *bufp,
                               uint16_t len)
 {
-  HAL_I2C_Mem_Write(handle, LSM6DS3TR_C_I2C_ADD_L, reg,
+  HAL_I2C_Mem_Write(handle, LSM6DS3_I2C_ADD_L, reg,
                     I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
 
   return 0;
@@ -264,7 +248,7 @@ static int32_t platform_write2(void *handle, uint8_t reg,
 static int32_t platform_read2(void *handle, uint8_t reg, uint8_t *bufp,
                              uint16_t len)
 {
-  HAL_I2C_Mem_Read(handle, LSM6DS3TR_C_I2C_ADD_L, reg,
+  HAL_I2C_Mem_Read(handle, LSM6DS3_I2C_ADD_L, reg,
                    I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
   return 0;
 }

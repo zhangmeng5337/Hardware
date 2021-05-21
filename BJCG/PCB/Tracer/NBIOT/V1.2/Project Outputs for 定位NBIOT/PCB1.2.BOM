@@ -1,0 +1,71 @@
+Bill of Material for PCB1.2.PcbDoc
+On 2021/5/2 at 16:19:13
+
+ Comment             Pattern     Quantity  Components
+------------------------------------------------------------------------------
+ 0.1uF/25V           0402c           13    C1, C3, C8, C9, C11, C12, C13 Capacitor            
+                                           C15, C35, C37, C38, C41, C50
+ 0.1uF               0402C            3    C14, C19, C33                Capacitor            
+ 0R                  0402R            2    R25, R26                                          
+ 1000uF              7343             2    C29, C31                     Polarized Capacitor (Surface Mount) 
+ 100K/1%             0402R            2    R20, R48                                          
+ 100K                0402R            1    R3                           Resistor             
+ 10K/1%              0402R            5    R2, R5, R35, R38, R52                             
+ 10K                 0402R            4    R6, R30, R42, R43            Resistor             
+ 10pF/NC             0402C            3    C16, C17, C18                Capacitor            
+ 10pF                0402C            1    C24                          Capacitor            
+ 10R/1A              0603R            1    FB2                                               
+ 10R                 0402R            3    R23, R27, R39                                     
+ 13K/1%              0402R            1    R49                                               
+ 1K/1%               0402R            2    R12, R29                                          
+ 1K                  0402R            2    R9, R65                                           
+ 1MR                 0402R            1    R1                           Resistor             
+ 1N4148              DIODE_SOP        1    D1                                                
+ 1uF/25V             0402C            1    C27                          Capacitor            
+ 21.5k/1%            0402R            1    R14                                               
+ 22pF                0402c            3    C4, C6, C40                  Capacitor            
+ 22uF/10V            0805C            6    C28, C34, C44, C46, C47, C48 Capacitor            
+ 3.95K/1%            0402R            1    R13                                               
+ 33pF                0402C            1    C43                          Capacitor            
+ 36pF                0402c            1    C20                          Capacitor            
+ 4.7K                0402R           12    R10, R22, R24, R28, R31, R32                      
+                                           R40, R41, R44, R45, R46, R47
+ 400K/1%             0402R            1    R21                                               
+ 470                 0402R            1    R7                           Resistor             
+ 47K                 0402R            1    R11                                               
+ 4K7                 0402R            6    R33, R34, R36, R37, R50, R51                      
+ 534K/1%             0402R            1    R19                                               
+ 6pF                 0402c            2    C5, C7                       Capacitor            
+ 8MHz                OSCILLATOR-3.2X2.5    1    Y2                           Crystal Oscillator   
+ AW5005DNR           AW5005           1    U9                                                
+ BMP388              BMP388           1    U15                                               
+ bq24210             QFN50P200X300X80-10N    1    U10                                               
+ DIODE_SCHOTTKY_0    LL-34(D1206)     2    D3, D4                                            
+ Header 5            5¡Á1.25mmSMT     1    P7                           Header, 5-Pin        
+ IPEX                RF-UFL           2    J1, J2                       IPEX                 
+ LED                 0603LED          4    LED1, LED2, LED4, LED5                            
+ LIS2MDL             LIS2MDL          1    U13                                               
+ LQW15A              0402R            1    L1                                                
+ LSM6DS3TR           LSM6DS3TR-C      1    U14                                               
+ MC-146 32.768K/6pF  32.768K          1    Y1                           Crystal Oscillator   
+ MMBT3904            SOT23-3          7    Q2, Q6, Q7, Q18, Q19, Q20                         
+                                           Q21
+ MS621FE             MS621FE          1    BATT                                              
+ MX25L51245GMI-10G   SOP127P1030X239-16N    1    U16                                               
+ REF3025AIDBZR       SOT23-3          1    U12                                               
+ RTH103AT            0603R            1    R15                                               
+ S8050               SOT23-3          3    Q9, Q11, Q13                                      
+ SAFFB1G56KB0F0A     SAFFB1G56KB0F0A    1    U8                                                
+ Si2369DS            sot23-3          4    Q3, Q8, Q10, Q12             NMOSFET              
+ SIM7080G            SIM868           1    U2                                                
+ SLI76CF3600P        QFN127P500X600X80-8N    1    U11                                               
+ SMAJ12CA            SMA              1    D2                                                
+ SRP4020TA-1R0M      L2520            2    L4, L6                                            
+ SRP4020TA-2R2M      L2520            1    L5                                                
+ stm32l412r8t6       LQFP-64          1    U3                           ARM Cortex-M3 32-bit MCU, 64 KB Flash, 8 KB Internal RAM, 51 I/Os, 64-pin LQFP, -40 to 85 degC, Tray 
+ TPD                 TP               8    T4, T5, T6, T7, T15, T16, T17                      
+                                           T20
+ TPD                 TPD             11    T1, T2, T3, T8, T9, T10, T11                      
+                                           T13, T14, T18, T19
+ TPS61023            SOT563-6         2    U17, U19                                          
+ TPS610997YFFR       TPS610997YFFR    1    U18                                               

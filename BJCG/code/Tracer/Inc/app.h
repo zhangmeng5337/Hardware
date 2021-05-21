@@ -15,6 +15,7 @@ typedef struct{
 void HardwareInit(void);
 void app_main(void);
 void ParamsInit(void);
+void test(void);
 
 #endif
 

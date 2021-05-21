@@ -190,7 +190,7 @@ void Flashwrite4bytes(uint32_t addr,uint8_t *pb,uint32_t len)
        Note: It needs to erase dirty sector before program */
     CMD_SE( addr, &flash_state );
     // CMD_PP( flash_addr, memory_addr, trans_len, &flash_state );
-    CMD_4PP( START_ADDR+addr, pb, len, &flash_state );    // need set QE bit
+    CMD_4PP( addr, pb, len, &flash_state );    // need set QE bit
 
 }
 
@@ -222,7 +222,19 @@ uint8 FlashRead4bytes(uint32_t addr,uint8 *pb,uint32_t len)
     CMD_RDSR( &st_reg, &flash_state );
     if( (st_reg & FLASH_QE_MASK) != FLASH_QE_MASK )
         Error_inc( error_cnt );
-        CMD_READ( addr, pb, len, &flash_state );
+	if((addr+len)>DATA_MAX_ADDR)
+	{
+	    uint32_t len_tmp,index;
+		len_tmp = DATA_MAX_ADDR - addr+1;
+		CMD_READ( addr, pb, len_tmp, &flash_state );
+		index = len_tmp;
+		
+		len_tmp = addr+len;//3   5  5
+		len_tmp = len_tmp - DATA_MAX_ADDR-1  ;
+	    CMD_READ( 0, pb+index, len_tmp, &flash_state );
+
+	}
+       
 	FLASH_Operation_End();
 
     if( error_cnt != 0 )

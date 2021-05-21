@@ -562,11 +562,6 @@
               <FilePath>..\Src\Hardware\LteHardware.c</FilePath>
             </File>
             <File>
-              <FileName>lsm6ds3tr_c_reg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\Hardware\lsm6ds3tr_c_reg.c</FilePath>
-            </File>
-            <File>
               <FileName>lis2mdl_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\Hardware\lis2mdl_reg.c</FilePath>
@@ -591,6 +586,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\Hardware\rtc.c</FilePath>
             </File>
+            <File>
+              <FileName>lsm6ds3_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Hardware\lsm6ds3_reg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -602,19 +602,9 @@
               <FilePath>..\Src\HAL\LteHal.c</FilePath>
             </File>
             <File>
-              <FileName>lsm6ds3tr_c_read_data_polling.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\HAL\lsm6ds3tr_c_read_data_polling.c</FilePath>
-            </File>
-            <File>
               <FileName>lis2mdl_read_data_polling.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\HAL\lis2mdl_read_data_polling.c</FilePath>
-            </File>
-            <File>
-              <FileName>BMP388.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\HAL\BMP388.c</FilePath>
             </File>
             <File>
               <FileName>MX25_APP.c</FileName>
@@ -640,6 +630,16 @@
               <FileName>crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\HAL\crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6ds3_read_data_polling.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\lsm6ds3_read_data_polling.c</FilePath>
+            </File>
+            <File>
+              <FileName>BMP3882.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\BMP3882.c</FilePath>
             </File>
           </Files>
         </Group>

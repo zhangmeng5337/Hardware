@@ -109,7 +109,7 @@ sensors_stru *GetMagnetic(void)
 {
 	return &sensors_usr;
 }
-
+extern I2C_HandleTypeDef hi2c1;
 /* Main Example --------------------------------------------------------------*/
 unsigned char lis2mdl_init()
 {
@@ -117,7 +117,7 @@ unsigned char lis2mdl_init()
 	 
 	 dev_ctx1.write_reg = platform_write;
 	 dev_ctx1.read_reg = platform_read;
-	 dev_ctx1.handle = &SENSOR_BUS;
+	 dev_ctx1.handle = &hi2c1;
 	 /* Initialize platform specific hardware */
 	 //platform_init();
 	 /* Wait sensor boot time */
@@ -127,9 +127,7 @@ unsigned char lis2mdl_init()
 	 lis2mdl_device_id_get(&dev_ctx1, &whoamI);
 	
 	 if (whoamI != LIS2MDL_ID)
-	   while (1) {
-		 /* manage here device not found */
-	   }
+	   return 1;
 	
 	 /* Restore default configuration */
 	 lis2mdl_reset_set(&dev_ctx1, PROPERTY_ENABLE);
@@ -156,7 +154,8 @@ void lis2mdl_read_data_simple(void)
 
 
   /* Read samples in polling mode (no int) */
-  while (1) {
+ // while (1)
+		{
     uint8_t reg;
     /* Read output only if new value is available */
     lis2mdl_mag_data_ready_get(&dev_ctx1, &reg);
@@ -193,27 +192,25 @@ void lis2mdl_read_data_simple(void)
  * @param  len       number of consecutive register to write
  *
  */
+
+/*
+ * @brief  Read generic device register (platform dependent)
+ *
+ * @param  handle    customizable argument. In this examples is used in
+ *                   order to select the correct sensor bus handler.
+ * @param  reg       register to read
+ * @param  bufp      pointer to buffer that store the data read
+ * @param  len       number of consecutive register to read
+ *
+ */
+
 static int32_t platform_write(void *handle, uint8_t reg,
                               uint8_t *bufp,
                               uint16_t len)
 {
-#if defined(NUCLEO_F411RE)
-  /* Write multiple command */
-  reg |= 0x80;
   HAL_I2C_Mem_Write(handle, LIS2MDL_I2C_ADD, reg,
                     I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
-#elif defined(STEVAL_MKI109V3)
-  /* Write multiple command */
-  reg |= 0x40;
-  HAL_GPIO_WritePin(CS_up_GPIO_Port, CS_up_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(handle, &reg, 1, 1000);
-  HAL_SPI_Transmit(handle, bufp, len, 1000);
-  HAL_GPIO_WritePin(CS_up_GPIO_Port, CS_up_Pin, GPIO_PIN_SET);
-#elif defined(SPC584B_DIS)
-  /* Write multiple command */
-  reg |= 0x80;
-  i2c_lld_write(handle,  LIS2MDL_I2C_ADD & 0xFE, reg, bufp, len);
-#endif
+
   return 0;
 }
 
@@ -230,26 +227,10 @@ static int32_t platform_write(void *handle, uint8_t reg,
 static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp,
                              uint16_t len)
 {
-#if defined(NUCLEO_F411RE)
-  /* Read multiple command */
-  reg |= 0x80;
   HAL_I2C_Mem_Read(handle, LIS2MDL_I2C_ADD, reg,
                    I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
-#elif defined(STEVAL_MKI109V3)
-  /* Read multiple command */
-  reg |= 0xC0;
-  HAL_GPIO_WritePin(CS_up_GPIO_Port, CS_up_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(handle, &reg, 1, 1000);
-  HAL_SPI_Receive(handle, bufp, len, 1000);
-  HAL_GPIO_WritePin(CS_up_GPIO_Port, CS_up_Pin, GPIO_PIN_SET);
-#elif defined(SPC584B_DIS)
-  /* Read multiple command */
-  reg |= 0x80;
-  i2c_lld_read(handle, LIS2MDL_I2C_ADD & 0xFE, reg, bufp, len);
-#endif
   return 0;
 }
-
 /*
  * @brief  Send buffer to console (platform dependent)
  *

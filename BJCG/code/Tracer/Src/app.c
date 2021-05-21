@@ -20,6 +20,20 @@ void HardwareInit()
 #endif
     sensors_Init();
 }
+
+ uint32_t CpuID[3];
+ uint32_t Lock_Code;
+void GetLockCode(void)
+{
+//获取CPU唯一ID
+CpuID[0]=*(volatile uint32_t*)(0x1ffff7e8);
+CpuID[1]=*(volatile uint32_t*)(0x1ffff7ec);
+CpuID[2]=*(volatile uint32_t*)(0x1ffff7f0);
+//加密算法,很简单的加密算法
+Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
+}
+
+
 void ParamsInit(void)
 {
 
@@ -66,6 +80,7 @@ void ParamsInit(void)
         flash_read( addr++,  (uint32_t *)&(systemParams_usr.Nhours),1);
 
     }
+	GetLockCode();
 
 }
 void systmeReconfig()
@@ -106,13 +121,13 @@ unsigned char  LteAnaly(void)
         }
         else
         {
-            switch(pb[17])
+            switch(pb[CMD_INDEX])
             {
             case 0x60:
 
                 break;
             case 0x61:
-                if(pb[18] == 0x31)
+                if(pb[PARAMS_INDEX] == 0x31)
                 {
 					systemParams_usr.Dhours= pb[20];
 					systemParams_usr.DayPeriod = pb[21];
@@ -129,28 +144,30 @@ unsigned char  LteAnaly(void)
 		return result;
 }
 
+
 void payloadpack(unsigned char *p,uint32_t size)
 {
     unsigned char *pb;
     unsigned int calCRC;
     uint32_t len;
-    pb = malloc(size+12+4+2);
+    pb = malloc(size+HEADDER_LEN+DEVID_LEN+PAYLOAD_LEN+CRC_LEN);//id:12   len:4  crc: 2 header:1
     pb[0] = NODE_HEADER;
-    len = 1;
-    memcpy(&(pb[1]),0,12);//dev id
-    len = len +12;
-    len = len +4;//paylaod len length
+    len = 0;//header length is not included
+    memcpy(&(pb[DEVID_INDEX]),CpuID,DEVID_LEN);//dev id
+    len = len +DEVID_LEN;
+    len = len +PAYLOAD_LEN;//paylaod len length
     memcpy(pb+len,p,size);//gps+imu
     len = len +size;
-    len = len +2;//crc
-    pb[13] = (unsigned char)len;
-    pb[14] = (unsigned char)(len>>8);
-    pb[15] = (unsigned char)(len>>16);
-    pb[16] = (unsigned char)(len>>24);
-    calCRC=CRC_Compute(pb+1,len-1);//计算所接收数据的CRC
-    pb[125] = (unsigned char)calCRC;
-    pb[126] = (unsigned char)(calCRC>>8);
-    LteUart_SendByte(LTE_4G,pb,len);
+    len = len +CRC_LEN;//crc
+    pb[LENINDEX] = (unsigned char)len;
+    pb[LENINDEX+1] = (unsigned char)(len>>8);
+    pb[LENINDEX+2] = (unsigned char)(len>>16);
+    pb[LENINDEX+3] = (unsigned char)(len>>24);
+    calCRC=CRC_Compute(pb+HEADDER_LEN,len);//计算所接收数据的CRC
+    pb[len] = (unsigned char)calCRC;
+    pb[len-1] = (unsigned char)(calCRC>>8);
+	
+    LteUart_SendByte(LTE_4G,pb,len+HEADDER_LEN);
     free(pb);
 
 }
@@ -179,7 +196,6 @@ void powersleep(void)
 		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	
 	
 	
 		GPIO_InitStruct.Pin =GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
@@ -267,7 +283,6 @@ void powersleep(void)
 
 	
 		 RTC_WAKEUP_Init(systemParams_usr.period);
-	
 		__HAL_RCC_PWR_CLK_ENABLE();
 		HAL_SuspendTick();
 		__HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
@@ -293,6 +308,12 @@ void DataUploadPeriod()
     }
 
 }
+void test()
+{
+   // SIMCOM_Register_Network();
+    //DataUploadPeriod();//数据上传周期控制	
+    snesors_process();//imu参数采集
+}
 void app_main()
 {
 
@@ -312,6 +333,8 @@ void app_main()
             LteAnaly();//解析服务端命令
         }
     }
+
+	/***********************数据上报机制*********************************/
     if((HAL_GetTick()-tick)>=(systemParams_usr.period*60000))//周期上报数据
     {
         tick = HAL_GetTick();
@@ -333,13 +356,18 @@ void app_main()
                 len = GetFLashStatus()->SumLen;
                 if(len<=1400)//数据分包
                 {
-                    for(i=0; i<GetFLashStatus()->SumLen; i++)
+                   // for(i=0; i<GetFLashStatus()->SumLen; i++)
                     {
-                        FlashRead4bytes((GetFLashStatus()->LastWriteAddr+i),pb,GetFLashStatus()->SumLen);
+                        FlashRead4bytes((GetFLashStatus()->LastWriteAddr),pb,GetFLashStatus()->SumLen);
 
                     }
                     payloadpack(pb,GetFLashStatus()->SumLen);
-
+				    GetFLashStatus()->LastWriteAddr = GetFLashStatus()->SumLen + len;
+					if(GetFLashStatus()->LastWriteAddr>DATA_MAX_ADDR)
+					{
+						GetFLashStatus()->LastWriteAddr= GetFLashStatus()->LastWriteAddr-DATA_MAX_ADDR;
+					}
+				    GetFLashStatus()->SumLen = 0;
                 }
                 else  //分包续传
                 {
@@ -353,11 +381,16 @@ void app_main()
 
                     FlashRead4bytes((GetFLashStatus()->LastWriteAddr+i),pb,len-len2);
                     payloadpack(pb,len-len2);
-                    GetFLashStatus()->LastWriteAddr = 0;
-                    GetFLashStatus()->SumLen = 0;
-                }
+				    GetFLashStatus()->LastWriteAddr = GetFLashStatus()->SumLen + len;
 
+					if(GetFLashStatus()->LastWriteAddr>DATA_MAX_ADDR)
+					{
+						GetFLashStatus()->LastWriteAddr= GetFLashStatus()->LastWriteAddr-DATA_MAX_ADDR;
+					}
+				    GetFLashStatus()->SumLen = 0;
+                }
                 free(pb);
+				systmeReconfig();
             }
             else //定期上传
             {
@@ -367,11 +400,10 @@ void app_main()
                 memcpy(pb+len,FilterData,12);
                 payloadpack(pb,72);
                 free(pb);
-
             }
             powersleep();
         }
     }
-
+  /***************************数据上报机制结束***********************************/
 
 }

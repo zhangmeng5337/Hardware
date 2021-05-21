@@ -8,12 +8,14 @@
 #define SERVER_HEADER  0xab
 
 #define HEADDER_LEN 	1
-#define DEVID_LEN 		2
+#define DEVID_LEN 		12
 #define CRC_LEN 		2
 #define PAYLOAD_LEN 	4
 
+#define DEVID_INDEX 	1
 #define LENINDEX 		13
-
+#define CMD_INDEX       17 
+#define PARAMS_INDEX    18
 //³£Á¿
 #define Success 1U
 #define Failure 0U

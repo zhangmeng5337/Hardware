@@ -173,6 +173,7 @@ typedef struct
 
 /** Device Identification (Who am I) **/
 #define LSM6DS3TR_C_ID            0x6AU
+#define LSM6DS3TR_ID            0x69U
 
 /**
   * @}
