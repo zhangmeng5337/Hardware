@@ -155,7 +155,7 @@ void flash_read(uint32_t addr,uint32_t *pbuffer,uint16_t numtoread)
 	for(i=0;i<numtoread;i++)
 	{
 		 tmp = *(__IO uint32_t *)Address;
-		// pbuffer[i] = (unsigned char)tmp;	
+		 pbuffer[i] = tmp;	
 		Address = Address+1;
 	}
 }
