@@ -21,15 +21,12 @@
   */
 #include "BMP3882.h"
 extern I2C_HandleTypeDef hi2c1;
-static BMP388_ST_AVG gsstBMP388AvgFilter[3];
 static BMP388_ST_CALI gsstCali;
 bmp3_data	   comp_data;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-static bool bmp388Check(void);
 
 
  void bmp388DataGet(void);
@@ -81,18 +78,7 @@ void BMP388_Get_PaT()
   bmp388DataGet( );
   return;
 }
-/******************************************************************************
- * BMP388 sensor device                                                       *
- ******************************************************************************/
-static bool bmp388Check(void)
-{
-    bool bRet = false;
-    if(BMP388_REG_VAL_WIA == I2C_ReadOneByte(I2C_ADD_BMP388, BMP388_REG_ADD_WIA))
-    {
-        bRet = true;
-    }
-    return bRet;
-}
+
 //BMP388≥ı ºªØ
 u8 BMP388_Init()
 {
@@ -157,7 +143,7 @@ u8 BMP388_Init()
   uint8_t u8Xlsb, u8Lsb, u8Msb;
   int32_t s32Pressure0 = 101325;  // Mean Sea Level Pressure = 1013.25 hPA (1hPa = 100Pa = 1mbar)
   int32_t s32Temp, s32Press, s32Alti;
-  int32_t* ps32Temp, *ps32Press,*ps32Alti;
+
 
   u8Xlsb= I2C_ReadOneByte(I2C_ADD_BMP388, BMP388_REG_ADD_TEMP_XLSB);
   u8Lsb = I2C_ReadOneByte(I2C_ADD_BMP388, BMP388_REG_ADD_TEMP_LSB);

@@ -152,6 +152,7 @@ struct sFlashStatus{
     BOOL     ArrangeOpt;
 };
 typedef struct{
+	uint32_t LastReadAddr;
 	uint32_t LastWriteAddr;
 	uint8_t  WriteReadBuffer[4096];
 	uint32_t SumLen;

@@ -50,6 +50,7 @@ void ParamsInit(void)
         flash_init(0);
         addr = 0;
         flash_write(addr++, &p,1);
+        flash_write( addr++,&(FLashData_usr2->LastReadAddr),1);
         flash_write( addr++,&(FLashData_usr2->LastWriteAddr),1);
         flash_write( addr++,&(FLashData_usr2->SumLen),1);
 
@@ -71,8 +72,11 @@ void ParamsInit(void)
 
         addr = 0;
         flash_read( addr++, &p,1);
+        flash_read( addr++, &(FLashData_usr2->LastReadAddr),1);
+
         flash_read( addr++, &(FLashData_usr2->LastWriteAddr),1);
         flash_read( addr++,  &(FLashData_usr2->SumLen),1);
+		
 
         flash_read( addr++,  (uint32_t *)&(systemParams_usr.DayPeriod),1);
         flash_read( addr++, (uint32_t *) &(systemParams_usr.NightPeriod),1);
@@ -91,6 +95,8 @@ void systmeReconfig()
 	flash_init(0);
 	addr = 0;
 	flash_write(addr++, &p,1);
+	flash_write( addr++,&(GetFLashStatus()->LastReadAddr),1);
+
 	flash_write( addr++,&(GetFLashStatus()->LastWriteAddr),1);
 	flash_write( addr++,&(GetFLashStatus()->SumLen),1);
 	
@@ -342,7 +348,7 @@ void app_main()
         if(GetLteStru()->RetryConnectCount>MAX_CONNECT_COUNT )//断网数据存储
         {
 
-            FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,12);
+            FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,SENSORS_COUNT);
             powersleep();
         }
 
@@ -352,40 +358,43 @@ void app_main()
             {
                 uint32_t i,len,len2,k;
                 uint8_t *pb;
-                pb = malloc(1400);
+                pb = malloc(SUM_COUNT*100);
                 len = GetFLashStatus()->SumLen;
-                if(len<=1400)//数据分包
+                if(len<=SUM_COUNT*100)//数据分包
                 {
-                   // for(i=0; i<GetFLashStatus()->SumLen; i++)
-                    {
-                        FlashRead4bytes((GetFLashStatus()->LastWriteAddr),pb,GetFLashStatus()->SumLen);
-
-                    }
+                    FlashRead4bytes((GetFLashStatus()->LastReadAddr ),pb,GetFLashStatus()->SumLen);
                     payloadpack(pb,GetFLashStatus()->SumLen);
-				    GetFLashStatus()->LastWriteAddr = GetFLashStatus()->SumLen + len;
-					if(GetFLashStatus()->LastWriteAddr>DATA_MAX_ADDR)
+				    GetFLashStatus()->LastReadAddr = GetFLashStatus()->LastReadAddr + len;
+					if(GetFLashStatus()->LastReadAddr>DATA_MAX_ADDR)
 					{
-						GetFLashStatus()->LastWriteAddr= GetFLashStatus()->LastWriteAddr-DATA_MAX_ADDR;
+						GetFLashStatus()->LastReadAddr= GetFLashStatus()->LastReadAddr-DATA_MAX_ADDR;
 					}
 				    GetFLashStatus()->SumLen = 0;
                 }
                 else  //分包续传
                 {
-                    k = len/1400;
-                    len2 = k *1400;
+                    k = len/(SUM_COUNT*100);
+                    len2 = k *(SUM_COUNT*100);
                     for(i=0; i<k; i++)
                     {
-                        FlashRead4bytes((GetFLashStatus()->LastWriteAddr+i),pb,1400);
-                        payloadpack(pb,1400);
+                        FlashRead4bytes((GetFLashStatus()->LastReadAddr),pb,SUM_COUNT*100);
+                        payloadpack(pb,SUM_COUNT*100);
+						GetFLashStatus()->LastReadAddr = GetFLashStatus()->LastReadAddr+
+							                             i*(SUM_COUNT*100);
+						if(GetFLashStatus()->LastReadAddr>DATA_MAX_ADDR)
+						{
+							GetFLashStatus()->LastReadAddr= GetFLashStatus()->LastReadAddr-DATA_MAX_ADDR;
+						}
+
                     }
 
-                    FlashRead4bytes((GetFLashStatus()->LastWriteAddr+i),pb,len-len2);
+                    FlashRead4bytes((GetFLashStatus()->LastReadAddr),pb,len-len2);
                     payloadpack(pb,len-len2);
-				    GetFLashStatus()->LastWriteAddr = GetFLashStatus()->SumLen + len;
+				    GetFLashStatus()->LastReadAddr = GetFLashStatus()->LastReadAddr + len-len2;
 
-					if(GetFLashStatus()->LastWriteAddr>DATA_MAX_ADDR)
+					if(GetFLashStatus()->LastReadAddr>DATA_MAX_ADDR)
 					{
-						GetFLashStatus()->LastWriteAddr= GetFLashStatus()->LastWriteAddr-DATA_MAX_ADDR;
+						GetFLashStatus()->LastReadAddr= GetFLashStatus()->LastReadAddr-DATA_MAX_ADDR;
 					}
 				    GetFLashStatus()->SumLen = 0;
                 }
@@ -394,11 +403,11 @@ void app_main()
             }
             else //定期上传
             {
-                pb = malloc(60+12);//每组数据包含60个gps数据，12个imu数据
-                memcpy(pb+len,getGPS(),60);
-                len = len +60;
-                memcpy(pb+len,FilterData,12);
-                payloadpack(pb,72);
+                pb = malloc(SUM_COUNT);//每组数据包含60个gps数据，12个imu数据
+                memcpy(pb+len,getGPS(),GPS_COUNT);
+                len = len +GPS_COUNT;
+                memcpy(pb+len,FilterData,SENSORS_COUNT);
+                payloadpack(pb,SUM_COUNT);
                 free(pb);
             }
             powersleep();

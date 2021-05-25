@@ -25,9 +25,9 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
     float Q = 0.008;  // Q = 0.0003;
     float R = 10;
     static float Kg = 0;
-    static float P_k_k1 = 1,P_k_k2[SN],P_k_k3,P_k_k4;
+    static float P_k_k1 = 1,P_k_k2[SN];
 
-    static float kalman_adc,kalman_adc2[SN],kalman_adc3,kalman_adc4;
+    static float kalman_adc,kalman_adc2[SN];
     static float kalman_adc_old=1;
     unsigned int i;
     Q = sq;
@@ -44,7 +44,7 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
             kalman_adc = kalman_adc2[seq-1];
             kalman_adc_old = kalman_adc2[seq-1];
             P_k1_k1 = P_k_k2[seq-1];
-        if (abs(kalman_adc_old-pbf)>=10)
+        if (fabs(kalman_adc_old-pbf)>=10)
         {
             x_k1_k1= pb[0]*0.382 + kalman_adc_old*0.618;
         }
@@ -69,8 +69,8 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
         kalman_adc2[seq-1] = kalman_adc  ;
         P_k_k2[seq-1]= P_k1_k1 ;
 
-        float error;
-        error = ADC_OLD_Value - kalman_adc;
+//        float error;
+//        error = ADC_OLD_Value - kalman_adc;
         //pb[i] = kalman_adc;
 		return 	kalman_adc;
 				//jansson_pack_test();
@@ -79,6 +79,7 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
     }
 
 }
+
 
 
 // printf("总体测量误差      : %f\n",sumerror_measure);  //输出测量累积误差
