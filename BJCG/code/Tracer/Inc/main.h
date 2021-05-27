@@ -34,7 +34,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #define ON    1
 #define OFF   0
-#define ROLE  0
+#define ROLE LTE_NBIOT
+#define DEBUG_MODE 1
 typedef uint32_t u32;
 typedef unsigned int u16;
 typedef  unsigned char u8;

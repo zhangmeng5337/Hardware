@@ -75,7 +75,7 @@ void FLASH_Operation_End()
  * Return Message: None.
  */
 void CS_Low()
-{   HAL_GPIO_WritePin(GPIOA, WP_Pin, GPIO_PIN_SET);
+{   
 	HAL_GPIO_WritePin(GPIOB, SPI_RESET_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GPIOA, CS_Pin, GPIO_PIN_RESET);
 
@@ -90,7 +90,6 @@ void FLASH_RESET()
 void CS_High()
 {
 	HAL_GPIO_WritePin(GPIOA, CS_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOA, WP_Pin, GPIO_PIN_RESET);
 
 }
 
@@ -2444,7 +2443,7 @@ ReturnMsg CMD_4PP( uint32 flash_address, uint8 *source_address, uint32 byte_leng
 
     uint32 index;
     uint8  addr_4byte_mode;
-
+start:
     // Check current state
     if( IsFlashQPI( fsptr ) )    return    FlashCmdSpiOnly;
 
@@ -2470,11 +2469,30 @@ ReturnMsg CMD_4PP( uint32 flash_address, uint8 *source_address, uint32 byte_leng
     SendByte( FLASH_CMD_PP4B, SIO );
     SendFlashAddr( flash_address, SIO, addr_4byte_mode );
 
+	if((flash_address+byte_length)>FLASH_PAGESIZE)
+	{
+	static unsigned char pagecount;
+	static uint32_t indexR,j;
+	pagecount = (flash_address+byte_length)/256;
+	for(j= 0;j<pagecount;j++)
+	{
     // Send source data to flash.
-    for( index=0; index < byte_length; index++ )
+    indexR = j;
+    for( index=indexR; index < FLASH_PAGESIZE; index++ )
     {
         SendByte( *(source_address + index ), SIO );
     }
+    goto start;
+	}
+	break;
+
+
+	}
+    for( index=indexR; index < FLASH_PAGESIZE; index++ )
+    {
+        SendByte( *(source_address + index ), SIO );
+    }
+
 
     // Chip select go high to end a flash command
     CS_High();

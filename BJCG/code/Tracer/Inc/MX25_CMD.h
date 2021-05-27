@@ -10,12 +10,14 @@
 #ifndef    __MX25_CMD_H__
 #define    __MX25_CMD_H__
 
+#include    "main.h"
+
 #include    "MX25_DEF.h"
 #define START_ADDR				0x00000004
 #define DATA_MAX_ADDR           0x3ffffff
 #define DATA_4K_SIZE            0x1000
 #define DATA_MAX_SECTORS        16383
-
+#define FLASH_PAGESIZE          0x100
 /*** MX25 series command hex code definition ***/
 //ID comands
 #define    FLASH_CMD_RDID      0x9F    //RDID (Read Identification)
@@ -82,7 +84,7 @@
 #define    FLASH_CMD_BE32K    0x52    //BE32K (Block Erase 32kb)
 #define    FLASH_CMD_BE       0xD8    //BE (Block Erase)
 #define    FLASH_CMD_BE4B     0xDC    //BE4B (Block Erase with 4 byte address)
-#define    FLASH_CMD_CE       0x60    //CE (Chip Erase) hex code: 60 or C7
+#define    FLASH_CMD_CE       0xC7    //CE (Chip Erase) hex code: 60 or C7
 #define    FLASH_CMD_SE4B     0x21    //SE (Sector Erase with 4 byte addr)
 #define    FLASH_CMD_BE32K4B  0x5C    //BE32K4B (Block Erase 32kb with 4 byte addr)
 
@@ -274,8 +276,11 @@ ReturnMsg CMD_NOP( FlashStatus *fsptr );
 void SwitchBank( BOOL bank);
 extern BOOL  flash_bank_flag ;
 unsigned char FlashDataStore(uint32_t addr,uint32_t *pb,uint32_t len);
-uint8 FlashRead4bytes(uint32_t addr,uint8 *pb,uint32_t len);
-void Flashwrite4bytes(uint32_t addr,uint8_t *pb,uint32_t len);
+uint8 FlashReadOnebytes(uint32_t addr,uint8_t *pb,uint32_t len,unsigned char recordFlag);
+void FlashwriteOnebytes(uint32_t addr,uint8_t *pb,uint32_t len);
 FLashData_stru *GetFLashStatus(void);
+void flash_process(void);
+void FLASH_RESET(void);
+void EraseChip(void);
 
 #endif    /* __MX25_CMD_H__ */

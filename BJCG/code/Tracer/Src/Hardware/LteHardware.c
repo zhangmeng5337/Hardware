@@ -212,7 +212,7 @@ void Gps_RxCpltCallback()
 void errorLog(int num)
 {
 }
-unsigned char * parseGpsBuffer()
+unsigned char  parseGpsBuffer(unsigned char *p)
 {
   char *subString;
   char *subStringNext;
@@ -268,7 +268,6 @@ unsigned char * parseGpsBuffer()
   }
     if(Save_Data.isUsefull == true)
   {
-    unsigned char p[60];    
     unsigned char len;
     memcpy(p+len,Save_Data.E_W ,2);
     len = len +2;
@@ -278,7 +277,7 @@ unsigned char * parseGpsBuffer()
     len = len +2;
     memcpy(p+len,Save_Data.latitude ,11);
     len = len +11;
-	return p;
+	return 0;
     
   }
    else

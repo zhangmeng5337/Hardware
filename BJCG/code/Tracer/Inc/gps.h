@@ -29,9 +29,9 @@ typedef struct SaveData
 void Gps_RxCpltCallback(void);
 
 void errorLog(int num);
-unsigned char * parseGpsBuffer(void);
 void printGpsBuffer(void);
 void gps_uart_Init(void);
 unsigned char gps_powerON(void);
+unsigned char  parseGpsBuffer(unsigned char *p);
 
 #endif

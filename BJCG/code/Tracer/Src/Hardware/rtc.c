@@ -138,21 +138,18 @@ void RTC_WAKEUP_Init(uint32_t p)
         //HAL_RTCEx_SetWakeUpTimer_IT(&hrtc,  rtc_usr.wakeup_period, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
         SetWakeUp(p);
 }
-
-unsigned char *getRTC()
+unsigned char p[6];
+RTC_TimeTypeDef *getRTCTime()
 {
-    unsigned char p[6],i;
-//	RTC_HandleTypeDef hrtc;	
-	HAL_RTC_GetTime(&hrtc, &stimestructure, RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(&hrtc, &sdatestructure, RTC_FORMAT_BIN); 
-	p[i++] = sdatestructure.Year;
-	p[i++] = sdatestructure.Month;
-	p[i++] = sdatestructure.Date;
-	p[i++] = stimestructure.Hours;
-	p[i++] = stimestructure.Minutes;
-	p[i++] = stimestructure.Seconds;
-	return p;
 
+	HAL_RTC_GetTime(&hrtc, &stimestructure, RTC_FORMAT_BIN);
+
+	return &stimestructure;
+}
+RTC_DateTypeDef *getRTCDATE()
+{
+	HAL_RTC_GetDate(&hrtc, &sdatestructure, RTC_FORMAT_BIN); 
+	return &sdatestructure;
 }
 
 void RTC_Calibration(unsigned char *p)

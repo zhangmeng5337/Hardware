@@ -93,7 +93,59 @@ typedef    unsigned char     BOOL;
 /*
   System Information Define
 */
+#ifdef MCU8051
 
+#define    CLK_PERIOD             20     // unit: ns
+#define    Min_Cycle_Per_Inst     12     // use 12T 8051
+#define    One_Loop_Inst          8      // instruction count of one loop (estimate)
+
+/*GPIO to SPI port mapping ( PORT1 )
+ *
+ *  GPIO1 bit 7        6     5       4       3       2       1         0
+ *  1xI/O     NC     WP#     SO      SI      SCLK    CS#     ErrFlag  OutValid
+ *  2xI/O                    SIO1    SIO0
+ *  4xI/O     SIO3   SIO2    SIO1    SIO0
+ *  8xI/O                    PO7                             PO6
+ *
+ *(parallel mode)
+ *  GPIO3 bit 7        6     5       4       3       2       1         0
+// *  8xI/O     nRD    nWR     PO5     PO4     PO3     PO2     PO1      PO0
+// */
+//    #ifdef GPIO_SPI
+//    #define    SIO3    P1_7
+//    #define    WPn     P1_6
+//    #define    SIO2    P1_6
+//    #define    SO      P1_5
+//    #define    SIO1    P1_5
+//    #define    SI      P1_4
+//    #define    SIO0    P1_4
+//    #define    SCLK    P1_3
+//    #define    CSn     P1_2
+
+//    #define    SIO7    P3_3
+//    #define    SIO6    P3_2
+//    #define    SIO5    P3_1
+//    #define    SIO4    P3_0
+
+
+//    #define    PO7     P1_5
+//    #define    PO6     P1_1
+//    #define    PO5     P3_5
+//    #define    PO4     P3_4
+//    #define    PO3     P3_3
+//    #define    PO2     P3_2
+//    #define    PO1     P3_1
+//    #define    PO0     P3_0
+//    #define    DQS     P3_4
+//    #endif  //end GPIO_SPI
+
+//#else
+////--- insert your MCU information ---//
+//#define    CLK_PERIOD                // unit: ns
+//#define    Min_Cycle_Per_Inst        // cycle count of one instruction
+//#define    One_Loop_Inst             // instruction count of one loop (estimate)
+
+//#endif  //end MCU8051
 
 /*
   Flash ID, Timing Information Define
@@ -233,7 +285,7 @@ typedef    unsigned char     BOOL;
 #define    SectorEraseCycleTime        tSE / (CLK_PERIOD * Min_Cycle_Per_Inst * One_Loop_Inst)
 #define    BlockEraseCycleTime         tBE / (CLK_PERIOD * Min_Cycle_Per_Inst * One_Loop_Inst)
 #define    ChipEraseCycleTime          CE_period
-#define    FlashFullAccessTime         tPUW / (20 * 12 * 8)
+#define    FlashFullAccessTime         tPUW / (CLK_PERIOD * Min_Cycle_Per_Inst * One_Loop_Inst)
 
 #ifdef tBP
 #define    ByteProgramCycleTime        tBP / (CLK_PERIOD * Min_Cycle_Per_Inst * One_Loop_Inst)
@@ -248,4 +300,4 @@ typedef    unsigned char     BOOL;
 #define    WriteExtRegCycleTime        tWREAW / (CLK_PERIOD * Min_Cycle_Per_Inst * One_Loop_Inst)
 #endif
 #endif    /* end of __MX25_DEF_H__  */
-
+#endif    /* end of __MX25_DEF_H__  */

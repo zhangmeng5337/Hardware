@@ -17,6 +17,7 @@ void HardwareInit(void);
 void app_main(void);
 void ParamsInit(void);
 void test(void);
+void systmeReconfig(void);
 
 #endif
 

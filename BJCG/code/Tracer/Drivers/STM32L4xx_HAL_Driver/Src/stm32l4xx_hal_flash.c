@@ -102,7 +102,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
-#if defined (STM32L4P5xx) || defined (STM32L4Q5xx) || defined (STM32L4R5xx) || defined (STM32L4R7xx) || defined (STM32L4R9xx) || defined (STM32L4S5xx) || defined (STM32L4S7xx) || defined (STM32L4S9xx)
+#if defined (STM32L4R5xx) || defined (STM32L4R7xx) || defined (STM32L4R9xx) || defined (STM32L4S5xx) || defined (STM32L4S7xx) || defined (STM32L4S9xx)
 #define FLASH_NB_DOUBLE_WORDS_IN_ROW  64
 #else
 #define FLASH_NB_DOUBLE_WORDS_IN_ROW  32
@@ -159,9 +159,9 @@ static void          FLASH_Program_Fast(uint32_t Address, uint32_t DataAddress);
 
 /**
   * @brief  Program double word or fast program of a row at a specified address.
-  * @param  TypeProgram  Indicate the way to program at a specified address.
+  * @param  TypeProgram:  Indicate the way to program at a specified address.
   *                           This parameter can be a value of @ref FLASH_Type_Program
-  * @param  Address  specifies the address to be programmed.
+  * @param  Address:  specifies the address to be programmed.
   * @param  Data specifies the data to be programmed
   *                This parameter is the data for the double word program and the address where
   *                are stored the data for the row fast program
@@ -320,7 +320,6 @@ void HAL_FLASH_IRQHandler(void)
   CLEAR_BIT(FLASH->CR, (FLASH_CR_PG | FLASH_CR_MER1 | FLASH_CR_PER | FLASH_CR_PNB));
 #if defined (STM32L471xx) || defined (STM32L475xx) || defined (STM32L476xx) || defined (STM32L485xx) || defined (STM32L486xx) || \
     defined (STM32L496xx) || defined (STM32L4A6xx) || \
-    defined (STM32L4P5xx) || defined (STM32L4Q5xx) || \
     defined (STM32L4R5xx) || defined (STM32L4R7xx) || defined (STM32L4R9xx) || defined (STM32L4S5xx) || defined (STM32L4S7xx) || defined (STM32L4S9xx)
   CLEAR_BIT(FLASH->CR, FLASH_CR_MER2);
 #endif
@@ -333,6 +332,7 @@ void HAL_FLASH_IRQHandler(void)
 
   /* Check FLASH operation error flags */
   error = (FLASH->SR & FLASH_FLAG_SR_ERRORS);
+  error |= (FLASH->ECCR & FLASH_FLAG_ECCC);
 
   if (error !=0U)
   {
@@ -666,6 +666,7 @@ HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout)
   }
 
   error = (FLASH->SR & FLASH_FLAG_SR_ERRORS);
+  error |= (FLASH->ECCR & FLASH_FLAG_ECCD);
 
   if(error != 0u)
   {
@@ -713,19 +714,35 @@ static void FLASH_Program_DoubleWord(uint32_t Address, uint64_t Data)
   /* Program second word */
   *(__IO uint32_t*)(Address+4U) = (uint32_t)(Data >> 32);
 }
+static void FLASH_Program_Fast(uint32_t Address, uint32_t Data)
+{
+  /* Check the parameters */
+  assert_param(IS_FLASH_PROGRAM_ADDRESS(Address));
 
+  /* Set PG bit */
+  SET_BIT(FLASH->CR, FLASH_CR_PG);
+
+  /* Program first word */
+  *(__IO uint32_t*)Address = (uint32_t)Data;
+
+  /* Barrier to ensure programming is performed in 2 steps, in right order
+    (independently of compiler optimization behavior) */
+   __ISB();
+
+
+}
 /**
   * @brief  Fast program a row double-word (64-bit) at a specified address.
   * @param  Address specifies the address to be programmed.
   * @param  DataAddress specifies the address where the data are stored.
   * @retval None
   */
-static void FLASH_Program_Fast(uint32_t Address, uint32_t DataAddress)
+static void FLASH_Program_Fast2(uint32_t Address, uint32_t DataAddress)
 {
   uint32_t primask_bit;
   uint8_t row_index = (2*FLASH_NB_DOUBLE_WORDS_IN_ROW);
   __IO uint32_t *dest_addr = (__IO uint32_t*)Address;
-  __IO uint32_t *src_addr = (__IO uint32_t*)DataAddress;
+  __IO uint32_t *src_addr = (__IO uint32_t*)&DataAddress;
 
   /* Check the parameters */
   assert_param(IS_FLASH_MAIN_MEM_ADDRESS(Address));

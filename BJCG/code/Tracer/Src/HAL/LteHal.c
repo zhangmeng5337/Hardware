@@ -131,7 +131,7 @@ void SIMCOM_Register_Network()
         SIMCOM_TimeOut_Count = 0;
         if(lte_usr.RetryConnectCount <= MAX_CONNECT_COUNT)
             lte_usr.RetryConnectCount ++;
-        LtePowerManage(LTE_4G,ON);                   //复位重启
+        //LtePowerManage(LTE_4G,ON);                   //复位重启
         lte_usr.NetStatus=SIMCOM_POWER_ON;       //状态机复位
     }
     break;
@@ -186,7 +186,7 @@ void SIMCOM_Register_Network()
     break;
     case SIMCOM_NET_CLOSE:
     {
-#if ROLE == 0
+#if ROLE == LTE_NBIOT
 
 #else
         if (sendCommand(moduleType,"AT+CNACT=0,1\r\n", "ACTIVE", 20000, 1,0) == Success)

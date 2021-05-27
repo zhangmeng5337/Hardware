@@ -9,7 +9,10 @@ sensors_stru *sensorsp;
 AccAng_stru *AccAng_usrp;
 bmp3_data   *comp_datap;
 
-float FilterData[SN];//滤波后的imu数据
+
+
+unsigned char gpsBuf[GPS_COUNT];
+float FilterData[SN];////滤波后的imu数据
 void sensors_Init(void)
 {
     if(BMP388_Init()==1)
@@ -20,6 +23,7 @@ void sensors_Init(void)
         printf("lsm6ds3tr Init Failure\n");  //输出测量累积误差
 
 }
+
 void sensors_sample(void)
 {
     BMP388_Get_PaT();
@@ -28,18 +32,13 @@ void sensors_sample(void)
 
 
 }
-unsigned char* getGPS()//获取gps位置信息
+unsigned char *getGPS()//获取gps位置信息
 {
     unsigned char *p;
-	unsigned char result;
-    p = (unsigned char *)malloc(60);
-    p =parseGpsBuffer();
-    if(p!=NULL)
-    result = 0;
-    else
-	result = 1;
-    free(p);
-	return p;
+    unsigned char result;
+
+    parseGpsBuffer(gpsBuf);
+    return gpsBuf;
 }
 //float *GetSensorsData(void)
 //{
@@ -47,7 +46,7 @@ unsigned char* getGPS()//获取gps位置信息
 //}
 void snesors_process(void)
 {
-    float pbt[12];
+    float pbt[SENSORS_COUNT];
     unsigned char i,j;
     unsigned char len;
     len = 0;
@@ -58,60 +57,60 @@ void snesors_process(void)
     AccAng_usrp = GetAccAngtic();
     comp_datap = GetPressure();
 
-	  for(i = 0;i<3;i++)
-		{
-			FilterData[i+len]=AccAng_usrp->acceleration_mg[i];	
-		}
+    for(i = 0; i<3; i++)
+    {
+        FilterData[i+len]=AccAng_usrp->acceleration_mg[i];
+    }
     len =len +3;
-	  for(i = 0;i<3;i++)
-		{
-			FilterData[i+len]=AccAng_usrp->angular_rate_mdps[i];	
-		}
+    for(i = 0; i<3; i++)
+    {
+        FilterData[i+len]=AccAng_usrp->angular_rate_mdps[i];
+    }
     len =len +3;
     FilterData[len]=AccAng_usrp->temperature_degC;
     len =len +1;
-	  for(i = 0;i<3;i++)
-		{
-			FilterData[i+len]=sensorsp->magnetic_mG[i];	
-		}
-   // memcpy(FilterData+len,sensorsp->magnetic_mG,3);
+    for(i = 0; i<3; i++)
+    {
+        FilterData[i+len]=sensorsp->magnetic_mG[i];
+    }
+    // memcpy(FilterData+len,sensorsp->magnetic_mG,3);
     len =len +3;
     //memcpy(FilterData+len,&comp_datap->pressure,1);
     FilterData[len]=comp_datap->pressure;
     len =len +1;
-   // memcpy(FilterData+len,&comp_datap->temperature,1);
+    // memcpy(FilterData+len,&comp_datap->temperature,1);
     FilterData[len]=comp_datap->temperature;
     len =len +1;
 
-		
-		
-		len = 0;
-	  for(i = 0;i<3;i++)
-		{
-			pbt[i+len]=AccAng_usrp->acceleration_mg[i];	
-		}
+
+
+    len = 0;
+    for(i = 0; i<3; i++)
+    {
+        pbt[i+len]=AccAng_usrp->acceleration_mg[i];
+    }
     len =len +3;
-	  for(i = 0;i<3;i++)
-		{
-			pbt[i+len]=AccAng_usrp->angular_rate_mdps[i];	
-		}
+    for(i = 0; i<3; i++)
+    {
+        pbt[i+len]=AccAng_usrp->angular_rate_mdps[i];
+    }
     len =len +3;
     pbt[len]=AccAng_usrp->temperature_degC;
     len =len +1;
-	  for(i = 0;i<3;i++)
-		{
-			pbt[i+len]=sensorsp->magnetic_mG[i];	
-		}
-   // memcpy(FilterData+len,sensorsp->magnetic_mG,3);
+    for(i = 0; i<3; i++)
+    {
+        pbt[i+len]=sensorsp->magnetic_mG[i];
+    }
+    // memcpy(FilterData+len,sensorsp->magnetic_mG,3);
     len =len +3;
     //memcpy(FilterData+len,&comp_datap->pressure,1);
     pbt[len]=comp_datap->pressure;
     len =len +1;
-   // memcpy(FilterData+len,&comp_datap->temperature,1);
+    // memcpy(FilterData+len,&comp_datap->temperature,1);
     pbt[len]=comp_datap->temperature;
     len =len +1;
-		
-		
+
+
 //    len = 0;
 //    memcpy(pbt,AccAng_usrp->acceleration_mg,3);
 //    len =len +3;
@@ -130,7 +129,7 @@ void snesors_process(void)
                       数据滤波处理
     ************************************************************/
 
- 
+
     for(j = 0; j<SN; j++)
     {
         FilterData[j] = Claman(&(FilterData[j]),0.004,10,j+1);

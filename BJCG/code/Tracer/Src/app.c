@@ -12,25 +12,25 @@ systemParams_stru systemParams_usr;
 extern float FilterData[SN];//滤波后的imu数据
 void HardwareInit()
 {
-    LteUartConfig();
-#if ROLE == 0
-    LtePowerManage(LTE_4G,ON);
+    //LteUartConfig();
+#if ROLE == LTE_4G
+    ;  //LtePowerManage(LTE_4G,ON);
 #else
-    LtePowerManage(LTE_NBIOT,ON);
+    ;  //LtePowerManage(LTE_NBIOT,ON);
 #endif
     sensors_Init();
 }
 
- uint32_t CpuID[3];
- uint32_t Lock_Code;
+uint32_t CpuID[3];
+uint32_t Lock_Code;
 void GetLockCode(void)
 {
 //获取CPU唯一ID
-CpuID[0]=*(volatile uint32_t*)(0x1ffff7e8);
-CpuID[1]=*(volatile uint32_t*)(0x1ffff7ec);
-CpuID[2]=*(volatile uint32_t*)(0x1ffff7f0);
+    CpuID[0]=*(volatile uint32_t*)(0x1fff7590);
+    CpuID[1]=*(volatile uint32_t*)(0x1fff7594);
+    CpuID[2]=*(volatile uint32_t*)(0x1fff7598);
 //加密算法,很简单的加密算法
-Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
+    Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
 }
 
 
@@ -42,6 +42,11 @@ void ParamsInit(void)
     FLashData_stru *FLashData_usr2;
     addr = 0;
     FLashData_usr2 = GetFLashStatus();
+    if(DEBUG_MODE == 1)
+    {
+        FLashData_usr2->LastWriteAddr = 0x7000;
+    }
+
     flash_read(addr++,&p,1);
     if(p!=0x5a)
     {
@@ -54,14 +59,28 @@ void ParamsInit(void)
         flash_write( addr++,&(FLashData_usr2->LastWriteAddr),1);
         flash_write( addr++,&(FLashData_usr2->SumLen),1);
 
-        systemParams_usr.DayPeriod = 1;
-        systemParams_usr.NightPeriod = 10;
-        systemParams_usr.Dhours = 6;
-        systemParams_usr.Nhours = 18;
-        flash_write( addr++,(uint32_t *)&(systemParams_usr.DayPeriod),1);
-        flash_write( addr++,(uint32_t *)&(systemParams_usr.NightPeriod),1);
-        flash_write( addr++,(uint32_t *)&(systemParams_usr.Dhours),1);
-        flash_write( addr++,(uint32_t *)&(systemParams_usr.Nhours),1);
+        if(DEBUG_MODE == 0)
+        {
+            systemParams_usr.DayPeriod = 1;
+            systemParams_usr.NightPeriod = 10;
+            systemParams_usr.Dhours = 6;
+            systemParams_usr.Nhours = 18;
+        }
+
+        uint32_t tmp;
+
+        tmp = systemParams_usr.DayPeriod;
+        flash_write( addr++,&(tmp),1);
+        tmp = systemParams_usr.NightPeriod;
+        flash_write( addr++,(uint32_t *)&(tmp),1);
+        tmp = systemParams_usr.Dhours;
+        flash_write( addr++,(uint32_t *)&(tmp),1);
+        tmp = systemParams_usr.Nhours;
+        flash_write( addr++,(uint32_t *)&(tmp),1);
+        if(DEBUG_MODE == 0)
+        {
+            EraseChip();
+        }
 
 
 
@@ -76,34 +95,48 @@ void ParamsInit(void)
 
         flash_read( addr++, &(FLashData_usr2->LastWriteAddr),1);
         flash_read( addr++,  &(FLashData_usr2->SumLen),1);
-		
+        uint32_t tmp;
 
-        flash_read( addr++,  (uint32_t *)&(systemParams_usr.DayPeriod),1);
-        flash_read( addr++, (uint32_t *) &(systemParams_usr.NightPeriod),1);
-        flash_read( addr++,  (uint32_t *)&(systemParams_usr.Dhours),1);
-        flash_read( addr++,  (uint32_t *)&(systemParams_usr.Nhours),1);
+
+        flash_read( addr++,&(tmp),1);
+        systemParams_usr.DayPeriod=tmp;
+
+        flash_read( addr++,(uint32_t *)&(tmp),1);
+        systemParams_usr.NightPeriod=tmp ;
+
+        flash_read( addr++,(uint32_t *)&(tmp),1);
+        systemParams_usr.Dhours=tmp  ;
+
+        flash_read( addr++,(uint32_t *)&(tmp),1);
+        systemParams_usr.Nhours =tmp ;
 
     }
-	GetLockCode();
+    GetLockCode();
 
 }
 void systmeReconfig()
 {
     uint32_t p;
     uint32_t addr;
-	p = 0x5a;  //写入标志
-	flash_init(0);
-	addr = 0;
-	flash_write(addr++, &p,1);
-	flash_write( addr++,&(GetFLashStatus()->LastReadAddr),1);
+    p = 0x5a;  //写入标志
+    flash_init(0);
+    addr = 0;
+    flash_write(addr++, &p,1);
+    flash_write( addr++,&(GetFLashStatus()->LastReadAddr),1);
 
-	flash_write( addr++,&(GetFLashStatus()->LastWriteAddr),1);
-	flash_write( addr++,&(GetFLashStatus()->SumLen),1);
-	
-	flash_write( addr++,(uint32_t *)&(systemParams_usr.DayPeriod),1);
-	flash_write( addr++,(uint32_t *)&(systemParams_usr.NightPeriod),1);
-	flash_write( addr++,(uint32_t *)&(systemParams_usr.Dhours),1);
-	flash_write( addr++,(uint32_t *)&(systemParams_usr.Nhours),1);
+    flash_write( addr++,&(GetFLashStatus()->LastWriteAddr),1);
+    flash_write( addr++,&(GetFLashStatus()->SumLen),1);
+
+    uint32_t tmp;
+
+    tmp = systemParams_usr.DayPeriod;
+    flash_write( addr++,&(tmp),1);
+    tmp = systemParams_usr.NightPeriod;
+    flash_write( addr++,(uint32_t *)&(tmp),1);
+    tmp = systemParams_usr.Dhours;
+    flash_write( addr++,(uint32_t *)&(tmp),1);
+    tmp = systemParams_usr.Nhours;
+    flash_write( addr++,(uint32_t *)&(tmp),1);
 
 
 }
@@ -120,7 +153,7 @@ unsigned char  LteAnaly(void)
         memcpy(pb,&(GetLteStru()->lterxbuffer[1]),GetLteStru()->rxSize-HEADDER_LEN);
         len = *(uint32_t *)GetLteStru()->lterxbuffer[LENINDEX]+DEVID_LEN+PAYLOAD_LEN;
         calCRC=CRC_Compute(pb,len-2);//计算所接收数据的CRC
-        recCRC=pb[len-1]|(((u16)pb[len-2])<<8);//接收到的CRC(低字节在前，高字节在后)
+        recCRC=pb[len-1]|(((u16)pb[len-2])<<8);//接收到的CRC(低字节在前，高字节在�?
         if(calCRC!=recCRC||(calCRC == 0))//CRC校验错误
         {
             result = 1;
@@ -135,10 +168,10 @@ unsigned char  LteAnaly(void)
             case 0x61:
                 if(pb[PARAMS_INDEX] == 0x31)
                 {
-					systemParams_usr.Dhours= pb[20];
-					systemParams_usr.DayPeriod = pb[21];
-					systemParams_usr.Nhours= pb[23];
-					systemParams_usr.NightPeriod= pb[24];
+                    systemParams_usr.Dhours= pb[20];
+                    systemParams_usr.DayPeriod = pb[21];
+                    systemParams_usr.Nhours= pb[23];
+                    systemParams_usr.NightPeriod= pb[24];
                     systmeReconfig();
                 }
                 break;
@@ -147,7 +180,7 @@ unsigned char  LteAnaly(void)
         }
     }
     free(pb);
-		return result;
+    return result;
 }
 
 
@@ -172,7 +205,7 @@ void payloadpack(unsigned char *p,uint32_t size)
     calCRC=CRC_Compute(pb+HEADDER_LEN,len);//计算所接收数据的CRC
     pb[len] = (unsigned char)calCRC;
     pb[len-1] = (unsigned char)(calCRC>>8);
-	
+
     LteUart_SendByte(LTE_4G,pb,len+HEADDER_LEN);
     free(pb);
 
@@ -181,130 +214,129 @@ void powersleep(void)
 {
 
 
-		GPIO_InitTypeDef GPIO_InitStruct = {0};
-	
-		/* GPIO Ports Clock Enable */
-	
-	
-	
-		/*Configure GPIO pins : DTR_Pin EN_3_3V_Pin SIM_PWR_Pin CTRL3__Pin
-								 CTRL1__Pin */
-		GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|
-							  GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|
-							  GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	
-		GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	
-	
-		GPIO_InitStruct.Pin =GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
-		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-	
-		GPIO_InitStruct.Pin = GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
-		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-		GPIO_InitStruct.Pin = GPIO_PIN_9;
-		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Pull = GPIO_NOPULL;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
-	
-		GPIO_InitStruct.Pin =GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
-		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-	
-		GPIO_InitStruct.Pin = GPIO_PIN_10;
-		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-		GPIO_InitStruct.Pin = GPIO_PIN_11;
-		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET);
-	
-		GPIO_InitStruct.Pin = GPIO_PIN_All;
-		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-	
-		GPIO_InitStruct.Pin = GPIO_PIN_11;
-		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Pull = GPIO_PULLUP;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
-	
-	
-	
-	
-	
-	
-	
-		GPIO_InitStruct.Pin =GPIO_PIN_All;
-		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
-	
-	
-		//HAL_GPIO_WritePin(GPIOC, EN_3_3V_Pin, GPIO_PIN_RESET);
-		//HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_RESET);
-	
-	
-	
-		__HAL_RCC_GPIOC_CLK_DISABLE();
-		__HAL_RCC_GPIOH_CLK_DISABLE();
-		__HAL_RCC_GPIOA_CLK_DISABLE();
-		__HAL_RCC_GPIOB_CLK_DISABLE();
-		__HAL_RCC_GPIOD_CLK_DISABLE();
-		__HAL_RCC_DMA1_CLK_DISABLE();
-		__HAL_RCC_DMA2_CLK_DISABLE();
-		__HAL_RCC_USART1_CLK_DISABLE();
-		__HAL_RCC_USART2_CLK_DISABLE();
-		__HAL_RCC_USART3_CLK_DISABLE();
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-	
-		 RTC_WAKEUP_Init(systemParams_usr.period);
-		__HAL_RCC_PWR_CLK_ENABLE();
-		HAL_SuspendTick();
-		__HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
-		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
-		//	 HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
-		HAL_PWR_EnterSTANDBYMode();
-		__HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
-		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
-		HAL_ResumeTick();
+    /* GPIO Ports Clock Enable */
+
+
+
+    /*Configure GPIO pins : DTR_Pin EN_3_3V_Pin SIM_PWR_Pin CTRL3__Pin
+    						 CTRL1__Pin */
+    GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|
+                          GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|
+                          GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+    GPIO_InitStruct.Pin =GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+
+    GPIO_InitStruct.Pin = GPIO_PIN_3;//CTRL1OUT11_Pin|MODE1_Pin|MODE2_Pin|CTRL1OUT21_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+
+    GPIO_InitStruct.Pin =GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+
+    GPIO_InitStruct.Pin = GPIO_PIN_10;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_11;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_All;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_11;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
+
+
+
+
+
+
+
+    GPIO_InitStruct.Pin =GPIO_PIN_All;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+
+
+    //HAL_GPIO_WritePin(GPIOC, EN_3_3V_Pin, GPIO_PIN_RESET);
+    //HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_RESET);
+
+
+
+    __HAL_RCC_GPIOC_CLK_DISABLE();
+    __HAL_RCC_GPIOH_CLK_DISABLE();
+    __HAL_RCC_GPIOA_CLK_DISABLE();
+    __HAL_RCC_GPIOB_CLK_DISABLE();
+    __HAL_RCC_GPIOD_CLK_DISABLE();
+    __HAL_RCC_DMA1_CLK_DISABLE();
+    __HAL_RCC_DMA2_CLK_DISABLE();
+    __HAL_RCC_USART1_CLK_DISABLE();
+    __HAL_RCC_USART2_CLK_DISABLE();
+    __HAL_RCC_USART3_CLK_DISABLE();
+
+
+    RTC_WAKEUP_Init(systemParams_usr.period);
+    __HAL_RCC_PWR_CLK_ENABLE();
+    HAL_SuspendTick();
+    __HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
+    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+    //	 HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+    HAL_PWR_EnterSTANDBYMode();
+    __HAL_RTC_WAKEUPTIMER_EXTI_CLEAR_FLAG();
+    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+    HAL_ResumeTick();
 
 }
 void DataUploadPeriod()
 {
-    unsigned char *p;
-    p = getRTC();
-    if(p[3] < systemParams_usr.Nhours&&p[3]>=systemParams_usr.Dhours)  //23.00-18.0
+
+    if(getRTCTime()->Hours < systemParams_usr.Nhours&&getRTCTime()->Hours>=systemParams_usr.Dhours)  //23.00-18.0
     {
         systemParams_usr.period = systemParams_usr.DayPeriod;
     }
@@ -316,19 +348,46 @@ void DataUploadPeriod()
 }
 void test()
 {
-   // SIMCOM_Register_Network();
-    //DataUploadPeriod();//数据上传周期控制	
+    // SIMCOM_Register_Network();
+    //DataUploadPeriod();//数据上传周期控制
+    HAL_GPIO_TogglePin(GPIOB, led_Pin);
+//   HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_SET);
+//
+//	/*Configure GPIO pin Output Level */
+//	HAL_GPIO_WritePin(GPIOB, EN_5V1_Pin, GPIO_PIN_SET);
+//
+//	/*Configure GPIO pin Output Level */
+//	HAL_GPIO_WritePin(GPIOC, EN_5V2_Pin, GPIO_PIN_SET);
+//   HAL_GPIO_WritePin(GPIOB, EN_3V8_Pin, GPIO_PIN_RESET);
+
+//  HAL_Delay(1000);
     snesors_process();//imu参数采集
+
+    /*Configure GPIO pin Output Level */
+    //HAL_GPIO_WritePin(GPIOB, EN_5V1_Pin|EN_3V8_Pin, GPIO_PIN_SET);
+    // HAL_Delay(1000);
+
+    flash_process();
+}
+uint32_t ledtick;
+void ledBLink()
+{
+
+
+    HAL_GPIO_TogglePin(GPIOB, led_Pin);
+ HAL_Delay(500);
+
+
 }
 void app_main()
 {
 
     uint32_t tick;
-    unsigned char *pb;
+    unsigned char pb[SUM_COUNT*PAYLOAD_COUNT];
     uint32_t len;
     SIMCOM_Register_Network();
     DataUploadPeriod();//数据上传周期控制
-
+    ledBLink();
     if(GetLteStru()->NetStatus == SIMCOM_NET_OK)//解析服务器指令
     {
 
@@ -340,16 +399,28 @@ void app_main()
         }
     }
 
-	/***********************数据上报机制*********************************/
+    /***********************数据上报机制*********************************/
     if((HAL_GetTick()-tick)>=(systemParams_usr.period*60000))//周期上报数据
     {
         tick = HAL_GetTick();
         snesors_process();//imu参数采集
         if(GetLteStru()->RetryConnectCount>MAX_CONNECT_COUNT )//断网数据存储
         {
-
+            //test();
+            // pb = malloc(GetFLashStatus()->SumLen);
+            FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)getGPS(),GPS_COUNT/4);
             FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,SENSORS_COUNT);
-            powersleep();
+            if(DEBUG_MODE == 1)
+            {
+                FlashReadOnebytes((GetFLashStatus()->LastReadAddr ),pb,GetFLashStatus()->SumLen,1);
+            }
+            else
+            {
+                powersleep();
+
+            }
+            // free(pb);
+            //
         }
 
         if(GetLteStru()->NetStatus == SIMCOM_NET_OK)
@@ -357,62 +428,40 @@ void app_main()
             if(GetFLashStatus()->SumLen !=0)//数据断网续传
             {
                 uint32_t i,len,len2,k;
-                uint8_t *pb;
-                pb = malloc(SUM_COUNT*100);
                 len = GetFLashStatus()->SumLen;
-                if(len<=SUM_COUNT*100)//数据分包
+                if(len<=SUM_COUNT*PAYLOAD_COUNT)//数据分包
                 {
-                    FlashRead4bytes((GetFLashStatus()->LastReadAddr ),pb,GetFLashStatus()->SumLen);
+                    FlashReadOnebytes((GetFLashStatus()->LastReadAddr ),pb,GetFLashStatus()->SumLen,1);
                     payloadpack(pb,GetFLashStatus()->SumLen);
-				    GetFLashStatus()->LastReadAddr = GetFLashStatus()->LastReadAddr + len;
-					if(GetFLashStatus()->LastReadAddr>DATA_MAX_ADDR)
-					{
-						GetFLashStatus()->LastReadAddr= GetFLashStatus()->LastReadAddr-DATA_MAX_ADDR;
-					}
-				    GetFLashStatus()->SumLen = 0;
+                    GetFLashStatus()->SumLen = 0;
                 }
                 else  //分包续传
                 {
-                    k = len/(SUM_COUNT*100);
-                    len2 = k *(SUM_COUNT*100);
+                    k = len/(SUM_COUNT*PAYLOAD_COUNT);
+                    len2 = k *(SUM_COUNT*PAYLOAD_COUNT);
                     for(i=0; i<k; i++)
                     {
-                        FlashRead4bytes((GetFLashStatus()->LastReadAddr),pb,SUM_COUNT*100);
-                        payloadpack(pb,SUM_COUNT*100);
-						GetFLashStatus()->LastReadAddr = GetFLashStatus()->LastReadAddr+
-							                             i*(SUM_COUNT*100);
-						if(GetFLashStatus()->LastReadAddr>DATA_MAX_ADDR)
-						{
-							GetFLashStatus()->LastReadAddr= GetFLashStatus()->LastReadAddr-DATA_MAX_ADDR;
-						}
+                        FlashReadOnebytes((GetFLashStatus()->LastReadAddr),pb,SUM_COUNT*PAYLOAD_COUNT,1);
+                        payloadpack(pb,SUM_COUNT*PAYLOAD_COUNT);
 
                     }
 
-                    FlashRead4bytes((GetFLashStatus()->LastReadAddr),pb,len-len2);
+                    FlashReadOnebytes((GetFLashStatus()->LastReadAddr),pb,len-len2,1);
                     payloadpack(pb,len-len2);
-				    GetFLashStatus()->LastReadAddr = GetFLashStatus()->LastReadAddr + len-len2;
-
-					if(GetFLashStatus()->LastReadAddr>DATA_MAX_ADDR)
-					{
-						GetFLashStatus()->LastReadAddr= GetFLashStatus()->LastReadAddr-DATA_MAX_ADDR;
-					}
-				    GetFLashStatus()->SumLen = 0;
+                    GetFLashStatus()->SumLen = 0;
                 }
-                free(pb);
-				systmeReconfig();
+                systmeReconfig();
             }
             else //定期上传
             {
-                pb = malloc(SUM_COUNT);//每组数据包含60个gps数据，12个imu数据
                 memcpy(pb+len,getGPS(),GPS_COUNT);
                 len = len +GPS_COUNT;
                 memcpy(pb+len,FilterData,SENSORS_COUNT);
                 payloadpack(pb,SUM_COUNT);
-                free(pb);
             }
             powersleep();
         }
     }
-  /***************************数据上报机制结束***********************************/
+    /***************************数据上报机制结束***********************************/
 
 }

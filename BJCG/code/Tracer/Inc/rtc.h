@@ -14,8 +14,8 @@ void MX_RTC_Init2(void);
 u8 RTC_Init(void);              		//RTC≥ı ºªØ
 void RtcIT_ctrl(unsigned char flag);
 void  RTC_WAKEUP_Init(uint32_t p);
-unsigned char *getRTC(void);
 void RTC_Calibration(unsigned char *p);
-
+RTC_TimeTypeDef *getRTCTime(void);
+RTC_DateTypeDef *getRTCDATE(void);
 #endif
 
