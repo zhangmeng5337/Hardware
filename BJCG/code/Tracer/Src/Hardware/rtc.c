@@ -74,6 +74,27 @@ u8 RTC_Init(void)
     return 0;
 }
 
+u8 RTC_InitSetting(unsigned char *p)
+{      
+
+	
+	hrtc.Instance=RTC;
+    hrtc.Init.HourFormat=RTC_HOURFORMAT_24;//RTC设置为24小时格式 
+    hrtc.Init.AsynchPrediv=0X7F;           //RTC异步分频系数(1~0X7F)
+    hrtc.Init.SynchPrediv=0XFF;            //RTC同步分频系数(0~7FFF)   
+    hrtc.Init.OutPut=RTC_OUTPUT_DISABLE;     
+    hrtc.Init.OutPutPolarity=RTC_OUTPUT_POLARITY_HIGH;
+    hrtc.Init.OutPutType=RTC_OUTPUT_TYPE_OPENDRAIN;
+    if(HAL_RTC_Init(&hrtc)!=HAL_OK) return 2;
+     // HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5051);//标记已经初始化过了
+    //if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0X5050)//是否第一次配置
+    { 
+        RTC_Set_Time(p[3],p[4],p[5],RTC_HOURFORMAT12_PM);	        //设置时间 ,根据实际时间修改
+		RTC_Set_Date(p[0],p[1],p[2],7);		                    //设置日期
+        HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5050);//标记已经初始化过了
+    }
+    return 0;
+}
 
 
 RTC_STRU rtc_usr;
@@ -156,7 +177,35 @@ void RTC_Calibration(unsigned char *p)
 {
 	if(rtc_usr.calibration == 0)
 	{
+	    unsigned char i;
+		unsigned char pbuff[6];
+		i = 9;
+	    p[i++] = p[i]-0x30;//yearH
+	    p[i++] = p[i]-0x30;//yearL
+		i++;               //  '/'
+	    p[i++] = p[i]-0x30; //monthH
+	    p[i++] = p[i]-0x30;//monthL
+		i++;               // '/'
+	    p[i++] = p[i]-0x30;//date H
+	    p[i++] = p[i]-0x30;//date L
+        i++;               // 'L'
+	    p[i++] = p[i]-0x30;//hours H
+	    p[i++] = p[i]-0x30;//hours L
+        i++;		 //':'
+ 	    p[i++] = p[i]-0x30;//minute H
+	    p[i++] = p[i]-0x30;//minute L
+        i++;		 //':'
+	    p[i++] = p[i]-0x30;//seconds H
+	    p[i++] = p[i]-0x30;//seconds L
+        i++;		 //'+'
+        i = 0;
+		pbuff[i++] = p[i]*10+p[i+1];//year
+		pbuff[i++] = p[i]*10+p[i+1];//month
+		pbuff[i++] = p[i]*10+p[i+1];//date
+		pbuff[i++] = p[i]*10+p[i+1];//hours
+		pbuff[i++] = p[i]*10+p[i+1];//minutes
+		pbuff[i++] = p[i]*10+p[i+1];//seconds		
 		rtc_usr.calibration =1;
-		RTC_Init();
+		RTC_InitSetting(pbuff);
 	}
 }

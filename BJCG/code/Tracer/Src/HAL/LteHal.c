@@ -106,7 +106,7 @@ void set_NetStatus(unsigned char flag)
 }
 unsigned char * GetLteTime()
 {
-    if (sendCommand(LTE_4G,"AT+CCLK\r\n", "AT+CCLK=", 50000, 3,1) == Success)
+    if (sendCommand(LTE_4G,"AT+CCLK?\r\n", "AT+CCLK=", 50000, 3,1) == Success)
     {
         return lte_usr.lterxbuffer;
     }
@@ -131,7 +131,8 @@ void SIMCOM_Register_Network()
         SIMCOM_TimeOut_Count = 0;
         if(lte_usr.RetryConnectCount <= MAX_CONNECT_COUNT)
             lte_usr.RetryConnectCount ++;
-        //LtePowerManage(LTE_4G,ON);                   //复位重启
+		if(DEBUG_MODE == 0)
+           LtePowerManage(LTE_4G,ON);                   //复位重启
         lte_usr.NetStatus=SIMCOM_POWER_ON;       //状态机复位
     }
     break;

@@ -4,8 +4,8 @@
 #include "main.h"
 #define FLASH_WAITETIME  50000          //FLASH等待超时时间
 #define FLASH_BASE            (0x08000000UL) /*!< FLASH(up to 128 KB) base address */
-#define FLASH_END             (0x0807FFFFUL) /*!< FLASH END address                */
-#define FLASH_BANK1_END       (0x0807FFFFUL) /*!< FLASH END address of bank1       */
+//#define FLASH_END             (0x0807FFFFUL) /*!< FLASH END address                */
+//#define FLASH_BANK1_END       (0x0807FFFFUL) /*!< FLASH END address of bank1       */
 
 /* Base address of the Flash sectors */
 #define ADDR_FLASH_SECTOR_0     ((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */

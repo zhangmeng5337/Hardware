@@ -122,8 +122,8 @@ void InsertDummyCycle( uint8 dummy_cycle )
  */
 void SendByte( uint8 byte_value, uint8 transfer_type )
 {
-    uint16 i;
-    uint8 cycle_cnt;
+
+
     HAL_SPI_Transmit(&hspi1, &byte_value,1, 100);
 }
 /*

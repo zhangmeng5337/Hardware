@@ -31,7 +31,7 @@ unsigned char FlashDataStore2(uint32_t addr,uint8_t *pb,uint32_t len);
 void flash_process()
 {
     /* Setting flash access mode: SPI or QPI */
-    uint8 QPI_Enable = FALSE;
+
 
     //FLASH_INIT();
     //Initial_Spi();
@@ -197,7 +197,7 @@ uint8 FlashReadWrite_Test( uint8 QPI_Enable )
 //    else
 //        return TRUE;
 
-
+return 0;
 }
 void FlashwriteOnebytes(uint32_t addr,uint8_t *pb,uint32_t len)
 {
@@ -206,8 +206,7 @@ void FlashwriteOnebytes(uint32_t addr,uint8_t *pb,uint32_t len)
     uint16   error_cnt = 0;
     if(len != 0)
     {
-        uint32_t pagecount,addrTmp,writelen,index,i,pageOffsetaddr,pageaddrT;
-        unsigned char addrL;
+        uint32_t pagecount,addrTmp,writelen,index,i,pageOffsetaddr;
         index = 0;
         //pagecount = (addr+len);
         /***********计算首地址在本页中的偏移地址****************/
@@ -382,7 +381,7 @@ unsigned char FlashDataStore(uint32_t addr,uint32_t *pb,uint32_t len)
 
 
 
-    uint32_t sectorsNO,sectorsAddr,lenNoOverWrite,writeLen,writeAddr,len_tmp;
+    uint32_t sectorsNO,sectorsAddr,lenNoOverWrite,writeLen,writeAddr;
     unsigned char *pbuf;
     pbuf = (unsigned char *)pb;
 
@@ -437,7 +436,7 @@ unsigned char FlashDataStore(uint32_t addr,uint32_t *pb,uint32_t len)
 
     else
         return 1;
-    FLashData_usr.SumLen = FLashData_usr.SumLen +1;//数据帧数量
+    //FLashData_usr.SumLen = FLashData_usr.SumLen +1;//数据帧数量
 }
 /*unsigned char FlashDataStore2(uint32_t addr,uint8_t *pb,uint32_t len)
 {

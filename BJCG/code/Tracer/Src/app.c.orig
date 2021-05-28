@@ -8,16 +8,22 @@
 #include "crc.h"
 #include "rtc.h"
 systemParams_stru systemParams_usr;
-
+void payloadpack(unsigned char *p,uint32_t size);
 extern float FilterData[SN];//滤波后的imu数据
 void HardwareInit()
 {
     //LteUartConfig();
+if(DEBUG_MODE == 0)
+{
 #if ROLE == LTE_4G
-    ;  //LtePowerManage(LTE_4G,ON);
+
+LtePowerManage(LTE_4G,ON);
 #else
-   ;  //LtePowerManage(LTE_NBIOT,ON);
+LtePowerManage(LTE_NBIOT,ON);
 #endif
+
+}
+
     sensors_Init();
 }
 
@@ -95,20 +101,20 @@ void ParamsInit(void)
 
         flash_read( addr++, &(FLashData_usr2->LastWriteAddr),1);
         flash_read( addr++,  &(FLashData_usr2->SumLen),1);
-		uint32_t tmp;
+        uint32_t tmp;
 
-       
+
         flash_read( addr++,&(tmp),1);
-		systemParams_usr.DayPeriod=tmp;
-        
+        systemParams_usr.DayPeriod=tmp;
+
         flash_read( addr++,(uint32_t *)&(tmp),1);
-		systemParams_usr.NightPeriod=tmp ;
-        
+        systemParams_usr.NightPeriod=tmp ;
+
         flash_read( addr++,(uint32_t *)&(tmp),1);
-		systemParams_usr.Dhours=tmp  ;
-       
+        systemParams_usr.Dhours=tmp  ;
+
         flash_read( addr++,(uint32_t *)&(tmp),1);
-		systemParams_usr.Nhours =tmp ;
+        systemParams_usr.Nhours =tmp ;
 
     }
     GetLockCode();
@@ -127,16 +133,16 @@ void systmeReconfig()
     flash_write( addr++,&(GetFLashStatus()->LastWriteAddr),1);
     flash_write( addr++,&(GetFLashStatus()->SumLen),1);
 
-        uint32_t tmp;
+    uint32_t tmp;
 
-        tmp = systemParams_usr.DayPeriod;
-        flash_write( addr++,&(tmp),1);
-        tmp = systemParams_usr.NightPeriod;
-        flash_write( addr++,(uint32_t *)&(tmp),1);
-        tmp = systemParams_usr.Dhours;
-        flash_write( addr++,(uint32_t *)&(tmp),1);
-        tmp = systemParams_usr.Nhours;
-        flash_write( addr++,(uint32_t *)&(tmp),1);
+    tmp = systemParams_usr.DayPeriod;
+    flash_write( addr++,&(tmp),1);
+    tmp = systemParams_usr.NightPeriod;
+    flash_write( addr++,(uint32_t *)&(tmp),1);
+    tmp = systemParams_usr.Dhours;
+    flash_write( addr++,(uint32_t *)&(tmp),1);
+    tmp = systemParams_usr.Nhours;
+    flash_write( addr++,(uint32_t *)&(tmp),1);
 
 
 }
@@ -163,7 +169,12 @@ unsigned char  LteAnaly(void)
             switch(pb[CMD_INDEX])
             {
             case 0x60:
-
+            	{
+				                memcpy(pb+len,getGPS(),GPS_COUNT);
+                len = len +GPS_COUNT;
+                memcpy(pb+len,FilterData,SENSORS_COUNT);
+                payloadpack(pb,SUM_COUNT);
+			}
                 break;
             case 0x61:
                 if(pb[PARAMS_INDEX] == 0x31)
@@ -372,10 +383,10 @@ void test()
 uint32_t ledtick;
 void ledBLink()
 {
-     
 
-        HAL_GPIO_TogglePin(GPIOB, led_Pin);
 
+    HAL_GPIO_TogglePin(GPIOB, led_Pin);
+ HAL_Delay(500);
 
 
 }
@@ -385,7 +396,6 @@ void app_main()
     uint32_t tick;
     unsigned char pb[SUM_COUNT*PAYLOAD_COUNT];
     uint32_t len;
-	test();
     SIMCOM_Register_Network();
     DataUploadPeriod();//数据上传周期控制
     ledBLink();
@@ -409,19 +419,17 @@ void app_main()
         {
             //test();
             // pb = malloc(GetFLashStatus()->SumLen);
-           // FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)getGPS(),GPS_COUNT/4);
-           FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,SENSORS_COUNT);
+            FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)getGPS(),GPS_COUNT/4);
+            FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,SENSORS_COUNT);
             if(DEBUG_MODE == 1)
             {
                 FlashReadOnebytes((GetFLashStatus()->LastReadAddr ),pb,GetFLashStatus()->SumLen,1);
             }
-			else
-			{
-			 powersleep();
+            else
+            {
+                powersleep();
 
-			}
-
-
+            }
             // free(pb);
             //
         }

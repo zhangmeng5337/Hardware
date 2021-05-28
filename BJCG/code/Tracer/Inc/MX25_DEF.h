@@ -96,7 +96,7 @@ typedef    unsigned char     BOOL;
 #ifdef MCU8051
 
 #define    CLK_PERIOD             20     // unit: ns
-#define    Min_Cycle_Per_Inst     12     // use 12T 8051
+//#define    Min_Cycle_Per_Inst     12     // use 12T 8051
 #define    One_Loop_Inst          8      // instruction count of one loop (estimate)
 
 /*GPIO to SPI port mapping ( PORT1 )

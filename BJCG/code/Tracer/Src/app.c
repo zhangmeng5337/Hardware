@@ -8,16 +8,23 @@
 #include "crc.h"
 #include "rtc.h"
 systemParams_stru systemParams_usr;
-
+void payloadpack(unsigned char *p,uint32_t size);
 extern float FilterData[SN];//滤波后的imu数据
 void HardwareInit()
 {
+	  RTC_Init();
     //LteUartConfig();
+    if(DEBUG_MODE == 0)
+    {
 #if ROLE == LTE_4G
-    ;  //LtePowerManage(LTE_4G,ON);
+
+        LtePowerManage(LTE_4G,ON);
 #else
-    ;  //LtePowerManage(LTE_NBIOT,ON);
+        LtePowerManage(LTE_NBIOT,ON);
 #endif
+
+    }
+
     sensors_Init();
 }
 
@@ -26,10 +33,12 @@ uint32_t Lock_Code;
 void GetLockCode(void)
 {
 //获取CPU唯一ID
+
     CpuID[0]=*(volatile uint32_t*)(0x1fff7590);
     CpuID[1]=*(volatile uint32_t*)(0x1fff7594);
     CpuID[2]=*(volatile uint32_t*)(0x1fff7598);
 //加密算法,很简单的加密算法
+
     Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
 }
 
@@ -51,7 +60,7 @@ void ParamsInit(void)
     if(p!=0x5a)
     {
         systemParams_usr.period = 120000;
-        p = 0x5a;  //写入标志
+        p = 0x5a; //写入标志
         flash_init(0);
         addr = 0;
         flash_write(addr++, &p,1);
@@ -81,10 +90,6 @@ void ParamsInit(void)
         {
             EraseChip();
         }
-
-
-
-
     }
     else
     {
@@ -109,7 +114,6 @@ void ParamsInit(void)
 
         flash_read( addr++,(uint32_t *)&(tmp),1);
         systemParams_usr.Nhours =tmp ;
-
     }
     GetLockCode();
 
@@ -118,7 +122,7 @@ void systmeReconfig()
 {
     uint32_t p;
     uint32_t addr;
-    p = 0x5a;  //写入标志
+    p = 0x5a;  //дɫҪ־
     flash_init(0);
     addr = 0;
     flash_write(addr++, &p,1);
@@ -137,8 +141,6 @@ void systmeReconfig()
     flash_write( addr++,(uint32_t *)&(tmp),1);
     tmp = systemParams_usr.Nhours;
     flash_write( addr++,(uint32_t *)&(tmp),1);
-
-
 }
 unsigned char  LteAnaly(void)
 {
@@ -153,7 +155,7 @@ unsigned char  LteAnaly(void)
         memcpy(pb,&(GetLteStru()->lterxbuffer[1]),GetLteStru()->rxSize-HEADDER_LEN);
         len = *(uint32_t *)GetLteStru()->lterxbuffer[LENINDEX]+DEVID_LEN+PAYLOAD_LEN;
         calCRC=CRC_Compute(pb,len-2);//计算所接收数据的CRC
-        recCRC=pb[len-1]|(((u16)pb[len-2])<<8);//接收到的CRC(低字节在前，高字节在�?
+        recCRC=pb[len-1]|(((u16)pb[len-2])<<8);//接收到的CRC(低字节在前
         if(calCRC!=recCRC||(calCRC == 0))//CRC校验错误
         {
             result = 1;
@@ -163,8 +165,13 @@ unsigned char  LteAnaly(void)
             switch(pb[CMD_INDEX])
             {
             case 0x60:
-
-                break;
+            {
+                memcpy(pb+len,getGPS(),GPS_COUNT);
+                len = len +GPS_COUNT;
+                memcpy(pb+len,FilterData,SENSORS_COUNT);
+                payloadpack(pb,SUM_COUNT);
+            }
+            break;
             case 0x61:
                 if(pb[PARAMS_INDEX] == 0x31)
                 {
@@ -351,20 +358,20 @@ void test()
     // SIMCOM_Register_Network();
     //DataUploadPeriod();//数据上传周期控制
     HAL_GPIO_TogglePin(GPIOB, led_Pin);
-//   HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_SET);
-//
-//	/*Configure GPIO pin Output Level */
-//	HAL_GPIO_WritePin(GPIOB, EN_5V1_Pin, GPIO_PIN_SET);
-//
-//	/*Configure GPIO pin Output Level */
-//	HAL_GPIO_WritePin(GPIOC, EN_5V2_Pin, GPIO_PIN_SET);
-//   HAL_GPIO_WritePin(GPIOB, EN_3V8_Pin, GPIO_PIN_RESET);
+   HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_SET);
 
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(GPIOB, EN_5V1_Pin, GPIO_PIN_SET);
+
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(GPIOC, EN_5V2_Pin, GPIO_PIN_SET);
+   HAL_GPIO_WritePin(GPIOB, EN_3V8_Pin, GPIO_PIN_RESET);
+DataUploadPeriod();//数据上传周期控制
 //  HAL_Delay(1000);
     snesors_process();//imu参数采集
 
     /*Configure GPIO pin Output Level */
-    //HAL_GPIO_WritePin(GPIOB, EN_5V1_Pin|EN_3V8_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, EN_5V1_Pin|EN_3V8_Pin, GPIO_PIN_SET);
     // HAL_Delay(1000);
 
     flash_process();
@@ -375,7 +382,7 @@ void ledBLink()
 
 
     HAL_GPIO_TogglePin(GPIOB, led_Pin);
- HAL_Delay(500);
+    HAL_Delay(500);
 
 
 }
@@ -388,6 +395,7 @@ void app_main()
     SIMCOM_Register_Network();
     DataUploadPeriod();//数据上传周期控制
     ledBLink();
+
     if(GetLteStru()->NetStatus == SIMCOM_NET_OK)//解析服务器指令
     {
 
@@ -399,7 +407,7 @@ void app_main()
         }
     }
 
-    /***********************数据上报机制*********************************/
+     /***********************数据上报机制*********************************/
     if((HAL_GetTick()-tick)>=(systemParams_usr.period*60000))//周期上报数据
     {
         tick = HAL_GetTick();
@@ -463,5 +471,6 @@ void app_main()
         }
     }
     /***************************数据上报机制结束***********************************/
+
 
 }
