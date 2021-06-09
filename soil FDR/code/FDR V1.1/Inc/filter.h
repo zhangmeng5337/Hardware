@@ -23,8 +23,7 @@ typedef struct{
 	unsigned char calibrationFlag;
 	unsigned int samplecount;
 }ratio_stru;
-ratio_stru *CalibrationRatio(float ahumid,float chumid);
-ratio_stru *getRatio(void);
+
 //uint32_t average_filter(uint32_t *pb) ;
 float average_filter(float *pb,unsigned int count);  //中值滤波+均值滤波
 float average_filterFloat(float *pb,unsigned int sampleCount);  //中值滤波+均值滤波;

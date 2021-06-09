@@ -1,4 +1,4 @@
-/*
+﻿/*
  ******************************************************************************
  * @file    read_data_simple.c
  * @author  Sensors Software Solution Team
@@ -146,9 +146,15 @@ unsigned char lis2mdl_init()
 	 lis2mdl_offset_temp_comp_set(&dev_ctx1, PROPERTY_ENABLE);
 	 /* Set device in continuous mode */
 	 lis2mdl_operating_mode_set(&dev_ctx1, LIS2MDL_CONTINUOUS_MODE);
+	 
 	 return 0;
 
 }
+void lis2mdlPowerDown()
+{
+	lis2mdl_operating_mode_set(&dev_ctx1, LIS2MDL_POWER_DOWN);
+}
+
 void lis2mdl_read_data_simple(void)
 {
 

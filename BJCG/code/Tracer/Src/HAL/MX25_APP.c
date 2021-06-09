@@ -214,7 +214,7 @@ void FlashwriteOnebytes(uint32_t addr,uint8_t *pb,uint32_t len)
         addrTmp = addr;
         pageOffsetaddr = pagecount*FLASH_PAGESIZE;
         pageOffsetaddr = addrTmp-pageOffsetaddr;
-
+       
         if((pageOffsetaddr+len)>FLASH_PAGESIZE)//¿çÒ³Ð´
         {
             pagecount = pageOffsetaddr+len;
@@ -300,7 +300,24 @@ void FlashwriteOnebytes(uint32_t addr,uint8_t *pb,uint32_t len)
 
 
 }
+void PowerDown()
+{
+    FlashStatus  flash_state = {0};
+    uint16   error_cnt = 0;
+    uint8   st_reg = 0;
+	 CMD_DP( &flash_state );
 
+
+}
+void ExitPD()
+{
+    FlashStatus  flash_state = {0};
+    uint16   error_cnt = 0;
+    uint8   st_reg = 0;
+
+	 CMD_RDP( &flash_state );
+
+}
 uint8 FlashReadOnebytes(uint32_t addr,uint8_t *pb,uint32_t len,unsigned char recordFlag)
 {
     FlashStatus  flash_state = {0};

@@ -138,10 +138,10 @@ float SoilHumid(unsigned char status,float AdcValueVol)
     float tmp3,v3,v2,v1;
     static float last_temp,kk;
     float a0,a1,a2,a3;
-    a0 = 1110;
-    a1 = -2610;
-    a2 = 2091.9;
-    a3 = -519.5;
+    a0 = 1438.7;
+    a1 = -5972.1;
+    a2 = 8318;
+    a3 = -3727;
    AdcValueVol =DigitRound(AdcValueVol,3);
     v3 = AdcValueVol*AdcValueVol;
     v3 = v3*AdcValueVol;
@@ -160,7 +160,7 @@ float SoilHumid(unsigned char status,float AdcValueVol)
         factor_usr.humid=a0*log(exp(AdcValueVol));//校准前湿度输出
         factor_usr.humid=factor_usr.humid+a1;
     }*/
-    factor_usr.humid=factor_usr.humid/100;
+    //factor_usr.humid=factor_usr.humid/100;
     if(factor_usr.status == CALIBRATION)//校准后湿度输出
     {
 
@@ -177,14 +177,29 @@ float SoilHumid(unsigned char status,float AdcValueVol)
        // else
             factor_usr.humid = humid_cal;
     }
+    else
+    {
+		factor_usr.humid=255;
+	}
 
 
-    /* if(AdcValueVol<0.63)
-     {
-         factor_usr.humid = 0;
-         last_temp = 0;
-     }*/
+	/*	if(factor_usr.humid>=485)
+		{
+			a0 = 90574.12;
+			a1 = -555268.8;
+			a2 = 1135048.85;
+			a3 = -772900.04;
+		    AdcValueVol =DigitRound(AdcValueVol,3);
+			v3 = AdcValueVol*AdcValueVol;
+			v3 = v3*AdcValueVol;
+			v2 = AdcValueVol*AdcValueVol;
+			v1= AdcValueVol;
 
+			factor_usr.humid=a0*v3;//校准前湿度输出
+			factor_usr.humid=factor_usr.humid+a1*v2;
+			factor_usr.humid=factor_usr.humid+a2*v1;
+			factor_usr.humid=factor_usr.humid+a3;
+		}*/
     last_temp = last_temp +factor_usr.humid;
     index++;
     tmp3= factor_usr.humid;//GlideFilterAD2(factor_usr.humid,index);
@@ -195,17 +210,18 @@ float SoilHumid(unsigned char status,float AdcValueVol)
     /************滤波去抖动，防止数据过于频繁跳动****************/
 
 
-    result = (unsigned int)(tmp3*1000);
+    result = (unsigned int)(tmp3);
     factor_usr.humid = result;
-		#if DEBUG == 0
+
+		#if DEBUG == 1
 		{
 			if(factor_usr.humid>=1000)
 					factor_usr.humid = 1000;
-			if(factor_usr.humid<0)
+			if(tmp3<0)
 					factor_usr.humid = 0;
-			if(AdcValueVol/V_Nom<=1.03&&AdcValueVol/V_Nom>=0.97)
-			
+			if(V_Nom<=1.01)	
 			{
+				  if(factor_usr.humid<=0)
 					factor_usr.humid = 0;
 					last_temp = 0;
 			}		

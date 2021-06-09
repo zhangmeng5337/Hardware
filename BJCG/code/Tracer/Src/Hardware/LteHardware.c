@@ -1,4 +1,4 @@
-#include "LteHardware.h"
+Ôªø#include "LteHardware.h"
 #include "LteHal.h"
 #include "gps.h"
 #include "string.h"
@@ -7,11 +7,11 @@ extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 
 extern DMA_HandleTypeDef hdma_usart1_rx;
-extern DMA_HandleTypeDef hdma_usart2_rx;
+
 extern DMA_HandleTypeDef hdma_usart3_rx;
  char  USART_RX_BUF[USART_REC_LEN]; //Ω” ’ª∫≥Â,◊Ó¥ÛUSART_REC_LEN∏ˆ◊÷Ω⁄.ƒ©◊÷Ω⁄Œ™ªª––∑˚ 
  uint16_t USART_RX_STA;         		//Ω” ’◊¥Ã¨±Íº«
- unsigned char gps_res;
+uint8_t gps_res;
  
 void LtePowerManage(unsigned char moduleType,unsigned char powerCtrl)
 {
@@ -24,8 +24,7 @@ void LtePowerManage(unsigned char moduleType,unsigned char powerCtrl)
             HAL_GPIO_WritePin(GPIOA, SIM_PWR_Pin, GPIO_PIN_RESET);//4gø™ª˙
             HAL_GPIO_WritePin(GPIOA, SIM_PWR_Pin, GPIO_PIN_SET);
             HAL_Delay(1000);
-            HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_RESET);
-
+            HAL_GPIO_WritePin(GPIOA, SIM_PWR_Pin, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(GPIOC, POWER_CTRL_GPS_Pin, GPIO_PIN_SET);//ø™gps
         }
         else
@@ -38,14 +37,15 @@ void LtePowerManage(unsigned char moduleType,unsigned char powerCtrl)
     {
         if(powerCtrl == ON)
         {
+					 HAL_GPIO_WritePin(GPIOB,EN_3V8_Pin, GPIO_PIN_RESET);//lteµÁ‘¥ πƒ‹
             HAL_GPIO_WritePin(GPIOB,EN_3V8_Pin, GPIO_PIN_SET);//lteµÁ‘¥ πƒ‹
-
+						HAL_GPIO_WritePin(GPIOC, POWER_CTRL_GPS_Pin, GPIO_PIN_SET);//
             HAL_GPIO_WritePin(GPIOA, SIM_PWR_Pin, GPIO_PIN_RESET);//4gø™ª˙
             HAL_GPIO_WritePin(GPIOA, SIM_PWR_Pin, GPIO_PIN_SET);
             HAL_Delay(1000);
-            HAL_GPIO_WritePin(GPIOC, SIM_PWR_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(GPIOA, SIM_PWR_Pin, GPIO_PIN_RESET);
 
-            HAL_GPIO_WritePin(GPIOC, POWER_CTRL_GPS_Pin, GPIO_PIN_RESET);//
+            
         }
         else
         {
@@ -69,13 +69,13 @@ void LteUart_SendStr(unsigned char moduleType,uint8_t *str)
     if(moduleType == LTE_4G)
     {
 
-        HAL_UART_Transmit(&huart2, str, len, 1000);
+        HAL_UART_Transmit(&huart1, str, len, 1000);
 
     }
     else if((moduleType == LTE_NBIOT))
     {
 
-        HAL_UART_Transmit(&huart2, str, len, 1000);
+        HAL_UART_Transmit(&huart1, str, len, 1000);
     }
     else
     {
@@ -89,13 +89,13 @@ void LteUart_SendByte(unsigned char moduleType,uint8_t *str,uint32_t len)
     if(moduleType == LTE_4G)
     {
 
-        HAL_UART_Transmit(&huart2, str, len, 1000);
+        HAL_UART_Transmit(&huart1, str, len, 1000);
 
     }
     else if((moduleType == LTE_NBIOT))
     {
 
-        HAL_UART_Transmit(&huart2, str, len, 1000);
+        HAL_UART_Transmit(&huart1, str, len, 1000);
     }
     else
     {
@@ -113,11 +113,16 @@ void LteUartConfig(void)
     HAL_UART_Receive_DMA(&huart1,GetLteStru()->lterxbuffer,BUFFERSIZE);
 
     __HAL_UART_CLEAR_IDLEFLAG(&huart2);
-    __HAL_UART_DISABLE_IT(&huart2, UART_IT_IDLE);	// πƒ‹ø’œ–÷–∂œ
+    __HAL_UART_DISABLE_IT(&huart2, UART_IT_RXNE);	// πƒ‹ø’œ–÷–∂œ
 
-    HAL_UART_DMAStop(&huart2);
-    __HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);	// πƒ‹ø’œ–÷–∂œ
-    HAL_UART_Receive_DMA(&huart2,GetLteStru()->gpsrxbuffer,BUFFERSIZE);
+
+    __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);	// πƒ‹ø’œ–÷–∂œ
+    HAL_UART_Receive_IT(&huart2,&gps_res,1);
+	
+
+
+
+	
 }
 void USART1_CLR_Buf(void)
 {
@@ -144,13 +149,13 @@ void Lte_RxCpltCallback(unsigned char flag)
     }
     else
     {
-        __HAL_UART_CLEAR_IDLEFLAG(&huart2);
-        temp=huart2.Instance->ISR;
-        temp=huart2.Instance->RDR;
-        GetLteStru()->rxSize = BUFFERSIZE -hdma_usart2_rx.Instance->CNDTR;
-        GetLteStru()->GpsReceivedFlag = 1;
-        HAL_UART_DMAStop(&huart2);
-        HAL_UART_Receive_DMA(&huart2,GetLteStru()->gpsrxbuffer,BUFFERSIZE);
+//        __HAL_UART_CLEAR_IDLEFLAG(&huart2);
+//        temp=huart2.Instance->ISR;
+//        temp=huart2.Instance->RDR;
+//        GetLteStru()->rxSize = BUFFERSIZE -hdma_usart2_rx.Instance->CNDTR;
+//        GetLteStru()->GpsReceivedFlag = 1;
+//        HAL_UART_DMAStop(&huart2);
+//        HAL_UART_Receive_DMA(&huart2,GetLteStru()->gpsrxbuffer,BUFFERSIZE);
     }
 
 }
@@ -171,6 +176,44 @@ unsigned char UART3_ReceiveByte()
 	HAL_UART_Receive_IT(&huart2, &gps_res, 1); 	  // ÷ÿ–¬◊¢≤·“ª¥Œ£¨“™≤ª»ªœ¬¥Œ ’≤ªµΩ¡À
 	return result;
 }
+ static unsigned char gps_status;
+unsigned char gps_powerON()
+{
+unsigned char moduleType;
+	 #if ROLE == 0
+    moduleType = LTE_4G;
+#else
+    moduleType = LTE_NBIOT;
+#endif
+  
+	switch(gps_status)
+	{
+
+	case 0:
+		{	 if(sendCommand(moduleType,"AT+SGNSCFG=\"NMEAOUTPORT\",2,9600\r\n", "OK\r\n", 3000, 1,0) == Success) 		//if(sendCommand("AT+CGNSINF\r\n", "OK\r\n", 5000, 3) == Success)
+     	
+			//if(sendCommand("AT+SGNSCFG=\"NMEAOUTPORT\",2£¨115200\r\n", "OK\r\n", 100000, 1) == Success) 	 
+			{
+				gps_status = 1;
+			}
+		}
+		break;
+		case 1:
+		{	   
+      if(sendCommand(moduleType,"AT+SGNSCMD=2,1000,0,1\r\n","OK\r\n", 3000, 1,0) == Success)
+   // if(sendCommand(moduleType,"AT+CGNSPWR=1\r\n", "OK\r\n", 1000, 1,0) == Success)
+			//if(sendCommand("AT+CGNSPWR=1\r\n", "OK\r\n", 100000, 1) == Success) 	 
+			{
+				gps_status = 3;
+				return 0;
+			}
+		}
+		break;
+		
+	}
+    return 1;
+}
+
 //Ω” ’◊¥Ã¨
 //bit15£¨	Ω” ’ÕÍ≥…±Í÷æ
 //bit14£¨	Ω” ’µΩ0x0d
@@ -181,15 +224,15 @@ _SaveData Save_Data;
 void Gps_RxCpltCallback()
 {
    uint8_t Res;
-    Res =UART3_ReceiveByte();//(USART1->DR);	//∂¡»°Ω” ’µΩµƒ ˝æ›
+    gps_res =UART3_ReceiveByte();//(USART1->DR);	//∂¡»°Ω” ’µΩµƒ ˝æ›
     
-    if(Res == '$')
+    if(gps_res == '$')
     {
       point1 = 0;	
     }
     
     
-    USART_RX_BUF[point1++] = Res;
+    USART_RX_BUF[point1++] = gps_res;
     
     if(USART_RX_BUF[0] == '$' && USART_RX_BUF[4] == 'M' && USART_RX_BUF[5] == 'C')			//»∑∂® «∑Ò ’µΩ"GPRMC/GNRMC"’‚“ª÷° ˝æ›
     {
@@ -280,8 +323,8 @@ unsigned char  parseGpsBuffer(unsigned char *p)
 	return 0;
     
   }
-   else
-   	return NULL;
+  // else
+   	return 0;
 }
 
 void printGpsBuffer()

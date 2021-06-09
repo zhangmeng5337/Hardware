@@ -1,4 +1,4 @@
-#include "sensors.h"
+ï»¿#include "sensors.h"
 #include "lis2mdl.h"
 #include "lsm6ds3tr.h"
 #include "calman.h"
@@ -158,6 +158,12 @@ void snesors_process(void)
     printf("	%f	 %f\n",pbt[j],FilterData[j]);  //Êä³ö²âÁ¿ÀÛ»ýÎó²î
 
 
+
+}
+void SensorsPowerDown()
+{
+    lsm6dPowerDown();
+	lis2mdlPowerDown();
 
 }
 

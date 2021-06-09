@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L412xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\Inc</IncludePath>
+              <IncludePath>../Inc;   ../Drivers/STM32L4xx_HAL_Driver/Inc;   ../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;   ../Drivers/CMSIS/Device/ST/STM32L4xx/Include;   ../Drivers/CMSIS/Include;   ..\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -392,16 +392,6 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
-              <FileName>stm32l4xx_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/stm32l4xx_it.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32l4xx_hal_msp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/stm32l4xx_hal_msp.c</FilePath>
-            </File>
-            <File>
               <FileName>app.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\app.c</FilePath>
@@ -410,6 +400,16 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32l4xx_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/stm32l4xx_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32l4xx_hal_msp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/stm32l4xx_hal_msp.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -590,6 +590,11 @@
               <FileName>lsm6ds3_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\Hardware\lsm6ds3_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>LowpoerTest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\Hardware\LowpoerTest.c</FilePath>
             </File>
           </Files>
         </Group>

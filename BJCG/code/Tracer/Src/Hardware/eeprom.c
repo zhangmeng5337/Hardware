@@ -125,14 +125,14 @@ input:addr is the address;
 void flash_read(uint32_t addr,uint32_t *pbuffer,uint16_t numtoread)	
 {
 	uint16_t i;
-	uint32_t tmp;
+	uint64_t tmp;
 	uint32_t Address;
-	Address = FLASH_USER_START_ADDR+addr;
+	Address = FLASH_USER_START_ADDR+addr*8;
 	for(i=0;i<numtoread;i++)
 	{
 		 tmp = *(__IO uint32_t *)Address;
-		 pbuffer[i] = tmp;	
-		Address = Address+4;
+		 pbuffer[i] =(uint32_t) tmp;	
+		Address = Address+8;
 	}
 }
 //void flash_write_Data(uint32_t addr,unsigned char *data,uint16_t numtowrite)	

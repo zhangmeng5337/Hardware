@@ -1,7 +1,7 @@
-#ifndef LTEHAL_H
+ï»¿#ifndef LTEHAL_H
 #define LTEHAL_H
 #include "main.h"
-#define BUFFERSIZE		256
+#define BUFFERSIZE		128
 #define MAX_CONNECT_COUNT  10
 
 #define NODE_HEADER    0xaa
@@ -14,8 +14,8 @@
 
 #define DEVID_INDEX 	1
 #define LENINDEX 		13
-#define CMD_INDEX       17 
-#define PARAMS_INDEX    18
+#define CMD_INDEX       16 
+#define PARAMS_INDEX    17
 //³£Á¿
 #define Success 1U
 #define Failure 0U
@@ -26,14 +26,17 @@
 #define	SIMCOM_READY_YES                                        2
 #define	SIMCOM_CLOSE_ECHO                                       3
 #define	SIMCOM_CARD_DET                                         4
-#define	SIMCOM_GPRS_READY                                       5
-#define	SIMCOM_NET_CLOSE                                        6
-#define	SIMCOM_NET_CONFIG                                       7
-
-#define	SIMCOM_NET_PASS_THROUGH                                 8
-#define	SIMCOM_Connect_Platform                                 9
+#define	SIMCOM_NET_DONE                                         5
+#define	SIMCOM_GPRS_READY                                       6
+#define	SIMCOM_NET_CLOSE                                        7
+#define	SIMCOM_NET_UPDATE                                       8
+#define	SIMCOM_NET_CONFIG                                       11
+#define	SIMCOM_NET_RTC                                          9
+#define	SIMCOM_NET_PASS_THROUGH                                 10
+#define	SIMCOM_Connect_Platform                                 12
 #define	SIMCOM_NET_ERROR					0XFF	//´íÎó
-#define	SIMCOM_NET_OK						10	//Á´½Ó³É¹¦
+#define	SIMCOM_NET_OK						13	//Á´½Ó³É¹¦
+  
 
 typedef struct{
 unsigned char lterxbuffer[BUFFERSIZE];
@@ -49,6 +52,9 @@ void SIMCOM_Register_Network(void);
 
 lte_stru *GetLteStru(void);
 unsigned char *GetLteTime(void);
+
+unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response, uint32_t Timeout, unsigned char Retry,unsigned char eflag);
+;
 
 #endif
 

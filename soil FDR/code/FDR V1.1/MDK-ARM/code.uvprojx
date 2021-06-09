@@ -311,7 +311,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;                               ../Drivers/STM32F1xx_HAL_Driver/Inc;                               ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;                               ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;                               ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Inc;                                ../Drivers/STM32F1xx_HAL_Driver/Inc;                                ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;                                ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;                                ../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -420,6 +420,11 @@
               <FileName>Calman.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\HAL\Calman.c</FilePath>
+            </File>
+            <File>
+              <FileName>calibration.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\HAL\calibration.c</FilePath>
             </File>
           </Files>
         </Group>

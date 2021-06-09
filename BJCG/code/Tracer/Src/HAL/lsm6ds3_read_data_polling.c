@@ -1,4 +1,4 @@
-/*
+﻿/*
  ******************************************************************************
  * @file    _read_data_polling.c
  * @author  Sensors Software Solution Team
@@ -155,6 +155,12 @@ unsigned char lsm6ds3tr_init()
   lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_12Hz5);
 	return 0;
 }
+  void lsm6dPowerDown()
+  {
+	  lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_OFF);
+	  lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_OFF);
+  }
+
   void lsm6ds3tr_c_read_data_polling(void)
 {
 

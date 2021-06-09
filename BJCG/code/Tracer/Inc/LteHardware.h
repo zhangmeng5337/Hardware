@@ -9,6 +9,7 @@ void LtePowerManage(unsigned char moduleType,unsigned char powerCtrl);
 void LteUart_SendStr(unsigned char moduleType,u8 *str);
 void USART1_CLR_Buf(void);
 void LteUartConfig(void);
+unsigned char gps_powerON(void);
 
 
 #endif 

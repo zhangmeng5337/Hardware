@@ -1,4 +1,4 @@
-#ifndef LIS2MDL_H
+﻿#ifndef LIS2MDL_H
 #define LIS2MDL_H
 #include "main.h"
 typedef struct{
@@ -10,6 +10,7 @@ typedef struct{
 unsigned char lis2mdl_init(void);
 void lis2mdl_read_data_simple(void);
 sensors_stru *GetMagnetic(void);
+void lis2mdlPowerDown(void);
 
 
 #endif

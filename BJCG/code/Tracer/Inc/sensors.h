@@ -1,4 +1,4 @@
-#ifndef SENSOR_H
+﻿#ifndef SENSOR_H
 #define SENSOR_H
 #define GPS_COUNT       60
 #define SENSORS_COUNT   12
@@ -10,6 +10,7 @@ void snesors_process(void);
 float *GetSensorsData(void);
 unsigned char *getGPS(void);//获取gps位置信息
 
+void SensorsPowerDown(void);
 
 #endif
 

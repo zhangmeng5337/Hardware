@@ -1,4 +1,4 @@
-#ifndef LSM6D_H
+﻿#ifndef LSM6D_H
 #define LSM6D_H
 #include "main.h"
 typedef struct {
@@ -15,6 +15,8 @@ typedef struct {
 void lsm6ds3tr_c_read_data_polling(void);
 unsigned char lsm6ds3tr_init(void);
 AccAng_stru *GetAccAngtic(void);
+void lsm6dPowerDown(void);
+
 
 #endif
 

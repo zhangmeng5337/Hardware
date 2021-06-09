@@ -15,6 +15,7 @@ float adcBuf_ref[N];	//参考电压缓冲区
 float adcBuf_humid[N];	//湿度电压缓冲区
 float adcBuf_ta[N];//温度a电压缓冲区
 float adcBuf_tb[N];//温度b电压缓冲区
+float adcBuf_cali[N];//温度b电压缓冲区
 
 
 
@@ -39,7 +40,7 @@ void Get_Adc_Average(unsigned char times)
     {
         //开启ADC
 
-        for(t=1; t<4; t++)
+        for(t=1; t<5; t++)
         {
 
             HAL_ADC_Start(&hadc1);
@@ -61,6 +62,10 @@ void Get_Adc_Average(unsigned char times)
             case 3:
                 adcBuf_tb[i]=temp_val;
                 break;
+            case 4:
+                adcBuf_cali[i]=temp_val;
+                break;
+
             }
         }
     }
@@ -68,45 +73,24 @@ void Get_Adc_Average(unsigned char times)
     HAL_ADC_Stop(&hadc1);
 
     /***************************filter adc value*************************************/
-    static float tmp_ref;
-    if(sensor_usr.CalibrationVref!=0&&sensor_usr.sensor[1]!=0)
-    {
-        sensor_usr.ADC_REF=sensor_usr.CalibrationVref;
-        //sensor_usr.ADC_REF=sensor_usr.CalibrationVref*sensor_usr.ADC_REF/sensor_usr.sensor[1];
-        sensor_usr.CalibrationVref=0;
-        params_save();
-    }
-    else if(sensor_usr.CalibrationVref==0&&sensor_usr.ADC_REF==0)
-    {
-        //	adc_value = filter(0);
-        if(tmp_ref==0)
-            tmp_ref = adc_value;
-        if(tmp_ref>adc_value)
-            tmp_ref = adc_value;
-        adc_value = 4096*3.0/adc_value;
-        sensor_usr.ADC_REF = adc_value;
-    }
+
     sensor_usr.ADC_REF = 3;
     //Claman(adcBuf_ta,0.01,10);
     adc_value = filter(1);
     sensor_usr.sensor[0] = adc_value;
+		
     adc_value = filter(2);
     sensor_usr.sensor[1] = adc_value;
+		
     adc_value = filter(3);
     sensor_usr.sensor[2] = adc_value;
+		
+    adc_value = filter(4);
+    sensor_usr.sensor[3] = adc_value;
 
 
     /****************************calculabute humid and temperature*********************/
-    float vprobeTmp;
-    if(sensor_usr.CalibrationProbeVref<=2&&sensor_usr.CalibrationProbeVref>0)
-    {
-
-        vprobeTmp = VPROBE - sensor_usr.CalibrationProbeVref;
-
-    }
-    else
-        vprobeTmp = 0;
-    sensor_usr.sensor[0] = sensor_usr.sensor[0] + vprobeTmp;
+    sensor_usr.sensor[0] = sensor_usr.sensor[0] ;
     sensor_usr.rh = SoilHumid(MEASURE,sensor_usr.sensor[0]);
     unsigned char tmp;
     if(sensor_usr.CalibrationT&0x80)

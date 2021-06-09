@@ -56,6 +56,24 @@ u8 RTC_Init(void)
 {      
 
 	
+	  /*##-1- Configure the RTC peripheral #######################################*/
+	  /* Configure RTC prescaler and RTC data registers */
+	  /* RTC configured as follows:
+		  - Hour Format    = Format 24
+		  - Asynch Prediv  = Value according to source clock
+		  - Synch Prediv   = Value according to source clock
+		  - OutPut		   = Output Disable
+		  - OutPutPolarity = High Polarity
+		  - OutPutType	   = Open Drain */
+
+#define WAKEUP_TIMER_ENABLE 0x32F2	
+
+	
+
+	  
+	  /*##-4- Write 'wakeup timer enabled' tag in RTC Backup data Register 1 #######*/
+	//	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, WAKEUP_TIMER_ENABLE);
+	
 	hrtc.Instance=RTC;
     hrtc.Init.HourFormat=RTC_HOURFORMAT_24;//RTC设置为24小时格式 
     hrtc.Init.AsynchPrediv=0X7F;           //RTC异步分频系数(1~0X7F)
@@ -64,12 +82,32 @@ u8 RTC_Init(void)
     hrtc.Init.OutPutPolarity=RTC_OUTPUT_POLARITY_HIGH;
     hrtc.Init.OutPutType=RTC_OUTPUT_TYPE_OPENDRAIN;
     if(HAL_RTC_Init(&hrtc)!=HAL_OK) return 2;
+
+	 /* Calendar ultra-low power mode */
+	 if (HAL_RTCEx_SetLowPowerCalib(&hrtc, RTC_LPCAL_SET) != HAL_OK)
+	 {
+	   Error_Handler();
+	 }
+	 
+	 /*##-2- Check if data stored in BackUp register1: Wakeup timer enable #######*/
+	 /* Read the Back Up Register 1 Data */
+	 if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) == WAKEUP_TIMER_ENABLE)
+	 {
+	   /* if the wakeup timer is enabled then deactivate it to disable the wakeup timer interrupt */
+	   if(HAL_RTCEx_DeactivateWakeUpTimer(&hrtc) != HAL_OK)
+	   {
+		 /* Initialization Error */
+		 Error_Handler(); 
+	   }
+	 }
+	
+
      // HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5051);//标记已经初始化过了
-    if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0X5050)//是否第一次配置
+   // if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0X5050)//是否第一次配置
     { 
-        RTC_Set_Time(13,59,56,RTC_HOURFORMAT12_PM);	        //设置时间 ,根据实际时间修改
-		RTC_Set_Date(15,12,27,7);		                    //设置日期
-        HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5050);//标记已经初始化过了
+    //    RTC_Set_Time(13,59,56,RTC_HOURFORMAT12_PM);	        //设置时间 ,根据实际时间修改
+	//	RTC_Set_Date(15,12,27,7);		                    //设置日期
+    //    HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0X5050);//标记已经初始化过了
     }
     return 0;
 }
@@ -108,9 +146,9 @@ RTC_STRU rtc_usr;
 
 void SetWakeUp(uint32_t p)
 {
-   RTC_HandleTypeDef hrtc;
+  // RTC_HandleTypeDef hrtc;
    unsigned int WakeUpCounter;
-   WakeUpCounter = ((u16)(p))<<8+p;
+   WakeUpCounter = (u16)(p);
    WakeUpCounter = WakeUpCounter*60;   
    HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, WakeUpCounter, RTC_WAKEUPCLOCK_CK_SPRE_16BITS,0);
 
@@ -143,6 +181,7 @@ void  setRtc(unsigned char* p,unsigned char item)
 void RTC_WAKEUP_Init(uint32_t p)
 {
 
+    #if 0
 	   __HAL_RTC_WAKEUPTIMER_CLEAR_FLAG(&hrtc, RTC_FLAG_WUTF);//清除RTC WAKE UP的标志
 	    HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
         /*rtc_usr.wakeup_period = p[0];
@@ -158,12 +197,19 @@ void RTC_WAKEUP_Init(uint32_t p)
 
         //HAL_RTCEx_SetWakeUpTimer_IT(&hrtc,  rtc_usr.wakeup_period, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
         SetWakeUp(p);
+	#else if 1
+	//HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+	if(RTC_Init()==0)	 
+	SetWakeUp(p);
+	#endif
+	
 }
 unsigned char p[6];
 RTC_TimeTypeDef *getRTCTime()
 {
-
 	HAL_RTC_GetTime(&hrtc, &stimestructure, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(&hrtc, &sdatestructure, RTC_FORMAT_BIN);  
+	
 
 	return &stimestructure;
 }
@@ -175,36 +221,44 @@ RTC_DateTypeDef *getRTCDATE()
 
 void RTC_Calibration(unsigned char *p)
 {
-	if(rtc_usr.calibration == 0)
+	//if(rtc_usr.calibration == 0)
 	{
-	    unsigned char i;
+	    unsigned char i,j;
 		unsigned char pbuff[6];
-		i = 9;
-	    p[i++] = p[i]-0x30;//yearH
-	    p[i++] = p[i]-0x30;//yearL
-		i++;               //  '/'
-	    p[i++] = p[i]-0x30; //monthH
-	    p[i++] = p[i]-0x30;//monthL
-		i++;               // '/'
-	    p[i++] = p[i]-0x30;//date H
-	    p[i++] = p[i]-0x30;//date L
-        i++;               // 'L'
-	    p[i++] = p[i]-0x30;//hours H
-	    p[i++] = p[i]-0x30;//hours L
-        i++;		 //':'
- 	    p[i++] = p[i]-0x30;//minute H
-	    p[i++] = p[i]-0x30;//minute L
-        i++;		 //':'
-	    p[i++] = p[i]-0x30;//seconds H
-	    p[i++] = p[i]-0x30;//seconds L
-        i++;		 //'+'
-        i = 0;
-		pbuff[i++] = p[i]*10+p[i+1];//year
-		pbuff[i++] = p[i]*10+p[i+1];//month
-		pbuff[i++] = p[i]*10+p[i+1];//date
-		pbuff[i++] = p[i]*10+p[i+1];//hours
-		pbuff[i++] = p[i]*10+p[i+1];//minutes
-		pbuff[i++] = p[i]*10+p[i+1];//seconds		
+		unsigned char len;
+		len = strlen(p);
+		for(j=0;j<len;j++)
+		{
+			if(p[j]=='+'&&p[j+4]=='K')
+				break;
+		}
+		j = j +8;
+		i = 0;
+	    p[i++] = p[j++]-0x30;//yearH
+	    p[i++] = p[j++]-0x30;//yearL
+		j++;               //  '/'
+	    p[i++] = p[j++]-0x30; //monthH
+	    p[i++] = p[j++]-0x30;//monthL
+		j++;               // '/'
+	    p[i++] = p[j++]-0x30;//date H
+	    p[i++] = p[j++]-0x30;//date L
+        j++;               // 'L'
+	    p[i++] = p[j++]-0x30;//hours H
+	    p[i++] = p[j++]-0x30;//hours L
+        j++;		 //':'
+ 	    p[i++] = p[j++]-0x30;//minute H
+	    p[i++] = p[j++]-0x30;//minute L
+        j++;		 //':'
+	    p[i++] = p[j++]-0x30;//seconds H
+	    p[i++] = p[j++]-0x30;//seconds L
+        j++;		 //'+'
+        i = 0;j = 0;
+		pbuff[j++] = p[i]*10+p[i+1];i = i+2;//year
+		pbuff[j++] = p[i]*10+p[i+1];i = i+2;//month
+		pbuff[j++] = p[i]*10+p[i+1];i = i+2;//date
+		pbuff[j++] = p[i]*10+p[i+1];i = i+2;//hours
+		pbuff[j++] = p[i]*10+p[i+1];i = i+2;//minutes
+		pbuff[j++] = p[i]*10+p[i+1];//seconds		
 		rtc_usr.calibration =1;
 		RTC_InitSetting(pbuff);
 	}

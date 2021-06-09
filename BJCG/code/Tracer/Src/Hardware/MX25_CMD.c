@@ -1,4 +1,4 @@
-/*
+﻿/*
  * COPYRIGHT (c) 2010-2017 MACRONIX INTERNATIONAL CO., LTD
  * SPI Flash Low Level Driver (LLD) Sample Code
  *
@@ -61,6 +61,7 @@ void FLASH_INIT()
 HAL_GPIO_WritePin(GPIOA, WP_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, SPI_RESET_Pin, GPIO_PIN_SET);
     Wait_Flash_WarmUp();
+	ExitPD();
 }
 void FLASH_Operation_End()
 {

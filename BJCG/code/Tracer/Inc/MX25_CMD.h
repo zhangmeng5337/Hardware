@@ -1,4 +1,4 @@
-/*
+﻿/*
  * COPYRIGHT (c) 2010-2017 MACRONIX INTERNATIONAL CO., LTD
  * SPI Flash Low Level Driver (LLD) Sample Code
  *
@@ -282,5 +282,6 @@ FLashData_stru *GetFLashStatus(void);
 void flash_process(void);
 void FLASH_RESET(void);
 void EraseChip(void);
+void PowerDown(void);
 
 #endif    /* __MX25_CMD_H__ */

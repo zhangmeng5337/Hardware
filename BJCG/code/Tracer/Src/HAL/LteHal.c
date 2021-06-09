@@ -1,11 +1,14 @@
-#include "LteHal.h"
+ï»¿#include "LteHal.h"
 #include "string.h"
 #include "LteHardware.h"
 
 
-unsigned char one_net_key[]="*296832#838905307#json*";//296832£º²úÆ·±àºÅ£»571498701£º¼øÈ¨Âë£»json£º½Å±¾
+unsigned char one_net_key[]="*284261#580794566#json*";//296832£º²úÆ·±àºÅ£»571498701£º¼øÈ¨Âë£»json£º½Å±¾
+#if ROLE == LTE_4G
+unsigned char Establish_TCP_Connection[]="AT+CIPOPEN=0,\"TCP\",\"dtu.heclouds.com\",1811\r";
+#else
 unsigned char Establish_TCP_Connection[]="AT+CAOPEN=0,0,\"TCP\",\"dtu.heclouds.com\",1811\r";
-
+#endif
 //unsigned char Establish_TCP_Connection[100];//="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 //unsigned char Establish_TCP_Connection2[100]="AT+CIPSTART=\"TCP\",\"192.168.1.3\",3\r";
 lte_stru lte_usr;
@@ -17,7 +20,7 @@ lte_stru *GetLteStru()
 {
     return &lte_usr;
 }
-unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response, unsigned long Timeout, unsigned char Retry,unsigned char eflag)
+unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response, uint32_t Timeout, unsigned char Retry,unsigned char eflag)
 {
     unsigned char *USARTX_RX_BUF;
 
@@ -35,7 +38,9 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
 
         USARTX_RX_BUF =lte_usr.lterxbuffer;;
     }
-    if((HAL_GetTick()-timeout)>=Timeout)
+    uint32_t tmp;
+    tmp = HAL_GetTick()-timeout;
+    if((tmp)>=Timeout)
     {
         if(RetryCount<=Retry)
         {
@@ -44,10 +49,12 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
                 LteUart_SendStr( moduleType,Command);
                 RetryCount = RetryCount +1;
                 timeout = HAL_GetTick();
-                
-
             }
 
+        }
+        else
+        {
+            RetryCount = 0;
         }
 
         if (strstr(USARTX_RX_BUF, Response) != NULL)
@@ -59,7 +66,8 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
         }
         else
         {
-            //USART1_CLR_Buf();
+					  if(eflag == 1)
+            USART1_CLR_Buf();
             return Failure;
         }
 
@@ -75,7 +83,8 @@ unsigned int sendCommand(unsigned char moduleType,char *Command, char *Response,
         }
         else
         {
-            //USART1_CLR_Buf();
+
+			// USART1_CLR_Buf();
             return Failure;
         }
 
@@ -131,19 +140,19 @@ void SIMCOM_Register_Network()
         SIMCOM_TimeOut_Count = 0;
         if(lte_usr.RetryConnectCount <= MAX_CONNECT_COUNT)
             lte_usr.RetryConnectCount ++;
-		if(DEBUG_MODE == 0)
-           LtePowerManage(LTE_4G,ON);                   //¸´Î»ÖØÆô
+        if(DEBUG_MODE == 0)
+            LtePowerManage(LTE_4G,ON);                   //¸´Î»ÖØÆô
         lte_usr.NetStatus=SIMCOM_POWER_ON;       //×´Ì¬»ú¸´Î»
     }
     break;
     case SIMCOM_POWER_ON://SIMCOM_READY_YES:
     {
 
-        if (sendCommand(moduleType,"AT\r\n", "OK\r\n", 50000, 1,0) == Success)
+        if (sendCommand(moduleType,"AT\r\n", "OK\r\n", 200, 1,0) == Success)
             lte_usr.NetStatus = SIMCOM_READY_YES;
         else
         {
-            lte_usr.NetStatus = SIMCOM_NET_NOT;
+            ;//lte_usr.NetStatus = SIMCOM_NET_NOT;
 
         }
 
@@ -151,7 +160,7 @@ void SIMCOM_Register_Network()
     break;
     case SIMCOM_READY_YES:
     {
-        if (sendCommand(moduleType,"ATE0\r\n", "OK\r\n", 10000, 1,0) == Success)
+        if (sendCommand(moduleType,"ATE0\r\n", "OK\r\n", 200, 1,0) == Success)
             lte_usr.NetStatus = SIMCOM_CLOSE_ECHO;
     }
     break;
@@ -159,70 +168,130 @@ void SIMCOM_Register_Network()
 
     case SIMCOM_CLOSE_ECHO:
     {
-        if (sendCommand(moduleType,"AT+CPIN?\r\n", "READY", 10000, 1,0) == Success)
+        if (sendCommand(moduleType,"AT+CPIN?\r\n", "READY", 500, 1,0) == Success)
             lte_usr.NetStatus = SIMCOM_CARD_DET;
     }
     break;
     case SIMCOM_CARD_DET:
     {
-
-        //if (sendCommand("AT+CSQ\r\n", "+CSQ: 2", 13000000, 1) == Success)
-        if (sendCommand(moduleType,"AT+CGATT?\r\n", "+CGATT: 1", 130000, 1,0) == Success)
-        {
-
-            lte_usr.NetStatus=SIMCOM_GPRS_READY;
-        }
+#if ROLE == LTE_NBIOT
+        if (sendCommand(moduleType,"AT+CGATT?\r\n", "PB DONE", 1000, 0,0) == Success)
+            lte_usr.NetStatus=SIMCOM_NET_DONE;
+#else
+        if (sendCommand(moduleType,"AT+CREG?\r", "PB DONE", 1000, 0,0) == Success)
+            lte_usr.NetStatus=SIMCOM_NET_DONE;
+#endif
     }
     break;
-
+    case SIMCOM_NET_DONE:
+    {
+#if ROLE == LTE_NBIOT
+        if (sendCommand(moduleType,"AT+CGATT?\r\n", "+CGATT: 1", 2000, 1,0) == Success)
+            lte_usr.NetStatus=SIMCOM_GPRS_READY;
+#else
+        if (sendCommand(moduleType,"AT+CREG?\r", "OK", 1000, 1,0) == Success)
+            lte_usr.NetStatus=SIMCOM_GPRS_READY;
+#endif
+    }
+    break;
     case SIMCOM_GPRS_READY:
     {
-#if ROLE == 0
-        if (sendCommand(moduleType,"AT+CIPSHUT\r", "OK", 10000, 1,0) == Success)
+#if ROLE == LTE_NBIOT
+        if (sendCommand(moduleType,"AT+CASSLCFG=0,\"SSL\",0\r\n", "OK", 500, 1,0) == Success)
 #else
-        if (sendCommand(moduleType,"AT+CASSLCFG=0,\"SSL\",0\r\n", "OK", 10000, 1,0) == Success)
+        ;//if (sendCommand(moduleType,"AT+CIPCLOSE=1\r", "OK", 1000, 1,0) == Success)
+
 #endif
+			
+
             lte_usr.NetStatus = SIMCOM_NET_CLOSE;
     }
     break;
-    case SIMCOM_NET_CLOSE:
+
+		case SIMCOM_NET_CLOSE:
+		{
+#if ROLE == LTE_NBIOT
+			if (sendCommand(moduleType,"AT+CASWITCH =0,1\r\n", "OK", 1000, 1,0) == Success)
+						{
+						// RTC_Calibration(lte_usr.lterxbuffer);
+						lte_usr.NetStatus = SIMCOM_NET_UPDATE;
+					}
+#else
+			if(sendCommand(LTE_4G,"AT+CTZU=1\r\n", "OK", 1000, 3,1) == Success)//æ—¶é—´æ ¡å‡†
+					{
+						// RTC_Calibration(lte_usr.lterxbuffer);
+						lte_usr.NetStatus = SIMCOM_NET_UPDATE;
+					}
+			
+#endif
+				
+		}
+		break;
+
+
+    case SIMCOM_NET_UPDATE:
     {
 #if ROLE == LTE_NBIOT
+        if (sendCommand(moduleType,"AT+CASWITCH =0,1\r\n", "OK", 1000, 1,0) == Success)
+    				{
+				     RTC_Calibration(lte_usr.lterxbuffer);
+					lte_usr.NetStatus = SIMCOM_NET_RTC;
+				}            
+#else
+        if(sendCommand(LTE_4G,"AT+CCLK?\r\n", "+CCLK", 1000, 3,1) == Success)//æ—¶é—´æ ¡å‡†
+				{
+				     RTC_Calibration(lte_usr.lterxbuffer);
+					lte_usr.NetStatus = SIMCOM_NET_RTC;
+				}
+        
+#endif
+            
+    }
+    break;
+    case SIMCOM_NET_RTC:
+    {
+#if ROLE == LTE_NBIOT
+        if (sendCommand(moduleType,"AT+CASWITCH =0,1\r\n", "OK", 1000, 1,0) == Success)
 
 #else
-        if (sendCommand(moduleType,"AT+CNACT=0,1\r\n", "ACTIVE", 20000, 1,0) == Success)
+        if (sendCommand(moduleType,"AT+CIPMODE =1\r\n", "OK", 1000, 1,0) == Success)
 #endif
-        lte_usr.NetStatus = SIMCOM_NET_CONFIG;
+
+            lte_usr.NetStatus = SIMCOM_NET_PASS_THROUGH;
+    }
+    break;
+    case SIMCOM_NET_PASS_THROUGH:
+    {
+#if ROLE == LTE_NBIOT
+        if (sendCommand(moduleType,"AT+CNACT=0,1\r\n", "ACTIVE", 1000, 1,0) == Success)
+
+#else
+        if (sendCommand(moduleType,"AT+NETOPEN\r\n", "Network is already", 1000, 1,0) == Success)
+
+#endif
+            lte_usr.NetStatus = SIMCOM_NET_CONFIG;
         SIMCOM_TimeOut_Count = 0;
     }
     break;
-
-
     case SIMCOM_NET_CONFIG://SIMCOM_NET_PASS_THROUGH:
     {
-        if (sendCommand(moduleType,Establish_TCP_Connection, "OK", 500000, 1,0) == Success)
-        {
 
-            lte_usr.NetStatus=SIMCOM_NET_OK;
+#if ROLE == LTE_NBIOT
+        if (sendCommand(moduleType,Establish_TCP_Connection, "OK", 2000, 1,0) == Success)
             lte_usr.NetStatus=SIMCOM_Connect_Platform;
-        }
+#else
+        if (sendCommand(moduleType,Establish_TCP_Connection, "CONNECT", 2000, 1,0) == Success)
+            lte_usr.NetStatus=SIMCOM_Connect_Platform;
+#endif
+
 
     }
     break;
     case SIMCOM_Connect_Platform:
     {
-        if (sendCommand(moduleType,"AT+CASWITCH =0,1\r\n", "OK", 10000, 1,0) == Success)
-            lte_usr.NetStatus = SIMCOM_NET_PASS_THROUGH;
-        else
-            lte_usr.NetStatus = SIMCOM_NET_PASS_THROUGH;
-        SIMCOM_TimeOut_Count = 0;
-    }
-    break;
-    case SIMCOM_NET_PASS_THROUGH:
-    {
         static unsigned char tx_count;
 
-        if (sendCommand(moduleType,one_net_key, "received", 340000, 1,0) == Success)
+        if (sendCommand(moduleType,one_net_key, "received", 1400, 1,0) == Success)
         {
             lte_usr.NetStatus=SIMCOM_NET_OK;
             lte_usr.RetryConnectCount = 0;

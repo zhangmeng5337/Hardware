@@ -1,6 +1,6 @@
 #include "gps.h"
 #include "string.h"
-#include "nbiotHAL.h"
+#include "LteHal.h"
 
  char  USART_RX_BUF[USART_REC_LEN]; //接收缓冲,最大USART_REC_LEN个字节.末字节为换行符 
  u16 USART_RX_STA;         		//接收状态标记
@@ -68,7 +68,7 @@ unsigned char UART3_ReceiveByte()
 
 	}  
 
-	HAL_UART_Receive_IT(&huart3, &gps_res, 1); 	  // 重新注册一次，要不然下次收不到了
+	HAL_UART_Receive_IT(&huart2, &gps_res, 1); 	  // 重新注册一次，要不然下次收不到了
 	return result;
 }
 //接收状态

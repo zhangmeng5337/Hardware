@@ -804,8 +804,8 @@ typedef struct
   * @{
   */
 #define FLASH_BASE            (0x08000000UL) /*!< FLASH(up to 128 KB) base address */
-#define FLASH_END             (0x0801FFFFUL) /*!< FLASH END address                */
-#define FLASH_BANK1_END       (0x0801FFFFUL) /*!< FLASH END address of bank1       */
+#define FLASH_END             (0x0807FFFFUL) /*!< FLASH END address                */
+#define FLASH_BANK1_END       (0x0807FFFFUL) /*!< FLASH END address of bank1       */
 #define SRAM1_BASE            (0x20000000UL) /*!< SRAM1(up to 32 KB) base address  */
 #define SRAM2_BASE            (0x10000000UL) /*!< SRAM2(8 KB) base address */
 #define PERIPH_BASE           (0x40000000UL) /*!< Peripheral base address */

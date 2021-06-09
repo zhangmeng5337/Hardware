@@ -24,8 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "modbus.h"
+#include "calibration.h"
 #include "filter.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

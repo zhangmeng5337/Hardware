@@ -26,9 +26,9 @@ void Claman(float *pb,float sq,float sr,unsigned char seq)
     float Q = 0.008;  // Q = 0.0003;
     float R = 10;
     static float Kg = 0;
-    static float P_k_k1 = 1,P_k_k2,P_k_k3,P_k_k4;
+    static float P_k_k1 = 1,P_k_k2,P_k_k3,P_k_k4,P_k_k5;
 
-    static float kalman_adc,kalman_adc2,kalman_adc3,kalman_adc4;
+    static float kalman_adc,kalman_adc2,kalman_adc3,kalman_adc4,kalman_adc5;
     static float kalman_adc_old=1;
     unsigned int i;
     Q = sq;
@@ -58,6 +58,11 @@ void Claman(float *pb,float sq,float sr,unsigned char seq)
             kalman_adc = kalman_adc4;
             kalman_adc_old = kalman_adc4;
             P_k1_k1 = P_k_k4;
+            break;
+        case 4:
+            kalman_adc = kalman_adc5;
+            kalman_adc_old = kalman_adc5;
+            P_k1_k1 = P_k_k5;
             break;
         }
         if (abs(kalman_adc_old-pbf)>=10)
@@ -95,9 +100,15 @@ void Claman(float *pb,float sq,float sr,unsigned char seq)
             kalman_adc4 = kalman_adc;
             P_k_k4 = P_k1_k1;
             break;
+        case 4:
+            kalman_adc5 = kalman_adc;
+            P_k_k5 = P_k1_k1;
+            break;
         }
-        pb[i] = kalman_adc;
-				
+				if(seq==4)
+        pb[i] = pbf;
+				else 
+	        pb[i] = kalman_adc;			
 				//jansson_pack_test();
        // printf("%f             %f\n",ADC_OLD_Value,kalman_adc);  //Êä³ö²âÁ¿ÀÛ»ýÎó²î
 
