@@ -81,7 +81,11 @@ void RS485_SendData(u8 *buff,u8 len)
     {
         HAL_UART_Transmit(&huart1,buff,len,1000);
     }
+	#if ROLE == 0
 	HAL_Delay(50);
+	#else
+	HAL_Delay(3000);
+	#endif
 	 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
 	 modbus_usr.RS485_TX_EN=0;
 	MX_USART1_UART_Init();
@@ -643,4 +647,7 @@ void Modbus_12_Solve()
 		   modbus_usr.RS485_TX_BUFF[6]=(calCRC>>8)&0xFF;		  //CRC~{8_5XN;2;6TBp#?~}  // ~{OH8_:s5M~}
 		   modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
 		   RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
-	 HAL_GPIO_WritePin
+	 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+}
+
+
