@@ -1,7 +1,7 @@
 #ifndef MODBUS_H
 #define MODBUS_H
 #include "main.h"
-#define ROLE  1
+#define ROLE  0
 #define RH_ADDR	  0x0002
 #define TE_ADDR	  0x0003
 #define DEV_ADDR	0x0100

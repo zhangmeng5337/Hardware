@@ -6,6 +6,8 @@ ratio_stru *getRatio()
 {
     return &ratio;
 }
+
+static float c1,c2,c3,c4,c5;
 /************************************************************
 功能：设备出厂前校准
 输入参数：
@@ -13,7 +15,7 @@ ratio_stru *getRatio()
 ************************************************************/
 ratio_stru *CalibrationRatio(float sVol,float CaliVol)
 {
-    static float c1,c2,c3,c4,c5;
+    
     c1 = CaliVol;
     c1 = c1;
     c2 = CaliVol*CaliVol;
@@ -45,6 +47,7 @@ ratio_stru *CalibrationRatio(float sVol,float CaliVol)
         L = 0;
         M = 0;
         P = 0;
+		ratio.aN = AN;
         K = ratio.aF*ratio.aF;//F^2
         K = ratio.aI*K;//I*F^2
         

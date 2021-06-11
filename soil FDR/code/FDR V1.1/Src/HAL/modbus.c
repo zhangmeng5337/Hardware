@@ -81,7 +81,9 @@ void RS485_SendData(u8 *buff,u8 len)
     {
         HAL_UART_Transmit(&huart1,buff,len,1000);
     }
+	HAL_Delay(50);
 	 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+	 modbus_usr.RS485_TX_EN=0;
 	MX_USART1_UART_Init();
   RS485_Init();
 }
@@ -584,7 +586,7 @@ void Modbus_11_Solve(void)
         {
             Get_Adc_Average(N);
 
-            tmp1 = getSensor()->sensor[4];
+            tmp1 = getSensor()->sensor[3];
 
 
             if(CalibrationRatio(tmp1,tmp2)->status == 0)//~{=xPPP#W<#,P#W<Mj3I~}
@@ -639,4 +641,6 @@ void Modbus_12_Solve()
    	modbus_usr.RS485_TX_BUFF[5]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
 		   calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
 		   modbus_usr.RS485_TX_BUFF[6]=(calCRC>>8)&0xFF;		  //CRC~{8_5XN;2;6TBp#?~}  // ~{OH8_:s5M~}
-		   modbus_usr.RS485_
+		   modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
+		   RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
+	 HAL_GPIO_WritePin

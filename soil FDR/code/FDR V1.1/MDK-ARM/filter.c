@@ -1,4 +1,4 @@
-#include "filter.h"
+﻿#include "filter.h"
 #include "calman.h"
 extern  float adcBuf_ref[N];
 extern	float adcBuf_humid[N];
@@ -188,7 +188,7 @@ float filter(uint32_t seq)
         break;
     case 4:
         //value_buf=adcBuf_tb;
-       // Claman(adcBuf_cali,0.008,10,4);
+        Claman(adcBuf_cali,0.008,10,4);
         sum = average_filter(adcBuf_cali,N);
         break;
 

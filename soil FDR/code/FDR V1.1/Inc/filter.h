@@ -1,10 +1,10 @@
-#ifndef FILTER_H
+﻿#ifndef FILTER_H
 #define FILTER_H
 
 #include "main.h"
 
 #define N 48  
-#define AN 50
+#define AN 48 
 
 float filter(uint32_t seq);  
 typedef struct{

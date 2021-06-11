@@ -1,4 +1,4 @@
-#include "math.h"
+ï»¿#include "math.h"
 #include "filter.h"
 #include "calman.h"
 #include <jansson.h>
@@ -105,9 +105,9 @@ void Claman(float *pb,float sq,float sr,unsigned char seq)
             P_k_k5 = P_k1_k1;
             break;
         }
-				if(seq==4)
-        pb[i] = pbf;
-				else 
+			//	if(seq==4)
+        //pb[i] = pbf;
+			//	else 
 	        pb[i] = kalman_adc;			
 				//jansson_pack_test();
        // printf("%f             %f\n",ADC_OLD_Value,kalman_adc);  //Êä³ö²âÁ¿ÀÛ»ýÎó²î
