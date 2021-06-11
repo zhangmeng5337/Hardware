@@ -1,4 +1,4 @@
-/* USER CODE BEGIN Header */
+﻿/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.h
@@ -47,6 +47,8 @@ typedef unsigned int u16 ;
 #define TERROR		5
 #define RHERROR		3
 #define FRESH		3000
+void MX_USART1_UART_Init(void);
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

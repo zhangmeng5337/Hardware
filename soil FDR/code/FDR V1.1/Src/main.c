@@ -60,7 +60,7 @@ UART_HandleTypeDef huart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
-static void MX_USART1_UART_Init(void);
+ //void MX_USART1_UART_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -105,28 +105,28 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-    params_init();//设备参数初始化
+    params_init();//~{Ih182NJ}3uJ<;/~}
     RS485_Init();//tur
     HAL_GPIO_WritePin(PWR_EN_GPIO_Port, PWR_EN_Pin, GPIO_PIN_RESET);
     HAL_TIM_Base_Start_IT(&htim2);
     HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
     tickTime=HAL_GetTick();
 
-    if(getFactor()->dutycycle == 0)//pwm空测电压未进行校准
+    if(getFactor()->dutycycle == 0)//pwm~{?U2b5gQ9N4=xPPP#W<~}
     {
-        while(1)//led指示灯闪烁
+        while(1)//led~{V8J>5FIAK8~}
         {
 
 
-            if((HAL_GetTick()-tickTimeLED)>=200)//led指示灯闪烁
+            if((HAL_GetTick()-tickTimeLED)>=200)//led~{V8J>5FIAK8~}
             {
                 tickTimeLED=HAL_GetTick();
                 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
             }
-            if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
+            if((HAL_GetTick()-tickTime)>=1000)//led~{V8J>5FIAK8~}
             {
 
-                app_loop();//主程序
+                app_loop();//~{Vw3LPr~}
                 Get_Adc_Average(N);
                 if(sensor_usr.sensor[0]/V_Nom>=1.01)
                 {
@@ -167,9 +167,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
         //HAL_Delay(1000);
 
-        if(getRatio()->calibrationFlag == 1)//校准过程
+        if(getRatio()->calibrationFlag == 1)//~{P#W<9}3L~}
         {
-            if((HAL_GetTick()-tickTime)>=200)//led指示灯闪烁
+            if((HAL_GetTick()-tickTime)>=200)//led~{V8J>5FIAK8~}
             {
                 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
                 tickTime=HAL_GetTick();
@@ -178,7 +178,7 @@ int main(void)
         }
         else
         {
-            if((HAL_GetTick()-tickTime)>=1000)//led指示灯闪烁
+            if((HAL_GetTick()-tickTime)>=1000)//led~{V8J>5FIAK8~}
             {
 
                 HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
@@ -187,7 +187,7 @@ int main(void)
 
         }
 
-        app_loop();//主程序
+        app_loop();//~{Vw3LPr~}
     }
   /* USER CODE END 3 */
 }
@@ -369,7 +369,7 @@ static void MX_TIM2_Init(void)
   * @param None
   * @retval None
   */
-static void MX_USART1_UART_Init(void)
+void MX_USART1_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART1_Init 0 */
@@ -489,4 +489,4 @@ void assert_failed(uint8_t *file, uint32_t line)
 }
 #endif /* USE_FULL_ASSERT */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT STMicroelectr

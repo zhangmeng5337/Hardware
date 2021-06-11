@@ -79,9 +79,11 @@ void RS485_SendData(u8 *buff,u8 len)
     HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_SET);//~{GP;;N*7"KMD#J=~}
     modbus_usr.RS485_TX_EN=1;
     {
-        HAL_UART_Transmit(&huart1,buff,len,100);
+        HAL_UART_Transmit(&huart1,buff,len,1000);
     }
 	 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+	MX_USART1_UART_Init();
+  RS485_Init();
 }
 
 unsigned char count;
@@ -121,7 +123,7 @@ void timCallback()
     modbus_usr.RS485_TX_EN=1;//~{M#V9=SJU#,GP;;N*7"KMW4L,~}
     if(modbus_usr.RS485_FrameFlag==1)
     {
-        if((HAL_GetTick()-Tick4ms)>=4)
+        if((HAL_GetTick()-Tick4ms)>=10)
             modbus_usr.RS485_FrameFlag=2;//~{VCN;V!=aJx1j<G~}
 
     }
@@ -181,16 +183,20 @@ void RS485_Service(void)
                     recCRC=modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-1]|(((u16)modbus_usr.RS485_RX_BUFF[modbus_usr.RS485_RX_CNT-2])<<8);//~{=SJU5=5D~}CRC(~{5MWV=ZTZG0#,8_WV=ZTZ:s~})
                     if(calCRC==recCRC)//CRC~{P#QiU}H7~}
                     {
+                       #if ROLE == 0
 
                         if(modbus_usr.RS485_RX_BUFF[3] == 0x01)
                         {
                             modbus_usr.RS485_RX_BUFF[1] = 11;
                         }
+						#endif
+						#if ROLE == 1
                         if(modbus_usr.RS485_RX_BUFF[3] == 0x02)
                         {
                             modbus_usr.RS485_RX_BUFF[1] = 12;
                         }
-                        #if 1
+						#endif 
+                        #if ROLE == 1
                         if(modbus_usr.RS485_RX_BUFF[1]!=10&&modbus_usr.RS485_RX_BUFF[1]!=11)
                             getRatio()->calibrationFlag = 0;//~{P#W<1jV>~}
                         #endif
@@ -288,8 +294,8 @@ void RS485_Service(void)
         modbus_usr.RS485_RX_CNT=0;//~{=SJU<FJ}FwGeAc~}
         modbus_usr.RS485_TX_EN=0;//~{?*Ft=SJUD#J=~}
     }
-	 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+	 //HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
+   // HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
 }
 
 
@@ -633,9 +639,4 @@ void Modbus_12_Solve()
    	modbus_usr.RS485_TX_BUFF[5]=(unsigned char)(tmp);//(*Modbus_HoldReg[startRegAddr+i])&0xFF; //
 		   calCRC=CRC_Compute(modbus_usr.RS485_TX_BUFF,6);
 		   modbus_usr.RS485_TX_BUFF[6]=(calCRC>>8)&0xFF;		  //CRC~{8_5XN;2;6TBp#?~}  // ~{OH8_:s5M~}
-		   modbus_usr.RS485_TX_BUFF[7]=(calCRC)&0xFF;
-		   RS485_SendData(modbus_usr.RS485_TX_BUFF,8);
-	 HAL_GPIO_WritePin(GPIOA, RS485_EN1_Pin, GPIO_PIN_RESET);
-}
-
-
+		   modbus_usr.RS485_
