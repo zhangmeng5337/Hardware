@@ -1,4 +1,4 @@
-ï»¿#include "app.h"
+#include "app.h"
 #include "sensors.h"
 #include "LteHal.h"
 #include "LteHardware.h"
@@ -8,11 +8,16 @@
 #include "crc.h"
 #include "rtc.h"
 #include "LowpowerTest.h"
-
+#include <jansson.h>
+#include "gps.h"
 extern ADC_HandleTypeDef hadc1;
 systemParams_stru systemParams_usr;
+extern unsigned char gpsBuf[GPS_COUNT];
+ unsigned int len;
+
+
 void payloadpack(unsigned char *p,uint32_t size);
-extern float FilterData[SN];//æ»¤æ³¢åçš„imuæ•°æ®
+extern float FilterData[SN];//ÂË²¨ºóµÄimuÊı¾İ
 void HardwareInit()
 {
     RTC_Init();
@@ -36,16 +41,21 @@ void HardwareInit()
     sensors_Init();
 }
 
-uint32_t CpuID[3];
+unsigned char  CpuID[7];
 uint32_t Lock_Code;
 void GetLockCode(void)
 {
-//è·å–CPUå”¯ä¸€ID
+//»ñÈ¡CPUÎ¨Ò»ID
 
-    CpuID[0]=*(volatile uint32_t*)(0x1fff7590);
-    CpuID[1]=*(volatile uint32_t*)(0x1fff7594);
-    CpuID[2]=*(volatile uint32_t*)(0x1fff7598);
-//åŠ å¯†ç®—æ³•,å¾ˆç®€å•çš„åŠ å¯†ç®—æ³•
+    CpuID[0]=0x00;
+    CpuID[1]=0x03;
+    CpuID[2]=0x04;
+    CpuID[3]=0x02;
+    CpuID[4]=0x20;
+    CpuID[5]=0x00;
+    CpuID[6]=0x01;
+    //CpuID[2]=*(volatile uint32_t*)(0x1fff7598);
+//¼ÓÃÜËã·¨,ºÜ¼òµ¥µÄ¼ÓÃÜËã·¨
 
     Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
 }
@@ -68,7 +78,7 @@ void ParamsInit(void)
     if(p!=0x5a)
     {
         systemParams_usr.period = 2;
-        p = 0x5a; //å†™å…¥æ ‡å¿—
+        p = 0x5a; //Ğ´Èë±êÖ¾
         flash_init(0);
         addr = 0;
         flash_write(addr++, &p,1);
@@ -91,7 +101,7 @@ void ParamsInit(void)
             systemParams_usr.NightPeriod = 2;
             systemParams_usr.Dhours = 6;
             systemParams_usr.Nhours = 18;
-			systemParams_usr.vbatT = 31;
+			      systemParams_usr.vbatT = 31;
         }
 
         uint32_t tmp;
@@ -105,10 +115,18 @@ void ParamsInit(void)
         tmp = systemParams_usr.Nhours;
         flash_write( addr++,(uint32_t *)&(tmp),1);
         tmp = systemParams_usr.vbatT;
-        flash_write( addr++,(uint32_t *)&(tmp),1);		
+        flash_write( addr++,(uint32_t *)&(tmp),1);
+
+        unsigned char i;
+				for(i=0;i<7;i++)
+				{
+          tmp = CpuID[i];
+          flash_write( addr++,(uint32_t *)&(tmp),1);				
+				}
+				
         if(DEBUG_MODE == 0)
         {
-            EraseChip();
+           ;// EraseChip();
         }
     }
     else
@@ -134,9 +152,15 @@ void ParamsInit(void)
 
         flash_read( addr++,(uint32_t *)&(tmp),1);
         systemParams_usr.Nhours =tmp ;
-	flash_read( addr++,(uint32_t *)&(tmp),1);
-	systemParams_usr.vbatT =tmp ;
-
+	      flash_read( addr++,(uint32_t *)&(tmp),1);
+	      systemParams_usr.vbatT =tmp ;
+        unsigned char i;
+				for(i=0;i<7;i++)
+				{
+          
+          flash_read( addr++,(uint32_t *)&(tmp),1);	
+					CpuID[i]=tmp  ;			
+				}
     }
     GetLockCode();
 
@@ -145,7 +169,7 @@ void systmeReconfig()
 {
     uint32_t p;
     uint32_t addr;
-    p = 0x5a;  //Ğ´É«ÒªÖ¾
+    p = 0x5a;  //§Õ0®20Û80÷4
     flash_init(0);
     addr = 0;
     flash_write(addr++, &p,1);
@@ -172,7 +196,7 @@ void cmdResponse(unsigned char wr,unsigned char *params)
 {
     uint8_t *pb;
     uint32_t len;
-    if(wr == 1)//è¯»
+    if(wr == 1)//ÚÃ
     {
         if(params[PARAMS_INDEX] == 0x31)
         { 
@@ -195,7 +219,7 @@ void cmdResponse(unsigned char wr,unsigned char *params)
 					len = 0;
             pb = malloc(1);
             memcpy(pb+len,&systemParams_usr.vbat,1);
-            len++;//æ”¾å¤§10å€
+            len++;//·Å´ó10‚
             payloadpack(pb,len);
 					   free(pb);
         }
@@ -224,8 +248,8 @@ void cmdResponse(unsigned char wr,unsigned char *params)
         }
         else if(params[PARAMS_INDEX] == 0x32)
         {
-		systemParams_usr.vbatT= params[18];
-		systmeReconfig();
+		      systemParams_usr.vbatT= params[18];
+		      systmeReconfig();
 
         }
         else if(params[PARAMS_INDEX] == 0x33)
@@ -254,22 +278,22 @@ unsigned char  LteAnaly(void)
         len =len + ((GetLteStru()->lterxbuffer[LENINDEX+3])<<24);
         len = len +DEVID_LEN;
         len = len +PAYLOAD_LEN;
-        calCRC=CRC_Compute(ltebuf,len-2);//è®¡ç®—æ‰€æ¥æ”¶æ•°æ®çš„CRC
-        recCRC=ltebuf[len-1]|(((u16)ltebuf[len-2])<<8);//æ¥æ”¶åˆ°çš„CRC
-        if(calCRC!=recCRC||(calCRC == 0))//CRCæ ¡éªŒé”™è¯¯
+        calCRC=CRC_Compute(ltebuf,len-2);//¼ÆËã³Ğ½ÓÊÕÊı¾İµÄCRC
+        recCRC=ltebuf[len-1]|(((u16)ltebuf[len-2])<<8);//½ÓÊÕµ½µÄCRC
+        if(calCRC!=recCRC||(calCRC == 0))//CRCĞ£Ñé´íÎó
         {
             result = 1;
         }
         else
         {
-            switch(ltebuf[CMD_INDEX])//è¯»å†™è§£æ
+            switch(ltebuf[CMD_INDEX])//¶ÁĞ´½âÎö
             {
-            case 0x60://è¯»
+            case 0x60://ÚÃ
             {
                 cmdResponse(1,ltebuf);
             }
             break;
-            case 0x61://å†™
+            case 0x61://ƒï
                 cmdResponse(0,ltebuf);
                 break;
             }
@@ -277,6 +301,99 @@ unsigned char  LteAnaly(void)
         }
     }
     return result;
+}
+//jansson Test
+
+//{
+//	"token": "Éè±¸±àºÅ ",
+//	"values": {
+//		"accX_mg": "1010.3",        //xÖá¼ÓËÙ¶È 
+//		"accY_mg": "1010.3",        //yÖá¼ÓËÙ¶È
+//		"accZ_mg": "1010.3",        //zÖá¼ÓËÙ¶È
+//		"angular_rateX": "1.2",     //xÖá½ÇËÙ¶È mdps
+//		"angular_rateY": "1.2",      //yÖá½ÇËÙ¶È 
+//		"angular_rateZ": "1.2",      //zÖá¼ÓËÙ¶È
+//		"magneticX_mG": "3.2",      //xÖá´ÅÊÆ  mg
+//		"magneticY_mG": "3.2",      //yÖá´ÅÊÆ
+//		"magneticZ_mG": "3.2",      //zÖá´ÅÊÆ
+//		"temperature": "30",        //ÎÂ¶È ÉãÊÏø
+//		"Pressure": "101",          //ÆøÑ¹ kpa
+//		"latitude": "41.23",         //Î³¶È
+//		"N_S": "110",                 //ÄÏ±±Ïß  110  163
+//		"longtitude": "121.23",     //¾­¶È
+//		"E_W": "101",                 //¶«Î÷ÂÌ  101  167
+//		"altitude": "121.23"         //º£°Î  µ¥Î»£ºÃ×
+//	}
+//    
+//}
+void jansson_pack_test(void)
+{
+	json_t *root;
+	
+json_t* item = NULL;  
+// //{"root": {"name": "xiaopeng", "age": 21}} 
+root = json_object();  
+item = json_object();  
+  
+char* s_repon = NULL;  
+float tmp = 3.1514;
+json_object_set_new(item,"aX",json_real(FilterData[0])); 
+json_object_set_new(item,"aY",json_real(FilterData[1])); 
+json_object_set_new(item,"aZ",json_real(FilterData[2])); 
+json_object_set_new(item,"rateX",json_real(FilterData[3])); 
+json_object_set_new(item,"rateY",json_real(FilterData[4])); 
+json_object_set_new(item,"rateZ",json_real(FilterData[5])); 
+json_object_set_new(item,"magX_mG",json_real(FilterData[7])); 
+json_object_set_new(item,"magY_mG",json_real(FilterData[8])); 
+json_object_set_new(item,"magZ_mG",json_real(FilterData[9])); 
+json_object_set_new(item,"temp",json_real(FilterData[6])); 
+json_object_set_new(item,"Pressure",json_real(FilterData[10])); 
+
+extern _SaveData Save_Data;
+//if(Save_Data.isUsefull == 1)
+{
+    unsigned char len;
+	len = strlen(Save_Data.latitude);
+	json_object_set_new(item,"lat",json_stringn(Save_Data.latitude,len)); 
+	len = strlen(Save_Data.N_S);	
+	json_object_set_new(item,"N_S",json_stringn(Save_Data.N_S,len)); 
+	len = strlen(Save_Data.longitude);	
+	json_object_set_new(item,"longti",json_stringn(Save_Data.longitude,len)); 
+	len = strlen(Save_Data.E_W);	
+	json_object_set_new(item,"E_W",json_stringn(Save_Data.E_W,len)); 
+	len = strlen(Save_Data.altitude);	
+	json_object_set_new(item,"alti",json_stringn(Save_Data.altitude,len)); 
+}
+
+/*/json_object_set_new(item,"latitude",json_string("xiaopeng")); 
+json_object_set_new(item,"N_S",json_string("xiaopeng")); 
+json_object_set_new(item,"longtitude",json_string("xiaopeng")); 
+json_object_set_new(item,"E_W",json_string("xiaopeng")); 
+json_object_set_new(item,"altitude",json_string("xiaopeng")); */
+json_object_set_new(root,"values",item);
+ json_object_set_new(root,"token",json_string("000304020001"));   
+s_repon = json_dumps(root, JSON_ENCODE_ANY);
+ extern UART_HandleTypeDef huart3;
+
+unsigned char tmp2[2];
+len = strlen(s_repon);
+tmp2[0] = len >>8;
+tmp2[1] = len ;
+//LteUart_SendByte(LTE_4G,tmp2,2);
+//HAL_UART_Transmit(&huart3, tmp2, 2, 500);
+//HAL_UART_Transmit(&huart3, tmp2[1], 1, 500);
+
+printf("%c",tmp2[0]);
+printf("%c",tmp2[1]);
+printf("%s",s_repon);  
+//LteUart_SendByte(LTE_4G,s_repon,len);
+
+free(s_repon); 
+json_decref(root);
+json_decref(item);
+//free(root);
+//free(item);
+	//free(s_repon);	
 }
 
 
@@ -299,7 +416,7 @@ void payloadpack(unsigned char *p,uint32_t size)
     pb[LENINDEX+1] = (unsigned char)(payload_len>>8);
     pb[LENINDEX+2] = (unsigned char)(payload_len>>16);
     pb[LENINDEX+3] = (unsigned char)(payload_len>>24);
-    calCRC=CRC_Compute(pb+HEADDER_LEN,len-3);//è®¡ç®—æ‰€æ¥æ”¶æ•°æ®çš„CRC
+    calCRC=CRC_Compute(pb+HEADDER_LEN,len-3);//¼ÆËã³Ğ½ÓÊÕÊı¾İµÄCRC
     pb[len-1] = (unsigned char)calCRC;
     pb[len-2] = (unsigned char)(calCRC>>8);
 
@@ -495,7 +612,7 @@ void DataUploadPeriod()
 void test()
 {
 // SIMCOM_Register_Network();
-//DataUploadPeriod();//æ•°æ®ä¸Šä¼ å‘¨æœŸæ§åˆ¶
+//DataUploadPeriod();//Êı¾İÉÏ´«ÖÜÆÚ¿ØÖÆ
     HAL_GPIO_TogglePin(GPIOB, led_Pin);
     HAL_GPIO_WritePin(GPIOA, EN_5V_Pin, GPIO_PIN_SET);
 
@@ -505,9 +622,9 @@ void test()
     /*Configure GPIO pin Output Level */
     HAL_GPIO_WritePin(GPIOC, EN_5V2_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOB, EN_3V8_Pin, GPIO_PIN_RESET);
-    DataUploadPeriod();//æ•°æ®ä¸Šä¼ å‘¨æœŸæ§åˆ¶
+    DataUploadPeriod();//Êı¾İÉÏ´«ÖÜÆÚ¿ØÖÆ
 //  HAL_Delay(1000);
-    snesors_process();//imuå‚æ•°é‡‡é›†
+    snesors_process();//imu²ÎÊı²É¼¯
 
     /*Configure GPIO pin Output Level */
     HAL_GPIO_WritePin(GPIOB, EN_5V1_Pin|EN_3V8_Pin, GPIO_PIN_SET);
@@ -532,11 +649,11 @@ void app_main()
     unsigned char pb[SUM_COUNT*PAYLOAD_COUNT];
     uint32_t len;
     static unsigned char SleepFLag;
-
-    DataUploadPeriod();//æ•°æ®ä¸Šä¼ å‘¨æœŸæ§åˆ¶
+    
+    DataUploadPeriod();//Êı¾İÉÏ´«ÖÜÆÚ¿ØÖÆ
     ledBLink();
 #if DEBUG_MODE == 0
-    snesors_process();//imuå‚æ•°é‡‡é›†
+    snesors_process();//imu²ÎÊı²É¼¯
     SIMCOM_Register_Network();
 #endif
 
@@ -546,37 +663,37 @@ void app_main()
     if(powerManage() == 1)
     {
         systemParams_usr.period = 120;
-        powersleep();
+        //powersleep();
     }
 #endif
-    if(GetLteStru()->NetStatus == SIMCOM_NET_OK)//è§£ææœåŠ¡å™¨æŒ‡ä»?
+    if(GetLteStru()->NetStatus == SIMCOM_NET_OK)//½âÎö·şÎñÆ÷Ö¸·Â
     {
 
 
         if(GetLteStru()->LteReceivedFlag)
         {
 
-		   tick = HAL_GetTick();
+		       tick = HAL_GetTick();
             GetLteStru()->LteReceivedFlag = 0;
-            if(LteAnaly()==0)//è§£ææœåŠ¡ç«¯å‘½ä»?
+            if(LteAnaly()==0)//½âÎö·şÎñ¶ËÃü·Â
                 SleepFLag = 2;
         }
     }
 
-    /***********************æ•°æ®ä¸ŠæŠ¥æœºåˆ¶*********************************/
+    /***********************Êı¾İÉÏ±¨»úÖÆ*********************************/
     if(GetLteStru()->NetStatus == SIMCOM_NET_OK&&SleepFLag ==0)
     {
-        if(GetFLashStatus()->SumLen !=0)//æ•°æ®æ–­ç½‘ç»­ä¼ 
+        if(GetFLashStatus()->SumLen !=0)//Êı¾İ¶ÏÍøĞø´«
         {
             uint32_t i,len,len2,k;
             len = GetFLashStatus()->SumLen;
-            if(len<=SUM_COUNT*PAYLOAD_COUNT)//æ•°æ®åˆ†åŒ…
+            if(len<=SUM_COUNT*PAYLOAD_COUNT)//Êı¾İ·Ö°ü
             {
                 FlashReadOnebytes((GetFLashStatus()->LastReadAddr ),pb,GetFLashStatus()->SumLen,1);
                 payloadpack(pb,len);
 
             }
-            else  //åˆ†åŒ…ç»­ä¼ 
+            else  //·Ö°üĞø´«
             {
                 k = len/(SUM_COUNT*PAYLOAD_COUNT);
                 len2 = k *(SUM_COUNT*PAYLOAD_COUNT);
@@ -593,15 +710,15 @@ void app_main()
             }
             systmeReconfig();
         }
-        else //å®šæœŸä¸Šä¼ 
+        else //¶¨ÆÚÉÏ´«
         {
-            extern unsigned char gpsBuf[GPS_COUNT];
+           jansson_pack_test();
             getGPS();
             len = 0;
             memcpy(pb+len,gpsBuf,GPS_COUNT);
             len = len +GPS_COUNT;
             memcpy(pb+len,FilterData,SENSORS_COUNT*4);
-            payloadpack(pb,SUM_COUNT);
+           // payloadpack(pb,SUM_COUNT);
 
         }
         SleepFLag = 1;
@@ -612,7 +729,7 @@ void app_main()
     {
 
 
-        if(GetLteStru()->RetryConnectCount>MAX_CONNECT_COUNT )//æ–­ç½‘æ•°æ®å­˜å‚¨
+        if(GetLteStru()->RetryConnectCount>MAX_CONNECT_COUNT )//¶ÏÍøÊı¾İ´æ´¢
         {
             FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)getGPS(),GPS_COUNT/4);
             FlashDataStore(GetFLashStatus()->LastWriteAddr,(uint32_t *)FilterData,SENSORS_COUNT);
@@ -637,11 +754,12 @@ void app_main()
         tick = HAL_GetTick();
     if((HAL_GetTick()-tick)>=60000)
     {
+			  tick = HAL_GetTick();
         SleepFLag = 0;
-        powersleep();
+        //powersleep();
     }
 
-    /***************************æ•°æ®ä¸ŠæŠ¥æœºåˆ¶ç»“æŸ***********************************/
+    /***************************Êı¾İÉÏ±¨»úÖÆ½áÊø***********************************/
 
 
 }

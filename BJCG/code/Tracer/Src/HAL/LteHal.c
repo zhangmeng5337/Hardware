@@ -1,13 +1,13 @@
-ï»¿#include "LteHal.h"
+#include "LteHal.h"
 #include "string.h"
 #include "LteHardware.h"
 
 
 unsigned char one_net_key[]="*284261#580794566#json*";//296832£º²úÆ·±àºÅ£»571498701£º¼øÈ¨Âë£»json£º½Å±¾
 #if ROLE == LTE_4G
-unsigned char Establish_TCP_Connection[]="AT+CIPOPEN=0,\"TCP\",\"dtu.heclouds.com\",1811\r";
+unsigned char Establish_TCP_Connection[]="AT+CIPOPEN=0,\"TCP\",\"thingssaas.jiyikeji.cn\",9501\r";
 #else
-unsigned char Establish_TCP_Connection[]="AT+CAOPEN=0,0,\"TCP\",\"dtu.heclouds.com\",1811\r";
+unsigned char Establish_TCP_Connection[]="AT+CAOPEN=0,0,\"TCP\",\"thingssaas.jiyikeji.cn\",9501\r";
 #endif
 //unsigned char Establish_TCP_Connection[100];//="AT+CIPSTART=\"TCP\",\"dtu.heclouds.com\",1811\r";
 //unsigned char Establish_TCP_Connection2[100]="AT+CIPSTART=\"TCP\",\"192.168.1.3\",3\r";
@@ -290,7 +290,7 @@ void SIMCOM_Register_Network()
     case SIMCOM_Connect_Platform:
     {
         static unsigned char tx_count;
-
+lte_usr.NetStatus=SIMCOM_NET_OK;
         if (sendCommand(moduleType,one_net_key, "received", 1400, 1,0) == Success)
         {
             lte_usr.NetStatus=SIMCOM_NET_OK;

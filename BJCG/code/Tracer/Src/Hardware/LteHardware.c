@@ -1,4 +1,4 @@
-Ôªø#include "LteHardware.h"
+#include "LteHardware.h"
 #include "LteHal.h"
 #include "gps.h"
 #include "string.h"
@@ -233,10 +233,9 @@ void Gps_RxCpltCallback()
     
     
     USART_RX_BUF[point1++] = gps_res;
-    
-    if(USART_RX_BUF[0] == '$' && USART_RX_BUF[4] == 'M' && USART_RX_BUF[5] == 'C')			//»∑∂® «∑Ò ’µΩ"GPRMC/GNRMC"’‚“ª÷° ˝æ›
+    if(USART_RX_BUF[0] == '$' && USART_RX_BUF[2] == 'N'&& USART_RX_BUF[3] == 'G'&& USART_RX_BUF[4] == 'G' && USART_RX_BUF[5] == 'A')			//»∑∂® «∑Ò ’µΩ"GPRMC/GNRMC"’‚“ª÷° ˝æ›
     {
-      if(Res == '\n')									   
+      if(gps_res == '\n')									   
       {
         memset(Save_Data.GPS_Buffer, 0, GPS_Buffer_Length);      //«Âø’
         memcpy(Save_Data.GPS_Buffer, USART_RX_BUF, point1); 	//±£¥Ê ˝æ›
@@ -255,6 +254,7 @@ void Gps_RxCpltCallback()
 void errorLog(int num)
 {
 }
+	unsigned char t;
 unsigned char  parseGpsBuffer(unsigned char *p)
 {
   char *subString;
@@ -267,7 +267,7 @@ unsigned char  parseGpsBuffer(unsigned char *p)
    // printf(Save_Data.GPS_Buffer);
     
     
-    for (i = 0 ; i <= 6 ; i++)
+    for (i = 0 ; i <= 9 ; i++)
     {
       if (i == 0)
       {
@@ -280,23 +280,25 @@ unsigned char  parseGpsBuffer(unsigned char *p)
         if ((subStringNext = strstr(subString, ",")) != NULL)
         {
           char usefullBuffer[2]; 
+		  usefullBuffer[0]='0'; 
           switch(i)
           {
           case 1:memcpy(Save_Data.UTCTime, subString, subStringNext - subString);break;	//ªÒ»°UTC ±º‰
-          case 2:memcpy(usefullBuffer, subString, subStringNext - subString);break;	//ªÒ»°UTC ±º‰
-          case 3:memcpy(Save_Data.latitude, subString, subStringNext - subString);break;	//ªÒ»°Œ≥∂»–≈œ¢
-          case 4:memcpy(Save_Data.N_S, subString, subStringNext - subString);break;	//ªÒ»°N/S
-          case 5:memcpy(Save_Data.longitude, subString, subStringNext - subString);break;	//ªÒ»°æ≠∂»–≈œ¢
-          case 6:memcpy(Save_Data.E_W, subString, subStringNext - subString);break;	//ªÒ»°E/W
-          
+          case 2:memcpy(Save_Data.latitude, subString, subStringNext - subString);break;	//ªÒ»°Œ≥∂»–≈œ¢
+          case 3:memcpy(Save_Data.N_S, subString, subStringNext - subString);break;	//ªÒ»°N/S
+          case 4:memcpy(Save_Data.longitude, subString, subStringNext - subString);break;//£ª
+		  case 5: memcpy(Save_Data.E_W, subString, subStringNext - subString);break;	//ªÒ»°E/Wbreak;	//ªÒ»°æ≠∂»–≈œ¢
+          case 6:memcpy(usefullBuffer, subString, subStringNext - subString);break;	//ªÒ»°UTC ±º‰
+          case 9:memcpy(Save_Data.altitude, subString, subStringNext - subString);break;	//ªÒ»°UTC ±º‰
+                    
           default:break;
           }
           
           subString = subStringNext;
           Save_Data.isParseData = true;
-          if(usefullBuffer[0] == 'A')
+          if(usefullBuffer[0] != '0')
             Save_Data.isUsefull = true;
-          else if(usefullBuffer[0] == 'V')
+          else// if(usefullBuffer[0] == 'V')
             Save_Data.isUsefull = false;
           
         }
@@ -309,6 +311,8 @@ unsigned char  parseGpsBuffer(unsigned char *p)
       
     }
   }
+
+	t=strlen(Save_Data.UTCTime);
     if(Save_Data.isUsefull == true)
   {
     unsigned char len;

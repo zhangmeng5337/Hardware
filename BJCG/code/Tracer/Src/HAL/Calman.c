@@ -32,7 +32,8 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
     unsigned int i;
     Q = sq;
     R = sr;
-    //kalman_adc_old = adcBuf_humid[0];
+    kalman_adc_old = pb[0];
+	
     for(i=0; i<1; i++)
     {
 			  //Z_k = 0;
@@ -43,6 +44,11 @@ float Claman(float *pb,float sq,float sr,unsigned char seq)
 
             kalman_adc = kalman_adc2[seq-1];
             kalman_adc_old = kalman_adc2[seq-1];
+			if(kalman_adc ==0)
+				kalman_adc= pb[0];
+			if(kalman_adc_old ==0)
+				kalman_adc_old= pb[0];
+
             P_k1_k1 = P_k_k2[seq-1];
         if (fabs(kalman_adc_old-pbf)>=10)
         {

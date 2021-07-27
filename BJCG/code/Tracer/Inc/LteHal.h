@@ -1,4 +1,4 @@
-ï»¿#ifndef LTEHAL_H
+#ifndef LTEHAL_H
 #define LTEHAL_H
 #include "main.h"
 #define BUFFERSIZE		128
@@ -8,7 +8,7 @@
 #define SERVER_HEADER  0xab
 
 #define HEADDER_LEN 	1
-#define DEVID_LEN 		12
+#define DEVID_LEN 		7
 #define CRC_LEN 		2
 #define PAYLOAD_LEN 	4
 
@@ -19,7 +19,7 @@
 //³£Á¿
 #define Success 1U
 #define Failure 0U
-#define SIMCOM_TIME_OUT					5000
+#define SIMCOM_TIME_OUT					200
 
 #define	SIMCOM_NET_NOT 						                    0    	//¿ª»úÎ´Íê³É
 #define	SIMCOM_POWER_ON                                         1

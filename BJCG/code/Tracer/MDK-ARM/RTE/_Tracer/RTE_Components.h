@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'TRACER' 
+ * Project: 'Tracer' 
  * Target:  'TRACER' 
  */
 
@@ -16,5 +16,6 @@
  */
 #define CMSIS_device_header "stm32l4xx.h"
 
+#define JANSSON
 
 #endif /* RTE_COMPONENTS_H */

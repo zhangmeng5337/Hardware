@@ -150,13 +150,13 @@ void snesors_process(void)
     pb[i++]= Claman(&(AccAng_usrp->temperature_degC),0.008,10,1);
     pb[i++]= Claman(&(AccAng_usrp->temperature_degC),0.008,10,1);*/
 
-    for(j =0; j<(SN/2-1); j++)
+   /* for(j =0; j<(SN/2-1); j++)
     {
         printf("   %f    %f  ",pbt[j],FilterData[j]);  //Êä³ö²âÁ¿ÀÛ»ýÎó²î
 
     }
     printf("	%f	 %f\n",pbt[j],FilterData[j]);  //Êä³ö²âÁ¿ÀÛ»ýÎó²î
-
+*/
 
 
 }

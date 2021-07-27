@@ -2,7 +2,7 @@
 #include "stdio.h"
 extern UART_HandleTypeDef huart3;
 
-
+extern UART_HandleTypeDef huart1;
 struct __FILE
 {
 int handle;
@@ -15,6 +15,7 @@ int fputc(int ch, FILE *f)
 	unsigned char tmp;
 	tmp =(unsigned char )ch;
     HAL_UART_Transmit(&huart3, &tmp, 1, 500);
+	 HAL_UART_Transmit(&huart1, &tmp, 1, 500);
 	return ch;
 }
 
