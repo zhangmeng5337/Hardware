@@ -1,4 +1,4 @@
-﻿#include "calibration.h"
+#include "calibration.h"
 #include "filter.h"
 ratio_stru ratio;
 
@@ -47,7 +47,7 @@ ratio_stru *CalibrationRatio(float sVol,float CaliVol)
         L = 0;
         M = 0;
         P = 0;
-		ratio.aN = AN;
+		    ratio.aN = AN;
         K = ratio.aF*ratio.aF;//F^2
         K = ratio.aI*K;//I*F^2
         
