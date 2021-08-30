@@ -162,98 +162,82 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
 [GeneratedDocument1]
-DocumentPath=Project Outputs for FDRV_1.0\Design Rule Check - PCB1.html
-DItemRevisionGUID=
-
-[GeneratedDocument2]
-DocumentPath=Project Outputs for FDRV_1.0\FDRV_1.1.xls
-DItemRevisionGUID=
-
-[GeneratedDocument3]
-DocumentPath=Project Outputs for FDRV_1.0\FDRV_1.2.xls
-DItemRevisionGUID=
-
-[GeneratedDocument4]
-DocumentPath=Project Outputs for FDRV_1.0\FDRV_1.3.xls
-DItemRevisionGUID=
-
-[GeneratedDocument5]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1-RoundHoles.TXT
 DItemRevisionGUID=
 
-[GeneratedDocument6]
+[GeneratedDocument2]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1-SlotHoles.TXT
 DItemRevisionGUID=
 
-[GeneratedDocument7]
+[GeneratedDocument3]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.DRL
 DItemRevisionGUID=
 
-[GeneratedDocument8]
+[GeneratedDocument4]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.DRR
 DItemRevisionGUID=
 
-[GeneratedDocument9]
+[GeneratedDocument5]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.EXTREP
 DItemRevisionGUID=
 
-[GeneratedDocument10]
+[GeneratedDocument6]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GBL
 DItemRevisionGUID=
 
-[GeneratedDocument11]
+[GeneratedDocument7]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GBO
 DItemRevisionGUID=
 
-[GeneratedDocument12]
+[GeneratedDocument8]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GBP
 DItemRevisionGUID=
 
-[GeneratedDocument13]
+[GeneratedDocument9]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GBS
 DItemRevisionGUID=
 
-[GeneratedDocument14]
+[GeneratedDocument10]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GKO
 DItemRevisionGUID=
 
-[GeneratedDocument15]
+[GeneratedDocument11]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GM1
 DItemRevisionGUID=
 
-[GeneratedDocument16]
+[GeneratedDocument12]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GPB
 DItemRevisionGUID=
 
-[GeneratedDocument17]
+[GeneratedDocument13]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GPT
 DItemRevisionGUID=
 
-[GeneratedDocument18]
+[GeneratedDocument14]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GTL
 DItemRevisionGUID=
 
-[GeneratedDocument19]
+[GeneratedDocument15]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GTO
 DItemRevisionGUID=
 
-[GeneratedDocument20]
+[GeneratedDocument16]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GTP
 DItemRevisionGUID=
 
-[GeneratedDocument21]
+[GeneratedDocument17]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.GTS
 DItemRevisionGUID=
 
-[GeneratedDocument22]
+[GeneratedDocument18]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.LDP
 DItemRevisionGUID=
 
-[GeneratedDocument23]
+[GeneratedDocument19]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.REP
 DItemRevisionGUID=
 
-[GeneratedDocument24]
+[GeneratedDocument20]
 DocumentPath=Project Outputs for FDRV_1.0\PCB1.RUL
 DItemRevisionGUID=
 
