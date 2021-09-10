@@ -35,7 +35,7 @@ extern "C" {
 typedef uint32_t u32; 
 typedef unsigned  char u8 ;  
 typedef unsigned int u16 ; 
-#define DEBUG  1
+#define DEBUG  0
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
