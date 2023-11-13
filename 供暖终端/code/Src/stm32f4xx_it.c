@@ -24,6 +24,11 @@
 #include "ads1258.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+<<<<<<< HEAD
+=======
+#include "uart.h"
+
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -274,7 +279,11 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
+<<<<<<< HEAD
 
+=======
+ uart_lte();
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
   /* USER CODE END USART1_IRQn 1 */
 }
 
@@ -288,7 +297,11 @@ void UART4_IRQHandler(void)
   /* USER CODE END UART4_IRQn 0 */
   HAL_UART_IRQHandler(&huart4);
   /* USER CODE BEGIN UART4_IRQn 1 */
+<<<<<<< HEAD
 
+=======
+   uart_rs485();
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
   /* USER CODE END UART4_IRQn 1 */
 }
 
@@ -302,7 +315,11 @@ void UART5_IRQHandler(void)
   /* USER CODE END UART5_IRQn 0 */
   HAL_UART_IRQHandler(&huart5);
   /* USER CODE BEGIN UART5_IRQn 1 */
+<<<<<<< HEAD
 
+=======
+  uart_lcd();
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
   /* USER CODE END UART5_IRQn 1 */
 }
 

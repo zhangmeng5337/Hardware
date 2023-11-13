@@ -381,7 +381,11 @@ void readData(unsigned char adc_No,readMode mode)
     	if((DataRx[dataPosition-1]&0x7f)<0x1e)
     	{
     	 
+<<<<<<< HEAD
 		    channel = DataRx[dataPosition-1]&0x1f;
+=======
+		    channel = DataRx[dataPosition-1]&0x1f-0x08;
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
     	  memcpy(data_ADC.data_inADC+2*channel,&DataRx[dataPosition],byteLength-1);
 		  
 		}
@@ -396,7 +400,11 @@ void readData(unsigned char adc_No,readMode mode)
     	if((DataRx[dataPosition-1]&0x7f)<0x1e)
     	{
     	  //unsigned  char channel;
+<<<<<<< HEAD
 		  channel = DataRx[dataPosition-1]&0x1f;
+=======
+		  channel = DataRx[dataPosition-1]&0x1f-0x08;
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
     	  memcpy(data_ADC.data2_inADC+2*channel,&DataRx[dataPosition],byteLength-1);
           if(channel == 29)
 		  	data_ADC.update = 1;//数据采集完成

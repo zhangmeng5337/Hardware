@@ -1,4 +1,8 @@
 #include "pt100.h"
+<<<<<<< HEAD
+=======
+#include "pt100_ROM.h"
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 stru_pt_stru  pt_u;
 /**********************************************
  *

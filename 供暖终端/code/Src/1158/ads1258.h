@@ -44,7 +44,11 @@
 typedef struct 
 {
 	unsigned char data_inADC[CHANNEL_SIZE*2];
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 	unsigned char data2_inADC[CHANNEL_SIZE*2];
 	unsigned char update;
 	

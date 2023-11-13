@@ -221,6 +221,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
+<<<<<<< HEAD
 [GeneratedDocument1]
 DocumentPath=Project Outputs for controller\Design Rule Check - controller_V1.html
 DItemRevisionGUID=
@@ -237,6 +238,8 @@ DItemRevisionGUID=
 DocumentPath=Project Outputs for controller\Pick Place for controller_V1.0.txt
 DItemRevisionGUID=
 
+=======
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 [Configuration1]
 Name=Default Configuration
 ParameterCount=0
@@ -397,7 +400,11 @@ OutputDefault3=0
 [OutputGroup3]
 Name=Documentation Outputs
 Description=
+<<<<<<< HEAD
 TargetPrinter=HP Smart Tank 510 series
+=======
+TargetPrinter=Adobe PDF
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Composite
 OutputName1=Composite Drawing

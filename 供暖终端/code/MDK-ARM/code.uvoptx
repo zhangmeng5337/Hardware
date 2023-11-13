@@ -761,6 +761,21 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+<<<<<<< HEAD
+=======
+    <File>
+      <GroupNumber>5</GroupNumber>
+      <FileNumber>25</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Src\uart.c</PathWithFileName>
+      <FilenameWithoutPath>uart.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
   </Group>
 
   <Group>
@@ -771,7 +786,11 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>25</FileNumber>
+=======
+      <FileNumber>26</FileNumber>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -783,7 +802,11 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>26</FileNumber>
+=======
+      <FileNumber>27</FileNumber>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -795,7 +818,11 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>27</FileNumber>
+=======
+      <FileNumber>28</FileNumber>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -807,7 +834,11 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>28</FileNumber>
+=======
+      <FileNumber>29</FileNumber>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -819,7 +850,11 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>29</FileNumber>
+=======
+      <FileNumber>30</FileNumber>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -831,7 +866,11 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>30</FileNumber>
+=======
+      <FileNumber>31</FileNumber>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -841,6 +880,69 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+<<<<<<< HEAD
+=======
+    <File>
+      <GroupNumber>6</GroupNumber>
+      <FileNumber>32</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Src\modbus.c</PathWithFileName>
+      <FilenameWithoutPath>modbus.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>6</GroupNumber>
+      <FileNumber>33</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Src\crc.c</PathWithFileName>
+      <FilenameWithoutPath>crc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>6</GroupNumber>
+      <FileNumber>34</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Src\rs485.c</PathWithFileName>
+      <FilenameWithoutPath>rs485.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>6</GroupNumber>
+      <FileNumber>35</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Src\lte_hal.c</PathWithFileName>
+      <FilenameWithoutPath>lte_hal.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>6</GroupNumber>
+      <FileNumber>36</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Src\lcd.c</PathWithFileName>
+      <FilenameWithoutPath>lcd.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+>>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
   </Group>
 
   <Group>
