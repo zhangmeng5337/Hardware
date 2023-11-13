@@ -639,13 +639,14 @@ unsigned char check_id(unsigned char *p)			// 这个命令跟在命令后面，读取response
 	unsigned char i;
    
 	nSEL_H();   
-	
+		i = PART_INFO;
+	spi_write(1, &i);
+
 	nSEL_L();
-	spi_byte(0x01);
-	for(i=0;i<4;i++)
-	p[i] = spi_byte(0);
+	spi_read(9, READ_CMD_BUFF);
+
 	nSEL_H();
-	return (i);
+
 }	
 
 
@@ -771,7 +772,9 @@ void sdn_reset(void)
  	delay_1ms(10);	// 延时10ms RF 模块进入工作状态
  
  	nSEL_H();   
-	//
+		i = 0;
+	while(i!=0xff)
+		i = check_cts();
 	nSEL_L();
 	for (i = 0; i< 7; i++)
 		spi_byte(RF_POWER_UP_data[i]);   // 发送power up 命令
