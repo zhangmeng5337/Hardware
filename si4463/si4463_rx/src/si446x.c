@@ -437,10 +437,10 @@ void SI446X_START_RX(unsigned char channel, unsigned char condition, unsigned in
     SI446X_RX_FIFO_RESET();
     SI446X_TX_FIFO_RESET();
 
-    SI446X_CHANGE_STATE(2);
-    while (SI446X_GET_DEVICE_STATE() != 2);
-    SI446X_CHANGE_STATE(6);
-    while (SI446X_GET_DEVICE_STATE() != 6);
+//    SI446X_CHANGE_STATE(2);
+//    while (SI446X_GET_DEVICE_STATE() != 2);
+//    SI446X_CHANGE_STATE(6);
+//    while (SI446X_GET_DEVICE_STATE() != 6);
     cmd[0] = START_RX;
     cmd[1] = channel;
     cmd[2] = condition;
@@ -520,7 +520,7 @@ SI446X_GPIO_CONFIG();
 Function : config the GPIOs, IRQ, SDO
  Return 1:OK;0:failed;
 ============================================================================*/
-extern unsigned char two_hex_cmp(unsigned char *str1,unsigned char *str2,unsigned char afirstChar,unsigned char bfirstChar,unsigned char length);
+//extern unsigned char two_hex_cmp(unsigned char *str1,unsigned char *str2,unsigned char afirstChar,unsigned char bfirstChar,unsigned char length);
 unsigned char SI446X_GPIO_CONFIG(unsigned char G0, unsigned char G1, unsigned char G2, unsigned char G3,
                         unsigned char IRQ, unsigned char SDO, unsigned char GEN_CONFIG)
 {
@@ -536,10 +536,10 @@ unsigned char SI446X_GPIO_CONFIG(unsigned char G0, unsigned char G1, unsigned ch
     cmd[7] = GEN_CONFIG;
     SI446X_CMD(cmd, 8);
     SI446X_READ_RESPONSE(cmd, 8);
-//	 	if(two_hex_cmp(cmp,cmd,0,0,8)==1)
-// 		{
-// 			return 0;
-// 		}
+	 	if(two_hex_cmp(cmp,cmd,0,0,8)==1)
+ 		{
+ 			return 0;
+ 		}
 	
 		
  		return 1;
@@ -661,3 +661,28 @@ unsigned char get_has_init_si4463(void)
 ------------------------------------End of FILE----------------------------------
 =================================================================================
 */
+void enable_rx_interrupt(void)
+{
+	unsigned char p[7];
+
+	p[0] = 0x11;
+	p[1] = 0x01;  // 0x0100
+	p[2] = 0x03;  // 3???
+	p[3] = 0x00;   // 0100
+	p[4] = 0x03;   // ph, modem int
+	p[5] = 0x18; // 0x10;   // Pack received int
+	p[6] = 0x00;   //preamble int, sync int setting
+	SI446X_CMD(p,0x07);  // enable  packet receive interrupt	
+}
+void rx_init(void)
+{
+	unsigned char buffer[9];
+	SI446X_RX_FIFO_RESET();
+	SI446X_TX_FIFO_RESET();	
+	enable_rx_interrupt();	
+//	clr_interrupt();  // ???Factor	
+	//HAL_Delay(1);
+	SI446X_INT_STATUS(buffer);
+		SI446X_START_RX(0, 0, SI463_PACKAGE_LEN64, 8, 8, 8);  // 进入接收模式
+
+}	

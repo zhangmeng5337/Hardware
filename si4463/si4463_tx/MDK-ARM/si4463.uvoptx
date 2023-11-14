@@ -101,7 +101,9 @@
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
         <bEvRecOn>1</bEvRecOn>
-        <nTsel>3</nTsel>
+        <bSchkAxf>0</bSchkAxf>
+        <bTchkAxf>0</bTchkAxf>
+        <nTsel>4</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -118,6 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name>/</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -137,7 +140,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>JL2CM3</Key>
-          <Name>-U20730697 -O78 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
+          <Name>-U20731024 -O78 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -154,66 +157,50 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>113</LineNumber>
+          <LineNumber>101</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134223210</Address>
+          <Address>134223244</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liqiang\Desktop\zm\si4463\Core\Src\main.c</Filename>
+          <Filename>../Core/Src/main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\si4463\../Core/Src/main.c\113</Expression>
+          <Expression>\\si4463\../Core/Src/main.c\101</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>112</LineNumber>
+          <LineNumber>339</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134223226</Address>
+          <Address>134221764</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liqiang\Desktop\zm\si4463\Core\Src\main.c</Filename>
+          <Filename>..\src\si446x.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\si4463\../Core/Src/main.c\112</Expression>
+          <Expression>\\si4463\../src/si446x.c\339</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>98</LineNumber>
+          <LineNumber>645</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134223204</Address>
+          <Address>134221566</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liqiang\Desktop\zm\si4463\Core\Src\main.c</Filename>
+          <Filename>..\src\si446x.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\si4463\../Core/Src/main.c\98</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>442</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134222224</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Users\liqiang\Desktop\zm\si4463\src\si446x.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\si4463\../src/si446x.c\442</Expression>
+          <Expression>\\si4463\../src/si446x.c\645</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -226,6 +213,31 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>send_buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buffer</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>cmd</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>cmp</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tx_cnt,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>wait,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -272,6 +284,7 @@
       <pMultCmdsp></pMultCmdsp>
       <DebugDescription>
         <Enable>1</Enable>
+        <EnableFlashSeq>0</EnableFlashSeq>
         <EnableLog>0</EnableLog>
         <Protocol>2</Protocol>
         <DbgClock>10000000</DbgClock>

@@ -48,3 +48,22 @@ void system_mydelayms(unsigned int a)
 		for(j=0;j<a;j++);
 	}
 }
+unsigned char two_hex_cmp(const unsigned char *str1,const unsigned char *str2,\
+	const unsigned char afirstChar,const unsigned char bfirstChar,const unsigned char length)
+{
+    unsigned char i = 0;
+    unsigned char cmpflag = 0;
+    for(i = 0;i<length;i++)
+    {
+        if(str1[i + afirstChar] != str2[i + bfirstChar])
+        {
+            cmpflag = 0;
+            break;
+        }
+        else
+        {
+            cmpflag = 1;
+        }
+    }
+    return cmpflag;
+}

@@ -197,7 +197,17 @@ void SI446X_INT_STATUS(unsigned char *buffer)
     SI446X_READ_RESPONSE(buffer, 9);
 
 }
+void si4463_chip_ID(unsigned char *buffer)
+{
+    unsigned char cmd[4];
+    cmd[0] = PART_INFO;
+    cmd[1] = 0;
+    cmd[2] = 0;
+    cmd[3] = 0;
 
+    SI446X_CMD(cmd, 1);
+    SI446X_READ_RESPONSE(buffer, 9);
+}
 /*===========================================================================
 SI446X_GET_PROPERTY();
 Function : Read the PROPERTY of the device
@@ -627,23 +637,31 @@ unsigned char Si4463_init(void)
 	SI446X_START_RX(0, 0, SI463_PACKAGE_LEN64, 8, 8, 8);  // 进入接收模式
 	return f;
 }
-
+uint32_t wait;
+uint32_t tx_cnt;
 void RF_SendPacket(const unsigned char *buf,const unsigned char len)
 {
 	unsigned char TxBuffer[100];
 	__disable_irq();
 	SI446X_SEND_PACKET(buf, len, 0, 0);   // 发送数据  
   __enable_irq();
-	HAL_Delay(1000);
-	do
-	{
-		__disable_irq();
-		SI446X_INT_STATUS(TxBuffer);
-		__enable_irq();
-	}while (!(TxBuffer[3] & (1<<5)));               // 等待发射完成
-	__disable_irq();
-	SI446X_START_RX(0, 0, SI463_PACKAGE_LEN64, 8, 8, 8);  // 进入接收模式  
-	__enable_irq();
+	  wait = 0;
+			while(nIRQ)
+			wait++;
+			
+			{
+				{
+					tx_cnt++;
+					__disable_irq();
+					SI446X_INT_STATUS(TxBuffer);
+					__enable_irq();
+				}//while (!(TxBuffer[3] & (1<<5)));               // 等待发射完成
+				__disable_irq();
+				SI446X_START_RX(0, 0, SI463_PACKAGE_LEN64, 8, 8, 8);  // 进入接收模式  
+				__enable_irq();			
+			}
+	//do
+
 }
 ////si4463是否已经初始化
 //1：已经初始化；0：没有初始化
