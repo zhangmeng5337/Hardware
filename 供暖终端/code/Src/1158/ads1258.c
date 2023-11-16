@@ -83,52 +83,52 @@ uint8_t getRegisterValue(uint8_t address)
  * \fn void adcStartupRoutine(void)
  * \brief Startup function to be called before communicating with the ADC
  */
-void adcStartupRoutine(void)
-{
-    /* (OPTIONAL) Provide additional delay time for power supply settling */
-    delay_ms(50);
+//void adcStartupRoutine(void)
+//{
+//    /* (OPTIONAL) Provide additional delay time for power supply settling */
+//    delay_ms(50);
 
-    /* (REQUIRED) Set nRESET/nPWDN pin high for ADC operation */
-    setPWDN(HIGH);
+//    /* (REQUIRED) Set nRESET/nPWDN pin high for ADC operation */
+//    setPWDN(HIGH);
 
-    /* (OPTIONAL) Start ADC conversions with HW pin control  */
-    setSTART(HIGH);
+//    /* (OPTIONAL) Start ADC conversions with HW pin control  */
+//    setSTART(HIGH);
 
-    /* (REQUIRED) tWAKE delay */
-    delay_ms(5);
+//    /* (REQUIRED) tWAKE delay */
+//    delay_ms(5);
 
-    /* (OPTIONAL) Toggle nRESET pin to assure default register settings. */
-    /* NOTE: This also ensures that the device registers are unlocked.   */
-   // toggleRESET();
+//    /* (OPTIONAL) Toggle nRESET pin to assure default register settings. */
+//    /* NOTE: This also ensures that the device registers are unlocked.   */
+//   // toggleRESET();
 
-    /* Ensure internal register array is initialized */
-    restoreRegisterDefaults();
+//    /* Ensure internal register array is initialized */
+//    restoreRegisterDefaults();
 
-    /* (OPTIONAL) Configure initial device register settings here */
-    uint8_t initRegisterMap[NUM_REGISTERS];
-    initRegisterMap[REG_ADDR_CONFIG0]   =   CONFIG0_DEFAULT;
-    initRegisterMap[REG_ADDR_CONFIG1]   =   CONFIG1_DLY_64us | CONFIG1_DRATE_7813SPS;
-    initRegisterMap[REG_ADDR_MUXSCH]    =   MUXSCH_DEFAULT;
-    initRegisterMap[REG_ADDR_MUXDIF]    =   MUXDIF_DEFAULT;
-    initRegisterMap[REG_ADDR_MUXSG0]    =   MUXSG0_DEFAULT;
-    initRegisterMap[REG_ADDR_MUXSG1]    =   MUXSG1_DEFAULT;
-    initRegisterMap[REG_ADDR_SYSRED]    =   SYSRED_DEFAULT;
-    initRegisterMap[REG_ADDR_GPIOC]     =   GPIOC_DEFAULT;
-    initRegisterMap[REG_ADDR_GPIOD]     =   GPIOD_DEFAULT;
-    initRegisterMap[REG_ADDR_ID]        =   0x00;           // Read-only register
+//    /* (OPTIONAL) Configure initial device register settings here */
+//    uint8_t initRegisterMap[NUM_REGISTERS];
+//    initRegisterMap[REG_ADDR_CONFIG0]   =   CONFIG0_DEFAULT;
+//    initRegisterMap[REG_ADDR_CONFIG1]   =   CONFIG1_DLY_64us | CONFIG1_DRATE_7813SPS;
+//    initRegisterMap[REG_ADDR_MUXSCH]    =   MUXSCH_DEFAULT;
+//    initRegisterMap[REG_ADDR_MUXDIF]    =   MUXDIF_DEFAULT;
+//    initRegisterMap[REG_ADDR_MUXSG0]    =   MUXSG0_DEFAULT;
+//    initRegisterMap[REG_ADDR_MUXSG1]    =   MUXSG1_DEFAULT;
+//    initRegisterMap[REG_ADDR_SYSRED]    =   SYSRED_DEFAULT;
+//    initRegisterMap[REG_ADDR_GPIOC]     =   GPIOC_DEFAULT;
+//    initRegisterMap[REG_ADDR_GPIOD]     =   GPIOD_DEFAULT;
+//    initRegisterMap[REG_ADDR_ID]        =   0x00;           // Read-only register
 
-    /* (OPTIONAL) Write to all (writable) registers */
-    writeMultipleRegisters(REG_ADDR_CONFIG0, NUM_REGISTERS - 1, initRegisterMap);
+//    /* (OPTIONAL) Write to all (writable) registers */
+//    writeMultipleRegisters(REG_ADDR_CONFIG0, NUM_REGISTERS - 1, initRegisterMap);
 
-    /* (OPTIONAL) Read back all registers */
-    readMultipleRegisters(REG_ADDR_CONFIG0, NUM_REGISTERS);
+//    /* (OPTIONAL) Read back all registers */
+//    readMultipleRegisters(REG_ADDR_CONFIG0, NUM_REGISTERS);
 
-    /* (OPTIONAL) Start ADC conversions with the SPI command.
-     * Not needed if the START pin has already been set HIGH.
-     *
-     * sendCommand(START_OPCODE);
-     */
-}
+//    /* (OPTIONAL) Start ADC conversions with the SPI command.
+//     * Not needed if the START pin has already been set HIGH.
+//     *
+//     * sendCommand(START_OPCODE);
+//     */
+//}
 
 
 
@@ -228,7 +228,7 @@ void writeSingleRegister(uint8_t address, uint8_t data)
  * - Use getRegisterValue() to retrieve the written values.
  * - Registers should be re-read after a write operaiton to ensure proper configuration.
  */
-void writeMultipleRegisters(uint8_t startAddress, uint8_t count, const uint8_t regData[])
+void writeMultipleRegisters(unsigned char adc_No,uint8_t startAddress, uint8_t count, const uint8_t regData[])
 {
     /* Check that the register address and count are in range */
   //  assert(startAddress + count <= NUM_REGISTERS);
@@ -241,7 +241,7 @@ void writeMultipleRegisters(uint8_t startAddress, uint8_t count, const uint8_t r
     // SPI communication
     //
 
-    setCS(1,LOW);
+    setCS(adc_No,LOW);
 
     uint8_t dataTx = OPCODE_WREG | OPCODE_MUL_MASK | (startAddress & OPCODE_A_MASK);
     spiSendReceiveByte(dataTx);
@@ -256,9 +256,9 @@ void writeMultipleRegisters(uint8_t startAddress, uint8_t count, const uint8_t r
         registerMap[i] = regData[i];
     }
 
-    setCS(1,HIGH);
+    setCS(adc_No,HIGH);
 
-    setCS(2,LOW);
+    /*setCS(adc_No,LOW);
     spiSendReceiveByte(dataTx);
 
     for (i = startAddress; i < startAddress + count; i++)
@@ -268,9 +268,9 @@ void writeMultipleRegisters(uint8_t startAddress, uint8_t count, const uint8_t r
 
         /* Update register array */
         registerMap[i] = regData[i];
-    }
+    //}
 
-    setCS(2,HIGH);
+    /*setCS(adc_No,HIGH);*/
 
 	
 }
@@ -344,7 +344,7 @@ void readData(unsigned char adc_No,readMode mode)
     uint8_t dataPosition;
     bool    status_byte_enabled;
 	unsigned  char channel;
-
+			unsigned char tmp,tmp1;
     /* Build TX array and send it */
     if (mode == DIRECT)
     {
@@ -376,16 +376,19 @@ void readData(unsigned char adc_No,readMode mode)
     }
     if(adc_No == 1)
     {
-    if(DataRx[dataPosition-1]&0x80)
+			tmp = DataRx[dataPosition-1]&0x80;
+    if(tmp)
     {
-    	if((DataRx[dataPosition-1]&0x7f)<0x1e)
+
+			tmp = DataRx[dataPosition-1]&0x7f;
+			tmp = tmp&0x1f;
+			tmp1 = tmp;
+    	if((tmp)<0x1e)
     	{
-    	 
-<<<<<<< HEAD
-		    channel = DataRx[dataPosition-1]&0x1f;
-=======
-		    channel = DataRx[dataPosition-1]&0x1f-0x08;
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
+    	   if(tmp<26)
+		    channel = tmp1-0x08;
+		   else 
+		   	channel = tmp1-0x09;
     	  memcpy(data_ADC.data_inADC+2*channel,&DataRx[dataPosition],byteLength-1);
 		  
 		}
@@ -397,16 +400,18 @@ void readData(unsigned char adc_No,readMode mode)
     {
     if(DataRx[dataPosition-1]&0x80)
     {
-    	if((DataRx[dataPosition-1]&0x7f)<0x1e)
+			tmp = DataRx[dataPosition-1]&0x7f;
+			tmp = tmp&0x1f;	
+			tmp1 = tmp;
+    	if((tmp)<0x1e)
     	{
-    	  //unsigned  char channel;
-<<<<<<< HEAD
-		  channel = DataRx[dataPosition-1]&0x1f;
-=======
-		  channel = DataRx[dataPosition-1]&0x1f-0x08;
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
+		  if(tmp<26)
+		   channel = tmp1-0x08;
+		  else 
+		   channel = tmp1-0x09;
+
     	  memcpy(data_ADC.data2_inADC+2*channel,&DataRx[dataPosition],byteLength-1);
-          if(channel == 29)
+          if(channel == (CHANNEL_SIZE-1))
 		  	data_ADC.update = 1;//数据采集完成
 		  
 		}

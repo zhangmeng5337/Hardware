@@ -81,7 +81,7 @@ int main(void)
     HAL_Init();
 
     /* USER CODE BEGIN Init */
-    tx_cnt = 0;
+   // tx_cnt = 0;
     /* USER CODE END Init */
 
     /* Configure the system clock */
@@ -114,6 +114,7 @@ int main(void)
 
         }
         RF_SendPacket(send_buf, 64);
+				printf("uart tx");
 
         //HAL_Delay(500);
 

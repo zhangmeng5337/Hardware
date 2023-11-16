@@ -47,6 +47,7 @@ unsigned char registerTick(unsigned char TickNo,uint32_t ms)
             tick_usr.TickTimeTmp[TickNo] = HAL_GetTick();
             tick_usr.TimeEnd[TickNo] = 0;
             tick_usr.TickStart[TickNo] = 1;
+			tick_usr.TickNum[TickNo] = 1;
 
         }
 		else
@@ -62,7 +63,7 @@ void reset_registerTick(unsigned char TickNo)
 {
 	tick_usr.TimeEnd[TickNo] = 0;
 	tick_usr.TickStart[TickNo] = 0;
-
+	tick_usr.TickNum[TickNo] = 0;
 }
 unsigned char GetTickNum(unsigned char TickNo)
 {

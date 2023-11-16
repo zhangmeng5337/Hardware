@@ -32,11 +32,7 @@
 
 #include "unit_tests.h"
 #include "sys.h"
-<<<<<<< HEAD
-
-=======
 #include "pt100.h"
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 /* NOTES:
  * - Unless specified, tests should be self-contained (results should not depend on the testing sequence)!
  * - Tests that modify register configurations should restore the device to its default state.
@@ -48,260 +44,8 @@
 data_ai_stru data_ai;
 
 
-<<<<<<< HEAD
-///////////////////////////////////   MAIN   ///////////////////////////////////
 
-// This function will run all test cases and return true if all tests PASS
-bool run_self_tests(void)
-{
-    bool allTestsPassed = true;
-
-    delay_ms(50);   // Delay in case we are calling this function while the power supplies are still settling.
-    // toggleRESET();  // NOTE: We are assuming that this function is working before we've tested it.
-
-
-    /// GPIO Functionality ///////////////////////////////////////
-
-    // NOTE: All tests assume GPIO pins are controlled by MCU.
-    // If pins are tied, update the tests to check for desired state.
-
-    allTestsPassed &= test_PWDN_pin();
-    allTestsPassed &= test_START_pin();
-    allTestsPassed &= test_RESET_pin();
-    allTestsPassed &= test_CS_pin();
-    allTestsPassed &= test_DRDY_interrupt();
-
-
-    /// SPI Functionality ////////////////////////////////////////
-
-    allTestsPassed &= test_read_register();
-    allTestsPassed &= test_write_register();
-    allTestsPassed &= test_reset_command();
-    allTestsPassed &= test_multiple_read_write();
-    allTestsPassed &= test_read_data();
-
-
-    /// ADC Performance  /////////////////////////////////////////
-
-    // allTestsPassed &= test_noise();
-
-
-    return allTestsPassed;
-}
-
-
-
-////////////////////////////////   TEST CASES   ////////////////////////////////
-
-
-/// GPIO Functionality ///////////////////////////////////////
-
-// bool test_PWDN_pin(void)
-// Tests if the GPIO pin connected to /PWDN is functioning
-// NOTE: This test will NOT catch broken connections between the MCU and ADC!
-bool test_PWDN_pin(void)
-{
-//    bool b_pass = true;
-    //  bool setting;
-
-    // Set nCS LOW and read it back
-    // setPWDN(LOW);
-    // setting = getPWDN();
-    // b_pass &= (setting == LOW);
-
-    // Set nPWDN HIGH and read it back
-    // setPWDN(HIGH);
-    //setting = getPWDN();
-    //b_pass &= (setting == HIGH);
-
-    return 0;
-}
-
-// bool test_START_pin(void)
-// Tests if the GPIO pin connected to START is functioning
-// NOTE: This test will NOT catch broken connections between the MCU and ADC!
-bool test_START_pin(void)
-{
-    bool b_pass = true;
-    bool setting;
-
-    // Set nCS LOW and read it back
-    setSTART(LOW);
-    setting = getSTART();
-    b_pass &= (setting == LOW);
-
-    // Set START HIGH and read it back
-    setSTART(HIGH);
-    setting = getSTART();
-    b_pass &= (setting == HIGH);
-
-    return b_pass;
-}
-
-// bool test_RESET_pin(void)
-// Tests if the GPIO pin connected to /RESET is functioning
-// NOTE: This test will NOT catch broken connections between the MCU and ADC!
-bool test_RESET_pin(void)
-{
-    // bool b_pass = true;
-    //  bool setting;
-
-    // Set nRESET LOW and read it back
-    // setRESET(LOW);
-    //setting = getRESET();
-    //b_pass &= (setting == LOW);
-
-    // Set nRESET HIGH and read it back
-    // setRESET(HIGH);
-    // setting = getRESET();
-    // b_pass &= (setting == HIGH);
-
-    return 0;
-}
-
-// bool test_CS_pin(void)
-// Tests if the GPIO pin connected to /CS is functioning
-// NOTE: This test will NOT catch broken connections between the MCU and ADC!
-bool test_CS_pin(void)
-{
-    bool b_pass = true;
-    bool setting;
-
-    // Set nCS LOW and read it back
-    setCS(1,LOW);
-    setting = getCS();
-    b_pass &= (setting == LOW);
-
-    // Set nCS HIGH and read it back
-    setCS(1,HIGH);
-    setting = getCS();
-    b_pass &= (setting == HIGH);
-
-    return b_pass;
-}
-
-// bool test_DRDY_interrupt(void)
-// Tests if the /DRDY interrupt and interrupt handler is functioning
-bool test_DRDY_interrupt(void)
-{
-    bool b_pass = true;
-
-    // Set START and nPWDN pins high and check if nDRDY is active and interrupt is functioning
-    //setPWDN(HIGH);
-    setSTART(HIGH);
-    //toggleRESET();  // Abort current conversion
-    b_pass &= waitForDRDYinterrupt(1,50);
-    b_pass &= waitForDRDYinterrupt(2,50);
-    return b_pass;
-}
-
-
-/// SPI Functionality ////////////////////////////////////////
-
-// bool test_read_register(void)
-// Tests if reading a (non-zero) register returns the expected result.
-bool test_read_register(void)
-{
-    bool b_pass = true;
-    uint8_t value;
-
-    // toggleRESET();
-
-    value = readSingleRegister(REG_ADDR_CONFIG0);
-    b_pass &= (value == CONFIG0_DEFAULT);
-
-    return b_pass;
-}
-
-// bool test_write_register(void)
-// Tests if writing to and then reading back a register returns the expected result.
-bool test_write_register(void)
-{
-    bool b_pass = true;
-    uint8_t writeValue, readValue;
-
-    writeValue = (~CONFIG0_DEFAULT) & (0x7E);
-    writeSingleRegister(REG_ADDR_CONFIG0, writeValue);
-
-    readValue = readSingleRegister(REG_ADDR_CONFIG0);
-    b_pass &= (readValue == writeValue);
-
-    // Restore default register state
-    sendCommand(OPCODE_RESET);
-
-    return b_pass;
-}
-
-// bool test_reset_command(void)
-// Tests if the RESET SPI command causes a register to return to its default value.
-bool test_reset_command(void)
-{
-    bool b_pass = true;
-    uint8_t writeValue, readValue;
-
-    // Write non-default value to register
-    writeValue = (~CONFIG0_DEFAULT) & (0x7E);
-    writeSingleRegister(REG_ADDR_CONFIG0, writeValue);
-
-    // Issue reset command
-    sendCommand(OPCODE_RESET);
-
-    // Check that internal array was automatically updated
-    b_pass &= (getRegisterValue(REG_ADDR_CONFIG0) == CONFIG0_DEFAULT);
-
-    // Check if read register command returns default value
-    readValue = readSingleRegister(REG_ADDR_CONFIG0);
-    b_pass &= (readValue == CONFIG0_DEFAULT);
-
-    return b_pass;
-}
-
-// bool test_multiple_read_write(void)
-// Tests if writing to and then reading back multiple registers returns the expected results.
-bool test_multiple_read_write(void)
-{
-    bool b_pass = true;
-    uint8_t i, writeValues[7];
-
-    // Test data - when reasonable, register bits where inverted
-    writeValues[0]   = 0x74u;   // CONFIG0
-    writeValues[1]   = 0x7Cu;   // CONFIG1
-    writeValues[2]   = 0xFFu;   // MUXSCH
-    writeValues[3]   = 0xFFu;   // MUXDIF
-    writeValues[4]   = 0x00u;   // MUXSG0
-    writeValues[5]   = 0x00u;   // MUXSG1
-    writeValues[6]   = 0xFFu;   // SYSRED
-
-    // In case of external GPIO connections, do not test GPIO pins here.
-    // This should be done in a separate test case.
-
-    // Write registers
-    writeMultipleRegisters(REG_ADDR_CONFIG0, 7, writeValues);
-
-    // Check that internal array was automatically updated
-    for (i = 0; i < 7; i++)
-    {
-        b_pass &= (getRegisterValue(i) == writeValues[i]);
-    }
-
-    // Read back registers
-    readMultipleRegisters(REG_ADDR_CONFIG0, 7);
-
-    // Check that read back values match the written values
-    for (i = 0; i < 7; i++)
-    {
-        b_pass &= (getRegisterValue(i) == writeValues[i]);
-    }
-
-    // Restore default register state
-    sendCommand(OPCODE_RESET);
-
-    return b_pass;
-}
-=======
-
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
-void ads1158_config()
+void ads1158_config(unsigned char adc_No)
 {
     uint8_t  writeValues[7];
 
@@ -323,34 +67,10 @@ void ads1158_config()
     //toggleRESET();
 
     // Write registers
-    writeMultipleRegisters(REG_ADDR_CONFIG0, 7, writeValues);
+    writeMultipleRegisters(adc_No,REG_ADDR_CONFIG0, 7, writeValues);
 
 }
-<<<<<<< HEAD
-//void dat_adc_proc()
-//{
-//	  unsigned char i;
-//    for (i = 0; i < CHANNEL_SIZE; i++)
-//    {
-//
-//        // Not required, but added to allow for debugger to halt code execution
-//        setSTART(HIGH);
-//         readData(DIRECT);
-//        // Wait and check that /DRDY interrupt occurred
-//        //b_pass = waitForDRDYinterrupt(1,10);
-//
-//        //  Read data in read direct mode
-//        //if(b_pass)
-//        	//dataValues[i] = readData(&statusBytes[i], NULL, DIRECT);
 
-//        // Not required, but added to allow for debugger to halt code execution
-//        setSTART(LOW);
-//    }
-
-//}
-=======
-
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 // bool test_read_data(void)
 // Tests if reading data from the internal monitoring channels returns data within an expected range.
 bool test_read_data(void)
@@ -360,7 +80,7 @@ bool test_read_data(void)
    // uint32_t dataValues[CHANNEL_SIZE];//, upperLimit, lowerLimit;
 
     // ads1158_config();
-
+ //  ads1158_config(1);
     // Read all data monitor channels
     for (i = 0; i < CHANNEL_SIZE; i++)
     {
@@ -378,6 +98,7 @@ bool test_read_data(void)
         // Not required, but added to allow for debugger to halt code execution
         setSTART(LOW);
     }
+	ads1158_config(2);
     for (i = 0; i < CHANNEL_SIZE; i++)
     {
 
@@ -385,10 +106,10 @@ bool test_read_data(void)
         setSTART(HIGH);
 
         // Wait and check that /DRDY interrupt occurred
-        b_pass = waitForDRDYinterrupt(1,10);
+        b_pass = waitForDRDYinterrupt(2,10);
 
         //  Read data in read direct mode
-        if(b_pass==1)
+        if(b_pass==2)
             //dataValues[i] = readData(&statusBytes[i], NULL, DIRECT);
             readData(2,DIRECT);
         // Not required, but added to allow for debugger to halt code execution
@@ -430,20 +151,9 @@ bool test_read_data(void)
     return b_pass;
 }
 
-<<<<<<< HEAD
-
-void adc_proc()
-{
-    registerTick(ADC_SAMP_TICK_NO,2000);
-    if(GetTickResult(ADC_SAMP_TICK_NO)==1)
-    {
-        reset_registerTick(ADC_SAMP_TICK_NO);
-        test_read_data();
-
-=======
 void pressure_temp_proc()
 {
-           /*计算pt100温度，温度放大100倍*/
+         
     float volt_tmp,volt_tmp2;
     unsigned char i;
 	for(i=ADC1_PT_INDEX;i<(ADC1_PT_SIZE+ADC1_PT_INDEX);i++)//u2/(2u1-u2)
@@ -539,13 +249,12 @@ void ai_health_dec()
 void ai_proc()
 {
     registerTick(ADC_SAMP_TICK_NO,2000);
-    if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s更采集一次温度压力
+    if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s更采集一次温度压�?
     {
         reset_registerTick(ADC_SAMP_TICK_NO);
         test_read_data();
 	    pressure_temp_proc();
 		ai_health_dec();	
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
     }
 
 }

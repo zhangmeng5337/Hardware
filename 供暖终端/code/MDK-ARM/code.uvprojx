@@ -522,14 +522,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\di.c</FilePath>
             </File>
-<<<<<<< HEAD
-=======
             <File>
               <FileName>uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\uart.c</FilePath>
             </File>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
           </Files>
         </Group>
         <Group>
@@ -565,8 +562,6 @@
               <FileType>1</FileType>
               <FilePath>..\Src\1158\unit_tests.c</FilePath>
             </File>
-<<<<<<< HEAD
-=======
             <File>
               <FileName>modbus.c</FileName>
               <FileType>1</FileType>
@@ -592,7 +587,6 @@
               <FileType>1</FileType>
               <FilePath>..\Src\lcd.c</FilePath>
             </File>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
           </Files>
         </Group>
         <Group>

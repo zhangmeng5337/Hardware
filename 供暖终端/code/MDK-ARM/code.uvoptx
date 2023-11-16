@@ -154,32 +154,48 @@
           <Type>0</Type>
           <LineNumber>114</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230568</Address>
+          <Address>134232786</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
+          <Filename>F:\projects\23\code\Src\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\code\../Src/main.c\114</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>383</LineNumber>
+          <LineNumber>254</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>134231946</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Src\1158\ads1258.c</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>C:\Users\zm\Desktop\渚涙殩缁堢\code\Src\1158\unit_tests.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\code\../Src/1158/unit_tests.c\254</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>251</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134231926</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>C:\Users\zm\Desktop\渚涙殩缁堢\code\Src\1158\unit_tests.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code\../Src/1158/unit_tests.c\251</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -306,12 +322,12 @@
         <Ww>
           <count>24</count>
           <WinNumber>1</WinNumber>
-          <ItemText>b_pass</ItemText>
+          <ItemText>tmp1,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>25</count>
           <WinNumber>1</WinNumber>
-          <ItemText>statusGood</ItemText>
+          <ItemText>channel,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>26</count>
@@ -367,6 +383,11 @@
           <count>36</count>
           <WinNumber>1</WinNumber>
           <ItemText>data_ai</ItemText>
+        </Ww>
+        <Ww>
+          <count>37</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tick_usr</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -761,8 +782,6 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
-<<<<<<< HEAD
-=======
     <File>
       <GroupNumber>5</GroupNumber>
       <FileNumber>25</FileNumber>
@@ -775,7 +794,6 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
   </Group>
 
   <Group>
@@ -786,11 +804,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
-      <FileNumber>25</FileNumber>
-=======
       <FileNumber>26</FileNumber>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -802,11 +816,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
-      <FileNumber>26</FileNumber>
-=======
       <FileNumber>27</FileNumber>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -818,11 +828,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
-      <FileNumber>27</FileNumber>
-=======
       <FileNumber>28</FileNumber>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -834,11 +840,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
-      <FileNumber>28</FileNumber>
-=======
       <FileNumber>29</FileNumber>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -850,11 +852,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
-      <FileNumber>29</FileNumber>
-=======
       <FileNumber>30</FileNumber>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -866,11 +864,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
-      <FileNumber>30</FileNumber>
-=======
       <FileNumber>31</FileNumber>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -880,8 +874,6 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
-<<<<<<< HEAD
-=======
     <File>
       <GroupNumber>6</GroupNumber>
       <FileNumber>32</FileNumber>
@@ -942,7 +934,6 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
   </Group>
 
   <Group>

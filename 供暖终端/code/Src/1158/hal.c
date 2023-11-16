@@ -600,24 +600,44 @@ unsigned char waitForDRDYinterrupt(uint32_t ads_No,uint32_t timeout)
     {
         if(ads_No == 1)
         {
-            if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_2)==0)
+            if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_1)==0)
             {
                 result_int = 1;
                 ads1158_adc1_data.ads1_update=0;
                 break;
 
             }
-            else if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_1)==0)
+    /*        else if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_2)==0)
             {
                 result_int = 2;
                 ads1158_adc1_data.ads2_update=0;
                 break;
 
-            }
+            }*/
 						else 
 							result_int = 3;
 
         }
+        if(ads_No == 2)
+        {
+            if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_2)==0)
+            {
+                result_int = 2;
+                ads1158_adc1_data.ads1_update=0;
+                break;
+
+            }
+           /* else if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_1)==0)
+            {
+                result_int = 2;
+                ads1158_adc1_data.ads2_update=0;
+                break;
+
+            }*/
+						else 
+							result_int = 3;
+
+        }		
     }
     while ((HAL_GetTick()-tick_curr)<timeout);
     return result_int;

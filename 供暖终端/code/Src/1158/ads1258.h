@@ -44,11 +44,7 @@
 typedef struct 
 {
 	unsigned char data_inADC[CHANNEL_SIZE*2];
-<<<<<<< HEAD
-
-=======
   
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 	unsigned char data2_inADC[CHANNEL_SIZE*2];
 	unsigned char update;
 	
@@ -463,8 +459,9 @@ uint8_t readSingleRegister(uint8_t address);
 void    readMultipleRegisters(uint8_t startAddress, uint8_t count);
 void    sendCommand(uint8_t op_code);
 void    startConversions(void);
-void    writeSingleRegister(uint8_t address, uint8_t data);
-void    writeMultipleRegisters(uint8_t startAddress, uint8_t count, const uint8_t regData[]);
+void    writeSingleRegister(uint8_t address, uint8_t data);   
+void writeMultipleRegisters(unsigned char adc_No,uint8_t startAddress, uint8_t count, const uint8_t regData[])
+;
 
 // Internal variable getters
 uint8_t getRegisterValue(uint8_t address);

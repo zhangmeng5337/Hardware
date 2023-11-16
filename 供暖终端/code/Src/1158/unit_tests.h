@@ -39,17 +39,6 @@
 #include "ads1258.h"
 #include "hal.h"
 
-<<<<<<< HEAD
-
-
-typedef struct 
-{
-	float data_ai[30];
-	float ref1;
-	float ref2;
-
-	float data2_ai[30];
-=======
 #define ADC1_PT_SIZE    4
 #define ADC2_PT_SIZE    8
 #define ADC1_PT_INDEX   0
@@ -79,7 +68,6 @@ typedef struct
 	unsigned int failure_count[32];
 	unsigned int last_gather[32];	
 	uint32_t channel_status;
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 	unsigned char update;
 	
 }data_ai_stru;
@@ -88,30 +76,11 @@ typedef struct
 //
 // Function prototypes
 //
-<<<<<<< HEAD
-bool run_unit_tests(void);
 
-bool test_PWDN_pin(void);
-bool test_START_pin(void);
-bool test_RESET_pin(void);
-bool test_CS_pin(void);
-bool test_DRDY_interrupt(void);
-bool test_read_register(void);
-bool test_write_register(void);
-bool test_reset_command(void);
-bool test_multiple_read_write(void);
-bool test_read_data(void);
-=======
-
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 
 void ads1158_init(void);
-void ads1158_config(void);
+void ads1158_config(unsigned char adc_No);
 bool test_read_data(void);
-<<<<<<< HEAD
-void adc_proc(void);
-=======
 void ai_proc(void);
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 
 #endif /* ADS1258_UNIT_TESTS_H_ */

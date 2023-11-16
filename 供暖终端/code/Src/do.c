@@ -1,34 +1,6 @@
 #include "do.h"
 stru_do_stru do_usr;
 
-<<<<<<< HEAD
-#define  DO_ctrl_7 		0
-#define  DO_ctrl_6 		1
-#define  DO_ctrl_5 		2
-#define  DO_ctrl_4 		3
-#define  DO_ctrl_3 		4
-#define  DO_ctrl_2 		5
-#define  DO_ctrl_1 		6
-#define  DO_ctrl_0 		7
-#define  DO_ctrl_15 	8
-#define  DO_ctrl_14 	9
-#define  DO_ctrl_13 	10
-#define  DO_ctrl_12 	11
-#define  DO_ctrl_11 	12
-#define  DO_ctrl_10 	13
-#define  DO_ctrl_9 		14
-#define  DO_ctrl_8 		15
-
-#define  DO_ctrl_19 	16
-#define  DO_ctrl_18 	17
-#define  DO_ctrl_17 	18
-#define  DO_ctrl_16 	19
-#define  DO_ctrl_20 	20
-#define  DO_ctrl_21 	21
-#define  DO_ctrl_22 	22
-#define  DO_ctrl_23 	23
-=======
->>>>>>> aa4ae69f45d718490ac99e831aaa8d4fee09c114
 
 void do_init()
 {
