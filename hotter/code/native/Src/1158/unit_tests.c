@@ -80,7 +80,7 @@ bool test_read_data(void)
    // uint32_t dataValues[CHANNEL_SIZE];//, upperLimit, lowerLimit;
 
     // ads1158_config();
- //  ads1158_config(1);
+   //ads1158_config(1);
     // Read all data monitor channels
     for (i = 0; i < CHANNEL_SIZE; i++)
     {
@@ -251,7 +251,7 @@ void ai_health_dec()
 void ai_proc()
 {
     registerTick(ADC_SAMP_TICK_NO,2000);
-    if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s 
+    //if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s 
     {
         reset_registerTick(ADC_SAMP_TICK_NO);
         test_read_data();

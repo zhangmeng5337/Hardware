@@ -17,14 +17,13 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app.h"
-
+#include "update.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,7 +83,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -112,6 +110,8 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   hardware_init();
+	 //test();
+	// Start_BootLoader();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,8 +119,11 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-      app_proc();
+
     /* USER CODE BEGIN 3 */
+		HAL_Delay(1000);
+		HAL_GPIO_TogglePin(status_GPIO_Port,status_Pin );
+		app_proc();
   }
   /* USER CODE END 3 */
 }
@@ -134,26 +137,28 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /** Configure the main internal regulator output voltage 
+  /** Configure the main internal regulator output voltage
   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-  /** Initializes the CPU, AHB and APB busses clocks 
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 64;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 80;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks 
+
+  /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -343,10 +348,10 @@ static void MX_USART1_UART_Init(void)
 
 }
 
-/** 
+/**
   * Enable DMA controller clock
   */
-static void MX_DMA_Init(void) 
+static void MX_DMA_Init(void)
 {
 
   /* DMA controller clock enable */
@@ -374,6 +379,8 @@ static void MX_DMA_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
@@ -383,22 +390,22 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, IN_SI_Pin|IN_RCK_Pin|IN_SCK_Pin|status_Pin 
+  HAL_GPIO_WritePin(GPIOA, IN_SI_Pin|IN_RCK_Pin|IN_SCK_Pin|status_Pin
                           |MIBSPI1MCS3_Pin|MIBSPI1MCS2_Pin|lte_pwr_ctrl_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, IO0_Pin|LATCH_AO_MCU_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|SPEAKER_Pin 
+  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|SPEAKER_Pin
                           |lte_3_8V_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MIBSPI1MCS1_GPIO_Port, MIBSPI1MCS1_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : IN_SI_Pin IN_RCK_Pin IN_SCK_Pin status_Pin 
+  /*Configure GPIO pins : IN_SI_Pin IN_RCK_Pin IN_SCK_Pin status_Pin
                            MIBSPI1MCS3_Pin MIBSPI1MCS2_Pin lte_pwr_ctrl_Pin */
-  GPIO_InitStruct.Pin = IN_SI_Pin|IN_RCK_Pin|IN_SCK_Pin|status_Pin 
+  GPIO_InitStruct.Pin = IN_SI_Pin|IN_RCK_Pin|IN_SCK_Pin|status_Pin
                           |MIBSPI1MCS3_Pin|MIBSPI1MCS2_Pin|lte_pwr_ctrl_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -412,9 +419,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin SPEAKER_Pin 
+  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin SPEAKER_Pin
                            lte_3_8V_EN_Pin */
-  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|SPEAKER_Pin 
+  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|SPEAKER_Pin
                           |lte_3_8V_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -427,9 +434,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MDRDY_PT2_MCU_Pin DI_IN4_Pin DI_IN5_Pin DI_IN6_Pin 
+  /*Configure GPIO pins : MDRDY_PT2_MCU_Pin DI_IN4_Pin DI_IN5_Pin DI_IN6_Pin
                            DI_IN7_Pin DI_IN8_Pin DI_IN9_Pin */
-  GPIO_InitStruct.Pin = MDRDY_PT2_MCU_Pin|DI_IN4_Pin|DI_IN5_Pin|DI_IN6_Pin 
+  GPIO_InitStruct.Pin = MDRDY_PT2_MCU_Pin|DI_IN4_Pin|DI_IN5_Pin|DI_IN6_Pin
                           |DI_IN7_Pin|DI_IN8_Pin|DI_IN9_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -455,6 +462,8 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_SetPriority(EXTI2_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -482,12 +491,10 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(uint8_t *file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

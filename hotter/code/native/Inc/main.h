@@ -110,6 +110,7 @@ void Error_Handler(void);
 #define DI_IN8_GPIO_Port GPIOB
 #define DI_IN9_Pin GPIO_PIN_9
 #define DI_IN9_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
@@ -119,5 +120,3 @@ void Error_Handler(void);
 #endif
 
 #endif /* __MAIN_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

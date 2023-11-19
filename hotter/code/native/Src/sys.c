@@ -58,7 +58,7 @@ unsigned char registerTick(unsigned char TickNo,uint32_t ms)
 	
 
 
-}
+ }
 void reset_registerTick(unsigned char TickNo)
 {
 	tick_usr.TimeEnd[TickNo] = 0;
