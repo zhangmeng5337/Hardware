@@ -23,6 +23,8 @@ int addr_count = 0;
 int reboot_flag = 0;
 int Erase_flag = 1;
 /*入网AT指令集*/
+/*   发送指令内容    返回内容       超时时间，    发三次超时
+   {"AT\r\n",       "OK", 1000, NO_REC, 3}*/
 tsATCmds ATCmds[] =
 {
     /* 下面是关于连接MQTT的指令集*/
@@ -34,7 +36,8 @@ tsATCmds ATCmds[] =
     {"AT+CEREG?\r\n", "OK", 1000, NO_REC, 100},											//查询当前GPRS注册状态
     {"AT+CGATT?\r\n", "OK", 1000, NO_REC, 3},												//查询当前GPRS附着状态
     {"AT+CSQ\r\n", "OK", 1000, NO_REC, 3},													//查询信号值
-    {"AT+CMQTTSTART\r\n", "+CMQTTSTART: 0", 2000, NO_REC, 3},				//开启MQTT连接
+//mqtt 发布主题
+	{"AT+CMQTTSTART\r\n", "+CMQTTSTART: 0", 2000, NO_REC, 3},				//开启MQTT连接
     {"AT+CMQTTACCQ=0,\"clientid01\"\r\n", "OK", 2000, NO_REC, 3},		//注册MQTT的ClientID
     {"AT+CMQTTCONNECT=0,\"tcp://47.98.183.97:1884\",120,1,\"admin\",\"public\"\r\n", "+CMQTTCONNECT: 0,0", 3000, NO_REC, 3},	//设置IP port username password keepalive
     {"AT+CSQ\r\n", "OK", 1000, NO_REC, 3},													//查询CSQ
@@ -43,7 +46,11 @@ tsATCmds ATCmds[] =
     {"AT+CMQTTPAYLOAD=0,", ">", 2000, NO_REC, 3},										//设置发送报文
     {message_buffer, "OK", 3000, NO_REC, 5},												//msg内容
     {"AT+CMQTTPUB=0,1,60\r\n", "+CMQTTPUB: 0,0", 3000, NO_REC, 5},	//发送报文
-    /* 下面是关于查询版本号的AT指令集*/
+
+//mqtt订阅主题
+
+
+	/* 下面是关于查询版本号的AT指令集*/
     {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},											//开启HTTP服务
     {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/getVersion?device_id=123456\"\r\n", "OK", 1000, NO_REC, 3},	//设置HTTP参数
     {"AT+HTTPACTION=0\r\n", "+HTTP_PEER_CLOSED", 1000, NO_REC, 3},				//操作HTTP方法
