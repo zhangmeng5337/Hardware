@@ -13,17 +13,18 @@
 
 extern int reboot_flag;
 
-/*è®¾ç½®CAT1çŠ¶æ€çš„æšä¸¾å˜é‡*/
+/*ÉèÖÃCAT1×´Ì¬µÄÃ¶¾Ù±äÁ¿*/
 typedef enum
 {
     CAT1_IDIE = 0,
     CAT1_SEND,
     CAT1_WAIT,
+    CAT1_MQTT_REC,
     CAT1_ACCESS
 } teCAT1_TaskStatus;
 
 
-/*è®¾ç½®ATæŒ‡ä»¤é›†çš„æšä¸¾å˜é‡*/
+/*ÉèÖÃATÖ¸Áî¼¯µÄÃ¶¾Ù±äÁ¿*/
 typedef enum
 {
     //AT_RST,
@@ -43,7 +44,7 @@ typedef enum
     AT_CMQTTPAYLOAD,
     AT_MESSAGE,
     AT_CMQTTPUB,
-		/*HTTPç›¸å…³æŒ‡ä»¤*/
+		/*HTTPÏà¹ØÖ¸Áî*/
 		AT_HTTPINIT_1,
 		AT_HTTPPARA_VERSION,
 		AT_HTTPACTION_1,
@@ -57,7 +58,7 @@ typedef enum
 		AT_HTTPREAD_POST,		
 } teATCmdNum;
 
-/*è®¾ç½®æ¨¡ç»„çŠ¶æ€çš„æšä¸¾å˜é‡*/
+/*ÉèÖÃÄ£×é×´Ì¬µÄÃ¶¾Ù±äÁ¿*/
 typedef enum
 {
     SUCCESS_REC = 0,
@@ -65,7 +66,7 @@ typedef enum
     NO_REC
 } teATStatus;
 
-/*è®¾ç½®ATæŒ‡ä»¤é›†çš„ç»“æ„ä½“*/
+/*ÉèÖÃATÖ¸Áî¼¯µÄ½á¹¹Ìå*/
 typedef struct
 {
     char *ATSendStr;
