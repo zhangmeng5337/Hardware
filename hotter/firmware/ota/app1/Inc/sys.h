@@ -5,6 +5,7 @@ void delay_us(uint32_t nCount);
 #include "main.h"
 #define TICK_SIZE  26
 #define ADC_SAMP_TICK_NO  	0
+#define MQTT_TX_TICK_NO  	1
 
 typedef struct
 {

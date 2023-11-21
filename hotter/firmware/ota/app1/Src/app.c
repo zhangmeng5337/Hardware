@@ -46,8 +46,8 @@ void module_test()
 void app_proc()
 {
    TickPro(); 
-   ai_proc();//2s²É¼¯Ò»´Î
-   di_proc(0);//²É¼¯Ò»´Î
+   ai_proc();//2sé‡‡é›†ä¸€æ¬¡
+   di_proc(0);//é‡‡é›†ä¸€æ¬¡
    lcd_proc();
    modbus_proc();
    lte_proc();

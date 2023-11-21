@@ -23,6 +23,7 @@
 #include "sys.h"
 #include <string.h>
 #include "cat1.h"
+#include "mqtt_analy.h"
 
 
 rs485_stru *lte_t;
@@ -269,6 +270,15 @@ void lte_proc()
 {
 	CAT1_Task();
 	OTA_Task();
+	    registerTick(MQTT_TX_TICK_NO,10000);
+    if(GetTickResult(MQTT_TX_TICK_NO)==1)//2s 
+    {
+        reset_registerTick(MQTT_TX_TICK_NO);
+		upload();
+			
+    }
+
+	
 
 }
 

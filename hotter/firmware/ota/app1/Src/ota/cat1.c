@@ -1,4 +1,6 @@
 #include "cat1.h"
+#include "config.h"
+#include "mqtt_analy.h"
 extern UART_HandleTypeDef huart1;
 static uint8_t CurrentRty;
 static teATCmdNum ATRecCmdNum;
@@ -7,6 +9,8 @@ static teATCmdNum ATNextCmdNum;
 static teCAT1_TaskStatus CAT1_TaskStatus;
 
 static tsTimeType TimeCAT1;
+CONFIG_stru config_usr;
+
 //char CAT1_SENDDataBuff[200];
 
 char Imei_buffer[16];
@@ -22,87 +26,176 @@ char send_buffer[200];
 int addr_count = 0;
 int reboot_flag = 0;
 int Erase_flag = 1;
-/*ÈëÍøATÖ¸Áî¼¯*/
-/*   ·¢ËÍÖ¸ÁîÄÚÈİ    ·µ»ØÄÚÈİ       ³¬Ê±Ê±¼ä£¬    ·¢Èı´Î³¬Ê±
+/*å…¥ç½‘ATæŒ‡ä»¤é›†*/
+/*   å‘é€æŒ‡ä»¤å†…å®¹    è¿”å›å†…å®¹       è¶…æ—¶æ—¶é—´ï¼Œ    å‘ä¸‰æ¬¡è¶…æ—¶
    {"AT\r\n",       "OK", 1000, NO_REC, 3}*/
+
+/*
+{
+    "è®¾å¤‡ID": "47",
+    "è¿è¡Œæ•°æ®": {
+        "å‡ºæ°´æ¸©åº¦": "value",
+        "å›æ°´æ¸©åº¦": "value",
+        "æ³µå‰å‹åŠ›": "value",
+        "æ³µåå‹åŠ›": "value",
+        "ä¼´çƒ­å¸¦çŠ¶æ€": "value"
+    },
+    "è®¾å¤‡å‚æ•°": {
+        "ç‰ˆæœ¬å·": 255,
+        "æ•…éšœ": 255,
+        "è®¾ç½®å‡ºæ°´æ¸©åº¦": "value",
+        "è®¾ç½®å®¤å†…æ¸©åº¦": "value",
+        "æ•°æ®ä¸Šä¼ å‘¨æœŸ": "value"
+    }
+}
+
+//è®¾ç½®å‚æ•°
+{
+    "è®¾å¤‡ID": "47",
+    "è®¾å¤‡æ§åˆ¶": {
+        "å‡çº§": 1,
+        "é‡å¯": 1,
+        "æœºç»„å¼€å…³æœº": 0,
+        "è®¾ç½®å‡ºæ°´æ¸©åº¦": "value",
+        "è®¾ç½®å®¤å†…æ¸©åº¦": "value",
+        "æ•°æ®ä¸Šä¼ å‘¨æœŸ": "value"
+    }
+}
+
+
+*/
 tsATCmds ATCmds[] =
 {
-    /* ÏÂÃæÊÇ¹ØÓÚÁ¬½ÓMQTTµÄÖ¸Áî¼¯*/
+    /* ä¸‹é¢æ˜¯å…³äºè¿æ¥MQTTçš„æŒ‡ä»¤é›†*/
     //{"AT+CRESET\r\n","PB DONE",5000,NO_REC,3},
-    {"AT\r\n", "OK", 1000, NO_REC, 3},															//ATÖ¸Áî²âÊÔ
-    {"ATE0\r\n", "OK", 1000, NO_REC, 3},														//¹Ø±Õ»ØÏÔ
-    {"AT+CGSN\r\n", "OK", 1000, NO_REC, 3},													//²éÑ¯Imei
-    {"AT+CCID\r\n", "OK", 1000, NO_REC, 3},													//²éÑ¯ICCID
-    {"AT+CEREG?\r\n", "OK", 1000, NO_REC, 100},											//²éÑ¯µ±Ç°GPRS×¢²á×´Ì¬
-    {"AT+CGATT?\r\n", "OK", 1000, NO_REC, 3},												//²éÑ¯µ±Ç°GPRS¸½×Å×´Ì¬
-    {"AT+CSQ\r\n", "OK", 1000, NO_REC, 3},													//²éÑ¯ĞÅºÅÖµ
-//mqtt ·¢²¼Ö÷Ìâ
-	{"AT+CMQTTSTART\r\n", "+CMQTTSTART: 0", 2000, NO_REC, 3},				//¿ªÆôMQTTÁ¬½Ó
-    {"AT+CMQTTACCQ=0,\"clientid01\"\r\n", "OK", 2000, NO_REC, 3},		//×¢²áMQTTµÄClientID
-    {"AT+CMQTTCONNECT=0,\"tcp://47.98.183.97:1884\",120,1,\"admin\",\"public\"\r\n", "+CMQTTCONNECT: 0,0", 3000, NO_REC, 3},	//ÉèÖÃIP port username password keepalive
-    {"AT+CSQ\r\n", "OK", 1000, NO_REC, 3},													//²éÑ¯CSQ
-    {"AT+CMQTTTOPIC=0,", ">", 2000, NO_REC, 3},											//ÉèÖÃtopic
-    {topic_buffer, "OK", 3000, NO_REC, 3},													//topicÄÚÈİ
-    {"AT+CMQTTPAYLOAD=0,", ">", 2000, NO_REC, 3},										//ÉèÖÃ·¢ËÍ±¨ÎÄ
-    {message_buffer, "OK", 3000, NO_REC, 5},												//msgÄÚÈİ
-    {"AT+CMQTTPUB=0,1,60\r\n", "+CMQTTPUB: 0,0", 3000, NO_REC, 5},	//·¢ËÍ±¨ÎÄ
+    {"AT\r\n", "OK", 1000, NO_REC, 3},															//ATæŒ‡ä»¤æµ‹è¯•
+    {"ATE0\r\n", "OK", 1000, NO_REC, 3},														//å…³é—­å›æ˜¾
+    {"AT+CGSN\r\n", "OK", 1000, NO_REC, 3},													//æŸ¥è¯¢Imei
+    {"AT+CCID\r\n", "OK", 1000, NO_REC, 3},													//æŸ¥è¯¢ICCID
+    {"AT+CEREG?\r\n", "OK", 1000, NO_REC, 100},											//æŸ¥è¯¢å½“å‰GPRSæ³¨å†ŒçŠ¶æ€
+    {"AT+CGATT?\r\n", "OK", 1000, NO_REC, 3},												//æŸ¥è¯¢å½“å‰GPRSé™„ç€çŠ¶æ€
+    {"AT+CSQ\r\n", "OK", 1000, NO_REC, 3},													//æŸ¥è¯¢ä¿¡å·å€¼
+    //mqtt å‘å¸ƒè®¢é˜…ä¸»é¢˜
+    {"AT+MCONFIG=,,"},
+    {config_usr.user_id, "OK", 1000, NO_REC, 3},
 
-//mqtt¶©ÔÄÖ÷Ìâ
+    {"AT+MIPSTART="},
+    {config_usr.mqtt_ip, "CONNECT OK", 1000, NO_REC, 3},
+
+    {"AT+MCONNECT=1,60\r\n"},//å®¢æˆ·ç«¯å‘æœåŠ¡å™¨è¯·æ±‚ä¼šè¯è¿æ¥
+
+    {"AT+MSUB="},//è®¢é˜…æ¶ˆæ¯
+    {config_usr.mqtt_msubtopic, "SUBACK", 1000, NO_REC, 3}, //è®¢é˜…æ¶ˆæ¯
+
+    {"AT+MPUB="},//å‘å¸ƒæ¶ˆæ¯*/
+    {config_usr.mqtt_subtopic, "PUBREC"}, //å‘å¸ƒæ¶ˆæ¯*/
 
 
-	/* ÏÂÃæÊÇ¹ØÓÚ²éÑ¯°æ±¾ºÅµÄATÖ¸Áî¼¯*/
-    {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},											//¿ªÆôHTTP·şÎñ
-    {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/getVersion?device_id=123456\"\r\n", "OK", 1000, NO_REC, 3},	//ÉèÖÃHTTP²ÎÊı
-    {"AT+HTTPACTION=0\r\n", "+HTTP_PEER_CLOSED", 1000, NO_REC, 3},				//²Ù×÷HTTP·½·¨
-    {"AT+HTTPREAD=0,100\r\n", "+HTTPREAD:0", 1000, NO_REC, 3},			//¶ÁÈ¡HTTP·şÎñ»Ø¸´
-    {"AT+HTTPTERM\r\n", "OK", 1000, NO_REC, 3},											//¹Ø±ÕHTTP·şÎñ
-    /* ÏÂÃæÊÇ¹ØÓÚÏÂÔØBINÎÄ¼şµÄATÖ¸Áî¼¯*/
-    {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},											//¿ªÆôHTTP·şÎñ
-    {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/download1?device_id=123456&version=3.0.0\"\r\n", "OK", 3000, NO_REC, 3},	//ÉèÖÃHTTP²ÎÊı
-    {"AT+HTTPACTION=0\r\n", "+HTTPACTION:", 3000, NO_REC, 3},				//²Ù×÷HTTP·½·¨
-    {"AT+HTTPREAD=0,1024\r\n", "+HTTPREAD:", 3000, NO_REC, 3},			//¶ÁÈ¡HTTP·şÎñ»Ø¸´
-    {"AT+HTTPTERM\r\n", "OK", 1000, NO_REC, 3},											//¹Ø±ÕHTTP·şÎñ
+
+    /* ä¸‹é¢æ˜¯å…³äºæŸ¥è¯¢ç‰ˆæœ¬å·çš„ATæŒ‡ä»¤é›†*/
+    {"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", 1000, NO_REC, 3},
+    {"AT+SAPBR=3,1,\"APN\",\"\"", "OK", 1000, NO_REC, 3},
+    {"AT+SAPBR=1,1", "OK", 1000, NO_REC, 3},
+    {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},
+    {"AT+HTTPPARA=\"CID\",1", "OK", 1000, NO_REC, 3},
+    {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/getVersion?device_id=123456\"\r\n", "OK", 1000, NO_REC, 3},   //è®¾ç½®HTTPå‚æ•°
+    {"AT+HTTPACTION=0\r\n", "+HTTP_PEER_CLOSED", 1000, NO_REC, 3},				//æ“ä½œHTTPæ–¹æ³•
+    {"AT+HTTPREAD=0,100\r\n", "+HTTPREAD:0", 1000, NO_REC, 3},			//è¯»å–HTTPæœåŠ¡å›å¤
+
+    /* ä¸‹é¢æ˜¯å…³äºä¸‹è½½BINæ–‡ä»¶çš„ATæŒ‡ä»¤é›†*/
+    {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},											//å¼€å¯HTTPæœåŠ¡
+    {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/download1?device_id=123456&version=3.0.0\"\r\n", "OK", 3000, NO_REC, 3},	//è®¾ç½®HTTPå‚æ•°
+    {"AT+HTTPACTION=0\r\n", "+HTTPACTION:", 3000, NO_REC, 3},				//æ“ä½œHTTPæ–¹æ³•
+    {"AT+HTTPREAD=0,1024\r\n", "+HTTPREAD:", 3000, NO_REC, 3},			//è¯»å–HTTPæœåŠ¡å›å¤
+    {"AT+HTTPTERM\r\n", "OK", 1000, NO_REC, 3},
+
+	/*mqttè¿”å›ä¿¡æ¯è§£æ*/
+	{"", "+MSUB:", 1000, NO_REC, 3},
 };
-
-/* ATÖ¸Áî·¢ËÍ´¦ÀíÂß¼­ */
-void ATSend(teATCmdNum ATCmdNum)
+CONFIG_stru *get_params()
 {
-    //Çå¿Õ½ÓÊÕ»º´æÇø
-    memset(Lpuart1type.Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
-    ATCmds[ATCmdNum].ATStatus = NO_REC;
-    ATRecCmdNum = ATCmdNum;
-    printf("\r\nµ±Ç°ÃüÁîÂë£º%d\r\n", ATCmdNum);
-    /* ÉèÖÃtopicµÄ³¤¶È */
-    if (ATCmdNum == AT_CMQTTTOPIC)
+   return &config_usr;
+}
+
+/* ATæŒ‡ä»¤å‘é€å¤„ç†é€»è¾‘ */
+void ATSend(teATCmdNum ATCmdNum,unsigned char mode)
+{
+    //æ¸…ç©ºæ¥æ”¶ç¼“å­˜åŒº
+    if(mode == 0)
     {
-        memset(topic_buffer, 0x00, sizeof(topic_buffer));
-        sprintf(topic_buffer, "dev/%s", Imei_buffer);
-        sprintf(send_buffer, "%s%d\r\n", ATCmds[ATCmdNum].ATSendStr, strlen(topic_buffer));
-        HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
-        printf("send_buffer:%s\r\n", send_buffer);
-        memset(send_buffer, 0x00, strlen(send_buffer));
-    }
-    /* ÉèÖÃmsgµÄ³¤¶È */
-    else if (ATCmdNum == AT_CMQTTPAYLOAD)
-    {
-        memset(message_buffer, 0x00, sizeof(message_buffer));
-        sprintf(message_buffer, "{\"CSQ\":%s}", CSQ_buffer);
-        sprintf(send_buffer, "%s%d\r\n", ATCmds[ATCmdNum].ATSendStr, strlen(message_buffer));
-        HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
-        printf("send_buffer:%s", send_buffer);
-        memset(send_buffer, 0x00, sizeof(send_buffer));
-    }
-    else
-    {
-        HAL_UART_Transmit(&huart1, (uint8_t *)ATCmds[ATCmdNum].ATSendStr, strlen(ATCmds[ATCmdNum].ATSendStr), 0xff);
-        printf("send:%s", ATCmds[ATCmdNum].ATSendStr);
-    }
-    //´ò¿ª³¬Ê±¶¨Ê±Æ÷
-    SetTime(&TimeCAT1, ATCmds[ATCmdNum].TimeOut);
+	memset(Lpuart1type.Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
+		ATCmds[ATCmdNum].ATStatus = NO_REC;
+		ATRecCmdNum = ATCmdNum;
+		printf("\r\nå½“å‰å‘½ä»¤ç ï¼š%d\r\n", ATCmdNum);
+		/* è®¾ç½®topicçš„é•¿åº¦ */
+		if (ATCmdNum == AT_MCONFIG)
+		{
+			memset(config_usr.user_id, 0x00, sizeof(config_usr.user_id));
+			memset(config_usr.user, 0x00, sizeof(config_usr.user)); 		
+			memset(config_usr.password, 0x00, sizeof(config_usr.password));
+				
+			sprintf(config_usr.user_id, "%s,", Imei_buffer);//user id
+			//sprintf(config_usr.user_id, "%s,", Imei_buffer);//user id 		
+			sprintf(send_buffer, "%s%s,%s,%s\r\n",ATCmds[ATCmdNum].ATSendStr,
+						 config_usr.user_id, config_usr.user, config_usr.password);
+			HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
+			memset(send_buffer, 0x00, strlen(send_buffer)); 
+		}
+		else if (ATCmdNum == AT_MIPSTART)
+		{		
+			sprintf(send_buffer, "%s%s,%s\r\n",ATCmds[ATCmdNum].ATSendStr,
+													 config_usr.mqtt_ip, config_usr.mqtt_port);
+			HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
+			memset(send_buffer, 0x00, strlen(send_buffer)); 	
+			}		
+		else if (ATCmdNum == AT_MSUB)//è®¢é˜…æ¶ˆæ¯
+		{		
+			sprintf(send_buffer, "%s%s,%d\r\n",ATCmds[ATCmdNum].ATSendStr,
+													 config_usr.mqtt_msubtopic, 0);
+			HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
+			memset(send_buffer, 0x00, strlen(send_buffer)); 	
+			}	
+		else if (ATCmdNum == AT_MPUB)//å‘å¸ƒæ¶ˆæ¯
+		{		
+			sprintf(send_buffer, "%s%s,%d\r\n",ATCmds[ATCmdNum].ATSendStr,
+													 config_usr.mqtt_msubtopic, 0);
+			HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
+			memset(send_buffer, 0x00, strlen(send_buffer)); 	
+			}		
+	//	  if (ATCmdNum == AT_MCONFIG)
+	//	  {
+	//		  memset(config_usr.user_id, 0x00, sizeof(config_usr.user_id));
+	//		  sprintf(config_usr.user_id, "dev/%s", Imei_buffer);
+	//		  sprintf(send_buffer, "%s%d\r\n", ATCmds[ATCmdNum].ATSendStr, strlen(config_usr.user_id));
+	//		  HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
+	//		  printf("send_buffer:%s\r\n", send_buffer);
+	//		  memset(send_buffer, 0x00, strlen(send_buffer));
+	//	  } 	
+		/* è®¾ç½®msgçš„é•¿åº¦ */
+	//	  else if (ATCmdNum == AT_CMQTTPAYLOAD)
+	//	  {
+	//		  memset(message_buffer, 0x00, sizeof(message_buffer));
+	//		  sprintf(message_buffer, "{\"CSQ\":%s}", CSQ_buffer);
+	//		  sprintf(send_buffer, "%s%d\r\n", ATCmds[ATCmdNum].ATSendStr, strlen(message_buffer));
+	//		  HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
+	//		  printf("send_buffer:%s", send_buffer);
+	//		  memset(send_buffer, 0x00, sizeof(send_buffer));
+	//	  }
+		else
+		{
+			HAL_UART_Transmit(&huart1, (uint8_t *)ATCmds[ATCmdNum].ATSendStr, strlen(ATCmds[ATCmdNum].ATSendStr), 0xff);
+			printf("send:%s", ATCmds[ATCmdNum].ATSendStr);
+		}
+		//æ‰“å¼€è¶…æ—¶å®šæ—¶å™¨
+	SetTime(&TimeCAT1, ATCmds[ATCmdNum].TimeOut);
+	}
+	
+    
+    
 
 }
 
-/* ATÖ¸Áî½ÓÊÕ´¦ÀíÂß¼­ */
+/* ATæŒ‡ä»¤æ¥æ”¶å¤„ç†é€»è¾‘ */
 void ATRec(void)
 {
     if (Lpuart1type.Lpuart1RecFlag)
@@ -111,20 +204,22 @@ void ATRec(void)
         {
             ATCmds[ATRecCmdNum].ATStatus = SUCCESS_REC;
         }
-        printf("ÊÕµ½Êı¾İ£º%s", Lpuart1type.Lpuart1RecBuff);
+        //printf("æ”¶åˆ°æ•°æ®ï¼š%s", Lpuart1type.Lpuart1RecBuff);
         Lpuart1type.Lpuart1RecFlag = 0;
         Lpuart1type.Lpuart1RecLen = 0;
     }
 }
 
-/*4G¿ª»ú*/
+
+
+/*4Gå¼€æœº*/
 void Start_4G(void)
 {
     lte_init();
 
 }
 
-/* ³õÊ¼»¯CAT1 */
+/* åˆå§‹åŒ–CAT1 */
 void CAT1_Init(void)
 {
     Start_4G();
@@ -133,236 +228,232 @@ void CAT1_Init(void)
     ATNextCmdNum = ATE0;
 }
 
-/* ATÖ¸Áî½»»¥Âß¼­ */
+/* ATæŒ‡ä»¤äº¤äº’é€»è¾‘ */
 void CAT1_Task(void)
 {
     while (1)
     {
         switch (CAT1_TaskStatus)
         {
-        case CAT1_IDIE: //¿ÕÏĞÌ¬
-            return;
-        case CAT1_SEND://·¢ËÍÃüÁî
-            if (ATCurrentCmdNum != ATNextCmdNum)
-            {
-                CurrentRty = ATCmds[ATCurrentCmdNum].RtyNum;
-            }
-            ATSend(ATCurrentCmdNum);
-            CAT1_TaskStatus = CAT1_WAIT;
-
-            return;
-        case CAT1_WAIT:	//µÈ´ıÌ¬£¬µÈ´ıCAT1·µ»ØµÄĞÅÏ¢
-            ATRec();	//µ÷ÓÃ½ÓÊÕº¯Êı
-            if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
-            {
-                printf("µ±Ç°Âë£º%d\r\n", ATCurrentCmdNum);
-                if (ATCurrentCmdNum == AT_CGSN)	//Èç¹ûATÖ¸ÁîÎª²éÑ¯IMEI
+            case CAT1_IDIE: //ç©ºé—²æ€
+                return;
+            case CAT1_SEND://å‘é€å‘½ä»¤
+                if (ATCurrentCmdNum != ATNextCmdNum)
                 {
-                    ATCurrentCmdNum += 1;
-                    ATNextCmdNum = ATCurrentCmdNum + 1;
-                    CAT1_TaskStatus = CAT1_SEND;
-                    memset(CSQ_buffer, 0x00, sizeof(CSQ_buffer));
-                    Find_string((char *)Lpuart1type.Lpuart1RecBuff, "\r\n", "\r\n", Imei_buffer);
-                    printf("Imei_buffer=%s\r\n", Imei_buffer);
-                    break;
+                    CurrentRty = ATCmds[ATCurrentCmdNum].RtyNum;
                 }
-                else if (ATCurrentCmdNum == AT_CSQ_2)	//Èç¹ûATÖ¸ÁîÎª²éÑ¯CSQ
-                {
-                    ATCurrentCmdNum += 1;
-                    ATNextCmdNum = ATCurrentCmdNum + 1;
-                    CAT1_TaskStatus = CAT1_SEND;
-                    memset(CSQ_buffer, 0x00, sizeof(CSQ_buffer));
-                    Find_string((char *)Lpuart1type.Lpuart1RecBuff, " ", ",", CSQ_buffer);
-                    printf("CSQ_buffer=%s\r\n", CSQ_buffer);
-                    break;
-                }
-                else if (ATCurrentCmdNum == AT_HTTPREAD_1)	//Èç¹ûATÖ¸ÁîÎª²éÑ¯°æ±¾ºÅ
-                {
-                    ATCurrentCmdNum += 1;
-                    ATNextCmdNum = ATCurrentCmdNum + 1;
-                    CAT1_TaskStatus = CAT1_SEND;
-                    memset(Version_buffer, 0x00, sizeof(Version_buffer));
-                    Find_string((char *)Lpuart1type.Lpuart1RecBuff, "{", "}", Version_buffer);
-                    printf("Version_buffer=%s\r\n", Version_buffer);
-                    if (strcmp(Version_buffer, "\"version\":\"3.0.0\"") == 0)
-                    {
-                        printf("Ó²¼ş°æ±¾ºÍÔÆ¶Ë°æ±¾Ò»ÖÂ£¬ÎŞĞèÉı¼¶£¡\r\n");
-                        //ATCurrentCmdNum += 1;
-                       // ATNextCmdNum = ATCurrentCmdNum + 1;
-                        CAT1_TaskStatus = CAT1_MQTT_REC;						
-                    }
-                    else
-                    {
-                        Update_Task();
-                    }
-                    break;
-                }
-                else if (ATCurrentCmdNum == AT_HTTPACTION_2)	//Èç¹ûATÖ¸ÁîÎª¶ÁÈ¡BINÎÄ¼ş³¤¶È
-                {
-                    ATCurrentCmdNum += 1;
-                    ATNextCmdNum = ATCurrentCmdNum + 1;
-                    CAT1_TaskStatus = CAT1_SEND;
-                    memset(Bin_len, 0x00, sizeof(Bin_len));
-                    Find_string((char *)Lpuart1type.Lpuart1RecBuff, "200,", "\r\n", Bin_len);
-                    printf("Bin_len=%s\r\n", Bin_len);
-                    break;
-                }
-                else if (ATCurrentCmdNum == AT_HTTPREAD_2)	//Èç¹ûATÖ¸ÁîÎªÏÂÔØBINÎÄ¼ş
-                {
+                ATSend(ATCurrentCmdNum,1);
+                CAT1_TaskStatus = CAT1_WAIT;
 
-                    int len = 0;
-                    long compare_len = 0;
-                    unsigned int crc_re,crc_cal;
-                    memset(Msg_Len, 0x00, sizeof(Msg_Len));
-                    Find_string((char *)Lpuart1type.Lpuart1RecBuff, "DATA,", "\r\n", Msg_Len);
-                    compare_len = atoi(Msg_Len);
-                    crc_re = Lpuart1type.Lpuart1RecBuff[compare_len-2]<<8;
-                    crc_re = crc_re|Lpuart1type.Lpuart1RecBuff[compare_len-1];
-                    crc_cal = CRC_Compute(Lpuart1type.Lpuart1RecBuff, compare_len-2);
-                    if(crc_cal != crc_re)
+                return;
+            case CAT1_WAIT:	//ç­‰å¾…æ€ï¼Œç­‰å¾…CAT1è¿”å›çš„ä¿¡æ¯
+                ATRec();	//è°ƒç”¨æ¥æ”¶å‡½æ•°
+                if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
+                {
+                    printf("å½“å‰ç ï¼š%d\r\n", ATCurrentCmdNum);
+                    if (ATCurrentCmdNum == AT_CGSN)	//å¦‚æœATæŒ‡ä»¤ä¸ºæŸ¥è¯¢IMEI
                     {
-                        ATCurrentCmdNum = AT_HTTPREAD_POST;
-                        ATNextCmdNum = AT_HTTPREAD_2;
-                        CAT1_TaskStatus = CAT1_SEND;
-                        return ;
-                    }
-
-                    printf("Find_Buf:%lu\r\n", compare_len);
-                    if (Erase_flag == 1)	//½ö½ö¿ªÊ¼ÊÇ²Á³ıflashÒ»´Î
-                    {
-                        Erase_flag = 0;
-                        Erase_page(Application_2_Addr, 45); //²Á³ı45Ò³  90K
-                    }
-                    len = strstr((char *)Lpuart1type.Lpuart1RecBuff, Msg_Len) - (char *)Lpuart1type.Lpuart1RecBuff + strlen(Msg_Len) + 2;
-                    printf("offset address is: %d\r\n", len);
-
-                    if (compare_len == 1024)
-                    {
-                        memset(Bin_len, 0x00, sizeof(Bin_len));
-                        for (long b = 0; b < 1024; b++)
-                        {
-                            Bin_buffer[b] = Lpuart1type.Lpuart1RecBuff[len + b];
-                        }
-                        /* ½ÓÏÂÀ´½«¹Ì¼şĞ´½øflashÄÚ */
-                        printf("ÉÕÂ¼µÚ%d°ü...................\r\n", addr_count);
-                        WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), 1024);
-                        addr_count++;
-                        ATNextCmdNum = ATCurrentCmdNum;
-                        CAT1_TaskStatus = CAT1_SEND;
-                    }
-                    else if (compare_len < 1024)
-                    {
-                        memset(Bin_len, 0x00, sizeof(Bin_len));
-                        for (int b = 0; b < 1024; b++)
-                        {
-                            Bin_buffer[b] = Lpuart1type.Lpuart1RecBuff[len + b];
-                        }
-                        /* ½ÓÏÂÀ´½«¹Ì¼şĞ´½øflashÄÚ  */
-
-                        printf("ÉÕÂ¼µÚ%d°ü...................\r\n", addr_count);
-                        WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), compare_len);
-                        addr_count = 0;
-                        Erase_flag = 1;
-                        reboot_flag = 1;
                         ATCurrentCmdNum += 1;
                         ATNextCmdNum = ATCurrentCmdNum + 1;
                         CAT1_TaskStatus = CAT1_SEND;
+                        memset(CSQ_buffer, 0x00, sizeof(CSQ_buffer));
+                        Find_string((char *)Lpuart1type.Lpuart1RecBuff, "\r\n", "\r\n", Imei_buffer);
+                        //printf("Imei_buffer=%s\r\n", Imei_buffer);
+                        break;
                     }
-                    break;
-                }
-                else if(ATCurrentCmdNum == AT_HTTPREAD_POST)//ÉÏÒ»°üÊı¾İ´íÎó£¬ÖØ·¢
-                {
-                    ATCurrentCmdNum = AT_HTTPREAD_2;
-                    ATNextCmdNum = ATCurrentCmdNum+1;
-                    CAT1_TaskStatus = CAT1_SEND;
-                }
-                else if (ATCurrentCmdNum == AT_CMQTTPUB)	//±íÊ¾·¢ËÍmsg³É¹¦
-                {
-                    CAT1_TaskStatus = CAT1_MQTT_REC;
-                    break;
-                }
-                else if (ATCurrentCmdNum == AT_HTTPTERM_1)	//±íÊ¾²éÑ¯°æ±¾ºÅ³É¹¦
-                {
-                    CAT1_TaskStatus = CAT1_ACCESS;
-                    break;
-                }
-                else if (ATCurrentCmdNum == AT_HTTPTERM_2)	//±íÊ¾ÏÂÔØBINÎÄ¼ş³É¹¦
-                {
-                    CAT1_TaskStatus = CAT1_MQTT_REC;//½øÈëÑ­»·½ÓÊÕmqttÃüÁî£¬Êµ¼ÊÖ´ĞĞ²»µ½ÕâÀï
-                    break;
-                }
-                else
-                {
-                    ATCurrentCmdNum += 1;
-                    ATNextCmdNum = ATCurrentCmdNum + 1;
-                    CAT1_TaskStatus = CAT1_SEND;
-                    break;
-                }
-            }
-            else if (CompareTime(&TimeCAT1)) //±íÊ¾·¢ËÍ³¬Ê±
-            {
-                printf("TimeOut:%s\r\n", Lpuart1type.Lpuart1RecBuff);
-                ATCmds[ATRecCmdNum].ATStatus = TIME_OUT;
-                if (CurrentRty > 0)
-                {
-                    CurrentRty--;
-                    ATNextCmdNum = ATCurrentCmdNum;
-                    CAT1_TaskStatus = CAT1_SEND;
-                    break;
-                }
-                else
-                {
-                    CAT1_Init();
-                    return;
-                }
-            }
-            return;
-        case CAT1_MQTT_REC:	//²»ĞèÒªÉı¼¶£¬Ñ­»·½ÓÊÜ·şÎñÆ÷ÃüÁî
-             ATRec();	//µ÷ÓÃ½ÓÊÕº¯Êı
-            if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
-				{
+									
+//                    else if (ATCurrentCmdNum == AT_CSQ_2)	//å¦‚æœATæŒ‡ä»¤ä¸ºæŸ¥è¯¢CSQ
+//                    {
+//                        ATCurrentCmdNum += 1;
+//                        ATNextCmdNum = ATCurrentCmdNum + 1;
+//                        CAT1_TaskStatus = CAT1_SEND;
+//                        memset(CSQ_buffer, 0x00, sizeof(CSQ_buffer));
+//                        Find_string((char *)Lpuart1type.Lpuart1RecBuff, " ", ",", CSQ_buffer);
+//                        printf("CSQ_buffer=%s\r\n", CSQ_buffer);
+//                        break;
+//                    }
+                    else if (ATCurrentCmdNum == AT_HTTPREAD_1)	//å¦‚æœATæŒ‡ä»¤ä¸ºæŸ¥è¯¢ç‰ˆæœ¬å·
+                    {
+                        ATCurrentCmdNum += 1;
+                        ATNextCmdNum = ATCurrentCmdNum + 1;
+                        CAT1_TaskStatus = CAT1_SEND;
+                        memset(Version_buffer, 0x00, sizeof(Version_buffer));
+                        Find_string((char *)Lpuart1type.Lpuart1RecBuff, "{", "}", Version_buffer);
+                        printf("Version_buffer=%s\r\n", Version_buffer);
+                        if (strcmp(Version_buffer, config_usr.version) == 0)
+                        {
+                            printf("ç¡¬ä»¶ç‰ˆæœ¬å’Œäº‘ç«¯ç‰ˆæœ¬ä¸€è‡´ï¼Œæ— éœ€å‡çº§ï¼\r\n");
+                            ATCurrentCmdNum = AT_MPUB_RECV;
+                            ATNextCmdNum = AT_MPUB;
+                            CAT1_TaskStatus = CAT1_MQTT_REC;
+                        }
+                        else
+                        {
+                            Update_Task();
+                        }
+                        break;
+                    }
+                    else if (ATCurrentCmdNum == AT_HTTPACTION_2)	//å¦‚æœATæŒ‡ä»¤ä¸ºè¯»å–BINæ–‡ä»¶é•¿åº¦
+                    {
+                        ATCurrentCmdNum += 1;
+                        ATNextCmdNum = ATCurrentCmdNum + 1;
+                        CAT1_TaskStatus = CAT1_SEND;
+                        memset(Bin_len, 0x00, sizeof(Bin_len));
+                        Find_string((char *)Lpuart1type.Lpuart1RecBuff, "200,", "\r\n", Bin_len);
+                        printf("Bin_len=%s\r\n", Bin_len);
+                        break;
+                    }
+                    else if (ATCurrentCmdNum == AT_HTTPREAD_2)	//å¦‚æœATæŒ‡ä»¤ä¸ºä¸‹è½½BINæ–‡ä»¶
+                    {
 
-			}
-            else if (CompareTime(&TimeCAT1)) //Òì³£Öµ
-            {
+                        int len = 0;
+                        long compare_len = 0;
+                        unsigned int crc_re, crc_cal;
+                        memset(Msg_Len, 0x00, sizeof(Msg_Len));
+                        Find_string((char *)Lpuart1type.Lpuart1RecBuff, "DATA,", "\r\n", Msg_Len);
+                        compare_len = atoi(Msg_Len);
+                        crc_re = Lpuart1type.Lpuart1RecBuff[compare_len - 2] << 8;
+                        crc_re = crc_re | Lpuart1type.Lpuart1RecBuff[compare_len - 1];
+                        crc_cal = CRC_Compute(Lpuart1type.Lpuart1RecBuff, compare_len - 2);
+                        if (crc_cal != crc_re)
+                        {
+                            ATCurrentCmdNum = AT_HTTPREAD_POST;
+                            ATNextCmdNum = AT_HTTPREAD_2;
+                            CAT1_TaskStatus = CAT1_SEND;
+                            return ;
+                        }
+
+                        printf("Find_Buf:%lu\r\n", compare_len);
+                        if (Erase_flag == 1)	//ä»…ä»…å¼€å§‹æ˜¯æ“¦é™¤flashä¸€æ¬¡
+                        {
+                            Erase_flag = 0;
+                            Erase_page(Application_2_Addr, 45); //æ“¦é™¤45é¡µ  90K
+                        }
+                        len = strstr((char *)Lpuart1type.Lpuart1RecBuff, Msg_Len) - (char *)Lpuart1type.Lpuart1RecBuff + strlen(Msg_Len) + 2;
+                        printf("offset address is: %d\r\n", len);
+
+                        if (compare_len == 1024)
+                        {
+                            memset(Bin_len, 0x00, sizeof(Bin_len));
+                            for (long b = 0; b < 1024; b++)
+                            {
+                                Bin_buffer[b] = Lpuart1type.Lpuart1RecBuff[len + b];
+                            }
+                            /* æ¥ä¸‹æ¥å°†å›ºä»¶å†™è¿›flashå†… */
+                            printf("çƒ§å½•ç¬¬%dåŒ…...................\r\n", addr_count);
+                            WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), 1024);
+                            addr_count++;
+                            ATNextCmdNum = ATCurrentCmdNum;
+                            CAT1_TaskStatus = CAT1_SEND;
+                        }
+                        else if (compare_len < 1024)
+                        {
+                            memset(Bin_len, 0x00, sizeof(Bin_len));
+                            for (int b = 0; b < 1024; b++)
+                            {
+                                Bin_buffer[b] = Lpuart1type.Lpuart1RecBuff[len + b];
+                            }
+                            /* æ¥ä¸‹æ¥å°†å›ºä»¶å†™è¿›flashå†…  */
+
+                            printf("çƒ§å½•ç¬¬%dåŒ…...................\r\n", addr_count);
+                            WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), compare_len);
+                            addr_count = 0;
+                            Erase_flag = 1;
+                            reboot_flag = 1;
+                            ATCurrentCmdNum += 1;
+                            ATNextCmdNum = ATCurrentCmdNum + 1;
+                            CAT1_TaskStatus = CAT1_SEND; 
+							              sprintf(config_usr.version, "%s,", Version_buffer);//user id
+                        }
+                        break;
+                    }
+                    else if (ATCurrentCmdNum == AT_HTTPREAD_POST) //ä¸Šä¸€åŒ…æ•°æ®é”™è¯¯ï¼Œé‡å‘
+                    {
+                        ATCurrentCmdNum = AT_HTTPREAD_2;
+                        ATNextCmdNum = ATCurrentCmdNum + 1;
+                        CAT1_TaskStatus = CAT1_SEND;
+                    }
+                    else if (ATCurrentCmdNum == AT_HTTPTERM)	//è¡¨ç¤ºçƒ§å½•å®Œæˆ
+                    {
+                        CAT1_TaskStatus = CAT1_ACCESS;
+											 // HAL_NVIC_SystemReset();
+                        break;
+                    }
+                    else
+                    {
+                        ATCurrentCmdNum += 1;
+                        ATNextCmdNum = ATCurrentCmdNum + 1;
+                        CAT1_TaskStatus = CAT1_SEND;
+                        break;
+                    }
+                }
+                else if (CompareTime(&TimeCAT1)) //è¡¨ç¤ºå‘é€è¶…æ—¶
+                {
+                    printf("TimeOut:%s\r\n", Lpuart1type.Lpuart1RecBuff);
+                    ATCmds[ATRecCmdNum].ATStatus = TIME_OUT;
+                    if (CurrentRty > 0)
+                    {
+                        CurrentRty--;
+                        ATNextCmdNum = ATCurrentCmdNum;
+                        CAT1_TaskStatus = CAT1_SEND;
+                        break;
+                    }
+                    else
+                    {
+                        CAT1_Init();
+                        return;
+                    }
+                }
+                return;
+            case CAT1_MQTT_REC:	//ä¸éœ€è¦å‡çº§ï¼Œå¾ªç¯æ¥å—æœåŠ¡å™¨å‘½ä»¤
+                ATRec();	//è°ƒç”¨æ¥æ”¶å‡½æ•°
+                if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
+                {
+					 if (ATCurrentCmdNum == AT_MPUB_RECV)	//è¡¨ç¤ºæ”¶åˆ°è®¢é˜…æ¶ˆæ¯
+					 {
+					    anlysis_mqtt_recv();
+					 }
+                }
+                else if (CompareTime(&TimeCAT1)) //å¼‚å¸¸å€¼
+                {
                     CAT1_Init();
                     return;
-            }			
-            return;			
-        case CAT1_ACCESS:	//³É¹¦Ì¬
-            CAT1_TaskStatus = CAT1_IDIE;
-            break;
-        default:
-            return;
+                }
+                return;
+            case CAT1_ACCESS:	//æˆåŠŸæ€
+                CAT1_TaskStatus = CAT1_IDIE;
+                break;
+            default:
+                return;
         }
     }
 }
 
-/* MQTT·¢ËÍ±¨ÎÄ */
+/* MQTTå‘é€æŠ¥æ–‡ */
 void MQTTSendData(void)
 {
     CAT1_TaskStatus = CAT1_SEND;
-    ATCurrentCmdNum = AT_CSQ_2;
-    ATNextCmdNum = AT_CMQTTTOPIC;
+    ATCurrentCmdNum = AT_MPUB;
+    ATNextCmdNum = AT_SAPBR_1;
 }
 
-/* ²éÑ¯°æ±¾ºÅÈÎÎñ */
+/* æŸ¥è¯¢ç‰ˆæœ¬å·ä»»åŠ¡ */
 void Get_Version(void)
 {
     CAT1_TaskStatus = CAT1_SEND;
-    ATCurrentCmdNum = AT_HTTPINIT_1;
-    ATNextCmdNum = AT_HTTPPARA_VERSION;
+    ATCurrentCmdNum = AT_HTTPREAD_1;
+    ATNextCmdNum = AT_HTTPINIT_2;
 }
 
-/* Éı¼¶ÈÎÎñ */
+/* å‡çº§ä»»åŠ¡ */
 void Update_Task(void)
 {
     CAT1_TaskStatus = CAT1_SEND;
     ATCurrentCmdNum = AT_HTTPINIT_2;
-    ATNextCmdNum = AT_HTTPPARA_DATA;
+    ATNextCmdNum = AT_HTTPPARA_3;
 }
 
-/* ÏÂÔØBINÎÄ¼ş */
+/* ä¸‹è½½BINæ–‡ä»¶ */
 void Download_BIN(void)
 {
     //char BIN_buffer[1025];

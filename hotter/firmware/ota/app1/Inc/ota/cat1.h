@@ -10,10 +10,10 @@
 //#include "gpio.h"
 #include "my_string.h"
 #include "stmflash.h"
-
+#include "config.h"
 extern int reboot_flag;
 
-/*ÉèÖÃCAT1×´Ì¬µÄÃ¶¾Ù±äÁ¿*/
+/*è®¾ç½®CAT1çŠ¶æ€çš„æšä¸¾å˜é‡*/
 typedef enum
 {
     CAT1_IDIE = 0,
@@ -24,7 +24,7 @@ typedef enum
 } teCAT1_TaskStatus;
 
 
-/*ÉèÖÃATÖ¸Áî¼¯µÄÃ¶¾Ù±äÁ¿*/
+/*è®¾ç½®ATæŒ‡ä»¤é›†çš„æšä¸¾å˜é‡*/
 typedef enum
 {
     //AT_RST,
@@ -35,30 +35,34 @@ typedef enum
     AT_CEREG,
     AT_CGATT,
     AT_CSQ_1,
-    AT_CMQTTSTART,
-    AT_CMQTTACCQ,
-    AT_CMQTTCONNECT,
-    AT_CSQ_2,
-    AT_CMQTTTOPIC,
-    AT_TOPIC,
-    AT_CMQTTPAYLOAD,
-    AT_MESSAGE,
-    AT_CMQTTPUB,
-		/*HTTPÏà¹ØÖ¸Áî*/
+    //mqtt 
+    AT_MCONFIG,
+    AT_MIPSTART,
+    AT_MCONNECT,
+    AT_MSUB,
+    AT_MPUB,
+		/*HTTPç‰ˆæœ¬å·*/
+		AT_SAPBR_1,
+		AT_SAPBR_2,
+		AT_SAPBR_3,
 		AT_HTTPINIT_1,
-		AT_HTTPPARA_VERSION,
+		AT_HTTPPARA_1,	
+		AT_HTTPPARA_2,
 		AT_HTTPACTION_1,
 		AT_HTTPREAD_1,
-		AT_HTTPTERM_1,	
+		/*HTTPç›¸å…³æŒ‡ä»¤*/
 		AT_HTTPINIT_2,
-		AT_HTTPPARA_DATA,
+		AT_HTTPPARA_3,
 		AT_HTTPACTION_2,
 		AT_HTTPREAD_2,
-		AT_HTTPTERM_2,
-		AT_HTTPREAD_POST,		
+		AT_HTTPTERM,		
+		AT_HTTPREAD_POST,
+
+	//mqttè®¢é˜…æ¶ˆæ¯æ¥æ”¶
+	 AT_MPUB_RECV
 } teATCmdNum;
 
-/*ÉèÖÃÄ£×é×´Ì¬µÄÃ¶¾Ù±äÁ¿*/
+/*è®¾ç½®æ¨¡ç»„çŠ¶æ€çš„æšä¸¾å˜é‡*/
 typedef enum
 {
     SUCCESS_REC = 0,
@@ -66,7 +70,7 @@ typedef enum
     NO_REC
 } teATStatus;
 
-/*ÉèÖÃATÖ¸Áî¼¯µÄ½á¹¹Ìå*/
+/*è®¾ç½®ATæŒ‡ä»¤é›†çš„ç»“æ„ä½“*/
 typedef struct
 {
     char *ATSendStr;
@@ -83,6 +87,8 @@ void MQTTSendData(void);
 void Get_Version(void);
 void Update_Task(void);
 void Download_BIN(void);
+CONFIG_stru *get_params(void);
+
 #endif
 
 

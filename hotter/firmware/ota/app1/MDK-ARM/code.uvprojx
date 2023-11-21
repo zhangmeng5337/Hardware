@@ -522,6 +522,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\lcd.c</FilePath>
             </File>
+            <File>
+              <FileName>mqtt_analy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\mqtt_analy.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
