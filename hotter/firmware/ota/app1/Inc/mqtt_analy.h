@@ -1,6 +1,6 @@
 #ifndef MQTT_ANALY_H_
 #define MQTT_ANALY_H_
-
+#include "main.h"
 
 
 #define UPDATE_INDEX		0
@@ -22,7 +22,8 @@
 typedef struct 
 {
 	float data[64];
-	unsigned int status;
+	uint32_t status;
+	uint32_t fault;
 	char devid[64];
 	char version[64];
 	

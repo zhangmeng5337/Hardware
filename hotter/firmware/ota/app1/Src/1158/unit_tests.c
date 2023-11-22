@@ -179,7 +179,7 @@ void pressure_temp_proc()
 		 // volt_tmp= 2*data_ai.data2_ai[ADC1_PT_INDEX+1]; //2u1;
 		 // volt_tmp2 = data_ai.data2_ai[ADC1_PT_INDEX];//u2
 		 // volt_tmp=  volt_tmp-volt_tmp2;//(2u1-u2)
-		  data_ai.press[i-ADC1_PR_INDEX]  = data_ai.data_ai[i]*PR_RATIO;
+		  data_ai.press[i-ADC1_PR_INDEX]  = data_ai.data_ai[i]*PRESS_RATIO+PRESS_B;
 	}
 
 	

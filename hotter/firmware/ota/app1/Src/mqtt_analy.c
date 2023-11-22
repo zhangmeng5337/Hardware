@@ -158,7 +158,8 @@ void upload()
     mqtt_payload_u.data[TIN_INDEX] =  get_ai_data()->temp[AI_WATER_T_IN_INDEX]; //water IN
     mqtt_payload_u.data[PUMP_F_INDEX] = get_ai_data()->temp[AI_PUMP_F_INDEX]; //pump front
     mqtt_payload_u.data[PUMP_E_INDEX] = get_ai_data()->temp[AI_PUMP_E_INDEX]; //pump end
-    mqtt_payload_u.status = get_di_data()->di_status; //dev status
+    mqtt_payload_u.status = get_di_data()->di_status<<20; //dev status
+    mqtt_payload_u.status = mqtt_payload_u.status|get_ai_data()->channel_status; //dev status
     sprintf(mqtt_payload_u.version, "%s", get_params()->version);//devid
     mqtt_payload_u.data[WATER_O_INDEX] = get_params()->set_tout; //set tmp
     mqtt_payload_u.data[WATER_IN_INDEX] = get_params()->set_tindoor; //set indoor tmp
@@ -173,7 +174,7 @@ void upload()
 			回水温度: %f,\r\n\
 			泵前压力: %f,\r\n\
 			泵后压力: %f,\r\n\
-			设备状态: %d\r\n\
+			运行状态: %h\r\n\
 		},\r\n\
 		设备参数: {\r\n\
 			版本号: %s,\r\n\
@@ -183,7 +184,7 @@ void upload()
 		}\r\n\
 	}\r\n", mqtt_payload_u.devid, mqtt_payload_u.data[TOUT_INDEX], mqtt_payload_u.data[TIN_INDEX], 
 	   mqtt_payload_u.data[PUMP_F_INDEX], mqtt_payload_u.data[PUMP_E_INDEX], 
-	   mqtt_payload_u.status, mqtt_payload_u.version, 
+	   mqtt_payload_u.status,mqtt_payload_u.version, 
 	   mqtt_payload_u.data[WATER_O_INDEX], mqtt_payload_u.data[WATER_IN_INDEX], 
 	   mqtt_payload_u.data[UP_PERIOD_INDEX]);
 
