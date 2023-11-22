@@ -44,7 +44,8 @@
 typedef struct 
 {
 	unsigned char data_inADC[CHANNEL_SIZE*2];
-  
+  uint16_t data_2byte[CHANNEL_SIZE];
+  uint16_t data2_2byte[CHANNEL_SIZE];	
 	unsigned char data2_inADC[CHANNEL_SIZE*2];
 	unsigned char update;
 	unsigned char status_byte;

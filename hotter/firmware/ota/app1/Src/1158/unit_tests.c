@@ -119,19 +119,19 @@ bool test_read_data(void)
     {
         uint32_t upperByte 	= ((uint32_t) (get_ADC_data()->data_inADC[CHANNEL_SIZE*2-2]) & 0xFF) << 8;
         uint32_t middleByte  = ((uint32_t)(get_ADC_data()->data_inADC[CHANNEL_SIZE*2-1])  & 0xFF) ;
-        data_ai.ref1 = upperByte|middleByte;
+        data_ai.ref1 = get_ADC_data()->data_2byte[CHANNEL_SIZE-1];
         data_ai.ref1 = data_ai.ref1/3072.0;
 
         upperByte  = ((uint32_t) (get_ADC_data()->data2_inADC[CHANNEL_SIZE*2-2]) & 0xFF) << 8;
         middleByte  = ((uint32_t)(get_ADC_data()->data2_inADC[CHANNEL_SIZE*2-1])  & 0xFF) ;
-        data_ai.ref2 = upperByte|middleByte;
+        data_ai.ref2 =  get_ADC_data()->data2_2byte[CHANNEL_SIZE-1];
         data_ai.ref2 = data_ai.ref2/3072.0;
 
         for(i=0; i<16; i++)//ads1158 1
         {
             upperByte	= ((uint32_t) (get_ADC_data()->data_inADC[2*(i)]) & 0xFF) << 8;
             middleByte  = ((uint32_t)(get_ADC_data()->data_inADC[2*(i)+1])  & 0xFF) ;
-            data_ai.data_ai[i]= upperByte|middleByte;
+            data_ai.data_ai[i]=  get_ADC_data()->data_2byte[i];
             data_ai.data_ai[i]= data_ai.data_ai[i]/30720;
             data_ai.data_ai[i]= data_ai.data_ai[i]*data_ai.ref1;
         }
@@ -139,7 +139,7 @@ bool test_read_data(void)
         {
             upperByte	= ((uint32_t) (get_ADC_data()->data2_inADC[2*(i)]) & 0xFF) << 8;
             middleByte  = ((uint32_t)(get_ADC_data()->data2_inADC[2*(i)+1])  & 0xFF) ;
-            data_ai.data2_ai[i]= upperByte|middleByte;
+            data_ai.data2_ai[i]= get_ADC_data()->data2_2byte[i];
             data_ai.data2_ai[i]= data_ai.data2_ai[i]/30720;
             data_ai.data2_ai[i]= data_ai.data2_ai[i]*data_ai.ref2;
         }
@@ -156,6 +156,14 @@ void pressure_temp_proc()
          
     float volt_tmp,volt_tmp2;
     unsigned char i;
+	/**********************4-20mA convention**********************/
+	for(i=ADC1_PR_INDEX;i<(ADC1_PR_INDEX+8);i++)//u2/(2u1-u2)
+	{
+		 // volt_tmp= 2*data_ai.data2_ai[ADC1_PT_INDEX+1]; //2u1;
+		 // volt_tmp2 = data_ai.data2_ai[ADC1_PT_INDEX];//u2
+		 // volt_tmp=  volt_tmp-volt_tmp2;//(2u1-u2)
+		  data_ai.press[i-ADC1_PR_INDEX]  = data_ai.data_ai[i]*PRESS_RATIO+PRESS_B;
+	}	
 	for(i=ADC1_PT_INDEX;i<(ADC1_PT_SIZE+ADC1_PT_INDEX);i++)//u2/(2u1-u2)
 	{
 		  volt_tmp= 2*data_ai.data_ai[ADC1_PT_INDEX+1]; //2u1;
@@ -173,14 +181,7 @@ void pressure_temp_proc()
 		  data_ai.temp[i-ADC2_PT_INDEX+ADC1_PT_SIZE]  = volt_tmp2*1000/volt_tmp;
 		  data_ai.temp[i-ADC2_PT_INDEX+ADC1_PT_SIZE]=PT100_Temp(data_ai.temp[i-ADC2_PT_INDEX+ADC1_PT_SIZE]);
 	}	
-	/**********************4-20mA convention**********************/
-	for(i=ADC1_PR_INDEX;i<8;i++)//u2/(2u1-u2)
-	{
-		 // volt_tmp= 2*data_ai.data2_ai[ADC1_PT_INDEX+1]; //2u1;
-		 // volt_tmp2 = data_ai.data2_ai[ADC1_PT_INDEX];//u2
-		 // volt_tmp=  volt_tmp-volt_tmp2;//(2u1-u2)
-		  data_ai.press[i-ADC1_PR_INDEX]  = data_ai.data_ai[i]*PRESS_RATIO+PRESS_B;
-	}
+
 
 	
 }
