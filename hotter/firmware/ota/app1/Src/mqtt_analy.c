@@ -39,6 +39,8 @@ void anlysis_mqtt_recv()
     }*/
      char dev_id[128];
     unsigned char valid_flag;
+	  float tmp_f;
+	  float tmp_i;
 
     valid_flag = 0;
     get_params()->update_setting = 0;
@@ -82,8 +84,8 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             get_params()->update_setting = 1;
-            sprintf(get_params()->set_tout, "%s", dev_id); //字符串
-
+			      tmp_f = atof(dev_id);
+					  get_params()->set_tout = tmp_f;
         }
 
 
@@ -92,7 +94,8 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             get_params()->update_setting = 1;
-            sprintf(get_params()->set_tindoor, "%s", dev_id); //字符串
+			      tmp_f = atof(dev_id);
+					  get_params()->set_tindoor = tmp_f;
 
         }
 
@@ -102,7 +105,9 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             get_params()->update_setting = 1;
-            sprintf(get_params()->set_up_period, "%s", dev_id); //字符串
+					tmp_f = atof(dev_id);
+					get_params()->set_up_period = tmp_f;
+
 
         }
 
@@ -155,9 +160,9 @@ void upload()
     mqtt_payload_u.data[PUMP_E_INDEX] = get_ai_data()->temp[AI_PUMP_E_INDEX]; //pump end
     mqtt_payload_u.status = get_di_data()->di_status; //dev status
     sprintf(mqtt_payload_u.version, "%s", get_params()->version);//devid
-    mqtt_payload_u.data[WATER_O_INDEX] = atof(get_params()->set_tout); //set tmp
-    mqtt_payload_u.data[WATER_IN_INDEX] = atof(get_params()->set_tindoor); //set indoor tmp
-    mqtt_payload_u.data[UP_PERIOD_INDEX] = atof(get_params()->set_up_period); //up period
+    mqtt_payload_u.data[WATER_O_INDEX] = get_params()->set_tout; //set tmp
+    mqtt_payload_u.data[WATER_IN_INDEX] = get_params()->set_tindoor; //set indoor tmp
+    mqtt_payload_u.data[UP_PERIOD_INDEX] =get_params()->set_up_period; //up period
 
 
 	

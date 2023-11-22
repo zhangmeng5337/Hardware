@@ -45,9 +45,9 @@ typedef struct
 	unsigned char reboot;
 	unsigned char machine;	
 	unsigned char update_firm;	
-	unsigned char set_tout[12];
-	unsigned char set_tindoor[12];
-	unsigned char set_up_period[32];	
+	float set_tout;
+	float set_tindoor;
+	float set_up_period;	
 	//char password[128];
 	unsigned char update_setting;
 
