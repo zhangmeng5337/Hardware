@@ -46,11 +46,11 @@ void module_test()
 void app_proc()
 {
    TickPro(); 
-   ai_proc();//2s采集一次
-   di_proc(0);//采集一次
+   ai_proc();//2s采集一次,压力，温度采集
+   di_proc(0);//采集一次，数字信号量采集，包括热继信号
    lcd_proc();
    modbus_proc();
    lte_proc();
-   //do_ctrl_proc(0,1);
+   //do_ctrl_proc(0,1);//接触器控制
    
 }

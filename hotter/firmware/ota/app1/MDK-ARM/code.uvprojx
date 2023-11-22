@@ -403,14 +403,14 @@
               <FilePath>..\Src\ota\stmflash.c</FilePath>
             </File>
             <File>
-              <FileName>update.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\ota\update.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
+            </File>
+            <File>
+              <FileName>update.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\ota\update.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_it.c</FileName>

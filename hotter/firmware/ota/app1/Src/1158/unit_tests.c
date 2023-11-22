@@ -189,7 +189,7 @@ data_ai_stru *get_ai_data()
 	return &data_ai;
 }
 
-//检测到传感器有问题，不清零，重启设备后清零
+//妫�娴嬪埌浼犳劅鍣ㄦ湁闂锛屼笉娓呴浂锛岄噸鍚澶囧悗娓呴浂
 void ai_health_dec()
 {
 	unsigned char i;
@@ -225,14 +225,14 @@ void ai_health_dec()
 	}
 	for(i=0;i<8;i++)
 	{
-		if(data_ai.temp[i]>=MAX_TEMP||data_ai.temp[i]<=MIN_TEMP)
+		if(data_ai.press[i]>=MAX_TEMP||data_ai.press[i]<=MIN_TEMP)
 		{
-		    failure_flag = failure_flag<<i;
+		    failure_flag = failure_flag<<(i+8);
 			data_ai.channel_status = data_ai.channel_status|failure_flag;
 		}
 		else 
 		{
-			if(data_ai.temp[i] == data_ai.last_gather[i])
+			if(data_ai.press[i] == data_ai.last_gather[i])
 			{
 				data_ai.failure_count[i] = data_ai.failure_count[i]+1;
 			}
@@ -245,7 +245,7 @@ void ai_health_dec()
 			}
 			if(data_ai.failure_count[i]>=MAX_FAILUE)
 			{
-		    	failure_flag = failure_flag<<i;
+		    	failure_flag = failure_flag<<(i+8);
 				data_ai.channel_status = data_ai.channel_status|failure_flag;
 		        data_ai.failure_count[i] = 0;
 			}
@@ -259,9 +259,9 @@ void ai_proc()
     //if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s 
     {
         reset_registerTick(ADC_SAMP_TICK_NO);
-        test_read_data();
-	    pressure_temp_proc();
-		ai_health_dec();	
+        test_read_data();//adc sample
+	      pressure_temp_proc();//temp pressure convert
+		    ai_health_dec();//channels health detected	
     }
 
 }
