@@ -7,7 +7,7 @@ di_usr.di_No_buf：对应通道有输入数组置1
 */
 stru_di_stru di_input_read(unsigned int diNO)
 {   
-    static unsigned char di_status = 0;
+   // static unsigned char di_status = 0;
     switch(diNO)
     {
 		case 0:
@@ -128,5 +128,9 @@ unsigned char di_proc(unsigned char diNO)
 {
 	di_input_read( diNO);
 	return di_usr.di_No_buf[diNO] ;	
+}
+stru_di_stru *get_di_data()
+{
+   return &di_usr;
 }
 

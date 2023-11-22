@@ -57,7 +57,7 @@ unsigned char registerTick(unsigned char TickNo,uint32_t ms)
     }
 	
 
-
+  return 0;
  }
 void reset_registerTick(unsigned char TickNo)
 {

@@ -29,12 +29,12 @@
 #define  DO_ctrl_23 	23
 
 
-#define HC595_SHCP_Low()   	   HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,0)
-#define HC595_SHCP_High()      HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,1)
-#define HC595_STCP_Low() 			 HAL_GPIO_WritePin(IN_RCK_GPIO_Port,IN_RCK_Pin,0)
-#define HC595_STCP_High() 		 HAL_GPIO_WritePin(IN_RCK_GPIO_Port,IN_RCK_Pin,1)
-#define HC595_Data_Low()   	   HAL_GPIO_WritePin(IN_SI_GPIO_Port,IN_SI_Pin,0)
-#define HC595_Data_High()      HAL_GPIO_WritePin(IN_SI_GPIO_Port,IN_SI_Pin,1)
+#define HC595_SHCP_Low()   	   HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,GPIO_PIN_RESET)
+#define HC595_SHCP_High()      HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,GPIO_PIN_SET)
+#define HC595_STCP_Low() 			 HAL_GPIO_WritePin(IN_RCK_GPIO_Port,IN_RCK_Pin,GPIO_PIN_RESET)
+#define HC595_STCP_High() 		 HAL_GPIO_WritePin(IN_RCK_GPIO_Port,IN_RCK_Pin,GPIO_PIN_SET)
+#define HC595_Data_Low()   	   HAL_GPIO_WritePin(IN_SI_GPIO_Port,IN_SI_Pin,GPIO_PIN_RESET)
+#define HC595_Data_High()      HAL_GPIO_WritePin(IN_SI_GPIO_Port,IN_SI_Pin,GPIO_PIN_SET)
 #define DO_SIZE  24
 
 void HC595_SendByte(uint8_t byte);

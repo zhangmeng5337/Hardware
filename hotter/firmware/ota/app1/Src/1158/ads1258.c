@@ -266,7 +266,7 @@ void writeMultipleRegisters(unsigned char adc_No, uint8_t startAddress, uint8_t 
         // write register data bytes
         spiSendReceiveByte(regData[i]);
 
-        /* Update register array */
+        /* eUpdate register array */
     registerMap[i] = regData[i];
     //}
 
@@ -344,7 +344,7 @@ void readData(unsigned char adc_No, readMode mode)
     uint8_t dataPosition;
     bool    status_byte_enabled;
     unsigned  char channel;
-    unsigned char tmp, tmp1;
+   // unsigned char tmp, tmp1;
     /* Build TX array and send it */
     if (mode == DIRECT)
     {

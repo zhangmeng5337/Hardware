@@ -40,7 +40,7 @@ typedef enum
     AT_MIPSTART,
     AT_MCONNECT,
     AT_MSUB,
-    AT_MPUB,
+    //AT_MPUB,
 		/*HTTP版本号*/
 		AT_SAPBR_1,
 		AT_SAPBR_2,
@@ -50,16 +50,27 @@ typedef enum
 		AT_HTTPPARA_2,
 		AT_HTTPACTION_1,
 		AT_HTTPREAD_1,
-		/*HTTP相关指令*/
+		/*HTTP get相关指令*/
 		AT_HTTPINIT_2,
 		AT_HTTPPARA_3,
+		AT_HTTPPARA_4,
 		AT_HTTPACTION_2,
 		AT_HTTPREAD_2,
-		AT_HTTPTERM,		
+		AT_HTTPTERM_1,	
+		/*HTTP post相关指令*/
+		AT_HTTPINIT_3,
+		AT_HTTPPARA_5,
+		AT_HTTPPARA_6,
+		AT_HTTPDATA_1,
+		AT_HTTPDATA_2,	//发数据	
+		AT_HTTPACTION_6,
+		AT_HTTPREAD_7,
+		//AT_HTTPTERM_2,		
 		AT_HTTPREAD_POST,
 
 	//mqtt订阅消息接收
-	 AT_MPUB_RECV
+	 AT_MPUB_RECV,
+	 AT_MPUB
 } teATCmdNum;
 
 /*设置模组状态的枚举变量*/

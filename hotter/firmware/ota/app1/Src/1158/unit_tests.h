@@ -57,18 +57,28 @@
 #define GOOD		0
 #define BAD			1
 
+
+#define AI_WATER_T_O_INDEX   	0
+#define AI_WATER_T_IN_INDEX   	1
+
+#define AI_PUMP_F_INDEX   		0
+#define AI_PUMP_E_INDEX   		1
+
+
+
+
 #define MAX_FAILUE 100 
 typedef struct 
 {
 	float data_ai[CHANNEL_SIZE];
 	float ref1;
 	float ref2;
-    float press[8];	
-    float temp[12];
+    float press[8];	//pressure
+    float temp[12]; //temperature
 	float data2_ai[CHANNEL_SIZE];
 	unsigned int failure_count[32];
 	unsigned int last_gather[32];	
-	uint32_t channel_status;
+	uint32_t channel_status; //fault status
 	unsigned char update;
 	
 }data_ai_stru;
@@ -83,5 +93,6 @@ void ads1158_init(void);
 void ads1158_config(unsigned char adc_No);
 bool test_read_data(void);
 void ai_proc(void);
+data_ai_stru *get_ai_data(void);
 
 #endif /* ADS1258_UNIT_TESTS_H_ */

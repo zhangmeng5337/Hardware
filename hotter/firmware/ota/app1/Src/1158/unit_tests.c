@@ -184,6 +184,10 @@ void pressure_temp_proc()
 
 	
 }
+data_ai_stru *get_ai_data()
+{
+	return &data_ai;
+}
 
 //检测到传感器有问题，不清零，重启设备后清零
 void ai_health_dec()
@@ -248,6 +252,7 @@ void ai_health_dec()
 		}
 	}	
 }
+
 void ai_proc()
 {
     registerTick(ADC_SAMP_TICK_NO,2000);

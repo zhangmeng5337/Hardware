@@ -1,5 +1,6 @@
 #include "my_string.h"
-
+#include "my_string.h"
+#include "sys.h"
 #define POLY	0x1021  
 
 /***********************************************************

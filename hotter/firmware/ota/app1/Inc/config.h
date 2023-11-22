@@ -20,23 +20,37 @@ index = 5 "鏁版嵁涓婁紶鍛ㄦ湡": "value"*/
 
 typedef struct
 {
-    char user[128];
-    char password[128];
-    char user_id[128];
-    char mqtt_ip[128];
-    char mqtt_port[128];
+   //mqtt
+    char user[128];//mqtt server user
+    char password[64]; //mqtt server password
+    char user_id[128];//imei
+    char mqtt_ip[128];//server ip
+    char mqtt_port[64];//
     char mqtt_msubtopic[128];
     char mqtt_subtopic[128];
-	char version[32];
+	char version[64];
+  //http
+    char http_ip[128];//server ip
+    char http_port[64];//
+
+	
     unsigned char temp[24];//温度段
     unsigned char mode;// 0---本地；1----远程
     unsigned char ai_config[32];
     unsigned char ao_config[1];
     unsigned char di_config[8];
     unsigned char do_config[20];
-	unsigned char payload[256];
-	unsigned char update;
-	float payload_f[32];
+
+    //setting params
+	unsigned char reboot;
+	unsigned char machine;	
+	unsigned char update_firm;	
+	unsigned char set_tout[12];
+	unsigned char set_tindoor[12];
+	unsigned char set_up_period[32];	
+	//char password[128];
+	unsigned char update_setting;
+
 } CONFIG_stru;
 
 

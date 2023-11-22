@@ -85,7 +85,7 @@ unsigned int PT100_Temp(unsigned int vadc)
 stru_pt_stru cal_pt_temp(unsigned char pt_NO)
 {
 	float *adc_vol;
-	float pt_a,pt_b;
+//	float pt_a,pt_b;
 	//adc_vol = get_ads_volt();
 
    pt_u.pt_temp[pt_NO]= PT100_Temp(adc_vol[0]);
