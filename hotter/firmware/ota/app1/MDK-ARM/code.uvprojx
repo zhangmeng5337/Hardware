@@ -398,19 +398,9 @@
               <FilePath>..\Src\app.c</FilePath>
             </File>
             <File>
-              <FileName>stmflash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\ota\stmflash.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
-            </File>
-            <File>
-              <FileName>update.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\ota\update.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_it.c</FileName>
@@ -421,11 +411,6 @@
               <FileName>stm32f4xx_hal_msp.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f4xx_hal_msp.c</FilePath>
-            </File>
-            <File>
-              <FileName>cat1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\ota\cat1.c</FilePath>
             </File>
             <File>
               <FileName>time.c</FileName>
@@ -493,11 +478,6 @@
               <FilePath>..\Src\1158\hal.c</FilePath>
             </File>
             <File>
-              <FileName>unit_tests.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\1158\unit_tests.c</FilePath>
-            </File>
-            <File>
               <FileName>modbus.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\modbus.c</FilePath>
@@ -531,6 +511,36 @@
               <FileName>config.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\config.c</FilePath>
+            </File>
+            <File>
+              <FileName>equipment_ctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\equipment_ctrl.c</FilePath>
+            </File>
+            <File>
+              <FileName>water_ctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\water_ctrl.c</FilePath>
+            </File>
+            <File>
+              <FileName>ai_proc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\1158\ai_proc.c</FilePath>
+            </File>
+            <File>
+              <FileName>cat1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\ota\cat1.c</FilePath>
+            </File>
+            <File>
+              <FileName>stmflash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\ota\stmflash.c</FilePath>
+            </File>
+            <File>
+              <FileName>update.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\ota\update.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -30,7 +30,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * --/COPYRIGHT--*/
 
-#include "unit_tests.h"
+#include "ai_proc.h"
 #include "sys.h"
 #include "pt100.h"
 /* NOTES:

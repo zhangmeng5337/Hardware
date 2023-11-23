@@ -6,7 +6,7 @@
 #include "lcd.h"
 #include "sys.h"
 #include "config.h"
-#include "unit_tests.h"
+#include "ai_proc.h"
 stru_di_stru di_status;
 
 void hardware_init()
@@ -44,6 +44,12 @@ void module_test()
 
 
 }
+void control_proc()
+{
+	
+	if(equipment_control()==0)//no fault control water
+		water_temperature_control();
+}
 void app_proc()
 {
    TickPro(); 
@@ -53,6 +59,7 @@ void app_proc()
    modbus_proc();
    lte_proc();
    config_save();
+   control_proc();
    //do_ctrl_proc(0,1);//do control
    
 }

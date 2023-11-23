@@ -65,9 +65,7 @@
 #define AI_PUMP_E_INDEX   		1
 
 #define PRESS_RATIO        626.25
-
 #define PRESS_B            -250
-
 #define PT100_PR          75
 
 #define MAX_FAILUE 100 

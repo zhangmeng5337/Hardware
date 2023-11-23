@@ -1,7 +1,7 @@
 #include "mqtt_analy.h"
 #include "my_string.h"
 #include "cat1.h"
-#include "unit_tests.h"
+#include "ai_proc.h"
 #include "di.h"
 
 mqtt_payload_stru mqtt_payload_u;
@@ -165,9 +165,11 @@ void upload()
     mqtt_payload_u.data[TIN_INDEX] =  get_ai_data()->temp[AI_WATER_T_IN_INDEX]; //water IN
     mqtt_payload_u.data[PUMP_F_INDEX] = get_ai_data()->temp[AI_PUMP_F_INDEX]; //pump front
     mqtt_payload_u.data[PUMP_E_INDEX] = get_ai_data()->temp[AI_PUMP_E_INDEX]; //pump end
-    mqtt_payload_u.status = get_di_data()->di_status; //dev status
+    
+	mqtt_payload_u.status = get_di_data()->di_status; //dev status
     mqtt_payload_u.status = mqtt_payload_u.status << 20; //dev status
-    mqtt_payload_u.status = mqtt_payload_u.status | get_ai_data()->channel_status; //dev status
+    mqtt_payload_u.status = mqtt_payload_u.status | get_ai_data()->channel_status;
+	get_congfig()->fault_status = mqtt_payload_u.status ;//fault status
     sprintf(mqtt_payload_u.version, "%s", get_congfig()->version);//devid
     mqtt_payload_u.data[WATER_O_INDEX] = get_congfig()->set_tout; //set tmp
     mqtt_payload_u.data[WATER_IN_INDEX] = get_congfig()->set_tindoor; //set indoor tmp
