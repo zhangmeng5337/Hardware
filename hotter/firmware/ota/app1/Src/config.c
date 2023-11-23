@@ -6,7 +6,7 @@
 CONFIG_stru config_usr;
 void config_save()
 {
-    uint32_t addr_count = 0;
+    //uint32_t addr_count = 0;
     uint32_t buf[1024], len, index;
     if (config_usr.update_setting == 1)
     {
@@ -14,53 +14,53 @@ void config_save()
         index = 1;
         buf[0] = 0x5a;
         len = sizeof(get_congfig()->user);
-        memcpy(buf, get_congfig()->user, len);
+        memcpy(buf+index, get_congfig()->user, len);
         index = index + len;
 
         len = sizeof(get_congfig()->password);
-        memcpy(buf, get_congfig()->password, len);
+        memcpy(buf+index, get_congfig()->password, len);
         index = index + len;
 
 
         len = sizeof(get_congfig()->mqtt_ip);
-        memcpy(buf, get_congfig()->mqtt_ip, len);
+        memcpy(buf+index, get_congfig()->mqtt_ip, len);
         index = index + len;
 
 
         len = sizeof(get_congfig()->mqtt_port);
-        memcpy(buf, get_congfig()->mqtt_port, len);
+        memcpy(buf+index, get_congfig()->mqtt_port, len);
         index = index + len;
 
 
 
         len = sizeof(get_congfig()->version);
-        memcpy(buf, get_congfig()->version, len);
+        memcpy(buf+index, get_congfig()->version, len);
         index = index + len;
 
 
         len = sizeof(get_congfig()->http_ip);
-        memcpy(buf, get_congfig()->http_ip, len);
+        memcpy(buf+index, get_congfig()->http_ip, len);
         index = index + len;
 
 
         len = sizeof(get_congfig()->http_port);
-        memcpy(buf, get_congfig()->http_port, len);
+        memcpy(buf+index, get_congfig()->http_port, len);
         index = index + len;
 
         len = sizeof(get_congfig()->set_tout);
-        memcpy(buf, &get_congfig()->set_tout, len);
+        memcpy(buf+index, &get_congfig()->set_tout, len);
         index = index + len;
 
         len = sizeof(get_congfig()->set_tindoor);
-        memcpy(buf, &get_congfig()->set_tindoor, len);
+        memcpy(buf+index, &get_congfig()->set_tindoor, len);
         index = index + len;
 
         len = sizeof(get_congfig()->set_up_period);
-        memcpy(buf, &get_congfig()->set_up_period, len);
+        memcpy(buf+index, &get_congfig()->set_up_period, len);
         index = index + len;
 
         len = sizeof(get_congfig()->mode);
-        memcpy(buf, &get_congfig()->mode, len);
+        memcpy(buf+index, &get_congfig()->mode, len);
         index = index + len;
 
 
@@ -85,50 +85,50 @@ void config_init()
 
         index = 1;
         len = sizeof(get_congfig()->user);
-        ReadFlash(CONFIG_Addr + index, get_congfig()->user, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_congfig()->user, len);
 
         index = index + len;
         len = sizeof(get_congfig()->password);
-        ReadFlash(CONFIG_Addr + index, get_congfig()->password, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_congfig()->password, len);
 
         index = index + len;
         len = sizeof(get_congfig()->mqtt_ip);
-        ReadFlash(CONFIG_Addr + index, get_congfig()->mqtt_ip, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_congfig()->mqtt_ip, len);
 
         index = index + len;
         len = sizeof(get_congfig()->mqtt_port);
-        ReadFlash(CONFIG_Addr + index, get_congfig()->mqtt_port, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_congfig()->mqtt_port, len);
 
 
         index = index + len;
         len = sizeof(get_congfig()->version);
-        ReadFlash(CONFIG_Addr + index, get_congfig()->version, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_congfig()->version, len);
 
 
         index = index + len;
         len = sizeof(get_congfig()->http_ip);
-        ReadFlash(CONFIG_Addr + index, get_congfig()->http_ip, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_congfig()->http_ip, len);
 
         index = index + len;
         len = sizeof(get_congfig()->http_port);
-        ReadFlash(CONFIG_Addr + index, get_congfig()->http_port, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_congfig()->http_port, len);
 
 
         index = index + len;
         len = sizeof(get_congfig()->set_tout);
         ReadFlash(CONFIG_Addr + index, buf, len);
-        memcpy(get_congfig()->set_tout, buf, len);
+        memcpy(&get_congfig()->set_tout, buf, len);
 
         index = index + len;
         len = sizeof(get_congfig()->set_tindoor);
         ReadFlash(CONFIG_Addr + index, buf, len);
-        memcpy(get_congfig()->set_tindoor, buf, len);
+        memcpy(&get_congfig()->set_tindoor, buf, len);
 
         index = index + len;
         len = sizeof(get_congfig()->set_up_period);
         // ReadFlash(CONFIG_Addr + index, &get_congfig()->set_up_period, len);
         ReadFlash(CONFIG_Addr + index, buf, len);
-        memcpy(get_congfig()->set_up_period, buf, len);
+        memcpy(&get_congfig()->set_up_period, buf, len);
 
 
         index = index + len;
@@ -148,7 +148,6 @@ void config_init()
         sprintf(get_congfig()->http_port, "%s", "8080");
         get_congfig()->machine = 1;
         get_congfig()->update_firm = 0;
-        sprintf(get_congfig()->version, "%s", "usr");
         get_congfig()->set_tout = 45;
         get_congfig()->set_tindoor = 35;
         get_congfig()->reboot = 0;

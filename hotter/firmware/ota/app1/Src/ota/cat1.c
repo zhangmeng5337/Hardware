@@ -5,10 +5,10 @@
 #include "string.h"
 extern UART_HandleTypeDef huart1;
 static uint8_t CurrentRty;
-static teATCmdNum ATRecCmdNum;
-static teATCmdNum ATCurrentCmdNum;
-static teATCmdNum ATNextCmdNum;
-static teCAT1_TaskStatus CAT1_TaskStatus;
+static unsigned int ATRecCmdNum;
+static unsigned int ATCurrentCmdNum;
+static unsigned int ATNextCmdNum;
+static unsigned int CAT1_TaskStatus;
 
 static tsTimeType TimeCAT1;
 
@@ -168,7 +168,7 @@ void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
         }
         else if (ATCmdNum == AT_MPUB)//发布阅消息
         {
-            sprintf(send_buffer, "%s,%d,%d,%s\r\n", ATCmds[ATCmdNum].ATSendStr,
+            sprintf(send_buffer, "%s%s,%d,%d,%s\r\n", ATCmds[ATCmdNum].ATSendStr,
                     get_congfig()->mqtt_subtopic, 1,0,mqtt_send_p);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
@@ -377,7 +377,7 @@ void CAT1_Task(void)
 
                     else
                     {
-                        ATCurrentCmdNum += 1;
+                        ATCurrentCmdNum = ATCurrentCmdNum+1;
                         ATNextCmdNum = ATCurrentCmdNum + 1;
                         CAT1_TaskStatus = CAT1_SEND;
                         break;
