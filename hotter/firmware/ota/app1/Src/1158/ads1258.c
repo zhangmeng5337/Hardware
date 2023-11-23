@@ -344,7 +344,7 @@ void readData(unsigned char adc_No, readMode mode)
     uint8_t dataPosition;
     bool    status_byte_enabled;
     unsigned  char channel;
-   // unsigned char tmp, tmp1;
+    // unsigned char tmp, tmp1;
     /* Build TX array and send it */
     if (mode == DIRECT)
     {
@@ -387,10 +387,10 @@ void readData(unsigned char adc_No, readMode mode)
                     channel = data_ADC.ch_id - 0x08;
                 else
                     channel = data_ADC.ch_id - 0x09; //通道25没有
-								data_ADC.data_2byte[channel] = DataRx[dataPosition];
-								data_ADC.data_2byte[channel] = data_ADC.data_2byte[channel]<<8;
-								data_ADC.data_2byte[channel] = data_ADC.data_2byte[channel]|DataRx[dataPosition-1];								
-                memcpy(data_ADC.data_inADC + 2 * channel, &DataRx[dataPosition], byteLength - 1);
+                data_ADC.data_2byte[channel] = DataRx[dataPosition];
+                data_ADC.data_2byte[channel] = data_ADC.data_2byte[channel] << 8;
+                data_ADC.data_2byte[channel] = data_ADC.data_2byte[channel] | DataRx[dataPosition - 1];
+               // memcpy(data_ADC.data_inADC + 2 * channel, &DataRx[dataPosition], byteLength - 1);
 
             }
 
@@ -411,10 +411,10 @@ void readData(unsigned char adc_No, readMode mode)
                         channel = data_ADC.ch_id - 0x08;
                     else
                         channel = data_ADC.ch_id - 0x09;
-								data_ADC.data2_2byte[channel] = DataRx[dataPosition];
-								data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel]<<8;
-								data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel]|DataRx[dataPosition-1];											
-                    memcpy(data_ADC.data2_inADC + 2 * channel, &DataRx[dataPosition], byteLength - 1);
+                    data_ADC.data2_2byte[channel] = DataRx[dataPosition];
+                    data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel] << 8;
+                    data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel] | DataRx[dataPosition - 1];
+                   // memcpy(data_ADC.data2_inADC + 2 * channel, &DataRx[dataPosition], byteLength - 1);
                     if (channel == (CHANNEL_SIZE - 1))
                         data_ADC.update = 1;//数据采集完成
 

@@ -5,7 +5,7 @@
 #include "lte_hal.h"
 #include "lcd.h"
 #include "sys.h"
-//#include "ads1158.h"
+#include "config.h"
 #include "unit_tests.h"
 stru_di_stru di_status;
 
@@ -14,6 +14,7 @@ void hardware_init()
     ads1158_init();
 	ads1158_config(1);
 	ads1158_config(2);
+	config_init();
 
 
 
@@ -46,11 +47,12 @@ void module_test()
 void app_proc()
 {
    TickPro(); 
-   ai_proc();//2s采集一次,压力，温度采集
-   di_proc(0);//采集一次，数字信号量采集，包括热继信号
-   lcd_proc();
+   ai_proc();//pressure temperature sample interval 2s 
+   di_proc(0);//di detection
+   //lcd_proc();
    modbus_proc();
    lte_proc();
-   //do_ctrl_proc(0,1);//接触器控制
+   config_save();
+   //do_ctrl_proc(0,1);//do control
    
 }

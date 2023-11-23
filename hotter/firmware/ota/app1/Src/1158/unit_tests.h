@@ -49,7 +49,7 @@
 #define PR_RATIO		0.08
 
 #define MAX_TEMP        100
-#define MIN_TEMP        -50
+#define MIN_TEMP        -60
 
 #define MAX_PRESS      10
 #define MIN_PRESS      0
@@ -64,10 +64,11 @@
 #define AI_PUMP_F_INDEX   		0
 #define AI_PUMP_E_INDEX   		1
 
-#define PRESS_RATIO        0.62484
-#define PRESS_B            0.24943
+#define PRESS_RATIO        626.25
 
+#define PRESS_B            -250
 
+#define PT100_PR          75
 
 #define MAX_FAILUE 100 
 typedef struct 
@@ -93,7 +94,7 @@ typedef struct
 
 void ads1158_init(void);
 void ads1158_config(unsigned char adc_No);
-bool test_read_data(void);
+bool adc_read_data(void);
 void ai_proc(void);
 data_ai_stru *get_ai_data(void);
 

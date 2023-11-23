@@ -78,7 +78,8 @@ typedef enum
 {
     SUCCESS_REC = 0,
     TIME_OUT,
-    NO_REC
+    NO_REC,
+    ERROR_STATUS
 } teATStatus;
 
 /*设置AT指令集的结构体*/
@@ -94,11 +95,11 @@ typedef struct
 void CAT1_Init(void);
 void CAT1_Task(void);
 void Msg_Handler(void);
-void MQTTSendData(void);
 void Get_Version(void);
 void Update_Task(void);
 void Download_BIN(void);
-CONFIG_stru *get_params(void);
+void MQTTSendData(unsigned char *s);
+
 
 #endif
 

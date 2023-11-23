@@ -26,7 +26,7 @@ unsigned int PT100_Temp(unsigned int vadc)
 	//= (((unsigned long)((PT100_U3 + ((vadc) / (PT100_VADC_TIME)))) * PT100_R2 * 100) / (PT100_VDD - (PT100_U3 + ((vadc) / (PT100_VADC_TIME)))));
 
     //二分法查找温度值
-    unsigned int start = 0, mid = 0, endd = 1023;
+    unsigned int start = 0, mid = 0, endd = PT100_ROM_NUM-1;
     unsigned int dat = 0;
    pt100 = vadc;
     // 1. 检查数据合法性
@@ -66,17 +66,18 @@ unsigned int PT100_Temp(unsigned int vadc)
 
     if (dat == pt100) // 正好相等
     {
-        return mid * 10;
+        
+        return mid ;
     }
     else
     {
         if (dat > pt100)
         {
-            return (10*(mid - 1)  + 10*(pt100 - PT100_ROM[mid - 1]) / (PT100_ROM[mid] - PT100_ROM[mid - 1]));
+            return ((mid - 1)  + (pt100 - PT100_ROM[mid - 1]) / (PT100_ROM[mid] - PT100_ROM[mid - 1]));
         }
         else
         {
-            return (10 * mid + 10*(pt100 - PT100_ROM[mid]) / (PT100_ROM[mid + 1]-PT100_ROM[mid]));
+            return (mid + (pt100 - PT100_ROM[mid]) / (PT100_ROM[mid + 1]-PT100_ROM[mid]));
         }
     }
 

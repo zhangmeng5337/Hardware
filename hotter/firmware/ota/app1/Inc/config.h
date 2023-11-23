@@ -3,12 +3,12 @@
 #include "main.h"
 void delay_us(uint32_t nCount);
 #include "main.h"
-/*index = 0  "升级": 1,
-index = 1 "重启": 1,
-index = 2 "机组开关机": 0,
-index = 3 "设置出水温度": "value",
-index = 4 "设置室内温度": "value",
-index = 5 "数据上传周期": "value"*/
+/*index = 0  "鍗囩骇": 1,
+index = 1 "閲嶅惎": 1,
+index = 2 "鏈虹粍寮€鍏虫満": 0,
+index = 3 "璁剧疆鍑烘按娓╁害": "value",
+index = 4 "璁剧疆瀹ゅ唴娓╁害": "value",
+index = 5 "鏁版嵁涓婁紶鍛ㄦ湡": "value"*/
 
 #define UPDATE_INDEX		0
 #define REBOOT_INDEX		1
@@ -34,8 +34,8 @@ typedef struct
     char http_port[64];//
 
 	
-    unsigned char temp[24];//�¶ȶ�
-    unsigned char mode;// 0---���أ�1----Զ��
+    unsigned char temp[24];//temperature
+    unsigned char mode;// 0---native；1----remote
     unsigned char ai_config[32];
     unsigned char ao_config[1];
     unsigned char di_config[8];
@@ -44,15 +44,18 @@ typedef struct
     //setting params
 	unsigned char reboot;
 	unsigned char machine;	
-	unsigned char update_firm;	
-	float set_tout;
-	float set_tindoor;
-	float set_up_period;	
+	unsigned char update_firm;	//firmware update
+	float set_tout;  //
+	float set_tindoor; //
+	float set_up_period;//	
 	//char password[128];
-	unsigned char update_setting;
+	unsigned char update_setting; //setting update 
 
 } CONFIG_stru;
 
+CONFIG_stru *get_congfig(void);
+void config_save(void);
+void config_init(void);
 
 
 

@@ -527,6 +527,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\mqtt_analy.c</FilePath>
             </File>
+            <File>
+              <FileName>config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\config.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

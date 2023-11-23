@@ -91,7 +91,7 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     FlashSet.Banks   = FLASH_BANK_1;	//STM32L431RCT6只有Bank1
     FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;//按页擦除
     FlashSet.Sector  = GetSectors(secaddr);//获取扇区位置
-    FlashSet.NbSectors = 2;  //擦除的扇区数
+    FlashSet.NbSectors = num;  //擦除的扇区数
     printf("识别的初始扇区数:%d  共删除%d扇区\r\n",FlashSet.Sector,2);
     /*设置PageError，调用擦除函数*/
     status = HAL_FLASHEx_Erase(&FlashSet, &PageError);
