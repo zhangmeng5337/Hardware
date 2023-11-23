@@ -160,8 +160,9 @@ void config_init()
     }
 
 
-    sprintf(get_congfig()->mqtt_msubtopic, "%s", "mqtt/mub");
-    sprintf(get_congfig()->mqtt_subtopic, "%s", "mqtt/sub");
+
+    sprintf(get_congfig()->mqtt_msubtopic, "%s/%s", "mqtt_mub",get_congfig()->user_id);
+    sprintf(get_congfig()->mqtt_subtopic, "%s/%s", "mqtt_sub",get_congfig()->user_id);
 
 
 
