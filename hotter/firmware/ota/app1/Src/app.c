@@ -8,7 +8,8 @@
 #include "config.h"
 #include "ai_proc.h"
 #include "uart.h"
-
+#include "equipment_ctrl.h"
+#include "water_ctrl.h"
 stru_di_stru di_status;
 
 void hardware_init()
