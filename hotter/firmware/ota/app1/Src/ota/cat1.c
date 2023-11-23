@@ -5,10 +5,10 @@
 #include "string.h"
 extern UART_HandleTypeDef huart1;
 static uint8_t CurrentRty;
-static unsigned int ATRecCmdNum;
-static unsigned int ATCurrentCmdNum;
-static unsigned int ATNextCmdNum;
-static unsigned int CAT1_TaskStatus;
+static teATCmdNum ATRecCmdNum;
+static teATCmdNum ATCurrentCmdNum;
+static teATCmdNum ATNextCmdNum;
+static teCAT1_TaskStatus CAT1_TaskStatus;
 
 static tsTimeType TimeCAT1;
 
@@ -72,6 +72,7 @@ tsATCmds ATCmds[] =
     //{"AT+CRESET\r\n","PB DONE",5000,NO_REC,3},
     {"AT\r\n", "OK", 1000, NO_REC, 3},															//AT指令测试
     {"ATE0\r\n", "OK", 1000, NO_REC, 3},														//关闭回显
+    //{"AT+CPIN?\r\n", "OK", 1000, NO_REC, 3},
     {"AT+CGSN\r\n", "OK", 1000, NO_REC, 3},													//查询Imei
     {"AT+CCID\r\n", "OK", 1000, NO_REC, 3},													//查询ICCID
     {"AT+CEREG?\r\n", "OK", 1000, NO_REC, 100},											//查询当前GPRS注册状态
@@ -219,6 +220,7 @@ void Start_4G(void)
 void CAT1_Init(void)
 {
     Start_4G();
+	  HAL_Delay(5000);
     CAT1_TaskStatus = CAT1_SEND;
     ATCurrentCmdNum = AT;
     ATNextCmdNum = ATE0;
@@ -239,7 +241,7 @@ void CAT1_Task(void)
                 {
                     CurrentRty = ATCmds[ATCurrentCmdNum].RtyNum;
                 }
-                ATSend(ATCurrentCmdNum, 1);
+                ATSend(ATCurrentCmdNum, 0);
                 CAT1_TaskStatus = CAT1_WAIT;
 
                 return;
