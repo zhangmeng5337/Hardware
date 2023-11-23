@@ -32,6 +32,7 @@ typedef struct
 
 rs485_stru *get_uart_recv(unsigned char uart_num);
 void uart_transmit(unsigned char uart_num,uint8_t * pData ,uint16_t Size);
+void uart_init(void);
 
 void uart_lte(void);
 void uart_rs485(void);

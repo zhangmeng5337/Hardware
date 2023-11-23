@@ -125,7 +125,7 @@ void EnableUartIT(void)
 void uart_lte()
 
 {
-		printf("DMA_len:%d\r\n",Lpuart1type.Lpuart1DMARecLen);
+		//printf("DMA_len:%d\r\n",Lpuart1type.Lpuart1DMARecLen);
         if(Lpuart1type.Lpuart1RecLen > 0)
         {
 					

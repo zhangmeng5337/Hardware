@@ -7,6 +7,8 @@
 #include "sys.h"
 #include "config.h"
 #include "ai_proc.h"
+#include "uart.h"
+
 stru_di_stru di_status;
 
 void hardware_init()
@@ -15,6 +17,7 @@ void hardware_init()
 	ads1158_config(1);
 	ads1158_config(2);
 	config_init();
+	uart_init();
 
 
 
