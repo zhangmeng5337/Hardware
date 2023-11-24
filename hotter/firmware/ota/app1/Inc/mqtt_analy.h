@@ -36,6 +36,7 @@ typedef struct
 
 void anlysis_mqtt_recv(void);
 void upload(void);
+void mqtt_recv_proc(void);
 
 #endif
 
