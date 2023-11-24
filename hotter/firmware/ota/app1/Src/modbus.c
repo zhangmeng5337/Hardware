@@ -15,7 +15,7 @@ void modbus_init()
 }
 modbus_stru *get_machine()
 {
-	return &modbus_recv;
+    return &modbus_recv;
 }
 
 /************************************************
@@ -126,10 +126,10 @@ void modbus_trans()
 
         modbus_tx.update = 0;//发三次无响应，发送停止
         unsigned int tmp;
-		tmp = 0;
-		if(modbus_tx.address>0)
-			tmp = 1<<(modbus_tx.address-1);
-        modbus_recv.fault =modbus_recv.fault|tmp; 
+        tmp = 0;
+        if (modbus_tx.address > 0)
+            tmp = 1 << (modbus_tx.address - 1);
+        modbus_recv.fault = modbus_recv.fault | tmp;
 
     }
 
@@ -180,15 +180,51 @@ void modbus_proc()
 
         if (modbus_tx.retry_count == 3 || modbus_tx.retry_count == 0)
         {
-            modbus_tx.address ++;
-            modbus_tx.retry_count = 3;
-            if (modbus_tx.address > MODBUS_RTU_COUNT)
+            if (get_congfig()->machine & 0xff00 == 0)
             {
-                modbus_tx.address = 0;
-                if (modbus_tx.retry_count == 0)
-                    modbus_tx.update = 0;
+                modbus_tx.address ++;
+                modbus_tx.retry_count = 3;
+                if (modbus_tx.address > MODBUS_RTU_COUNT)
+                {
+                    modbus_tx.address = 0;
+                    if (modbus_tx.retry_count == 0)
+                        modbus_tx.update = 0;
+
+                }
 
             }
+            else
+            {
+                if (get_congfig()->machine & 0x8000)
+                {
+                    modbus_tx.address = 1;
+                    get_congfig()->machine = 0x7ffff;
+
+                }
+                else if (get_congfig()->machine & 0x4000)
+                {
+                    modbus_tx.address = 2;
+                    get_congfig()->machine = 0x3ffff;
+
+                }
+                else if (get_congfig()->machine & 0x2000)
+                {
+                    modbus_tx.address = 3;
+                    get_congfig()->machine = 0x1ffff;
+
+                }
+                else
+                {
+                    modbus_tx.address = 0;
+                    if (modbus_tx.retry_count == 0)
+                        modbus_tx.update = 0;
+
+                }
+
+
+
+            }
+
         }
         //*********************************************
         registerTick(MODBUS_TX_TICK_NO, 500);
