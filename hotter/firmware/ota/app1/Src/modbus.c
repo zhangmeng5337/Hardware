@@ -180,7 +180,7 @@ void modbus_proc()
 
         if (modbus_tx.retry_count == 3 || modbus_tx.retry_count == 0)
         {
-            if (get_congfig()->machine & 0xff00 == 0)
+            if (get_congfig()->machine & 0xff00 == 0)//all machine to be writen
             {
                 modbus_tx.address ++;
                 modbus_tx.retry_count = 3;
@@ -218,13 +218,8 @@ void modbus_proc()
                     modbus_tx.address = 0;
                     if (modbus_tx.retry_count == 0)
                         modbus_tx.update = 0;
-
                 }
-
-
-
             }
-
         }
         //*********************************************
         registerTick(MODBUS_TX_TICK_NO, 500);
