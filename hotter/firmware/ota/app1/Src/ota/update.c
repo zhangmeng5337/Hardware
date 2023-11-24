@@ -1,14 +1,14 @@
 #include "update.h"
 #include "stmflash.h"
 
-/* 鍗囩骇瀹屾垚,骞跺啓鍏ヤ竴涓爣蹇椾綅 */
+/* 升级完成,并写入一个标志位 */
 void Update_Success(void)
 {
     uint8_t update_flag = 0xAA;
     WriteFlash((Application_2_Addr + Application_Size - 8), &update_flag, 1);
 }
 
-/* 鍗囩骇浠诲姟 */
+/* 升级任务 */
 void OTA_Task(void)
 {
     if (reboot_flag == 1)

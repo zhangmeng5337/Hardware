@@ -30,47 +30,47 @@ typedef enum
     //AT_RST,
     AT,
     ATE0,
+    AT_CPIN,
     AT_CGSN,
     AT_CCID,
-    AT_CEREG,
     AT_CGATT,
-    AT_CSQ_1,
-    //mqtt 
+    
+    //mqtt
     AT_MCONFIG,
     AT_MIPSTART,
     AT_MCONNECT,
     AT_MSUB,
-    //AT_MPUB,
-		/*HTTP版本号*/
-		AT_SAPBR_1,
-		AT_SAPBR_2,
-		AT_SAPBR_3,
-		AT_HTTPINIT_1,
-		AT_HTTPPARA_1,	
-		AT_HTTPPARA_2,
-		AT_HTTPACTION_1,
-		AT_HTTPREAD_1,
-		/*HTTP get相关指令*/
-		AT_HTTPINIT_2,
-		AT_HTTPPARA_3,
-		AT_HTTPPARA_4,
-		AT_HTTPACTION_2,
-		AT_HTTPREAD_2,
-		AT_HTTPTERM_1,	
-		/*HTTP post相关指令*/
-		AT_HTTPINIT_3,
-		AT_HTTPPARA_5,
-		AT_HTTPPARA_6,
-		AT_HTTPDATA_1,
-		AT_HTTPDATA_2,	//发数据	
-		AT_HTTPACTION_6,
-		AT_HTTPREAD_7,
-		//AT_HTTPTERM_2,		
-		AT_HTTPREAD_POST,
 
-	//mqtt订阅消息接收
-	 AT_MPUB_RECV,
-	 AT_MPUB
+    /*HTTP版本号*/
+    AT_SAPBR_1,
+    AT_SAPBR_2,
+    AT_SAPBR_3,
+    AT_HTTPINIT_1,
+    AT_HTTPPARA_1,
+    AT_HTTPPARA_2,
+    AT_HTTPACTION_1,
+    AT_HTTPREAD_1,
+    
+    /*HTTP get相关指令*/
+    AT_HTTPINIT_2,
+    AT_HTTPPARA_3,
+    AT_HTTPPARA_4,
+    AT_HTTPACTION_2,
+    AT_HTTPREAD_2,
+    AT_HTTPTERM_1,
+    
+    /*HTTP post相关指令*/
+    AT_HTTPINIT_3,
+    AT_HTTPPARA_5,
+    AT_HTTPPARA_6,
+    AT_HTTPDATA_1,
+    AT_HTTPDATA_2,	//发数据
+    AT_HTTPACTION_6,
+    AT_HTTPREAD_POST,
+
+    //mqtt订阅消息接收
+    AT_MPUB_RECV,
+    AT_MPUB
 } teATCmdNum;
 
 /*设置模组状态的枚举变量*/

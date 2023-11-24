@@ -47,7 +47,8 @@ typedef struct
 	unsigned char update_firm;	//firmware update
 	float set_tout;  //
 	float set_tindoor; //
-	float set_up_period;//	
+	float set_up_period;//
+	uint32_t fault_mask;	
 	uint32_t fault_status;
 	//char password[128];
 	unsigned char update_setting; //setting update 

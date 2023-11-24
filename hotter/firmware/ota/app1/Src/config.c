@@ -64,6 +64,9 @@ void config_save()
         index = index + len;
 
 
+        len = sizeof(get_congfig()->fault_mask);
+        memcpy(buf+index, &get_congfig()->fault_mask, len);
+        index = index + len;
 
 
         Erase_page(CONFIG_Addr, 1); //²Á³ý2ÉÈÇø
@@ -135,6 +138,10 @@ void config_init()
         len = sizeof(get_congfig()->mode);
         ReadFlash(CONFIG_Addr + index, &get_congfig()->mode, len);
 
+	index = index + len;
+	len = sizeof(get_congfig()->fault_mask);
+	ReadFlash(CONFIG_Addr + index, buf, len);
+ memcpy(&get_congfig()->fault_mask , buf, len);
 
     }
     else
@@ -153,6 +160,7 @@ void config_init()
         get_congfig()->reboot = 0;
         get_congfig()->set_up_period = 60;
         get_congfig()->mode = 1;
+		get_congfig()->fault_mask = 0xffffffff;
         get_congfig()->update_setting = 1;
         config_save();
 

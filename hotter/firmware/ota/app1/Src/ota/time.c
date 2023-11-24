@@ -8,7 +8,12 @@ void SetTime(tsTimeType *TimeType,uint32_t TimeInter)
 }
 
 /*比较时间*/
-uint8_t CompareTime(tsTimeType *TimeType)
+uint32_t CompareTime(tsTimeType *TimeType)
 {
-    return ((HAL_GetTick()-TimeType->TimeStart) >= TimeType->TimeInter);
+   uint32_t t1;
+   t1 = HAL_GetTick()-TimeType->TimeStart;
+   if(t1 >= TimeType->TimeInter)
+    return 1;
+   else 
+   	return 0;
 }

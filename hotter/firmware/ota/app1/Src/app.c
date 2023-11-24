@@ -62,7 +62,7 @@ void app_proc()
    //lcd_proc();
    modbus_proc();
    lte_proc();
-   config_save();
+   
    control_proc();
    //do_ctrl_proc(0,1);//do control
    

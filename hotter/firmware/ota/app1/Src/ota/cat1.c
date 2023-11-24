@@ -69,59 +69,46 @@ int Erase_flag = 1;
 tsATCmds ATCmds[] =
 {
     /* 下面是关于连接MQTT的指令集*/
-    //{"AT+CRESET\r\n","PB DONE",5000,NO_REC,3},
     {"AT\r\n", "OK", 1000, NO_REC, 3},															//AT指令测试
     {"ATE0\r\n", "OK", 1000, NO_REC, 3},														//关闭回显
-    //{"AT+CPIN?\r\n", "OK", 1000, NO_REC, 3},
-    {"AT+CGSN\r\n", "OK", 1000, NO_REC, 3},													//查询Imei
-    {"AT+CCID\r\n", "OK", 1000, NO_REC, 3},													//查询ICCID
-    {"AT+CEREG?\r\n", "OK", 1000, NO_REC, 100},											//查询当前GPRS注册状态
-    {"AT+CGATT?\r\n", "OK", 1000, NO_REC, 3},												//查询当前GPRS附着状态
-    {"AT+CSQ\r\n", "OK", 1000, NO_REC, 3},													//查询信号值
-    //mqtt 发布订阅主题
+    {"AT+CPIN?\r\n", "READY", 1000, NO_REC, 3},
+    {"AT+CGSN\r\n", "OK", 2000, NO_REC, 3},													//查询Imei
+    {"AT+CCID\r\n", "OK", 1000, NO_REC, 3},													//查询ICCID											//查询当前GPRS注册状态
+    {"AT+CGATT?\r\n", "+CGATT: 1", 2000, NO_REC, 3},//查询当前GPRS附着状态	
+    
+    //mqtt 订阅订阅主题
     {"AT+MCONFIG=", "OK", 1000, NO_REC, 3},
-    // {get_congfig()->user_id, "OK", 1000, NO_REC, 3},
-
-    {"AT+MIPSTART=", "CONNECT OK", 1000, NO_REC, 3},
-    //{get_congfig()->mqtt_ip, "CONNECT OK", 1000, NO_REC, 3},
-
-    {"AT+MCONNECT=1,60\r\n"},//客户端向服务器请求会话连接
-
-    {"AT+MSUB=", "SUBACK", 1000, NO_REC, 3},//订阅消息
-    // {get_congfig()->mqtt_msubtopic, "SUBACK", 1000, NO_REC, 3}, //订阅消息
-
-    //{"AT+MPUB=","PUBREC", 1000, NO_REC, 3},//发布消息*/
-    // {get_congfig()->mqtt_subtopic, "PUBREC"}, //发布消息*/
-
+    {"AT+MIPSTART=", "CONNECT OK", 2000, NO_REC, 3},
+    {"AT+MCONNECT=1,300\r\n", "OK", 1000, NO_REC, 3},//客户端向服务器请求会话连接
+    {"AT+MSUB=", "SUBACK", 2000, NO_REC, 3},//订阅消息
 
 
     /* 下面是关于查询版本号的AT指令集*/
-    {"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", 1000, NO_REC, 3},
-    {"AT+SAPBR=3,1,\"APN\",\"\"", "OK", 1000, NO_REC, 3},
-    {"AT+SAPBR=1,1", "OK", 1000, NO_REC, 3},
-    {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},
-    {"AT+HTTPPARA=\"CID\",1", "OK", 1000, NO_REC, 3},
-    {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/getVersion?device_id=123456\"\r\n", "OK", 1000, NO_REC, 3},   //设置HTTP参数
-    {"AT+HTTPACTION=0\r\n", "OK", 1000, NO_REC, 3},				//操作HTTP方法
-    {"AT+HTTPREAD,100\r\n", "+HTTPREAD:", 1000, NO_REC, 3},			//读取HTTP服务回复
+    {"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", 2000, NO_REC, 3},
+    {"AT+SAPBR=3,1,\"APN\",\"\"", "OK", 2000, NO_REC, 3},
+    {"AT+SAPBR=1,1", "OK", 2000, NO_REC, 3},
+    {"AT+HTTPINIT\r\n", "OK", 2000, NO_REC, 3},
+    {"AT+HTTPPARA=\"CID\",1", "OK", 2000, NO_REC, 3},
+    {"AT+HTTPPARA=\"URL\",", "OK", 2000, NO_REC, 3},   //设置HTTP参数
+    {"AT+HTTPACTION=0\r\n", "OK", 2000, NO_REC, 3},				//操作HTTP方法
+    {"AT+HTTPREAD\r\n", "+HTTPREAD:", 2000, NO_REC, 3},			//读取HTTP服务回复
 
     /* 下面是关于下载BIN文件的AT指令集*/
-    {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},
-    {"AT+HTTPPARA=\"CID\",1", "OK", 1000, NO_REC, 3},
-    {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/getVersion?device_id=123456\"\r\n", "OK", 1000, NO_REC, 3},   //设置HTTP参数
-    {"AT+HTTPACTION=0\r\n", "+OK", 1000, NO_REC, 3},				//操作HTTP方法
-    {"AT+HTTPREAD,100\r\n", "+HTTPREAD: ", 1000, NO_REC, 3},			//读取HTTP服务回复
-    {"AT+HTTPTERM\r\n", "OK", 1000, NO_REC, 3},
+    {"AT+HTTPINIT\r\n", "OK", 2000, NO_REC, 3},
+    {"AT+HTTPPARA=\"CID\",1", "OK", 2000, NO_REC, 3},
+    {"AT+HTTPPARA=\"URL\",", "OK", 2000, NO_REC, 3},   //设置HTTP参数
+    {"AT+HTTPACTION=0\r\n", "+OK", 2000, NO_REC, 3},				//操作HTTP方法
+    {"AT+HTTPREAD\r\n", "+HTTPREAD: ", 2000, NO_REC, 3},			//读取HTTP服务回复
+    {"AT+HTTPTERM\r\n", "OK", 2000, NO_REC, 3},
 
     /* 下面是关于post的AT指令集*/
-    {"AT+HTTPINIT\r\n", "OK", 1000, NO_REC, 3},
-    {"AT+HTTPPARA=\"CID\",1", "OK", 1000, NO_REC, 3},
-    {"AT+HTTPPARA=\"URL\",\"http://47.98.248.24:8888/getVersion?device_id=123456\"\r\n", "OK", 1000, NO_REC, 3},   //设置HTTP参数
-    {"AT+HTTPDATA=16,10000", "OK", 1000, NO_REC, 3},
-    {"data crc error", "OK", 1000, SUCCESS_REC, 3},
-    {"AT+HTTPACTION=1\r\n", "OK", 1000, NO_REC, 3},				//操作HTTP方法
-    {"AT+HTTPREAD,100\r\n", "+HTTPREAD:", 1000, NO_REC, 3},			//读取HTTP服务回复
-    {"AT+HTTPTERM\r\n", "OK", 1000, NO_REC, 3},
+    {"AT+HTTPINIT\r\n", "OK", 2000, NO_REC, 3},
+    {"AT+HTTPPARA=\"CID\",1", "OK", 2000, NO_REC, 3},
+    {"AT+HTTPPARA=\"URL\",", "OK", 2000, NO_REC, 3},   //设置HTTP参数
+    {"AT+HTTPDATA=16,10000", "DOWNLOAD", 2000, NO_REC, 3},
+    {"data crc error\r\n", "OK", 2000, SUCCESS_REC, 3},
+    {"AT+HTTPACTION=1\r\n", "OK", 2000, NO_REC, 3},				//操作HTTP方法
+    {"AT+HTTPTERM\r\n", "OK", 2000, NO_REC, 3},
 
     /*mqtt返回信息解析*/
     {"", "+MSUB:", 1000, NO_REC, 3},
@@ -163,17 +150,25 @@ void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
         else if (ATCmdNum == AT_MSUB)//订阅消息
         {
             sprintf(send_buffer, "%s%s,%d\r\n", ATCmds[ATCmdNum].ATSendStr,
-                    get_congfig()->mqtt_msubtopic, 0);
+                    get_congfig()->mqtt_msubtopic, 1);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
         }
-        else if (ATCmdNum == AT_MPUB)//发布阅消息
+        else if (ATCmdNum == AT_MPUB)//发布阅消息 
         {
             sprintf(send_buffer, "%s%s,%d,%d,%s\r\n", ATCmds[ATCmdNum].ATSendStr,
                     get_congfig()->mqtt_subtopic, 1,0,mqtt_send_p);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
-        }		
+        }	
+        else if (ATCmdNum == AT_HTTPPARA_2||ATCmdNum == AT_HTTPPARA_4||
+			     ATCmdNum == AT_HTTPPARA_6)//发布阅消息 AT_HTTPPARA_2
+        {
+            sprintf(send_buffer, "%s%s\r\n", ATCmds[ATCmdNum].ATSendStr,
+                    get_congfig()->http_ip);
+            HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
+            memset(send_buffer, 0x00, strlen(send_buffer));
+        }			
         else
         {
             HAL_UART_Transmit(&huart1, (uint8_t *)ATCmds[ATCmdNum].ATSendStr, strlen(ATCmds[ATCmdNum].ATSendStr), 0xff);
@@ -235,7 +230,7 @@ void CAT1_Task(void)
         switch (CAT1_TaskStatus)
         {
             case CAT1_IDIE: //空闲态
-                return;
+                break;
             case CAT1_SEND://发送命令
                 if (ATCurrentCmdNum != ATNextCmdNum)
                 {
@@ -244,7 +239,7 @@ void CAT1_Task(void)
                 ATSend(ATCurrentCmdNum, 0);
                 CAT1_TaskStatus = CAT1_WAIT;
 
-                return;
+                break;
             case CAT1_WAIT:	//等待态，等待CAT1返回的信息
                 ATRec();	//调用接收函数
                 if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
@@ -255,7 +250,6 @@ void CAT1_Task(void)
                         ATCurrentCmdNum += 1;
                         ATNextCmdNum = ATCurrentCmdNum + 1;
                         CAT1_TaskStatus = CAT1_SEND;
-                        memset(CSQ_buffer, 0x00, sizeof(CSQ_buffer));
                         Find_string((char *)Lpuart1type.Lpuart1RecBuff, "\r\n", "\r\n", Imei_buffer);
                         //printf("Imei_buffer=%s\r\n", Imei_buffer);
                         break;
@@ -307,7 +301,7 @@ void CAT1_Task(void)
                         if (crc_cal != crc_re)
                         {
                             ATCurrentCmdNum = AT_HTTPINIT_3;
-                            ATNextCmdNum = AT_HTTPPARA_5;
+                            ATNextCmdNum = ATCurrentCmdNum + 1;
                             CAT1_TaskStatus = CAT1_SEND;
                             return ;
                         }
@@ -352,13 +346,14 @@ void CAT1_Task(void)
                             ATCurrentCmdNum += 1;
                             ATNextCmdNum = ATCurrentCmdNum + 1;
                             CAT1_TaskStatus = CAT1_SEND;
+							get_congfig()->update_setting = 1;
                             sprintf(get_congfig()->version, "%s,", Version_buffer);//user id
                         }
                         break;
                     }
                     else if (ATCurrentCmdNum == AT_HTTPREAD_POST) //上一包数据错误，重发
                     {
-                        ATCurrentCmdNum = AT_HTTPREAD_2;
+                        ATCurrentCmdNum = AT_HTTPINIT_2;
                         ATNextCmdNum = ATCurrentCmdNum + 1;
                         CAT1_TaskStatus = CAT1_SEND;
                     }
@@ -428,13 +423,14 @@ void CAT1_Task(void)
 }
 
 /* MQTT发送报文 */
-unsigned char *mqtt_send_p;
+
 void MQTTSendData(unsigned char *s)
 {
     CAT1_TaskStatus = CAT1_SEND;
     ATCurrentCmdNum = AT_MPUB;
     ATNextCmdNum = AT_SAPBR_1;
-	ATSend(ATCurrentCmdNum,0);
+	mqtt_send_p = s;
+	//ATSend(ATCurrentCmdNum,0);
 }
 
 /* 查询版本号任务 */

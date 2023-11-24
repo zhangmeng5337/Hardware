@@ -2,7 +2,7 @@
 #define MQTT_ANALY_H_
 #include "main.h"
 
-
+//data
 #define UPDATE_INDEX		0
 #define REBOOT_INDEX		1
 #define MACHINE_INDEX		2
@@ -15,15 +15,19 @@
 #define PUMP_E_INDEX        9
 #define WATER_O_INDEX       10
 #define WATER_IN_INDEX       11
+#define WATER_IN_INDEX       11
 
+//status
+#define DEV_STATUS_INDEX        0
+#define DEV_MASK_INDEX          1
+#define DEV_FAULT_INDEX         2
 
-#define HEAT_INDEX          0
 
 typedef struct 
 {
 	float data[64];
-	uint32_t status;
-	uint32_t fault;
+	uint32_t status[64];
+	//uint32_t fault;
 	char devid[64];
 	char version[64];
 	
