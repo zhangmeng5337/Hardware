@@ -115,7 +115,7 @@ void anlysis_mqtt_recv()
 
 
         }
-
+        valid_flag = 0;
 
     }
 
@@ -154,6 +154,24 @@ void anlysis_mqtt_recv()
         }
     }
 }*/
+
+/*{
+    "设备ID": 47,
+    "运行数据": {
+        "出水温度": 25,
+        "回水温度": 36,
+        "泵前压力": 42,
+        "泵后压力": 4,
+        "运行状态": 4
+    },
+    "设备参数": {
+        "版本号": 255,
+        "设置出水温度": 5,
+        "设置室内温度": 8,
+        "数据上传周期": 1
+    }
+}*/
+
 /*else if (ATCmdNum == AT_MPUB)//发布消息
 {
 	sprintf(send_buffer, "%s%s,%d\r\n",ATCmds[ATCmdNum].ATSendStr,
@@ -243,5 +261,11 @@ void upload()
 
 
 }
-
+void mqtt_recv_proc()
+{
+		
+		if(get_congfig()->update_firm == '1'||get_congfig()->reboot=='1' )
+			HAL_NVIC_SystemReset();
+		
+}
 
