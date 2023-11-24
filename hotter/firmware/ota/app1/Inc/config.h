@@ -43,7 +43,8 @@ typedef struct
 
     //setting params
 	unsigned char reboot;
-	unsigned char machine;	
+	unsigned int machine;	  //pwrctrl:bit0---m1;bit1---m2;bit2---m3;
+	                          //select:bit15 ---m1;bit14---m2;bit13---m3,only for pwr ctrl
 	unsigned char update_firm;	//firmware update
 	float set_tout;  //
 	float set_tindoor; //

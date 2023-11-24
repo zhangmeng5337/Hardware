@@ -3,6 +3,7 @@
 #include "cat1.h"
 #include "ai_proc.h"
 #include "di.h"
+#include "modbus.h"
 
 mqtt_payload_stru mqtt_payload_u;
 
@@ -77,7 +78,7 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             get_congfig()->update_setting = 1;
-            sprintf(&get_congfig()->machine, "%s", dev_id); //字符串
+            //sprintf(&get_congfig()->machine, "%s", dev_id); //字符串
             tmp_f = atoi(dev_id);
             get_congfig()->machine = tmp_f;
 
@@ -97,7 +98,7 @@ void anlysis_mqtt_recv()
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "设置室内温度: ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 1;
+            get_congfig()->update_setting = 2;
             tmp_f = atof(dev_id);
             get_congfig()->set_tindoor = tmp_f;
 
@@ -108,7 +109,7 @@ void anlysis_mqtt_recv()
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "数据上传周期: ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 1;
+            get_congfig()->update_setting = 2;
             tmp_f = atof(dev_id);
             get_congfig()->set_up_period = tmp_f;
 
@@ -175,12 +176,17 @@ void upload()
     mqtt_payload_u.data[TIN_INDEX] =  get_ai_data()->temp[AI_WATER_T_IN_INDEX]; //water IN
     mqtt_payload_u.data[PUMP_F_INDEX] = get_ai_data()->temp[AI_PUMP_F_INDEX]; //pump front
     mqtt_payload_u.data[PUMP_E_INDEX] = get_ai_data()->temp[AI_PUMP_E_INDEX]; //pump end
-
+    
+    uint32_t tmp;
+	tmp = get_ai_data()->channel_status&0x000000ff;
     mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //8 bit di
-    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] << 20; //dev status
-    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] |
-        get_ai_data()->channel_status;//20bit ai
+    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] << 8; //dev status
+    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] |tmp;//20bit ai but 8bit used
+    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] <<8;    
+	mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] |
+		                                      get_machine()->fault;
     mqtt_payload_u.status[DEV_MASK_INDEX] = get_congfig()->fault_mask;
+	
     get_congfig()->fault_status = mqtt_payload_u.status[DEV_STATUS_INDEX] ;//fault status
     sprintf(mqtt_payload_u.version, "%s", get_congfig()->version);//devid
     mqtt_payload_u.data[WATER_O_INDEX] = get_congfig()->set_tout; //set tmp

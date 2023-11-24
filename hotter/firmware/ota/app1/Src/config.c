@@ -8,7 +8,7 @@ void config_save()
 {
     //uint32_t addr_count = 0;
     uint32_t buf[1024], len, index;
-    if (config_usr.update_setting == 1)
+    if (config_usr.update_setting )
     {
 
         index = 1;

@@ -1,6 +1,16 @@
 #ifndef MODBUS_H_
 #define MODBUS_H_
+
+#define MODBUS_RTU_COUNT            3
+
+#define MODBUS_READ_CMD				0x03
+#define MODBUS_WRITE_ONE_CMD        0x06
+#define MODBUS_WRITE_MUL_CMD        0x10
+
+
+
 #define DEV_ADDR  0xfe
+
 
 typedef struct 
 {
@@ -8,22 +18,16 @@ typedef struct
 	unsigned char func;
 	unsigned int  reg;
 	unsigned int  regCount;
-	unsigned char payload[128];
-	unsigned int crc;
-}modbus_stru;
-typedef struct 
-{
-	unsigned char address;
-	unsigned char func;
-	unsigned int  reg;
-	unsigned int  regCount;
-	unsigned char payload[64];
-	unsigned int crc;
+	unsigned char payload[256];
+	unsigned int  crc;
 	unsigned char update;
-}modbus_tx_stru;
+	unsigned char retry_count;
+	unsigned int  fault;
+}modbus_stru;
 void modbus_trans(void);
-modbus_tx_stru*modbus_pack(void);
 void modbus_proc(void);
+void modbus_pack(unsigned char mode, unsigned char *pb);
+modbus_stru *get_machine(void);
 
 #endif
 

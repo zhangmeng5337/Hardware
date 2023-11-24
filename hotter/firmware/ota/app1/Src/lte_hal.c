@@ -277,7 +277,7 @@ void lte_proc()
 		upload();
 			
     }
-
+   config_save();
 	
 
 }
