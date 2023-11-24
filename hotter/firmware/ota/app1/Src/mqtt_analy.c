@@ -165,9 +165,7 @@ void anlysis_mqtt_recv()
 void upload()
 {
     char mqtt_buf[512];
-#define DEV_STATUS_INDEX        0
-#define DEV_MASK_INDEX          1
-#define DEV_FAULT_INDEX         2
+
 
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
