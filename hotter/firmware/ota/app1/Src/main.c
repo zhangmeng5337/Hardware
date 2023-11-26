@@ -123,8 +123,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		HAL_Delay(1000);
-		HAL_GPIO_TogglePin(status_GPIO_Port,status_Pin );
+		//HAL_Delay(1000);
+		//HAL_GPIO_TogglePin(status_GPIO_Port,status_Pin );
 		app_proc();
   }
   /* USER CODE END 3 */

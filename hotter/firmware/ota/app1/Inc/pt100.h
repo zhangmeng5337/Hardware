@@ -55,8 +55,8 @@ typedef struct
 #define PT100_U3                (PT100_VDD / (PT100_R1 + PT100_R3) * PT100_R3)
 #define PT100_U4(VADC)            (PT100_U3 + ((VADC) / (PT100_VADC_TIME)))
 
-#define PT100_MIN_TEMP      7633
-#define PT100_MAX_TEMP      13851   //配置PT100的测温范围为0~100度
+#define PT100_MIN_TEMP      76.33
+#define PT100_MAX_TEMP      138.51   //配置PT100的测温范围为0~100度
 #define PT100_ROM_NUM       321     //PT100_ROM表的大小
 
 
@@ -68,7 +68,7 @@ typedef struct
  * @param   vadc, ADC采样后换算的电压差值, 单位: mv
  * @return  温度的100倍
  *******************************************************************************/
-unsigned int PT100_Temp(unsigned int vadc);
+float PT100_Temp(float vadc);
 
 
 #endif

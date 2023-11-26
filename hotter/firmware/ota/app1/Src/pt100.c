@@ -20,14 +20,14 @@ stru_pt_stru  pt_u;
  * @param   vadc, ADC采样后换算的电压值, 单位: mv
  * @return  温度的100倍，温度超过瓶颈则为0xffff.
  *******************************************************************************/
-unsigned int PT100_Temp(unsigned int vadc)
+float PT100_Temp(float vadc)
 {
-    unsigned long pt100;
+    float pt100;
 	//= (((unsigned long)((PT100_U3 + ((vadc) / (PT100_VADC_TIME)))) * PT100_R2 * 100) / (PT100_VDD - (PT100_U3 + ((vadc) / (PT100_VADC_TIME)))));
 
     //二分法查找温度值
     unsigned int start = 0, mid = 0, endd = PT100_ROM_NUM-1;
-    unsigned int dat = 0;
+    float dat = 0;
    pt100 = vadc;
     // 1. 检查数据合法性
     if ((pt100 > PT100_MAX_TEMP ) || (pt100 < PT100_MIN_TEMP))

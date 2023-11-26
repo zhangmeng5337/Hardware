@@ -51,7 +51,7 @@
 #define MAX_TEMP        100
 #define MIN_TEMP        -60
 
-#define MAX_PRESS      10
+#define MAX_PRESS      1
 #define MIN_PRESS      0
 
 #define GOOD		0
@@ -76,6 +76,7 @@ typedef struct
 	float ref2;
     float press[8];	//pressure
     float temp[12]; //temperature
+    float resis[21];
 	float data2_ai[CHANNEL_SIZE];
 	unsigned int failure_count[32];
 	unsigned int last_gather[32];	
@@ -92,7 +93,7 @@ typedef struct
 
 void ads1158_init(void);
 void ads1158_config(unsigned char adc_No);
-bool adc_read_data(void);
+unsigned char adc_read_data(void);
 void ai_proc(void);
 data_ai_stru *get_ai_data(void);
 

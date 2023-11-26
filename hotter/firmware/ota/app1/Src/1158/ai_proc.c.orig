@@ -73,7 +73,7 @@ void ads1158_config(unsigned char adc_No)
 
 // bool test_read_data(void)
 // Tests if reading data from the internal monitoring channels returns data within an expected range.
-unsigned char adc_read_data(void)
+bool adc_read_data(void)
 {
     uint8_t b_pass = 1;
     uint8_t i;//, statusBytes[5];//, statusGood;
@@ -127,13 +127,13 @@ unsigned char adc_read_data(void)
                 data_ai.data_ai[i] = data_ai.data_ai[i] * data_ai.ref1;
             }
             get_ADC_data()->update = 0;
-            return 0;
+
         }
         else
         {
-            get_ADC_data()->update = 1;
-            return 4;
-        }
+		get_ADC_data()->update = 1;
+        return ;
+		}
 
         if( data_ai.ref2>=2.4&&data_ai.ref2<=2.6)
         {
@@ -145,18 +145,17 @@ unsigned char adc_read_data(void)
 
             }
             get_ADC_data()->update = 0;
-            return 0;
+
         }
         else
-        {
-            get_ADC_data()->update = 1;
-            return 4;
-        }
+			{
+			get_ADC_data()->update = 1;
+			return ;
+			}
 
     }
-    else 
-			return 4;
-    //return b_pass;
+
+    return b_pass;
 }
 
 void pressure_temp_proc()
@@ -183,8 +182,8 @@ void pressure_temp_proc()
         tmp2 = PT100_PR*tmp1;
         tmp3 = PT100_PR-tmp1;
         tmp4 = tmp2/tmp3;
-        data_ai.resis[i - ADC1_PT_INDEX] = tmp4;
-         //volt_tmp = PT100_PR*data_ai.temp[i - ADC1_PT_INDEX];
+
+        //volt_tmp = PT100_PR*data_ai.temp[i - ADC1_PT_INDEX];
         //volt_tmp2 = PT100_PR-data_ai.temp[i - ADC1_PT_INDEX];
         data_ai.temp[i - ADC1_PT_INDEX] = tmp4;
         data_ai.temp[i - ADC1_PT_INDEX] = PT100_Temp(data_ai.temp[i - ADC1_PT_INDEX]);
@@ -202,8 +201,7 @@ void pressure_temp_proc()
         tmp3 = PT100_PR-tmp1;
         tmp4 = tmp2/tmp3;
 
-        data_ai.resis[i - ADC2_PT_INDEX + ADC1_PT_SIZE] = tmp4;
-
+		
         data_ai.temp[i - ADC2_PT_INDEX + ADC1_PT_SIZE]  = tmp4;
         data_ai.temp[i - ADC2_PT_INDEX + ADC1_PT_SIZE] = PT100_Temp(data_ai.temp[i - ADC2_PT_INDEX + ADC1_PT_SIZE]);
     }
@@ -252,7 +250,7 @@ void ai_health_dec()
     }
     for (i = 0; i < 8; i++)
     {
-        if (data_ai.press[i] >= MAX_PRESS || data_ai.press[i] <= MIN_PRESS)
+        if (data_ai.press[i] >= MAX_TEMP || data_ai.press[i] <= MIN_TEMP)
         {
             failure_flag = failure_flag << (i + 8);
             data_ai.channel_status = data_ai.channel_status | failure_flag;
@@ -286,9 +284,8 @@ void ai_proc()
     //if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s
     {
         reset_registerTick(ADC_SAMP_TICK_NO);
-        //adc_read_data();//adc sample
-			  if(adc_read_data() == 0)
-					pressure_temp_proc();//temp pressure convert
+        adc_read_data();//adc sample
+        pressure_temp_proc();//temp pressure convert
         ai_health_dec();//channels health detected
     }
 
