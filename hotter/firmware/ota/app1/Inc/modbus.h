@@ -3,7 +3,7 @@
 
 #define MODBUS_RTU_COUNT            3
 
-#define MODBUS_READ_CMD				0x03
+#define MODBUS_READ_CMD				0x03  //
 #define MODBUS_WRITE_ONE_CMD        0x06
 #define MODBUS_WRITE_MUL_CMD        0x10
 
@@ -24,10 +24,11 @@ typedef struct
 	unsigned char retry_count;
 	unsigned int  fault;
 }modbus_stru;
-void modbus_trans(void);
+void modbus_trans(unsigned char mode);
 void modbus_proc(void);
 void modbus_pack(unsigned char mode, unsigned char *pb);
-modbus_stru *get_machine(void);
+modbus_stru *get_recv_machine(void);
+
 
 #endif
 

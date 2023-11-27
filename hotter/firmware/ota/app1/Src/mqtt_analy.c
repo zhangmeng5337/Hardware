@@ -194,13 +194,13 @@ void upload()
     mqtt_payload_u.data[PUMP_E_INDEX] = get_ai_data()->temp[AI_PUMP_E_INDEX]; //pump end
     
     uint32_t tmp;
-	tmp = get_ai_data()->channel_status&0x000000ff;
+	tmp = get_ai_data()->channel_status;
     mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //8 bit di
     mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] << 8; //dev status
     mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] |tmp;//20bit ai but 8bit used
-    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] <<8;    
+    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] <<20;    
 	mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] |
-		                                      get_machine()->fault;
+		                                      get_recv_machine()->fault;
     mqtt_payload_u.status[DEV_MASK_INDEX] = get_congfig()->fault_mask;
 	
     get_congfig()->fault_status = mqtt_payload_u.status[DEV_STATUS_INDEX] ;//fault status

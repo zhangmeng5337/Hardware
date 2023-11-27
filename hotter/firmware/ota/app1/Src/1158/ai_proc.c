@@ -118,7 +118,7 @@ unsigned char adc_read_data(void)
 
         data_ai.ref2 =  get_ADC_data()->data2_2byte[CHANNEL_SIZE - 1];
         data_ai.ref2 = data_ai.ref2 / 3072.0;
-        if( data_ai.ref1>=2.4&&data_ai.ref1<=2.6)
+        if (data_ai.ref1 >= 2.4 && data_ai.ref1 <= 2.6)
         {
             for (i = 0; i < 16; i++) //ads1158 1
             {
@@ -135,7 +135,7 @@ unsigned char adc_read_data(void)
             return 4;
         }
 
-        if( data_ai.ref2>=2.4&&data_ai.ref2<=2.6)
+        if (data_ai.ref2 >= 2.4 && data_ai.ref2 <= 2.6)
         {
             for (i = 0; i < 16; i++) //ads1158 2
             {
@@ -154,59 +154,61 @@ unsigned char adc_read_data(void)
         }
 
     }
-    else 
-			return 4;
+    else
+        return 4;
     //return b_pass;
 }
 
 void pressure_temp_proc()
 {
 
-    float volt_tmp, volt_tmp2,tmp1,tmp2,tmp3,tmp4;
+    float volt_tmp, volt_tmp2, tmp1, tmp2, tmp3, tmp4;
     unsigned char i;
     /**********************4-20mA convention**********************/
     for (i = ADC1_PR_INDEX; i < (ADC1_PR_INDEX + 8); i++) //u2/(2u1-u2)
     {
-        // volt_tmp= 2*data_ai.data2_ai[ADC1_PT_INDEX+1]; //2u1;
-        // volt_tmp2 = data_ai.data2_ai[ADC1_PT_INDEX];//u2
-        // volt_tmp=  volt_tmp-volt_tmp2;//(2u1-u2)
         data_ai.press[i - ADC1_PR_INDEX]  = data_ai.data_ai[i] * PRESS_RATIO + PRESS_B;//kpa
     }
+
+	
+	//**************************pt100******************************
     for (i = ADC1_PT_INDEX; i < (ADC1_PT_SIZE + ADC1_PT_INDEX); i++) //u2/(2u1-u2)
     {
-        volt_tmp = 2 * data_ai.data_ai[2*i+1]; //2u1;
-        volt_tmp2 = data_ai.data_ai[2*i];//u2
+        volt_tmp = 2 * data_ai.data_ai[2 * i + 1]; //2u1;
+        volt_tmp2 = data_ai.data_ai[2 * i]; //u2
 
 
         volt_tmp =  volt_tmp - volt_tmp2; //(2u1-u2)
-        tmp1 = volt_tmp2*1000  / volt_tmp;//1000u2/(2u1-u2)=75r/75+r
-        tmp2 = PT100_PR*tmp1;
-        tmp3 = PT100_PR-tmp1;
-        tmp4 = tmp2/tmp3;
+        tmp1 = volt_tmp2 * 1000  / volt_tmp; //1000u2/(2u1-u2)=75r/75+r
+        tmp2 = PT100_PR * tmp1;
+        tmp3 = PT100_PR - tmp1;
+        tmp4 = tmp2 / tmp3;
         data_ai.resis[i - ADC1_PT_INDEX] = tmp4;
-         //volt_tmp = PT100_PR*data_ai.temp[i - ADC1_PT_INDEX];
+        //volt_tmp = PT100_PR*data_ai.temp[i - ADC1_PT_INDEX];
         //volt_tmp2 = PT100_PR-data_ai.temp[i - ADC1_PT_INDEX];
         data_ai.temp[i - ADC1_PT_INDEX] = tmp4;
         data_ai.temp[i - ADC1_PT_INDEX] = PT100_Temp(data_ai.temp[i - ADC1_PT_INDEX]);
-        data_ai.temp[i - ADC1_PT_INDEX] = data_ai.temp[i - ADC1_PT_INDEX]*PT100_RATIO;
-        data_ai.temp[i - ADC1_PT_INDEX] = data_ai.temp[i - ADC1_PT_INDEX]+PT100_B;
+        data_ai.temp[i - ADC1_PT_INDEX] = data_ai.temp[i - ADC1_PT_INDEX] * PT100_RATIO;
+        data_ai.temp[i - ADC1_PT_INDEX] = data_ai.temp[i - ADC1_PT_INDEX] + PT100_B;
     }
 
     for (i = ADC2_PT_INDEX; i < (ADC2_PT_SIZE + ADC2_PT_INDEX); i++) //u2/(2u1-u2)
     {
-        volt_tmp = 2 * data_ai.data2_ai[2*i + 1]; //2u1;
+        volt_tmp = 2 * data_ai.data2_ai[2 * i + 1]; //2u1;
         volt_tmp2 = data_ai.data2_ai[i];//u2
         volt_tmp =  volt_tmp - volt_tmp2; //(2u1-u2)
-        tmp1 = volt_tmp2*1000  / volt_tmp;//1000u2/(2u1-u2)=75r/75+r
-        tmp2 = PT100_PR*tmp1;
-        tmp3 = PT100_PR-tmp1;
-        tmp4 = tmp2/tmp3;
-
-        data_ai.resis[i - ADC2_PT_INDEX + ADC1_PT_SIZE] = tmp4;
-
-        data_ai.temp[i - ADC2_PT_INDEX + ADC1_PT_SIZE]  = tmp4;
-        data_ai.temp[i - ADC2_PT_INDEX + ADC1_PT_SIZE] = PT100_Temp(data_ai.temp[i - ADC2_PT_INDEX + ADC1_PT_SIZE]);
+        tmp1 = volt_tmp2 * 1000  / volt_tmp; //1000u2/(2u1-u2)=75r/75+r
+        tmp2 = PT100_PR * tmp1;
+        tmp3 = PT100_PR - tmp1;
+        tmp4 = tmp2 / tmp3;
+        unsigned char index;
+        index = i - ADC2_PT_INDEX + ADC1_PT_SIZE;
+        data_ai.temp[index] = tmp4;
+        data_ai.temp[index] = PT100_Temp(data_ai.temp[index]);
+        data_ai.temp[index] = data_ai.temp[index] * PT100_RATIO;
+        data_ai.temp[index] = data_ai.temp[index] + PT100_B;
     }
+
 
 
 
@@ -221,9 +223,10 @@ void ai_health_dec()
 {
     unsigned char i;
     uint32_t failure_flag;
-    failure_flag = 1;
+    
     for (i = 0; i < 12; i++)
     {
+        failure_flag = 1;
         if (data_ai.temp[i] >= MAX_TEMP || data_ai.temp[i] <= MIN_TEMP)
         {
             failure_flag = failure_flag << i;
@@ -252,29 +255,30 @@ void ai_health_dec()
     }
     for (i = 0; i < 8; i++)
     {
+       failure_flag = 1;
         if (data_ai.press[i] >= MAX_PRESS || data_ai.press[i] <= MIN_PRESS)
         {
-            failure_flag = failure_flag << (i + 8);
+            failure_flag = failure_flag << (i + 12);
             data_ai.channel_status = data_ai.channel_status | failure_flag;
         }
         else
         {
             if (data_ai.press[i] == data_ai.last_gather[i])
             {
-                data_ai.failure_count[i] = data_ai.failure_count[i] + 1;
+                data_ai.failure_count[i+12] = data_ai.failure_count[i] + 1;
             }
             else
             {
-                if (data_ai.failure_count[i] > 0)
-                    data_ai.failure_count[i] = data_ai.failure_count[i] - 1;
-                data_ai.last_gather[i] = data_ai.temp[i];
+                if (data_ai.failure_count[i+12] > 0)
+                    data_ai.failure_count[i+12] = data_ai.failure_count[i+12] - 1;
+                   data_ai.last_gather[i] = data_ai.press[i];
 
             }
-            if (data_ai.failure_count[i] >= MAX_FAILUE)
+            if (data_ai.failure_count[i+12] >= MAX_FAILUE)
             {
-                failure_flag = failure_flag << (i + 8);
+                failure_flag = failure_flag << (i + 12);
                 data_ai.channel_status = data_ai.channel_status | failure_flag;
-                data_ai.failure_count[i] = 0;
+                data_ai.failure_count[i+12] = 0;
             }
         }
     }
@@ -287,8 +291,8 @@ void ai_proc()
     {
         reset_registerTick(ADC_SAMP_TICK_NO);
         //adc_read_data();//adc sample
-			  if(adc_read_data() == 0)
-					pressure_temp_proc();//temp pressure convert
+        if (adc_read_data() == 0)
+            pressure_temp_proc();//temp pressure convert
         ai_health_dec();//channels health detected
     }
 

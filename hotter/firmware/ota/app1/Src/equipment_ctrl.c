@@ -3,6 +3,7 @@
 #include "di.h"
 #include "ai_proc.h"
 
+machine_stru machine_usr;
 
 unsigned char equipment_control()
 {
@@ -18,4 +19,10 @@ unsigned char equipment_control()
 
   return result;
 }
+
+machine_stru *get_machine()
+{
+	return &machine_usr;
+}
+
 
