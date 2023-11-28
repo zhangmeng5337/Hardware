@@ -12,7 +12,7 @@ typedef struct
 {
     int  num_area; //划分区域个数
     float e_membership_values[7]; //输入e的隶属值
-    float ec_membership_values[7];//输入de/dt的隶属值
+    float ec_membership_values[7];//输入de/dt的隶属值3
     float kp_menbership_values[7];//输出增量kp的隶属值
     float ki_menbership_values[7]; //输出增量ki的隶属值
     float kd_menbership_values[7];  //输出增量kd的隶属值
