@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F405xx,USE_HAL_DRIVER,STM32F405xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Src/1158;../Inc/ota</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Src/1158;../Inc/ota;..\Src\pid</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -541,6 +541,16 @@
               <FileName>update.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\ota\update.c</FilePath>
+            </File>
+            <File>
+              <FileName>FuzzyPID.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\pid\FuzzyPID.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\pid\pid_test.c</FilePath>
             </File>
           </Files>
         </Group>
