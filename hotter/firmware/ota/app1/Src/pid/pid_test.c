@@ -2,7 +2,7 @@
 #include "FuzzyPID.h"
 //#include "stdio.h"
 //extern FuzzyPID_stru FuzzyPID_usr;
-int main()
+int test()
 {
 
     float Target = 600;
@@ -33,7 +33,7 @@ int main()
         erro_pre = erro;
         erro = Target - actual;
         erro_c= erro - erro_pre;
-       // printf("i:%d  target:%f  actual:%f  kp:%f  ki:%f  kd:%f\r\n",i,Target,actual,FuzzyPID_usr.detail_kp,FuzzyPID_usr.detail_ki,FuzzyPID_usr.detail_kd);
+        //printf("i:%d  target:%f  actual:%f  kp:%f  ki:%f  kd:%f\r\n",i,Target,actual,FuzzyPID_usr.detail_kp,FuzzyPID_usr.detail_ki,FuzzyPID_usr.detail_kd);
     }
    // printf("ok\r\n");
  }
