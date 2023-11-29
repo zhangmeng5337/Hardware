@@ -5,6 +5,72 @@
 #include "di.h"
 #include "modbus.h"
 
+unsigned char *enviro_tem[]={
+	"温度1",
+	"温度2",
+	"温度3",
+	"温度4",
+	"温度5",
+	"温度6",
+	"温度7",
+	"温度8",
+	"温度9",
+	"温度10",
+	"温度11",
+	"温度12",
+	"温度13",
+	"温度14",
+	"温度15",
+	"温度16",
+	"温度17",
+	"温度18",
+	"温度19",
+	"温度20",
+	"温度21",
+	"温度22",
+	"温度23",
+	"温度24",
+	"温度25",
+	"温度26",
+	"温度27",
+	"温度28",
+	"温度29",
+	"温度30",
+	"温度31",
+	"温度32",
+	"温度33",
+	"温度34",
+	"温度35",
+	"温度36",
+	"温度37",
+	"温度38",
+	"温度39",
+	"温度40",
+	"温度41",
+	"温度42",
+	"温度43",
+	"温度44",
+	"温度45",
+	"温度46",
+	"温度47",
+	"温度48",
+	"温度49",
+	"温度50",
+	"温度51",
+	"温度52",
+	"温度53",
+	"温度54",
+	"温度55",
+	"温度56",
+	"温度57",
+	"温度58",
+	"温度59",
+	"温度60",
+	"温度61",
+	"温度62",
+	"温度63",
+	"温度64"
+};
 mqtt_payload_stru mqtt_payload_u;
 
 
@@ -39,6 +105,7 @@ void anlysis_mqtt_recv()
     unsigned char valid_flag;
     float tmp_f;
     float tmp_i;
+	unsigned char index;
 
     valid_flag = 0;
     get_congfig()->update_setting = 0;
@@ -115,6 +182,21 @@ void anlysis_mqtt_recv()
 
 
         }
+		unsigned char i;
+		for(i=0;i<ENVIRO_SIZE;i++)
+			{
+        if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, enviro_tem[i], "\r\n",
+                        dev_id) == 1)
+        {
+            //index = 0;
+            get_congfig()->update_setting = 2;
+            tmp_f = atof(dev_id);
+            get_congfig()->indoor_temperature[i]= tmp_f;
+
+
+        }	
+
+			}						
         valid_flag = 0;
 
     }
