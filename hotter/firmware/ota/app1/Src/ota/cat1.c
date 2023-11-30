@@ -79,8 +79,8 @@ tsATCmds ATCmds[] =
     //mqtt 订阅订阅主题
     {"AT+MCONFIG=", "OK", 1000, NO_REC, 3},
     {"AT+MIPSTART=", "CONNECT OK", 2000, NO_REC, 3},
-    {"AT+MCONNECT=1,300\r\n", "OK", 1000, NO_REC, 3},//客户端向服务器请求会话连接
-    {"AT+MSUB=", "SUBACK", 2000, NO_REC, 3},//订阅消息
+    {"AT+AT+MSUBMCONNECT=1,300\r\n", "OK", 1000, NO_REC, 3},//客户端向服务器请求会话连接
+    {"=", "SUBACK", 2000, NO_REC, 3},//订阅消息
 
 
     /* 下面是关于查询版本号的AT指令集*/

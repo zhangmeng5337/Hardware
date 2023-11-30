@@ -26,7 +26,7 @@ typedef struct
     char user_id[128];//imei
     char mqtt_ip[128];//server ip
     char mqtt_port[64];//
-    char mqtt_msubtopic[128];
+    char mqtt_mpubtopic[128];
     char mqtt_subtopic[128];
 	char version[64];
   //http
@@ -54,6 +54,9 @@ typedef struct
 	uint32_t fault_status;
 	//char password[128];
 	unsigned char update_setting; //setting update 
+	int addr_count ;
+	int reboot_flag ;
+	int Erase_flag ;
 
 } CONFIG_stru;
 

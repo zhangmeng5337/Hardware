@@ -36,6 +36,10 @@ void uart_init(void);
 
 void uart_lte(void);
 void uart_rs485(void);
+
+
+tsLpuart1type *get_lte_recv(void);
+
 #endif
 
 

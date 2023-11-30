@@ -169,7 +169,7 @@ void config_init()
 
 
 
-    sprintf(get_config()->mqtt_msubtopic, "%s/%s", "mqtt_mub",get_config()->user_id);
+    sprintf(get_config()->mqtt_mpubtopic, "%s/%s", "mqtt_mub",get_config()->user_id);
     sprintf(get_config()->mqtt_subtopic, "%s/%s", "mqtt_sub",get_config()->user_id);
 
 

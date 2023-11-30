@@ -528,11 +528,6 @@
               <FilePath>..\Src\1158\ai_proc.c</FilePath>
             </File>
             <File>
-              <FileName>cat1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\ota\cat1.c</FilePath>
-            </File>
-            <File>
               <FileName>stmflash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\ota\stmflash.c</FilePath>

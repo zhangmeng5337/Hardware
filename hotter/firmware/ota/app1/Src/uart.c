@@ -10,7 +10,7 @@ extern DMA_HandleTypeDef hdma_uart5_rx;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 
 
-rs485_stru lte_str;
+//rs485_stru lte_str;
 rs485_stru lcd_str;
 rs485_stru rs485_str;
 
@@ -64,6 +64,10 @@ void uart_rs485()
 		HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);  
 
 }
+tsLpuart1type *get_lte_recv()
+{
+	return &Lpuart1type;
+}
 
 void uart_lcd()
 {
@@ -106,21 +110,21 @@ rs485_stru *get_uart_recv(unsigned char uart_num)
 {
 	switch(uart_num)
 	{
-		case LTE_No:	return &lte_str;
+		//case LTE_No:	return &lte_str;
 		case RS485_No:	return &rs485_str;
 		case LCD_No:	return &lcd_str; 
 		default :		return 0;		
 	}
 }
 /*使能LPuart1串口中断*/
-void EnableUartIT(void)
+/*void EnableUartIT(void)
 {
     __HAL_UART_ENABLE_IT(&huart1,UART_IT_RXNE);
     __HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);
     __HAL_UART_CLEAR_IDLEFLAG(&huart1);
     HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff,LPUART1_DMA_REC_SIZE);
 }
-
+*/
 /*lpuart1回调函数*/
 void uart_lte()
 

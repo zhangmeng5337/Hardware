@@ -1,6 +1,6 @@
 #include "update.h"
 #include "stmflash.h"
-
+#include "config.h"
 /* 升级完成,并写入一个标志位 */
 void Update_Success(void)
 {
@@ -11,9 +11,9 @@ void Update_Success(void)
 /* 升级任务 */
 void OTA_Task(void)
 {
-    if (reboot_flag == 1)
+    if (get_config()->reboot_flag == 1)
     {
-        reboot_flag = 0;
+        get_config()->reboot_flag = 0;
         Update_Success();
         HAL_NVIC_SystemReset();
     }
