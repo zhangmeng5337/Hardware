@@ -57,7 +57,7 @@ typedef struct
 
 } CONFIG_stru;
 
-CONFIG_stru *get_congfig(void);
+CONFIG_stru *get_config(void);
 void config_save(void);
 void config_init(void);
 

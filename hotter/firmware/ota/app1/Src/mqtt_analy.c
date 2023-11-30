@@ -108,11 +108,11 @@ void anlysis_mqtt_recv()
 	unsigned char index;
 
     valid_flag = 0;
-    get_congfig()->update_setting = 0;
+    get_config()->update_setting = 0;
     if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "设备ID:  ", "\r\n",
                     dev_id) == 1)
     {
-        if ((strcmp(dev_id, get_congfig()->user_id)) == 0)
+        if ((strcmp(dev_id, get_config()->user_id)) == 0)
             valid_flag = 1;
 
     }
@@ -122,20 +122,20 @@ void anlysis_mqtt_recv()
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "升级:  ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 1;
-            sprintf(&get_congfig()->update_firm, "%s", dev_id);//字符串
+            get_config()->update_setting = 1;
+            sprintf(&get_config()->update_firm, "%s", dev_id);//字符串
             tmp_f = atoi(dev_id);
-            get_congfig()->update_firm = tmp_f;
+            get_config()->update_firm = tmp_f;
 
         }
         memset(dev_id, 0, 128);
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "重启: ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 1;
-            sprintf(&get_congfig()->reboot, "%s", dev_id); //字符串
+            get_config()->update_setting = 1;
+            sprintf(&get_config()->reboot, "%s", dev_id); //字符串
             tmp_f = atoi(dev_id);
-            get_congfig()->reboot = tmp_f;
+            get_config()->reboot = tmp_f;
 
 
         }
@@ -144,10 +144,10 @@ void anlysis_mqtt_recv()
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "机组开关机: ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 1;
-            //sprintf(&get_congfig()->machine, "%s", dev_id); //字符串
+            get_config()->update_setting = 1;
+            //sprintf(&get_config()->machine, "%s", dev_id); //字符串
             tmp_f = atoi(dev_id);
-            get_congfig()->machine = tmp_f;
+            get_config()->machine = tmp_f;
 
         }
         memset(dev_id, 0, 128);
@@ -155,9 +155,9 @@ void anlysis_mqtt_recv()
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "设置出水温度: ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 1;
+            get_config()->update_setting = 1;
             tmp_f = atof(dev_id);
-            get_congfig()->set_tout = tmp_f;
+            get_config()->set_tout = tmp_f;
         }
 
 
@@ -165,9 +165,9 @@ void anlysis_mqtt_recv()
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "设置室内温度: ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 2;
+            get_config()->update_setting = 2;
             tmp_f = atof(dev_id);
-            get_congfig()->set_tindoor = tmp_f;
+            get_config()->set_tindoor = tmp_f;
 
         }
 
@@ -176,9 +176,9 @@ void anlysis_mqtt_recv()
         if (Find_string((char *)Lpuart1type.Lpuart1RecBuff, "数据上传周期: ", "\r\n",
                         dev_id) == 1)
         {
-            get_congfig()->update_setting = 2;
+            get_config()->update_setting = 2;
             tmp_f = atof(dev_id);
-            get_congfig()->set_up_period = tmp_f;
+            get_config()->set_up_period = tmp_f;
 
 
         }
@@ -189,9 +189,9 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             //index = 0;
-            get_congfig()->update_setting = 2;
+            get_config()->update_setting = 2;
             tmp_f = atof(dev_id);
-            get_congfig()->indoor_temperature[i]= tmp_f;
+            get_config()->indoor_temperature[i]= tmp_f;
 
 
         }	
@@ -270,7 +270,7 @@ void upload()
 
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
-    sprintf(mqtt_payload_u.devid, "%s", get_congfig()->user_id);//devid
+    sprintf(mqtt_payload_u.devid, "%s", get_config()->user_id);//devid
     mqtt_payload_u.data[TOUT_INDEX] = get_ai_data()->temp[AI_WATER_T_O_INDEX];
     mqtt_payload_u.data[TIN_INDEX] =  get_ai_data()->temp[AI_WATER_T_IN_INDEX]; //water IN
     mqtt_payload_u.data[PUMP_F_INDEX] = get_ai_data()->temp[AI_PUMP_F_INDEX]; //pump front
@@ -284,13 +284,13 @@ void upload()
     mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] <<20;    
 	mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] |
 		                                      get_recv_machine()->fault;
-    mqtt_payload_u.status[DEV_MASK_INDEX] = get_congfig()->fault_mask;
+    mqtt_payload_u.status[DEV_MASK_INDEX] = get_config()->fault_mask;
 	
-    get_congfig()->fault_status = mqtt_payload_u.status[DEV_STATUS_INDEX] ;//fault status
-    sprintf(mqtt_payload_u.version, "%s", get_congfig()->version);//devid
-    mqtt_payload_u.data[WATER_O_INDEX] = get_congfig()->set_tout; //set tmp
-    mqtt_payload_u.data[WATER_IN_INDEX] = get_congfig()->set_tindoor; //set indoor tmp
-    mqtt_payload_u.data[UP_PERIOD_INDEX] = get_congfig()->set_up_period; //up period
+    get_config()->fault_status = mqtt_payload_u.status[DEV_STATUS_INDEX] ;//fault status
+    sprintf(mqtt_payload_u.version, "%s", get_config()->version);//devid
+    mqtt_payload_u.data[WATER_O_INDEX] = get_config()->set_tout; //set tmp
+    mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor; //set indoor tmp
+    mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
 
 
@@ -352,7 +352,7 @@ void mqtt_msub()//订阅消息
 void mqtt_recv_proc()
 {
 		
-		if(get_congfig()->update_firm == '1'||get_congfig()->reboot=='1' )
+		if(get_config()->update_firm == '1'||get_config()->reboot=='1' )
 			HAL_NVIC_SystemReset();
 		
 }

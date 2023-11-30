@@ -87,6 +87,7 @@ typedef struct
 {
     char *ATSendStr;
     char *ATRecStr;
+	unsigned char mqtt_topic_count;
     uint16_t TimeOut;
     teATStatus ATStatus;
     uint8_t RtyNum;

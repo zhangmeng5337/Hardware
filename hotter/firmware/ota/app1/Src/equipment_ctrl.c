@@ -9,7 +9,7 @@ unsigned char equipment_control()
 {
    unsigned char result;
    result = 0;
-	if(get_congfig()->machine)
+	if(get_config()->machine)
 	{
 		result = 1;
 	}

@@ -129,35 +129,35 @@ void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
         /* 设置topic的长度 */
         if (ATCmdNum == AT_MCONFIG)
         {
-            memset(get_congfig()->user_id, 0x00, sizeof(get_congfig()->user_id));
-            memset(get_congfig()->user, 0x00, sizeof(get_congfig()->user));
-            memset(get_congfig()->password, 0x00, sizeof(get_congfig()->password));
+            memset(get_config()->user_id, 0x00, sizeof(get_config()->user_id));
+            memset(get_config()->user, 0x00, sizeof(get_config()->user));
+            memset(get_config()->password, 0x00, sizeof(get_config()->password));
 
-            sprintf(get_congfig()->user_id, "%s,", Imei_buffer);//user id
-            //sprintf(get_congfig()->user_id, "%s,", Imei_buffer);//user id
+            sprintf(get_config()->user_id, "%s,", Imei_buffer);//user id
+            //sprintf(get_config()->user_id, "%s,", Imei_buffer);//user id
             sprintf(send_buffer, "%s%s,%s,%s\r\n", ATCmds[ATCmdNum].ATSendStr,
-                    get_congfig()->user_id, get_congfig()->user, get_congfig()->password);
+                    get_config()->user_id, get_config()->user, get_config()->password);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
         }
         else if (ATCmdNum == AT_MIPSTART)
         {
             sprintf(send_buffer, "%s%s,%s\r\n", ATCmds[ATCmdNum].ATSendStr,
-                    get_congfig()->mqtt_ip, get_congfig()->mqtt_port);
+                    get_config()->mqtt_ip, get_config()->mqtt_port);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
         }
         else if (ATCmdNum == AT_MSUB)//订阅消息
         {
             sprintf(send_buffer, "%s%s,%d\r\n", ATCmds[ATCmdNum].ATSendStr,
-                    get_congfig()->mqtt_msubtopic, 1);
+                    get_config()->mqtt_msubtopic, 1);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
         }
         else if (ATCmdNum == AT_MPUB)//发布阅消息 
         {
             sprintf(send_buffer, "%s%s,%d,%d,%s\r\n", ATCmds[ATCmdNum].ATSendStr,
-                    get_congfig()->mqtt_subtopic, 1,0,mqtt_send_p);
+                    get_config()->mqtt_subtopic, 1,0,mqtt_send_p);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
         }	
@@ -165,7 +165,7 @@ void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
 			     ATCmdNum == AT_HTTPPARA_6)//发布阅消息 AT_HTTPPARA_2
         {
             sprintf(send_buffer, "%s%s\r\n", ATCmds[ATCmdNum].ATSendStr,
-                    get_congfig()->http_ip);
+                    get_config()->http_ip);
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
         }			
@@ -263,7 +263,7 @@ void CAT1_Task(void)
                         memset(Version_buffer, 0x00, sizeof(Version_buffer));
                         Find_string((char *)Lpuart1type.Lpuart1RecBuff, "{", "}", Version_buffer);
                         printf("Version_buffer=%s\r\n", Version_buffer);
-                        if (strcmp(Version_buffer, get_congfig()->version) == 0)
+                        if (strcmp(Version_buffer, get_config()->version) == 0)
                         {
                             printf("硬件版本和云端版本一致，无需升级！\r\n");
                             ATCurrentCmdNum = AT_MPUB_RECV;
@@ -346,8 +346,8 @@ void CAT1_Task(void)
                             ATCurrentCmdNum += 1;
                             ATNextCmdNum = ATCurrentCmdNum + 1;
                             CAT1_TaskStatus = CAT1_SEND;
-							get_congfig()->update_setting = 1;
-                            sprintf(get_congfig()->version, "%s,", Version_buffer);//user id
+							get_config()->update_setting = 1;
+                            sprintf(get_config()->version, "%s,", Version_buffer);//user id
                         }
                         break;
                     }
@@ -373,28 +373,25 @@ void CAT1_Task(void)
                     }
                     else if (ATCurrentCmdNum == AT_MSUB)	//表示订阅完成
                     {
-                       if(ATNextCmdNum == AT_MPUB_RECV)
-                       	{
-					   		ATCurrentCmdNum = AT_MPUB_RECV;
-					   		CAT1_TaskStatus = CAT1_MQTT_REC; 
-							break;
-					   }
-					   else
-					   	{
+					   	   if(ATCmds[ATRecCmdNum].mqtt_topic_count>0)
+					   	   	{
+						   ATCurrentCmdNum = ATCurrentCmdNum;
+						   //ATNextCmdNum = ATCurrentCmdNum + 1;
+						   CAT1_TaskStatus = CAT1_SEND;
+						   ATCmds[ATRecCmdNum].mqtt_topic_count--;
+						   //get_config()->mqtt_msubtopic = "";
+						   break;
+
+						   }
+						   else 
+						   	{
 						   ATCurrentCmdNum = ATCurrentCmdNum+1;
 						   ATNextCmdNum = ATCurrentCmdNum + 1;
 						   CAT1_TaskStatus = CAT1_SEND;
 						   break;
 
-					   }
-                    }
+						   }
 
-                    else
-                    {
-                        ATCurrentCmdNum = ATCurrentCmdNum+1;
-                        ATNextCmdNum = ATCurrentCmdNum + 1;
-                        CAT1_TaskStatus = CAT1_SEND;
-                        break;
                     }
                 }
                 else if (CompareTime(&TimeCAT1)) //表示发送超时
@@ -419,6 +416,7 @@ void CAT1_Task(void)
                 ATRec();	//调用接收函数
                 if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
                 {
+                    //ATCmds[ATRecCmdNum].ATStatus = NO_REC;
                     if (ATCurrentCmdNum == AT_MPUB_RECV)	//表示收到订阅消息
                     {
                         anlysis_mqtt_recv();
@@ -426,6 +424,7 @@ void CAT1_Task(void)
                 }
                 else if (ATCmds[ATRecCmdNum].ATStatus == ERROR_STATUS) //异常值
                 {
+                     ATCmds[ATRecCmdNum].ATStatus = NO_REC;
                     CAT1_Init();
                     return;
                 }

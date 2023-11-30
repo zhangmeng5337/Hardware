@@ -94,8 +94,8 @@ void modbus_trans(unsigned char mode)
         modbus_tx.reg = MACHINE_CTRL;
         modbus_tx.regCount = 11;
         memcpy(modbus_tx.payload, &get_machine()->reg_data[modbus_tx.address], modbus_tx.regCount * 2);
-        memcpy(modbus_tx.payload, &get_congfig()->machine, 2);
-        memcpy(&modbus_tx.payload[6], &get_congfig()->set_tout, 2);
+        memcpy(modbus_tx.payload, &get_config()->machine, 2);
+        memcpy(&modbus_tx.payload[6], &get_config()->set_tout, 2);
     }
 
 
@@ -182,7 +182,7 @@ void analy_modbus_recv()
 }
 unsigned char  analy_mqtt()
 {
-    if (get_congfig()->update_setting == 1)
+    if (get_config()->update_setting == 1)
     {
         if (modbus_tx.update == 0)
         {
