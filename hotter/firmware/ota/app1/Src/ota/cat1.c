@@ -371,6 +371,23 @@ void CAT1_Task(void)
 
                         break;
                     }
+                    else if (ATCurrentCmdNum == AT_MSUB)	//表示订阅完成
+                    {
+                       if(ATNextCmdNum == AT_MPUB_RECV)
+                       	{
+					   		ATCurrentCmdNum = AT_MPUB_RECV;
+					   		CAT1_TaskStatus = CAT1_MQTT_REC; 
+							break;
+					   }
+					   else
+					   	{
+						   ATCurrentCmdNum = ATCurrentCmdNum+1;
+						   ATNextCmdNum = ATCurrentCmdNum + 1;
+						   CAT1_TaskStatus = CAT1_SEND;
+						   break;
+
+					   }
+                    }
 
                     else
                     {
@@ -424,13 +441,28 @@ void CAT1_Task(void)
 
 /* MQTT发送报文 */
 
-void MQTTSendData(unsigned char *s)
+void MQTTSendData(unsigned char mode,unsigned char *s)
 {
+    if(mode == 0)
+    {
     CAT1_TaskStatus = CAT1_SEND;
     ATCurrentCmdNum = AT_MPUB;
-    ATNextCmdNum = AT_SAPBR_1;
+    ATNextCmdNum = AT_MPUB_RECV;
 	mqtt_send_p = s;
 	//ATSend(ATCurrentCmdNum,0);
+
+	}
+	else   //订阅消息
+	{
+    CAT1_TaskStatus = CAT1_SEND;
+    ATCurrentCmdNum = AT_MSUB;
+    ATNextCmdNum = AT_MPUB_RECV;
+	  //send_buffer = s;
+		memcpy(send_buffer,s,strlen(s));
+	//ATSend(ATCurrentCmdNum,0);
+
+	}
+
 }
 
 /* 查询版本号任务 */
@@ -465,7 +497,5 @@ void Download_BIN(void)
     //
     //	}
     //
-
-
 
 }

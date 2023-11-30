@@ -51,3 +51,11 @@ for i=1:1:(len(1))  %1-10   11-20 21   1  11 21 31
 end
 
 plot(dat(:,1),dat(:,2))
+
+
+
+
+close all;
+clear;
+clc;
+serial_user()

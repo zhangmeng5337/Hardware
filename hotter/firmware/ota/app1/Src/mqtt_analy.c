@@ -261,10 +261,11 @@ void anlysis_mqtt_recv()
 	HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
 	memset(send_buffer, 0x00, strlen(send_buffer));
 	}*/
-
+char mqtt_buf[512];
+//周期上传
 void upload()
 {
-    char mqtt_buf[512];
+    
 
 
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
@@ -321,7 +322,7 @@ void upload()
             mqtt_payload_u.data[WATER_IN_INDEX],
             mqtt_payload_u.data[UP_PERIOD_INDEX]);
 
-    MQTTSendData(mqtt_buf);
+    MQTTSendData(0,mqtt_buf);
 
     //{
     //    "设备ID": "47",
@@ -341,6 +342,11 @@ void upload()
     //    }
     //}
 
+
+}
+void mqtt_msub()//订阅消息
+{
+	MQTTSendData(1,mqtt_buf);
 
 }
 void mqtt_recv_proc()

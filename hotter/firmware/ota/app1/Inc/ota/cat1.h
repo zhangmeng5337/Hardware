@@ -98,7 +98,8 @@ void Msg_Handler(void);
 void Get_Version(void);
 void Update_Task(void);
 void Download_BIN(void);
-void MQTTSendData(unsigned char *s);
+
+void MQTTSendData(unsigned char mode,unsigned char *s);
 
 
 #endif
