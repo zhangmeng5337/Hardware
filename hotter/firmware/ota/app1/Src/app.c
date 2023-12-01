@@ -11,6 +11,7 @@
 #include "equipment_ctrl.h"
 #include "water_ctrl.h"
 #include "mqtt_analy.h"
+#include "pid.h"
 
 
 
@@ -25,6 +26,7 @@ void hardware_init()
 	uart_init();
 	CAT1_Init();
     mqtt_init();
+	pid_init();
 
 
 	//ads_init();
@@ -64,11 +66,10 @@ void app_proc()
    TickPro(); 
    ai_proc();//pressure temperature sample interval 2s 
    di_proc(0);//di detection
-   //lcd_proc();
-   modbus_proc();
    mqtt_proc();
+   modbus_proc();
   // control_proc();
- //  config_save();
+   //config_save();
    //do_ctrl_proc(0,1);//do control
    
 }

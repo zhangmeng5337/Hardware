@@ -2,43 +2,44 @@
 
 FuzzyPID_stru FuzzyPID_usr;
 
-const int Kp_rule_list[7][7]= 
-      { {PB, PB, PB, PB, PM, PS, ZO}, 	//kp规则表
-        {PB, PB, PM, PM, PS, ZO, NS},
-        {PB, PM, PM, PS, ZO, NS, NS},
-        {PM, PM, PS, ZO, NS, NM, NM},
-        {PS, PS, ZO, NS, NS, NM, NM},
-        {PS, ZO, NS, NM, NM, NM, NB},
-        {ZO, ZO, NM, NB, NM, NB, NB}
-    };
+const int Kp_rule_list[7][7] =
+{
+    {PB, PB, PB, PB, PM, PS, ZO}, 	//kp规则表
+    {PB, PB, PM, PM, PS, ZO, NS},
+    {PB, PM, PM, PS, ZO, NS, NS},
+    {PM, PM, PS, ZO, NS, NM, NM},
+    {PS, PS, ZO, NS, NS, NM, NM},
+    {PS, ZO, NS, NM, NM, NM, NB},
+    {ZO, ZO, NM, NB, NM, NB, NB}
+};
 
-     const int Ki_rule_list[7][7] = { {NB, NM, NM, NM, NM, ZO, ZO}, 	//ki规则表
-        {NB, NB, NM, NS, NS, ZO, ZO},
-        {NM, NM, NS, NS, ZO, PS, PS},
-        {NM, NM, ZO, ZO, PS, PM, PS},
-        {NS, NS, ZO, PS, PM, PM, PB},
-        {ZO, ZO, PS, PM, PM, PB, PB},
-        {ZO, ZO, PS, PM, PB, PB, PB}
-    };
+const int Ki_rule_list[7][7] = { {NB, NM, NM, NM, NM, ZO, ZO}, 	//ki规则表
+    {NB, NB, NM, NS, NS, ZO, ZO},
+    {NM, NM, NS, NS, ZO, PS, PS},
+    {NM, NM, ZO, ZO, PS, PM, PS},
+    {NS, NS, ZO, PS, PM, PM, PB},
+    {ZO, ZO, PS, PM, PM, PB, PB},
+    {ZO, ZO, PS, PM, PB, PB, PB}
+};
 
-     const int Kd_rule_list[7][7] = { {NS, NS, NB, NS, NB, NM, NS}, //kd规则表
-        {ZO, NS, NB, NS, NM, NM, ZO},
-        {ZO, NS, NM, NS, NS, NS, ZO},
-        {ZO, ZO, NS, ZO, ZO, ZO, ZO},
-        {ZO, ZO, ZO, ZO, ZO, ZO, PS},
-        {PS, NS, PS, PS, ZO, PB, PM},
-        {PB, PM, PM, PM, PS, PB, PB}
-    };
+const int Kd_rule_list[7][7] = { {NS, NS, NB, NS, NB, NM, NS}, //kd规则表
+    {ZO, NS, NB, NS, NM, NM, ZO},
+    {ZO, NS, NM, NS, NS, NS, ZO},
+    {ZO, ZO, NS, ZO, ZO, ZO, ZO},
+    {ZO, ZO, ZO, ZO, ZO, ZO, PS},
+    {PS, NS, PS, PS, ZO, PB, PM},
+    {PB, PM, PM, PM, PS, PB, PB}
+};
 
-    const int Fuzzy_rule_list[7][7] = { {PB, PB, PB, PB, PM, ZO, ZO},
-        {PB, PB, PB, PM, PM, ZO, ZO},
-        {PB, PM, PM, PS, ZO, NS, NM},
-        {PM, PM, PS, ZO, NS, NM, NM},
-        {PS, PS, ZO, NM, NM, NM, NB},
-        {ZO, ZO, ZO, NM, NB, NB, NB},
-        {ZO, NS, NB, NB, NB, NB, NB}
-    };	
-	 
+const int Fuzzy_rule_list[7][7] = { {PB, PB, PB, PB, PM, ZO, ZO},
+    {PB, PB, PB, PM, PM, ZO, ZO},
+    {PB, PM, PM, PS, ZO, NS, NM},
+    {PM, PM, PS, ZO, NS, NM, NM},
+    {PS, PS, ZO, NM, NM, NM, NB},
+    {ZO, ZO, ZO, NM, NB, NB, NB},
+    {ZO, NS, NB, NB, NB, NB, NB}
+};
+
 
 void FuzzyPID()  //构造函数
 {
@@ -179,7 +180,7 @@ void GetOUT()
 }
 
 //////////////////模糊PID控制实现函数/////////////////////////
-float FuzzyPIDcontroller(float e_max, float e_min, float ec_max, float ec_min, float kp_max, float kp_min, float erro,
+void FuzzyPIDcontroller(float e_max, float e_min, float ec_max, float ec_min, float kp_max, float kp_min, float erro,
                          float erro_c, float ki_max, float ki_min, float kd_max, float kd_min, float erro_pre, float errp_ppre)
 {
     FuzzyPID_usr.errosum += erro;
@@ -208,9 +209,8 @@ float FuzzyPIDcontroller(float e_max, float e_min, float ec_max, float ec_min, f
     FuzzyPID_usr.detail_kp = 0;
     FuzzyPID_usr.detail_ki = 0;
     FuzzyPID_usr.detail_kd = 0;
-    float output = FuzzyPID_usr.kp * (erro - erro_pre) + FuzzyPID_usr.ki * erro +
-                   FuzzyPID_usr.kd * (erro - 2 * erro_pre + errp_ppre);
-    return output;
+
+    //return output;
 }
 
 ///////////////////////////////区间映射函数///////////////////////////////////////////
@@ -228,29 +228,27 @@ float Inverse_quantization(float maximum, float minimum, float qvalues)
 {
     float x = (maximum - minimum) * (qvalues + 3) / 6 + minimum;
     return x;
-} 
+}
 
 void fuzzy_init()
 {
     float membership_values[7] = {-3, -2, -1, 0, 1, 2, 3};
     FuzzyPID_usr.num_area = 8; //划分区域个数
-    
-	  memcpy(FuzzyPID_usr.e_membership_values,membership_values,7);//输入e的隶属值
-	  memcpy(FuzzyPID_usr.ec_membership_values,membership_values,7);		//输入de/dt的隶属值
-	  memcpy(FuzzyPID_usr.kp_menbership_values,membership_values,7);//输出增量kp的隶属值
-	  memcpy(FuzzyPID_usr.ki_menbership_values,membership_values,7);//输出增量ki的隶属值
-	  memcpy(FuzzyPID_usr.kd_menbership_values,membership_values,7);//输出增量kd的隶属值
-	  memcpy(FuzzyPID_usr.fuzzyoutput_menbership_values,membership_values,7);		
 
-			  memcpy(FuzzyPID_usr.gradSums,0,7);	
-			  memcpy(FuzzyPID_usr.KpgradSums,0,7);//输出增量kp总的隶属度			
-			  memcpy(FuzzyPID_usr.KigradSums,0,7);//输出增量ki总的隶属度		
-			  memcpy(FuzzyPID_usr.KdgradSums,0,7); //输出增量kd总的隶属度		
+    memcpy(FuzzyPID_usr.e_membership_values, membership_values, 7); //输入e的隶属值
+    memcpy(FuzzyPID_usr.ec_membership_values, membership_values, 7);		//输入de/dt的隶属值
+    memcpy(FuzzyPID_usr.kp_menbership_values, membership_values, 7); //输出增量kp的隶属值
+    memcpy(FuzzyPID_usr.ki_menbership_values, membership_values, 7); //输出增量ki的隶属值
+    memcpy(FuzzyPID_usr.kd_menbership_values, membership_values, 7); //输出增量kd的隶属值
+    memcpy(FuzzyPID_usr.fuzzyoutput_menbership_values, membership_values, 7);
 
-
-
-    
-
-
+    memcpy(FuzzyPID_usr.gradSums, 0, 7);
+    memcpy(FuzzyPID_usr.KpgradSums, 0, 7); //输出增量kp总的隶属度
+    memcpy(FuzzyPID_usr.KigradSums, 0, 7); //输出增量ki总的隶属度
+    memcpy(FuzzyPID_usr.KdgradSums, 0, 7); //输出增量kd总的隶属度
+}
+FuzzyPID_stru *get_pid_params()
+{
+ return &FuzzyPID_usr;
 }
 

@@ -34,7 +34,7 @@ typedef struct
     char http_port[64];//
 
 	
-    unsigned char temp[24];//temperature
+    //unsigned char temp[24];//temperature
     unsigned char mode;// 0---nativeï¼?----remote
     unsigned char ai_config[32];
     unsigned char ao_config[1];
@@ -48,6 +48,8 @@ typedef struct
 	unsigned char update_firm;	//firmware update
 	float indoor_temperature[ENVIRO_SIZE];
 	float set_tout;  //
+	float set_tout_tmp;  //
+
 	float set_tindoor; //
 	float set_up_period;//
 	uint32_t fault_mask;	

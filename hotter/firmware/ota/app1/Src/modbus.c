@@ -60,7 +60,7 @@ void rs485_recv()
             modbus_recv.address = modbus_recv.payload[0];
             modbus_recv.func =    modbus_recv.payload[1];
             modbus_recv.update = 1;
-			analy_modbus_recv();
+            analy_modbus_recv();
 
 
         }
@@ -95,7 +95,7 @@ void modbus_trans(unsigned char mode)
         modbus_tx.regCount = 11;
         memcpy(modbus_tx.payload, &get_machine()->reg_data[modbus_tx.address], modbus_tx.regCount * 2);
         memcpy(modbus_tx.payload, &get_config()->machine, 2);
-        memcpy(&modbus_tx.payload[6], &get_config()->set_tout, 2);
+        memcpy(&modbus_tx.payload[6], &get_config()->set_tout_tmp, 2);
     }
 
 
@@ -155,20 +155,17 @@ void analy_modbus_recv()
         {
             case MODBUS_READ_CMD:
             {
-
                 if (modbus_recv.address > 0 && modbus_recv.address <= 3)
-                    memcpy(get_machine()->reg_data[modbus_recv.address - 1], &modbus_recv.payload[4], modbus_recv.regCount*2);
+                    memcpy(get_machine()->reg_data[modbus_recv.address - 1], &modbus_recv.payload[4], modbus_recv.regCount * 2);
             };
             break;
             case MODBUS_WRITE_ONE_CMD:
             {
-                //modbus_tx.update = 0;
                 modbus_tx.retry_count = 0;
             }
             break;
             case MODBUS_WRITE_MUL_CMD:
             {
-                //modbus_tx.update = 0;
                 modbus_tx.retry_count = 0;
             }
             break;
@@ -180,16 +177,31 @@ void analy_modbus_recv()
     }
 
 }
-unsigned char  analy_mqtt()
+/*************************************************
+func：控制modbus的收发
+***************************************************/
+unsigned char  modbus_ctrl()
 {
-    if (get_config()->update_setting == 1)
+    if (get_config()->update_setting == 1 || (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1))
     {
-        if (modbus_tx.update == 0)
+        #if CTRL_EN
+        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1)
         {
-            modbus_tx.update = 1;
-            modbus_tx.address = 0;
-            modbus_tx.retry_count = 3;
+            float u;
+            u = get_pid_output();
+            if (u == 0)
+            {
+                get_config()->machine = 0;
+                get_config()->set_tout_tmp = 20;
+            }
+            else
+                get_config()->set_tout_tmp = u;
         }
+		#endif
+
+        modbus_tx.update = 1;
+        modbus_tx.address = 0;
+        modbus_tx.retry_count = 3;
     }
 
     if (modbus_tx.update == 1) //pump set
@@ -215,19 +227,31 @@ unsigned char  analy_mqtt()
 void modbus_proc()
 {
     unsigned char pb[64];
-    if (analy_mqtt() == 1)
+    #if CTRL_EN
+    if (modbus_ctrl() == 1)
     {
-        registerTick(MODBUS_TX_TICK_NO, 500);
-        if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //执行mqtt指令，下发命令
+        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1) //180s
         {
-
-            // modbus_pack(MODBUS_WRITE_ONE_CMD, pb);
-            modbus_trans(MODBUS_WRITE_ONE_CMD);
             reset_registerTick(MODBUS_TX_TICK_NO);
+            reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
+            modbus_trans(MODBUS_WRITE_MUL_CMD);
         }
+        else
+        {
+            registerTick(MODBUS_TX_TICK_NO, 500);
+            if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //执行mqtt指令，下发命令
+            {
+                modbus_trans(MODBUS_WRITE_ONE_CMD);
+                reset_registerTick(MODBUS_TX_TICK_NO);
+            }
 
+        }
     }
+	
+
     else //read pump every 3s
+		#endif
+   
     {
         registerTick(MODBUS_TX_TICK_NO, 3000);
         if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //周期查询
@@ -238,11 +262,9 @@ void modbus_proc()
             //modbus_pack(MODBUS_READ_CMD, pb);
             reset_registerTick(MODBUS_TX_TICK_NO);
             modbus_trans(MODBUS_READ_CMD);
-
         }
         else
         {
-
             rs485_recv();
 
         }

@@ -56,8 +56,9 @@ float Quantization(float maximum, float minimum, float x);
 float Inverse_quantization(float maximum, float minimum, float qvalues);
 void GetSumGrad(void);
 void GetOUT(void);
-float FuzzyPIDcontroller(float e_max, float e_min, float ec_max, float ec_min, float kp_max, float kp_min, float erro, float erro_c, float ki_max, float ki_min,float kd_max, float kd_min,float erro_pre, float errp_ppre);
+void FuzzyPIDcontroller(float e_max, float e_min, float ec_max, float ec_min, float kp_max, float kp_min, float erro, float erro_c, float ki_max, float ki_min,float kd_max, float kd_min,float erro_pre, float errp_ppre);
 void fuzzy_init(void);
+FuzzyPID_stru *get_pid_params(void);
 
 
 #endif

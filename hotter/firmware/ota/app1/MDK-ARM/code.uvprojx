@@ -543,9 +543,14 @@
               <FilePath>..\Src\pid\FuzzyPID.c</FilePath>
             </File>
             <File>
-              <FileName>pid_test.c</FileName>
+              <FileName>pid.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Src\pid\pid_test.c</FilePath>
+              <FilePath>..\Src\pid\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\filter.c</FilePath>
             </File>
           </Files>
         </Group>
