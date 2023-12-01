@@ -4,8 +4,6 @@
 #include "sys.h"
 #include "config.h"
 #include "equipment_ctrl.h"
-
-
 #include "crc.h"
 
 

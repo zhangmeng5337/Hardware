@@ -122,7 +122,7 @@ void anlysis_mqtt_recv()
 
     valid_flag = 0;
     get_config()->update_setting = 0;
-    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设备ID:  ", "\r\n",
+    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设备ID:  ", ",\r\n",
                     dev_id) == 1)
     {
         if ((strcmp(dev_id, get_config()->user_id)) == 0)
@@ -132,7 +132,7 @@ void anlysis_mqtt_recv()
     if (valid_flag == 1)
     {
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "升级:  ", "\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "升级:  ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -142,7 +142,7 @@ void anlysis_mqtt_recv()
 
         }
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "重启: ", "\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "重启: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -154,7 +154,7 @@ void anlysis_mqtt_recv()
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "机组开关机: ", "\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "机组开关机: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -165,7 +165,7 @@ void anlysis_mqtt_recv()
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设置出水温度: ", "\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设置出水温度: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -176,7 +176,7 @@ void anlysis_mqtt_recv()
 
 
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设置室内温度: ", "\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设置室内温度: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
@@ -187,7 +187,7 @@ void anlysis_mqtt_recv()
 
 
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "数据上传周期: ", "\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "数据上传周期: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
@@ -199,7 +199,7 @@ void anlysis_mqtt_recv()
         unsigned char i;
         for (i = 0; i < ENVIRO_SIZE; i++)
         {
-            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], "\r\n",
+            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], ",\r\n",
                             dev_id) == 1)
             {
                 //index = 0;
@@ -523,7 +523,6 @@ void mqtt_proc()
 
             }
             registerTick(MODBUS_TEMP_TX_TICK_NO, 180000);
-
         }
 
     }
