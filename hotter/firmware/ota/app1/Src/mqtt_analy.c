@@ -313,9 +313,26 @@ void upload()
     mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
+   sprintf(mqtt_send_buf, "{\r\n\
+	   设备ID: "123",\r\n\
+	   运行数据: {\r\n\
+		   出水温度:  "123",\r\n\
+		   回水温度:  "123",\r\n\
+		   泵前压力:  "123",\r\n\
+		   泵后压力:  "123",\r\n\
+		   运行状态:  "123",\r\n\
+		   设备使能状态： "123",\r\n\
+	   },\r\n\
+	   设备参数: {\r\n\
+		   版本号:  "123",\r\n\
+		   设置出水温度:  "123",\r\n\
+		   设置室内温度:  "123",\r\n\
+		   数据上传周期:  "7123"\r\n\
+	   }\r\n\
+   }");
 
 
-    sprintf(mqtt_send_buf, "{\r\n\
+   /* sprintf(mqtt_send_buf, "{\r\n\
 		设备ID: %s,\r\n\
 		运行数据: {\r\n\
 			出水温度: %f,\r\n\
@@ -331,7 +348,7 @@ void upload()
 			设置室内温度: %f,\r\n\
 			数据上传周期: %f\r\n\
 		}\r\n\
-	}\r\n", mqtt_payload_u.devid,
+	}",     mqtt_payload_u.devid,
             mqtt_payload_u.data[TOUT_INDEX],
             mqtt_payload_u.data[TIN_INDEX],
             mqtt_payload_u.data[PUMP_F_INDEX],
@@ -342,7 +359,7 @@ void upload()
             mqtt_payload_u.data[WATER_O_INDEX],
             mqtt_payload_u.data[WATER_IN_INDEX],
             mqtt_payload_u.data[UP_PERIOD_INDEX]);
-
+*/
     mqtt_at_cmd_num = AT_MPUB;
 
     //{
@@ -379,7 +396,8 @@ void mqtt_recv_proc()
 }
 void mqtt_init()
 {
-    mqtt_at_cmd_num = AT_MCONFIG;
+    //mqtt_at_cmd_num = AT_MCONFIG;
+	mqtt_at_cmd_num = AT_MIPSTART;
     mqtt_at_cmds.RtyNum = 0;
     mqtt_recv = get_lte_recv();
     mqtt_at_cmds.net_status = NO_REC;
@@ -402,6 +420,8 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MIPSTART;
+				
+			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
@@ -418,6 +438,8 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MCONNECT;
+				
+			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
@@ -432,6 +454,8 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MSUB;
+				
+			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
@@ -439,7 +463,7 @@ uint8_t mqtt_Info_Show(void)
 
         case AT_MSUB://订阅消息
         {
-            sprintf(buf, "AT+MSUB==%s,%d", get_config()->mqtt_subtopic,
+            sprintf(buf, "AT+MSUB=%s,%d", get_config()->mqtt_subtopic,
                     0);
             if (lte_Send_Cmd(buf, "SUBACK", 20)) //查询AT
             {
@@ -449,13 +473,15 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
+				
+			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
         break;
         case AT_MPUB://发布消息
         {
-            sprintf(buf, "AT+MPUB==%s,%d,%d,%s", get_config()->mqtt_mpubtopic,
+            sprintf(buf, "AT+MPUB=%s,%d,%d,%s", get_config()->mqtt_mpubtopic,
                     0, 0, mqtt_send_buf);
             if (lte_Send_Cmd(buf, "OK", 20)) //查询AT
             {
@@ -465,6 +491,8 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
+				
+			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }

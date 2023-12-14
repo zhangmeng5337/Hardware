@@ -111,7 +111,7 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   hardware_init();
-  CAT1_Init();
+//  CAT1_Init();
 	 //test();
 	// Start_BootLoader();
   /* USER CODE END 2 */

@@ -19,17 +19,17 @@ typedef struct
     unsigned char TickStart[TICK_SIZE] ;
 }tick_stru;
 
-unsigned char GetTickResult(unsigned char TickNo);
+unsigned char GetTickResult(uint32_t TickNo);
 void TickPro(void);
-unsigned char registerTick(unsigned char TickNo,uint32_t ms);
-unsigned char GetTickStatus(unsigned char TickNo);
+unsigned char registerTick(uint32_t TickNo,uint32_t ms);
+unsigned char GetTickStatus(uint32_t TickNo);
 void delay_ms(uint32_t count);
 uint32_t HAL_GetTick(void);
 void systick_config(void);
 void delay_us(uint32_t nCount);
-unsigned char GetTickNum(unsigned char TickNo);
-unsigned char setTickResult(unsigned char TickNo,unsigned char oper);
-void reset_registerTick(unsigned char TickNo);
+unsigned char GetTickNum(uint32_t TickNo);
+unsigned char setTickResult(uint32_t TickNo,unsigned char oper);
+void reset_registerTick(uint32_t TickNo);
 
 #endif
 

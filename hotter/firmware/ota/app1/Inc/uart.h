@@ -13,6 +13,7 @@
 #define LPUART1_REC_SIZE 2000
 typedef struct
 {
+    uint32_t timeout;
 	uint8_t  	Lpuart1RecFlag;
 	uint16_t 	Lpuart1DMARecLen;
 	uint16_t 	Lpuart1RecLen;
