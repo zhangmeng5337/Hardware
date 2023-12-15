@@ -133,13 +133,13 @@ void uart_lte()
         if(Lpuart1type.Lpuart1DMARecLen > 0)
         {
 					
-            memcpy(&Lpuart1type.Lpuart1RecBuff[Lpuart1type.Lpuart1RecLen],Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
+            memcpy(&Lpuart1type.Lpuart1RecBuff,Lpuart1type.Lpuart1DMARecBuff,LPUART1_DMA_REC_SIZE);
             Lpuart1type.Lpuart1RecLen += Lpuart1type.Lpuart1DMARecLen;
 					  Lpuart1type.Lpuart1DMARecLen = 0;
         }
         else
         {
-            memcpy(Lpuart1type.Lpuart1RecBuff,Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
+            memcpy(Lpuart1type.Lpuart1RecBuff,Lpuart1type.Lpuart1DMARecBuff,LPUART1_DMA_REC_SIZE);
             Lpuart1type.Lpuart1RecLen = Lpuart1type.Lpuart1DMARecLen;
 
         }

@@ -35,11 +35,11 @@ void delay_us(uint32_t nCount)
 		}
 	}
 }
-unsigned char registerTick(unsigned char TickNo,uint32_t ms)
+unsigned char registerTick(uint32_t TickNo,uint32_t ms)
 {
 
 
-    if(tick_usr.TickTime[TickNo] ==0)
+    if(tick_usr.TickNum[TickNo] ==0)
     {
         if(tick_usr.TickStart[TickNo]==0)
         {
@@ -59,17 +59,17 @@ unsigned char registerTick(unsigned char TickNo,uint32_t ms)
 
   return 0;
  }
-void reset_registerTick(unsigned char TickNo)
+void reset_registerTick(uint32_t TickNo)
 {
 	tick_usr.TimeEnd[TickNo] = 0;
 	tick_usr.TickStart[TickNo] = 0;
 	tick_usr.TickNum[TickNo] = 0;
 }
-unsigned char GetTickNum(unsigned char TickNo)
+unsigned char GetTickNum(uint32_t TickNo)
 {
    return  tick_usr.TickStart[TickNo];
 }
-unsigned char GetTickResult(unsigned char TickNo)
+unsigned char GetTickResult(uint32_t TickNo)
 {
     return  tick_usr.TimeEnd[TickNo];
 }

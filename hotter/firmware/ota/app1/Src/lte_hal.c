@@ -52,7 +52,7 @@ unsigned char ATRec(char *s)
         }
         else
         {
-            at_cmds.ATStatus = ERROR_STATUS;;
+           ;// at_cmds.ATStatus = ERROR_STATUS;;
         }
         //printf("收到数据：%s", Lpuart1type.Lpuart1RecBuff);
         lte_recv->Lpuart1RecFlag = 0;
@@ -72,7 +72,7 @@ unsigned char ATRec(char *s)
 **********************************************************/
 uint8_t *lte_Check_Cmd(uint8_t *str)
 {
-    char *strx ;
+    uint8_t *strx ;
 
 
 
@@ -95,39 +95,49 @@ uint8_t *lte_Check_Cmd(uint8_t *str)
 uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
 {
     uint8_t res = 0;
-    uint8_t TxBuffer[32];
+    uint8_t TxBuffer[1024];
     uint8_t len;
+	  
 
     // tsLpuart1type *lte_recv;
     // lte_recv = get_lte_recv();
 
-
+   lte_recv->timeout = WaitTime;
+	  memset(TxBuffer,sizeof(TxBuffer),0);
     sprintf((char *)TxBuffer, "%s\r\n", cmd);
     // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
 
-    if (ack && WaitTime)    //需要等待应答
+    if (ack && lte_recv->timeout)    //需要等待应答
     {
-        while (--WaitTime)   //等待倒计时
+        while (--lte_recv->timeout)   //等待倒计时
         {
             if (lte_recv->Lpuart1RecFlag)
-            {
+            {                
+                lte_recv->Lpuart1RecLen = 0;
+                lte_recv->Lpuart1RecFlag = 0;	
                 len = lte_recv->Lpuart1RecLen; //从串口3读取一次数据
-                if (len > 1) //接收期待的应答结果
+               // if (len > 1) //接收期待的应答结果
                 {
                     if (lte_Check_Cmd(ack))
                     {
+						//memset(lte_recv->Lpuart1RecBuff,0,sizeof(lte_recv->Lpuart1RecBuff));
                         break;//得到有效数据
                     }
+					else 
+						
+				   memset(lte_recv->Lpuart1RecBuff,0,sizeof(lte_recv->Lpuart1RecBuff));
 
                 }
-                lte_recv->Lpuart1RecLen = 0;
-                lte_recv->Lpuart1RecFlag = 0;
+
+								
 
             }
 
         }
-        if (WaitTime == 0)
+			
+			 
+        if (lte_recv->timeout == 0)
         {
             res = 1;
         }
@@ -166,7 +176,7 @@ uint8_t lte_Info_Show(void)
     switch (at_cmd_num)
     {
         case AT:
-            if (lte_Send_Cmd("AT", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -177,7 +187,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case ATE0:
-            if (lte_Send_Cmd("ATE0", "OK", 20)) //关闭回显
+            if (lte_Send_Cmd("ATE0", "OK", LTE_SHORT_DELAY)) //关闭回显
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -188,7 +198,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_CPIN:
-            if (lte_Send_Cmd("AT_CPIN", "READY", 20)) //查询sim卡
+            if (lte_Send_Cmd("AT+CPIN?", "READY", LTE_SHORT_DELAY)) //查询sim卡
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -196,10 +206,12 @@ uint8_t lte_Info_Show(void)
             {
                 at_cmds.RtyNum = 0;
                 at_cmd_num = AT_CGSN;
+							 	memset(lte_recv->Lpuart1RecBuff,0,sizeof(lte_recv->Lpuart1RecBuff));
+ 
             }
             break;
         case AT_CGSN:
-            if (lte_Send_Cmd("AT+CGSN", "OK", 20)) //查询imei
+            if (lte_Send_Cmd("AT+CGSN", "OK", LTE_SHORT_DELAY)) //查询imei
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -207,12 +219,13 @@ uint8_t lte_Info_Show(void)
             {
 
                 Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
+				memset(lte_recv->Lpuart1RecBuff,0,sizeof(lte_recv->Lpuart1RecBuff));
                 at_cmds.RtyNum = 0;
                 at_cmd_num = AT_CCID;
             }
             break;
         case AT_CCID:
-            if (lte_Send_Cmd("AT+CCID", "OK", 20)) //
+            if (lte_Send_Cmd("AT+CCID", "OK", LTE_SHORT_DELAY)) //
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -224,14 +237,15 @@ uint8_t lte_Info_Show(void)
             break;
 
         case AT_CGATT:
-            if (lte_Send_Cmd("AT+CGATT?", "+CGATT: 1", 20)) //查询网络附着
+            if (lte_Send_Cmd("AT+CGATT?", "+CGATT: 1", LTE_LONG_DELAY)) //查询网络附着
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
             else
             {
                 at_cmds.RtyNum = 0;
-                at_cmd_num = AT_SAPBR_1;
+               // at_cmd_num = AT_SAPBR_1;
+				at_cmd_num = AT_IDLE;
                 //at_cmds.net_status = NET_CONNECT;
                 // http_info_show();
 
@@ -239,7 +253,7 @@ uint8_t lte_Info_Show(void)
             break;
         //***************************************************http
         case AT_SAPBR_1:
-            if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -250,7 +264,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_SAPBR_2:
-            if (lte_Send_Cmd("AT+SAPBR=3,1,\"APN\",\"\"", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+SAPBR=3,1,\"APN\",\"\"", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -261,7 +275,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_SAPBR_3:
-            if (lte_Send_Cmd("AT+SAPBR=1,1", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+SAPBR=1,1", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -272,7 +286,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPINIT_1:
-            if (lte_Send_Cmd("AT+HTTPINIT", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPINIT", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -283,7 +297,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPPARA_1:
-            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -295,7 +309,7 @@ uint8_t lte_Info_Show(void)
             break;
         case AT_HTTPPARA_2:
             sprintf(buf, "AT+HTTPPARA=\"URL\",%s", get_config()->http_ip);
-            if (lte_Send_Cmd(buf, "OK", 20)) //查询AT
+            if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -306,7 +320,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPACTION_1:
-            if (lte_Send_Cmd("AT+HTTPACTION=0", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPACTION=0", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -317,7 +331,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPREAD_1:
-            if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -340,7 +354,7 @@ uint8_t lte_Info_Show(void)
             break;
         //***********************get bin len*************************
         case AT_HTTPINIT_2:
-            if (lte_Send_Cmd("AT+HTTPINIT", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPINIT", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -351,7 +365,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPPARA_3:
-            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -363,7 +377,7 @@ uint8_t lte_Info_Show(void)
             break;
         case AT_HTTPPARA_4:
             sprintf(buf, "AT+HTTPPARA=\"URL\",%s", get_config()->http_ip);
-            if (lte_Send_Cmd(buf, "OK", 20)) //查询AT
+            if (lte_Send_Cmd(buf, "OK", 1000)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -374,7 +388,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPACTION_2:
-            if (lte_Send_Cmd("AT+HTTPACTION=0", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPACTION=0", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -388,7 +402,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPREAD_2:
-            if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -461,7 +475,7 @@ uint8_t lte_Info_Show(void)
 
         //***********************post data error****************************
         case AT_HTTPINIT_3:
-            if (lte_Send_Cmd("AT+HTTPINIT", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPINIT", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -472,7 +486,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPPARA_5:
-            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -495,7 +509,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPDATA_1:
-            if (lte_Send_Cmd("AT+HTTPDATA=16,10000", "DOWNLOAD", 20)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPDATA=16,10000", "DOWNLOAD", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }
@@ -506,7 +520,7 @@ uint8_t lte_Info_Show(void)
             }
             break;
         case AT_HTTPDATA_2:
-            if (lte_Send_Cmd("data crc error", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("data crc error", "OK", LTE_SHORT_DELAY)) //查询AT
             {
                 at_cmds.RtyNum = at_cmds.RtyNum++;
             }

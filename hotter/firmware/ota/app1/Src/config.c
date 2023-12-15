@@ -13,37 +13,37 @@ void config_save()
 
         index = 1;
         buf[0] = 0x5a;
-        len = sizeof(get_config()->user);
+        len = strlen(get_config()->user);
         memcpy(buf+index, get_config()->user, len);
         index = index + len;
 
-        len = sizeof(get_config()->password);
+        len = strlen(get_config()->password);
         memcpy(buf+index, get_config()->password, len);
         index = index + len;
 
 
-        len = sizeof(get_config()->mqtt_ip);
+        len = strlen(get_config()->mqtt_ip);
         memcpy(buf+index, get_config()->mqtt_ip, len);
         index = index + len;
 
 
-        len = sizeof(get_config()->mqtt_port);
+        len = strlen(get_config()->mqtt_port);
         memcpy(buf+index, get_config()->mqtt_port, len);
         index = index + len;
 
 
 
-        len = sizeof(get_config()->version);
+        len = strlen(get_config()->version);
         memcpy(buf+index, get_config()->version, len);
         index = index + len;
 
 
-        len = sizeof(get_config()->http_ip);
+        len = strlen(get_config()->http_ip);
         memcpy(buf+index, get_config()->http_ip, len);
         index = index + len;
 
 
-        len = sizeof(get_config()->http_port);
+        len = strlen(get_config()->http_port);
         memcpy(buf+index, get_config()->http_port, len);
         index = index + len;
 
@@ -148,8 +148,8 @@ void config_init()
     {
         sprintf(get_config()->user, "%s", "usr");
         sprintf(get_config()->password, "%s", "7895621");
-        sprintf(get_config()->mqtt_ip, "%s", "192.168.1.23");
-        sprintf(get_config()->mqtt_port, "%s", "8080");
+        sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
+        sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", "V1.0.0");
         sprintf(get_config()->http_ip, "%s", "192.168.1.23");
         sprintf(get_config()->http_port, "%s", "8080");
