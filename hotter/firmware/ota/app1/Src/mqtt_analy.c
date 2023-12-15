@@ -313,42 +313,59 @@ void upload()
     mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
-   sprintf(mqtt_send_buf, "{\r\n\
-	   设备ID: "123",\r\n\
-	   运行数据: {\r\n\
-		   出水温度:  "123",\r\n\
-		   回水温度:  "123",\r\n\
-		   泵前压力:  "123",\r\n\
-		   泵后压力:  "123",\r\n\
-		   运行状态:  "123",\r\n\
-		   设备使能状态： "123",\r\n\
-	   },\r\n\
-	   设备参数: {\r\n\
-		   版本号:  "123",\r\n\
-		   设置出水温度:  "123",\r\n\
-		   设置室内温度:  "123",\r\n\
-		   数据上传周期:  "7123"\r\n\
-	   }\r\n\
-   }");
+//   sprintf(mqtt_send_buf, "{\r\n\
+//	   “设备ID”: 123,\r\n\
+//	   运行数据: {\r\n\
+//		   出水温度:  123,\r\n\
+//		   回水温度:  123,\r\n\
+//		   泵前压力:  123,\r\n\
+//		   泵后压力:  123,\r\n\
+//		   运行状态:  123,\r\n\
+//		   设备使能状态： 123,\r\n\
+//	   },\r\n\
+//	   设备参数: {\r\n\
+//		   版本号:  123,\r\n\
+//		   设置出水温度:  123,\r\n\
+//		   设置室内温度:  123,\r\n\
+//		   数据上传周期:  7123\r\n\
+//	   }\r\n\
+//   }");
+
+//{
+//                "设备ID": 123,
+//                "运行数据": {
+//                        "出水温度": 12.000000,
+//                        "回水温度": 7.000000,
+//                        "泵前压力": 5.000000,
+//                        "泵后压力": 3.000000,
+//                        "运行状态": 4,
+//                        "设备使能状态": 5.0},
+//                "设备参数": {
+//                        "版本号": 22,
+//                        "设置出水温度": 1.000000,
+//                        "设置室内温度": 2.000000,
+//                        "数据上周期": 3.000000
+//                }
+//        }
 
 
-   /* sprintf(mqtt_send_buf, "{\r\n\
-		设备ID: %s,\r\n\
-		运行数据: {\r\n\
-			出水温度: %f,\r\n\
-			回水温度: %f,\r\n\
-			泵前压力: %f,\r\n\
-			泵后压力: %f,\r\n\
-			运行状态: %x,\r\n\
-			设备使能状态：%x,\r\n\
+    sprintf(mqtt_send_buf, "{\r\n\
+		“设备ID”: %s,\r\n\
+		“运行数据”: {\r\n\
+			“出水温度”: %f,\r\n\
+			“回水温度”: %f,\r\n\
+			“泵前压力”: %f,\r\n\
+			“泵后压力”: %f,\r\n\
+			“运行状态”: %x,\r\n\
+			“设备使能状态”：%x,\r\n\
 		},\r\n\
-		设备参数: {\r\n\
-			版本号: %s,\r\n\
-			设置出水温度: %f,\r\n\
-			设置室内温度: %f,\r\n\
-			数据上传周期: %f\r\n\
+		“设备参数”: {\r\n\
+			“版本号”: %s,\r\n\
+			“设置出水温度”: %f,\r\n\
+			“设置室内温度”: %f,\r\n\
+			“数据上传周期”: %f\r\n\
 		}\r\n\
-	}",     mqtt_payload_u.devid,
+	}",       mqtt_payload_u.devid,
             mqtt_payload_u.data[TOUT_INDEX],
             mqtt_payload_u.data[TIN_INDEX],
             mqtt_payload_u.data[PUMP_F_INDEX],
@@ -359,7 +376,7 @@ void upload()
             mqtt_payload_u.data[WATER_O_INDEX],
             mqtt_payload_u.data[WATER_IN_INDEX],
             mqtt_payload_u.data[UP_PERIOD_INDEX]);
-*/
+
     mqtt_at_cmd_num = AT_MPUB;
 
     //{
