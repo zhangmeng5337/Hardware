@@ -114,11 +114,11 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
     // lte_recv = get_lte_recv();
 
     lte_recv->timeout = WaitTime;
-    memset(TxBuffer, 1024, 0);
-    sprintf((char *)TxBuffer, "%s", cmd);
+    memset(TxBuffer, sizeof(TxBuffer), 0);
+    sprintf((char *)TxBuffer, "%s\r\n", cmd);
     // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
-  //  printf("%s",TxBuffer);
+
     if (ack && lte_recv->timeout)    //需要等待应答
     {
         while (--lte_recv->timeout)   //等待倒计时
@@ -130,7 +130,7 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
                 if (lte_Check_Cmd(ack))
                 {
                     memcpy(lte_recv->Lpuart1RecBuff, lte_recv->Lpuart1DMARecBuff, lte_recv->Lpuart1DMARecLen);
-                    memset(lte_recv->Lpuart1DMARecBuff, 0, LPUART1_DMA_REC_SIZE);
+                    memset(lte_recv->Lpuart1DMARecBuff, 0, sizeof(lte_recv->Lpuart1DMARecBuff));
                     break;//得到有效数据
                 }
             }
@@ -138,7 +138,7 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
         }
 
     }
-  //  memset(lte_recv->Lpuart1DMARecBuff, 0, LPUART1_DMA_REC_SIZE);
+    memset(lte_recv->Lpuart1DMARecBuff, 0, sizeof(lte_recv->Lpuart1DMARecBuff));
     if (lte_recv->timeout == 0)
     {
         res = 1;
@@ -177,7 +177,7 @@ uint8_t lte_Info_Show(void)
     switch (at_cmd_num)
     {
     case AT:
-        if (lte_Send_Cmd("AT\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
+        if (lte_Send_Cmd("AT", "OK", LTE_SHORT_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -187,27 +187,27 @@ uint8_t lte_Info_Show(void)
         {
             at_cmds.RtyNum = 0;
             at_cmd_num = ATE0;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         break;
     case ATE0:
-        if (lte_Send_Cmd("ATE0\r\n", "OK", LTE_SHORT_DELAY)) //关闭回显
+        if (lte_Send_Cmd("ATE0", "OK", LTE_SHORT_DELAY)) //关闭回显
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         else
         {
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_CPIN;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         break;
     case AT_CPIN:
-        if (lte_Send_Cmd("AT+CPIN?\r\n", "READY", LTE_SHORT_DELAY)) //查询sim卡
+        if (lte_Send_Cmd("AT+CPIN?", "READY", LTE_SHORT_DELAY)) //查询sim卡
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -217,12 +217,12 @@ uint8_t lte_Info_Show(void)
         {
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_CGSN;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         break;
     case AT_CGSN:
-        if (lte_Send_Cmd("AT+CGSN\r\n", "OK", LTE_SHORT_DELAY)) //查询imei
+        if (lte_Send_Cmd("AT+CGSN", "OK", LTE_SHORT_DELAY)) //查询imei
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -232,15 +232,13 @@ uint8_t lte_Info_Show(void)
         {
 
             Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
-			sprintf(get_config()->mqtt_mpubtopic,"%s/%s", "mqtt_mub",get_config()->user_id);
-            sprintf(get_config()->mqtt_subtopic,"%s/%s", "mqtt_sub",get_config()->user_id);
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_CCID;
         }
         break;
     case AT_CCID:
-        if (lte_Send_Cmd("AT+CCID\r\n", "OK", LTE_SHORT_DELAY)) //
+        if (lte_Send_Cmd("AT+CCID", "OK", LTE_SHORT_DELAY)) //
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -250,13 +248,13 @@ uint8_t lte_Info_Show(void)
         {
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_CGATT;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         break;
 
     case AT_CGATT:
-        if (lte_Send_Cmd("AT+CGATT?\r\n", "+CGATT: 1", LTE_LONG_DELAY)) //查询网络附着
+        if (lte_Send_Cmd("AT+CGATT?", "+CGATT: 1", LTE_LONG_DELAY)) //查询网络附着
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -276,7 +274,7 @@ uint8_t lte_Info_Show(void)
         break;
     //***************************************************http
     case AT_SAPBR_1:
-        if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
+        if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"", "OK", LTE_SHORT_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -286,7 +284,7 @@ uint8_t lte_Info_Show(void)
         {
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_SAPBR_2;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         break;
@@ -324,7 +322,7 @@ uint8_t lte_Info_Show(void)
         if (lte_Send_Cmd("AT+HTTPINIT", "OK", LTE_SHORT_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         else
@@ -355,7 +353,7 @@ uint8_t lte_Info_Show(void)
         if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         else
@@ -377,7 +375,7 @@ uint8_t lte_Info_Show(void)
         {
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_HTTPREAD_1;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         break;
@@ -393,7 +391,7 @@ uint8_t lte_Info_Show(void)
             Find_string((char *)lte_recv->Lpuart1RecBuff, "{", "}", Version_buffer);
             if (strcmp(Version_buffer, get_config()->version) == 0)
             {
-               // printf("硬件版本和云端版本一致，无需升级！\r\n");
+                printf("硬件版本和云端版本一致，无需升级！\r\n");
                 at_cmds.RtyNum = 0;
                 at_cmd_num = AT_IDLE;
                 //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -403,7 +401,7 @@ uint8_t lte_Info_Show(void)
             {
                 at_cmds.RtyNum = 0;
                 at_cmd_num = AT_HTTPINIT_2;
-                 
+                // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
             }
 
@@ -429,7 +427,7 @@ uint8_t lte_Info_Show(void)
         if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1", "OK", LTE_SHORT_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         else
@@ -445,7 +443,7 @@ uint8_t lte_Info_Show(void)
         if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         else
@@ -470,7 +468,7 @@ uint8_t lte_Info_Show(void)
 
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_HTTPREAD_2;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         break;
@@ -478,36 +476,28 @@ uint8_t lte_Info_Show(void)
         if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", LTE_SHORT_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
-             
+            // memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
         }
         else
         {
-            int payload_head_index ;
-            uint8_t *tmp;
+            int len_t ;
+					  uint8_t *tmp;
             long compare_len = 0;
             unsigned int crc_re, crc_cal;
-
-
-
-
+					
+			
+					
+					
             memset(Msg_Len, 0x00, sizeof(Msg_Len));
-			/*
-			数据格式：
-			DATA,1024
-			1024byte+2(crc)
-			*/
             Find_string((char *)lte_recv->Lpuart1RecBuff, "DATA,", "\r\n", Msg_Len);
-            compare_len = atoi(Msg_Len);
-            payload_head_index= strrindex(lte_recv->Lpuart1RecBuff, Msg_Len);
-			      payload_head_index = payload_head_index + 2;
+            compare_len = atoi(Msg_Len) - 2;
+			len_t= strrindex(lte_recv->Lpuart1RecBuff, Msg_Len);
+            
 
-     
-            crc_re = lte_recv->Lpuart1RecBuff[payload_head_index+compare_len] << 8;
-            crc_re = crc_re | lte_recv->Lpuart1RecBuff[payload_head_index+compare_len - 1];
-					
-            crc_cal = CRC_Compute(lte_recv->Lpuart1RecBuff[payload_head_index], compare_len);
-					
+            crc_re = lte_recv->Lpuart1RecBuff[len_t+compare_len - 2] << 8;
+            crc_re = crc_re | lte_recv->Lpuart1RecBuff[len_t+compare_len - 1];
+            crc_cal = CRC_Compute(lte_recv->Lpuart1RecBuff, compare_len - 2);
             if (crc_cal != crc_re)
             {
                 at_cmd_num = AT_HTTPINIT_3;
@@ -523,7 +513,7 @@ uint8_t lte_Info_Show(void)
                 Erase_page(Application_2_Addr, 2); //擦除2扇区
             }
 
-            //  len_t = strstr((char *)(lte_recv->Lpuart1RecBuff), Msg_Len);
+          //  len_t = strstr((char *)(lte_recv->Lpuart1RecBuff), Msg_Len);
             //  printf("offset address is: %d\r\n", *len_t);
 
             if (compare_len == 1024)
@@ -531,7 +521,7 @@ uint8_t lte_Info_Show(void)
                 memset(Bin_len, 0x00, sizeof(Bin_len));
                 for (long b = 0; b < 1024; b++)
                 {
-                    Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
+                    Bin_buffer[b] = lte_recv->Lpuart1RecBuff[len_t + b];
                 }
                 /* 接下来将固件写进flash内 */
                 //  printf("烧录第%d包...................\r\n", addr_count);
@@ -545,7 +535,7 @@ uint8_t lte_Info_Show(void)
                 memset(Bin_len, 0x00, sizeof(Bin_len));
                 for (int b = 0; b < 1024; b++)
                 {
-                    Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
+                    Bin_buffer[b] = lte_recv->Lpuart1RecBuff[len_t + b];
                 }
                 /* 接下来将固件写进flash内  */
 

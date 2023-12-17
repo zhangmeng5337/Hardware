@@ -675,14 +675,14 @@ void ads1158_init()
     if (sys_ID == 0x9B)
     {
         //ok
-        printf("ADS1158 ok\r\n");
+       ;// printf("ADS1158 ok\r\n");
     }
     else
     {
         //error
-        printf("ADS1158 failed\r\n");
+     ;//   printf("ADS1158 failed\r\n");
     }
-    printf("ADS1158 id is %d\r\n",sys_ID);
+    //printf("ADS1158 id is %d\r\n",sys_ID);
 
 
     //SPIÐ´0xc0£¨¸´Î»£© Èí¼þ¸´Î»
@@ -705,14 +705,14 @@ void ads1158_init()
     if (sys_ID == 0x9B)
     {
         //ok
-        printf("ADS11582 ok\r\n");
+        ;//printf("ADS11582 ok\r\n");
     }
     else
     {
         //error
-        printf("ADS11582 failed\r\n");
+        ;//printf("ADS11582 failed\r\n");
     }
-    printf("ADS11582 id is %d\r\n",sys_ID);
+   // printf("ADS11582 id is %d\r\n",sys_ID);
     // ads_config();
     ads1158_adc1_data.chip_No = 1;
 }

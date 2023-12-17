@@ -19,84 +19,84 @@ tsLpuart1type *mqtt_recv;
 
 unsigned char *enviro_tem[] =
 {
-    "温度1",
-    "温度2",
-    "温度3",
-    "温度4",
-    "温度5",
-    "温度6",
-    "温度7",
-    "温度8",
-    "温度9",
-    "温度10",
-    "温度11",
-    "温度12",
-    "温度13",
-    "温度14",
-    "温度15",
-    "温度16",
-    "温度17",
-    "温度18",
-    "温度19",
-    "温度20",
-    "温度21",
-    "温度22",
-    "温度23",
-    "温度24",
-    "温度25",
-    "温度26",
-    "温度27",
-    "温度28",
-    "温度29",
-    "温度30",
-    "温度31",
-    "温度32",
-    "温度33",
-    "温度34",
-    "温度35",
-    "温度36",
-    "温度37",
-    "温度38",
-    "温度39",
-    "温度40",
-    "温度41",
-    "温度42",
-    "温度43",
-    "温度44",
-    "温度45",
-    "温度46",
-    "温度47",
-    "温度48",
-    "温度49",
-    "温度50",
-    "温度51",
-    "温度52",
-    "温度53",
-    "温度54",
-    "温度55",
-    "温度56",
-    "温度57",
-    "温度58",
-    "温度59",
-    "温度60",
-    "温度61",
-    "温度62",
-    "温度63",
-    "温度64"
+    "??1",
+    "??2",
+    "??3",
+    "??4",
+    "??5",
+    "??6",
+    "??7",
+    "??8",
+    "??9",
+    "??10",
+    "??11",
+    "??12",
+    "??13",
+    "??14",
+    "??15",
+    "??16",
+    "??17",
+    "??18",
+    "??19",
+    "??20",
+    "??21",
+    "??22",
+    "??23",
+    "??24",
+    "??25",
+    "??26",
+    "??27",
+    "??28",
+    "??29",
+    "??30",
+    "??31",
+    "??32",
+    "??33",
+    "??34",
+    "??35",
+    "??36",
+    "??37",
+    "??38",
+    "??39",
+    "??40",
+    "??41",
+    "??42",
+    "??43",
+    "??44",
+    "??45",
+    "??46",
+    "??47",
+    "??48",
+    "??49",
+    "??50",
+    "??51",
+    "??52",
+    "??53",
+    "??54",
+    "??55",
+    "??56",
+    "??57",
+    "??58",
+    "??59",
+    "??60",
+    "??61",
+    "??62",
+    "??63",
+    "??64"
 };
 mqtt_payload_stru mqtt_payload_u;
 
 
 /*
 /*{
-   "设备ID": "47",
-   "设备控制": {
-	   "升级": 1,
-	   "重启": 1,
-	   "机组开关机": 0,
-	   "设置出水温度": "value",
-	   "设置室内温度": "value",
-	   "数据上传周期": "value"
+   "??ID": "47",
+   "????": {
+	   "??": 1,
+	   "??": 1,
+	   "?????": 0,
+	   "??????": "value",
+	   "??????": "value",
+	   "??????": "value"
    }
 }*/
 
@@ -104,14 +104,14 @@ mqtt_payload_stru mqtt_payload_u;
 void anlysis_mqtt_recv()
 {
     /*{
-       "设备ID": "47",
-       "设备控制": {
-           "升级": 1,
-           "重启": 1,
-           "机组开关机": 0,
-           "设置出水温度": "value",
-           "设置室内温度": "value",
-           "数据上传周期": "value"
+       "??ID": "47",
+       "????": {
+           "??": 1,
+           "??": 1,
+           "?????": 0,
+           "??????": "value",
+           "??????": "value",
+           "??????": "value"
        }
     }*/
     char dev_id[128];
@@ -122,7 +122,7 @@ void anlysis_mqtt_recv()
 
     valid_flag = 0;
     get_config()->update_setting = 0;
-    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设备ID:  ", ",\r\n",
+    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??ID:  ", ",\0D\0A",
                     dev_id) == 1)
     {
         if ((strcmp(dev_id, get_config()->user_id)) == 0)
@@ -132,21 +132,21 @@ void anlysis_mqtt_recv()
     if (valid_flag == 1)
     {
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "升级:  ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??:  ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
-            sprintf(&get_config()->update_firm, "%s", dev_id);//字符串
+            sprintf(&get_config()->update_firm, "%s", dev_id);//????
             tmp_f = atoi(dev_id);
             get_config()->update_firm = tmp_f;
 
         }
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "重启: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??: ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
-            sprintf(&get_config()->reboot, "%s", dev_id); //字符串
+            sprintf(&get_config()->reboot, "%s", dev_id); //????
             tmp_f = atoi(dev_id);
             get_config()->reboot = tmp_f;
 
@@ -154,18 +154,18 @@ void anlysis_mqtt_recv()
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "机组开关机: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "?????: ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
-            //sprintf(&get_config()->machine, "%s", dev_id); //字符串
+            //sprintf(&get_config()->machine, "%s", dev_id); //????
             tmp_f = atoi(dev_id);
             get_config()->machine = tmp_f;
 
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设置出水温度: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??????: ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -176,7 +176,7 @@ void anlysis_mqtt_recv()
 
 
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "设置室内温度: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??????: ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
@@ -187,7 +187,7 @@ void anlysis_mqtt_recv()
 
 
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "数据上传周期: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??????: ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
@@ -199,7 +199,7 @@ void anlysis_mqtt_recv()
         unsigned char i;
         for (i = 0; i < ENVIRO_SIZE; i++)
         {
-            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], ",\r\n",
+            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], ",\0D\0A",
                             dev_id) == 1)
             {
                 //index = 0;
@@ -215,7 +215,7 @@ void anlysis_mqtt_recv()
         float *buf;
         buf = low_temperature_cal(get_config()->indoor_temperature, ENVIRO_SIZE);
         get_temp_cal(buf);
-        fuzzy_proc(0);  //根据室内温度控制
+        fuzzy_proc(0);  //????????
 #endif
         valid_flag = 0;
 
@@ -229,66 +229,66 @@ void anlysis_mqtt_recv()
 
 }
 /*{
-    "设备ID": 47,
-    "运行数据": {
-        "出水温度": 25,
-        "回水温度": 36,
-        "泵前压力": 42,
-        "泵后压力": 4,
-        "运行状态": 4
+    "??ID": 47,
+    "????": {
+        "????": 25,
+        "????": 36,
+        "????": 42,
+        "????": 4,
+        "?????: 4
     },
-    "设备参数": {
-        "版本号": 255,
-        "设置出水温度": 5,
-        "设置室内温度": 8,
-        "数据上传周期": 1
+    "????": {
+        "????: 255,
+        "??????": 5,
+        "??????": 8,
+        "??????": 1
     },
-    "机组状态": {
-        "机组1": {
-            "状态": "异常",
-            "故障码": 254
+    "?????: {
+        "??1": {
+            "???: "??",
+            "????: 254
         },
-        "机组2": {
-            "状态": "正常"
+        "??2": {
+            "???: "??"
         },
-        "机组3": {
-            "状态": "正常"
+        "??3": {
+            "???: "??"
         }
     }
 }*/
 
 /*{
-    "设备ID": 47,
-    "运行数据": {
-        "出水温度": 25,
-        "回水温度": 36,
-        "泵前压力": 42,
-        "泵后压力": 4,
-        "运行状态": 4
+    "??ID": 47,
+    "????": {
+        "????": 25,
+        "????": 36,
+        "????": 42,
+        "????": 4,
+        "?????: 4
     },
-    "设备参数": {
-        "版本号": 255,
-        "设置出水温度": 5,
-        "设置室内温度": 8,
-        "数据上传周期": 1
+    "????": {
+        "????: 255,
+        "??????": 5,
+        "??????": 8,
+        "??????": 1
     }
 }*/
 
-/*else if (ATCmdNum == AT_MPUB)//发布消息
+/*else if (ATCmdNum == AT_MPUB)//????
 {
-	sprintf(send_buffer, "%s%s,%d\r\n",ATCmds[ATCmdNum].ATSendStr,
+	sprintf(send_buffer, "%s%s,%d\0D\0A",ATCmds[ATCmdNum].ATSendStr,
 											 config_usr.mqtt_msubtopic, 0);
 	HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
 	memset(send_buffer, 0x00, strlen(send_buffer));
 	}*/
-char mqtt_send_buf[512];
+char mqtt_send_buf[1024];
 
-//周期上传
+//????
 void upload()
 {
 
 
-
+   
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
     sprintf(mqtt_payload_u.devid, "%s", get_config()->user_id);//devid
@@ -313,59 +313,86 @@ void upload()
     mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
-//   sprintf(mqtt_send_buf, "{\r\n\
-//	   “设备ID”: 123,\r\n\
-//	   运行数据: {\r\n\
-//		   出水温度:  123,\r\n\
-//		   回水温度:  123,\r\n\
-//		   泵前压力:  123,\r\n\
-//		   泵后压力:  123,\r\n\
-//		   运行状态:  123,\r\n\
-//		   设备使能状态： 123,\r\n\
-//	   },\r\n\
-//	   设备参数: {\r\n\
-//		   版本号:  123,\r\n\
-//		   设置出水温度:  123,\r\n\
-//		   设置室内温度:  123,\r\n\
-//		   数据上传周期:  7123\r\n\
-//	   }\r\n\
+//   sprintf(mqtt_send_buf, "{\0D\0A\
+//	   ??ID?? 123,\0D\0A\
+//	   ????: {\0D\0A\
+//		   ????:  123,\0D\0A\
+//		   ????:  123,\0D\0A\
+//		   ????:  123,\0D\0A\
+//		   ????:  123,\0D\0A\
+//		   ?????  123,\0D\0A\
+//		   ??????: 123,\0D\0A\
+//	   },\0D\0A\
+//	   ????: {\0D\0A\
+//		   ????  123,\0D\0A\
+//		   ??????:  123,\0D\0A\
+//		   ??????:  123,\0D\0A\
+//		   ??????:  7123\0D\0A\
+//	   }\0D\0A\
 //   }");
 
 //{
-//                "设备ID": 123,
-//                "运行数据": {
-//                        "出水温度": 12.000000,
-//                        "回水温度": 7.000000,
-//                        "泵前压力": 5.000000,
-//                        "泵后压力": 3.000000,
-//                        "运行状态": 4,
-//                        "设备使能状态": 5.0},
-//                "设备参数": {
-//                        "版本号": 22,
-//                        "设置出水温度": 1.000000,
-//                        "设置室内温度": 2.000000,
-//                        "数据上周期": 3.000000
+//                "??ID": 123,
+//                "????": {
+//                        "????": 12.000000,
+//                        "????": 7.000000,
+//                        "????": 5.000000,
+//                        "????": 3.000000,
+//                        "?????: 4,
+//                        "???????: 5.0},
+//                "????": {
+//                        "????: 22,
+//                        "??????": 1.000000,
+//                        "??????": 2.000000,
+//                        "??????: 3.000000
 //                }
 //        }
 
 
-    sprintf(mqtt_send_buf, "{\r\n\
-		“设备ID”: %s,\r\n\
-		“运行数据”: {\r\n\
-			“出水温度”: %f,\r\n\
-			“回水温度”: %f,\r\n\
-			“泵前压力”: %f,\r\n\
-			“泵后压力”: %f,\r\n\
-			“运行状态”: %x,\r\n\
-			“设备使能状态”：%x,\r\n\
-		},\r\n\
-		“设备参数”: {\r\n\
-			“版本号”: %s,\r\n\
-			“设置出水温度”: %f,\r\n\
-			“设置室内温度”: %f,\r\n\
-			“数据上传周期”: %f\r\n\
-		}\r\n\
-	}",       mqtt_payload_u.devid,
+//    sprintf(mqtt_send_buf, "{\0D\0A\
+//		??ID?? %s,\0D\0A\
+//		?????? {\0D\0A\
+//			?????? %f,\0D\0A\
+//			?????? %f,\0D\0A\
+//			?????? %f,\0D\0A\
+//			?????? %f,\0D\0A\
+//			?????? %x,\0D\0A\
+//			???????%x,\0D\0A\
+//		},\0D\0A\
+//		?????? {\0D\0A\
+//			????? %s,\0D\0A\
+//			???????? %f,\0D\0A\
+//			???????? %f,\0D\0A\
+//			???????? %f\0D\0A\
+//		}\0D\0A\
+//	}",     mqtt_payload_u.devid,
+//            mqtt_payload_u.data[TOUT_INDEX],
+//            mqtt_payload_u.data[TIN_INDEX],
+//            mqtt_payload_u.data[PUMP_F_INDEX],
+//            mqtt_payload_u.data[PUMP_E_INDEX],
+//            mqtt_payload_u.status[DEV_STATUS_INDEX],
+//            mqtt_payload_u.status[DEV_MASK_INDEX],
+//            mqtt_payload_u.version,
+//            mqtt_payload_u.data[WATER_O_INDEX],
+//            mqtt_payload_u.data[WATER_IN_INDEX],
+//            mqtt_payload_u.data[UP_PERIOD_INDEX]);
+    sprintf(mqtt_send_buf, "{\\0D\\0A\
+		\22??ID\22 : %s,\\0D\\0A\
+		\22 ????\22 : {\\0D\\0A\
+			\22 ????\22 : %f,\\0D\\0A\
+			\22 ????\22 : %f,\\0D\\0A\
+			\22 ????\22 : %f,\\0D\\0A\
+			\22 ????\22 : %f,\\0D\\0A\
+			\22 ????\22 : %x,\\0D\\0A\
+			\22 ??????\22 ??x,\\0D\\0A\
+		},\\0D\\0A\
+		\22 ????\22 : {\\0D\\0A\
+			\22 ???\22 : %s,\\0D\\0A\
+			\22 ??????\22 : %f,\\0D\\0A\
+			\22 ??????\22 : %f,\\0D\\0A\
+			\22 ??????\22 : %f\\0D\\0A\
+		}\\0D\\0A\
+	}",     mqtt_payload_u.devid,
             mqtt_payload_u.data[TOUT_INDEX],
             mqtt_payload_u.data[TIN_INDEX],
             mqtt_payload_u.data[PUMP_F_INDEX],
@@ -376,30 +403,33 @@ void upload()
             mqtt_payload_u.data[WATER_O_INDEX],
             mqtt_payload_u.data[WATER_IN_INDEX],
             mqtt_payload_u.data[UP_PERIOD_INDEX]);
+						memset(mqtt_send_buf,0,1024);
 
+						sprintf(mqtt_send_buf,"test mqtt");
+		//mqtt_send_buf = �test mqtt??
     mqtt_at_cmd_num = AT_MPUB;
 
     //{
-    //    "设备ID": "47",
-    //    "运行数据": {
-    //        "出水温度": 1,
-    //        "回水温度": 2,
-    //        "泵前压力": 3,
-    //        "泵后压力": 4,
-    //        "伴热带状态": 5
+    //    "??ID": "47",
+    //    "????": {
+    //        "????": 1,
+    //        "????": 2,
+    //        "????": 3,
+    //        "????": 4,
+    //        "??????: 5
     //    },
-    //    "设备参数": {
-    //        "版本号": 255,
-    //        "故障": 255,
-    //        "设置出水温度": 6,
-    //        "设置室内温度": 7,
-    //        "数据上传周期": 8
+    //    "????": {
+    //        "????: 255,
+    //        "??": 255,
+    //        "??????": 6,
+    //        "??????": 7,
+    //        "??????": 8
     //    }
     //}
 
 
 }
-//void mqtt_msub()//订阅消息
+//void mqtt_msub()//????
 //{
 //	MQTTSendData(1,mqtt_buf);
 
@@ -423,13 +453,14 @@ void mqtt_init()
 uint8_t mqtt_Info_Show(void)
 {
     unsigned char buf[1024];
+	memset(buf,0,1024);
     switch (mqtt_at_cmd_num)
     {
         case AT_MCONFIG:
         {
-            sprintf(buf, "AT+MCONFIG=%s,%s,%s\r\n",
+            sprintf(buf, "AT+MCONFIG=%s,%s,%s\0D\0A",
                     get_config()->user_id, get_config()->user, get_config()->password);
-            if (lte_Send_Cmd(buf, "OK", 20)) //查询AT
+            if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
             }
@@ -438,16 +469,16 @@ uint8_t mqtt_Info_Show(void)
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MIPSTART;
 				
-			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
         break;
         case AT_MIPSTART:
         {
-            sprintf(buf, "AT+MIPSTART=%s,%s", get_config()->mqtt_ip,
+            sprintf(buf, "AT+MIPSTART=%s,%s\r\n", get_config()->mqtt_ip,
                     get_config()->mqtt_port);
-            if (lte_Send_Cmd(buf, "CONNECT OK", 20)) //查询AT
+            if (lte_Send_Cmd(buf, "CONNECT OK", LTE_SHORT_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
             }
@@ -456,14 +487,14 @@ uint8_t mqtt_Info_Show(void)
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MCONNECT;
 				
-			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
         break;
         case AT_MCONNECT:
         {
-            if (lte_Send_Cmd("AT+MCONNECT=1,300", "OK", 20)) //查询AT
+            if (lte_Send_Cmd("AT+MCONNECT=1,3000\r\n", "CONNACK OK", LTE_SHORT_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
             }
@@ -472,17 +503,17 @@ uint8_t mqtt_Info_Show(void)
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MSUB;
 				
-			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
         break;
 
-        case AT_MSUB://订阅消息
+        case AT_MSUB:////subscribe msg
         {
-            sprintf(buf, "AT+MSUB=%s,%d", get_config()->mqtt_subtopic,
+            sprintf(buf, "AT+MSUB=%s,%d\r\n", get_config()->mqtt_subtopic,
                     0);
-            if (lte_Send_Cmd(buf, "SUBACK", 20)) //查询AT
+            if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
             }
@@ -491,16 +522,17 @@ uint8_t mqtt_Info_Show(void)
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
 				
-			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
         break;
-        case AT_MPUB://发布消息
+        case AT_MPUB://public msg
         {
+					  
             sprintf(buf, "AT+MPUB=%s,%d,%d,%s", get_config()->mqtt_mpubtopic,
-                    0, 0, mqtt_send_buf);
-            if (lte_Send_Cmd(buf, "OK", 20)) //查询AT
+                    1,0, mqtt_send_buf);
+            if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
             }
@@ -509,22 +541,22 @@ uint8_t mqtt_Info_Show(void)
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
 				
-			memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
         break;
-        case AT_MPUB_RECV://接收消息
+        case AT_MPUB_RECV://????
         {
 
             unsigned char status;
             status  = ATRec("+MSUB:");
             mqtt_at_cmds.net_status = SUCCESS_REC;
-            if (status == SUCCESS_REC) //查询AT
+            if (status == SUCCESS_REC) //??AT
             {
                 anlysis_mqtt_recv();
             }
-            else if (status == ERROR_STATUS)//异常值
+            else if (status == ERROR_STATUS)//????
             {
                 mqtt_init();
             }
@@ -542,12 +574,12 @@ defautl:
 
 
     }
-    if (mqtt_at_cmds.RtyNum >= 3)
+   /* if (mqtt_at_cmds.RtyNum >= 3)
     {
         CAT1_Init();
         mqtt_at_cmds.net_status = TIME_OUT;
 
-    }
+    }*/
 
     return mqtt_at_cmds.net_status;
 }
@@ -555,15 +587,15 @@ defautl:
 void mqtt_proc()
 {
 
-    if (lte_Info_Show() == NET_CONNECT) //订阅主题
+    if (lte_Info_Show() == NET_CONNECT) //????
     {
-        if (mqtt_Info_Show() == SUCCESS_REC) //mqtt初始化测成功
+        if (mqtt_Info_Show() == SUCCESS_REC) //mqtt??????
         {
             registerTick(MQTT_TX_TICK_NO, 10000);
             if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
             {
                 reset_registerTick(MQTT_TX_TICK_NO);
-                upload();//发布消息
+                upload();//????
                 mqtt_Info_Show();
 
             }
@@ -571,7 +603,7 @@ void mqtt_proc()
         }
 
     }
-    else //无网络本地控制，根据回水温度控制
+    else //???????,????????
     {
         registerTick(MODBUS_TEMP_TX_TICK_NO, 180000);
         if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1) //180s

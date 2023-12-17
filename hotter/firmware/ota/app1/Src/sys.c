@@ -14,10 +14,33 @@ int fputc(int ch, FILE *f)
     unsigned char tmp;
     tmp =(unsigned char )ch;
 
-    //HAL_UART_Transmit(&huart1, &tmp, 1, 500);
+    HAL_UART_Transmit(&huart1, &tmp, 1, 500);
 
     return ch;
 }
+int strrindex(char s[], char t[])
+{
+    int i,j,k,r = -1;
+    for(i = 0; s[i] != '\0'; i++)
+    {
+        k = 0;
+        for(j = i; t[k] !='\0';j++,k++)
+        {
+            if(t[k] == s[j])
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if(t[k] == '\0')
+            r = i;
+    }
+	return r;
+}
+
 /***********************************************************************************
  * º¯ÊıÃû£ºdelay_us
  * ÃèÊö  £ºusÑÓÊ±

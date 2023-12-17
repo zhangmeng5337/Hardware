@@ -22,7 +22,7 @@ int Find_string(char *pcBuf,char *left,char *right, char *pcRes)
 	pcEnd = strstr(pcBegin+strlen(left), right);//找到右边标识
 	if(pcBegin == NULL || pcEnd == NULL || pcBegin > pcEnd)
 	{
-		printf("string name not found!\n");
+		;//printf("string name not found!\n");
 		return 0;
 	}
 	else

@@ -58,7 +58,7 @@ uint32_t GetSectors(uint32_t Addr)
 				 sectors = FLASH_SECTOR_11;
 			}  
 
-        printf("Bank_1\r\n");
+        //printf("Bank_1\r\n");
      
 		
     }
@@ -92,14 +92,14 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;//按页擦除
     FlashSet.Sector  = GetSectors(secaddr);//获取扇区位置
     FlashSet.NbSectors = num;  //擦除的扇区数
-    printf("识别的初始扇区数:%d  共删除%d扇区\r\n",FlashSet.Sector,2);
+   // printf("识别的初始扇区数:%d  共删除%d扇区\r\n",FlashSet.Sector,2);
     /*设置PageError，调用擦除函数*/
     status = HAL_FLASHEx_Erase(&FlashSet, &PageError);
     if (status != HAL_OK)
     {
-        printf("HAL_FLASHEx_Erase  ERROR\r\n");
+       ;// printf("HAL_FLASHEx_Erase  ERROR\r\n");
     }
-    printf("Erase sucessfully!\r\n");
+    //printf("Erase sucessfully!\r\n");
     HAL_FLASH_Lock();
     __enable_irq();
     return 1;

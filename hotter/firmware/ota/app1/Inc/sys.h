@@ -30,6 +30,7 @@ void delay_us(uint32_t nCount);
 unsigned char GetTickNum(uint32_t TickNo);
 unsigned char setTickResult(uint32_t TickNo,unsigned char oper);
 void reset_registerTick(uint32_t TickNo);
+int strrindex(char s[], char t[]);
 
 #endif
 
