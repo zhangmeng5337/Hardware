@@ -1,6 +1,6 @@
 /*************笔记****************
-1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出。
-2、CudeMX配置huart3：
+1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出�?
+2、CudeMX配置huart3�?
    ------------------------------------------
    Mode        --> Asynchronous(异步)
    Baud Rate   --> 9600 Bit/s
@@ -13,9 +13,9 @@
    DMA         --> Add 增加RX TX
                --> Data Width --> Byte
    ------------------------------------------
-3、需要FreeRTOS系统支持，需要"uartext.c"、"uartext.h"
+3、需要FreeRTOS系统支持，需�?uartext.c"�?uartext.h"
 4、本代码末尾有FreeRTOS任务模板。StartGSMTask()
-5、
+5�?
 ***********************************/
 #include "lte_hal.h"
 #include <stdlib.h>
@@ -41,6 +41,7 @@ unsigned char  Bin_buffer[1026] = {0};
 char Bin_len[10];
 unsigned char Msg_Len[10];
 uint32_t addr_count = 0;
+void Start_4G(void);
 /* AT指令接收处理逻辑 */
 unsigned char ATRec(char *s)
 {
@@ -68,7 +69,7 @@ unsigned char ATRec(char *s)
 
 
 
-            //printf("收到数据：%s", Lpuart1type.Lpuart1RecBuff);
+            //printf("收到数据�?s", Lpuart1type.Lpuart1RecBuff);
             lte_recv->Lpuart1RecFlag = 0;
         // lte_recv->Lpuart1RecLen = 0;
     }
@@ -79,15 +80,15 @@ unsigned char ATRec(char *s)
 
 /*********************************************************
 函数名：lte_Check_Cmd
-功  能：发送命令后,检测接收到的应答
-形  参：str--期待的应答结果
-返回值：0--没有得到期待的应答结果 *?*--期待应答结果的位置(str的位置)
-备  注：
+�? 能：发送命令后,检测接收到的应�?
+�? 参：str--期待的应答结�?
+返回值：0--没有得到期待的应答结�?*?*--期待应答结果的位�?str的位�?
+�? 注：
 **********************************************************/
 uint8_t *lte_Check_Cmd(uint8_t *str)
 {
     uint8_t *strx ;
-    strx = strstr((const char *)(lte_recv->Lpuart1DMARecBuff), (const char *)str); //寻找文本(被寻找，欲寻找)
+    strx = strstr((const char *)(lte_recv->Lpuart1DMARecBuff), (const char *)str); //寻找文本(被寻找，欲寻�?
     return (uint8_t *)strx;
 
 }
@@ -95,13 +96,13 @@ uint8_t *lte_Check_Cmd(uint8_t *str)
 
 /********************************************
 函数名：lte_Send_Cmd
-功  能：向GSM发送命令
-形  参：cmd:发送的命令字符串(不需要添加回车了)
-        ack:期待的应答结果,如果为空,则表示不需要等待应答
+�? 能：向GSM发送命�?
+�? 参：cmd:发送的命令字符�?不需要添加回车了)
+        ack:期待的应答结�?如果为空,则表示不需要等待应�?
         waittime:等待时间(单位:100ms)
-返回值：0--发送成功(得到了期待的应答结果)
-        1--发送失败
-备  注：
+返回值：0--发送成�?得到了期待的应答结果)
+        1--发送失�?
+�? 注：
 *********************************************/
 uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
 {
@@ -114,14 +115,14 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
     // lte_recv = get_lte_recv();
 
     lte_recv->timeout = WaitTime;
-    memset(TxBuffer, 1024, 0);
+    memset(TxBuffer, 0, 1024);
     sprintf((char *)TxBuffer, "%s", cmd);
     // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
   //  printf("%s",TxBuffer);
-    if (ack && lte_recv->timeout)    //需要等待应答
+    if (ack && lte_recv->timeout)    //需要等待应�?
     {
-        while (--lte_recv->timeout)   //等待倒计时
+        while (--lte_recv->timeout)   //等待倒计�?
         {
             if (lte_recv->Lpuart1RecFlag)
             {
@@ -145,7 +146,7 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
     }
     return res;
 }
-/*4G开机*/
+/*4G开�?/
 void Start_4G(void)
 {
     lte_init();
@@ -166,10 +167,10 @@ void CAT1_Init(void)
 
 /*********************************************************
 函数名：lte_Info_Show
-功  能：GSM检测(SIM卡准备和是否注册成功)
-形  参：无
+�? 能：GSM检�?SIM卡准备和是否注册成功)
+�? 参：�?
 返回值：2--正常  其他--错误代码
-备  注：
+�? 注：
 **********************************************************/
 uint8_t lte_Info_Show(void)
 {
@@ -207,7 +208,7 @@ uint8_t lte_Info_Show(void)
         }
         break;
     case AT_CPIN:
-        if (lte_Send_Cmd("AT+CPIN?\r\n", "READY", LTE_SHORT_DELAY)) //查询sim卡
+        if (lte_Send_Cmd("AT+CPIN?\r\n", "READY", LTE_SHORT_DELAY)) //查询sim�?
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -232,8 +233,8 @@ uint8_t lte_Info_Show(void)
         {
 
             Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
-			sprintf(get_config()->mqtt_mpubtopic,"%s/%s", "mqtt_mub",get_config()->user_id);
-            sprintf(get_config()->mqtt_subtopic,"%s/%s", "mqtt_sub",get_config()->user_id);
+			sprintf(get_config()->mqtt_mpubtopic,"%s%s", "mqtt_mub_",get_config()->user_id);
+            sprintf(get_config()->mqtt_subtopic,"%s%s", "mqtt_sub_",get_config()->user_id);
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_CCID;
@@ -493,7 +494,7 @@ uint8_t lte_Info_Show(void)
 
             memset(Msg_Len, 0x00, sizeof(Msg_Len));
 			/*
-			数据格式：
+			数据格式�?
 			DATA,1024
 			1024byte+2(crc)
 			*/
@@ -517,7 +518,7 @@ uint8_t lte_Info_Show(void)
             }
 
             // printf("Find_Buf:%lu\r\n", compare_len);
-            if (get_config()->Erase_flag == 1)	  //仅仅开始是擦除flash一次
+            if (get_config()->Erase_flag == 1)	  //仅仅开始是擦除flash一�?
             {
                 get_config()->Erase_flag = 0;
                 Erase_page(Application_2_Addr, 2); //擦除2扇区
@@ -533,8 +534,8 @@ uint8_t lte_Info_Show(void)
                 {
                     Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
                 }
-                /* 接下来将固件写进flash内 */
-                //  printf("烧录第%d包...................\r\n", addr_count);
+                /* 接下来将固件写进flash�?*/
+                //  printf("烧录�?d�?..................\r\n", addr_count);
                 WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), 1024);
                 addr_count++;
                 at_cmds.RtyNum = 0;
@@ -547,9 +548,9 @@ uint8_t lte_Info_Show(void)
                 {
                     Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
                 }
-                /* 接下来将固件写进flash内  */
+                /* 接下来将固件写进flash�? */
 
-                //printf("烧录第%d包...................\r\n", addr_count);
+                //printf("烧录�?d�?..................\r\n", addr_count);
                 WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), compare_len);
                 addr_count = 0;
                 get_config()->Erase_flag = 1;
@@ -653,10 +654,10 @@ defautl:
 
 /********************************************
 函数名：lte_CallNum
-功  能：拨打指定号码
-形  参：*num--手机号码("18977011111")
-返回值：无
-备  注：无
+�? 能：拨打指定号码
+�? 参：*num--手机号码("18977011111")
+返回值：�?
+�? 注：�?
 *********************************************/
 void lte_CallNum(uint8_t *Num)
 {
@@ -668,10 +669,10 @@ void lte_CallNum(uint8_t *Num)
 
 /********************************************
 函数名：lte_CmdShowOff
-功  能：指令不回显
-形  参：无
-返回值：无
-备  注：无
+�? 能：指令不回�?
+�? 参：�?
+返回值：�?
+�? 注：�?
 *********************************************/
 void lte_CmdShowOff(void)
 {
@@ -684,10 +685,10 @@ void lte_CmdShowOff(void)
 
 /********************************************
 函数名：lte_SendEN_SMS
-功  能：设置TEXT文本模式发送英文短信
-形  参：*phone--接收短信的号码  *text--短信内容
-返回值：无
-备  注：lte_SendEN_SMS(“10086”,“123”)
+�? 能：设置TEXT文本模式发送英文短�?
+�? 参：*phone--接收短信的号�? *text--短信内容
+返回值：�?
+�? 注：lte_SendEN_SMS(�?0086�?�?23�?
 *********************************************/
 void lte_SendEN_SMS(uint8_t *phone, uint8_t *text)
 {
@@ -697,14 +698,14 @@ void lte_SendEN_SMS(uint8_t *phone, uint8_t *text)
     lte_Send_Cmd("AT+CSCS=\"GSM\"", "OK", 10); //设置TE字符集为GSM
 
     sprintf((char *)TxBuffer, "AT+CMGS=\"%s\"\r\n", phone);
-    lte_Send_Cmd(TxBuffer, ">", 10);                     //发送短信命令+电话号码
+    lte_Send_Cmd(TxBuffer, ">", 10);                     //发送短信命�?电话号码
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
 
     //UartPutStr(&huart3, text, strlen((char *)text)); //发给串口3,发送短信内容到GSM模块
 
-    delay_us(1000);                                   //必须增加延时,否则接收方接收信息不全
+    delay_us(1000);                                   //必须增加延时,否则接收方接收信息不�?
     if (lte_Send_Cmd("\x1a\r\n", "+CMGS:",
-                     100) == 0) //发送结束符,等待发送完成(最长等待10秒钟,因为短信长了的话,等待时间会长一些)
+                     100) == 0) //发送结束符,等待发送完�?最长等�?0秒钟,因为短信长了的话,等待时间会长一�?
     {
         //  sprintf((char *)TxBuffer, "%d,02,05,SMS Send Success!\r\n", Address);
         // UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//发给串口1方便调试
@@ -716,7 +717,7 @@ void lte_SendEN_SMS(uint8_t *phone, uint8_t *text)
     }
 }
 
-void lte_init()
+void Start_4G()
 {
     HAL_GPIO_WritePin(lte_3_8V_EN_GPIO_Port, lte_3_8V_EN_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(lte_rst_GPIO_Port, lte_rst_Pin, GPIO_PIN_RESET);

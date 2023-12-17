@@ -474,13 +474,29 @@ uint8_t mqtt_Info_Show(void)
 
         }
         break;
+        case AT_MIPCLOSE:
+        {
+            sprintf(buf, "AT+MIPCLOSE\r\n");
+            if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MIPSTART;
+				
+			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
+        }		
         case AT_MIPSTART:
         {
             sprintf(buf, "AT+MIPSTART=%s,%s\r\n", get_config()->mqtt_ip,
                     get_config()->mqtt_port);
-            if (lte_Send_Cmd(buf, "CONNECT OK", LTE_SHORT_DELAY)) //??AT
+            if (lte_Send_Cmd(buf, "CONNECT", LTE_SHORT_DELAY)) //??AT
             {
-                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+               mqtt_at_cmd_num = AT_MIPCLOSE;
             }
             else
             {
@@ -496,7 +512,7 @@ uint8_t mqtt_Info_Show(void)
         {
             if (lte_Send_Cmd("AT+MCONNECT=1,3000\r\n", "CONNACK OK", LTE_SHORT_DELAY)) //??AT
             {
-                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+                mqtt_at_cmd_num = AT_MIPCLOSE;
             }
             else
             {
@@ -515,7 +531,7 @@ uint8_t mqtt_Info_Show(void)
                     0);
             if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY)) //??AT
             {
-                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+                mqtt_at_cmd_num = AT_MIPCLOSE;
             }
             else
             {
@@ -530,14 +546,16 @@ uint8_t mqtt_Info_Show(void)
         case AT_MPUB://public msg
         {
 					  
-            sprintf(buf, "AT+MPUB=%s,%d,%d,%s", get_config()->mqtt_mpubtopic,
+            sprintf(buf, "AT+MPUB=\\22%s\\22,%d,%d,\\22%s\\22\\0D\\0A", get_config()->mqtt_mpubtopic,
                     1,0, mqtt_send_buf);
             if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+							mqtt_at_cmd_num = AT_MIPCLOSE;
             }
             else
             {
+                //mqtt_init();
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
 				

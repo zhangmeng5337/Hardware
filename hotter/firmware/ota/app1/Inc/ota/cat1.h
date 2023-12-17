@@ -40,8 +40,9 @@ typedef enum
     AT_MIPSTART,
     AT_MCONNECT,
     AT_MSUB,
+	AT_MIPCLOSE,
 
-    /*HTTP版本号*/
+    /*HTTP版本�?/
     AT_SAPBR_1,
     AT_SAPBR_2,
     AT_SAPBR_3,
@@ -64,7 +65,7 @@ typedef enum
     AT_HTTPPARA_5,
     AT_HTTPPARA_6,
     AT_HTTPDATA_1,
-    AT_HTTPDATA_2,	//发数据
+    AT_HTTPDATA_2,	//发数�?
     AT_HTTPACTION_6,
     AT_HTTPREAD_POST,
 
@@ -82,7 +83,7 @@ typedef enum
     ERROR_STATUS
 } teATStatus;
 
-/*设置AT指令集的结构体*/
+/*设置AT指令集的结构�?/
 typedef struct
 {
     char *ATSendStr;
