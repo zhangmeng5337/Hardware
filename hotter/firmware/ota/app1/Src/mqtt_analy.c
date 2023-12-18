@@ -492,7 +492,7 @@ uint8_t mqtt_Info_Show(void)
         }		
         case AT_MIPSTART:
         {
-            sprintf(buf, "AT+MIPSTART=%s,%s\r\n", get_config()->mqtt_ip,
+            sprintf(buf, "AT+MIPSTART=\"%s\",\"%s\"\r\n", get_config()->mqtt_ip,
                     get_config()->mqtt_port);
             if (lte_Send_Cmd(buf, "CONNECT", LTE_SHORT_DELAY)) //??AT
             {
@@ -527,7 +527,7 @@ uint8_t mqtt_Info_Show(void)
 
         case AT_MSUB:////subscribe msg
         {
-            sprintf(buf, "AT+MSUB=%s,%d\r\n", get_config()->mqtt_subtopic,
+            sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", get_config()->mqtt_subtopic,
                     0);
             if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY)) //??AT
             {
@@ -546,7 +546,7 @@ uint8_t mqtt_Info_Show(void)
         case AT_MPUB://public msg
         {
 					  
-            sprintf(buf, "AT+MPUB=%s,%d,%d,%s\r\n", get_config()->mqtt_mpubtopic,
+            sprintf(buf, "AT+MPUB=\"%s\",%d,%d,\"%s\"\r\n", get_config()->mqtt_mpubtopic,
                     1,0, mqtt_send_buf);
             if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
             {

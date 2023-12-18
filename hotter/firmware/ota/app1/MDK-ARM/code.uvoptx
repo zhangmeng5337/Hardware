@@ -159,7 +159,7 @@
           <Type>0</Type>
           <LineNumber>129</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134243010</Address>
+          <Address>134242746</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -175,7 +175,7 @@
           <Type>0</Type>
           <LineNumber>549</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134243938</Address>
+          <Address>134243674</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -185,6 +185,22 @@
           <Filename>..\Src\mqtt_analy.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\code\../Src/mqtt_analy.c\549</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>121</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134242706</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\lte_hal.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code\../Src/lte_hal.c\121</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
