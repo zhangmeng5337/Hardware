@@ -57,6 +57,8 @@ typedef enum
     AT_HTTPPARA_3,
     AT_HTTPPARA_4,
     AT_HTTPACTION_2,
+    AT_HTTPACTION_3,
+
     AT_HTTPREAD_2,
     AT_HTTPTERM_1,
     

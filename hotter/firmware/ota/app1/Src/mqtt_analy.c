@@ -377,8 +377,8 @@ void upload()
 //            mqtt_payload_u.data[WATER_IN_INDEX],
 //            mqtt_payload_u.data[UP_PERIOD_INDEX]);
     sprintf(mqtt_send_buf, "{\\0D\\0A\
-		\22??ID\22 : %s,\\0D\\0A\
-		\22 ????\22 : {\\0D\\0A\
+		\22dev ID\22 : %s,\\0D\\0A\
+		\22 out????\22 : {\\0D\\0A\
 			\22 ????\22 : %f,\\0D\\0A\
 			\22 ????\22 : %f,\\0D\\0A\
 			\22 ????\22 : %f,\\0D\\0A\
@@ -546,7 +546,7 @@ uint8_t mqtt_Info_Show(void)
         case AT_MPUB://public msg
         {
 					  
-            sprintf(buf, "AT+MPUB=\\22%s\\22,%d,%d,\\22%s\\22\\0D\\0A", get_config()->mqtt_mpubtopic,
+            sprintf(buf, "AT+MPUB=%s,%d,%d,%s\r\n", get_config()->mqtt_mpubtopic,
                     1,0, mqtt_send_buf);
             if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
             {
