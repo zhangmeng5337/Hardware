@@ -51,6 +51,9 @@ typedef enum
     AT_HTTPDATA_2,	//发数据
     AT_HTTPACTION_6,
     AT_HTTPREAD_POST,
+	AT_HTTPPARA_7,
+	AT_HTTPACTION_21,
+	AT_HTTPTERM_21,
 
     //mqtt订阅消息接收
     AT_MPUB_RECV,
@@ -65,6 +68,7 @@ typedef enum
     SUCCESS_REC = 0,
     TIME_OUT,
     NO_REC,
+    NOT_CONNECT,
     NET_CONNECT,
     ERROR_STATUS
 } teATStatus;

@@ -32,8 +32,9 @@ typedef struct
   //http
     char http_ip[128];//server ip
     char http_port[64];//
-
-	
+    uint16_t seq;
+	uint16_t seq_count;
+	char http_download[128];//ftp url
     //unsigned char temp[24];//temperature
     unsigned char mode;// 0---nativeï¼?----remote
     unsigned char ai_config[32];
