@@ -176,6 +176,23 @@ unsigned char buf[256];
 //***************************************************http
     case AT_HTTPTERM_21:
         //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
+        if (lte_Send_Cmd("AT+CFUN\r\n", "OK", LTE_LONG_DELAY)) //查询AT
+        {
+            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+
+
+        }
+        else
+        {
+            at_cmds_ota.RtyNum = 0;
+            at_cmd_ota_num = AT_HTTPTERM_22;
+            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+        }
+        break;
+
+    case AT_HTTPTERM_22:
+        //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
         if (lte_Send_Cmd("AT+CIPSHUT\r\n", "OK", LTE_LONG_DELAY)) //查询AT
         {
             at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;

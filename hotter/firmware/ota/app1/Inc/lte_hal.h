@@ -54,6 +54,7 @@ typedef enum
 	AT_HTTPPARA_7,
 	AT_HTTPACTION_21,
 	AT_HTTPTERM_21,
+	AT_HTTPTERM_22,
 
     //mqtt订阅消息接收
     AT_MPUB_RECV,
