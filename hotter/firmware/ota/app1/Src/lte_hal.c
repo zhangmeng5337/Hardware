@@ -251,7 +251,7 @@ uint8_t lte_info_ota_show()
             break;
 
         case AT_HTTPREAD_1:
-            if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", LTE_LONG_DELAY)) //查询AT
+            if (lte_Send_Cmd("AT+HTTPREAD\r\n", "+HTTPREAD:", LTE_LONG_DELAY)) //查询AT
             {
                 at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
 
@@ -269,20 +269,20 @@ uint8_t lte_info_ota_show()
                 DATA,1024
                 1024byte+2(crc)
                 */
-                Find_string((char *)lte_recv->Lpuart1RecBuff, "DATA,", "\r\n", Msg_Len);
+                Find_string((char *)lte_recv->Lpuart1RecBuff, "+HTTPREAD:", "\r\n", Msg_Len);
                 compare_len = atoi(Msg_Len);
-                payload_head_index = strrindex(lte_recv->Lpuart1RecBuff, Msg_Len);
-                payload_head_index = payload_head_index + 2;
+                payload_head_index = strrindex(lte_recv->Lpuart1RecBuff, "\r\n");
+                payload_head_index = payload_head_index ;
 
 
-                crc_re = lte_recv->Lpuart1RecBuff[payload_head_index + compare_len] << 8;
+                crc_re = lte_recv->Lpuart1RecBuff[payload_head_index + compare_len-2] << 8;
                 crc_re = crc_re | lte_recv->Lpuart1RecBuff[payload_head_index + compare_len - 1];
 
                 crc_cal = crc16(lte_recv->Lpuart1RecBuff[payload_head_index], compare_len);
 
                 if (crc_cal != crc_re)
                 {
-                    at_cmd_ota_num = AT_HTTPREAD_1;
+                    at_cmd_ota_num = AT_HTTPPARA_2;
                     at_cmds_ota.RtyNum = 0;
 
                     return at_cmds_ota.net_status;
@@ -586,15 +586,16 @@ uint8_t lte_Info_Show(void)
 
                     memcpy(get_config()->version, Version_buffer, strlen(Version_buffer));
                     memset(Version_buffer, 0, 20);
-                    Find_string((char *)lte_recv->Lpuart1RecBuff, ",", ",", Version_buffer);
+                    Find_string((char *)lte_recv->Lpuart1RecBuff, "v", ",", Version_buffer);
                     get_config()->seq = atoi(Version_buffer);
 
                     memset(get_config()->http_download, 0, sizeof(get_config()->http_download));
-                    Find_string((char *)lte_recv->Lpuart1RecBuff, ",", "}", get_config()->http_download);
+					get_config()->http_download[0] = 'h';
+                    Find_string((char *)lte_recv->Lpuart1RecBuff, "h", "}", &get_config()->http_download[1]);
                     at_cmds.RtyNum = 0;
                    // get_config()->seq_count = 1;
                     at_cmd_num = AT_HTTPTERM_21;//get firmware data
-                    at_cmd_ota_num = AT_HTTPTERM_21;
+                    at_cmd_ota_num = AT_HTTPPARA_2;
                     at_cmds_ota.net_status = NOT_CONNECT;
 
                     //get_config()->seq_count ++;
