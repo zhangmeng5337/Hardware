@@ -4,6 +4,8 @@
 
 
 CONFIG_stru config_usr;
+
+
 void config_save()
 {
     //uint32_t addr_count = 0;
@@ -80,6 +82,7 @@ void config_init()
 
     uint32_t head, index, len;
     unsigned char buf[4];
+	ReadFlash(CONFIG_Addr, (uint8_t * )&head, 1);
 
 
     if (head == 0x5a)
@@ -168,11 +171,14 @@ void config_init()
     }
 
 
+	
 
-    sprintf(get_config()->mqtt_mpubtopic,"%s%s", "mqtt_mub",get_config()->user_id);
-    sprintf(get_config()->mqtt_subtopic,"%s%s", "mqtt_sub",get_config()->user_id);
-
-
+    //sprintf(get_config()->mqtt_mpubtopic,"%s%s", PUB,get_config()->user_id);
+    //sprintf(get_config()->mqtt_subtopic,"%s%s", SUB1,get_config()->user_id);
+	get_config()->seq_count = 1;
+  
+	memcpy(&get_config()->sub_sring[1][0],"dev_sub_temp_",strlen("dev_sub_temp_"));
+	memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
 
 
 

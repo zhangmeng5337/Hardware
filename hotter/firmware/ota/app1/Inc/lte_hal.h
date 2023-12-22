@@ -3,7 +3,7 @@
 #include "main.h"
 
 #define LTE_SHORT_DELAY  30000
-#define LTE_LONG_DELAY  1000000
+#define LTE_LONG_DELAY  5000000
 
 typedef enum
 {

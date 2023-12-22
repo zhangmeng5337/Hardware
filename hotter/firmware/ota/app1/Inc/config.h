@@ -18,6 +18,11 @@ index = 5 "鏁版嵁涓婁紶鍛ㄦ�?: "value"*/
 #define UP_PERIOD_INDEX		5
 
 #define ENVIRO_SIZE    64
+
+#define SUB_SIZE 2
+
+
+
 typedef struct
 {
    //mqtt
@@ -60,6 +65,7 @@ typedef struct
 	int addr_count ;
 	int reboot_flag ;
 	int Erase_flag ;
+	unsigned char sub_sring[3][64];
 
 } CONFIG_stru;
 

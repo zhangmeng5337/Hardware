@@ -228,51 +228,59 @@ void anlysis_mqtt_recv()
 
 
 }
-/*{
-    "??ID": 47,
-    "????": {
-        "????": 25,
-        "????": 36,
-        "????": 42,
-        "????": 4,
-        "?????: 4
+/*
+dev---->ser
+{
+    "Dev ID": "866289037465624",
+    "Status Data": {
+        "Out Tem": "45",
+        "In Tem": "26",
+        "Front Pressure": "0.5",
+        "After Pressure": "0.5",
+        "Status": "4"
     },
-    "????": {
-        "????: 255,
-        "??????": 5,
-        "??????": 8,
-        "??????": 1
-    },
-    "?????: {
-        "??1": {
-            "???: "??",
-            "????: 254
-        },
-        "??2": {
-            "???: "??"
-        },
-        "??3": {
-            "???: "??"
-        }
+    "Dev Params": {
+        "Version": "V3.0.1",
+        "Set Out Tem": "45",
+        "Set In Tem": "23",
+        "Upload Period(second)": "10"
     }
 }*/
 
-/*{
-    "??ID": 47,
-    "????": {
-        "????": 25,
-        "????": 36,
-        "????": 42,
-        "????": 4,
-        "?????: 4
-    },
-    "????": {
-        "????: 255,
-        "??????": 5,
-        "??????": 8,
-        "??????": 1
-    }
-}*/
+/*服务端--->设备（周期下发）
+{
+   "Dev ID":  "866289037465624",
+   "Room Temp": {
+               "Room 1 Temp": "15",
+               "Room 2 Temp": "18",
+               "Room 3 Temp": "16",
+               "Room 4 Temp": "17",
+               "Room 5 Temp": "15",
+               "Room 6 Temp": "13",
+               "Room 7 Temp": "12",
+               "Room 8 Temp": "21",
+               "Room 9 Temp": "20",
+               "Room 10 Temp": "15"
+     }
+}*
+
+
+服务端--->设备（周期下发）
+{
+   "Dev ID":  "866289037465624",
+   "Room Temp": {
+               "Room 1 Temp": "15",
+               "Room 2 Temp": "18",
+               "Room 3 Temp": "16",
+               "Room 4 Temp": "17",
+               "Room 5 Temp": "15",
+               "Room 6 Temp": "13",
+               "Room 7 Temp": "12",
+               "Room 8 Temp": "21",
+               "Room 9 Temp": "20",
+               "Room 10 Temp": "15"
+     }
+}/
 
 /*else if (ATCmdNum == AT_MPUB)//????
 {
@@ -288,7 +296,7 @@ void upload()
 {
 
 
-   
+
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
     sprintf(mqtt_payload_u.devid, "%s", get_config()->user_id);//devid
@@ -313,69 +321,69 @@ void upload()
     mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
-//   sprintf(mqtt_send_buf, "{\0D\0A\
-//	   ??ID?? 123,\0D\0A\
-//	   ????: {\0D\0A\
-//		   ????:  123,\0D\0A\
-//		   ????:  123,\0D\0A\
-//		   ????:  123,\0D\0A\
-//		   ????:  123,\0D\0A\
-//		   ?????  123,\0D\0A\
-//		   ??????: 123,\0D\0A\
-//	   },\0D\0A\
-//	   ????: {\0D\0A\
-//		   ????  123,\0D\0A\
-//		   ??????:  123,\0D\0A\
-//		   ??????:  123,\0D\0A\
-//		   ??????:  7123\0D\0A\
-//	   }\0D\0A\
-//   }");
+    //   sprintf(mqtt_send_buf, "{\0D\0A\
+    //	   ??ID?? 123,\0D\0A\
+    //	   ????: {\0D\0A\
+    //		   ????:  123,\0D\0A\
+    //		   ????:  123,\0D\0A\
+    //		   ????:  123,\0D\0A\
+    //		   ????:  123,\0D\0A\
+    //		   ?????  123,\0D\0A\
+    //		   ??????: 123,\0D\0A\
+    //	   },\0D\0A\
+    //	   ????: {\0D\0A\
+    //		   ????  123,\0D\0A\
+    //		   ??????:  123,\0D\0A\
+    //		   ??????:  123,\0D\0A\
+    //		   ??????:  7123\0D\0A\
+    //	   }\0D\0A\
+    //   }");
 
-//{
-//                "??ID": 123,
-//                "????": {
-//                        "????": 12.000000,
-//                        "????": 7.000000,
-//                        "????": 5.000000,
-//                        "????": 3.000000,
-//                        "?????: 4,
-//                        "???????: 5.0},
-//                "????": {
-//                        "????: 22,
-//                        "??????": 1.000000,
-//                        "??????": 2.000000,
-//                        "??????: 3.000000
-//                }
-//        }
+    //{
+    //                "??ID": 123,
+    //                "????": {
+    //                        "????": 12.000000,
+    //                        "????": 7.000000,
+    //                        "????": 5.000000,
+    //                        "????": 3.000000,
+    //                        "?????: 4,
+    //                        "???????: 5.0},
+    //                "????": {
+    //                        "????: 22,
+    //                        "??????": 1.000000,
+    //                        "??????": 2.000000,
+    //                        "??????: 3.000000
+    //                }
+    //        }
 
 
-//    sprintf(mqtt_send_buf, "{\0D\0A\
-//		??ID?? %s,\0D\0A\
-//		?????? {\0D\0A\
-//			?????? %f,\0D\0A\
-//			?????? %f,\0D\0A\
-//			?????? %f,\0D\0A\
-//			?????? %f,\0D\0A\
-//			?????? %x,\0D\0A\
-//			???????%x,\0D\0A\
-//		},\0D\0A\
-//		?????? {\0D\0A\
-//			????? %s,\0D\0A\
-//			???????? %f,\0D\0A\
-//			???????? %f,\0D\0A\
-//			???????? %f\0D\0A\
-//		}\0D\0A\
-//	}",     mqtt_payload_u.devid,
-//            mqtt_payload_u.data[TOUT_INDEX],
-//            mqtt_payload_u.data[TIN_INDEX],
-//            mqtt_payload_u.data[PUMP_F_INDEX],
-//            mqtt_payload_u.data[PUMP_E_INDEX],
-//            mqtt_payload_u.status[DEV_STATUS_INDEX],
-//            mqtt_payload_u.status[DEV_MASK_INDEX],
-//            mqtt_payload_u.version,
-//            mqtt_payload_u.data[WATER_O_INDEX],
-//            mqtt_payload_u.data[WATER_IN_INDEX],
-//            mqtt_payload_u.data[UP_PERIOD_INDEX]);
+    //    sprintf(mqtt_send_buf, "{\0D\0A\
+    //		??ID?? %s,\0D\0A\
+    //		?????? {\0D\0A\
+    //			?????? %f,\0D\0A\
+    //			?????? %f,\0D\0A\
+    //			?????? %f,\0D\0A\
+    //			?????? %f,\0D\0A\
+    //			?????? %x,\0D\0A\
+    //			???????%x,\0D\0A\
+    //		},\0D\0A\
+    //		?????? {\0D\0A\
+    //			????? %s,\0D\0A\
+    //			???????? %f,\0D\0A\
+    //			???????? %f,\0D\0A\
+    //			???????? %f\0D\0A\
+    //		}\0D\0A\
+    //	}",     mqtt_payload_u.devid,
+    //            mqtt_payload_u.data[TOUT_INDEX],
+    //            mqtt_payload_u.data[TIN_INDEX],
+    //            mqtt_payload_u.data[PUMP_F_INDEX],
+    //            mqtt_payload_u.data[PUMP_E_INDEX],
+    //            mqtt_payload_u.status[DEV_STATUS_INDEX],
+    //            mqtt_payload_u.status[DEV_MASK_INDEX],
+    //            mqtt_payload_u.version,
+    //            mqtt_payload_u.data[WATER_O_INDEX],
+    //            mqtt_payload_u.data[WATER_IN_INDEX],
+    //            mqtt_payload_u.data[UP_PERIOD_INDEX]);
     sprintf(mqtt_send_buf, "{\\0D\\0A\
 		\22dev ID\22 : %s,\\0D\\0A\
 		\22 out????\22 : {\\0D\\0A\
@@ -403,10 +411,10 @@ void upload()
             mqtt_payload_u.data[WATER_O_INDEX],
             mqtt_payload_u.data[WATER_IN_INDEX],
             mqtt_payload_u.data[UP_PERIOD_INDEX]);
-						memset(mqtt_send_buf,0,1024);
+    memset(mqtt_send_buf, 0, 1024);
 
-						sprintf(mqtt_send_buf,"test mqtt");
-		//mqtt_send_buf = �test mqtt??
+    sprintf(mqtt_send_buf, "test mqtt");
+    //mqtt_send_buf = �test mqtt??
     mqtt_at_cmd_num = AT_MPUB;
 
     //{
@@ -444,7 +452,7 @@ void mqtt_recv_proc()
 void mqtt_init()
 {
     //mqtt_at_cmd_num = AT_MCONFIG;
-	mqtt_at_cmd_num = AT_MIPSTART;
+    mqtt_at_cmd_num = AT_MIPSTART;
     mqtt_at_cmds.RtyNum = 0;
     mqtt_recv = get_lte_recv();
     mqtt_at_cmds.net_status = NO_REC;
@@ -452,8 +460,10 @@ void mqtt_init()
 }
 uint8_t mqtt_Info_Show(void)
 {
+    static unsigned char msub_count = 0;
+
     unsigned char buf[1024];
-	memset(buf,0,1024);
+    memset(buf, 0, 1024);
     switch (mqtt_at_cmd_num)
     {
         case AT_MCONFIG:
@@ -468,8 +478,8 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MIPSTART;
-				
-			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
@@ -485,25 +495,25 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MIPSTART;
-				
-			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
-        }		
+        }
         case AT_MIPSTART:
         {
             sprintf(buf, "AT+MIPSTART=\"%s\",\"%s\"\r\n", get_config()->mqtt_ip,
                     get_config()->mqtt_port);
             if (lte_Send_Cmd(buf, "CONNECT", LTE_SHORT_DELAY)) //??AT
             {
-               mqtt_at_cmd_num = AT_MIPCLOSE;
+                mqtt_at_cmd_num = AT_MIPCLOSE;
             }
             else
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MCONNECT;
-				
-			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
@@ -518,8 +528,8 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MSUB;
-				
-			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
@@ -527,7 +537,7 @@ uint8_t mqtt_Info_Show(void)
 
         case AT_MSUB:////subscribe msg
         {
-            sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", get_config()->mqtt_subtopic,
+            sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", get_config()->sub_sring[msub_count][0], get_config()->user_id,
                     0);
             if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY)) //??AT
             {
@@ -535,31 +545,44 @@ uint8_t mqtt_Info_Show(void)
             }
             else
             {
+
                 mqtt_at_cmds.RtyNum = 0;
-                mqtt_at_cmd_num = AT_MPUB_RECV;
-				
-			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+                if (msub_count == SUB_SIZE)
+                {
+                    msub_count = 0;
+                    mqtt_at_cmd_num = AT_MPUB_RECV;
+
+                }
+
+                else
+                {
+
+                    msub_count = msub_count ++;
+                }
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
+
         break;
         case AT_MPUB://public msg
         {
-					  
+
             sprintf(buf, "AT+MPUB=\"%s\",%d,%d,\"%s\"\r\n", get_config()->mqtt_mpubtopic,
-                    1,0, mqtt_send_buf);
+                    1, 0, mqtt_send_buf);
             if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
-							mqtt_at_cmd_num = AT_MIPCLOSE;
+                mqtt_at_cmd_num = AT_MIPCLOSE;
             }
             else
             {
                 //mqtt_init();
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
-				
-			//memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
 
         }
@@ -592,12 +615,12 @@ defautl:
 
 
     }
-   /* if (mqtt_at_cmds.RtyNum >= 3)
-    {
-        CAT1_Init();
-        mqtt_at_cmds.net_status = TIME_OUT;
+    /* if (mqtt_at_cmds.RtyNum >= 3)
+     {
+         CAT1_Init();
+         mqtt_at_cmds.net_status = TIME_OUT;
 
-    }*/
+     }*/
 
     return mqtt_at_cmds.net_status;
 }

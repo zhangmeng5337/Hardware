@@ -112,7 +112,7 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
 {
     uint8_t res = 0;
     uint8_t TxBuffer[1024];
-    uint8_t len;
+    //uint8_t len;
 
 
     // tsLpuart1type *lte_recv;
@@ -150,12 +150,6 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
     }
     return res;
 }
-/*4G开�?/
-void Start_4G(void)
-{
-    lte_init();
-
-}
 
 /* 初始化CAT1 */
 void CAT1_Init(void)
@@ -170,269 +164,198 @@ void CAT1_Init(void)
 }
 uint8_t lte_info_ota_show()
 {
-unsigned char buf[256];
+    unsigned char buf[256];
     switch (at_cmd_ota_num)
     {
-//***************************************************http
-    case AT_HTTPTERM_21:
-        //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
-        if (lte_Send_Cmd("AT+CFUN\r\n", "OK", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPTERM_22;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-
-    case AT_HTTPTERM_22:
-        //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
-        if (lte_Send_Cmd("AT+CIPSHUT\r\n", "OK", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_SAPBR_1;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-
-    case AT_SAPBR_1:
-        if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_SAPBR_2;
-
-
-        }
-        break;
-    case AT_SAPBR_2:
-        if (lte_Send_Cmd("AT+SAPBR=3,1,\"APN\",\"\"\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-            //  memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_SAPBR_3;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-    case AT_SAPBR_3:
-        if (lte_Send_Cmd("AT+SAPBR=1,1\r\n", "OK", LTE_LONG_DELAY)) //get active PDP quest
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPINIT_1;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-    case AT_HTTPINIT_1:
-        if (lte_Send_Cmd("AT+HTTPINIT\r\n", "OK", LTE_LONG_DELAY)) //init
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPPARA_1;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-    case AT_HTTPPARA_1:
-        if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1\r\n", "OK", LTE_LONG_DELAY)) //set http params
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPPARA_2;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-    case AT_HTTPPARA_2:
-        sprintf(buf, "AT+HTTPPARA=\"URL\",%s\r\n", get_config()->http_download);//url set
-        if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPACTION_1;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-
-    case AT_HTTPACTION_1:
-        if (lte_Send_Cmd("AT+HTTPACTION=0\r\n", "+HTTPACTION: 0,200,", LTE_LONG_DELAY)) //start get
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPREAD_2;
-
-
-        }
-        break;
-    case AT_HTTPREAD_2:
-        if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            int payload_head_index ;
-            uint8_t *tmp;
-            long compare_len = 0;
-            unsigned int crc_re, crc_cal;
-
-
-
-
-            memset(Msg_Len, 0x00, sizeof(Msg_Len));
-            /*
-            数据格式�?
-            DATA,1024
-            1024byte+2(crc)
-            */
-            Find_string((char *)lte_recv->Lpuart1RecBuff, "DATA,", "\r\n", Msg_Len);
-            compare_len = atoi(Msg_Len);
-            payload_head_index= strrindex(lte_recv->Lpuart1RecBuff, Msg_Len);
-            payload_head_index = payload_head_index + 2;
-
-
-            crc_re = lte_recv->Lpuart1RecBuff[payload_head_index+compare_len] << 8;
-            crc_re = crc_re | lte_recv->Lpuart1RecBuff[payload_head_index+compare_len - 1];
-
-            crc_cal = crc16(lte_recv->Lpuart1RecBuff[payload_head_index], compare_len);
-
-            if (crc_cal != crc_re)
+        //***************************************************http
+        case AT_HTTPTERM_21:
+            //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
+            if (lte_Send_Cmd("AT+HTTPTERM\r\n", "OK", LTE_LONG_DELAY)) //查询AT
             {
-                at_cmd_ota_num = AT_HTTPREAD_2;
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+            }
+            else
+            {
                 at_cmds_ota.RtyNum = 0;
-
-                return at_cmds_ota.net_status;
+                at_cmd_ota_num = AT_HTTPTERM_22;
             }
-            get_config()->seq_count ++;
-            // printf("Find_Buf:%lu\r\n", compare_len);
-            if (get_config()->Erase_flag == 1)	  //begin erase仅仅开始是擦除flash一�?
+            break;
+
+        case AT_HTTPTERM_22:
+            //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
+            if (lte_Send_Cmd("AT+SAPBR=0,1\r\n", "OK", LTE_LONG_DELAY)) //查询AT
             {
-                get_config()->Erase_flag = 0;
-                Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+
+
             }
-
-            //  len_t = strstr((char *)(lte_recv->Lpuart1RecBuff), Msg_Len);
-            //  printf("offset address is: %d\r\n", *len_t);
-
-            if (compare_len == 1024)
+            else
             {
-                memset(Bin_len, 0x00, sizeof(Bin_len));
-                for (long b = 0; b < 1024; b++)
+                at_cmds_ota.RtyNum = 0;
+                at_cmd_ota_num = AT_SAPBR_1;
+            }
+            break;
+
+        case AT_SAPBR_1:
+            if (lte_Send_Cmd("AT+HTTPINIT\r\n", "OK", LTE_LONG_DELAY)) //init
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPPARA_1;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            break;
+        case AT_HTTPPARA_1:
+            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1\r\n", "OK", LTE_LONG_DELAY)) //set http params
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+             }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPPARA_2;
+            }
+            break;
+        case AT_HTTPPARA_2:
+            sprintf(buf, "AT+HTTPPARA=\"URL\",%s%d\r\n", get_config()->http_download, get_config()->seq_count); //url set
+            if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //查询AT
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPACTION_1;
+            }
+            break;
+
+        case AT_HTTPACTION_1:
+            if (lte_Send_Cmd("AT+HTTPACTION=0\r\n", "+HTTPACTION: 0,200,", LTE_LONG_DELAY)) //start get
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPREAD_1;
+
+
+            }
+            break;
+
+        case AT_HTTPREAD_1:
+            if (lte_Send_Cmd("AT+HTTPREAD", "+HTTPREAD:", LTE_LONG_DELAY)) //查询AT
+            {
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+
+
+            }
+            else
+            {
+                int payload_head_index ;
+               // uint8_t *tmp;
+                long compare_len = 0;
+                unsigned int crc_re, crc_cal;
+                memset(Msg_Len, 0x00, sizeof(Msg_Len));
+                /*
+                数据格式�?
+                DATA,1024
+                1024byte+2(crc)
+                */
+                Find_string((char *)lte_recv->Lpuart1RecBuff, "DATA,", "\r\n", Msg_Len);
+                compare_len = atoi(Msg_Len);
+                payload_head_index = strrindex(lte_recv->Lpuart1RecBuff, Msg_Len);
+                payload_head_index = payload_head_index + 2;
+
+
+                crc_re = lte_recv->Lpuart1RecBuff[payload_head_index + compare_len] << 8;
+                crc_re = crc_re | lte_recv->Lpuart1RecBuff[payload_head_index + compare_len - 1];
+
+                crc_cal = crc16(lte_recv->Lpuart1RecBuff[payload_head_index], compare_len);
+
+                if (crc_cal != crc_re)
                 {
-                    Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
+                    at_cmd_ota_num = AT_HTTPREAD_1;
+                    at_cmds_ota.RtyNum = 0;
+
+                    return at_cmds_ota.net_status;
                 }
-                /* 接下来将固件写进flash�?*/
-                //  printf("烧录�?d�?..................\r\n", addr_count);
-                WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), 1024);
-                addr_count++;
-                at_cmds_ota.RtyNum = 0;
-                at_cmd_ota_num = AT_HTTPTERM_21;
-            }
-            else if (compare_len < 1024)
-            {
-                memset(Bin_len, 0x00, sizeof(Bin_len));
-                for (int b = 0; b < 1024; b++)
+
+                if (get_config()->seq_count == get_config()->seq)
                 {
-                    Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
+
+
+					get_config()->seq_count = 0;
+					get_config()->seq = 0;
+                    addr_count = 0;
+                    get_config()->Erase_flag = 1;
+                    get_config()->reboot_flag = 1;
+                    at_cmds_ota.RtyNum = 0;
+                    at_cmd_ota_num = AT_IDLE;
+                    at_cmd_num = AT_IDLE;
+                    // get_config()->update_setting = 1;
+                    OTA_Task();
+
                 }
-                /* 接下来将固件写进flash�? */
+                else
+                {
+                    get_config()->seq_count ++;
+                    // printf("Find_Buf:%lu\r\n", compare_len);
+                    if (get_config()->Erase_flag == 1)	  //begin erase仅仅开始是擦除flash一�?
+                    {
+                        get_config()->Erase_flag = 0;
+                        Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
+                    }
+                    memset(Bin_len, 0x00, sizeof(Bin_len));
+                    for (long b = 0; b < 1024; b++)
+                    {
+                        Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
+                    }
+                    /* 接下来将固件写进flash�?*/
+                    //	printf("烧录�?d�?..................\r\n", addr_count);
+                    WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), compare_len);
+                    addr_count++;
+                    at_cmds_ota.RtyNum = 0;
+                    at_cmd_ota_num = AT_HTTPPARA_2;
 
-                //printf("烧录�?d�?..................\r\n", addr_count);
-                WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), compare_len);
-                addr_count = 0;
-                get_config()->Erase_flag = 1;
-                get_config()->reboot_flag = 1;
-                at_cmds_ota.RtyNum = 0;
-                at_cmd_ota_num = AT_IDLE;
-                at_cmd_num = AT_IDLE;
-                // get_config()->update_setting = 1;
-                OTA_Task();
-                //sprintf(get_config()->version, "%s,", Version_buffer);//user id
+                }
             }
-
-        }
-        break;
+            break;
 
 
 
-    case AT_IDLE:
-        at_cmds_ota.net_status = NET_CONNECT;
+        case AT_IDLE:
+            at_cmds_ota.net_status = NET_CONNECT;
 
-        break;
-    	}
-	        if (at_cmds_ota.RtyNum >= 5)
-        {
-            CAT1_Init();
-            at_cmds_ota.net_status = TIME_OUT;
-
-        }
-        return at_cmds_ota.net_status;
+            break;
     }
-    /*********************************************************
-    函数名：lte_Info_Show
-    �? 能：GSM检�?SIM卡准备和是否注册成功)
-    �? 参：�?
-    返回值：2--正常  其他--错误代码
-    �? 注：
-    **********************************************************/
-    uint8_t lte_Info_Show(void)
+    if (at_cmds_ota.RtyNum >= 5)
     {
-        unsigned char buf[256];
-        switch (at_cmd_num)
-        {
+        CAT1_Init();
+        at_cmds_ota.net_status = TIME_OUT;
+
+    }
+    return at_cmds_ota.net_status;
+}
+/*********************************************************
+函数名：lte_Info_Show
+�? 能：GSM检�?SIM卡准备和是否注册成功)
+�? 参：�?
+返回值：2--正常  其他--错误代码
+�? 注：
+**********************************************************/
+uint8_t lte_Info_Show(void)
+{
+    unsigned char buf[256];
+    switch (at_cmd_num)
+    {
         case AT:
             if (lte_Send_Cmd("AT\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
             {
@@ -489,8 +412,8 @@ unsigned char buf[256];
             {
 
                 Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
-                sprintf(get_config()->mqtt_mpubtopic,"%s%s", "mqtt_mub_",get_config()->user_id);
-                sprintf(get_config()->mqtt_subtopic,"%s%s", "mqtt_sub_",get_config()->user_id);
+                //sprintf(get_config()->mqtt_mpubtopic, "%s%s", "mqtt_mub_", get_config()->user_id);
+               // sprintf(get_config()->mqtt_subtopic, "%s%s", "mqtt_sub_", get_config()->user_id);
                 //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
                 at_cmds.RtyNum = 0;
                 at_cmd_num = AT_CCID;
@@ -654,25 +577,25 @@ unsigned char buf[256];
                     // printf("硬件版本和云端版本一致，无需升级！\r\n");
                     at_cmds.RtyNum = 0;
                     at_cmd_num = AT_IDLE;
-                    get_config()->seq_count =1;
+                   // get_config()->seq_count = 1;
                     //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
                 }
                 else
                 {
 
-                    memcpy(get_config()->version,Version_buffer,strlen(Version_buffer));
-                    memset(Version_buffer,0,20);
+                    memcpy(get_config()->version, Version_buffer, strlen(Version_buffer));
+                    memset(Version_buffer, 0, 20);
                     Find_string((char *)lte_recv->Lpuart1RecBuff, ",", ",", Version_buffer);
                     get_config()->seq = atoi(Version_buffer);
 
-                    memset(get_config()->http_download,0,sizeof(get_config()->http_download));
+                    memset(get_config()->http_download, 0, sizeof(get_config()->http_download));
                     Find_string((char *)lte_recv->Lpuart1RecBuff, ",", "}", get_config()->http_download);
                     at_cmds.RtyNum = 0;
-                    get_config()->seq_count = 1;
+                   // get_config()->seq_count = 1;
                     at_cmd_num = AT_HTTPTERM_21;//get firmware data
                     at_cmd_ota_num = AT_HTTPTERM_21;
-                    at_cmds_ota.net_status =NOT_CONNECT;
+                    at_cmds_ota.net_status = NOT_CONNECT;
 
                     //get_config()->seq_count ++;
 
@@ -682,7 +605,7 @@ unsigned char buf[256];
             break;
 
         case AT_HTTPTERM_21:
-            if(lte_info_ota_show() !=NET_CONNECT)
+            if (lte_info_ota_show() != NET_CONNECT)
             {
 
             }
@@ -690,7 +613,7 @@ unsigned char buf[256];
             {
                 //at_cmds. =NOT_CONNECT;
                 at_cmd_num = AT_IDLE;
-                at_cmd_ota_num = AT_HTTPTERM_21;
+                at_cmd_ota_num = AT_HTTPPARA_2;
                 //at_cmds.net_status =NOT_CONNECT;
                 at_cmds_ota.net_status = NET_CONNECT;
 
@@ -710,97 +633,97 @@ defautl:
             break;
 
 
-        }
-        if (at_cmds.RtyNum >= 8)
-        {
-            CAT1_Init();
-            at_cmds.net_status = TIME_OUT;
-
-        }
-
-        return at_cmds.net_status;
     }
+    if (at_cmds.RtyNum >= 8)
+    {
+        CAT1_Init();
+        at_cmds.net_status = TIME_OUT;
+
+    }
+
+    return at_cmds.net_status;
+}
 //**********************************************************************
 
 
 
 
 
-    /********************************************
-    函数名：lte_CallNum
-    �? 能：拨打指定号码
-    �? 参：*num--手机号码("18977011111")
-    返回值：�?
-    �? 注：�?
-    *********************************************/
-    void lte_CallNum(uint8_t *Num)
+/********************************************
+函数名：lte_CallNum
+�? 能：拨打指定号码
+�? 参：*num--手机号码("18977011111")
+返回值：�?
+�? 注：�?
+*********************************************/
+void lte_CallNum(uint8_t *Num)
+{
+    uint8_t TxBuffer[20];
+    sprintf((char *)TxBuffer, "ATD%s;\r\n", Num);
+    uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
+    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
+}
+
+/********************************************
+函数名：lte_CmdShowOff
+�? 能：指令不回�?
+�? 参：�?
+返回值：�?
+�? 注：�?
+*********************************************/
+void lte_CmdShowOff(void)
+{
+    uint8_t TxBuffer[10];
+    sprintf((char *)TxBuffer, "ATE0\r\n");
+    uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
+    //UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
+}
+
+
+/********************************************
+函数名：lte_SendEN_SMS
+�? 能：设置TEXT文本模式发送英文短�?
+�? 参：*phone--接收短信的号�? *text--短信内容
+返回值：�?
+�? 注：lte_SendEN_SMS(�?0086�?�?23�?
+*********************************************/
+void lte_SendEN_SMS(uint8_t *phone, uint8_t *text)
+{
+    uint8_t TxBuffer[32];
+
+    lte_Send_Cmd("AT+CMGF=1", "OK", 10);       //设置文本模式
+    lte_Send_Cmd("AT+CSCS=\"GSM\"", "OK", 10); //设置TE字符集为GSM
+
+    sprintf((char *)TxBuffer, "AT+CMGS=\"%s\"\r\n", phone);
+    lte_Send_Cmd(TxBuffer, ">", 10);                     //发送短信命�?电话号码
+    uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
+
+    //UartPutStr(&huart3, text, strlen((char *)text)); //发给串口3,发送短信内容到GSM模块
+
+    delay_us(1000);                                   //必须增加延时,否则接收方接收信息不�?
+    if (lte_Send_Cmd("\x1a\r\n", "+CMGS:",
+                     100) == 0) //发送结束符,等待发送完�?最长等�?0秒钟,因为短信长了的话,等待时间会长一�?
     {
-        uint8_t TxBuffer[20];
-        sprintf((char *)TxBuffer, "ATD%s;\r\n", Num);
-        uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
-        // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
+        //  sprintf((char *)TxBuffer, "%d,02,05,SMS Send Success!\r\n", Address);
+        // UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//发给串口1方便调试
     }
-
-    /********************************************
-    函数名：lte_CmdShowOff
-    �? 能：指令不回�?
-    �? 参：�?
-    返回值：�?
-    �? 注：�?
-    *********************************************/
-    void lte_CmdShowOff(void)
+    else
     {
-        uint8_t TxBuffer[10];
-        sprintf((char *)TxBuffer, "ATE0\r\n");
-        uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
-        //UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
+        //sprintf((char *)TxBuffer, "%d,02,05,SMS Send fail!\r\n", Address);
+        //UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//发给串口1方便调试
     }
+}
 
+void Start_4G()
+{
+    HAL_GPIO_WritePin(lte_3_8V_EN_GPIO_Port, lte_3_8V_EN_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(lte_rst_GPIO_Port, lte_rst_Pin, GPIO_PIN_RESET);
+    HAL_Delay(500);
+    //HAL_GPIO_WritePin(lte_pwr_ctrl_GPIO_Port, lte_pwr_ctrl_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(lte_pwr_ctrl_GPIO_Port, lte_pwr_ctrl_Pin, GPIO_PIN_SET);
+    HAL_Delay(3000);
+    HAL_GPIO_WritePin(lte_pwr_ctrl_GPIO_Port, lte_pwr_ctrl_Pin, GPIO_PIN_RESET);
 
-    /********************************************
-    函数名：lte_SendEN_SMS
-    �? 能：设置TEXT文本模式发送英文短�?
-    �? 参：*phone--接收短信的号�? *text--短信内容
-    返回值：�?
-    �? 注：lte_SendEN_SMS(�?0086�?�?23�?
-    *********************************************/
-    void lte_SendEN_SMS(uint8_t *phone, uint8_t *text)
-    {
-        uint8_t TxBuffer[32];
-
-        lte_Send_Cmd("AT+CMGF=1", "OK", 10);       //设置文本模式
-        lte_Send_Cmd("AT+CSCS=\"GSM\"", "OK", 10); //设置TE字符集为GSM
-
-        sprintf((char *)TxBuffer, "AT+CMGS=\"%s\"\r\n", phone);
-        lte_Send_Cmd(TxBuffer, ">", 10);                     //发送短信命�?电话号码
-        uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
-
-        //UartPutStr(&huart3, text, strlen((char *)text)); //发给串口3,发送短信内容到GSM模块
-
-        delay_us(1000);                                   //必须增加延时,否则接收方接收信息不�?
-        if (lte_Send_Cmd("\x1a\r\n", "+CMGS:",
-                         100) == 0) //发送结束符,等待发送完�?最长等�?0秒钟,因为短信长了的话,等待时间会长一�?
-        {
-            //  sprintf((char *)TxBuffer, "%d,02,05,SMS Send Success!\r\n", Address);
-            // UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//发给串口1方便调试
-        }
-        else
-        {
-            //sprintf((char *)TxBuffer, "%d,02,05,SMS Send fail!\r\n", Address);
-            //UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//发给串口1方便调试
-        }
-    }
-
-    void Start_4G()
-    {
-        HAL_GPIO_WritePin(lte_3_8V_EN_GPIO_Port, lte_3_8V_EN_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(lte_rst_GPIO_Port, lte_rst_Pin, GPIO_PIN_RESET);
-        HAL_Delay(500);
-        //HAL_GPIO_WritePin(lte_pwr_ctrl_GPIO_Port, lte_pwr_ctrl_Pin, GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(lte_pwr_ctrl_GPIO_Port, lte_pwr_ctrl_Pin, GPIO_PIN_SET);
-        HAL_Delay(3000);
-        HAL_GPIO_WritePin(lte_pwr_ctrl_GPIO_Port, lte_pwr_ctrl_Pin, GPIO_PIN_RESET);
-
-    }
+}
 
 

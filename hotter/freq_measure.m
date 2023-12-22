@@ -1,26 +1,30 @@
 clear all;
 close all;
 clc;
-load('Z:\D\soft\SerialDebug\dat.txt');
+dat=load('Z:\D\soft\SerialDebug\dat.txt');
+
 len = size(dat);
 len = len(1)
 len = len/2;
 len = round(len);
 len = len*2
 x = dat(1:len-2,1)*1000;
+original = x;
 y=x(:,1); %¶ÁÈ¡Ê±ÓòÊı¾İ
- 
-Fs=1000; %²É¼¯ÆµÂÊ
+
+
+
+Fs=4000; %²É¼¯ÆµÂÊ
  
 T=1/Fs; %²É¼¯Ê±¼ä¼ä¸ô
  
 N=length(y); %²É¼¯ĞÅºÅµÄ³¤¶È
  
 t=(0:1:N-1)*T; %¶¨ÒåÕû¸ö²É¼¯Ê±¼äµã
- 
+
 t=t';  %×ªÖÃ³ÉÁĞÏòÁ¿
 figure(1)
-plot(t,y*1000);
+plot(t,x);
 title('Ô­Ê¼ĞÅºÅ ');
 xlabel('time/s');
 ylabel('voltage/mV');
@@ -40,20 +44,38 @@ plot(t,xd,'b');                                                %Mix_Signal_1 Ğ¡²
 
 %plot(t,y,'black');
 hold on;
-yy=smooth(xd,200);
+yy=smooth(original,4);
+orinal_smooth = yy;
 plot(t,yy,'r');
 title('¹â¸ĞÇ¿¶È ');
 xlabel('time/s');
-ylabel('voltage/V');
+ylabel('voltage/mV');
 legend('¿¨¶ûÂüÂË²¨ĞÅºÅ','Ğ¡²¨ÂË²¨ºóĞÅºÅ2','Æ½»¬´¦Àí'); 
 std_vector = std(yy);
 disp(std_vector);
 % Éú³É²âÊÔĞÅºÅ
-start_t = 111;
-end_t = 112;
+
+
+
+
+
+
+
+
+
+
+
+
+
+clc;
+start_t = 1;
+end_t = start_t+1;    
+
+
+
 step = 1/Fs;
 t = 0:step:(end_t-start_t)-step;   % Ê±¼äÏòÁ¿
-x = yy(start_t/step:end_t/step-1,1); % ĞÅºÅ
+x = orinal_smooth(start_t/step:end_t/step-1,1); % ĞÅºÅ
 
 % »æÖÆĞÅºÅÍ¼
 figure(3)
@@ -64,7 +86,7 @@ xlabel('Ê±¼ä (s)');
 ylabel('·ù¶È');
 
 % ¼ÆËãFFT
-N = length(x);
+N = length(x)/2;
 % len = N/2;
 % N = round(len);
 % N = N*2;
@@ -96,3 +118,4 @@ plot(t,x,'b');
 
 hold on;
 plot(t,IX,'r');
+
