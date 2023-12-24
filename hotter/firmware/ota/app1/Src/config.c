@@ -179,6 +179,7 @@ void config_init()
   
 	memcpy(&get_config()->sub_sring[1][0],"dev_sub_temp_",strlen("dev_sub_temp_"));
 	memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
+	get_config()->Erase_flag = 1;
 
 
 

@@ -1,5 +1,5 @@
 #include "stmflash.h"
-
+#include "main.h"
 /**
 	* @bieaf 	通过地址获取页
 	* @return page
@@ -8,62 +8,63 @@ uint32_t GetSectors(uint32_t Addr)
 {
     uint32_t sectors = 0;
     if (Addr < (FLASH_BASE + FLASH_BANK_SIZE))
-    {   /* Bank 1 */
-		if(Addr<=0x08003FFF&&Addr>=0x08000000)
-			{
-				sectors = FLASH_SECTOR_0;
-		   }
-		   else if(Addr<=0x08007FFF)
-			{
-				sectors = FLASH_SECTOR_1;
-		   }
-		   else if(Addr<=0x0800BFFF)
-			{
-				sectors = FLASH_SECTOR_2;
-		   }   
-		   else if(Addr<= 0x0800FFFF)
-			{
-				sectors = FLASH_SECTOR_3;
-		   } 
-			else if(Addr<=0x0801FFFF)
-			 {
-				 sectors = FLASH_SECTOR_4;
-			}  
-			else if(Addr<= 0x0803FFFF)
-			 {
-				 sectors = FLASH_SECTOR_5;
-			}  
-			else if(Addr<= 0x0805FFFF)
-			 {
-				 sectors = FLASH_SECTOR_6;
-			}  
-			else if(Addr<= 0x0807FFFF)
-			 {
-				 sectors = FLASH_SECTOR_7;
-			} 
-			 else if(Addr<=0x0809FFFF)
-			  {
-				  sectors = FLASH_SECTOR_8;
-			 }	
-			 else if(Addr<= 0x080bFFFF)
-			  {
-				  sectors = FLASH_SECTOR_9;
-			 }	
-			 else if(Addr<= 0x080dFFFF)
-			  {
-				  sectors = FLASH_SECTOR_10;
-			 }	
-			else if(Addr<= 0x080FFFFF)
-			 {
-				 sectors = FLASH_SECTOR_11;
-			}  
+    {
+        /* Bank 1 */
+        if(Addr<=0x08003FFF&&Addr>=0x08000000)
+        {
+            sectors = FLASH_SECTOR_0;
+        }
+        else if(Addr<=0x08007FFF)
+        {
+            sectors = FLASH_SECTOR_1;
+        }
+        else if(Addr<=0x0800BFFF)
+        {
+            sectors = FLASH_SECTOR_2;
+        }
+        else if(Addr<= 0x0800FFFF)
+        {
+            sectors = FLASH_SECTOR_3;
+        }
+        else if(Addr<=0x0801FFFF)
+        {
+            sectors = FLASH_SECTOR_4;
+        }
+        else if(Addr<= 0x0803FFFF)
+        {
+            sectors = FLASH_SECTOR_5;
+        }
+        else if(Addr<= 0x0805FFFF)
+        {
+            sectors = FLASH_SECTOR_6;
+        }
+        else if(Addr<= 0x0807FFFF)
+        {
+            sectors = FLASH_SECTOR_7;
+        }
+        else if(Addr<=0x0809FFFF)
+        {
+            sectors = FLASH_SECTOR_8;
+        }
+        else if(Addr<= 0x080bFFFF)
+        {
+            sectors = FLASH_SECTOR_9;
+        }
+        else if(Addr<= 0x080dFFFF)
+        {
+            sectors = FLASH_SECTOR_10;
+        }
+        else if(Addr<= 0x080FFFFF)
+        {
+            sectors = FLASH_SECTOR_11;
+        }
 
         //printf("Bank_1\r\n");
-     
-		
+
+
     }
-   
-  return sectors;
+
+    return sectors;
 
 }
 
@@ -80,28 +81,35 @@ int Erase_page(uint32_t secaddr, uint32_t num)
 {
     uint32_t PageError = 0;
     HAL_StatusTypeDef status;
-    __disable_irq();
-    //清除标志位，经测试 必要！！！
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR
-                           | FLASH_FLAG_PGSERR |  FLASH_FLAG_BSY);
-    HAL_FLASH_Unlock();
     /* 擦除FLASH*/
-    FLASH_EraseInitTypeDef FlashSet;  
-	  FlashSet.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+    FLASH_EraseInitTypeDef FlashSet;
+    HAL_FLASH_Unlock();
+    /* Fill EraseInit structure*/
+
+    /* Fill EraseInit structure*/
+    FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;
+    FlashSet.VoltageRange = FLASH_VOLTAGE_RANGE_3;
     FlashSet.Banks   = FLASH_BANK_1;	//STM32L431RCT6只有Bank1
-    FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;//按页擦除
-    FlashSet.Sector  = GetSectors(secaddr);//获取扇区位置
-    FlashSet.NbSectors = num;  //擦除的扇区数
-   // printf("识别的初始扇区数:%d  共删除%d扇区\r\n",FlashSet.Sector,2);
-    /*设置PageError，调用擦除函数*/
-    status = HAL_FLASHEx_Erase(&FlashSet, &PageError);
-    if (status != HAL_OK)
-    {
-       ;// printf("HAL_FLASHEx_Erase  ERROR\r\n");
-    }
-    //printf("Erase sucessfully!\r\n");
+    FlashSet.Sector = GetSectors(secaddr);
+    FlashSet.NbSectors = num;
+    HAL_FLASHEx_Erase(&FlashSet, &PageError);
+
+    /* Note: If an erase operation in Flash memory also concerns data in the data or instruction cache,
+    you have to make sure that these data are rewritten before they are accessed during code
+    execution. If this cannot be done safely, it is recommended to flush the caches by setting the
+    DCRST and ICRST bits in the FLASH_CR register. */
+    __HAL_FLASH_DATA_CACHE_DISABLE();
+    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
+
+    __HAL_FLASH_DATA_CACHE_RESET();
+    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
+
+    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
+    __HAL_FLASH_DATA_CACHE_ENABLE();
+
+    /* Lock the Flash to disable the flash control register access (recommended
+    to protect the FLASH memory against possible unwanted operation) *********/
     HAL_FLASH_Lock();
-    __enable_irq();
     return 1;
 }
 
@@ -116,12 +124,21 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
     int i = 0;
     /* 解锁FLASH */
     HAL_FLASH_Unlock();
+    __HAL_FLASH_DATA_CACHE_DISABLE();
+    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
 
-    /* 对FLASH烧写 */
+    __HAL_FLASH_DATA_CACHE_RESET();
+    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
+
+    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
+    __HAL_FLASH_DATA_CACHE_ENABLE();
+
     for( i= 0; i < buf_len; i+=4)
+
     {
         HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, addr+i, *(uint32_t*)(buff+i));
     }
+
 
     /* 上锁FLASH */
     HAL_FLASH_Lock();

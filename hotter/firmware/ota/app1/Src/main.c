@@ -110,7 +110,11 @@ int main(void)
   MX_USART1_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+	unsigned char buf[2];
+	buf[0] = 0x01;
+	buf[1] = 0x02;
   hardware_init();
+	crc16(buf, 2);
 //  CAT1_Init();
 	 //test();
 	// Start_BootLoader();

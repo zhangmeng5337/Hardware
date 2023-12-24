@@ -21,8 +21,7 @@ void uart_init()
 {
     HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
-    HAL_UART_Receive_DMA(&huart1, Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
-
+        HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
     __HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
     HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);
 
@@ -139,6 +138,33 @@ rs485_stru *get_uart_recv(unsigned char uart_num)
 void uart_lte()
 
 {
+	
+	
+	
+	      if(Lpuart1type.Lpuart1RecLen > 0)
+       {
+					
+            memcpy(&Lpuart1type.Lpuart1RecBuff[Lpuart1type.Lpuart1RecLen],Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
+            Lpuart1type.Lpuart1RecLen += Lpuart1type.Lpuart1DMARecLen;
+        }
+        else
+        {
+            memcpy(Lpuart1type.Lpuart1RecBuff,Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
+            Lpuart1type.Lpuart1RecLen = Lpuart1type.Lpuart1DMARecLen;
+
+        }
+        memset(Lpuart1type.Lpuart1DMARecBuff,0x00,LPUART1_DMA_REC_SIZE);
+       // Lpuart1type.Lpuart1RecFlag = 1;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	HAL_UART_DMAResume(&huart1);
     HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
     Lpuart1type.Lpuart1RecFlag = 1;
 }
