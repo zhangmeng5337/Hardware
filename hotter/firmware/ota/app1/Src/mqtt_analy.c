@@ -99,7 +99,37 @@ mqtt_payload_stru mqtt_payload_u;
 	   "??????": "value"
    }
 }*/
+/*
+服务端--->设备（周期下发）
+{
+   "Dev ID":  "866289037465624",
+   "Room Temp": {
+               "Room 1 Temp": "15",
+               "Room 2 Temp": "18",
+               "Room 3 Temp": "16",
+               "Room 4 Temp": "17",
+               "Room 5 Temp": "15",
+               "Room 6 Temp": "13",
+               "Room 7 Temp": "12",
+               "Room 8 Temp": "21",
+               "Room 9 Temp": "20",
+               "Room 10 Temp": "15"
+     }
+}
 
+*/
+/*服务端--->设备
+{
+   "Dev ID":  "866289037465624",
+   "Dev Ctrl": {
+               "Updat Frimware": "1",
+               "Reboot Dev": "1",
+               "Power ctrl": "1",
+               "Set Out Temp": "45",
+               "Set Room Temp": "23",
+               "Set Upload Period(second)": "13"
+     }
+}*/
 
 void anlysis_mqtt_recv()
 {
@@ -122,7 +152,7 @@ void anlysis_mqtt_recv()
 
     valid_flag = 0;
     get_config()->update_setting = 0;
-    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??ID:  ", ",\0D\0A",
+    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Dev ID:  ", ",\r\n",
                     dev_id) == 1)
     {
         if ((strcmp(dev_id, get_config()->user_id)) == 0)
@@ -132,7 +162,7 @@ void anlysis_mqtt_recv()
     if (valid_flag == 1)
     {
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??:  ", ",\0D\0A",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Updat Frimware: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -142,7 +172,7 @@ void anlysis_mqtt_recv()
 
         }
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??: ", ",\0D\0A",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Reboot Dev: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -154,7 +184,7 @@ void anlysis_mqtt_recv()
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "?????: ", ",\0D\0A",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Power ctrl: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -165,7 +195,7 @@ void anlysis_mqtt_recv()
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??????: ", ",\0D\0A",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Out Temp: ", ",\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
@@ -176,7 +206,7 @@ void anlysis_mqtt_recv()
 
 
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??????: ", ",\0D\0A",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Room Temp: ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
@@ -187,7 +217,7 @@ void anlysis_mqtt_recv()
 
 
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "??????: ", ",\0D\0A",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Upload Period(second): ", ",\0D\0A",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
@@ -199,7 +229,7 @@ void anlysis_mqtt_recv()
         unsigned char i;
         for (i = 0; i < ENVIRO_SIZE; i++)
         {
-            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], ",\0D\0A",
+            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], ",\r\n",
                             dev_id) == 1)
             {
                 //index = 0;
@@ -264,8 +294,20 @@ dev---->ser
      }
 }*
 
+/*服务端--->设备
+{
+   "Dev ID":  "866289037465624",
+   "Dev Ctrl": {
+               "Updat Frimware": "1",
+               "Reboot Dev": "1",
+               "Power ctrl": "1",
+               "Set Out Temp": "45",
+               "Set Room Temp": "23",
+               "Set Upload Period(second)": "13"
+     }
+}*/
 
-服务端--->设备（周期下发）
+/*服务端--->设备（周期下发）
 {
    "Dev ID":  "866289037465624",
    "Room Temp": {
@@ -280,7 +322,7 @@ dev---->ser
                "Room 9 Temp": "20",
                "Room 10 Temp": "15"
      }
-}/
+}*/
 
 /*else if (ATCmdNum == AT_MPUB)//????
 {
@@ -321,119 +363,75 @@ void upload()
     mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
-    //   sprintf(mqtt_send_buf, "{\0D\0A\
-    //	   ??ID?? 123,\0D\0A\
-    //	   ????: {\0D\0A\
-    //		   ????:  123,\0D\0A\
-    //		   ????:  123,\0D\0A\
-    //		   ????:  123,\0D\0A\
-    //		   ????:  123,\0D\0A\
-    //		   ?????  123,\0D\0A\
-    //		   ??????: 123,\0D\0A\
-    //	   },\0D\0A\
-    //	   ????: {\0D\0A\
-    //		   ????  123,\0D\0A\
-    //		   ??????:  123,\0D\0A\
-    //		   ??????:  123,\0D\0A\
-    //		   ??????:  7123\0D\0A\
-    //	   }\0D\0A\
-    //   }");
+    /*
+    dev---->ser
+    {
+      "Dev ID": "866289037465624",
+      "Status Data": {
+          "Out Tem": "45",
+          "In Tem": "26",
+          "Front Pressure": "0.5",
+          "After Pressure": "0.5",
+          "Status": "4"
+      },
+      "Dev Params": {
+          "Version": "V3.0.1",
+          "Set Out Tem": "45",
+          "Set In Tem": "23",
+          "Upload Period(second)": "10"
+      }
+    }*/
+    sprintf(mqtt_send_buf, "{\\0D\\0A\\
+            \\22Dev ID\\22: %s,\\0D\\0A\\
+            \\22Status Data\\22: {\\0D\\0A\\
+                                  \\22Out Tem\\22: %f,\\0D\\0A\\
+                                  \\22In Tem\\22: %f,\\0D\\0A\\
+                                  \\22Front Pressure\\22: %f,\\0D\\0A\\
+                                  \\22After Pressure\\22: %f,\\0D\\0A\\
+                                  \\22Status\\22: %d\\0D\\0A\\
+                                 },\\0D\\0A\\
+            \\22Dev Params\\22: {\\0D\\0A\\
+                                 \\22Version\\22: %s,\\0D\\0A\\
+                                 \\22Set Out Tem\\22: %f,\\0D\\0A\\
+                                 \\22Set In Tem\\22: %f,\\0D\\0A\\
+                                 \\22Upload Period(second)\\22: %d\\0D\\0A\\
+                                }\\0D\\0A\\
+}", mqtt_payload_u.devid,
+mqtt_payload_u.data[TOUT_INDEX],
+                    mqtt_payload_u.data[TIN_INDEX],
+                    mqtt_payload_u.data[PUMP_F_INDEX],
+                    mqtt_payload_u.data[PUMP_E_INDEX],
+                    mqtt_payload_u.status[DEV_STATUS_INDEX],
+                    mqtt_payload_u.status[DEV_MASK_INDEX],
+                    mqtt_payload_u.version,
+                    mqtt_payload_u.data[WATER_O_INDEX],
+                    mqtt_payload_u.data[WATER_IN_INDEX],
+                    mqtt_payload_u.data[UP_PERIOD_INDEX]);
+// sprintf(mqtt_send_buf,"{\\0D\\0A\\
+//   }");
 
-    //{
-    //                "??ID": 123,
-    //                "????": {
-    //                        "????": 12.000000,
-    //                        "????": 7.000000,
-    //                        "????": 5.000000,
-    //                        "????": 3.000000,
-    //                        "?????: 4,
-    //                        "???????: 5.0},
-    //                "????": {
-    //                        "????: 22,
-    //                        "??????": 1.000000,
-    //                        "??????": 2.000000,
-    //                        "??????: 3.000000
-    //                }
-    //        }
 
+//   sprintf(mqtt_send_buf, "test mqtt");
+//mqtt_send_buf = �test mqtt??
+mqtt_at_cmd_num = AT_MPUB;
 
-    //    sprintf(mqtt_send_buf, "{\0D\0A\
-    //		??ID?? %s,\0D\0A\
-    //		?????? {\0D\0A\
-    //			?????? %f,\0D\0A\
-    //			?????? %f,\0D\0A\
-    //			?????? %f,\0D\0A\
-    //			?????? %f,\0D\0A\
-    //			?????? %x,\0D\0A\
-    //			???????%x,\0D\0A\
-    //		},\0D\0A\
-    //		?????? {\0D\0A\
-    //			????? %s,\0D\0A\
-    //			???????? %f,\0D\0A\
-    //			???????? %f,\0D\0A\
-    //			???????? %f\0D\0A\
-    //		}\0D\0A\
-    //	}",     mqtt_payload_u.devid,
-    //            mqtt_payload_u.data[TOUT_INDEX],
-    //            mqtt_payload_u.data[TIN_INDEX],
-    //            mqtt_payload_u.data[PUMP_F_INDEX],
-    //            mqtt_payload_u.data[PUMP_E_INDEX],
-    //            mqtt_payload_u.status[DEV_STATUS_INDEX],
-    //            mqtt_payload_u.status[DEV_MASK_INDEX],
-    //            mqtt_payload_u.version,
-    //            mqtt_payload_u.data[WATER_O_INDEX],
-    //            mqtt_payload_u.data[WATER_IN_INDEX],
-    //            mqtt_payload_u.data[UP_PERIOD_INDEX]);
-    sprintf(mqtt_send_buf, "{\\0D\\0A\
-		\22dev ID\22 : %s,\\0D\\0A\
-		\22 out????\22 : {\\0D\\0A\
-			\22 ????\22 : %f,\\0D\\0A\
-			\22 ????\22 : %f,\\0D\\0A\
-			\22 ????\22 : %f,\\0D\\0A\
-			\22 ????\22 : %f,\\0D\\0A\
-			\22 ????\22 : %x,\\0D\\0A\
-			\22 ??????\22 ??x,\\0D\\0A\
-		},\\0D\\0A\
-		\22 ????\22 : {\\0D\\0A\
-			\22 ???\22 : %s,\\0D\\0A\
-			\22 ??????\22 : %f,\\0D\\0A\
-			\22 ??????\22 : %f,\\0D\\0A\
-			\22 ??????\22 : %f\\0D\\0A\
-		}\\0D\\0A\
-	}",     mqtt_payload_u.devid,
-            mqtt_payload_u.data[TOUT_INDEX],
-            mqtt_payload_u.data[TIN_INDEX],
-            mqtt_payload_u.data[PUMP_F_INDEX],
-            mqtt_payload_u.data[PUMP_E_INDEX],
-            mqtt_payload_u.status[DEV_STATUS_INDEX],
-            mqtt_payload_u.status[DEV_MASK_INDEX],
-            mqtt_payload_u.version,
-            mqtt_payload_u.data[WATER_O_INDEX],
-            mqtt_payload_u.data[WATER_IN_INDEX],
-            mqtt_payload_u.data[UP_PERIOD_INDEX]);
-    memset(mqtt_send_buf, 0, 1024);
-
-    sprintf(mqtt_send_buf, "test mqtt");
-    //mqtt_send_buf = �test mqtt??
-    mqtt_at_cmd_num = AT_MPUB;
-
-    //{
-    //    "??ID": "47",
-    //    "????": {
-    //        "????": 1,
-    //        "????": 2,
-    //        "????": 3,
-    //        "????": 4,
-    //        "??????: 5
-    //    },
-    //    "????": {
-    //        "????: 255,
-    //        "??": 255,
-    //        "??????": 6,
-    //        "??????": 7,
-    //        "??????": 8
-    //    }
-    //}
+//{
+//    "??ID": "47",
+//    "????": {
+//        "????": 1,
+//        "????": 2,
+//        "????": 3,
+//        "????": 4,
+//        "??????: 5
+//    },
+//    "????": {
+//        "????: 255,
+//        "??": 255,
+//        "??????": 6,
+//        "??????": 7,
+//        "??????": 8
+//    }
+//}
 
 
 }
@@ -537,7 +535,10 @@ uint8_t mqtt_Info_Show(void)
 
         case AT_MSUB:////subscribe msg
         {
-            sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", get_config()->sub_sring[msub_count][0], get_config()->user_id,
+            //dev_sub_temp_
+            unsigned char str[128];
+            // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+            sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_ctrl_", get_config()->user_id,
                     0);
             if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY)) //??AT
             {
@@ -547,18 +548,18 @@ uint8_t mqtt_Info_Show(void)
             {
 
                 mqtt_at_cmds.RtyNum = 0;
-                if (msub_count == SUB_SIZE)
+                //                if (msub_count == SUB_SIZE)
                 {
                     msub_count = 0;
                     mqtt_at_cmd_num = AT_MPUB_RECV;
 
                 }
 
-                else
-                {
-
-                    msub_count = msub_count ++;
-                }
+                //                else
+                //                {
+                //
+                //                    msub_count = msub_count ++;
+                //                }
 
                 //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
@@ -569,7 +570,7 @@ uint8_t mqtt_Info_Show(void)
         case AT_MPUB://public msg
         {
 
-            sprintf(buf, "AT+MPUB=\"%s\",%d,%d,\"%s\"\r\n", get_config()->mqtt_mpubtopic,
+            sprintf(buf, "AT+MPUB=\"%s%s\",%d,%d,\"%s\"\r\n", get_config()->mqtt_mpubtopic, get_config()->user_id,
                     1, 0, mqtt_send_buf);
             if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
             {

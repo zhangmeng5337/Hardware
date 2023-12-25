@@ -157,9 +157,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>370</LineNumber>
+          <LineNumber>328</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134243430</Address>
+          <Address>134243438</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,71 +168,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\lte_hal.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/lte_hal.c\370</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>592</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134241888</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\lte_hal.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/lte_hal.c\592</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>117</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134243718</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/main.c\117</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>132</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134243728</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/main.c\132</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>90</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134240240</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\crc.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/crc.c\90</Expression>
+          <Expression>\\app\../Src/lte_hal.c\328</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -404,12 +340,12 @@
         <Ww>
           <count>33</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TxBuffer</ItemText>
+          <ItemText>TxBuffer,0x10</ItemText>
         </Ww>
         <Ww>
           <count>34</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tick_usr</ItemText>
+          <ItemText>msub_count</ItemText>
         </Ww>
         <Ww>
           <count>35</count>
@@ -466,12 +402,52 @@
           <WinNumber>1</WinNumber>
           <ItemText>uchCRCLo</ItemText>
         </Ww>
+        <Ww>
+          <count>46</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>uchCRCHi</ItemText>
+        </Ww>
+        <Ww>
+          <count>47</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>uchCRCLo</ItemText>
+        </Ww>
+        <Ww>
+          <count>48</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>payload_head_index</ItemText>
+        </Ww>
+        <Ww>
+          <count>49</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>crc_cal</ItemText>
+        </Ww>
+        <Ww>
+          <count>50</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Bin_len</ItemText>
+        </Ww>
+        <Ww>
+          <count>51</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Bin_buffer</ItemText>
+        </Ww>
+        <Ww>
+          <count>52</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>compare_len,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>53</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>str</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x08060000</ItemText>
+          <ItemText>0x08064800</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

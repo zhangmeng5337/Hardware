@@ -50,17 +50,17 @@ void Start_4G(void);
 
 void clear_uart_buf(unsigned char flag)
 {
-   if(flag == 0)
-   	{
-   		memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
-   		lte_recv->Lpuart1RecLen = 0;
+    if (flag == 0)
+    {
+        memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
+        lte_recv->Lpuart1RecLen = 0;
 
-   }
-   else 
-   	{
-  	 	memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
+    }
+    else
+    {
+        memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
 
-   }
+    }
 
 
 }
@@ -144,7 +144,7 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
     //memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
     //  printf("%s",TxBuffer);
-    if (ack )    //需要等待应�?
+    if (ack)     //需要等待应�?
     {
 
         HAL_Delay(lte_recv->timeout);
@@ -152,15 +152,15 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
         {
             if (lte_Check_Cmd(ack))
             {
-                
+
                 res = 0;
             }
             else
             {
                 res = 1;
-               // clear_uart_buf(1);
+                // clear_uart_buf(1);
             }
-		    lte_recv->Lpuart1RecFlag = 0;
+            lte_recv->Lpuart1RecFlag = 0;
 
         }
         else
@@ -183,187 +183,192 @@ void CAT1_Init(void)
     lte_recv = get_lte_recv();
 
 }
+int payload_head_index ;
+// uint8_t *tmp;
+long compare_len = 0;
+unsigned char *pb;
+unsigned int crc_re, crc_cal;
 uint8_t lte_info_ota_show()
 {
     unsigned char buf[256];
     switch (at_cmd_ota_num)
     {
-    //***************************************************http
-    case AT_HTTPTERM_21:
-        //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
-        if (lte_Send_Cmd("AT+HTTPTERM\r\n", "OK", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPTERM_22;
-         //   clear_uart_buf();
-        }
-        break;
-
-    case AT_HTTPTERM_22:
-        //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
-        if (lte_Send_Cmd("AT+SAPBR=0,1\r\n", "OK", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_SAPBR_1;
-           // clear_uart_buf();
-        }
-        break;
-
-    case AT_SAPBR_1:
-        if (lte_Send_Cmd("AT+HTTPINIT\r\n", "OK", LTE_LONG_DELAY)) //init
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPPARA_1;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        break;
-    case AT_HTTPPARA_1:
-        if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1\r\n", "OK", LTE_LONG_DELAY)) //set http params
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPPARA_2;
-        }
-        break;
-    case AT_HTTPPARA_2:
-        sprintf(buf, "AT+HTTPPARA=\"URL\",%s%d\r\n", get_config()->http_download, get_config()->seq_count); //url set
-        if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-        }
-        else
-        {
-            at_cmds_ota.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPACTION_1;
-           // clear_uart_buf();
-        }
-        break;
-
-    case AT_HTTPACTION_1:
-        if (lte_Send_Cmd("AT+HTTPACTION=0\r\n", "+HTTPACTION: 0,200,", LTE_LONG_DELAY)) //start get
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_ota_num = AT_HTTPREAD_1;
-            //clear_uart_buf();
-
-
-        }
-        break;
-
-    case AT_HTTPREAD_1:
-        if (lte_Send_Cmd("AT+HTTPREAD\r\n", "+HTTPREAD: ", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
-
-
-        }
-        else
-        {
-            int payload_head_index ;
-            // uint8_t *tmp;
-            long compare_len = 0;
-            unsigned int crc_re, crc_cal;
-            memset(Msg_Len, 0x00, sizeof(Msg_Len));
-            /*
-            数据格式�?
-            DATA,1024
-            1024byte+2(crc)
-            */
-            Find_string((char *)lte_recv->Lpuart1RecBuff, "+HTTPREAD: ", "\r\n", Msg_Len);
-            compare_len = atoi(Msg_Len);
-            // memset(lte_recv->Lpuart1RecBuff,0,LPUART1_REC_SIZE);
-            payload_head_index = strrindex(lte_recv->Lpuart1RecBuff, "\r\n");
-            payload_head_index = payload_head_index+2 ;
-            memcpy(lte_recv->Lpuart1RecBuff,&lte_recv->Lpuart1RecBuff[payload_head_index],compare_len);
-            payload_head_index = 0;
-
-
-            crc_re = lte_recv->Lpuart1RecBuff[payload_head_index + compare_len-1] << 8;
-            crc_re = crc_re | lte_recv->Lpuart1RecBuff[payload_head_index + compare_len - 2];
-
-            crc_cal = crc16(lte_recv->Lpuart1RecBuff[payload_head_index], compare_len-2);
-
-//            if (crc_cal != crc_re)
-//            {
-//                at_cmd_ota_num = AT_HTTPPARA_2;
-//                at_cmds_ota.RtyNum = 0;
-
-//                return at_cmds_ota.net_status;
-//            }
-
-            if (get_config()->seq_count > get_config()->seq)
+        //***************************************************http
+        case AT_HTTPTERM_21:
+            //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
+            if (lte_Send_Cmd("AT+HTTPTERM\r\n", "OK", LTE_LONG_DELAY)) //查询AT
             {
-
-
-                get_config()->seq_count = 0;
-                get_config()->seq = 0;
-                addr_count = 0;
-                get_config()->Erase_flag = 1;
-                get_config()->reboot_flag = 1;
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+            }
+            else
+            {
                 at_cmds_ota.RtyNum = 0;
-                at_cmd_ota_num = AT_IDLE;
-                at_cmd_num = AT_IDLE;
-                // get_config()->update_setting = 1;
-                OTA_Task();
+                at_cmd_ota_num = AT_HTTPTERM_22;
+                //   clear_uart_buf();
+            }
+            break;
+
+        case AT_HTTPTERM_22:
+            //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
+            if (lte_Send_Cmd("AT+SAPBR=0,1\r\n", "OK", LTE_LONG_DELAY)) //查询AT
+            {
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+
 
             }
             else
             {
-                get_config()->seq_count ++;
-                // printf("Find_Buf:%lu\r\n", compare_len);
-                if (get_config()->Erase_flag == 1)	  //begin erase仅仅开始是擦除flash一�?
-                {
-                    get_config()->Erase_flag = 0;
-                    Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
-                }
-                memset(Bin_len, 0x00, sizeof(Bin_len));
-                for (long b = 0; b < (compare_len-2); b++)
-                {
-                    Bin_buffer[b] = lte_recv->Lpuart1RecBuff[payload_head_index + b];
-                }
-                /* 接下来将固件写进flash�?*/
-                //	printf("烧录�?d�?..................\r\n", addr_count);
-                WriteFlash((Application_2_Addr + (addr_count) * (compare_len-2)), (uint8_t *)(&Bin_buffer[0]), compare_len-2);
-                addr_count++;
                 at_cmds_ota.RtyNum = 0;
-                at_cmd_ota_num = AT_HTTPPARA_2;
+                at_cmd_ota_num = AT_SAPBR_1;
+                // clear_uart_buf();
+            }
+            break;
+
+        case AT_SAPBR_1:
+            if (lte_Send_Cmd("AT+HTTPINIT\r\n", "OK", LTE_LONG_DELAY)) //init
+            {
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+
 
             }
-           // clear_uart_buf();
-        }
-        break;
+            else
+            {
+                at_cmds_ota.RtyNum = 0;
+                at_cmd_ota_num = AT_HTTPPARA_1;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            break;
+        case AT_HTTPPARA_1:
+            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1\r\n", "OK", LTE_LONG_DELAY)) //set http params
+            {
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+            }
+            else
+            {
+                at_cmds_ota.RtyNum = 0;
+                at_cmd_ota_num = AT_HTTPPARA_2;
+            }
+            break;
+        case AT_HTTPPARA_2:
+            sprintf(buf, "AT+HTTPPARA=\"URL\",%s%d\r\n", get_config()->http_download, get_config()->seq_count); //url set
+            if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //查询AT
+            {
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+
+            }
+            else
+            {
+                at_cmds_ota.RtyNum = 0;
+                at_cmd_ota_num = AT_HTTPACTION_1;
+                // clear_uart_buf();
+            }
+            break;
+
+        case AT_HTTPACTION_1:
+            if (lte_Send_Cmd("AT+HTTPACTION=0\r\n", "+HTTPACTION: 0,200,", LTE_LONG_DELAY)) //start get
+            {
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_ota_num = AT_HTTPREAD_1;
+                //clear_uart_buf();
+
+
+            }
+            break;
+
+        case AT_HTTPREAD_1:
+            if (lte_Send_Cmd("AT+HTTPREAD\r\n", "+HTTPREAD: ", LTE_LONG_DELAY)) //查询AT
+            {
+                at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
+
+
+            }
+            else
+            {
+
+                memset(Msg_Len, 0x00, sizeof(Msg_Len));
+                /*
+                数据格式�?
+                DATA,1024
+                1024byte+2(crc)
+                */
+                HAL_Delay(50);
+                Find_string((char *)lte_recv->Lpuart1RecBuff, "+HTTPREAD: ", "\r\n", Msg_Len);
+                compare_len = atoi(Msg_Len);
+                // memset(lte_recv->Lpuart1RecBuff,0,LPUART1_REC_SIZE);
+                payload_head_index = strrindex(lte_recv->Lpuart1RecBuff, "+HTTPREAD: ");
+                payload_head_index = strrindex(&lte_recv->Lpuart1RecBuff[payload_head_index], "\r\n");
+                payload_head_index = payload_head_index + 4 ;
+                //pb= &lte_recv->Lpuart1RecBuff[payload_head_index];
+                memmove(Bin_buffer, &lte_recv->Lpuart1RecBuff[payload_head_index], compare_len);
+                //payload_head_index = 0;
+
+
+                crc_re = Bin_buffer[compare_len - 2] << 8;
+                crc_re = crc_re | Bin_buffer[compare_len - 1];
+
+                crc_cal = CRC_Compute(Bin_buffer, compare_len - 2);
+
+                if (crc_cal != crc_re)
+                {
+                    at_cmd_ota_num = AT_HTTPPARA_2;
+                    at_cmds_ota.RtyNum = 0;
+
+                    return at_cmds_ota.net_status;
+                }
+
+                if (get_config()->seq_count > get_config()->seq)
+                {
+
+
+                    get_config()->seq_count = 0;
+                    get_config()->seq = 0;
+                    addr_count = 0;
+                    get_config()->Erase_flag = 1;
+                    get_config()->reboot_flag = 1;
+                    at_cmds_ota.RtyNum = 0;
+                    at_cmd_ota_num = AT_IDLE;
+                    at_cmd_num = AT_IDLE;
+                    // get_config()->update_setting = 1;
+                    OTA_Task();
+
+                }
+                else
+                {
+                    get_config()->seq_count ++;
+                    // printf("Find_Buf:%lu\r\n", compare_len);
+                    if (get_config()->Erase_flag == 1)	  //begin erase仅仅开始是擦除flash一�?
+                    {
+                        get_config()->Erase_flag = 0;
+                        Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
+                    }
+                    memset(Bin_len, 0x00, sizeof(Bin_len));
+                    for (long b = 0; b < (compare_len - 2); b++)
+                    {
+                        Bin_buffer[b] = pb[payload_head_index + b];
+                    }
+                    /* 接下来将固件写进flash�?*/
+                    //	printf("烧录�?d�?..................\r\n", addr_count);
+                    WriteFlash((Application_2_Addr + (addr_count) * (compare_len - 2)), (uint8_t *)(&Bin_buffer[0]), compare_len - 2);
+                    addr_count++;
+                    at_cmds_ota.RtyNum = 0;
+                    at_cmd_ota_num = AT_HTTPPARA_2;
+
+                }
+                // clear_uart_buf();
+            }
+            break;
 
 
 
-    case AT_IDLE:
-        at_cmds_ota.net_status = NET_CONNECT;
+        case AT_IDLE:
+            at_cmds_ota.net_status = NET_CONNECT;
 
-        break;
+            break;
     }
     if (at_cmds_ota.RtyNum >= 10)
     {
@@ -386,290 +391,291 @@ uint8_t lte_Info_Show(void)
     unsigned char buf[256];
     switch (at_cmd_num)
     {
-    case AT:
-        if (lte_Send_Cmd("AT\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //clear_uart_buf();
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = ATE0;
-         //  clear_uart_buf();
-
-
-        }
-        break;
-    case ATE0:
-        if (lte_Send_Cmd("ATE0\r\n", "OK", LTE_SHORT_DELAY)) //关闭回显
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_CPIN;
-           // clear_uart_buf();
-
-
-        }
-        break;
-    case AT_CPIN:
-        if (lte_Send_Cmd("AT+CPIN?\r\n", "READY", LTE_SHORT_DELAY)) //查询sim�?
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_CGSN;
-           // clear_uart_buf();
-
-
-        }
-        break;
-    case AT_CGSN:
-        if (lte_Send_Cmd("AT+CGSN\r\n", "OK", LTE_SHORT_DELAY)) //查询imei
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            //clear_uart_buf();
-
-            Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
-            //sprintf(get_config()->mqtt_mpubtopic, "%s%s", "mqtt_mub_", get_config()->user_id);
-            // sprintf(get_config()->mqtt_subtopic, "%s%s", "mqtt_sub_", get_config()->user_id);
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_CCID;
-        }
-        break;
-    case AT_CCID:
-        if (lte_Send_Cmd("AT+CCID\r\n", "OK", LTE_SHORT_DELAY)) //
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_CGATT;
-           // clear_uart_buf();
-
-
-        }
-        break;
-
-    case AT_CGATT:
-        if (lte_Send_Cmd("AT+CGATT?\r\n", "+CGATT: 1", LTE_LONG_DELAY)) //查询网络附着
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            // at_cmd_num = AT_SAPBR_1;
-            at_cmd_num = AT_SAPBR_1;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-           // clear_uart_buf();
-
-            //at_cmds.net_status = NET_CONNECT;
-            // http_info_show();
-
-        }
-        break;
-    //***************************************************http
-    case AT_SAPBR_1:
-        if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_SAPBR_2;
-
-           // clear_uart_buf();
-
-        }
-        break;
-    case AT_SAPBR_2:
-        if (lte_Send_Cmd("AT+SAPBR=3,1,\"APN\",\"\"\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //  memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_SAPBR_3;
-            //clear_uart_buf();
-        }
-        break;
-    case AT_SAPBR_3:
-        if (lte_Send_Cmd("AT+SAPBR=1,1\r\n", "OK", LTE_LONG_DELAY)) //get active PDP quest
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_HTTPINIT_1;
-           // clear_uart_buf();
-        }
-        break;
-    case AT_HTTPINIT_1:
-        if (lte_Send_Cmd("AT+HTTPINIT\r\n", "OK", LTE_LONG_DELAY)) //init
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_HTTPPARA_1;
-          //  clear_uart_buf();
-        }
-        break;
-    case AT_HTTPPARA_1:
-        if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1\r\n", "OK", LTE_LONG_DELAY)) //set http params
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_HTTPPARA_2;
-           // clear_uart_buf();
-        }
-        break;
-    case AT_HTTPPARA_2:
-        sprintf(buf, "AT+HTTPPARA=\"URL\",%s\r\n", get_config()->http_ip);//url set
-        if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //查询AT
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_HTTPACTION_1;
-           // clear_uart_buf();
-        }
-        break;
-
-    case AT_HTTPACTION_1:
-        if (lte_Send_Cmd("AT+HTTPACTION=0\r\n", "+HTTPACTION: 0,200,", LTE_LONG_DELAY)) //start get
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-            at_cmds.RtyNum = 0;
-            at_cmd_num = AT_HTTPREAD_1;
-          //  clear_uart_buf();
-
-
-        }
-        break;
-    case AT_HTTPREAD_1:
-        if (lte_Send_Cmd("AT+HTTPREAD\r\n", "}\r\n", LTE_LONG_DELAY)) //start get
-        {
-            at_cmds.RtyNum = at_cmds.RtyNum++;
-            //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
-
-        }
-        else
-        {
-
-            Find_string((char *)lte_recv->Lpuart1RecBuff, "{", ",", Version_buffer);
-            if (strcmp(Version_buffer, get_config()->version) == 0)
+        case AT:
+            if (lte_Send_Cmd("AT\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
             {
-                // printf("硬件版本和云端版本一致，无需升级！\r\n");
-                at_cmds.RtyNum = 0;
-                at_cmd_num = AT_IDLE;
-                // get_config()->seq_count = 1;
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //clear_uart_buf();
                 //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
             }
             else
             {
-                Find_string((char *)lte_recv->Lpuart1RecBuff, "{", ",", Version_buffer);
-
-                memcpy(get_config()->version, Version_buffer, strlen(Version_buffer));
-                memset(Version_buffer, 0, 20);
-                Find_string((char *)lte_recv->Lpuart1RecBuff, ",", ",", Version_buffer);
-                get_config()->seq = atoi(Version_buffer);
-
-                memset(get_config()->http_download, 0, sizeof(get_config()->http_download));
-                get_config()->http_download[0] = 'h';
-                Find_string((char *)lte_recv->Lpuart1RecBuff, "h", "}", &get_config()->http_download[1]);
                 at_cmds.RtyNum = 0;
-                // get_config()->seq_count = 1;
-                at_cmd_num = AT_HTTPTERM_21;//get firmware data
-                at_cmd_ota_num = AT_HTTPPARA_2;
-                at_cmds_ota.net_status = NOT_CONNECT;
+                at_cmd_num = ATE0;
+                //  clear_uart_buf();
 
-                //get_config()->seq_count ++;
 
             }
-            //clear_uart_buf();
+            break;
+        case ATE0:
+            if (lte_Send_Cmd("ATE0\r\n", "OK", LTE_SHORT_DELAY)) //关闭回显
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
 
-        }
-        break;
 
-    case AT_HTTPTERM_21:
-        if (lte_info_ota_show() != NET_CONNECT)
-        {
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_CPIN;
+                // clear_uart_buf();
 
-        }
-        else
-        {
-            //at_cmds. =NOT_CONNECT;
-            at_cmd_num = AT_IDLE;
-            at_cmd_ota_num = AT_HTTPPARA_2;
-            //at_cmds.net_status =NOT_CONNECT;
-            at_cmds_ota.net_status = NET_CONNECT;
-          //  clear_uart_buf();
 
-        }
+            }
+            break;
+        case AT_CPIN:
+            if (lte_Send_Cmd("AT+CPIN?\r\n", "READY", LTE_SHORT_DELAY)) //查询sim�?
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
 
-        break;
-    //***********************************************************
-    case AT_IDLE:
-        at_cmds.RtyNum = 0;
-        at_cmds.net_status = NET_CONNECT;
-        break;
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_CGSN;
+                // clear_uart_buf();
+
+
+            }
+            break;
+        case AT_CGSN:
+            if (lte_Send_Cmd("AT+CGSN\r\n", "OK", LTE_SHORT_DELAY)) //查询imei
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                //clear_uart_buf();
+
+                Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
+                //sprintf(get_config()->mqtt_mpubtopic, "%s%s", "mqtt_mub_", get_config()->user_id);
+                // sprintf(get_config()->mqtt_subtopic, "%s%s", "mqtt_sub_", get_config()->user_id);
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_CCID;
+            }
+            break;
+        case AT_CCID:
+            if (lte_Send_Cmd("AT+CCID\r\n", "OK", LTE_SHORT_DELAY)) //
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_CGATT;
+                // clear_uart_buf();
+
+
+            }
+            break;
+
+        case AT_CGATT:
+            if (lte_Send_Cmd("AT+CGATT?\r\n", "+CGATT: 1", LTE_LONG_DELAY)) //查询网络附着
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                // at_cmd_num = AT_SAPBR_1;
+                at_cmd_num = AT_SAPBR_1;
+                at_cmd_num = AT_IDLE;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+                // clear_uart_buf();
+
+                //at_cmds.net_status = NET_CONNECT;
+                // http_info_show();
+
+            }
+            break;
+        //***************************************************http
+        case AT_SAPBR_1:
+            if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_SAPBR_2;
+
+                // clear_uart_buf();
+
+            }
+            break;
+        case AT_SAPBR_2:
+            if (lte_Send_Cmd("AT+SAPBR=3,1,\"APN\",\"\"\r\n", "OK", LTE_SHORT_DELAY)) //查询AT
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //  memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_SAPBR_3;
+                //clear_uart_buf();
+            }
+            break;
+        case AT_SAPBR_3:
+            if (lte_Send_Cmd("AT+SAPBR=1,1\r\n", "OK", LTE_LONG_DELAY)) //get active PDP quest
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPINIT_1;
+                // clear_uart_buf();
+            }
+            break;
+        case AT_HTTPINIT_1:
+            if (lte_Send_Cmd("AT+HTTPINIT\r\n", "OK", LTE_LONG_DELAY)) //init
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPPARA_1;
+                //  clear_uart_buf();
+            }
+            break;
+        case AT_HTTPPARA_1:
+            if (lte_Send_Cmd("AT+HTTPPARA=\"CID\",1\r\n", "OK", LTE_LONG_DELAY)) //set http params
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPPARA_2;
+                // clear_uart_buf();
+            }
+            break;
+        case AT_HTTPPARA_2:
+            sprintf(buf, "AT+HTTPPARA=\"URL\",%s\r\n", get_config()->http_ip);//url set
+            if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //查询AT
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPACTION_1;
+                // clear_uart_buf();
+            }
+            break;
+
+        case AT_HTTPACTION_1:
+            if (lte_Send_Cmd("AT+HTTPACTION=0\r\n", "+HTTPACTION: 0,200,", LTE_LONG_DELAY)) //start get
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+                at_cmds.RtyNum = 0;
+                at_cmd_num = AT_HTTPREAD_1;
+                //  clear_uart_buf();
+
+
+            }
+            break;
+        case AT_HTTPREAD_1:
+            if (lte_Send_Cmd("AT+HTTPREAD\r\n", "}\r\n", LTE_LONG_DELAY)) //start get
+            {
+                at_cmds.RtyNum = at_cmds.RtyNum++;
+                //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+            }
+            else
+            {
+
+                Find_string((char *)lte_recv->Lpuart1RecBuff, "{", ",", Version_buffer);
+                if (strcmp(Version_buffer, get_config()->version) == 0)
+                {
+                    // printf("硬件版本和云端版本一致，无需升级！\r\n");
+                    at_cmds.RtyNum = 0;
+                    at_cmd_num = AT_IDLE;
+                    // get_config()->seq_count = 1;
+                    //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
+
+                }
+                else
+                {
+                    Find_string((char *)lte_recv->Lpuart1RecBuff, "{", ",", Version_buffer);
+
+                    memcpy(get_config()->version, Version_buffer, strlen(Version_buffer));
+                    memset(Version_buffer, 0, 20);
+                    Find_string((char *)lte_recv->Lpuart1RecBuff, ",", ",", Version_buffer);
+                    get_config()->seq = atoi(Version_buffer);
+
+                    memset(get_config()->http_download, 0, sizeof(get_config()->http_download));
+                    get_config()->http_download[0] = 'h';
+                    Find_string((char *)lte_recv->Lpuart1RecBuff, "h", "}", &get_config()->http_download[1]);
+                    at_cmds.RtyNum = 0;
+                    // get_config()->seq_count = 1;
+                    at_cmd_num = AT_HTTPTERM_21;//get firmware data
+                    at_cmd_ota_num = AT_HTTPPARA_2;
+                    at_cmds_ota.net_status = NOT_CONNECT;
+
+                    //get_config()->seq_count ++;
+
+                }
+                //clear_uart_buf();
+
+            }
+            break;
+
+        case AT_HTTPTERM_21:
+            if (lte_info_ota_show() != NET_CONNECT)
+            {
+
+            }
+            else
+            {
+                //at_cmds. =NOT_CONNECT;
+                at_cmd_num = AT_IDLE;
+                at_cmd_ota_num = AT_HTTPPARA_2;
+                //at_cmds.net_status =NOT_CONNECT;
+                at_cmds_ota.net_status = NET_CONNECT;
+                //  clear_uart_buf();
+
+            }
+
+            break;
+        //***********************************************************
+        case AT_IDLE:
+            at_cmds.RtyNum = 0;
+            at_cmds.net_status = NET_CONNECT;
+            break;
 
 defautl:
-        {
-            CAT1_Init();
-        }
-        break;
+            {
+                CAT1_Init();
+            }
+            break;
 
 
     }

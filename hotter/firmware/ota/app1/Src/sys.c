@@ -36,7 +36,11 @@ int strrindex(char s[], char t[])
             }
         }
         if(t[k] == '\0')
-            r = i;
+         {
+		 			r = i;
+				   break;
+
+		 }  
     }
 	return r;
 }

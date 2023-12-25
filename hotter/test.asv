@@ -1,5 +1,5 @@
 clc;
-start_t =10;
+start_t =3;
 end_t = start_t+1;    
 
 
@@ -49,4 +49,3 @@ ylabel('¹¦ÂÊ');
 % 
 % hold on;
 % plot(t,IX,'r');
-
