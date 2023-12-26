@@ -616,12 +616,12 @@ defautl:
 
 
     }
-    /* if (mqtt_at_cmds.RtyNum >= 3)
+     if (mqtt_at_cmds.RtyNum >= 10)
      {
          CAT1_Init();
          mqtt_at_cmds.net_status = TIME_OUT;
 
-     }*/
+     }
 
     return mqtt_at_cmds.net_status;
 }

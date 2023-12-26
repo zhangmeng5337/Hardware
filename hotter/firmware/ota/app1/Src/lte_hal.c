@@ -79,7 +79,7 @@ unsigned char ATRec(char *s)
         {
             at_cmds.ATStatus = ERROR_STATUS;
         }
-        else if (strstr((const char *)lte_recv->Lpuart1DMARecBuff, "+CME ERROR: 767") != NULL)
+        else if (strstr((const char *)lte_recv->Lpuart1DMARecBuff, "+CME ERROR:") != NULL)
         {
             at_cmds.ATStatus = ERROR_STATUS;
         }
@@ -347,13 +347,28 @@ uint8_t lte_info_ota_show()
                         Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
                     }
                     memset(Bin_len, 0x00, sizeof(Bin_len));
-                    for (long b = 0; b < (compare_len - 2); b++)
-                    {
-                        Bin_buffer[b] = pb[payload_head_index + b];
-                    }
+//                    for (long b = 0; b < (compare_len - 2); b++)
+//                    {
+//                        Bin_buffer[b] = pb[payload_head_index + b];
+//                    }
                     /* 接下来将固件写进flash�?*/
                     //	printf("烧录�?d�?..................\r\n", addr_count);
-                    WriteFlash((Application_2_Addr + (addr_count) * (compare_len - 2)), (uint8_t *)(&Bin_buffer[0]), compare_len - 2);
+                    uint32_t addr_wr;
+					unsigned int i;
+					unsigned char tmp;
+					addr_wr = (addr_count) * (compare_len - 2);
+					addr_wr = addr_wr + Application_2_Addr;
+                    WriteFlash(addr_wr, (uint8_t *)(&Bin_buffer[0]), compare_len - 2);
+					
+					for(i=0;i<(compare_len - 2);i++)//verify data in flash
+					{
+					   WriteFlash(addr_wr,&tmp, 1);
+						if(tmp != Bin_buffer[i])
+						{
+						    get_config()->seq_count = 1;
+							return NOT_CONNECT;
+						}
+					}
                     addr_count++;
                     at_cmds_ota.RtyNum = 0;
                     at_cmd_ota_num = AT_HTTPPARA_2;
