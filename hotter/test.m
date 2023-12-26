@@ -4,13 +4,13 @@ clc;
 
 
 step = 1/Fs;
-start_t = 9.345;
-end_time = 9.35;
+start_t = 30.6
+end_time = 90.5;
 end_count = round((end_time-start_t)/step);
-end_t = start_t+step*end_count; 
+end_t = start_t+1; 
 
 t = 0:step:(end_t-start_t)-step;   % 时间向量
-x = xd(start_t/step:end_t/step-1,1); % 信号
+x = original(start_t/step:end_t/step-1,1); % 信号
 
 % 绘制信号图
 figure(3)
