@@ -19,11 +19,6 @@ T=1/Fs; %采集时间间隔
 N=length(y); %采集信号的长度
 t=(0:1:N-1)*T; %定义整个采集时间点
 t=t';  %转置成列向量
-figure(1)
-plot(t,original);
-title('原始信号 ');
-xlabel('time/s');
-ylabel('voltage/mV');
 
 
 
@@ -37,32 +32,51 @@ ylabel('voltage/mV');
 %iifr
 
  fs = 4000; % 采样率
-fc = 1000; % 截止频率
-N =100; % 阶数
+fc = 1500; % 截止频率
+N =20; % 阶数
 b = fir1(N, fc/(fs/2)); % 使用fir1函数设计低通滤波器系数
 %  freqz(b, 1); % 绘制滤波器的频率响应特性
  x1get=filter(b,1,original);
-figure(2)
- plot(t,original,'b');
- hold on;
-plot(t,x1get,'r');
-figure(3);
-plot(t,kal_man,'g');
-hold on;
+% figure(2)
+%  plot(t,original,'+b');
+%  hold on;
 
 
-[xd,cxd,lxd] = wden(original,'sqtwolog','s','one',2,'db3');
-plot(t,xd,'b');                                                %Mix_Signal_1 小波滤波后信号
-
-%plot(t,y,'black');
-hold on;
-yy=smooth(kal_man,10);
-orinal_smooth = yy;
-plot(t,yy,'r');
-title('光感强度 ');
+% plot(t,kal_man,'g');
+% hold on;
+figure(1)
+plot(t,original);
+title('原始信号 ');
 xlabel('time/s');
 ylabel('voltage/mV');
-legend('卡尔曼滤波信号','小波滤波后信号2','平滑处理'); 
+figure(2)
+
+
+
+subplot(4,1,2);
+plot(t,x1get,'r');
+title('fir滤波后原始信号 ');
+xlabel('time/s');
+ylabel('voltage/mV');
+
+[xd,cxd,lxd] = wden(original,'rigrsure','s','one',2,'db3');
+subplot(4,1,3);
+plot(t,xd,'b');                                                %Mix_Signal_1 小波滤波后信号
+title('小波变换后光感强度 ');
+xlabel('time/s');
+ylabel('voltage/mV');
+%plot(t,y,'black');
+
+yy=smooth(xd,5);
+orinal_smooth = yy;
+subplot(4,1,4);
+plot(t,yy,'r');
+title('平滑后光感强度 ');
+xlabel('time/s');
+ylabel('voltage/mV');
+% legend('小波滤波后信号2','平滑处理'); 
+
+% legend('卡尔曼滤波信号','小波滤波后信号2','平滑处理'); 
 std_vector = std(yy);
 disp(std_vector);
 % 生成测试信号

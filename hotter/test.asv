@@ -1,12 +1,12 @@
 clc;
-start_t =3;
-end_t = start_t+1;    
+start_t = 12.4;
+end_t = start_t+0.1;    
 
 
 
 step = 1/Fs;
-t = 0:step:(end_t-start_t)-step;   % 时间向量
-x = orinal_smooth(start_t/step:end_t/step-1,1); % 信号
+t = 0:step:(end_t-start_t);   % 时间向量
+x = smooth(start_t/step:end_t/step-1,1); % 信号
 
 % 绘制信号图
 figure(3)
@@ -25,17 +25,17 @@ N = length(x)/2;
 X = fft(x);
 IX=ifft(X);
 plot(t,IX);
-f = Fs*(0:(N/4-1))/N;
+f = Fs*(0:(N/2-1))/N;
 
 % 绘制FFT图
 subplot(3,1,2);
-plot(f,abs(X(1:N/4)));
+plot(f,abs(X(1:N/2)));
 title('FFT');
 xlabel('频率 (Hz)');
 ylabel('幅度');
 
 % 计算功率谱
-P = (2*abs(X(1:N/4)).^2)/N;
+P = (2*abs(X(1:N/2)).^2)/N;
 
 % 绘制功率谱图
 subplot(3,1,3);
