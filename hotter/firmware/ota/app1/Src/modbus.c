@@ -226,9 +226,9 @@ void modbus_proc()
 {
     unsigned char pb[64];
     #if CTRL_EN
-    if (modbus_ctrl() == 1)
+    if (modbus_ctrl() == 1)//pid cal and every 180s 
     {
-        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1) //180s
+        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1) //180s,ctrl pump every 180s
         {
             reset_registerTick(MODBUS_TX_TICK_NO);
             reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
