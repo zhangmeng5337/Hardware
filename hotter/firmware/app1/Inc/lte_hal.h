@@ -4,6 +4,7 @@
 
 #define LTE_SHORT_DELAY  50
 #define LTE_LONG_DELAY  1000
+#define LTE_LONG_DELAY2  1000
 
 typedef enum
 {

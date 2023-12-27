@@ -33,7 +33,7 @@ void MoveCode(unsigned int src_addr, unsigned int des_addr, unsigned int byte_si
 	  temp[0]= 0xaa;
 	  unsigned int i;
     //printf("> Start copy......\r\n");
-    for(int i = 0; i < 1024; i++)
+    for(int i = 0; i < byte_size/1024; i++)
     {
         ReadFlash((src_addr + i*1024), temp, 1024);
         WriteFlash((des_addr + i*1024), temp, 1024);
@@ -87,6 +87,7 @@ void Start_BootLoader(void)
 	{
 		case Startup_Normal:										//正常启动
 		{
+			//MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
 			//MoveCode(Application_2_Addr, Application_2_Addr + Application_Size - 8, Application_Size);
 			break;
 		}
@@ -99,10 +100,12 @@ void Start_BootLoader(void)
 		}
 		default:																//启动失败
 		{
+			
 		//	printf("> Error:%X!!!......\r\n", Read_Start_Mode());
 			return;			
 		}
 	}	
+	//MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
 	/* 跳转到应用程序 */
 	// __disable_irq() ;  //很重要！经测试STM32F4必要！  貌似F105也需要   L431 裸机 却不需要  RTOS需要
 	//printf("> Start up......\r\n\r\n");	
