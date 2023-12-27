@@ -110,7 +110,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-
+  while(1)
+		;
   hardware_init();
 	//crc16(buf, 2);
 //  CAT1_Init();

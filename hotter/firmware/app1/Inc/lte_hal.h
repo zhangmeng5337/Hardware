@@ -2,7 +2,7 @@
 #define _LTE_HAL_H
 #include "main.h"
 
-#define LTE_SHORT_DELAY  500
+#define LTE_SHORT_DELAY  50
 #define LTE_LONG_DELAY  1000
 
 typedef enum

@@ -136,19 +136,19 @@ void uart_lte()
 	
 	
 	
-	      if(Lpuart1type.Lpuart1RecLen > 0)
+	     // if(Lpuart1type.Lpuart1RecLen > 0)
        {
 					
             memcpy(&Lpuart1type.Lpuart1RecBuff[Lpuart1type.Lpuart1RecLen],Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
             Lpuart1type.Lpuart1RecLen += Lpuart1type.Lpuart1DMARecLen;
         }
-        else
-        {
-            memcpy(Lpuart1type.Lpuart1RecBuff,Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
-            Lpuart1type.Lpuart1RecLen = Lpuart1type.Lpuart1DMARecLen;
+//        else
+//        {
+//            memcpy(Lpuart1type.Lpuart1RecBuff,Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
+//            Lpuart1type.Lpuart1RecLen = Lpuart1type.Lpuart1DMARecLen;
 
-        }
-        memset(Lpuart1type.Lpuart1DMARecBuff,0x00,LPUART1_DMA_REC_SIZE);
+//        }
+        
        // Lpuart1type.Lpuart1RecFlag = 1;
 	
 	

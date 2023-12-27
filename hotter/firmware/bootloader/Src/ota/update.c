@@ -24,20 +24,21 @@ unsigned int Read_Start_Mode(void)
 void MoveCode(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size)
 {
     /*1.擦除目的地址*/
-    printf("> Start erase des flash......\r\n");
-    Erase_page(des_addr, 1);//只擦除1扇区128k
-    printf("> Erase des flash sucessfully......\r\n");
+    //printf("> Start erase des flash......\r\n");
+    Erase_page(des_addr, 2);//只擦除1扇区128k
+   // printf("> Erase des flash sucessfully......\r\n");
 
     /*2.开始拷贝*/
     uint8_t temp[1024];
 	  temp[0]= 0xaa;
-    printf("> Start copy......\r\n");
-    for(int i = 0; i < i/1024; i++)
+	  unsigned int i;
+    //printf("> Start copy......\r\n");
+    for(int i = 0; i < 1024; i++)
     {
         ReadFlash((src_addr + i*1024), temp, 1024);
         WriteFlash((des_addr + i*1024), temp, 1024);
     }
-    printf("> Copy sucessfully......\r\n");
+   // printf("> Copy sucessfully......\r\n");
 
 }
 
@@ -75,13 +76,13 @@ void IAP_ExecuteApp (uint32_t App_Addr)
 	*/
 void Start_BootLoader(void)
 {
-	 printf("\r\n");
-	 printf("***********************************\r\n");
-	 printf("*                                 *\r\n");
-	 printf("*           BootLoader            *\r\n");
-	 printf("*                                 *\r\n");
-	 printf("***********************************\r\n");	
-	 printf("> Choose a startup method......\r\n");	
+//	 printf("\r\n");
+//	 printf("***********************************\r\n");
+//	 printf("*                                 *\r\n");
+//	 printf("*           BootLoader            *\r\n");
+//	 printf("*                                 *\r\n");
+//	 printf("***********************************\r\n");	
+//	 printf("> Choose a startup method......\r\n");	
 	switch(Read_Start_Mode())									//读取是否启动应用程序
 	{
 		case Startup_Normal:										//正常启动
@@ -91,20 +92,20 @@ void Start_BootLoader(void)
 		}
 		case Startup_Update:										//升级再启动
 		{
-			printf("> Start update......\r\n");	
+			//printf("> Start update......\r\n");	
 			MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
-			printf("> Update sucessfully......\r\n");
+			//printf("> Update sucessfully......\r\n");
 			break;
 		}
 		default:																//启动失败
 		{
-			printf("> Error:%X!!!......\r\n", Read_Start_Mode());
+		//	printf("> Error:%X!!!......\r\n", Read_Start_Mode());
 			return;			
 		}
 	}	
 	/* 跳转到应用程序 */
 	// __disable_irq() ;  //很重要！经测试STM32F4必要！  貌似F105也需要   L431 裸机 却不需要  RTOS需要
-	printf("> Start up......\r\n\r\n");	
+	//printf("> Start up......\r\n\r\n");	
 	IAP_ExecuteApp(Application_1_Addr);
 }
 void MoveCode1(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size)
@@ -117,13 +118,13 @@ void MoveCode1(unsigned int src_addr, unsigned int des_addr, unsigned int byte_s
     /*2.开始拷贝*/
     uint8_t temp[1];
 	  temp[0]= 0xaa;
-    printf("> Start copy......\r\n");
+   // printf("> Start copy......\r\n");
     for(int i = 0; i < 1; i++)
     {
        // ReadFlash((src_addr + i*1024), temp, 1024);
         WriteFlash((des_addr + i*1024), temp, 1);
     }
-    printf("> Copy sucessfully......\r\n");
+   // printf("> Copy sucessfully......\r\n");
 
 }
 void test()

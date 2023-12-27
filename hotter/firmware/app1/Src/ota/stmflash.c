@@ -121,6 +121,7 @@ int Erase_page(uint32_t secaddr, uint32_t num)
  */
 void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
 {
+
     int i = 0;
     /* Ω‚À¯FLASH */
     HAL_FLASH_Unlock();
@@ -133,10 +134,11 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
     __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
     __HAL_FLASH_DATA_CACHE_ENABLE();
 
-    for( i= 0; i < buf_len; i+=4)
+    for( i= 0; i < buf_len; i+=1)
 
     {
-        HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, addr+i, *(uint32_t*)(buff+i));
+       // FLASH_Program_Byte(addr+i, *(buff+i));
+        HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, addr+i, *(buff+i));
     }
 
 
