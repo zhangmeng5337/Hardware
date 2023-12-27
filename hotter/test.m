@@ -4,29 +4,34 @@ clc;
 
 
 step = 1/Fs;
-start_t = 13.017
-end_time = 90.5;
-end_count = round((end_time-start_t)/step);
-end_t = start_t+0.5; 
+[max_index max_val] =max(original);
+len_t = size(original);
+len_t = len_t(1);
+t = 0:step:len_t*step-step;   % 时间向量
 
-t = 0:step:(end_t-start_t)-step;   % 时间向量
-x = original(start_t/step:end_t/step-1,1); % 信号
+  x_creat = original;
+  data_use_size = 200;
+  x_creat(1:max_index) = x(max_index+data_use_size);
+  x_creat(max_index+data_use_size:end) = x(data_use_size+1);
+
+% x = original(start_t/step:start_t/step+100); % 信号
+
 
 % 绘制信号图
 figure(3)
 subplot(3,1,1);
-plot(t,x);
+plot(t,x_creat);
 title('信号');
 xlabel('时间 (s)');
 ylabel('幅度');
 
 % 计算FFT
-N = length(x)/2;
+N = length(x_creat)/2;
 % len = N/2;
 % N = round(len);
 % N = N*2;
 
-X = fft(x);
+X = fft(x_creat);
 IX=ifft(X);
 plot(t,IX);
 f = Fs*(0:(N/2-1))/N;
