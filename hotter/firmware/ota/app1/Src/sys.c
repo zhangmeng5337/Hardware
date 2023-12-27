@@ -100,7 +100,10 @@ unsigned char GetTickResult(uint32_t TickNo)
 {
     return  tick_usr.TimeEnd[TickNo];
 }
-
+/***************************************************************
+func:system timer calculate
+params:
+****************************************************************/
 void TickPro()
 {
     unsigned char i;
@@ -110,8 +113,8 @@ void TickPro()
         {
             if((HAL_GetTick()-tick_usr.TickTimeTmp[i])>=tick_usr.TickTime[i])
             {
-                tick_usr.TimeEnd[i] = 1;
-				tick_usr.TickStart[i] = 0;
+                tick_usr.TimeEnd[i] = 1;//time reach
+				tick_usr.TickStart[i] = 0;//clear timer set flag
             }
         }
     }

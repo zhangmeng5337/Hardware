@@ -14,8 +14,8 @@
 #define PUMP_F_INDEX        8
 #define PUMP_E_INDEX        9
 #define WATER_O_INDEX       10
-#define WATER_IN_INDEX       11
-#define WATER_IN_INDEX       11
+#define WATER_IN_INDEX      11
+//#define WATER_IN_INDEX      11
 
 //status
 #define DEV_STATUS_INDEX        0

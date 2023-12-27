@@ -63,11 +63,11 @@ void control_proc()
 }
 void app_proc()
 {
-   TickPro(); 
+   TickPro(); //sys timer proc
    ai_proc();//pressure temperature sample interval 2s 
    di_proc(0);//di detection
-   mqtt_proc();
-   modbus_proc();
+   mqtt_proc();//lte ,mqtt and ota
+   modbus_proc();//machine control
   // control_proc();
    //config_save();
    //do_ctrl_proc(0,1);//do control

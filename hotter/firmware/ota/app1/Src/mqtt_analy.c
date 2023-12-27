@@ -19,71 +19,72 @@ tsLpuart1type *mqtt_recv;
 
 unsigned char *enviro_tem[] =
 {
-    "??1",
-    "??2",
-    "??3",
-    "??4",
-    "??5",
-    "??6",
-    "??7",
-    "??8",
-    "??9",
-    "??10",
-    "??11",
-    "??12",
-    "??13",
-    "??14",
-    "??15",
-    "??16",
-    "??17",
-    "??18",
-    "??19",
-    "??20",
-    "??21",
-    "??22",
-    "??23",
-    "??24",
-    "??25",
-    "??26",
-    "??27",
-    "??28",
-    "??29",
-    "??30",
-    "??31",
-    "??32",
-    "??33",
-    "??34",
-    "??35",
-    "??36",
-    "??37",
-    "??38",
-    "??39",
-    "??40",
-    "??41",
-    "??42",
-    "??43",
-    "??44",
-    "??45",
-    "??46",
-    "??47",
-    "??48",
-    "??49",
-    "??50",
-    "??51",
-    "??52",
-    "??53",
-    "??54",
-    "??55",
-    "??56",
-    "??57",
-    "??58",
-    "??59",
-    "??60",
-    "??61",
-    "??62",
-    "??63",
-    "??64"
+    "Room 1 Temp",
+    "Room 2 Temp",
+    "Room 3 Temp",
+    "Room 4 Temp",
+    "Room 5 Temp",
+    "Room 6 Temp",
+    "Room 7 Temp",
+    "Room 8 Temp",
+    "Room 9 Temp",
+    "Room 10 Temp",
+    "Room 11 Temp",
+    "Room 12 Temp",
+    "Room 13 Temp",
+    "Room 14 Temp",
+    "Room 15 Temp",
+    "Room 16 Temp",
+    "Room 17 Temp",
+    "Room 18 Temp",
+    "Room 19 Temp",
+    "Room 20 Temp",
+    "Room 21 Temp",
+    "Room 22 Temp",
+    "Room 23 Temp",
+    "Room 24 Temp",
+    "Room 25 Temp",
+    "Room 26 Temp",
+    "Room 27 Temp",
+    "Room 28 Temp",
+    "Room 29 Temp",
+    "Room 30 Temp",
+    "Room 31 Temp",
+    "Room 32 Temp",
+    "Room 33 Temp",
+    "Room 34 Temp",
+    "Room 35 Temp",
+    "Room 36 Temp",
+    "Room 37 Temp",
+    "Room 38 Temp",
+    "Room 39 Temp",
+    "Room 40 Temp",
+    "Room 41 Temp",
+    "Room 42 Temp",
+    "Room 43 Temp",
+    "Room 44 Temp",
+    "Room 45 Temp",
+    "Room 46 Temp",
+    "Room 47 Temp",
+    "Room 48 Temp",
+    "Room 49 Temp",
+    "Room 50 Temp",
+    "Room 51 Temp",
+    "Room 52 Temp",
+    "Room 53 Temp",
+    "Room 54 Temp",
+    "Room 55 Temp",
+    "Room 56 Temp",
+    "Room 57 Temp",
+    "Room 58 Temp",
+    "Room 59 Temp",
+    "Room 60 Temp",
+    "Room 61 Temp",
+    "Room 62 Temp",
+    "Room 63 Temp",
+    "Room 64 Temp"
 };
+
 mqtt_payload_stru mqtt_payload_u;
 
 
@@ -147,8 +148,8 @@ void anlysis_mqtt_recv()
     char dev_id[128];
     unsigned char valid_flag;
     float tmp_f;
-    float tmp_i;
-    unsigned char index;
+//    float tmp_i;
+ //   unsigned char index;
 
     valid_flag = 0;
     get_config()->update_setting = 0;
@@ -443,7 +444,7 @@ mqtt_at_cmd_num = AT_MPUB;
 void mqtt_recv_proc()
 {
 
-    if (get_config()->update_firm == '1' || get_config()->reboot == '1')
+    if (get_config()->update_firm == 1 || get_config()->reboot == 1)
         HAL_NVIC_SystemReset();
 
 }
@@ -458,7 +459,7 @@ void mqtt_init()
 }
 uint8_t mqtt_Info_Show(void)
 {
-    static unsigned char msub_count = 0;
+//    static unsigned char msub_count = 0;
 
     unsigned char buf[1024];
     memset(buf, 0, 1024);
@@ -536,7 +537,7 @@ uint8_t mqtt_Info_Show(void)
         case AT_MSUB:////subscribe msg
         {
             //dev_sub_temp_
-            unsigned char str[128];
+//            unsigned char str[128];
             // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
             sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_ctrl_", get_config()->user_id,
                     0);
@@ -548,20 +549,7 @@ uint8_t mqtt_Info_Show(void)
             {
 
                 mqtt_at_cmds.RtyNum = 0;
-                //                if (msub_count == SUB_SIZE)
-                {
-                    msub_count = 0;
-                    mqtt_at_cmd_num = AT_MPUB_RECV;
-
-                }
-
-                //                else
-                //                {
-                //
-                //                    msub_count = msub_count ++;
-                //                }
-
-                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+                mqtt_at_cmd_num = AT_MPUB_RECV;
             }
 
         }

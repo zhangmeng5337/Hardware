@@ -48,20 +48,15 @@ void uart_init()
 
 void uart_rs485()
 {
-    //停止本次DMA传输
-    HAL_UART_DMAStop(&huart4);
-
-    //计算接收到的数据长度
     rs485_str.recv_len  = BUFFER_SIZE - __HAL_DMA_GET_COUNTER(&hdma_uart4_rx);
     if(rs485_str.recv_update == 0)
     {
         memcpy(rs485_str.recv_buf,rs485_str.buff,rs485_str.recv_len);
         rs485_str.recv_update = 1;
     }
-
-    //重启开始DMA传输 每次BUFFER_SIZE字节数据
+	
+	HAL_UART_DMAResume(&huart4);
     HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);
-
 }
 tsLpuart1type *get_lte_recv()
 {

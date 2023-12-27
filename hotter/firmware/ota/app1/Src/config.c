@@ -177,8 +177,8 @@ void config_init()
     //sprintf(get_config()->mqtt_subtopic,"%s%s", SUB1,get_config()->user_id);
 	get_config()->seq_count = 1;
   
-	memcpy(&get_config()->sub_sring[1][0],"dev_sub_temp_",strlen("dev_sub_temp_"));
-	memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
+	//memcpy(&get_config()->sub_sring[1][0],"dev_sub_temp_",strlen("dev_sub_temp_"));
+	//memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
 	get_config()->Erase_flag = 1;
 
 

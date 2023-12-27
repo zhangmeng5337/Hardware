@@ -4,10 +4,10 @@ clc;
 
 
 step = 1/Fs;
-start_t = 30.6
+start_t = 13.017
 end_time = 90.5;
 end_count = round((end_time-start_t)/step);
-end_t = start_t+1; 
+end_t = start_t+0.5; 
 
 t = 0:step:(end_t-start_t)-step;   % 时间向量
 x = original(start_t/step:end_t/step-1,1); % 信号

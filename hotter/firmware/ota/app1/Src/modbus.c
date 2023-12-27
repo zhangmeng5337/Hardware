@@ -37,7 +37,7 @@ void rs485_recv()
         unsigned char i;
         for (i = 0; i < rs485_u->recv_len; i++)
         {
-            if (rs485_u->buff[i] > 0 && rs485_u->buff[i] <= 3) //addr ok
+            if (rs485_u->recv_buf[i] > 0 && rs485_u->recv_buf[i] <= 3) //addr ok
                 break;
 
         }
@@ -48,11 +48,11 @@ void rs485_recv()
         len = rs485_u->recv_len - i;
         index = rs485_u->recv_len - 2;
         //index = index-2;
-        crc_tmp = rs485_u->buff[index];
+        crc_tmp = rs485_u->recv_buf[index];
         crc_tmp = crc_tmp << 8;
-        crc_tmp = crc_tmp | rs485_u->buff[index - 1];
-        crc_cal = CRC_Compute(&rs485_u->buff[i], len);
-        memcpy(modbus_recv.payload, &rs485_u->buff[i], len);
+        crc_tmp = crc_tmp | rs485_u->recv_buf[index - 1];
+        crc_cal = CRC_Compute(&rs485_u->recv_buf[i], len);
+        memcpy(modbus_recv.payload, &rs485_u->recv_buf[i], len);
         if (crc_cal == crc_tmp)
         {
             modbus_recv.address = modbus_recv.payload[0];
@@ -62,6 +62,7 @@ void rs485_recv()
 
 
         }
+		memset(rs485_u->recv_buf,0,BUFFER_SIZE);
         rs485_u->recv_update = 0;
     }
 }
@@ -134,12 +135,12 @@ void modbus_trans(unsigned char mode)
     else
     {
 
-        modbus_tx.update = 0;//发三次无响应，发送停止
+       // modbus_tx.update = 0;
         unsigned int tmp;
         tmp = 0;
         if (modbus_tx.address > 0)
             tmp = 1 << (modbus_tx.address - 1);
-        modbus_recv.fault = modbus_recv.fault | tmp;
+        modbus_recv.fault = modbus_recv.fault | tmp;//发三次无响应，发送停止
 
     }
 
@@ -183,23 +184,23 @@ unsigned char  modbus_ctrl()
     if (get_config()->update_setting == 1 || (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1))
     {
         #if CTRL_EN
-        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1)
+        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1)//every 180s，cal pid out
         {
             float u;
             u = get_pid_output();
             if (u == 0)
             {
-                get_config()->machine = 0;
-                get_config()->set_tout_tmp = 20;
+                get_config()->machine = 0;//power off
+                get_config()->set_tout_tmp = 20; //set out temp
             }
             else
                 get_config()->set_tout_tmp = u;
         }
 		#endif
 
-        modbus_tx.update = 1;
+        modbus_tx.update = 1;//tx flag
         modbus_tx.address = 0;
-        modbus_tx.retry_count = 3;
+        modbus_tx.retry_count = 3;//retry count
     }
 
     if (modbus_tx.update == 1) //pump set
@@ -224,7 +225,7 @@ unsigned char  modbus_ctrl()
 
 void modbus_proc()
 {
-    unsigned char pb[64];
+//    unsigned char pb[64];
     #if CTRL_EN
     if (modbus_ctrl() == 1)//pid cal and every 180s 
     {
@@ -237,9 +238,9 @@ void modbus_proc()
         else
         {
             registerTick(MODBUS_TX_TICK_NO, 500);
-            if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //执行mqtt指令，下发命令
+            if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //500ms,write mqtt执行mqtt指令，下发命令
             {
-                modbus_trans(MODBUS_WRITE_ONE_CMD);
+                modbus_trans(MODBUS_WRITE_MUL_CMD);
                 reset_registerTick(MODBUS_TX_TICK_NO);
             }
 
