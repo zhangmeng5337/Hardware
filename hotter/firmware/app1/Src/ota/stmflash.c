@@ -133,6 +133,8 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
 
     __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
     __HAL_FLASH_DATA_CACHE_ENABLE();
+	
+	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR | FLASH_FLAG_BSY | FLASH_FLAG_OPERR);
 
     for( i= 0; i < buf_len; i+=1)
 
