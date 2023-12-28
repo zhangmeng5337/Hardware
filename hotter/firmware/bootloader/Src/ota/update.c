@@ -45,7 +45,7 @@ void MoveCode(unsigned int src_addr, unsigned int des_addr, unsigned int byte_si
 				}
 
     }
-   // printf("> Copy sucessfully......\r\n");
+   Erase_page(src_addr, 2);
 
 }
 
