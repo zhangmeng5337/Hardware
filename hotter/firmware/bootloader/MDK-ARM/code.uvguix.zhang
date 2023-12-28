@@ -1862,14 +1862,14 @@
       <Doc>
         <Name>../Src/main.c</Name>
         <ColumnNumber>20</ColumnNumber>
-        <TopLine>111</TopLine>
-        <CurrentLine>125</CurrentLine>
+        <TopLine>126</TopLine>
+        <CurrentLine>144</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\1158\unit_tests.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\1158\unit_tests.c</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>157</TopLine>
         <CurrentLine>162</CurrentLine>
@@ -1878,7 +1878,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\pt100.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\pt100.c</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>73</TopLine>
         <CurrentLine>88</CurrentLine>
@@ -1887,7 +1887,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>../Inc/pt100.h</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Inc\pt100.h</Name>
         <ColumnNumber>21</ColumnNumber>
         <TopLine>38</TopLine>
         <CurrentLine>47</CurrentLine>
@@ -1896,7 +1896,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>../Inc/pt100_ROM.h</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Inc\pt100_ROM.h</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>132</TopLine>
         <CurrentLine>151</CurrentLine>
@@ -1905,16 +1905,16 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\app.c</Name>
-        <ColumnNumber>4</ColumnNumber>
-        <TopLine>5</TopLine>
-        <CurrentLine>14</CurrentLine>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\app.c</Name>
+        <ColumnNumber>5</ColumnNumber>
+        <TopLine>1</TopLine>
+        <CurrentLine>9</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>../Inc/crc.h</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Inc\crc.h</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>1</TopLine>
         <CurrentLine>9</CurrentLine>
@@ -1923,7 +1923,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\crc.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\crc.c</Name>
         <ColumnNumber>12</ColumnNumber>
         <TopLine>28</TopLine>
         <CurrentLine>38</CurrentLine>
@@ -1932,7 +1932,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\rs485.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\rs485.c</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>1</TopLine>
         <CurrentLine>11</CurrentLine>
@@ -1950,7 +1950,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\modbus.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\modbus.c</Name>
         <ColumnNumber>21</ColumnNumber>
         <TopLine>59</TopLine>
         <CurrentLine>68</CurrentLine>
@@ -1968,7 +1968,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>../Inc/lte.h</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Inc\lte.h</Name>
         <ColumnNumber>61</ColumnNumber>
         <TopLine>1</TopLine>
         <CurrentLine>6</CurrentLine>
@@ -1977,7 +1977,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\lte_hal.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\lte_hal.c</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>164</TopLine>
         <CurrentLine>179</CurrentLine>
@@ -1986,7 +1986,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\1158\ads1258.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\1158\ads1258.c</Name>
         <ColumnNumber>41</ColumnNumber>
         <TopLine>414</TopLine>
         <CurrentLine>426</CurrentLine>
@@ -1995,7 +1995,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\1158\hal.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\1158\hal.c</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>1</TopLine>
         <CurrentLine>1</CurrentLine>
@@ -2004,7 +2004,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>../Inc/modbus.h</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Inc\modbus.h</Name>
         <ColumnNumber>5</ColumnNumber>
         <TopLine>8</TopLine>
         <CurrentLine>23</CurrentLine>
@@ -2013,7 +2013,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>..\Src\do.c</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Src\do.c</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>48</TopLine>
         <CurrentLine>62</CurrentLine>
@@ -2022,7 +2022,7 @@
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
-        <Name>../Inc/do.h</Name>
+        <Name>E:\git\Hardware\hotter\firmware\bootloader\Inc\do.h</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>1</TopLine>
         <CurrentLine>1</CurrentLine>
@@ -2032,9 +2032,9 @@
       </Doc>
       <Doc>
         <Name>..\Src\ota\update.c</Name>
-        <ColumnNumber>24</ColumnNumber>
-        <TopLine>98</TopLine>
-        <CurrentLine>93</CurrentLine>
+        <ColumnNumber>20</ColumnNumber>
+        <TopLine>94</TopLine>
+        <CurrentLine>114</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -2042,8 +2042,8 @@
       <Doc>
         <Name>..\Src\ota\stmflash.c</Name>
         <ColumnNumber>0</ColumnNumber>
-        <TopLine>143</TopLine>
-        <CurrentLine>156</CurrentLine>
+        <TopLine>133</TopLine>
+        <CurrentLine>122</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>

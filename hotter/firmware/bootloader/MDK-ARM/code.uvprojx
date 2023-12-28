@@ -393,11 +393,6 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
-              <FileName>app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\app.c</FilePath>
-            </File>
-            <File>
               <FileName>stmflash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\ota\stmflash.c</FilePath>
@@ -451,63 +446,6 @@
         </Group>
         <Group>
           <GroupName>hal</GroupName>
-          <Files>
-            <File>
-              <FileName>do.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\do.c</FilePath>
-            </File>
-            <File>
-              <FileName>pt100.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\pt100.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\sys.c</FilePath>
-            </File>
-            <File>
-              <FileName>ads1258.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\1158\ads1258.c</FilePath>
-            </File>
-            <File>
-              <FileName>hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\1158\hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>unit_tests.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\1158\unit_tests.c</FilePath>
-            </File>
-            <File>
-              <FileName>modbus.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\modbus.c</FilePath>
-            </File>
-            <File>
-              <FileName>crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\crc.c</FilePath>
-            </File>
-            <File>
-              <FileName>rs485.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\rs485.c</FilePath>
-            </File>
-            <File>
-              <FileName>lte_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\lte_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\lcd.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>Drivers/STM32F4xx_HAL_Driver</GroupName>

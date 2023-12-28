@@ -23,30 +23,32 @@ unsigned int Read_Start_Mode(void)
 	*/
 void MoveCode(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size)
 {
-
+printf("> Start Erase......\r\n");
 	erase:Erase_page(des_addr, 2);//只擦除1扇区128k
     uint8_t temp[1024];
 	  uint8_t read_temp;
 	  temp[0]= 0xaa;
 	  unsigned int i,j;
-    //printf("> Start copy......\r\n");
+    printf("> Start copy......\r\n");
     for(int i = 0; i < byte_size/1024; i++)
     {
         ReadFlash((src_addr + i*1024), temp, 1024);
         WriteFlash((des_addr + i*1024), temp, 1024);
-			
+			  printf("> Program Flash Addr %d\r\n",(des_addr + i*1024));
 			  for(j=0;j<=1024;j++)
 			  {
 						ReadFlash((des_addr + j+i*1024), &read_temp, 1);
 						if(read_temp != temp[j])
 						{
+							printf("> Read Flash data error\r\n");
 							goto erase;
 						}					
 				}
 
     }
+		
    Erase_page(src_addr, 2);
-
+printf("> Copy sucessfully......\r\n");
 }
 
 
@@ -73,7 +75,7 @@ void IAP_ExecuteApp (uint32_t App_Addr)
 		MSR_MSP( * (__IO uint32_t *) App_Addr);	//初始化APP堆栈指针(用户代码区的第一个字用于存放栈顶地址)
 		JumpToApp();	//跳转到APP
 	}else{
-	//printf("There is None APP to jump,ERROR!!!\r\n");
+	printf("There is None APP to jump,ERROR!!!\r\n");
 	}
 }
 
@@ -83,17 +85,18 @@ void IAP_ExecuteApp (uint32_t App_Addr)
 	*/
 void Start_BootLoader(void)
 {
-//	 printf("\r\n");
-//	 printf("***********************************\r\n");
-//	 printf("*                                 *\r\n");
-//	 printf("*           BootLoader            *\r\n");
-//	 printf("*                                 *\r\n");
-//	 printf("***********************************\r\n");	
-//	 printf("> Choose a startup method......\r\n");	
+	 printf("\r\n");
+	 printf("***********************************\r\n");
+	 printf("*                                 *\r\n");
+	 printf("*           BootLoader            *\r\n");
+	 printf("*                                 *\r\n");
+	 printf("***********************************\r\n");	
+
 	switch(Read_Start_Mode())									//读取是否启动应用程序
 	{
 		case Startup_Normal:										//正常启动
 		{
+			printf("> Normal Start......\r\n");	
 			//MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
 			//MoveCode(Application_2_Addr, Application_2_Addr + Application_Size - 8, Application_Size);
 			break;
@@ -108,7 +111,7 @@ void Start_BootLoader(void)
 			return;			
 		}
 	}	
-
+printf(">Jump to App......\r\n");	
 	IAP_ExecuteApp(Application_1_Addr);
 }
 void MoveCode1(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size)
@@ -121,13 +124,13 @@ void MoveCode1(unsigned int src_addr, unsigned int des_addr, unsigned int byte_s
     /*2.开始拷贝*/
     uint8_t temp[1];
 	  temp[0]= 0xaa;
-   // printf("> Start copy......\r\n");
+    printf("> Start copy......\r\n");
     for(int i = 0; i < 1; i++)
     {
        // ReadFlash((src_addr + i*1024), temp, 1024);
         WriteFlash((des_addr + i*1024), temp, 1);
     }
-   // printf("> Copy sucessfully......\r\n");
+    printf("> Copy sucessfully......\r\n");
 
 }
 void test()

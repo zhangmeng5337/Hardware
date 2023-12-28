@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "app.h"
 #include "update.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -72,6 +73,24 @@ static void MX_SPI1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
+
+extern UART_HandleTypeDef huart1;
+struct __FILE
+{
+    int handle;
+};
+FILE __stdout;
+
+int fputc(int ch, FILE *f)
+{
+    unsigned char tmp;
+    tmp =(unsigned char )ch;
+
+    HAL_UART_Transmit(&huart1, &tmp, 1, 500);
+
+    return ch;
+}
 /* USER CODE END 0 */
 
 /**
