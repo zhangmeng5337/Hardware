@@ -5,6 +5,7 @@ clc;
 
 step = 1/Fs;
 [max_index max_val] =max(original);
+max_index=269800;
 len_t = size(original);
 len_t = len_t(1);
 t = 0:step:len_t*step-step;   % 时间向量
