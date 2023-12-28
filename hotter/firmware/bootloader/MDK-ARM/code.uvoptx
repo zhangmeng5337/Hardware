@@ -152,9 +152,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>69</LineNumber>
+          <LineNumber>62</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134226224</Address>
+          <Address>134227158</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -163,71 +163,23 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\ota\update.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\code\../Src/ota/update.c\69</Expression>
+          <Expression>\\code\../Src/ota/update.c\62</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>90</LineNumber>
+          <LineNumber>35</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>134227120</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
+          <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\ota\update.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>102</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Src\ota\update.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>78</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Src\ota\update.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>100</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Src\ota\update.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\code\../Src/ota/update.c\35</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -424,14 +376,34 @@
         <Ww>
           <count>38</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temp</ItemText>
+          <ItemText>temp,0x10</ItemText>
+        </Ww>
+        <Ww>
+          <count>39</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>read_temp</ItemText>
+        </Ww>
+        <Ww>
+          <count>40</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>des_addr</ItemText>
+        </Ww>
+        <Ww>
+          <count>41</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>len,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>42</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>i,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x8090000</ItemText>
+          <ItemText>0x8020000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

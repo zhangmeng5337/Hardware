@@ -85,6 +85,14 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     FLASH_EraseInitTypeDef FlashSet;
     HAL_FLASH_Unlock();
     /* Fill EraseInit structure*/
+  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
+
+        /* Enable data cache */
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
+	
+	
+	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
+                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
     /* Fill EraseInit structure*/
     FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;
@@ -125,16 +133,27 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
     int i = 0;
     /* ����FLASH */
     HAL_FLASH_Unlock();
-    __HAL_FLASH_DATA_CACHE_DISABLE();
-    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
+	  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
 
-    __HAL_FLASH_DATA_CACHE_RESET();
-    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
-
-    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-    __HAL_FLASH_DATA_CACHE_ENABLE();
+        /* Enable data cache */
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
 	
-	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR | FLASH_FLAG_BSY | FLASH_FLAG_OPERR);
+	
+	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
+                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
+
+	
+	
+//    __HAL_FLASH_DATA_CACHE_DISABLE();
+//    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
+
+//    __HAL_FLASH_DATA_CACHE_RESET();
+//    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
+
+//    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
+//    __HAL_FLASH_DATA_CACHE_ENABLE();
+	
+	//__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR | FLASH_FLAG_BSY | FLASH_FLAG_OPERR);
 
     for( i= 0; i < buf_len; i+=1)
 

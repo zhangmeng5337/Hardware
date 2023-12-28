@@ -12,7 +12,7 @@
 #define Startup_Update 0xAA	//Éý¼¶ÔÙÆô¶¯
 
 unsigned int Read_Start_Mode(void);
-void MoveCode(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size);
+void  MoveCode(uint32_t src_addr, uint32_t des_addr, uint32_t byte_size);
 void IAP_ExecuteApp (uint32_t App_Addr);
 void Start_BootLoader(void);
 void test(void);

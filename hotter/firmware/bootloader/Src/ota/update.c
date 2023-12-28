@@ -21,34 +21,46 @@ unsigned int Read_Start_Mode(void)
 	* @param  搬运的目的地址
 	* @return 搬运的程序大小
 	*/
-void MoveCode(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size)
+void MoveCode(uint32_t src_addr, uint32_t des_addr, uint32_t byte_size)
 {
 printf("> Start Erase......\r\n");
 	erase:Erase_page(des_addr, 2);//只擦除1扇区128k
     uint8_t temp[1024];
 	  uint8_t read_temp;
 	  temp[0]= 0xaa;
-	  unsigned int i,j;
+	  uint32_t i,j,len;
+	  len =0x40000;
+
     printf("> Start copy......\r\n");
-    for(int i = 0; i < byte_size/1024; i++)
+    for(i = 0; i < len; i++)
     {
-        ReadFlash((src_addr + i*1024), temp, 1024);
-        WriteFlash((des_addr + i*1024), temp, 1024);
-			  printf("> Program Flash Addr %d\r\n",(des_addr + i*1024));
-			  for(j=0;j<=1024;j++)
-			  {
-						ReadFlash((des_addr + j+i*1024), &read_temp, 1);
-						if(read_temp != temp[j])
-						{
-							printf("> Read Flash data error\r\n");
-							goto erase;
-						}					
-				}
+			  //addr_tmp2 = addr_tmp2 + i*1024;
+        ReadFlash((src_addr + i), temp, 1024);
+        WriteFlash((des_addr + i), temp, 1024);
+			i=i+1024;
+			  //printf("> Program Flash Addr %x\r\n",(des_addr + addr_tmp));
+		     // for(j=0;j<1024;j++)
+         //  printf("%x ",temp[j]);
+//           printf("****************\r\n");			
+//						ReadFlash((des_addr + j+addr_tmp), &read_temp, 1);
+//						if(read_temp != temp[j])
+//						{
+//							if(read_temp == 0xff)
+//								WriteFlash((des_addr + j+addr_tmp), &temp[j], 1);
+//							else
+//							{
+//								printf("> Read Flash data error\r\n");
+//								goto erase;							
+//							}
+
+//						}					
+				//}
 
     }
 		
-   Erase_page(src_addr, 2);
+  // Erase_page(src_addr, 2);
 printf("> Copy sucessfully......\r\n");
+		while(1);
 }
 
 
@@ -97,7 +109,7 @@ void Start_BootLoader(void)
 		case Startup_Normal:										//正常启动
 		{
 			printf("> Normal Start......\r\n");	
-			//MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
+			MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
 			//MoveCode(Application_2_Addr, Application_2_Addr + Application_Size - 8, Application_Size);
 			break;
 		}

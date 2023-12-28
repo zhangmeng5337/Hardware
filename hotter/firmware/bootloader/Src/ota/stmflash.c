@@ -85,6 +85,14 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     FLASH_EraseInitTypeDef FlashSet;
     HAL_FLASH_Unlock();
     /* Fill EraseInit structure*/
+  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
+
+        /* Enable data cache */
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
+	
+	
+	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
+                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
     /* Fill EraseInit structure*/
     FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;
@@ -93,7 +101,7 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     FlashSet.Sector = GetSectors(secaddr);
     FlashSet.NbSectors = num;
     HAL_FLASHEx_Erase(&FlashSet, &PageError);
-
+    HAL_Delay(100);
     /* Note: If an erase operation in Flash memory also concerns data in the data or instruction cache,
     you have to make sure that these data are rewritten before they are accessed during code
     execution. If this cannot be done safely, it is recommended to flush the caches by setting the
@@ -125,14 +133,22 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
     int i = 0;
     /* ޢ̸FLASH */
     HAL_FLASH_Unlock();
-    __HAL_FLASH_DATA_CACHE_DISABLE();
-    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
+	  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
 
-    __HAL_FLASH_DATA_CACHE_RESET();
-    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
+        /* Enable data cache */
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
+	
+	
+	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
+                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
+//    __HAL_FLASH_DATA_CACHE_DISABLE();
+//    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
 
-    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-    __HAL_FLASH_DATA_CACHE_ENABLE();
+//    __HAL_FLASH_DATA_CACHE_RESET();
+//    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
+
+//    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
+//    __HAL_FLASH_DATA_CACHE_ENABLE();
 
     for( i= 0; i < buf_len; i+=1)
 
@@ -156,6 +172,14 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
 void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len)
 {
     uint32_t i;
+	  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
+
+        /* Enable data cache */
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
+	
+	
+	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
+                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
     for(i = 0; i < buf_len; i++)
     {
         buff[i] = *(__IO uint8_t*)(addr + i);

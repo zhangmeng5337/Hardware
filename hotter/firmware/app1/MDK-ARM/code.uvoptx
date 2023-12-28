@@ -150,60 +150,12 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>ST-LINKIII-KEIL_SWO</Key>
-          <Name>-U53FF74067187534831481567 -O2254 -SF4000 -C0 -A0 -I0 -HNlocalhost -HP7184 -P1 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8004 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO4 -FD20000000 -FC800 -FN1 -FF0STM32F4xx_1024.FLM -FS08000000 -FL0100000 -FP0($$Device:STM32F405RGTx$CMSIS\Flash\STM32F4xx_1024.FLM)</Name>
+          <Name>-U53FF74067187534831481567 -O2254 -SF4000 -C0 -A0 -I0 -HNlocalhost -HP7184 -P1 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8004 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F4xx_1024.FLM -FS08000000 -FL0100000 -FP0($$Device:STM32F405RGTx$CMSIS\Flash\STM32F4xx_1024.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint>
         <Bp>
           <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>329</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134243290</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\lte_hal.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/lte_hal.c\329</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>374</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134243456</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\lte_hal.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/lte_hal.c\374</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>606</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134241952</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\lte_hal.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/lte_hal.c\606</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
           <Type>0</Type>
           <LineNumber>147</LineNumber>
           <EnabledFlag>1</EnabledFlag>
@@ -493,14 +445,14 @@
         <Ww>
           <count>54</count>
           <WinNumber>1</WinNumber>
-          <ItemText>addr_count,0x10</ItemText>
+          <ItemText>addr_count,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x0809fff0</ItemText>
+          <ItemText>0x08068860</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -510,7 +462,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
-        <aLwin>1</aLwin>
+        <aLwin>0</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>

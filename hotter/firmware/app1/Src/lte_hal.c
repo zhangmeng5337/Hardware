@@ -322,23 +322,8 @@ uint8_t lte_info_ota_show()
                 return at_cmds_ota.net_status;
             }
 
-            if (get_config()->seq_count >=get_config()->seq)
-            {
 
-
-                get_config()->seq_count = 0;
-                get_config()->seq = 0;
-                addr_count = 0;
-                get_config()->Erase_flag = 1;
-                get_config()->reboot_flag = 1;
-                at_cmds_ota.RtyNum = 0;
-                at_cmd_ota_num = AT_IDLE;
-                at_cmd_num = AT_IDLE;
-                // get_config()->update_setting = 1;
-                OTA_Task();
-
-            }
-            else
+            if(get_config()->seq_count<=get_config()->seq)
             {
                 get_config()->seq_count ++;
                 // printf("Find_Buf:%lu\r\n", compare_len);
@@ -376,14 +361,33 @@ uint8_t lte_info_ota_show()
                         return NOT_CONNECT;
                     }
                 }
-
+								printf("******************");
+								for(i=0;i<(compare_len-2);i++)
+									printf("%x ",Bin_buffer[i]);
+								printf("******************\r\n");
                 addr_wr = (addr_wr ) + len;
                //addr_wr = addr_wr + Application_2_Addr;
                 addr_count++;
                 at_cmds_ota.RtyNum = 0;
                 at_cmd_ota_num = AT_HTTPPARA_2;
+								if(get_config()->seq_count==get_config()->seq)
+            {
+
+
+                get_config()->seq_count = 0;
+                get_config()->seq = 0;
+                addr_count = 0;
+                get_config()->Erase_flag = 1;
+                get_config()->reboot_flag = 1;
+                at_cmds_ota.RtyNum = 0;
+                at_cmd_ota_num = AT_IDLE;
+                at_cmd_num = AT_IDLE;
+                // get_config()->update_setting = 1;
+                OTA_Task();
 
             }
+            }
+						
             // clear_uart_buf();
         }
         break;
