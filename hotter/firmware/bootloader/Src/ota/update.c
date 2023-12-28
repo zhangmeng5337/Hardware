@@ -23,20 +23,27 @@ unsigned int Read_Start_Mode(void)
 	*/
 void MoveCode(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size)
 {
-    /*1.擦除目的地址*/
-    //printf("> Start erase des flash......\r\n");
-    Erase_page(des_addr, 2);//只擦除1扇区128k
-   // printf("> Erase des flash sucessfully......\r\n");
 
-    /*2.开始拷贝*/
+	erase:Erase_page(des_addr, 2);//只擦除1扇区128k
     uint8_t temp[1024];
+	  uint8_t read_temp;
 	  temp[0]= 0xaa;
-	  unsigned int i;
+	  unsigned int i,j;
     //printf("> Start copy......\r\n");
     for(int i = 0; i < byte_size/1024; i++)
     {
         ReadFlash((src_addr + i*1024), temp, 1024);
         WriteFlash((des_addr + i*1024), temp, 1024);
+			
+			  for(j=0;j<=1024;j++)
+			  {
+						ReadFlash((des_addr + j+i*1024), &read_temp, 1);
+						if(read_temp != temp[j])
+						{
+							goto erase;
+						}					
+				}
+
     }
    // printf("> Copy sucessfully......\r\n");
 
@@ -66,7 +73,7 @@ void IAP_ExecuteApp (uint32_t App_Addr)
 		MSR_MSP( * (__IO uint32_t *) App_Addr);	//初始化APP堆栈指针(用户代码区的第一个字用于存放栈顶地址)
 		JumpToApp();	//跳转到APP
 	}else{
-	printf("There is None APP to jump,ERROR!!!\r\n");
+	//printf("There is None APP to jump,ERROR!!!\r\n");
 	}
 }
 
@@ -93,22 +100,15 @@ void Start_BootLoader(void)
 		}
 		case Startup_Update:										//升级再启动
 		{
-			//printf("> Start update......\r\n");	
 			MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
-			//printf("> Update sucessfully......\r\n");
 			break;
 		}
 		default:																//启动失败
 		{
-			
-		//	printf("> Error:%X!!!......\r\n", Read_Start_Mode());
 			return;			
 		}
 	}	
-	//MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
-	/* 跳转到应用程序 */
-	// __disable_irq() ;  //很重要！经测试STM32F4必要！  貌似F105也需要   L431 裸机 却不需要  RTOS需要
-	//printf("> Start up......\r\n\r\n");	
+
 	IAP_ExecuteApp(Application_1_Addr);
 }
 void MoveCode1(unsigned int src_addr, unsigned int des_addr, unsigned int byte_size)
