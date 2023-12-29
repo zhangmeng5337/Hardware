@@ -129,7 +129,7 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   //hardware_init();
-	HAL_Delay(3000);
+	HAL_Delay(5000);
 	 //test();
 	// Start_BootLoader();
   /* USER CODE END 2 */

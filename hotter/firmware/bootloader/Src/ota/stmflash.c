@@ -1,9 +1,5 @@
 #include "stmflash.h"
 #include "main.h"
-/**
-	* @bieaf 	ͨڽַܱ֘ȡҳ
-	* @return page
-	*/
 uint32_t GetSectors(uint32_t Addr)
 {
     uint32_t sectors = 0;
@@ -58,10 +54,6 @@ uint32_t GetSectors(uint32_t Addr)
         {
             sectors = FLASH_SECTOR_11;
         }
-
-        //printf("Bank_1\r\n");
-
-
     }
 
     return sectors;
@@ -79,18 +71,17 @@ uint32_t GetSectors(uint32_t Addr)
 	*/
 int Erase_page(uint32_t secaddr, uint32_t num)
 {
+
     uint32_t PageError = 0;
     HAL_StatusTypeDef status;
     /* ӁԽFLASH*/
     FLASH_EraseInitTypeDef FlashSet;
     HAL_FLASH_Unlock();
+	FLASH_WaitForLastOperation(50000);    //添加的代码
     /* Fill EraseInit structure*/
   __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
-
         /* Enable data cache */
     __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
-	
-	
 	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
                          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
@@ -100,25 +91,12 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     FlashSet.Banks   = FLASH_BANK_1;	//STM32L431RCT6ֻԐBank1
     FlashSet.Sector = GetSectors(secaddr);
     FlashSet.NbSectors = num;
-    HAL_FLASHEx_Erase(&FlashSet, &PageError);
-    HAL_Delay(100);
-    /* Note: If an erase operation in Flash memory also concerns data in the data or instruction cache,
-    you have to make sure that these data are rewritten before they are accessed during code
-    execution. If this cannot be done safely, it is recommended to flush the caches by setting the
-    DCRST and ICRST bits in the FLASH_CR register. */
-    __HAL_FLASH_DATA_CACHE_DISABLE();
-    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
-
-    __HAL_FLASH_DATA_CACHE_RESET();
-    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
-
-    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-    __HAL_FLASH_DATA_CACHE_ENABLE();
-
+    status = HAL_FLASHEx_Erase(&FlashSet, &PageError);
+	//FLASH_WaitForLastOperation(50000);    //添加的代码
     /* Lock the Flash to disable the flash control register access (recommended
     to protect the FLASH memory against possible unwanted operation) *********/
     HAL_FLASH_Lock();
-    return 1;
+    return status;
 }
 
 /** @bieaf 	дɴىٶ˽ߝ,STM32L4xxxֻŜ˫ؖޚдɫ
@@ -131,34 +109,26 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
 {
 
     int i = 0;
-    /* ޢ̸FLASH */
+	HAL_StatusTypeDef status = HAL_ERROR;
     HAL_FLASH_Unlock();
-	  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
-
+	FLASH_WaitForLastOperation(50000);    //添加的代码
+	__HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
         /* Enable data cache */
     __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
-	
-	
 	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
                          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
-//    __HAL_FLASH_DATA_CACHE_DISABLE();
-//    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
 
-//    __HAL_FLASH_DATA_CACHE_RESET();
-//    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
-
-//    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-//    __HAL_FLASH_DATA_CACHE_ENABLE();
-
-    for( i= 0; i < buf_len; i+=1)
-
+    for( i= 0; i < buf_len; i+=4)
     {
-       // FLASH_Program_Byte(addr+i, *(buff+i));
-        HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, addr+i, *(buff+i));
-    }
-
-
-    /* ʏ̸FLASH */
+        status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, addr+i, *(__IO uint32_t*)(buff+i));
+        while(status != HAL_OK)
+        {
+           while(status != HAL_OK)
+			status = Erase_page(addr, 2);
+		   i = 0;
+		}
+			
+	}
     HAL_FLASH_Lock();
 }
 
@@ -172,15 +142,7 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
 void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len)
 {
     uint32_t i;
-	  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
-
-        /* Enable data cache */
-    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
-	
-	
-	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
-                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
-    for(i = 0; i < buf_len; i++)
+	    for(i = 0; i < buf_len; i++)
     {
         buff[i] = *(__IO uint8_t*)(addr + i);
     }

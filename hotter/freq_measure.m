@@ -10,11 +10,7 @@ len = round(len);
 len = len*2
 x = dat(1:len-2,1)*1000;
 original = x;
-% mean_x = mean(original);
-% x = x-mean_x;
-% original = x;
  y=x(:,1); %读取时域数据
-% [n,index]=max(original) %a为一维数组（向量）
 
 
 Fs=4000; %采集频率
@@ -22,11 +18,6 @@ T=1/Fs; %采集时间间隔
 N=length(y); %采集信号的长度
 t=(0:1:N-1)*T; %定义整个采集时间点
 t=t';  %转置成列向量
-
-
-
-
-
  y = kalman(original);
  y=y(:,1);
  kal_man = y;
@@ -38,32 +29,19 @@ t=t';  %转置成列向量
 fc = 1500; % 截止频率
 N =20; % 阶数
 b = fir1(N, fc/(fs/2)); % 使用fir1函数设计低通滤波器系数
-%  freqz(b, 1); % 绘制滤波器的频率响应特性
  x1get=filter(b,1,original);
+
 % figure(2)
-%  plot(t,original,'+b');
-%  hold on;
-
-
-% plot(t,kal_man,'g');
-% hold on;
-% figure(1)
-% plot(t,original);
-% title('原始信号 ');
+% % plot(t,original);
 % xlabel('time/s');
 % ylabel('voltage/mV');
-
-figure(2)
-% plot(t,original);
-xlabel('time/s');
-ylabel('voltage/mV');
-% hold on;
-plot(t,x1get,'r');
-title('fir信号 ');
-xlabel('time/s');
-ylabel('voltage/mV');
-% legend('原始信号','fir滤波');
-
+% % hold on;
+% plot(t,x1get,'r');
+% title('fir信号 ');
+% xlabel('time/s');
+% ylabel('voltage/mV');
+% % legend('原始信号','fir滤波');
+% 
 figure(3)
 [xd,cxd,lxd] = wden(original,'rigrsure','s','one',2,'db3');
 
@@ -75,16 +53,16 @@ title('小波变换信号 ');
 xlabel('time/s');
 ylabel('voltage/mV');
 % legend('原始信号','小波变换信号');
-figure(4)
-yy=smooth(xd,4);
-smooth_dat = yy;
-% plot(t,original);
-% hold on
-plot(t,yy,'r'); 
-title('平滑信号 ');
-xlabel('time/s');
-ylabel('voltage/mV');
-% legend('原始信号','平滑信号');
+% figure(4)
+% yy=smooth(xd,4);
+% smooth_dat = yy;
+% % plot(t,original);
+% % hold on
+% plot(t,yy,'r'); 
+% title('平滑信号 ');
+% xlabel('time/s');
+% ylabel('voltage/mV');
+% % legend('原始信号','平滑信号');
 figure(5)
 plot(t,original);
 hold on
@@ -95,8 +73,8 @@ title('卡尔曼信号 ');
 xlabel('time/s');
 ylabel('voltage/mV');
 legend('原始信号','卡尔曼信号');
-std_vector = std(yy);
-disp(std_vector);
+% std_vector = std(yy);
+% disp(std_vector);
 % 生成测试信号
 
 % 

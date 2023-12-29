@@ -292,12 +292,6 @@ uint8_t lte_info_ota_show()
         {
 
             memset(Msg_Len, 0x00, sizeof(Msg_Len));
-            /*
-            数据格式�?
-            DATA,1024
-            1024byte+2(crc)
-            */
-            // HAL_Delay(50);
             Find_string((char *)lte_recv->Lpuart1RecBuff, "+HTTPREAD: ", "\r\n", Msg_Len);
             compare_len = atoi(Msg_Len);
             // memset(lte_recv->Lpuart1RecBuff,0,LPUART1_REC_SIZE);
@@ -318,37 +312,28 @@ uint8_t lte_info_ota_show()
             {
                 at_cmd_ota_num = AT_HTTPPARA_2;
                 at_cmds_ota.RtyNum = 0;
-
                 return at_cmds_ota.net_status;
             }
 
 
             if(get_config()->seq_count<=get_config()->seq)
             {
-                get_config()->seq_count ++;
+                get_config()->seq_count = get_config()->seq_count + 1;
                 // printf("Find_Buf:%lu\r\n", compare_len);
                 if (get_config()->Erase_flag == 1)	  //begin erase仅仅开始是擦除flash一�?
                 {
                     addr_wr=Application_2_Addr;
                     get_config()->Erase_flag = 0;
-                    Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
+									  HAL_StatusTypeDef status = HAL_ERROR; 
+									  while(status != HAL_ERROR)
+									      status = Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
                 }
-                //  memset(Bin_len, 0x00, sizeof(Bin_len));
-//                    for (long b = 0; b < (compare_len - 2); b++)
-//                    {
-//                        Bin_buffer[b] = pb[payload_head_index + b];
-//                    }
-                /* 接下来将固件写进flash�?*/
-                //	printf("烧录�?d�?..................\r\n", addr_count);
 
                 unsigned int i;
                 unsigned char tmp;
                 unsigned int len;
-//                if(compare_len <1026)
-//                    len = 0;
-//                else if(compare_len ==1026)
-                    len = 	(compare_len - 2);
-
+								
+                len = 	(compare_len - 2);
                 WriteFlash(addr_wr, (uint8_t *)(&Bin_buffer[0]), len);
 
                 for(i=0; i<(compare_len - 2); i++) //verify data in flash
@@ -358,15 +343,12 @@ uint8_t lte_info_ota_show()
                     {
                         get_config()->Erase_flag = 1;
                         get_config()->seq_count = 1;
+											  addr_count = 0;
                         return NOT_CONNECT;
                     }
                 }
-								printf("******************");
-								for(i=0;i<(compare_len-2);i++)
-									printf("%x ",Bin_buffer[i]);
-								printf("******************\r\n");
+
                 addr_wr = (addr_wr ) + len;
-               //addr_wr = addr_wr + Application_2_Addr;
                 addr_count++;
                 at_cmds_ota.RtyNum = 0;
                 at_cmd_ota_num = AT_HTTPPARA_2;

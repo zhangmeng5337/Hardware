@@ -1,9 +1,5 @@
 #include "stmflash.h"
 #include "main.h"
-/**
-	* @bieaf 	Í¨¹ıµØÖ·»ñÈ¡Ò³
-	* @return page
-	*/
 uint32_t GetSectors(uint32_t Addr)
 {
     uint32_t sectors = 0;
@@ -72,112 +68,85 @@ uint32_t GetSectors(uint32_t Addr)
 
 
 /**
-	* @bieaf 	²Á³ıÒ³ L431Ã¿Ò³2K  ¹²127Ò³  256K
-	* @param 	pageaddr  ÆğÊ¼µØÖ·
-	* @param 	num       ²Á³ıµÄÒ³Êı
+	* @bieaf 	ÓÔ½Ò³ L431Ã¿Ò³2K  Ù²127Ò³  256K
+	* @param 	pageaddr  Ç°Ê¼Ö˜Ö·
+	* @param 	num       ÓÔ½Ö„Ò³Ë½
 	* @return 1
 	*/
 int Erase_page(uint32_t secaddr, uint32_t num)
 {
+
     uint32_t PageError = 0;
     HAL_StatusTypeDef status;
-    /* ²Á³ıFLASH*/
+    /* ÓÔ½FLASH*/
     FLASH_EraseInitTypeDef FlashSet;
     HAL_FLASH_Unlock();
+	FLASH_WaitForLastOperation(50000);    //æ·»åŠ çš„ä»£ç 
     /* Fill EraseInit structure*/
   __HAL_FLASH_DATA_CACHE_DISABLE();//FLASHæ“ä½œæœŸé—´ï¼Œå¿…é¡»ç¦æ­¢æ•°æ®ç¼“å­˜
-
         /* Enable data cache */
     __HAL_FLASH_DATA_CACHE_ENABLE();//å¼€å¯æ•°æ®ç¼“å­˜
-	
-	
 	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
                          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
     /* Fill EraseInit structure*/
     FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;
     FlashSet.VoltageRange = FLASH_VOLTAGE_RANGE_3;
-    FlashSet.Banks   = FLASH_BANK_1;	//STM32L431RCT6Ö»ÓĞBank1
+    FlashSet.Banks   = FLASH_BANK_1;	//STM32L431RCT6Ö»ÔBank1
     FlashSet.Sector = GetSectors(secaddr);
     FlashSet.NbSectors = num;
-    HAL_FLASHEx_Erase(&FlashSet, &PageError);
-
-    /* Note: If an erase operation in Flash memory also concerns data in the data or instruction cache,
-    you have to make sure that these data are rewritten before they are accessed during code
-    execution. If this cannot be done safely, it is recommended to flush the caches by setting the
-    DCRST and ICRST bits in the FLASH_CR register. */
-    __HAL_FLASH_DATA_CACHE_DISABLE();
-    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
-
-    __HAL_FLASH_DATA_CACHE_RESET();
-    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
-
-    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-    __HAL_FLASH_DATA_CACHE_ENABLE();
-
+    status = HAL_FLASHEx_Erase(&FlashSet, &PageError);
+	//FLASH_WaitForLastOperation(50000);    //æ·»åŠ çš„ä»£ç 
     /* Lock the Flash to disable the flash control register access (recommended
     to protect the FLASH memory against possible unwanted operation) *********/
     HAL_FLASH_Lock();
-    return 1;
+    return status;
 }
 
-/** @bieaf 	Ğ´Èô¸É¸öÊı¾İ,STM32L4xxxÖ»ÄÜË«×Ö½ÚĞ´Èë
-	* @param 	addr     		Ğ´ÈëµÄµØÖ·
-	* @param 	buff       	Ğ´ÈëÊı¾İµÄÆğÊ¼µØÖ·
-	* @param 	word_size  	³¤¶È
-	* @return	none				·µ»ØÖµ
+/** @bieaf 	Ğ´É´Ù‰Ù¶Ë½ß,STM32L4xxxÖ»ÅœË«Ø–ŞšĞ´É«
+	* @param 	addr     		Ğ´É«Ö„Ö˜Ö·
+	* @param 	buff       	Ğ´É«Ë½ßÖ„Ç°Ê¼Ö˜Ö·
+	* @param 	word_size  	Ó¤×ˆ
+	* @return	none				×µÜ˜Öµ
  */
 void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
 {
 
     int i = 0;
-    /* ½âËøFLASH */
+	HAL_StatusTypeDef status;
     HAL_FLASH_Unlock();
-	  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASHæ“ä½œæœŸé—´ï¼Œå¿…é¡»ç¦æ­¢æ•°æ®ç¼“å­˜
-
+	FLASH_WaitForLastOperation(50000);    //æ·»åŠ çš„ä»£ç 
+	__HAL_FLASH_DATA_CACHE_DISABLE();//FLASHæ“ä½œæœŸé—´ï¼Œå¿…é¡»ç¦æ­¢æ•°æ®ç¼“å­˜
         /* Enable data cache */
     __HAL_FLASH_DATA_CACHE_ENABLE();//å¼€å¯æ•°æ®ç¼“å­˜
-	
-	
 	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
                          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
-	
-	
-//    __HAL_FLASH_DATA_CACHE_DISABLE();
-//    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
-
-//    __HAL_FLASH_DATA_CACHE_RESET();
-//    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
-
-//    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-//    __HAL_FLASH_DATA_CACHE_ENABLE();
-	
-	//__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR | FLASH_FLAG_BSY | FLASH_FLAG_OPERR);
-
-    for( i= 0; i < buf_len; i+=1)
-
+    for( i= 0; i < buf_len; i+=4)
     {
-       // FLASH_Program_Byte(addr+i, *(buff+i));
-        HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, addr+i, *(buff+i));
-    }
-
-
-    /* ÉÏËøFLASH */
+        status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, addr+i, *(__IO uint32_t*)(buff+i));
+        while(status != HAL_OK)
+        {
+           while(status != HAL_OK)
+			status = Erase_page(addr, 2);
+		   i = 0;
+		}
+			
+	}
     HAL_FLASH_Lock();
 }
 
 /**
-	* @bieaf ¶ÁÈô¸É¸öÊı¾İ
-	* @param addr       ¶ÁÊı¾İµÄµØÖ·
-	* @param buff       ¶Á³öÊı¾İµÄÊı×éÖ¸Õë
-	* @param buf_len  ³¤¶È
+	* @bieaf ×É´Ù‰Ù¶Ë½ß
+	* @param addr       ×Ë½ßÖ„Ö˜Ö·
+	* @param buff       ×Ô¶Ë½ßÖ„Ë½Ø©Ö¸Ö«
+	* @param buf_len  Ó¤×ˆ
 	* @return
 	*/
 void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len)
 {
     uint32_t i;
-    for(i = 0; i < buf_len; i++)
+	    for(i = 0; i < buf_len; i++)
     {
         buff[i] = *(__IO uint8_t*)(addr + i);
     }
