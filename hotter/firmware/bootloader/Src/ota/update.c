@@ -7,7 +7,7 @@
 unsigned int Read_Start_Mode(void)
 {
     uint8_t mode = 0;
-    ReadFlash((Application_2_Addr + Application_Size - 8), &mode, 1);
+    ReadFlash((Application_2_Addr + 0x40000 - 8), &mode, 1);
     return mode;
 }
 
@@ -21,6 +21,7 @@ unsigned int Read_Start_Mode(void)
 	* @param  搬运的目的地址
 	* @return 搬运的程序大小
 	*/
+uint32_t rd_addr;
 void MoveCode(uint32_t src_addr, uint32_t des_addr, uint32_t byte_size)
 {
 	HAL_StatusTypeDef status;
@@ -29,20 +30,21 @@ void MoveCode(uint32_t src_addr, uint32_t des_addr, uint32_t byte_size)
     uint8_t temp[1024];
     uint32_t i;
     temp[0] = 0xaa;
-
-    while(status != HAL_ERROR)
+    status = HAL_ERROR;
+    while(status == HAL_ERROR)
     status = Erase_page(des_addr, 2);//只擦除1扇区128k
 
-
+   rd_addr =  src_addr;
     printf("> Start copy......\r\n");
     for (i = 0; i < byte_size; i = i + 1024)
     {
+			  rd_addr = rd_addr + i;
         ReadFlash((src_addr + i), temp, 1024);
         WriteFlash((des_addr + i), temp, 1024);
 
     }
     printf("> Copy sucessfully......\r\n");
-    while (1);
+  //  while (1);
 }
 
 
@@ -93,13 +95,13 @@ void Start_BootLoader(void)
         case Startup_Normal:										//正常启动
         {
             printf("> Normal Start......\r\n");
-            //MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
+           // MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
             //MoveCode(Application_2_Addr, Application_2_Addr + Application_Size - 8, Application_Size);
             break;
         }
         case Startup_Update:										//升级再启动
         {
-            MoveCode(Application_2_Addr, Application_1_Addr, Application_Size-1024);
+            MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
             break;
         }
         default:																//启动失败

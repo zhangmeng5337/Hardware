@@ -72,24 +72,24 @@ unsigned char ATRec(char *s)
 
     if (lte_recv->Lpuart1RecFlag)
     {
-        if (strstr((const char *)lte_recv->Lpuart1DMARecBuff, s) != NULL)
+        if (strstr((const char *)lte_recv->Lpuart1RecBuff, s) != NULL)
         {
             at_cmds.ATStatus = SUCCESS_REC;
         }
-        else if (strstr((const char *)lte_recv->Lpuart1DMARecBuff, "CLOSED") != NULL)
+        else if (strstr((const char *)lte_recv->Lpuart1RecBuff, "CLOSED") != NULL)
         {
             at_cmds.ATStatus = ERROR_STATUS;
         }
-        else if (strstr((const char *)lte_recv->Lpuart1DMARecBuff, "+CME ERROR:") != NULL)
+        else if (strstr((const char *)lte_recv->Lpuart1RecBuff, "+CME ERROR:") != NULL)
         {
             at_cmds.ATStatus = ERROR_STATUS;
         }
-        else if (strstr((const char *)lte_recv->Lpuart1DMARecBuff, "+CGEV: NW PDN DEACT 1") != NULL)
+        else if (strstr((const char *)lte_recv->Lpuart1RecBuff, "+CGEV: NW PDN DEACT 1") != NULL)
         {
             at_cmds.ATStatus = ERROR_STATUS;
         }
         else
-
+;
 
 
             //printf("收到数据�?s", Lpuart1type.Lpuart1RecBuff);
@@ -316,7 +316,7 @@ uint8_t lte_info_ota_show()
             }
 
 
-            if(get_config()->seq_count<=get_config()->seq)
+            if(get_config()->seq_count<=(get_config()->seq+1))
             {
                 get_config()->seq_count = get_config()->seq_count + 1;
                 // printf("Find_Buf:%lu\r\n", compare_len);
@@ -325,7 +325,7 @@ uint8_t lte_info_ota_show()
                     addr_wr=Application_2_Addr;
                     get_config()->Erase_flag = 0;
 									  HAL_StatusTypeDef status = HAL_ERROR; 
-									  while(status != HAL_ERROR)
+									  while(status == HAL_ERROR)
 									      status = Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
                 }
 
@@ -352,7 +352,7 @@ uint8_t lte_info_ota_show()
                 addr_count++;
                 at_cmds_ota.RtyNum = 0;
                 at_cmd_ota_num = AT_HTTPPARA_2;
-								if(get_config()->seq_count==get_config()->seq)
+								if(get_config()->seq_count>get_config()->seq)
             {
 
 
