@@ -30,7 +30,7 @@ typedef struct
 	unsigned char func;
 	unsigned int  reg;
 	unsigned int  regCount;
-	unsigned char payload[256];
+	unsigned char payload[16];
 	unsigned int crc;
 }modbus_stru;
 void modbus_trans(unsigned char mode);

@@ -440,9 +440,11 @@ void TIM1_UPD_Interrupt(void)
     //校正模式
     if (U8_CURR_WorkMode == D_CAL_START_MODE)
     {
+        UartSend(0x5b);
         U32_Cal_Times++;//校正时间36S，1000W负载36S时间消耗0.01度电
         if (U32_Cal_Times == D_TIME1_CAL_TIME)
         {
+            UartSend(0x5c);
             U8_CURR_WorkMode = D_CAL_END_MODE;
             U16_REF_001_E_Pluse_CNT = U16_E_Pluse_CNT;		//记录36S时间内的脉冲数，此脉冲数表示0.01度用电量
         }
@@ -844,10 +846,12 @@ void Read_CalData_EEPROM(void)
     U16_REF_001_E_Pluse_CNT = EEPROM_Read_Inte(ADDR_REF_001_E);
     U32_AC_BACKUP_E = EEPROM_Read_Word(ADDR_AC_BACKUP_E);
     power_usr.U32_AC_E = U32_AC_BACKUP_E;
+	//UartSendStr("eeprom ok\r\n");
 
 
     if (u8_temp != 0x55)	//判断EEPROM内是否存有校正值,若没有，则将参数设置为默认值
-    {
+    { // UartSendStr("eeprom read ok\r\n");
+        
         //设置默认值
         U16_P_REF_Data = 10000;		// 1000.0W
         U16_V_REF_Data = 2200;		// 220.0V
@@ -884,6 +888,7 @@ void Write_CalData_EEPROM(void)
     U32_AC_BACKUP_E = 0;
     power_usr.U32_AC_E = 0;
 }
+
 
 
 power_stru *get_power(void)
@@ -925,6 +930,7 @@ void tm7780_proc()
         Read_CalData_EEPROM();
         //杩斿洖娴嬮噺妯″紡
         U8_CURR_WorkMode = D_NORMAL_MODE;
+		UartSend(0x5a);
     }
 }
 

@@ -40,7 +40,7 @@ unsigned char rs485_recv()
     if (uart_usr_modbus->recv_flag == 1)
     {
         unsigned char i;
-        for (i = 0; i < uart_usr_modbus->wptr; i++)
+        for (i = 0; i < BUFFER_SIZE-8; i++)
         {
             if (uart_usr_modbus->recv_buf[i] == DEV_ADDR) //addr ok
                 break;
@@ -55,7 +55,8 @@ unsigned char rs485_recv()
         crc_tmp = crc_tmp | uart_usr_modbus->recv_buf[index - 1];
         crc_cal = CRC_Compute(&uart_usr_modbus->recv_buf[i], len);
         memcpy(modbus_recv.payload, &uart_usr_modbus->recv_buf[i], len);
-       // if (crc_cal == crc_tmp)
+        if (modbus_recv.payload[1] == MODBUS_READ_CMD||
+			modbus_recv.payload[1] == POWER_CALI)
         {
             modbus_recv.address = modbus_recv.payload[0];
             modbus_recv.func =    modbus_recv.payload[1];
@@ -69,6 +70,7 @@ unsigned char rs485_recv()
 	   	{
 		   memset(uart_usr_modbus->recv_buf, 0, BUFFER_SIZE);
 		   uart_usr_modbus->recv_flag = 0;
+	      uart_usr_modbus->wptr =0;
 
 	   }
 

@@ -32,6 +32,7 @@ void UartSendStr(char *p);
 unsigned char uart_proc(void);
 uart_stru *get_uart(void);
 void UartSendbyte(char *p,unsigned int len);
+uart_stru *get_uart(void);
 
 #endif
 
