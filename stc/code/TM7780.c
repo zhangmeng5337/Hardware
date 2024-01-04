@@ -416,6 +416,17 @@ void VI_Interrupt(void)
         }
     }
 }
+void set_mode(u8 mode)
+{
+	switch(mode)
+	{
+		case D_CAL_START_MODE:U8_CURR_WorkMode = D_CAL_START_MODE;break;
+		case D_NORMAL_MODE:U8_CURR_WorkMode = D_NORMAL_MODE;break;		
+		case D_CAL_END_MODE:U8_CURR_WorkMode = D_CAL_END_MODE;break;
+    default:		U8_CURR_WorkMode = D_NORMAL_MODE;break;		
+		
+	}
+}
 /*=====================================================
  * 函数名称: TIM1
  * 函数功能: 测量功率、电压、电流
@@ -860,6 +871,7 @@ void Read_CalData_EEPROM(void)
 =====================================================*/
 void Write_CalData_EEPROM(void)
 {
+	IapErase(ADDR_CAL_FLAG);
 
     EEPROM_Write_Word(ADDR_REF_P_PLUSEWIDTH_TIME, U32_P_CURRENT_PLUSEWIDTH_TIME);
     EEPROM_Write_Word(ADDR_REF_V_PLUSEWIDTH_TIME, U32_V_CURRENT_PLUSEWIDTH_TIME);

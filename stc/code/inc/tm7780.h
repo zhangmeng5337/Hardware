@@ -102,6 +102,6 @@ void tm7780_proc(void);
 power_stru *get_power(void);
 void VI_Interrupt(void);
 void P_Interrupt(void);
-
+void set_mode(u8 mode);
 #endif
 

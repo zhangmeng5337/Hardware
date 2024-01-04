@@ -2,13 +2,13 @@
 #define MODBUS_H_
 
 #define POWER_REQUEST		0x01  //
-#define POWER_CALI          0x02
+#define POWER_CALI          0x55
 
 
 
 
 #define MODBUS_READ_CMD				0x03  //
-#define MODBUS_WRITE_ONE_CMD        0x06
+#define MODBUS_WRITE_ONE_CMD        0x55
 
 
 #define DEV_ADDR		0x01

@@ -7,7 +7,7 @@
 
 void hardware_init(void)
 {
-     mcu_init();
+   mcu_init();
 	 tm7780_init();
 	 UartInit();
 	 Timer1_Init();		//100微秒@12.000MHz
@@ -34,14 +34,15 @@ void app_proc(void)
 		}
 		else if(status == 2)
 		{
-			modbus_proc(POWER_CALI);//配置校准，未实现
+			 modbus_proc(POWER_CALI);//配置校准
+			 set_mode(D_CAL_START_MODE);
 		}
    }
    else 
    	{
    		if(get_power()->time_1s>=1000)
    		{
-			modbus_proc(POWER_REQUEST);//获取数据
+			//modbus_proc(POWER_REQUEST);//获取数据
 			get_power()->time_1s = 0;
 		}
 

@@ -111,17 +111,17 @@ void modbus_proc(unsigned char mode)
     else if (mode == POWER_CALI)
     {
 	pb[i++] = DEV_ADDR;
-	pb[i++] = MODBUS_READ_CMD;
+	pb[i++] = POWER_CALI;
 	pb[i++] = 0;
-	pb[i++] = 7;
+	pb[i++] = 0;
 	//pb[i++] = (unsigned char)get_power()->U16_AC_V;
 	
-	memcpy(&pb[i], &get_power()->U16_AC_V, 2);
-	i = i + 2;
-	memcpy(&pb[i], &get_power()->U16_AC_I, 2);
-	i = i + 2;
-	memcpy(&pb[i], &get_power()->U16_AC_P, 2);
-	i = i + 2;
+//	memcpy(&pb[i], &get_power()->U16_AC_V, 2);
+//	i = i + 2;
+//	memcpy(&pb[i], &get_power()->U16_AC_I, 2);
+//	i = i + 2;
+//	memcpy(&pb[i], &get_power()->U16_AC_P, 2);
+//	i = i + 2;
 	
 	crc = CRC_Compute(pb, i);
 	pb[i++] = crc;
@@ -145,7 +145,7 @@ unsigned  char analy_modbus_recv()
             result = 1;
         };
         break;
-        case MODBUS_WRITE_ONE_CMD:
+        case POWER_CALI:
         {
             result = 2;
         }
