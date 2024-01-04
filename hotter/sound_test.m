@@ -1,13 +1,13 @@
 clear all;
 clc;
 %close all;
-time1 = 5; %第一个声音片段的总时长
-vol1 = 80; %第一个声音片段的音量
-fs = 44100; %采样频率
+time1 =3; %第一个声音片段的总时长
+vol1 = 120; %第一个声音片段的音量
+fs =44100; %采样频率
 
 T = 1/fs; %采样周期
 Tone = 0;
-     for freq=10:50:1000
+     for freq=150:1:500
     % freq = 1000
     tone1 = sin(2*pi*freq*(0:T:time1))*(db2mag(vol1)); 
     Tone = [Tone,tone1]; %组合所有声音片段
