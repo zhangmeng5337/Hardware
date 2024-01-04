@@ -168,7 +168,7 @@ void anlysis_mqtt_recv()
         {
             get_config()->update_setting = 1;
             sprintf(&get_config()->update_firm, "%s", dev_id);//????
-            tmp_f = atoi(dev_id);
+            tmp_f = atoi(&dev_id[3]);
             get_config()->update_firm = tmp_f;
 
         }
@@ -178,7 +178,7 @@ void anlysis_mqtt_recv()
         {
             get_config()->update_setting = 1;
             sprintf(&get_config()->reboot, "%s", dev_id); //????
-            tmp_f = atoi(dev_id);
+            tmp_f = atoi(&dev_id[3]);
             get_config()->reboot = tmp_f;
 
 
@@ -190,7 +190,7 @@ void anlysis_mqtt_recv()
         {
             get_config()->update_setting = 1;
             //sprintf(&get_config()->machine, "%s", dev_id); //????
-            tmp_f = atoi(dev_id);
+            tmp_f = atoi(&dev_id[3]);
             get_config()->machine = tmp_f;
 
         }
@@ -200,7 +200,7 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
-            tmp_f = atof(dev_id);
+            tmp_f = atof(&dev_id[3]);
             get_config()->set_tout = tmp_f;
             get_config()->set_tout_tmp = tmp_f;
         }
@@ -211,7 +211,7 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
-            tmp_f = atof(dev_id);
+            tmp_f = atof(&dev_id[3]);
             get_config()->set_tindoor = tmp_f;
 
         }
@@ -222,7 +222,7 @@ void anlysis_mqtt_recv()
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
-            tmp_f = atof(dev_id);
+            tmp_f = atof(&dev_id[3]);
             get_config()->set_up_period = tmp_f;
 
 

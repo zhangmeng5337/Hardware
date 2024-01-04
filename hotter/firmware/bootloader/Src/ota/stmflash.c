@@ -125,11 +125,12 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
                          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
          addr_add = addr_add +1;
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, addr+i, *(__IO uint32_t*)(buff+i));
-        if(status != HAL_OK)
+        while(status != HAL_OK)
         {
+					status = FLASH_WaitForLastOperation(50000);
 //           while(status != HAL_OK)
 //			status = Erase_page(addr, 2);
-		   i = 0;
+		   //i = 0;
 		}
 			
 	}
