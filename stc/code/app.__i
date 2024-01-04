@@ -1,0 +1,1 @@
+"src\app.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\inc;C:\Keil_v5\C51\LIB) DEBUG OBJECTEXTEND PRINT(.\app.lst) TABS (2) OBJECT(app.obj)
