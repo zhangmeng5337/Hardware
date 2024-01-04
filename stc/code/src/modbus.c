@@ -93,7 +93,7 @@ void modbus_proc(unsigned char mode)
         pb[i++] = MODBUS_READ_CMD;
         pb[i++] = 0;
         pb[i++] = 6;
-        pb[i++] = (unsigned char)get_power()->U16_AC_V;
+        //pb[i++] = (unsigned char)get_power()->U16_AC_V;
 
         memcpy(&pb[i], &get_power()->U16_AC_V, 2);
         i = i + 2;
@@ -105,11 +105,29 @@ void modbus_proc(unsigned char mode)
         crc = CRC_Compute(pb, i);
         pb[i++] = crc;
         pb[i++] = crc >> 8;
-        i = i + 2;
+        //i = i + 2;
         UartSendbyte(pb, i);
     }
     else if (mode == POWER_CALI)
     {
+	pb[i++] = DEV_ADDR;
+	pb[i++] = MODBUS_READ_CMD;
+	pb[i++] = 0;
+	pb[i++] = 7;
+	//pb[i++] = (unsigned char)get_power()->U16_AC_V;
+	
+	memcpy(&pb[i], &get_power()->U16_AC_V, 2);
+	i = i + 2;
+	memcpy(&pb[i], &get_power()->U16_AC_I, 2);
+	i = i + 2;
+	memcpy(&pb[i], &get_power()->U16_AC_P, 2);
+	i = i + 2;
+	
+	crc = CRC_Compute(pb, i);
+	pb[i++] = crc;
+	pb[i++] = crc >> 8;
+	//i = i + 2;
+	UartSendbyte(pb, i);
 
     }
 

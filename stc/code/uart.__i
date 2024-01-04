@@ -1,1 +1,1 @@
-"src\uart.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\inc;C:\Keil_v5\C51\LIB) DEBUG OBJECTEXTEND PRINT(.\uart.lst) TABS (2) OBJECT(uart.obj)
+"src\uart.c" LARGE OPTIMIZE (9,SPEED) BROWSE INCDIR(.\inc;C:\Keil_v5\C51\LIB) DEBUG OBJECTEXTEND PRINT(.\uart.lst) TABS (2) OBJECT(uart.obj)

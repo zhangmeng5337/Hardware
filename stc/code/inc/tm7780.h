@@ -17,16 +17,16 @@
 //--------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------
 //Time1定时器定时,时间基数 = 1ms
-#define D_TIME1_20MS				20		
-#define D_TIME1_100MS				100	
-#define D_TIME1_150MS				150	
-#define D_TIME1_200MS				200	
-#define D_TIME1_400MS				400	
-#define D_TIME1_500MS				500	
+#define D_TIME1_20MS				20
+#define D_TIME1_100MS				100
+#define D_TIME1_150MS				150
+#define D_TIME1_200MS				200
+#define D_TIME1_400MS				400
+#define D_TIME1_500MS				500
 #define D_TIME1_1S				1000		//Time1定时器定时1S时间常数
-#define D_TIME1_2S				2000	
-#define D_TIME1_3S				2000	
-#define D_TIME1_4S				4000	
+#define D_TIME1_2S				2000
+#define D_TIME1_3S				2000
+#define D_TIME1_4S				4000
 #define D_TIME1_6S				6000
 #define D_TIME1_8S				8000
 #define D_TIME1_9S				9000
@@ -51,7 +51,7 @@
 #define IO_TM7780_CF1        TM7780_CFA		//TM7780 PIN7	
 #define IO_TM7780_CF         TM7780_CF		//TM7780 PIN6
 //--------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------	
+//--------------------------------------------------------------------------------------------
 
 
 //工作模式
@@ -70,7 +70,7 @@
 //--------------------------------------------------------------------------------------------
 
 #define ADDR_BASE   0x0400
-
+#define ADDR_OFFSET 0x04
 #define ADDR_CAL_FLAG   ADDR_BASE
 #define ADDR_REF_P_PLUSEWIDTH_TIME (ADDR_BASE + 1)
 #define ADDR_REF_V_PLUSEWIDTH_TIME (ADDR_BASE + 5)
@@ -82,20 +82,20 @@
 
 //--------------------------------------------------------------------------------------------
 
-typedef struct 
+typedef struct
 {
-	u16 	U16_AC_P;				//功率值 1000.0W
-	u16 	U16_AC_V;				//电压值 220.0V
-	u16 	U16_AC_I;				//电流值 4.545A
-	u32 	U32_AC_E;				//用电量   0.01度
-    u8      tm_cfi_edge;       //上升沿标志位
-	u8      tm_cfv_edge;
-	u8		tm_cfp_edge;
-    u32     tm_cfi_cnt;       //上升沿标志位
-	u32     tm_cav_cnt;
-	u32		tm_cfp_cnt;	
-	u16     time_1s;
-}power_stru;
+    u16 	U16_AC_P;				//功率值 1000.0W
+    u16 	U16_AC_V;				//电压值 220.0V
+    u16 	U16_AC_I;				//电流值 4.545A
+    u32 	U32_AC_E;				//用电量   0.01度
+    u8    tm_cfi_edge;       //上升沿标志位
+    u8    tm_cfv_edge;
+    u8	  tm_cfp_edge;
+    u32   tm_cfi_cnt;       //上升沿标志位
+    u32   tm_cav_cnt;
+    u32	  tm_cfp_cnt;
+    u16   time_1s;
+} power_stru;
 
 void tm7780_init(void);
 void tm7780_proc(void);

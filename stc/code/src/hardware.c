@@ -1,6 +1,7 @@
 #include "hardware.h"
 #include "tm7780.h"
-
+#include "modbus.h"
+#include "uart.h"
 void mcu_init()
 {
     /*********************************************
@@ -34,14 +35,20 @@ void gpio_Isr() interrupt 13
 {
     unsigned char intf;
     intf = P3INTF;
+	//P3INTF = 0;
     if (intf)
     {
         if (intf & 0x20) //p3.5
         {
+           // UartSend(0x01);
+			P12 = !P12;
+			     
             VI_Interrupt();
         }
         if (intf & 0x40) //p3.6
         {
+            P13 = !P13;
+           // UartSend(2);
             P_Interrupt();
         }
     }

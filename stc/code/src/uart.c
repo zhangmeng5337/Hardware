@@ -14,14 +14,13 @@ uart_stru uart_usr;
 
 void UartSend(char dat);
 
-//char putchar(char c)
-//{
-//    while (busy);
-//    busy = 1;
-//    SBUF = c;
-//	return c;	
-//}
-
+char putchar(char c)
+{
+    while (busy);
+    busy = 1;
+    SBUF = c;
+	return c;	
+}
 
 
 
@@ -75,13 +74,13 @@ void UartSend(char dat)
     SBUF = dat;
 }
 
-//void UartSendStr(char *p)
-//{
-//    while (*p)
-//    {
-//        UartSend(*p++);
-//    }
-//}
+void UartSendStr(char *p)
+{
+    while (*p)
+    {
+        UartSend(*p++);
+    }
+}
 void UartSendbyte(char *p,unsigned int len)
 {
     while (len--)

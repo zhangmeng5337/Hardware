@@ -1,8 +1,8 @@
 clc;
 step = 1/Fs;
 % [max_val max_index ] =max(original);
-start_t =14.9;
-end_t = start_t + 0.05;
+start_t =7;
+end_t = start_t +2;
 % len_t = size(original);
 % len_t = len_t(1);
 % t = 0:step:len_t*step-step;   % 时间向量
@@ -12,7 +12,7 @@ t = 0:step:((end_t-start_t));   % 时间向量
 %   x_creat(1:max_index) = x(max_index+data_use_size);
 %   x_creat(max_index+data_use_size:end) = x(data_use_size+1);
 smooth_xd = smooth(xd,4);
- x = original(start_t/step:end_t/step); % 信号
+ x = xd(start_t/step:end_t/step); % 信号
  len = size(t(1:end),2);
  x_creat = x;
 
@@ -28,7 +28,7 @@ ylabel('幅度');
 % 绘制FFT图
 N = length(x_creat)-1;
 
-f = fs*(0:(N/2-1))/N;
+f = Fs*(0:(N/2-1))/N;
 X = fft(x_creat)/N ;
 subplot(4,1,2);
 plot(f(2:end),abs(X(2:N/2)));

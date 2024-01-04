@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
  %dat=load('Z:\D\soft\SerialDebug\dat.txt');
-dat=load('Z:\D\soft\SerialDebug\dat_mks2.txt');
+dat=load('Z:\D\soft\SerialDebug\dat_mks3.txt');
 len = size(dat);
 len = len(1)
 len = len/2;
@@ -25,11 +25,11 @@ t=t';  %转置成列向量
 
 %iifr
 
- fs = 4000; % 采样率
-fc = 1500; % 截止频率
-N =20; % 阶数
-b = fir1(N, fc/(fs/2)); % 使用fir1函数设计低通滤波器系数
- x1get=filter(b,1,original);
+%  fs = 2000; % 采样率
+% fc = 1500; % 截止频率
+% N =20; % 阶数
+% b = fir1(N, fc/(fs/2)); % 使用fir1函数设计低通滤波器系数
+%  x1get=filter(b,1,original);
 
 % figure(2)
 % % plot(t,original);

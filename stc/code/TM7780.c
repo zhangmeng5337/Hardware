@@ -1,6 +1,8 @@
 #include "tm7780.h"
 #include "hardware.h"
 #include "eeprom.h"
+#include "uart.h"
+
 //#include "stdio.h"
 
 power_stru power_usr;
@@ -205,7 +207,7 @@ void Init_Rom(void)
 
     //上电初始化为电压测试模式
     B_VI_Test_Mode = 1;
-    //IO_TM7780_CF1_S = 1;
+    IO_TM7780_CF1_S = 1;
     U16_VI_Test_Times = D_TIME1_2S;
 
     //显示初始化
@@ -224,6 +226,8 @@ void Init_Rom(void)
 //  #pragma vector = 7
 void P_Interrupt(void)
 {
+	//printf("LOW4 = %d\r\n", B_V_OVERFLOW);
+
     //功率测量
     U16_P_TotalTimes = 0;       //完成一次有效的测量，溢出寄存器清零
     U16_P_CNT++;
@@ -302,14 +306,18 @@ void P_Interrupt(void)
 //  #pragma vector = 8
 void VI_Interrupt(void)
 {
-
+	//printf("LOW3 = %d\r\n", B_V_OVERFLOW);
+    
     //电压测试模式
     if (B_VI_Test_Mode == 1)
-    {
+    {   
         U16_V_TotalTimes = 0;
         U16_V_CNT++;
+		
+	  //  printf("CNT = %d\r\n", U16_V_CNT);
         if (B_V_OVERFLOW == TRUE)
         {
+         // printf("LOW = %d\r\n", B_V_OVERFLOW);
             //从溢出模式转入,开始测量
             B_V_TestOneCycle_Mode = 0;  //初始化为计数脉冲测量模式
             U16_V_TotalTimes = 0;       //清溢出寄存器清零
@@ -318,7 +326,7 @@ void VI_Interrupt(void)
             B_V_OVERFLOW = FALSE;       //清溢出标志位
         }
         else
-        {
+        {   
             if (B_V_TestOneCycle_Mode == 1)
             {
                 if (U16_V_OneCycleTime >= D_TIME1_100MS)
@@ -360,8 +368,10 @@ void VI_Interrupt(void)
     {
         U16_I_TotalTimes = 0;
         U16_I_CNT++;
+		//printf("CNT2 = %d\r\n", U16_V_CNT);
         if (B_I_OVERFLOW == TRUE)
         {
+       // printf("LOW2 = %d\r\n", B_V_OVERFLOW);
             //从溢出模式转入,开始测量
             B_I_TestOneCycle_Mode = 0;  //初始化为计数脉冲测量模式
             U16_I_TotalTimes = 0;       //清溢出寄存器清零
@@ -432,6 +442,7 @@ void TIM1_UPD_Interrupt(void)
     {
         U16_P_OneCycleTime++;
         U16_P_TotalTimes++;
+
     }
     if (U16_P_TotalTimes >= D_TIME1_P_OVERFLOW)
     {
@@ -613,7 +624,11 @@ void TM7780_Measure_P(void)
     U32_P_CURRENT_PLUSEWIDTH_TIME = u32_P_Period;      // 校正时取U32_P_CURRENT_PLUSEWIDTH_TIME参数作为参考值
     a = U16_P_REF_Data * U32_P_REF_PLUSEWIDTH_TIME;
     power_usr.U16_AC_P = a / U32_P_CURRENT_PLUSEWIDTH_TIME;
+	
 
+	//printf("REF_Data = %d\r\n", U16_P_REF_Data);
+	//printf("ac_p = %d\r\n", power_usr.U16_AC_P);
+	
     if (power_usr.U16_AC_P == 0xffff)     //开机时U32_P_CURRENT_PLUSEWIDTH_TIME = 0，计算溢出
     {
         power_usr.U16_AC_P = 0;
@@ -859,29 +874,6 @@ void Write_CalData_EEPROM(void)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 power_stru *get_power(void)
 {
     return &power_usr;
@@ -899,6 +891,16 @@ void tm7780_init(void)
 }
 void tm7780_proc()
 {
+    if(power_usr.tm_cfv_edge != IO_TM7780_CF1)
+    {
+		power_usr.tm_cfv_edge = IO_TM7780_CF1;
+		VI_Interrupt();
+	}
+    if(power_usr.tm_cfp_edge != IO_TM7780_CF)
+    {
+		power_usr.tm_cfv_edge = IO_TM7780_CF;
+		 P_Interrupt();
+	}	
     if (U8_CURR_WorkMode == D_NORMAL_MODE)
     {
         TM7780_Measure();		//璁＄畻鍔熺巼銆佺數鍘嬨�佺數娴?
