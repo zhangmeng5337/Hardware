@@ -1,0 +1,158 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Administrator\Desktop\2023款数显仪表（短款）\无IIC短款三相电流STC8H1K17+DIDO\无IIC短款三相电流+DIDO.uvproj
+Project File Date:  12/10/2022
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 多功能.c...
+linking...
+Program Size: data=82.0 xdata=1257 code=13838
+creating hex file from "短款三相电流STC8H17+DIDO"...
+"短款三相电流STC8H17+DIDO" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 多功能.c...
+linking...
+Program Size: data=82.0 xdata=1257 code=13838
+creating hex file from "无IIC短款三相电流STC8H17+DIDO"...
+"无IIC短款三相电流STC8H17+DIDO" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 多功能.c...
+EPROM.H(146): error C202: 'IAP_TPS': undefined identifier
+EPROM.H(161): error C202: 'IAP_TPS': undefined identifier
+EPROM.H(178): error C202: 'IAP_TPS': undefined identifier
+EPROM.H(311): error C208: '_read_add': too many actual parameters
+EPROM.H(317): error C208: '_write_add': too many actual parameters
+EPROM.H(321): error C208: '_read_add': too many actual parameters
+CANSHU.H(11): error C208: '_write_add': too many actual parameters
+CANSHU.H(13): error C208: '_write_add': too many actual parameters
+CANSHU.H(15): error C208: '_write_add': too many actual parameters
+CANSHU.H(17): error C208: '_write_add': too many actual parameters
+CANSHU.H(19): error C208: '_write_add': too many actual parameters
+CANSHU.H(21): error C208: '_write_add': too many actual parameters
+CANSHU.H(23): error C208: '_write_add': too many actual parameters
+CANSHU.H(25): error C208: '_write_add': too many actual parameters
+CANSHU.H(27): error C208: '_write_add': too many actual parameters
+CANSHU.H(29): error C208: '_write_add': too many actual parameters
+CANSHU.H(31): error C208: '_write_add': too many actual parameters
+CANSHU.H(33): error C208: '_write_add': too many actual parameters
+CANSHU.H(35): error C208: '_write_add': too many actual parameters
+CANSHU.H(37): error C208: '_write_add': too many actual parameters
+CANSHU.H(39): error C208: '_write_add': too many actual parameters
+CANSHU.H(41): error C208: '_write_add': too many actual parameters
+CANSHU.H(43): error C208: '_write_add': too many actual parameters
+CANSHU.H(45): error C208: '_write_add': too many actual parameters
+CANSHU.H(47): error C208: '_write_add': too many actual parameters
+CANSHU.H(49): error C208: '_write_add': too many actual parameters
+CANSHU.H(51): error C208: '_write_add': too many actual parameters
+CANSHU.H(77): error C208: '_write_add': too many actual parameters
+CANSHU.H(113): error C208: '_write_add': too many actual parameters
+CANSHU.H(682): error C208: '_write_add': too many actual parameters
+CANSHU.H(687): error C208: '_write_add': too many actual parameters
+多功能.C(273): error C208: '_write_add': too many actual parameters
+多功能.C(275): error C208: '_write_add': too many actual parameters
+多功能.C(288): error C208: '_write_add': too many actual parameters
+多功能.C(290): error C208: '_write_add': too many actual parameters
+多功能.C(303): error C208: '_write_add': too many actual parameters
+多功能.C(305): error C208: '_write_add': too many actual parameters
+多功能.C(395): error C208: '_write_add': too many actual parameters
+多功能.C(400): error C208: '_write_add': too many actual parameters
+Target not created
+Build target 'Target 1'
+compiling 多功能.c...
+EPROM.H(311): error C208: '_read_add': too many actual parameters
+EPROM.H(317): error C208: '_write_add': too many actual parameters
+EPROM.H(321): error C208: '_read_add': too many actual parameters
+CANSHU.H(11): error C208: '_write_add': too many actual parameters
+CANSHU.H(13): error C208: '_write_add': too many actual parameters
+CANSHU.H(15): error C208: '_write_add': too many actual parameters
+CANSHU.H(17): error C208: '_write_add': too many actual parameters
+CANSHU.H(19): error C208: '_write_add': too many actual parameters
+CANSHU.H(21): error C208: '_write_add': too many actual parameters
+CANSHU.H(23): error C208: '_write_add': too many actual parameters
+CANSHU.H(25): error C208: '_write_add': too many actual parameters
+CANSHU.H(27): error C208: '_write_add': too many actual parameters
+CANSHU.H(29): error C208: '_write_add': too many actual parameters
+CANSHU.H(31): error C208: '_write_add': too many actual parameters
+CANSHU.H(33): error C208: '_write_add': too many actual parameters
+CANSHU.H(35): error C208: '_write_add': too many actual parameters
+CANSHU.H(37): error C208: '_write_add': too many actual parameters
+CANSHU.H(39): error C208: '_write_add': too many actual parameters
+CANSHU.H(41): error C208: '_write_add': too many actual parameters
+CANSHU.H(43): error C208: '_write_add': too many actual parameters
+CANSHU.H(45): error C208: '_write_add': too many actual parameters
+CANSHU.H(47): error C208: '_write_add': too many actual parameters
+CANSHU.H(49): error C208: '_write_add': too many actual parameters
+CANSHU.H(51): error C208: '_write_add': too many actual parameters
+CANSHU.H(77): error C208: '_write_add': too many actual parameters
+CANSHU.H(113): error C208: '_write_add': too many actual parameters
+CANSHU.H(682): error C208: '_write_add': too many actual parameters
+CANSHU.H(687): error C208: '_write_add': too many actual parameters
+多功能.C(273): error C208: '_write_add': too many actual parameters
+多功能.C(275): error C208: '_write_add': too many actual parameters
+多功能.C(288): error C208: '_write_add': too many actual parameters
+多功能.C(290): error C208: '_write_add': too many actual parameters
+多功能.C(303): error C208: '_write_add': too many actual parameters
+多功能.C(305): error C208: '_write_add': too many actual parameters
+多功能.C(395): error C208: '_write_add': too many actual parameters
+多功能.C(400): error C208: '_write_add': too many actual parameters
+Target not created
+Build target 'Target 1'
+compiling 多功能.c...
+CANSHU.H(58): error C202: 'dyjza': undefined identifier
+CANSHU.H(59): error C202: 'dyjza': undefined identifier
+CANSHU.H(63): error C202: 'dyjzb': undefined identifier
+CANSHU.H(64): error C202: 'dyjzb': undefined identifier
+CANSHU.H(68): error C202: 'dyjzc': undefined identifier
+CANSHU.H(69): error C202: 'dyjzc': undefined identifier
+多功能.C(273): error C208: '_write_add': too many actual parameters
+多功能.C(275): error C208: '_write_add': too many actual parameters
+多功能.C(288): error C208: '_write_add': too many actual parameters
+多功能.C(290): error C208: '_write_add': too many actual parameters
+多功能.C(303): error C208: '_write_add': too many actual parameters
+多功能.C(305): error C208: '_write_add': too many actual parameters
+多功能.C(395): error C208: '_write_add': too many actual parameters
+多功能.C(400): error C208: '_write_add': too many actual parameters
+Target not created
+Build target 'Target 1'
+compiling 多功能.c...
+CANSHU.H(22): warning C280: 'i': unreferenced local variable
+多功能.C(273): error C208: '_write_add': too many actual parameters
+多功能.C(275): error C208: '_write_add': too many actual parameters
+多功能.C(288): error C208: '_write_add': too many actual parameters
+多功能.C(290): error C208: '_write_add': too many actual parameters
+多功能.C(303): error C208: '_write_add': too many actual parameters
+多功能.C(305): error C208: '_write_add': too many actual parameters
+多功能.C(395): error C208: '_write_add': too many actual parameters
+多功能.C(400): error C208: '_write_add': too many actual parameters
+Target not created
+Build target 'Target 1'
+compiling 多功能.c...
+多功能.C(273): error C208: '_write_add': too many actual parameters
+多功能.C(275): error C208: '_write_add': too many actual parameters
+多功能.C(288): error C208: '_write_add': too many actual parameters
+多功能.C(290): error C208: '_write_add': too many actual parameters
+多功能.C(303): error C208: '_write_add': too many actual parameters
+多功能.C(305): error C208: '_write_add': too many actual parameters
+多功能.C(395): error C208: '_write_add': too many actual parameters
+多功能.C(400): error C208: '_write_add': too many actual parameters
+Target not created
+Build target 'Target 1'
+compiling 多功能.c...
+多功能.C(389): error C208: '_write_add': too many actual parameters
+多功能.C(394): error C208: '_write_add': too many actual parameters
+Target not created
+Build target 'Target 1'
+compiling 多功能.c...
+多功能.C(390): error C208: '_write_add': too many actual parameters
+多功能.C(395): error C208: '_write_add': too many actual parameters
+Target not created
+Build target 'Target 1'
+compiling 多功能.c...
+linking...
+Program Size: data=82.0 xdata=1257 code=13655
+creating hex file from "无IIC短款三相电流STC8H17+DIDO"...
+"无IIC短款三相电流STC8H17+DIDO" - 0 Error(s), 0 Warning(s).

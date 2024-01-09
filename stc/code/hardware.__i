@@ -1,1 +1,0 @@
-"src\hardware.c" LARGE OPTIMIZE (9,SPEED) BROWSE INCDIR(.\inc;C:\Keil_v5\C51\LIB) DEBUG OBJECTEXTEND PRINT(.\hardware.lst) TABS (2) OBJECT(hardware.obj)

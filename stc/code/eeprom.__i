@@ -1,1 +1,0 @@
-"src\eeprom.c" LARGE OPTIMIZE (9,SPEED) BROWSE INCDIR(.\inc;C:\Keil_v5\C51\LIB) DEBUG OBJECTEXTEND PRINT(.\eeprom.lst) TABS (2) OBJECT(eeprom.obj)
