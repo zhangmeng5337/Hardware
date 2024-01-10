@@ -186,7 +186,7 @@
         </Utilities>
         <Target51>
           <Target51Misc>
-            <MemoryModel>2</MemoryModel>
+            <MemoryModel>0</MemoryModel>
             <RTOS>0</RTOS>
             <RomSize>2</RomSize>
             <DataHold>0</DataHold>
@@ -324,7 +324,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\STC8H1K17+DIDO</IncludePath>
+              <IncludePath>..\bl0930f</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -377,19 +377,19 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>ht7038.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ht7038.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>bl0930.c</FileName>
+              <FileName>ht7038.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\bl0930.c</FilePath>
+              <FilePath>.\ht7038.c</FilePath>
+            </File>
+            <File>
+              <FileName>12864.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\12864.c</FilePath>
             </File>
           </Files>
         </Group>

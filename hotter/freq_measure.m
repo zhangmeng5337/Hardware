@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
  %dat=load('Z:\D\soft\SerialDebug\dat.txt');
-dat=load('Z:\D\soft\SerialDebug\dat_mks3.txt');
+dat=load('Z:\D\soft\SerialDebug\dat_mks2.txt');
 len = size(dat);
 len = len(1)
 len = len/2;
@@ -13,7 +13,7 @@ original = x;
  y=x(:,1); %读取时域数据
 
 
-Fs=2000; %采集频率
+Fs=4000; %采集频率
 T=1/Fs; %采集时间间隔
 N=length(y); %采集信号的长度
 t=(0:1:N-1)*T; %定义整个采集时间点
