@@ -3,8 +3,8 @@
 //METER_IC meter_ic;
 
 unsigned char  Calstep;
-/////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 typedef struct __packed 
 {
     unsigned int igain;     
@@ -84,12 +84,12 @@ typedef struct
 }MIC; 
  MIC mic;
 MIC_CAL mic_cal;
-//MIC mic;
+MIC mic;
 
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -286,7 +286,7 @@ int mic_write_Cmp(unsigned char  reg, long datap)
 		delay_ms(5);
 	 	if(mic_read(reg,&value)<0)
 		{
-//		   	Sysstate.bit.SysStat_RnReadErr=1;
+		   //	Sysstate.bit.SysStat_RnReadErr=1;
         return -2;	
 		}
 		if(value!=datap)
@@ -365,7 +365,7 @@ int mic_reset(void)
 		    if(mic_write_Cmp(BL_MODE, mic_cal.mode) < 0) goto err;
 		}
 		if(mic_write_Cmp(BL_I_CHGN, 0x00) < 0) goto err; 
-//		if(mic_write(OTP_GAIN_CR, 0x00) < 0) goto err; 	
+		if(mic_write(OTP_GAIN_CR, 0x00) < 0) goto err; 	
 		if(mic_write_Cmp(BL_CHIP_MODE,0x07) < 0) goto err;
     ret = 0;    
 err:
@@ -378,10 +378,10 @@ void mic_reset1(void)
     long value;
 
 	
-//	  if(mic_write(BL_OTP_WRPROT, 0x42) < 0) goto err;    //允许通讯
-//	  if(mic_write(BL_OTP_SUMERR, 0x0c) < 0) goto err;    //允许通讯
-//    if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;    //允许写操作 
-//	  if(mic_write(BL_OT_FUNX, 0x14) < 0) goto err;    
+	  if(mic_write(BL_OTP_WRPROT, 0x42) < 0) goto err;    //允许通讯
+	  if(mic_write(BL_OTP_SUMERR, 0x0c) < 0) goto err;    //允许通讯
+    if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;    //允许写操作 
+	  if(mic_write(BL_OT_FUNX, 0x14) < 0) goto err;    
 
 	         if(mic_read(BL_OTP_WRPROT, &value) < 0) goto err; //CF倍频默认	
 				  if(mic_read(BL_CFDIV, &value) < 0) goto err; //CF倍频默认				
@@ -436,24 +436,24 @@ History     :
 *******************************************************************************/
 int mic_check(void)
 { 
-//	  if(Sysstate.bit.SysStat_RnReadErr==1)
-//		{
-//		    mic.error |= MIC_ERR_READ;
-//        mic_reset();
-//        //led_alarm_on();
-//        return -1; 	
-//		}
-//		else if(Sysstate.bit.SysStat_RnWriteErr==1)
-//		{
-//	//	    mic.error |= MIC_ERR_CHECK;
-//        mic_reset();
-//        //led_alarm_on();
-//        return -2; 		
-//		}
+	  if(Sysstate.bit.SysStat_RnReadErr==1)
+		{
+		    mic.error |= MIC_ERR_READ;
+        mic_reset();
+        //led_alarm_on();
+        return -1; 	
+		}
+		else if(Sysstate.bit.SysStat_RnWriteErr==1)
+		{
+	//	    mic.error |= MIC_ERR_CHECK;
+        mic_reset();
+        //led_alarm_on();
+        return -2; 		
+		}
     return 0;
 }
 
-// read data per second
+ read data per second
 /***************************************************************************************
 函数名称:mic_read_param(void)
 函数作用:读取内容参数
@@ -466,11 +466,11 @@ void mic_read_param(void)
     
     static unsigned char  step = 0;
 
-//    if(mic.calc == 0x5A3C) // 校表过程不读寄存器
-//    {
-//        return;
-//    }
-// 
+    if(mic.calc == 0x5A3C) // 校表过程不读寄存器
+    {
+        return;
+    }
+ 
     if(mic_check() < 0)
     {
         return;
@@ -495,11 +495,11 @@ void mic_read_param(void)
 			
     if(mic_cal.kwatta != 0)
     {  
-//        mic.watta = (( signed long)value*10)/mic_cal.kwatta; //实际功率值
-//        //if(abs(mic.watta) < 33)// 3.3W，0.3% * 220V * 5A
-//        //{
-//        //    mic.watta = 0;
-//        //}
+        mic.watta = (( signed long)value*10)/mic_cal.kwatta; //实际功率值
+        //if(abs(mic.watta) < 33)// 3.3W，0.3% * 220V * 5A
+        //{
+        //    mic.watta = 0;
+        //}
     }
 		else
 		{
@@ -639,8 +639,8 @@ int micpara_init(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, u
 ***************************************************************************************/
 void mic_cal_init(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, unsigned int mode)
 {
-//    mic.calc_result = 1000;
-//    display_page(DP_CAL_BUSY);
+    mic.calc_result = 1000;
+    display_page(DP_CAL_BUSY);
     
     memset(&mic_cal, 0, sizeof(mic_cal));
     
@@ -674,7 +674,7 @@ void mic_cal_gain( signed long l0)
      signed long  l1;  
 	  if(Calstep!=1) return;
     mic.calc_result = 2000;
-//    display_page(DP_CAL_BUSY);
+    display_page(DP_CAL_BUSY);
     
 	  WDT_Restart();
     if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;   
@@ -701,7 +701,7 @@ err:
     mic_write(BL_USR_WRPROT, 0xAA);    
     Calstep=2;
     mic.calc_result = 2000;
-//    display_one_page(DP_CAL_END, 10);
+    display_one_page(DP_CAL_END, 10);
 }
 /***************************************************************************************
 函数名称:mic_cal_phase( signed long l0)
@@ -714,7 +714,7 @@ void mic_cal_phase( signed long l0)
      signed long l1;
     if(Calstep!=2) return;
     mic.calc_result = 3000;
-//    display_page(DP_CAL_BUSY);
+    display_page(DP_CAL_BUSY);
     WDT_Restart();
     if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;
     delay_ms(1200);
@@ -738,7 +738,7 @@ err:
     mic_write(BL_USR_WRPROT, 0xAA);    
     Calstep=3;
     mic.calc_result = 3000;
-//    display_one_page(DP_CAL_END, 10);
+    display_one_page(DP_CAL_END, 10);
 }
 /***************************************************************************************
 函数名称:mic_cal_offset( signed long l0)
@@ -752,7 +752,7 @@ void mic_cal_offset( signed long l0)
 	  long value;
 	  if(Calstep!=3) return;
     mic.calc_result = 4000;
-//    display_page(DP_CAL_BUSY);
+    display_page(DP_CAL_BUSY);
     
 	  WDT_Restart();
 
@@ -780,7 +780,7 @@ err:
     mic_write(BL_USR_WRPROT, 0xAA);    
     Calstep=4;
     mic.calc_result = 4000;
-//    display_one_page(DP_CAL_END, 10);
+    display_one_page(DP_CAL_END, 10);
 }
 /***************************************************************************************
 函数名称:mic_cal_finish(long vrms, long irms, long watt)
@@ -794,7 +794,7 @@ void mic_cal_finish(long vrms, long irms, long watt)
     int i;
     if(Calstep!=4) return;
     mic.calc_result = 5000;
-//    display_page(DP_CAL_BUSY);
+    display_page(DP_CAL_BUSY);
     
     WDT_Restart();
     mic.vrms = 0;
@@ -838,8 +838,8 @@ void mic_cal_finish(long vrms, long irms, long watt)
     mic_cal.wa_creep = (unsigned int)(creep*256/3125); // 0.2%
     if(mic_write(BL_WA_CREEP, mic_cal.wa_creep) < 0) goto err;	 //防潜动阈值
     
-//    if(mic_read(BL_CHKSUM, &value) < 0) goto err;
-//    mic_cal.checksum = (value & 0x00FFFFFF); 
+    if(mic_read(BL_CHKSUM, &value) < 0) goto err;
+    mic_cal.checksum = (value & 0x00FFFFFF); 
     meter_write_cal();//存储校验值
 
 err:
@@ -847,7 +847,7 @@ err:
     Calstep=0;
     mic.calc = 0;
     mic.calc_result = 5000;
-//    display_one_page(DP_CAL_END, 10);
+    display_one_page(DP_CAL_END, 10);
 }
 /***************************************************************************************
 函数名称:mic_read_reg(unsigned char  reg, long *value)
@@ -883,5 +883,5 @@ int mic_write_reg(unsigned char  reg, long value)
     
     return ret;
 }
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
