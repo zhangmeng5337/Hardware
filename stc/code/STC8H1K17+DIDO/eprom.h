@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "sys.h"
 #define CKSEL (*(unsigned char volatile xdata *)0xfe00)
 #define CLKDIV (*(unsigned char volatile xdata *)0xfe01)
 #define HIRCCR (*(unsigned char volatile xdata *)0xfe02)
@@ -118,13 +118,7 @@ xlong ax_aa=0,bx_aa=0,cx_aa=0;	//电流
 
 
 //延时程序
-void delay(){;}
-void delay1(uchar x)
-{
-	uchar y,z;
-	for(y=x;y>0;y--)
-	 for(z=150;z>0;z--);
-}
+
 
 #define WT_30M          0x80
 #define WT_24M          0x81

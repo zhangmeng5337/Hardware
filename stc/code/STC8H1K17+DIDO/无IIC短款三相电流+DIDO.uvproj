@@ -391,6 +391,11 @@
               <FileType>1</FileType>
               <FilePath>.\bl0930.c</FilePath>
             </File>
+            <File>
+              <FileName>sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sys.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
