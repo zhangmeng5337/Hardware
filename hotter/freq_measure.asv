@@ -39,14 +39,52 @@ for i=1:1:dat_len-3
                         j=j+1;
                         orginal(j) = values;
                      end
-                    index = index + 1024*4;%数据帧数计数
-                    
+                    index = index + 4096*4;%数据帧数计数
                 end                
             end
             
         end
     end
 end
+
+
+% for i = 1:1+index:find_index
+%     if(index>=find_index)
+%     break;
+%     else 
+%         
+%            data_H = dat(cycle*index+1+i);
+%             data_M = dat(cycle*index+2+i);
+%             data_S = dat(cycle*index+3+i); 
+%             data_L = dat(cycle*index+4+i); 
+% 
+% 
+%         if(data_H == 255&&data_M==255&&data_S==255&&(data_L==255||data_L==254))
+%             if(data_L==255)
+%                 
+%                 head = head+1;
+%                 if(start_index == 0)
+%                     start_index = i+1;
+%                 end
+%                 if((len-i-index)>=4096)
+%                     for k = start_index+4+index:4:index+4096+start_index
+%                         data_H = dat(k+3);
+%                         data_M = dat(k+2);
+%                         data_S = dat(k+1); 
+%                         data_L = dat(k);
+%                         mergedByte = bitshift((bitshift(data_H, 8) + data_M), 16) + (bitshift(data_S, 8) + data_L); %402500 f7f9
+%                         values = typecast(uint32(mergedByte),'single');
+%                         j=j+1;
+%                         orginal(j) = values;
+%                     end   
+%                     index= index +4096*4+3;
+%                     cycle = cycle+1;
+%                 end                
+%             end%255
+% 
+%         end
+%     end 
+% end
 orginal = orginal';
 
 x = orginal;

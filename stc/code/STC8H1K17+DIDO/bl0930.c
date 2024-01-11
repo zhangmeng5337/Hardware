@@ -1,4 +1,4 @@
-#include "BL0930F.h"
+﻿#include "BL0930F.h"
 #include <stdlib.h>
 unsigned char  Calstep;
 typedef struct __packed
@@ -113,6 +113,7 @@ unsigned char spi_read(uchar dat1)
 	return(dat);
 }
 
+
 unsigned char uart1_send_receive(unsigned char *wr_buf, unsigned char tx_len, unsigned char *read_buf,unsigned char read_len)
 {	
    unsigned char i;
@@ -124,6 +125,7 @@ unsigned char uart1_send_receive(unsigned char *wr_buf, unsigned char tx_len, un
     	spi_write(wr_buf[i]);
 
 	}
+	
 	for(i=0;i<read_len;i++)
 	{
     	read_buf[i]=spi_read(0);
@@ -264,16 +266,16 @@ int mic_read(unsigned char  reg, long *datap)
     }
     if(i==5)
     {
-        //	Sysstate.SysStat_RnReadErr=1;
+        	Sysstate.SysStat_RnReadErr=1;
         return -1;
     }
     else
     {
-        //Sysstate.SysStat_RnReadErr=0;
+        Sysstate.SysStat_RnReadErr=0;
         return 0;
     }
-    /*
-        if(bl0930_read(reg, data) < 0)//读取寄存器的值
+    
+        if(bl0930_read(reg, datap) < 0)//读取寄存器的值
         {
     			  Sysstate.SysStat_RnReadErr=1;
             return -1;
@@ -283,7 +285,7 @@ int mic_read(unsigned char  reg, long *datap)
     		   Sysstate.SysStat_RnReadErr=0;
     		}
         return 0;
-    	*/
+    	
 }
 /***************************************************************************************
 函数名称:mic_write(unsigned char  reg, long data)
@@ -300,7 +302,7 @@ int mic_write(unsigned char  reg, long datap)
     }
     else
     {
-        //Sysstate.SysStat_RnWriteErr=0;
+        Sysstate.SysStat_RnWriteErr=0;
     }
 
     return 0;
@@ -731,7 +733,8 @@ void mic_cal_gain( signed long l0)
     }
     mic_cal.v_gain = (unsigned int)l1;
 
-    if(mic_write(BL_V_CHGN, l1) < 0) goto err;//计量芯片写入校表值
+    if(mic_write(BL_V_CHGN, l1) < 0) 
+		goto err;//计量芯片写入校表值
 
 err:
     mic_write(BL_USR_WRPROT, 0xAA);
@@ -922,12 +925,11 @@ int mic_write_reg(unsigned char  reg, long value)
 }
 void mic_cal_proc(void)
 {
-	//int micpara_init(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, unsigned int mode)
-
+	 micpara_init(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, unsigned int mode)
 	 mic_cal_gain(10);
 	 mic_cal_phase( 10);
 	 mic_cal_offset( 10);
-	// mic_cal_finish(long vrms, long irms, long watt)
+	 mic_cal_finish(long vrms, long irms, long watt)
 
 }
 
