@@ -1,6 +1,7 @@
 #include "mqtt_analy.h"
 #include "my_string.h"
 #include "lte_hal.h"
+#include "json_para.h"
 
 #include "ai_proc.h"
 #include "di.h"
@@ -131,6 +132,10 @@ mqtt_payload_stru mqtt_payload_u;
                "Set Upload Period(second)": "13"
      }
 }*/
+mqtt_payload_stru *get_mqtt_payload()
+{
+	return &mqtt_payload_u;
+}
 
 void anlysis_mqtt_recv()
 {
@@ -332,7 +337,7 @@ dev---->ser
 	HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
 	memset(send_buffer, 0x00, strlen(send_buffer));
 	}*/
-char mqtt_send_buf[1024];
+char *mqtt_send_buf;
 
 //????
 void upload()
@@ -364,50 +369,50 @@ void upload()
     mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
-    /*
-    dev---->ser
-    {
-      "Dev ID": "866289037465624",
-      "Status Data": {
-          "Out Tem": "45",
-          "In Tem": "26",
-          "Front Pressure": "0.5",
-          "After Pressure": "0.5",
-          "Status": "4"
-      },
-      "Dev Params": {
-          "Version": "V3.0.1",
-          "Set Out Tem": "45",
-          "Set In Tem": "23",
-          "Upload Period(second)": "10"
-      }
-    }*/
-        sprintf(mqtt_send_buf,"{\\0D\\0A\\
-  \\22Dev ID\\22: %s,\\0D\\0A\\
-  \\22Status Data\\22: {\\0D\\0A\\
-    \\22Out Tem\\22: \\22%f\\22,\\0D\\0A\\
-    \\22In Tem\\22: \\22%f\\22,\\0D\\0A\\
-    \\22Front Pressure\\22: \\22%f\\22,\\0D\\0A\\
-    \\22After Pressure\\22: \\22%f\\22,\\0D\\0A\\
-    \\22Status\\22: \\22%d\\22\\0D\\0A\\
-    },\\0D\\0A\\
-  \\22Dev Params\\22: {\\0D\\0A\\
-    \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-    \\22Set Out Tem\\22: \\22%f\\22,\\0D\\0A\\
-    \\22Set In Tem\\22: \\22%f\\22,\\0D\\0A\\
-    \\22Upload Period(second)\\22: \\222\\22\\0D\\0A\\
-    }\\0D\\0A\\
-}",mqtt_payload_u.devid,
-mqtt_payload_u.data[TOUT_INDEX],
-mqtt_payload_u.data[TIN_INDEX],
-mqtt_payload_u.data[PUMP_F_INDEX],
-mqtt_payload_u.data[PUMP_E_INDEX],
-mqtt_payload_u.status[DEV_STATUS_INDEX],
-mqtt_payload_u.version,
-mqtt_payload_u.data[WATER_O_INDEX],
-mqtt_payload_u.data[WATER_IN_INDEX],
-mqtt_payload_u.data[UP_PERIOD_INDEX]);
-				
+//    /*
+//    dev---->ser
+//    {
+//      "Dev ID": "866289037465624",
+//      "Status Data": {
+//          "Out Tem": "45",
+//          "In Tem": "26",
+//          "Front Pressure": "0.5",
+//          "After Pressure": "0.5",
+//          "Status": "4"
+//      },
+//      "Dev Params": {
+//          "Version": "V3.0.1",
+//          "Set Out Tem": "45",
+//          "Set In Tem": "23",
+//          "Upload Period(second)": "10"
+//      }
+//    }*/
+//        sprintf(mqtt_send_buf,"{\\0D\\0A\\
+//  \\22Dev ID\\22: %s,\\0D\\0A\\
+//  \\22Status Data\\22: {\\0D\\0A\\
+//    \\22Out Tem\\22: \\22%f\\22,\\0D\\0A\\
+//    \\22In Tem\\22: \\22%f\\22,\\0D\\0A\\
+//    \\22Front Pressure\\22: \\22%f\\22,\\0D\\0A\\
+//    \\22After Pressure\\22: \\22%f\\22,\\0D\\0A\\
+//    \\22Status\\22: \\22%d\\22\\0D\\0A\\
+//    },\\0D\\0A\\
+//  \\22Dev Params\\22: {\\0D\\0A\\
+//    \\22Version\\22: \\22%s\\22,\\0D\\0A\\
+//    \\22Set Out Tem\\22: \\22%f\\22,\\0D\\0A\\
+//    \\22Set In Tem\\22: \\22%f\\22,\\0D\\0A\\
+//    \\22Upload Period(second)\\22: \\222\\22\\0D\\0A\\
+//    }\\0D\\0A\\
+//}",mqtt_payload_u.devid,
+//mqtt_payload_u.data[TOUT_INDEX],
+//mqtt_payload_u.data[TIN_INDEX],
+//mqtt_payload_u.data[PUMP_F_INDEX],
+//mqtt_payload_u.data[PUMP_E_INDEX],
+//mqtt_payload_u.status[DEV_STATUS_INDEX],
+//mqtt_payload_u.version,
+//mqtt_payload_u.data[WATER_O_INDEX],
+//mqtt_payload_u.data[WATER_IN_INDEX],
+//mqtt_payload_u.data[UP_PERIOD_INDEX]);
+	mqtt_send_buf = json_pack(&mqtt_payload_u);			
 				
 //		    sprintf(mqtt_send_buf,"{\\0D\\0A\\
 //  \\22Dev ID\\22: %s,\\0D\\0A\\

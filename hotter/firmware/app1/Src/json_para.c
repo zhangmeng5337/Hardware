@@ -1,5 +1,8 @@
 #include "cJSON.h"
 #include "main.h"
+#include "json_para.h"
+#include "mqtt_analy.h"
+
 //https://blog.csdn.net/weixin_45030703/article/details/106208593
 //https://blog.csdn.net/sinat_41785418/article/details/104635446
  /*		cJSON *root,*fmt;
@@ -77,9 +80,34 @@
      }
 }*/
 
+        //sprintf(mqtt_send_buf,"{\\0D\\0A\\
+  \\22Dev ID\\22: %s,\\0D\\0A\\
+  \\22Status Data\\22: {\\0D\\0A\\
+    \\22Out Tem\\22: \\22%f\\22,\\0D\\0A\\
+    \\22In Tem\\22: \\22%f\\22,\\0D\\0A\\
+    \\22Front Pressure\\22: \\22%f\\22,\\0D\\0A\\
+    \\22After Pressure\\22: \\22%f\\22,\\0D\\0A\\
+    \\22Status\\22: \\22%d\\22\\0D\\0A\\
+    },\\0D\\0A\\
+  \\22Dev Params\\22: {\\0D\\0A\\
+    \\22Version\\22: \\22%s\\22,\\0D\\0A\\
+    \\22Set Out Tem\\22: \\22%f\\22,\\0D\\0A\\
+    \\22Set In Tem\\22: \\22%f\\22,\\0D\\0A\\
+    \\22Upload Period(second)\\22: \\222\\22\\0D\\0A\\
+    }\\0D\\0A\\
+}",mqtt_payload_u.devid,
+//mqtt_payload_u.data[TOUT_INDEX],
+//mqtt_payload_u.data[TIN_INDEX],
+//mqtt_payload_u.data[PUMP_F_INDEX],
+//mqtt_payload_u.data[PUMP_E_INDEX],
+//mqtt_payload_u.status[DEV_STATUS_INDEX],
+//mqtt_payload_u.version,
+//mqtt_payload_u.data[WATER_O_INDEX],
+//mqtt_payload_u.data[WATER_IN_INDEX],
+//mqtt_payload_u.data[UP_PERIOD_INDEX]);
 
 
-void json_pack(void)
+char *json_pack(mqtt_payload_stru *pb)
 {
 	static uint8_t number_data;
     cJSON *dev_pub,*pub_status,*pub_params;
@@ -108,9 +136,9 @@ void json_pack(void)
 	   	number_data=0;
 	  }
         dev_pub=cJSON_CreateObject();   //创建根数据对象
-	      cJSON_AddItemToObject(dev_pub, "Dev ID", cJSON_CreateNumber(number_data));  //根节点下添加数字
+	    cJSON_AddItemToObject(dev_pub, "Dev ID", cJSON_CreateString(pb->devid));  //根节点下添加数字
 
-		    cJSON_AddItemToObject(dev_pub, "Status Data", pub_status=cJSON_CreateObject());			 //根节点下添加字符
+		cJSON_AddItemToObject(dev_pub, "Status Data", pub_status=cJSON_CreateObject());			 //根节点下添加字符
         cJSON_AddItemToObject(pub_status, "Out Tem", cJSON_CreateString("h"));			 		//根节点下添加汉字
         cJSON_AddItemToObject(pub_status, "In Tem", cJSON_CreateString("帅"));	
         cJSON_AddItemToObject(pub_status, "Front Pressure", cJSON_CreateString("帅"));	
@@ -127,7 +155,7 @@ void json_pack(void)
 		
 
 
-
+  return cJSON_Print(dev_pub);
 	/*	data = cJSON_Print(dev_pub);   //将json形式打印成正常字符串形式(带有\r\n)
 //	    data = cJSON_PrintUnformatted(usr);   //将json形式打印成正常字符串形式(没有\r\n)
 		 printf("%s",data);			//通过串口打印出来
