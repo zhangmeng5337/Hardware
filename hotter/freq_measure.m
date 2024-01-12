@@ -1,72 +1,24 @@
 clear all;
 close all;
 clc;
-filename = 'Z:\D\soft\SerialDebug\dat_mks2.txt'
-dat=textread(filename,'%s');
-dat = hex2dec(dat);
-dat_len = size(dat(1:end),1)
-
-j=0;
-orginal = 0;
-dat_4byte = 0;
-result = 0;
-head = 0;
-index = 0;
-find_index=dat_len-3;
-cycle = 0;
-start_index = 0;
-for i=1:1:dat_len-3
-    data_H = dat(i);
-    data_M = dat(1+i);
-    data_S = dat(2+i); 
-    data_L = dat(3+i);
-    if(data_H == 255&&data_M==255&&data_S==255&&data_L==255)
-        if(data_L==255)
-            head = head+1;
-            if((7+i+4096*4)<=dat_len)
-                data_H = dat(i+4+4096*4);%查看数据是否完整
-                data_M = dat(5+i+4096*4);
-                data_S = dat(6+i+4096*4); 
-                data_L = dat(7+i+4096*4);
-                if(data_H == 255&&data_M==255&&data_S==255&&data_L==254)%数据完整
-                     for k = i+4:4:i+4096
-                        data_H = dat(k+3);
-                        data_M = dat(k+2);
-                        data_S = dat(k+1); 
-                        data_L = dat(k);
-                        mergedByte = bitshift((bitshift(data_H, 8) + data_M), 16) + (bitshift(data_S, 8) + data_L); %402500 f7f9
-                        values = typecast(uint32(mergedByte),'single');
-                        j=j+1;
-                        orginal(j) = values;
-                     end
-                    index = index + 1024*4;%数据帧数计数
-                    
-                end                
-            end
-            
-        end
-    end
-end
-orginal = orginal';
-
-x = orginal;
-
-len = size(orginal);
+ %dat=load('Z:\D\soft\SerialDebug\dat.txt');
+dat=load('Z:\D\soft\SerialDebug\dat_mks2.txt');
+len = size(dat);
 len = len(1)
 len = len/2;
 len = round(len);
 len = len*2
-x = x(1:len,1)*1000;
+x = dat(1:len-2,1)*1000;
 original = x;
  y=x(:,1); %读取时域数据
 
 
-Fs=9000; %采集频率
+Fs=4000; %采集频率
 T=1/Fs; %采集时间间隔
 N=length(y); %采集信号的长度
 t=(0:1:N-1)*T; %定义整个采集时间点
 t=t';  %转置成列向量
- y = kalman(orginal);
+ y = kalman(original);
  y=y(:,1);
  kal_man = y;
 
@@ -91,7 +43,7 @@ t=t';  %转置成列向量
 % % legend('原始信号','fir滤波');
 % 
 figure(3)
-[xd,cxd,lxd] = wden(orginal','rigrsure','s','one',2,'db3');
+[xd,cxd,lxd] = wden(original,'rigrsure','s','one',2,'db3');
 
 % plot(t,original);
 % hold on;
@@ -112,7 +64,7 @@ ylabel('voltage/mV');
 % ylabel('voltage/mV');
 % % legend('原始信号','平滑信号');
 figure(5)
-plot(t,orginal);
+plot(t,original);
 hold on
 plot(t,kal_man,'r'); 
 

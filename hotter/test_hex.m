@@ -1,8 +1,8 @@
 clc;
 step = 1/Fs;
 % [max_val max_index ] =max(original);
-start_t =41.825;
-end_t = start_t +0.01;
+start_t =5.75;
+end_t = start_t +0.05;
 % len_t = size(original);
 % len_t = len_t(1);
 % t = 0:step:len_t*step-step;   % 时间向量
@@ -14,9 +14,7 @@ t = 0:step:((end_t-start_t));   % 时间向量
 smooth_xd = smooth(xd,4);
  x = xd(start_t/step:end_t/step); % 信号
  len = size(t(1:end),2);
- len_t = size(t(1,:))
-
- x_creat = x(1:len(1));
+ x_creat = x;
 
 % 绘制信号图
 figure(3)

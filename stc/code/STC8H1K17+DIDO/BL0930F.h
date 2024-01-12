@@ -1,6 +1,7 @@
 #ifndef BL0930F_H_
 #define BL0930F_H_
 #include "main.h" 
+
 #define BL_I_WAVE      0x01
 #define BL_V_WAVE      0x02
 #define BL_I_RMS       0x03//电流A有效值
@@ -79,6 +80,9 @@ typedef struct
     int error;
 } MIC;
 
+xlong get_mic(unsigned char num);
+void mic_init(void);
+void mic_read_proc(void);
 
 #endif
 

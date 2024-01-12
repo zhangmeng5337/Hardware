@@ -11,6 +11,7 @@
 #include <12864.h>
 #include <ht7050.h>
 #include <canshu.h>
+#include "BL0930F.h"
 
 
 void com_txsj(uint zjzs)
@@ -119,7 +120,7 @@ void du_dldy(void)
 				yb[216]=IEEE[2];
 				yb[217]=IEEE[3];
 	
-				abc=read_7053c(0x06);	//读电流
+				abc=get_mic(0x06);	//读电流
 				if(abc>0x7fffff)abc=0;
 				ax_aa=abc*10/dljza;
 				if(ax_aa<pingbidianliu)ax_aa=0;
@@ -130,7 +131,7 @@ void du_dldy(void)
 				yb[139]=IEEE[1];
 				yb[140]=IEEE[2];
 				yb[141]=IEEE[3];
-				abc=read_7053c(0x07);	//读电流
+				abc=get_mic(0x07);	//读电流
 				if(abc>0x7fffff)abc=0;
 				bx_aa=abc*10/dljzb;
 				if(bx_aa<pingbidianliu)bx_aa=0;
@@ -141,7 +142,7 @@ void du_dldy(void)
 				yb[143]=IEEE[1];
 				yb[144]=IEEE[2];
 				yb[145]=IEEE[3];
-				abc=read_7053c(0x08);	//读电流
+				abc=get_mic(0x08);	//读电流
 				if(abc>0x7fffff)abc=0;
 				cx_aa=abc*10/dljzc;
 				if(cx_aa<pingbidianliu)cx_aa=0;
@@ -345,6 +346,7 @@ main()
 	}
 	while(1)
 	{
+	    mic_read_proc();
 		k1_out();   //DIDO
 		if(sx_bz==0)
 		{

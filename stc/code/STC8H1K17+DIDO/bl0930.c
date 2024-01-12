@@ -1,4 +1,4 @@
-﻿#include "BL0930F.h"
+#include "BL0930F.h"
 #include <stdlib.h>
 unsigned char  Calstep;
 typedef struct __packed
@@ -344,15 +344,15 @@ int mic_write_Cmp(unsigned char  reg, long datap)
 int mic_reset(void)
 {
     int ret = -1;
-    WDT_Restart();
-    uart1_init(); //串口复位
+   // WDT_Restart();
+   // uart1_init(); //串口复位
 
     delay_ms(500);
-    WDT_Restart();
+   // WDT_Restart();
     bl0930_reset();//计量复位
 
     delay_ms(500);
-    WDT_Restart();
+   // WDT_Restart();
 
     if(mic_write(BL_OTP_WRPROT, 0x42) < 0) goto err;    //允许通讯
     if(mic_write(BL_OTP_SUMERR, 0x0c) < 0) goto err;    //允许通讯
@@ -497,7 +497,7 @@ int mic_check(void)
 变量描述:
 返回值：
 ***************************************************************************************/
-void mic_read_param(void)
+void mic_read_param(unsigned char num)
 {
     long value = 0;
 
@@ -925,13 +925,18 @@ int mic_write_reg(unsigned char  reg, long value)
 }
 void mic_cal_proc(void)
 {
-	 micpara_init(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, unsigned int mode)
+//	 micpara_init(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, unsigned int mode)
 	 mic_cal_gain(10);
 	 mic_cal_phase( 10);
 	 mic_cal_offset( 10);
-	 mic_cal_finish(long vrms, long irms, long watt)
+	// mic_cal_finish(long vrms, long irms, long watt)
 
 }
 
+void mic_read_proc()
+{
+	mic_read_param(0);
+
+}
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////

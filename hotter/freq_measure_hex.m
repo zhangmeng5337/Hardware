@@ -7,7 +7,7 @@ dat = hex2dec(dat);
 dat_len = size(dat(1:end),1)
 
 j=0;
-orginal = 0;
+original = 0;
 dat_4byte = 0;
 result = 0;
 head = 0;
@@ -37,59 +37,21 @@ for i=1:1:dat_len-3
                         mergedByte = bitshift((bitshift(data_H, 8) + data_M), 16) + (bitshift(data_S, 8) + data_L); %402500 f7f9
                         values = typecast(uint32(mergedByte),'single');
                         j=j+1;
-                        orginal(j) = values;
+                        original(j) = values;
                      end
-                    index = index + 4096*4;%Êý¾ÝÖ¡Êý¼ÆÊý
+                    index = index + 1024*4;%Êý¾ÝÖ¡Êý¼ÆÊý
+                    
                 end                
             end
             
         end
     end
 end
+original = original';
 
+x = original;
 
-% for i = 1:1+index:find_index
-%     if(index>=find_index)
-%     break;
-%     else 
-%         
-%            data_H = dat(cycle*index+1+i);
-%             data_M = dat(cycle*index+2+i);
-%             data_S = dat(cycle*index+3+i); 
-%             data_L = dat(cycle*index+4+i); 
-% 
-% 
-%         if(data_H == 255&&data_M==255&&data_S==255&&(data_L==255||data_L==254))
-%             if(data_L==255)
-%                 
-%                 head = head+1;
-%                 if(start_index == 0)
-%                     start_index = i+1;
-%                 end
-%                 if((len-i-index)>=4096)
-%                     for k = start_index+4+index:4:index+4096+start_index
-%                         data_H = dat(k+3);
-%                         data_M = dat(k+2);
-%                         data_S = dat(k+1); 
-%                         data_L = dat(k);
-%                         mergedByte = bitshift((bitshift(data_H, 8) + data_M), 16) + (bitshift(data_S, 8) + data_L); %402500 f7f9
-%                         values = typecast(uint32(mergedByte),'single');
-%                         j=j+1;
-%                         orginal(j) = values;
-%                     end   
-%                     index= index +4096*4+3;
-%                     cycle = cycle+1;
-%                 end                
-%             end%255
-% 
-%         end
-%     end 
-% end
-orginal = orginal';
-
-x = orginal;
-
-len = size(orginal);
+len = size(original);
 len = len(1)
 len = len/2;
 len = round(len);
@@ -102,34 +64,15 @@ original = x;
 Fs=9000; %²É¼¯ÆµÂÊ
 T=1/Fs; %²É¼¯Ê±¼ä¼ä¸ô
 N=length(y); %²É¼¯ÐÅºÅµÄ³¤¶È
-t=(0:1:N-1)*T; %¶¨ÒåÕû¸ö²É¼¯Ê±¼äµã
+t=0:T:(N-1)*T; %¶¨ÒåÕû¸ö²É¼¯Ê±¼äµã
 t=t';  %×ªÖÃ³ÉÁÐÏòÁ¿
- y = kalman(orginal);
+ y = kalman(original);
  y=y(:,1);
  kal_man = y;
 
 
-%iifr
-
-%  fs = 2000; % ²ÉÑùÂÊ
-% fc = 1500; % ½ØÖ¹ÆµÂÊ
-% N =20; % ½×Êý
-% b = fir1(N, fc/(fs/2)); % Ê¹ÓÃfir1º¯ÊýÉè¼ÆµÍÍ¨ÂË²¨Æ÷ÏµÊý
-%  x1get=filter(b,1,original);
-
-% figure(2)
-% % plot(t,original);
-% xlabel('time/s');
-% ylabel('voltage/mV');
-% % hold on;
-% plot(t,x1get,'r');
-% title('firÐÅºÅ ');
-% xlabel('time/s');
-% ylabel('voltage/mV');
-% % legend('Ô­Ê¼ÐÅºÅ','firÂË²¨');
-% 
 figure(3)
-[xd,cxd,lxd] = wden(orginal','rigrsure','s','one',2,'db3');
+[xd,cxd,lxd] = wden(original','rigrsure','s','one',2,'db3');
 
 % plot(t,original);
 % hold on;
@@ -138,19 +81,9 @@ plot(t,xd,'r');                                                %Mix_Signal_1 Ð¡²
 title('Ð¡²¨±ä»»ÐÅºÅ ');
 xlabel('time/s');
 ylabel('voltage/mV');
-% legend('Ô­Ê¼ÐÅºÅ','Ð¡²¨±ä»»ÐÅºÅ');
-% figure(4)
-% yy=smooth(xd,4);
-% smooth_dat = yy;
-% % plot(t,original);
-% % hold on
-% plot(t,yy,'r'); 
-% title('Æ½»¬ÐÅºÅ ');
-% xlabel('time/s');
-% ylabel('voltage/mV');
-% % legend('Ô­Ê¼ÐÅºÅ','Æ½»¬ÐÅºÅ');
+
 figure(5)
-plot(t,orginal);
+plot(t,original);
 hold on
 plot(t,kal_man,'r'); 
 
