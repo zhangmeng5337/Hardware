@@ -32,6 +32,26 @@ int Find_string(char *pcBuf,char *left,char *right, char *pcRes)
 		return 1;
 	}
 }
+
+unsigned char Find_string_left(char *pcBuf,char *left)
+{
+	char *pcBegin = NULL;
+	char *pcEnd = NULL;
+	pcBegin = strstr(pcBuf, left);//找到第一次出现的位置
+	//pcEnd = strstr(pcBegin+strlen(left), right);//找到右边标识
+	if(pcBegin == NULL || pcEnd == NULL || pcBegin > pcEnd)
+	{
+		;//printf("string name not found!\n");
+		return 1;
+	}
+	else
+	{
+		//pcBegin += strlen(left);
+		//memcpy(pcRes, pcBegin, pcEnd-pcBegin);
+		return 0;
+	}
+}
+
 /**
  * @bieaf CRC-16 校验
  *

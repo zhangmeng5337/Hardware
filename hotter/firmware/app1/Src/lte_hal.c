@@ -29,6 +29,8 @@
 #include "stmflash.h"
 #include "string.h"
 #include <stdio.h>
+#include "my_string.h"
+
 //rs485_stru *lte_t;
 tsATCmds     at_cmds;
 tsATCmds     at_cmds_ota;
@@ -111,8 +113,10 @@ unsigned char ATRec(char *s)
 uint8_t *lte_Check_Cmd(uint8_t *str)
 {
     uint8_t *strx ;
+	//strx = Find_string_left(lte_recv->Lpuart1RecBuff,str);
     strx = strstr((const char *)(lte_recv->Lpuart1RecBuff), (const char *)str); //寻找文本(被寻找，欲寻�?
-    return (uint8_t *)strx;
+    return strx;
+	//Find_string(char *pcBuf,char *left,char *right, char *pcRes)
 
 }
 
@@ -584,7 +588,7 @@ uint8_t lte_Info_Show(void)
         }
         break;
     case AT_HTTPREAD_1:
-        if (lte_Send_Cmd("AT+HTTPREAD\r\n", "}\r\n", LTE_LONG_DELAY)) //start get
+        if (lte_Send_Cmd("AT+HTTPREAD\r\n", "}", LTE_LONG_DELAY)) //start get
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
         }

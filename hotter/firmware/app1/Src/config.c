@@ -154,8 +154,8 @@ void config_init()
         sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", "v1.0.0.1");
-        sprintf(get_config()->http_ip, "%s", "39.106.131.169:9006/u");
-        sprintf(get_config()->http_port, "%s", "9006/u");
+        sprintf(get_config()->http_ip, "%s", "http://39.106.131.169:666/ota/a/866289037465624");
+        sprintf(get_config()->http_port, "%s", "666");
         get_config()->machine = 1;
         get_config()->update_firm = 0;
         get_config()->set_tout = 45;

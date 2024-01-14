@@ -9,7 +9,7 @@ void Update_Success(void)
     if(OTA_UPDATE_NUM == 2)
     {
         WriteFlash((Application_2_Addr + Application_Size - 8), &update_flag, 1);
-        update_flag = 2;
+        update_flag = 0x20;
         ReadFlash(OTA_NUM_ADDR,&tmp,1);
         if(tmp!=update_flag)
         {
@@ -22,7 +22,7 @@ void Update_Success(void)
     if(OTA_UPDATE_NUM == 1)
     {
         WriteFlash((Application_1_Addr + Application_Size - 8), &update_flag, 1);
-        update_flag = 1;
+        update_flag = 0x10;
         ReadFlash(OTA_NUM_ADDR,&tmp,1);
 
         if(tmp!=update_flag)
