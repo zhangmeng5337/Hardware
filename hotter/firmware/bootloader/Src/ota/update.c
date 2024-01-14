@@ -7,7 +7,7 @@
 unsigned int Read_Start_Mode(void)
 {
     uint8_t mode = 0;
-    ReadFlash((Application_2_Addr + 0x40000 - 8), &mode, 1);
+    ReadFlash(OTA_NUM_ADDR, &mode, 1);
     return mode;
 }
 
@@ -90,26 +90,51 @@ void Start_BootLoader(void)
     printf("*                                 *\r\n");
     printf("***********************************\r\n");
 
-    switch (Read_Start_Mode())									//读取是否启动应用程序
-    {
-        case Startup_Normal:										//正常启动
-        {
-            printf("> Normal Start......\r\n");
-           // MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
-            //MoveCode(Application_2_Addr, Application_2_Addr + Application_Size - 8, Application_Size);
-            break;
-        }
-        case Startup_Update:										//升级再启动
-        {
-            MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
-            break;
-        }
-        default:																//启动失败
-        {
-            return;
-        }
-    }
-    printf(">Jump to App......\r\n");
-    IAP_ExecuteApp(Application_1_Addr);
+//    switch (Read_Start_Mode())									//读取是否启动应用程序
+//    {
+//        case Startup_Normal:										//正常启动
+//        {
+//            printf("> Normal Start......\r\n");
+//           // MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
+//            //MoveCode(Application_2_Addr, Application_2_Addr + Application_Size - 8, Application_Size);
+//            break;
+//        }
+//        case Startup_Update:										//升级再启动
+//        {
+//            MoveCode(Application_2_Addr, Application_1_Addr, Application_Size);
+//            break;
+//        }
+//        default:																//启动失败
+//        {
+//            return;
+//        }
+//    }
+
+    unsigned char read_flag=0;
+		read_flag = Read_Start_Mode();
+    if(read_flag|0x2a)
+		{
+			if(read_flag == 0x20)
+			{   
+				  read_flag = 0x10;
+			    Erase_page(OTA_NUM_ADDR, 1);
+          WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
+			}
+			printf(">Jump to App2......\r\n");
+			IAP_ExecuteApp(Application_2_Addr);		
+		}
+		else if(read_flag|0x10)
+		{
+			if(read_flag == 0x20)
+			{   
+				  read_flag = 0x20;
+			    Erase_page(OTA_NUM_ADDR, 1);
+          WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
+			}
+			printf(">Jump to App1......\r\n");
+			IAP_ExecuteApp(Application_1_Addr);				
+		}
+		
+
 }
 

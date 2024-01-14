@@ -1,4 +1,4 @@
-#ifndef __STMFLASH_H__
+﻿#ifndef __STMFLASH_H__
 #define __STMFLASH_H__
 
 #include "main.h"
@@ -12,11 +12,14 @@
 #define PageSize				FLASH_PAGE_SIZE
 
 /**
-	*	第一部分：BootLoader 		     起始地址:	0x08000000 	大小为:64K 占4 sectors
+	*	第一部分：BootLoader 		     起始地址:	0x0801fff0 	大小为:64K 占4 sectors
 	*	第二部分：Application_1      起始地址:	0x08020000	大小为:256K 占2 sectors
 	*	第三部分：Application_2      起始地址:	0x08060000 	大小为:256K 占2 sectors
 	*	第三部分：参数区域           起始地址:	0x08010000 	大小为:64K 占1 sectors	
 	*/
+#define OTA_UPDATE_NUM   2
+#define OTA_NUM_ADDR   0x801fff0
+
 #define BootLoader_Size				0x10000U						// BootLoader的区间大小  64K
 #define Application_Size			0x40000U					// Application的区间大小 256K
 

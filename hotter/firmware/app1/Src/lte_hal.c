@@ -89,11 +89,11 @@ unsigned char ATRec(char *s)
             at_cmds.ATStatus = ERROR_STATUS;
         }
         else
-;
+            ;
 
 
-            //printf("收到数据�?s", Lpuart1type.Lpuart1RecBuff);
-            lte_recv->Lpuart1RecFlag = 0;
+        //printf("收到数据�?s", Lpuart1type.Lpuart1RecBuff);
+        lte_recv->Lpuart1RecFlag = 0;
         // lte_recv->Lpuart1RecLen = 0;
     }
     else
@@ -322,17 +322,20 @@ uint8_t lte_info_ota_show()
                 // printf("Find_Buf:%lu\r\n", compare_len);
                 if (get_config()->Erase_flag == 1)	  //begin erase仅仅开始是擦除flash一�?
                 {
-                    addr_wr=Application_2_Addr;
+                    if(OTA_UPDATE_NUM == 2)
+                        addr_wr=Application_2_Addr;
+                    else
+                        addr_wr=Application_1_Addr;
                     get_config()->Erase_flag = 0;
-									  HAL_StatusTypeDef status = HAL_ERROR; 
-									  while(status == HAL_ERROR)
-									      status = Erase_page(Application_2_Addr, 2); //erase 2 sector擦除2扇区
+                    HAL_StatusTypeDef status = HAL_ERROR;
+                    while(status == HAL_ERROR)
+                        status = Erase_page(addr_wr, 2); //erase 2 sector擦除2扇区
                 }
 
                 unsigned int i;
                 unsigned char tmp;
                 unsigned int len;
-								
+
                 len = 	(compare_len - 2);
                 WriteFlash(addr_wr, (uint8_t *)(&Bin_buffer[0]), len);
 
@@ -343,7 +346,7 @@ uint8_t lte_info_ota_show()
                     {
                         get_config()->Erase_flag = 1;
                         get_config()->seq_count = 1;
-											  addr_count = 0;
+                        addr_count = 0;
                         return NOT_CONNECT;
                     }
                 }
@@ -352,24 +355,24 @@ uint8_t lte_info_ota_show()
                 addr_count++;
                 at_cmds_ota.RtyNum = 0;
                 at_cmd_ota_num = AT_HTTPPARA_2;
-								if(get_config()->seq_count>get_config()->seq)
-            {
+                if(get_config()->seq_count>get_config()->seq)
+                {
 
 
-                get_config()->seq_count = 0;
-                get_config()->seq = 0;
-                addr_count = 0;
-                get_config()->Erase_flag = 1;
-                get_config()->reboot_flag = 1;
-                at_cmds_ota.RtyNum = 0;
-                at_cmd_ota_num = AT_IDLE;
-                at_cmd_num = AT_IDLE;
-                // get_config()->update_setting = 1;
-                OTA_Task();
+                    get_config()->seq_count = 0;
+                    get_config()->seq = 0;
+                    addr_count = 0;
+                    get_config()->Erase_flag = 1;
+                    get_config()->reboot_flag = 1;
+                    at_cmds_ota.RtyNum = 0;
+                    at_cmd_ota_num = AT_IDLE;
+                    at_cmd_num = AT_IDLE;
+                    // get_config()->update_setting = 1;
+                    OTA_Task();
 
+                }
             }
-            }
-						
+
             // clear_uart_buf();
         }
         break;

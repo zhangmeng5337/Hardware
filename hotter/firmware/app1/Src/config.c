@@ -187,8 +187,20 @@ void config_init()
     //setting params
 
 
+    if(OTA_UPDATE_NUM == 2)
+    {
+		unsigned char read_flag=0x1a;
+		Erase_page(OTA_NUM_ADDR, 1);
+	    WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
 
+    }
+    if(OTA_UPDATE_NUM == 1)
+    {
+		unsigned char read_flag=0x2a;
+		Erase_page(OTA_NUM_ADDR, 1);
+	    WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
 
+    }
 
 
 }
