@@ -107,7 +107,7 @@
 //mqtt_payload_u.data[UP_PERIOD_INDEX]);
 
 
-char *json_pack(mqtt_payload_stru *pb)
+char*json_pack(mqtt_payload_stru *pb)
 {
 	static uint8_t number_data;
     cJSON *dev_pub,*pub_status,*pub_params;
@@ -138,24 +138,21 @@ char *json_pack(mqtt_payload_stru *pb)
         dev_pub=cJSON_CreateObject();   //创建根数据对象
 	    cJSON_AddItemToObject(dev_pub, "Dev ID", cJSON_CreateString(pb->devid));  //根节点下添加数字
 
-		cJSON_AddItemToObject(dev_pub, "Status Data", pub_status=cJSON_CreateObject());			 //根节点下添加字符
-        cJSON_AddItemToObject(pub_status, "Out Tem", cJSON_CreateString("h"));			 		//根节点下添加汉字
-        cJSON_AddItemToObject(pub_status, "In Tem", cJSON_CreateString("帅"));	
-        cJSON_AddItemToObject(pub_status, "Front Pressure", cJSON_CreateString("帅"));	
-        cJSON_AddItemToObject(pub_status, "After Pressure", cJSON_CreateString("帅"));	
-        cJSON_AddItemToObject(pub_status, "Status", cJSON_CreateString("帅"));	
+		    cJSON_AddItemToObject(dev_pub, "Status Data", pub_status=cJSON_CreateObject());			 //根节点下添加字符
+        cJSON_AddItemToObject(pub_status, "Out Tem", cJSON_CreateNumber(pb->data[TOUT_INDEX]));			 		//根节点下添加汉字
+        cJSON_AddItemToObject(pub_status, "In Tem", cJSON_CreateNumber(pb->data[TIN_INDEX]));	
+        cJSON_AddItemToObject(pub_status, "Front Pressure", cJSON_CreateNumber(pb->data[PUMP_F_INDEX]));	
+        cJSON_AddItemToObject(pub_status, "After Pressure", cJSON_CreateNumber(pb->data[PUMP_E_INDEX]));	
+        cJSON_AddItemToObject(pub_status, "Status", cJSON_CreateNumber(pb->data[DEV_STATUS_INDEX]));	
 		
         cJSON_AddItemToObject(dev_pub, "Dev Params", pub_params=cJSON_CreateObject());	
-        cJSON_AddItemToObject(pub_params, "Version", cJSON_CreateString("帅"));	
-        cJSON_AddItemToObject(pub_params, "Set Out Tem", cJSON_CreateString("帅"));	
-        cJSON_AddItemToObject(pub_params, "Set In Tem", cJSON_CreateString("帅"));	
-        cJSON_AddItemToObject(pub_params, "Upload Period(second)", cJSON_CreateString("帅"));	
+        cJSON_AddItemToObject(pub_params, "Version", cJSON_CreateString(pb->version));	
+        cJSON_AddItemToObject(pub_params, "Set Out Tem", cJSON_CreateNumber(pb->data[WATER_O_INDEX]));	
+        cJSON_AddItemToObject(pub_params, "Set In Tem", cJSON_CreateNumber(pb->data[WATER_IN_INDEX]));	
+        cJSON_AddItemToObject(pub_params, "Upload Period(second)", cJSON_CreateNumber(pb->data[UP_PERIOD_INDEX]));	
 
-
+        return cJSON_Print(dev_pub);
 		
-
-
-  return cJSON_Print(dev_pub);
 	/*	data = cJSON_Print(dev_pub);   //将json形式打印成正常字符串形式(带有\r\n)
 //	    data = cJSON_PrintUnformatted(usr);   //将json形式打印成正常字符串形式(没有\r\n)
 		 printf("%s",data);			//通过串口打印出来
@@ -171,26 +168,58 @@ char *json_pack(mqtt_payload_stru *pb)
 
 
 }
+/*鏈嶅姟绔?-->璁惧锛堝懆鏈熶笅鍙戯級
+{
+   "Dev ID":  "866289037465624",
+   "Room Temp": {
+               "Room 1 Temp": "15",
+               "Room 2 Temp": "18",
+               "Room 3 Temp": "16",
+               "Room 4 Temp": "17",
+               "Room 5 Temp": "15",
+               "Room 6 Temp": "13",
+               "Room 7 Temp": "12",
+               "Room 8 Temp": "21",
+               "Room 9 Temp": "20",
+               "Room 10 Temp": "15"
+     }
+}*
 
-void json_analysis()
+/*鏈嶅姟绔?-->璁惧
+{
+   "Dev ID":  "866289037465624",
+   "Dev Ctrl": {
+               "Updat Frimware": "1",
+               "Reboot Dev": "1",
+               "Power ctrl": "1",
+               "Set Out Temp": "45",
+               "Set Room Temp": "23",
+               "Set Upload Period(second)": "13"
+     }
+}*/
+
+void json_analysis(char* out)
 {
 
-    cJSON *json,*json_one,*json_two,*json_three;
-    char* out="{\"one\":\"long\",\"two\":\"2\",\"three\":3}";
+    cJSON *sub_ser,*sub_ctrl,*sub_dev_ctrl,*json_three;
+  //  char* out="{\"one\":\"long\",\"two\":\"2\",\"three\":3}";
  
-    json = cJSON_Parse(out); //将得到的字符串解析成json形式
+    sub_ser = cJSON_Parse(out); //将得到的字符串解析成json形式
     /****************************/
     /*	  测试将JSON打印出来	*/
     /***************************/
    //char *out_data = cJSON_Print(json);   //将json形式打印成正常字符串形式
    //printf("%s",out_data);
 
-    json_one = cJSON_GetObjectItem( json , "one" );  //从json获取键值内容
-    json_two = cJSON_GetObjectItem( json , "two" );//从json获取键值内容
-    json_three = cJSON_GetObjectItem( json , "three" );//从json获取键值内容
+    sub_dev_ctrl = cJSON_GetObjectItem( sub_ser , "Updat Frimware" );  //从json获取键值内容
+    sub_dev_ctrl = cJSON_GetObjectItem( sub_ser , "Reboot Dev" );//从json获取键值内容
+    sub_dev_ctrl = cJSON_GetObjectItem( sub_ser , "Power ctrl" );//从json获取键值内容
+     sub_dev_ctrl = cJSON_GetObjectItem( sub_ser , "Set Out Temp" );  //从json获取键值内容
+    sub_dev_ctrl = cJSON_GetObjectItem( sub_ser , "Set Room Temp" );//从json获取键值内容
+    sub_dev_ctrl = cJSON_GetObjectItem( sub_ser , "Set Upload Period(second)" );//从json获取键值内容
  
-    printf("\r\none:%s   two:%d   three:%d",json_one->valuestring,json_two->valueint,json_three->valueint);
+  //  printf("\r\none:%s   two:%d   three:%d",json_one->valuestring,json_two->valueint,json_three->valueint);
  
-    cJSON_Delete(json);  //释放内存 
+    cJSON_Delete(sub_dev_ctrl);  //释放内存 
 }
 

@@ -1,5 +1,6 @@
 #include "BL0930F.h"
 #include <stdlib.h>
+#include "sys.h"
 unsigned char  Calstep;
 typedef struct __packed
 {
@@ -93,7 +94,7 @@ void spi_write(uchar dat)
 	{
 		dat=dat<<1;
 		SCLK=1;delay();
-		DIN=CY;
+		SPI_MOSI=CY;
 		SCLK=0;delay();
 	}
 }
@@ -106,7 +107,7 @@ unsigned char spi_read(uchar dat1)
 	{
 		dat=dat<<1;
 		SCLK=1;delay();
-		if(DOUT==1)dat++;
+		if(SPI_MISO==1)dat++;
 		SCLK=0;delay();
 	}
 
@@ -135,10 +136,10 @@ unsigned char uart1_send_receive(unsigned char *wr_buf, unsigned char tx_len, un
 	CS=1;
    return 0;
 }
-void delay_ms(long ms)
-{
+//void delay_ms(long ms)
+//{
 
-}
+//}
 /***************************************************************************************
 函数名称:bl0930_reset(void)
 函数作用:复位计量芯片
@@ -167,8 +168,8 @@ void bl0930_reset(void)
 }
 /***************************************************************************************
 函数名称:bl0930_read(unsigned char  reg, long *data)
-函数作用:读取寄存器的值（通过uart）
-变量描述: reg 寄存器 *data读取的32值
+函数作用:读取寄存器的值（通过uart�?
+变量描述: reg 寄存�?*data读取�?2�?
 返回值：
 ***************************************************************************************/
 int bl0930_read(unsigned char  reg, long *datap)
@@ -181,7 +182,7 @@ int bl0930_read(unsigned char  reg, long *datap)
 
     }
     bl_buf[0] = BL_READCMD;
-    bl_buf[1] = reg; //寄存器
+    bl_buf[1] = reg; //寄存�?
 
 
     if(uart1_send_receive(bl_buf, 2, bl_buf+2, 4) < 0)//收到数据不对
@@ -190,12 +191,12 @@ int bl0930_read(unsigned char  reg, long *datap)
     }
     check += bl_buf[0];
     check += bl_buf[1];
-    check += bl_buf[2];//校验值
+    check += bl_buf[2];//校验�?
     check += bl_buf[3];
     check += bl_buf[4];
     check = ~check;
 
-    if(check != bl_buf[5])//接收的校验值不对
+    if(check != bl_buf[5])//接收的校验值不�?
     {
         return -3;
     }
@@ -213,8 +214,8 @@ int bl0930_read(unsigned char  reg, long *datap)
 }
 /***************************************************************************************
 函数名称:bl0930_write(unsigned char  reg, long data)
-函数作用:写寄存器的值（通过uart）
-变量描述: reg 寄存器 *data读取的32值
+函数作用:写寄存器的值（通过uart�?
+变量描述: reg 寄存�?*data读取�?2�?
 返回值：
 ***************************************************************************************/
 int bl0930_write(unsigned char  reg, long datap)
@@ -245,8 +246,8 @@ int bl0930_write(unsigned char  reg, long datap)
 }
 /***************************************************************************************
 函数名称:mic_read(unsigned char  reg, long *data)
-函数作用:比较读取读取的数据
-变量描述: reg 寄存器 *data读取的32值
+函数作用:比较读取读取的数�?
+变量描述: reg 寄存�?*data读取�?2�?
 返回值：  0正确
 ***************************************************************************************/
 int mic_read(unsigned char  reg, long *datap)
@@ -254,7 +255,7 @@ int mic_read(unsigned char  reg, long *datap)
     unsigned char  i;
     for(i=0; i<5; i++)
     {
-        if(bl0930_read(reg, datap) < 0)//读取寄存器的值
+        if(bl0930_read(reg, datap) < 0)//读取寄存器的�?
         {
 
         }
@@ -275,7 +276,7 @@ int mic_read(unsigned char  reg, long *datap)
         return 0;
     }
     
-        if(bl0930_read(reg, datap) < 0)//读取寄存器的值
+        if(bl0930_read(reg, datap) < 0)//读取寄存器的�?
         {
     			  Sysstate.SysStat_RnReadErr=1;
             return -1;
@@ -289,8 +290,8 @@ int mic_read(unsigned char  reg, long *datap)
 }
 /***************************************************************************************
 函数名称:mic_write(unsigned char  reg, long data)
-函数作用:比较写寄存器的值
-变量描述: reg 寄存器 data读取的32值
+函数作用:比较写寄存器的�?
+变量描述: reg 寄存�?data读取�?2�?
 返回值：  0正确
 ***************************************************************************************/
 int mic_write(unsigned char  reg, long datap)
@@ -309,8 +310,8 @@ int mic_write(unsigned char  reg, long datap)
 }
 /***************************************************************************************
 函数名称:mic_write_Cmp(unsigned char  reg, long data)
-函数作用:比较写寄存器的值
-变量描述: reg 寄存器 data读取的32值
+函数作用:比较写寄存器的�?
+变量描述: reg 寄存�?data读取�?2�?
 返回值：  0正确
 ***************************************************************************************/
 int mic_write_Cmp(unsigned char  reg, long datap)
@@ -346,7 +347,8 @@ int mic_reset(void)
     int ret = -1;
    // WDT_Restart();
    // uart1_init(); //串口复位
-
+     CD4052_A1   =0;		//ѡͨ 1
+     CD4052_A0   =0;		//ѡͨ 1
     delay_ms(500);
    // WDT_Restart();
     bl0930_reset();//计量复位
@@ -356,7 +358,7 @@ int mic_reset(void)
 
     if(mic_write(BL_OTP_WRPROT, 0x42) < 0) goto err;    //允许通讯
     if(mic_write(BL_OTP_SUMERR, 0x0c) < 0) goto err;    //允许通讯
-    if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;    //允许写操作
+    if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;    //允许写操�?
     if(mic_write(BL_OT_FUNX, 0x14) < 0) goto err;
 
     if(meter_read_cal())
@@ -380,7 +382,7 @@ int mic_reset(void)
         }
         if(mic_write_Cmp(BL_V_CHGN, mic_cal.v_gain) < 0) goto err; //电压增益
         if(mic_write_Cmp(BL_PHCAL, mic_cal.ia_phs) < 0) goto err; //相位
-        if(mic_write_Cmp(BL_WATTOS, mic_cal.watta_ofs) < 0) goto err;//偏移量
+        if(mic_write_Cmp(BL_WATTOS, mic_cal.watta_ofs) < 0) goto err;//偏移�?
 
         if(mic_cal.wa_creep==0)
         {
@@ -394,7 +396,7 @@ int mic_reset(void)
 
     if(mic_cal.mode==0)
     {
-        if(mic_write_Cmp(BL_MODE, 0xc7) < 0) goto err;         //读后清
+        if(mic_write_Cmp(BL_MODE, 0xc7) < 0) goto err;         //读后�?
 
     }
     else
@@ -417,7 +419,7 @@ void mic_reset1(void)
 
     if(mic_write(BL_OTP_WRPROT, 0x42) < 0) goto err;    //允许通讯
     if(mic_write(BL_OTP_SUMERR, 0x0c) < 0) goto err;    //允许通讯
-    if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;    //允许写操作
+    if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;    //允许写操�?
     if(mic_write(BL_OT_FUNX, 0x14) < 0) goto err;
 
     if(mic_read(BL_OTP_WRPROT, &value) < 0) goto err; //CF倍频默认
@@ -426,9 +428,9 @@ void mic_reset1(void)
     if(mic_read(BL_GAIN_CR, &value) < 0) goto err;
     if(mic_read(BL_V_CHGN, &value) < 0) goto err; //电压增益
     if(mic_read(BL_PHCAL, &value) < 0) goto err; //相位
-    if(mic_read(BL_WATTOS, &value) < 0) goto err;//偏移量
+    if(mic_read(BL_WATTOS, &value) < 0) goto err;//偏移�?
     if(mic_read(BL_WA_CREEP, &value) < 0) goto err;
-    if(mic_read(BL_MODE, &value) < 0) goto err;         //读后清
+    if(mic_read(BL_MODE, &value) < 0) goto err;         //读后�?
     if(mic_read(BL_I_CHGN, &value) < 0) goto err;
     if(mic_read(BL_CHIP_MODE,&value) < 0) goto err;
 err:
@@ -440,7 +442,7 @@ err:
 
 /*******************************************************************************
 Function    : mic_init
-Description : 计算芯片初始化，复位并加载校表数据
+Description : 计算芯片初始化，复位并加载校表数�?
 Input       :
 Output      :
 Return      : void
@@ -503,7 +505,7 @@ void mic_read_param(unsigned char num)
 
     static unsigned char  step = 0;
 
-    if(mic.calc == 0x5A3C) // 校表过程不读寄存器
+    if(mic.calc == 0x5A3C) // 校表过程不读寄存�?
     {
         return;
     }
@@ -532,8 +534,8 @@ void mic_read_param(unsigned char num)
 
     if(mic_cal.kwatta != 0)
     {
-        mic.watta = (( signed long)value*10)/mic_cal.kwatta; //实际功率值
-        if(abs(mic.watta) < 33)// 3.3W，0.3% * 220V * 5A
+        mic.watta = (( signed long)value*10)/mic_cal.kwatta; //实际功率�?
+        if(abs(mic.watta) < 33)// 3.3W�?.3% * 220V * 5A
         {
             mic.watta = 0;
         }
@@ -558,7 +560,7 @@ void mic_read_param(unsigned char num)
     }
 #endif
 
-    if(0==step && mic_read(BL_V_RMS, &value) == 0)//电压有效值
+    if(0==step && mic_read(BL_V_RMS, &value) == 0)//电压有效�?
     {
 
         if(mic_cal.kvrms != 0)
@@ -571,12 +573,12 @@ void mic_read_param(unsigned char num)
             mic.vrms = value/120/10;
         }
     }
-    if(1==step && mic_read(BL_I_RMS, &value) == 0)//电流有效值
+    if(1==step && mic_read(BL_I_RMS, &value) == 0)//电流有效�?
     {
         if(mic_cal.kiarms != 0)
         {
              mic.iarms = value*10/mic_cal.kiarms;
-            // 按50mA限定显示的最小电流
+            // �?0mA限定显示的最小电�?
              if(mic.iarms < 50) // 50mA, 1%  * 5A
             {
                    mic.iarms = 0;
@@ -626,10 +628,10 @@ int mic_cal_reset(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, 
 {
 
     int ret = -1;
-    WDT_Restart();
+    //WDT_Restart();
     bl0930_reset();//计量复位
 
-    WDT_Restart();
+    //WDT_Restart();
 
     delay_ms(1000);
 
@@ -637,7 +639,7 @@ int mic_cal_reset(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, 
 
     if(mic_write_Cmp(BL_CFDIV, cfdiv) < 0) goto err;    //CF倍频默认
     if(mic_write_Cmp(BL_GAIN_CR, igain) < 0) goto err; //电流增益
-    if(mic_write_Cmp(BL_MODE, mode) < 0) goto err;    //读后清
+    if(mic_write_Cmp(BL_MODE, mode) < 0) goto err;    //读后�?
     if(mic_write_Cmp(BL_PHCAL, 0x00) < 0) goto err;
     if(mic_write_Cmp(BL_I_CHGN, 0x00) < 0) goto err;
     if(mic_write_Cmp(BL_V_CHGN, 0x00) < 0) goto err;
@@ -670,7 +672,7 @@ int micpara_init(unsigned int igain,unsigned int cfdiv, unsigned int chipmode, u
 
 /***************************************************************************************
 函数名称:mic_cal_init(unsigned int cfdiv, unsigned int un, unsigned int ib, unsigned int im)
-函数作用:初始化校表参数
+函数作用:初始化校表参�?
 变量描述:
 返回值：  正确显示1000 错误显示1099
 ***************************************************************************************/
@@ -702,7 +704,7 @@ err:
 }
 /***************************************************************************************
 函数名称:mic_cal_gain( signed long l0)
-函数作用:增益值校验
+函数作用:增益值校�?
 变量描述:
 返回值：  正确显示2000 错误显示0000
 ***************************************************************************************/
@@ -714,10 +716,10 @@ void mic_cal_gain( signed long l0)
     mic.calc_result = 2000;
     //display_page(DP_CAL_BUSY);
 
-    WDT_Restart();
+    //WDT_Restart();
     if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;
     delay_ms(1200);
-    WDT_Restart();
+   // WDT_Restart();
     if(l0<0)
     {
         l1=-(l0*10000);
@@ -734,7 +736,7 @@ void mic_cal_gain( signed long l0)
     mic_cal.v_gain = (unsigned int)l1;
 
     if(mic_write(BL_V_CHGN, l1) < 0) 
-		goto err;//计量芯片写入校表值
+		goto err;//计量芯片写入校表�?
 
 err:
     mic_write(BL_USR_WRPROT, 0xAA);
@@ -744,7 +746,7 @@ err:
 }
 /***************************************************************************************
 函数名称:mic_cal_phase( signed long l0)
-函数作用:相位值校验
+函数作用:相位值校�?
 变量描述:
 返回值：  正确显示3000 错误显示0000
 ***************************************************************************************/
@@ -754,10 +756,10 @@ void mic_cal_phase( signed long l0)
     if(Calstep!=2) return;
     mic.calc_result = 3000;
 //    display_page(DP_CAL_BUSY);
-    WDT_Restart();
+   // WDT_Restart();
     if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;
     delay_ms(1200);
-    WDT_Restart();
+   // WDT_Restart();
     if(l0<0)
     {
         l1=-(l0*100);
@@ -781,7 +783,7 @@ err:
 }
 /***************************************************************************************
 函数名称:mic_cal_offset( signed long l0)
-函数作用:偏移量值校验
+函数作用:偏移量值校�?
 变量描述:
 返回值：  正确显示4000 错误显示0000
 ***************************************************************************************/
@@ -793,12 +795,12 @@ void mic_cal_offset( signed long l0)
     mic.calc_result = 4000;
 //    display_page(DP_CAL_BUSY);
 
-    WDT_Restart();
+   // WDT_Restart();
 
     if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;
     if(mic_read(BL_WATT, &value) < 0) goto err;
     delay_ms(1200);
-    WDT_Restart();
+  //  WDT_Restart();
 
     if(l0<0)
     {
@@ -835,31 +837,31 @@ void mic_cal_finish(long vrms, long irms, long watt)
     mic.calc_result = 5000;
 //    display_page(DP_CAL_BUSY);
 
-    WDT_Restart();
+    //WDT_Restart();
     mic.vrms = 0;
     mic.iarms = 0;
     mic.watta = 0;
 
     for(i=0; i<10; i++)
     {
-        WDT_Restart();
+        //WDT_Restart();
         delay_ms(100);
-        if(mic_read(BL_V_RMS, &value) < 0) goto err;//获取电压值
+        if(mic_read(BL_V_RMS, &value) < 0) goto err;//获取电压�?
         {
             mic.vrms += ( signed long)value;
         }
-        if(mic_read(BL_I_RMS, &value) < 0) goto err;//获取电流值
+        if(mic_read(BL_I_RMS, &value) < 0) goto err;//获取电流�?
         {
             mic.iarms += ( signed long)value;
         }
-        if(mic_read(BL_WATT, &value) < 0) goto err;//获取功率值
+        if(mic_read(BL_WATT, &value) < 0) goto err;//获取功率�?
         {
             mic.watta += ( signed long)value;
         }
     }
-    WDT_Restart();
+   // WDT_Restart();
 
-    mic.vrms /= 10;//求平均值
+    mic.vrms /= 10;//求平均�?
     mic.iarms /= 10;
     mic.watta /= 10;
 
@@ -875,12 +877,12 @@ void mic_cal_finish(long vrms, long irms, long watt)
     if(mic_write(BL_USR_WRPROT, 0x55) < 0) goto err;
     creep=(mic.watta*2)/1000;
     mic_cal.wa_creep = (unsigned int)(creep*256/3125); // 0.2%
-    if(mic_write(BL_WA_CREEP, mic_cal.wa_creep) < 0) goto err;	 //防潜动阈值
+    if(mic_write(BL_WA_CREEP, mic_cal.wa_creep) < 0) goto err;	 //防潜动阈�?
 
     if(mic_read(BL_CHKSUM, &value) < 0)
         goto err;
     mic_cal.checksum = (value & 0x00FFFFFF);
-    meter_write_cal();//存储校验值
+    meter_write_cal();//存储校验�?
 
 err:
     mic_write(BL_USR_WRPROT, 0xAA);
@@ -891,8 +893,8 @@ err:
 }
 /***************************************************************************************
 函数名称:mic_read_reg(unsigned char  reg, long *value)
-函数作用:读取寄存器参数
-变量描述: red 寄存器 value读取值
+函数作用:读取寄存器参�?
+变量描述: red 寄存�?value读取�?
 返回值：
 ***************************************************************************************/
 int mic_read_reg(unsigned char  reg, long *value)
@@ -902,7 +904,7 @@ int mic_read_reg(unsigned char  reg, long *value)
 /***************************************************************************************
 函数名称:mic_write_reg(unsigned char  reg, long value)
 函数作用:写寄存器参数
-变量描述: red 寄存器 value写入值
+变量描述: red 寄存�?value写入�?
 返回值：
 ***************************************************************************************/
 int mic_write_reg(unsigned char  reg, long value)

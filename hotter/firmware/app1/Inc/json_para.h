@@ -2,8 +2,8 @@
 #define _JSON_PARA_H
 #include "main.h"
 #include "mqtt_analy.h"
-void json_pack(mqtt_payload_stru *pb);
 
+char*json_pack(mqtt_payload_stru *pb);
 #endif
 
 

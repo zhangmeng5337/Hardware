@@ -1,6 +1,8 @@
 #ifndef MODBUS_H_
 #define MODBUS_H_
 
+#define DEV_SIZE    3
+
 #define MODBUS_RTU_COUNT            3
 
 #define MODBUS_READ_CMD				0x03  //
@@ -18,11 +20,12 @@ typedef struct
 	unsigned char func;
 	unsigned int  reg;
 	unsigned int  regCount;
-	unsigned char payload[256];
+	unsigned char payload[512];
 	unsigned int  crc;
 	unsigned char update;
 	unsigned char retry_count;
 	unsigned int  fault;
+	unsigned char dev_addr_index;
 }modbus_stru;
 void modbus_trans(unsigned char mode);
 void modbus_proc(void);

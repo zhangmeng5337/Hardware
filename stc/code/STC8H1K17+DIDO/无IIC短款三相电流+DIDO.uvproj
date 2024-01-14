@@ -377,24 +377,19 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>ht7038.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ht7038.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>bl0930.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\bl0930.c</FilePath>
-            </File>
-            <File>
               <FileName>sys.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sys.c</FilePath>
+            </File>
+            <File>
+              <FileName>bl0930.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\bl0930.c</FilePath>
             </File>
           </Files>
         </Group>

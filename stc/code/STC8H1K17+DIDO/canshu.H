@@ -719,8 +719,8 @@ void key_in(void)
 				write_add(i,sd[i]);
 				delay1(150);
 			}		
-			init();
-			in_att7053c();
+			//init();
+			//in_att7053c();
 			mima=0;
 			sj_tt=0;
 		}		

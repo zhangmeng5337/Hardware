@@ -37,22 +37,41 @@ void rs485_recv()
         unsigned char i;
         for (i = 0; i < rs485_u->recv_len; i++)
         {
-            if (rs485_u->recv_buf[i] > 0 && rs485_u->recv_buf[i] <= 3) //addr ok
-                break;
+            if (rs485_u->recv_buf[i] > 0 && rs485_u->recv_buf[i] <= DEV_SIZE) //addr ok
+                {
+                	modbus_recv.dev_addr_index = i;
+					break;
+
+				}
 
         }
         unsigned int crc_tmp;
         unsigned int crc_cal;
         unsigned char index;
         unsigned char len;
-        len = rs485_u->recv_len - i;
-        index = rs485_u->recv_len - 2;
-        //index = index-2;
-        crc_tmp = rs485_u->recv_buf[index];
-        crc_tmp = crc_tmp << 8;
-        crc_tmp = crc_tmp | rs485_u->recv_buf[index - 1];
-        crc_cal = CRC_Compute(&rs485_u->recv_buf[i], len);
-        memcpy(modbus_recv.payload, &rs485_u->recv_buf[i], len);
+		if(rs485_u->recv_buf[modbus_recv.dev_addr_index+1] == MODBUS_READ_CMD)
+		{
+			len = rs485_u->recv_buf[modbus_recv.dev_addr_index+2];//read data len
+			crc_tmp = rs485_u->recv_buf[len+4];
+            crc_tmp = crc_tmp << 8;
+            crc_tmp = crc_tmp | rs485_u->recv_buf[len+3];
+			crc_cal = CRC_Compute(&rs485_u->recv_buf[i], len);
+		}
+		else 
+		{
+			len = rs485_u->recv_buf[modbus_recv.dev_addr_index+4];//read data len
+			len = len<<8;//read data len	
+			len = len|rs485_u->recv_buf[modbus_recv.dev_addr_index+5];//read data len
+			
+			crc_tmp = rs485_u->recv_buf[len+4];
+			crc_tmp = crc_tmp << 8;
+			crc_tmp = crc_tmp | rs485_u->recv_buf[len+3];
+			crc_cal = CRC_Compute(&rs485_u->recv_buf[i], len);
+
+		}
+        
+        
+        memcpy(modbus_recv.payload, &rs485_u->recv_buf[modbus_recv.dev_addr_index], len);
         if (crc_cal == crc_tmp)
         {
             modbus_recv.address = modbus_recv.payload[0];

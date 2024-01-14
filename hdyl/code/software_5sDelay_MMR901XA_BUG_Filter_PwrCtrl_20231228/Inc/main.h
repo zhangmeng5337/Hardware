@@ -112,6 +112,7 @@ void Error_Handler(void);
 #define MOTOR_GPIO_Port GPIOB
 #define VALVE_Pin GPIO_PIN_9
 #define VALVE_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 //add by zm 2023.12.26
 
@@ -128,5 +129,3 @@ void Error_Handler(void);
 #endif
 
 #endif /* __MAIN_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

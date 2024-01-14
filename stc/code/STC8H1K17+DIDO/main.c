@@ -49,7 +49,7 @@ void yc_shuju(void)
 	{
 		k=6;
 		tp[2]=2;
-		abc=read_7053c(jcqa);
+		//abc=read_7053c(jcqa);
 		tp[3]=abc>>16&0xff;
 		tp[4]=abc>>8&0xff;
 		tp[5]=abc&0xff;
@@ -120,7 +120,7 @@ void du_dldy(void)
 				yb[216]=IEEE[2];
 				yb[217]=IEEE[3];
 	
-				abc=get_mic(0x06);	//读电流
+				abc=get_mic(0x08);	//读电流
 				if(abc>0x7fffff)abc=0;
 				ax_aa=abc*10/dljza;
 				if(ax_aa<pingbidianliu)ax_aa=0;
@@ -131,7 +131,7 @@ void du_dldy(void)
 				yb[139]=IEEE[1];
 				yb[140]=IEEE[2];
 				yb[141]=IEEE[3];
-				abc=get_mic(0x07);	//读电流
+				abc=get_mic(0x08);	//读电流
 				if(abc>0x7fffff)abc=0;
 				bx_aa=abc*10/dljzb;
 				if(bx_aa<pingbidianliu)bx_aa=0;
@@ -264,7 +264,7 @@ void bc_data(void)//校准
 	datbz=0;
 	for(i=0;i<10;i++)
 	{
-		abc=read_7053c(0x06);	//
+		//abc=read_7053c(0x06);	//
 		if(abc>0x7fffff)abc=0;
 		datbz=datbz+abc;
 	}
@@ -277,7 +277,7 @@ void bc_data(void)//校准
 	datbz=0;
 	for(i=0;i<10;i++)
 	{
-		abc=read_7053c(0x07);	//
+		//abc=read_7053c(0x07);	//
 		if(abc>0x7fffff)abc=0;
 		datbz=datbz+abc;
 	}
@@ -290,7 +290,7 @@ void bc_data(void)//校准
 	datbz=0;
 	for(i=0;i<10;i++)
 	{
-		abc=read_7053c(0x08);	//
+		//abc=read_7053c(0x08);	//
 		if(abc>0x7fffff)abc=0;
 		datbz=datbz+abc;
 	}
@@ -333,8 +333,9 @@ void k1_out()
 main() 
 {
 	uchar i;
+	// mic_init();
 	init();			//初始化
-	in_att7053c();	//初始化7053c
+	//in_att7053c();	//初始化7053c
 	time1_init();
 	while(zijian!=0)
 	{
@@ -393,8 +394,8 @@ main()
 							write_add(i,sd[i]);
 							delay1(150);
 						} 						
-						init();
-						in_att7053c();
+						//init();
+						//in_att7053c();
 						mima=0;
 						sj_tt=0;
 					}

@@ -14,7 +14,7 @@ void write_7053c(uchar add,ulong date)
 	{
 		add=add<<1;
 		SCLK=1;delay();
-		DIN=CY;
+		SPI_MOSI=CY;
 		SCLK=0;delay();
 	}
 	date=date<<8;delay();
@@ -22,7 +22,7 @@ void write_7053c(uchar add,ulong date)
 	{
 		date=date<<1;
 		SCLK=1;delay();
-		DIN=CY;
+		SPI_MOSI=CY;
 		SCLK=0;delay();
 	}
 	CS=1;
@@ -37,7 +37,7 @@ ulong read_7053c(uchar add)
 	{
 		add=add<<1;
 		SCLK=1;delay();
-		DIN=CY;
+		SPI_MOSI=CY;
 		SCLK=0;delay();
 	}
 	delay();delay();
@@ -45,7 +45,7 @@ ulong read_7053c(uchar add)
 	{
 		dat=dat<<1;
 		SCLK=1;delay();
-		if(DOUT==1)dat++;
+		if(SPI_MISO==1)dat++;
 		SCLK=0;delay();
 	}
 	CS=1;
