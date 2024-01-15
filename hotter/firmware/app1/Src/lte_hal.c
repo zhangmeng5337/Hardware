@@ -1,4 +1,4 @@
-/*************笔记****************
+﻿/*************笔记****************
 1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出�?
 2、CudeMX配置huart3�?
    ------------------------------------------
@@ -464,6 +464,11 @@ uint8_t lte_Info_Show(void)
         {
 
             Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
+			if(OTA_UPDATE_NUM == 1)
+            	sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/a/", get_config()->user_id);
+			else
+				sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/b/", get_config()->user_id);
+
             //sprintf(get_config()->mqtt_mpubtopic, "%s%s", "mqtt_mub_", get_config()->user_id);
             // sprintf(get_config()->mqtt_subtopic, "%s%s", "mqtt_sub_", get_config()->user_id);
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));

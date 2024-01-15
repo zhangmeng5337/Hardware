@@ -2,8 +2,12 @@
 #define MODBUS_H_
 
 #define DEV_SIZE    3
-
 #define MODBUS_RTU_COUNT            3
+
+#define CONTROLLER_REG				0x0000
+#define TEMPERATURE_REG				0x0007
+
+
 
 #define MODBUS_READ_CMD				0x03  //
 #define MODBUS_WRITE_ONE_CMD        0x06
@@ -27,7 +31,8 @@ typedef struct
 	unsigned int  fault;
 	unsigned char dev_addr_index;
 }modbus_stru;
-void modbus_trans(unsigned char mode);
+
+void modbus_trans(unsigned char addr,unsigned char func,unsigned int reg,unsigned char *payload,unsigned int reg_count,unsigned char len);
 void modbus_proc(void);
 void modbus_pack(unsigned char mode, unsigned char *pb);
 modbus_stru *get_recv_machine(void);

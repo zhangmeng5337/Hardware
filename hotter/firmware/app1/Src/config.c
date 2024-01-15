@@ -10,64 +10,64 @@ void config_save()
 {
     //uint32_t addr_count = 0;
     uint32_t buf[1024], len, index;
-    if (config_usr.update_setting )
+    if (config_usr.update_setting)
     {
 
         index = 1;
         buf[0] = 0x5a;
         len = strlen(get_config()->user);
-        memcpy(buf+index, get_config()->user, len);
+        memcpy(buf + index, get_config()->user, len);
         index = index + len;
 
         len = strlen(get_config()->password);
-        memcpy(buf+index, get_config()->password, len);
+        memcpy(buf + index, get_config()->password, len);
         index = index + len;
 
 
         len = strlen(get_config()->mqtt_ip);
-        memcpy(buf+index, get_config()->mqtt_ip, len);
+        memcpy(buf + index, get_config()->mqtt_ip, len);
         index = index + len;
 
 
         len = strlen(get_config()->mqtt_port);
-        memcpy(buf+index, get_config()->mqtt_port, len);
+        memcpy(buf + index, get_config()->mqtt_port, len);
         index = index + len;
 
 
 
         len = strlen(get_config()->version);
-        memcpy(buf+index, get_config()->version, len);
+        memcpy(buf + index, get_config()->version, len);
         index = index + len;
 
 
         len = strlen(get_config()->http_ip);
-        memcpy(buf+index, get_config()->http_ip, len);
+        memcpy(buf + index, get_config()->http_ip, len);
         index = index + len;
 
 
         len = strlen(get_config()->http_port);
-        memcpy(buf+index, get_config()->http_port, len);
+        memcpy(buf + index, get_config()->http_port, len);
         index = index + len;
 
         len = sizeof(get_config()->set_tout);
-        memcpy(buf+index, &get_config()->set_tout, len);
+        memcpy(buf + index, &get_config()->set_tout, len);
         index = index + len;
 
         len = sizeof(get_config()->set_tindoor);
-        memcpy(buf+index, &get_config()->set_tindoor, len);
+        memcpy(buf + index, &get_config()->set_tindoor, len);
         index = index + len;
 
         len = sizeof(get_config()->set_up_period);
-        memcpy(buf+index, &get_config()->set_up_period, len);
+        memcpy(buf + index, &get_config()->set_up_period, len);
         index = index + len;
 
         len = sizeof(get_config()->mode);
-        memcpy(buf+index, &get_config()->mode, len);
+        memcpy(buf + index, &get_config()->mode, len);
         index = index + len;
 
 
         len = sizeof(get_config()->fault_mask);
-        memcpy(buf+index, &get_config()->fault_mask, len);
+        memcpy(buf + index, &get_config()->fault_mask, len);
         index = index + len;
 
 
@@ -82,7 +82,7 @@ void config_init()
 
     uint32_t head, index, len;
     unsigned char buf[4];
-	ReadFlash(CONFIG_Addr, (uint8_t * )&head, 1);
+    ReadFlash(CONFIG_Addr, (uint8_t *)&head, 1);
 
 
     if (head == 0x5a)
@@ -91,33 +91,33 @@ void config_init()
 
         index = 1;
         len = sizeof(get_config()->user);
-        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_config()->user, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->user, len);
 
         index = index + len;
         len = sizeof(get_config()->password);
-        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_config()->password, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->password, len);
 
         index = index + len;
         len = sizeof(get_config()->mqtt_ip);
-        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_config()->mqtt_ip, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_ip, len);
 
         index = index + len;
         len = sizeof(get_config()->mqtt_port);
-        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_config()->mqtt_port, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_port, len);
 
 
         index = index + len;
         len = sizeof(get_config()->version);
-        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_config()->version, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->version, len);
 
 
         index = index + len;
         len = sizeof(get_config()->http_ip);
-        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_config()->http_ip, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_ip, len);
 
         index = index + len;
         len = sizeof(get_config()->http_port);
-        ReadFlash(CONFIG_Addr + index, (uint8_t * )get_config()->http_port, len);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_port, len);
 
 
         index = index + len;
@@ -141,10 +141,10 @@ void config_init()
         len = sizeof(get_config()->mode);
         ReadFlash(CONFIG_Addr + index, &get_config()->mode, len);
 
-	index = index + len;
-	len = sizeof(get_config()->fault_mask);
-	ReadFlash(CONFIG_Addr + index, buf, len);
- memcpy(&get_config()->fault_mask , buf, len);
+        index = index + len;
+        len = sizeof(get_config()->fault_mask);
+        ReadFlash(CONFIG_Addr + index, buf, len);
+        memcpy(&get_config()->fault_mask, buf, len);
 
     }
     else
@@ -154,7 +154,8 @@ void config_init()
         sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", "v1.0.0.1");
-        sprintf(get_config()->http_ip, "%s", "http://39.106.131.169:666/ota/a/866289037465624");
+        sprintf(get_config()->http_ip, "%s",
+                "http://39.106.131.169:666/ota/a/866289037465624");
         sprintf(get_config()->http_port, "%s", "666");
         get_config()->machine = 1;
         get_config()->update_firm = 0;
@@ -163,7 +164,7 @@ void config_init()
         get_config()->reboot = 0;
         get_config()->set_up_period = 60;
         get_config()->mode = 1;
-		get_config()->fault_mask = 0xffffffff;
+        get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;
         config_save();
 
@@ -171,15 +172,15 @@ void config_init()
     }
 
 
-	
 
-    sprintf(get_config()->mqtt_mpubtopic,"%s", "dev_pub_");
+
+    sprintf(get_config()->mqtt_mpubtopic, "%s", "dev_pub_");
     //sprintf(get_config()->mqtt_subtopic,"%s%s", SUB1,get_config()->user_id);
-	get_config()->seq_count = 1;
-  
-	//memcpy(&get_config()->sub_sring[1][0],"dev_sub_temp_",strlen("dev_sub_temp_"));
-	//memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
-	get_config()->Erase_flag = 1;
+    get_config()->seq_count = 1;
+
+    //memcpy(&get_config()->sub_sring[1][0],"dev_sub_temp_",strlen("dev_sub_temp_"));
+    //memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
+    get_config()->Erase_flag = 1;
 
 
 
@@ -187,18 +188,18 @@ void config_init()
     //setting params
 
 
-    if(OTA_UPDATE_NUM == 2)
+    if (OTA_UPDATE_NUM == 2)
     {
-		unsigned char read_flag=0x1a;
-		Erase_page(OTA_NUM_ADDR, 1);
-	    WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
+        unsigned char read_flag = 0x1a;
+        Erase_page(OTA_NUM_ADDR, 1);
+        WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
 
     }
-    if(OTA_UPDATE_NUM == 1)
+    if (OTA_UPDATE_NUM == 1)
     {
-		unsigned char read_flag=0x2a;
-		Erase_page(OTA_NUM_ADDR, 1);
-	    WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
+        unsigned char read_flag = 0x2a;
+        Erase_page(OTA_NUM_ADDR, 1);
+        WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
 
     }
 
