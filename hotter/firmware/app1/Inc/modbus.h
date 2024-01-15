@@ -6,6 +6,7 @@
 
 #define CONTROLLER_REG				0x0000
 #define TEMPERATURE_REG				0x0007
+#define FAULT_REG				    0x0051
 
 
 
