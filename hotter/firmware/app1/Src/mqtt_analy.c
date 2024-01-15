@@ -678,7 +678,9 @@ defautl:
 
 void mqtt_proc()
 {
-
+	//mqtt_send_buf = json_pack(&mqtt_payload_u); 	
+	// printf("%s",mqtt_send_buf);
+ //free_cjson();
     if (lte_Info_Show() == NET_CONNECT) //????
     {
         if (mqtt_Info_Show() == SUCCESS_REC) //mqtt??????

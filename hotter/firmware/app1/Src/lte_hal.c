@@ -1,4 +1,4 @@
-﻿/*************笔记****************
+/*************笔记****************
 1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出�?
 2、CudeMX配置huart3�?
    ------------------------------------------
@@ -326,7 +326,7 @@ uint8_t lte_info_ota_show()
                 // printf("Find_Buf:%lu\r\n", compare_len);
                 if (get_config()->Erase_flag == 1)	  //begin erase仅仅开始是擦除flash一�?
                 {
-                    if(OTA_UPDATE_NUM == 2)
+                    if(OTA_UPDATE_TO == APP2)
                         addr_wr=Application_2_Addr;
                     else
                         addr_wr=Application_1_Addr;
@@ -464,7 +464,7 @@ uint8_t lte_Info_Show(void)
         {
 
             Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
-			if(OTA_UPDATE_NUM == 1)
+			if(OTA_UPDATE_TO == APP1)
             	sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/a/", get_config()->user_id);
 			else
 				sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/b/", get_config()->user_id);

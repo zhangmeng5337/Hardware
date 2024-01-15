@@ -153,8 +153,8 @@
           <Number>0</Number>
           <Type>0</Type>
           <LineNumber>204</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134245654</Address>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>134245846</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -169,8 +169,8 @@
           <Number>1</Number>
           <Type>0</Type>
           <LineNumber>317</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134246174</Address>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>134246366</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -185,8 +185,8 @@
           <Number>2</Number>
           <Type>0</Type>
           <LineNumber>366</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134246428</Address>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>134246620</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -201,8 +201,8 @@
           <Number>3</Number>
           <Type>0</Type>
           <LineNumber>375</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134246490</Address>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>134246682</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -216,34 +216,34 @@
         <Bp>
           <Number>4</Number>
           <Type>0</Type>
-          <LineNumber>594</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <LineNumber>259</LineNumber>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>134246030</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
+          <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\lte_hal.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\app\../Src/lte_hal.c\259</Expression>
         </Bp>
         <Bp>
           <Number>5</Number>
           <Type>0</Type>
-          <LineNumber>147</LineNumber>
+          <LineNumber>682</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>134248592</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Src\uart.c</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\mqtt_analy.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\app\../Src/mqtt_analy.c\682</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -311,6 +311,21 @@
           <count>12</count>
           <WinNumber>1</WinNumber>
           <ItemText>Bin_buffer</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dev_pub</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>mqtt_send_buf</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -495,7 +510,7 @@
 
   <Group>
     <GroupName>hardware</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

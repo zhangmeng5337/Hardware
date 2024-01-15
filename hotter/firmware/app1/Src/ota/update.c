@@ -6,7 +6,7 @@ void Update_Success(void)
 {
     uint8_t update_flag = 0xAA;
     uint8_t tmp;
-    if(OTA_UPDATE_NUM == 2)
+    if(OTA_UPDATE_TO == APP2)
     {
         WriteFlash((Application_2_Addr + Application_Size - 8), &update_flag, 1);
         update_flag = 0x20;
@@ -19,7 +19,7 @@ void Update_Success(void)
         }
     }
 
-    if(OTA_UPDATE_NUM == 1)
+    if(OTA_UPDATE_TO == APP1)
     {
         WriteFlash((Application_1_Addr + Application_Size - 8), &update_flag, 1);
         update_flag = 0x10;

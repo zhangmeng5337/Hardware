@@ -17,6 +17,7 @@ rs485_stru rs485_str;
 uint8_t Usart1RX = 0;
 tsLpuart1type Lpuart1type;
 
+
 void uart_init()
 {
     HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);

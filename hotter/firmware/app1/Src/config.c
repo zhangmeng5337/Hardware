@@ -153,7 +153,7 @@ void config_init()
         sprintf(get_config()->password, "%s", "7895621");
         sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
         sprintf(get_config()->mqtt_port, "%s", "1883");
-        sprintf(get_config()->version, "%s", "v1.0.0.1");
+        sprintf(get_config()->version, "%s", VERSION);
         sprintf(get_config()->http_ip, "%s",
                 "http://39.106.131.169:666/ota/a/866289037465624");
         sprintf(get_config()->http_port, "%s", "666");
@@ -188,20 +188,13 @@ void config_init()
     //setting params
 
 
-    if (OTA_UPDATE_NUM == 2)
-    {
-        unsigned char read_flag = 0x1a;
+
+        unsigned char read_flag = APP_NUM;
         Erase_page(OTA_NUM_ADDR, 1);
         WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
 
-    }
-    if (OTA_UPDATE_NUM == 1)
-    {
-        unsigned char read_flag = 0x2a;
-        Erase_page(OTA_NUM_ADDR, 1);
-        WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
 
-    }
+
 
 
 }

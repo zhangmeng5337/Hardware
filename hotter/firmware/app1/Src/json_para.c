@@ -106,6 +106,8 @@
 //mqtt_payload_u.data[WATER_IN_INDEX],
 //mqtt_payload_u.data[UP_PERIOD_INDEX]);
 
+cJSON *dev_pub,*pub_status,*pub_params;
+char *data;
 
 char*json_pack(mqtt_payload_stru *pb)
 {
@@ -136,22 +138,22 @@ char*json_pack(mqtt_payload_stru *pb)
 	   	number_data=0;
 	  }
         dev_pub=cJSON_CreateObject();   //创建根数据对象
-	    cJSON_AddItemToObject(dev_pub, "Dev ID", cJSON_CreateString(pb->devid));  //根节点下添加数字
+	    cJSON_AddStringToObject(dev_pub, "Dev ID", pb->devid);  //根节点下添加数字
 
-		    cJSON_AddItemToObject(dev_pub, "Status Data", pub_status=cJSON_CreateObject());			 //根节点下添加字符
-        cJSON_AddItemToObject(pub_status, "Out Tem", cJSON_CreateNumber(pb->data[TOUT_INDEX]));			 		//根节点下添加汉字
-        cJSON_AddItemToObject(pub_status, "In Tem", cJSON_CreateNumber(pb->data[TIN_INDEX]));	
-        cJSON_AddItemToObject(pub_status, "Front Pressure", cJSON_CreateNumber(pb->data[PUMP_F_INDEX]));	
-        cJSON_AddItemToObject(pub_status, "After Pressure", cJSON_CreateNumber(pb->data[PUMP_E_INDEX]));	
-        cJSON_AddItemToObject(pub_status, "Status", cJSON_CreateNumber(pb->data[DEV_STATUS_INDEX]));	
+		 cJSON_AddItemToObject(dev_pub, "Status Data", pub_status=cJSON_CreateObject());			 //根节点下添加字符
+        cJSON_AddNumberToObject(pub_status, "Out Tem", (pb->data[TOUT_INDEX]));			 		//根节点下添加汉字
+        cJSON_AddNumberToObject(pub_status, "In Tem", (pb->data[TIN_INDEX]));	
+        cJSON_AddNumberToObject(pub_status, "Front Pressure", (pb->data[PUMP_F_INDEX]));	
+        cJSON_AddNumberToObject(pub_status, "After Pressure", (pb->data[PUMP_E_INDEX]));	
+        cJSON_AddNumberToObject(pub_status, "Status", (pb->data[DEV_STATUS_INDEX]));	
 		
-        cJSON_AddItemToObject(dev_pub, "Dev Params", pub_params=cJSON_CreateObject());	
-        cJSON_AddItemToObject(pub_params, "Version", cJSON_CreateString(pb->version));	
-        cJSON_AddItemToObject(pub_params, "Set Out Tem", cJSON_CreateNumber(pb->data[WATER_O_INDEX]));	
-        cJSON_AddItemToObject(pub_params, "Set In Tem", cJSON_CreateNumber(pb->data[WATER_IN_INDEX]));	
-        cJSON_AddItemToObject(pub_params, "Upload Period(second)", cJSON_CreateNumber(pb->data[UP_PERIOD_INDEX]));	
+       cJSON_AddItemToObject(dev_pub, "Dev Params", pub_params=cJSON_CreateObject());	
+        cJSON_AddStringToObject(pub_params, "Version", (pb->version));	
+      cJSON_AddNumberToObject(pub_params, "Set Out Tem", (pb->data[WATER_O_INDEX]));
+          cJSON_AddNumberToObject(pub_params, "Set In Tem", (pb->data[WATER_IN_INDEX]));	
+        cJSON_AddNumberToObject(pub_params, "Upload Period(second)", (pb->data[UP_PERIOD_INDEX]));	
 
-        return cJSON_Print(dev_pub);
+        return cJSON_PrintUnformatted(dev_pub);
 		
 	/*	data = cJSON_Print(dev_pub);   //将json形式打印成正常字符串形式(带有\r\n)
 //	    data = cJSON_PrintUnformatted(usr);   //将json形式打印成正常字符串形式(没有\r\n)
@@ -166,6 +168,11 @@ char*json_pack(mqtt_payload_stru *pb)
 		   free(out);
 		}*/
 
+
+}
+void free_cjson()
+{
+	cJSON_Delete(dev_pub);
 
 }
 /*鏈嶅姟绔?-->璁惧锛堝懆鏈熶笅鍙戯級
