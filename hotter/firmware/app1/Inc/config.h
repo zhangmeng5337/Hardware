@@ -52,11 +52,11 @@ typedef struct
 	unsigned int machine;	  //pwrctrl:bit0---m1;bit1---m2;bit2---m3;
 	                          //select:bit15 ---m1;bit14---m2;bit13---m3,only for pwr ctrl
 	unsigned char update_firm;	//firmware update
-	float indoor_temperature[ENVIRO_SIZE];
-	float set_tout;  //
-	float set_tout_tmp;  //
+	unsigned int indoor_temperature[ENVIRO_SIZE];
+	unsigned int set_tout;  //pid cal
+	unsigned int set_tout_tmp;  //pum set
 
-	float set_tindoor; //
+	unsigned int set_tindoor; //
 	float set_up_period;//
 	uint32_t fault_mask;	
 	uint32_t fault_status;

@@ -32,7 +32,7 @@ typedef struct
 	unsigned char dev_addr_index;
 }modbus_stru;
 
-void modbus_trans(unsigned char addr,unsigned char func,unsigned int reg,unsigned char *payload,unsigned int reg_count,unsigned char len);
+unsigned char modbus_trans(unsigned char addr,unsigned char func,unsigned int reg,unsigned char *payload,unsigned int reg_count,unsigned char len);
 void modbus_proc(void);
 void modbus_pack(unsigned char mode, unsigned char *pb);
 modbus_stru *get_recv_machine(void);

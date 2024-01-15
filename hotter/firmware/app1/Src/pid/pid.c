@@ -34,13 +34,13 @@ void get_temp_cal(float *buf)
 float get_pid_output()
 {
     float  u;
-    if (indoor_temp_usr.output >= PID_MIN && indoor_temp_usr.output <= PID_MAX)//换算成设备温度
+    if (indoor_temp_usr.output >= PID_MIN && indoor_temp_usr.output <= PID_MAX)//换算成设备温�?
         u = MACHINE_RATIO * indoor_temp_usr.output + MACHINE_RATIO_B;
     else
     {
-        if (indoor_temp_usr.output < PID_MIN) //换算成设备温度
+        if (indoor_temp_usr.output < PID_MIN) //换算成设备温�?
             u = 0;
-        if (indoor_temp_usr.output > PID_MAX)//换算成设备温度
+        if (indoor_temp_usr.output > PID_MAX)//换算成设备温�?
             u = MACHINE_MAX_T;
 
     }
@@ -70,7 +70,7 @@ void pid_cal(unsigned char mode)
     {
         if (indoor_temp_usr.temp_average >= (0.95 * get_config()->set_tindoor)) //平均温度达标
         {
-            if (indoor_temp_usr.low_temp_percent >= 0.2) //末端温度不达标
+            if (indoor_temp_usr.low_temp_percent >= 0.2) //末端温度不达�?
             {
                 float tmp;
                 tmp = 1 - indoor_temp_usr.low_temp_percent;

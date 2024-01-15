@@ -91,12 +91,13 @@ void rs485_recv()
 /****************************************************
 func:modbus数据发送函数
 *****************************************************/
-void modbus_trans(unsigned char addr, unsigned char func, unsigned int reg,
+unsigned char modbus_trans(unsigned char addr, unsigned char func, unsigned int reg,
                   unsigned char *payload, unsigned int reg_count, unsigned char len)
 {
-    unsigned char i;
+    unsigned char i, result = 0;
     unsigned char pb[64];
     i = 0;
+    result = 0;
 
 
     if (func == MODBUS_READ_CMD)
@@ -149,20 +150,28 @@ void modbus_trans(unsigned char addr, unsigned char func, unsigned int reg,
     {
 
         uart_transmit(RS485_No, pb, i);
-        modbus_tx.retry_count--;
-    }
-//    else
-//    {
-//
-//       // modbus_tx.update = 0;
-//        unsigned int tmp;
-//        tmp = 0;
-//        if (modbus_tx.address > 0)
-//            tmp = 1 << (modbus_tx.address - 1);
-//        modbus_recv.fault = modbus_recv.fault | tmp;//发三次无响应，发送停止
-//
-//    }
+        if (modbus_recv.address == modbus_tx.address
+                && modbus_recv.func == modbus_tx.func)
+        {
+            modbus_tx.retry_count = 0;
+            result = 1;
 
+        }
+
+        else
+            modbus_tx.retry_count--;
+    }
+    else
+    {
+        unsigned int i;
+        i = 1;
+        i = i << modbus_recv.address;
+        modbus_recv.fault = modbus_recv.fault | i;
+        result = 1;
+
+    }
+
+    return result;
 }
 
 void analy_modbus_recv()
@@ -209,6 +218,7 @@ unsigned char  modbus_ctrl()
         {
             float u;
             u = get_pid_output();
+			//if(get_config()->set_tout)
             if (u == 0)
             {
                 get_config()->machine = 0;//power off
@@ -218,63 +228,155 @@ unsigned char  modbus_ctrl()
                 get_config()->set_tout_tmp = u;
         }
 #endif
-
-        modbus_tx.update = 1;//tx flag
-        modbus_tx.address = 0;
-        modbus_tx.retry_count = 3;//retry count
-    }
-
-    if (modbus_tx.update == 1) //pump set
-    {
-        if (modbus_tx.retry_count == 0)
+        if (get_config()->update_setting == 1)
         {
-            if (modbus_tx.address < MODBUS_RTU_COUNT)
-            {
-                modbus_tx.retry_count = 3;
-                modbus_tx.address = modbus_tx.address + 1;
-            }
-            else
-            {
-                modbus_tx.retry_count = 3;
-                modbus_tx.address = 1;
-                modbus_tx.update = 0;
-            }
+            modbus_tx.update = 2;
+			config_save();//位置不能变
+            get_config()->update_setting = 0;
+
         }
+
+        else
+            modbus_tx.update = 1;//tx flag
+        // modbus_tx.address = 0;
+        //modbus_tx.retry_count = 3;//retry count
     }
+
+//    if (modbus_tx.update == 1) //pump set
+//    {
+//        if (modbus_tx.retry_count == 0)
+//        {
+//            if (modbus_tx.address < MODBUS_RTU_COUNT)
+//            {
+//                modbus_tx.retry_count = 3;
+//                modbus_tx.address = modbus_tx.address + 1;
+//            }
+//            else
+//            {
+//                modbus_tx.retry_count = 3;
+//                modbus_tx.address = 1;
+//                modbus_tx.update = 0;
+//            }
+//        }
+//    }
     return modbus_tx.update;
 }
 
 void modbus_proc()
 {
     unsigned char pb[512];
-
-//    unsigned char pb[64];
+    unsigned char result, first_flag;
+    result = modbus_ctrl();
 #if CTRL_EN
-    if (modbus_ctrl() == 1)//pid cal and every 180s
+
+    if (result)//pid cal and every 180s
     {
-        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1) //180s,ctrl pump every 180s
+        if (result == 1) //pid update
         {
-            reset_registerTick(MODBUS_TX_TICK_NO);
-            reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
-            modbus_trans(MODBUS_WRITE_MUL_CMD);
-        }
-        else
-        {
-            registerTick(MODBUS_TX_TICK_NO, 500);
-            if (GetTickResult(MODBUS_TX_TICK_NO) ==
-                    1) //500ms,write mqtt执行mqtt指令，下发命令
+            if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1) //180s,ctrl pump every 180s
             {
 
-                memcpy(pb, get_config()->set_tout_tmp, 2);
-                memcpy(pb, get_config()->machine, 1);
-                // modbus_trans(MODBUS_WRITE_ONE_CMD);
-                modbus_trans(0, MODBUS_WRITE_ONE_CMD, TEMPERATURE_REG, pb, 1, 1);
-                reset_registerTick(MODBUS_TX_TICK_NO);
-            }
+                if(get_config()->set_tindoor<15)//below 15 no pid ctrl
+                {
+                memcpy(pb, get_config()->set_tout, 2);
+
+				}
+				else 
+					 memcpy(pb, get_config()->set_tout_tmp, 2);
+                registerTick(MODBUS_TX_TICK_NO, 500);
+
+
+                if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //every 500ms tx
+                {
+
+                    if (first_flag == 0)
+                    {
+                        first_flag = 1;
+                        modbus_tx.retry_count = 3;
+                        modbus_tx.address = 1;
+                    }
+                    if (modbus_trans(0, MODBUS_WRITE_ONE_CMD, TEMPERATURE_REG, pb, 1, 1) == 1)
+                    {
+                        if (modbus_tx.address < MODBUS_RTU_COUNT)
+                        {
+                            modbus_tx.retry_count = 3;
+                            modbus_tx.address = modbus_tx.address + 1;
+
+                        }
+                        else
+                        {
+                            modbus_tx.retry_count = 3;
+                            modbus_tx.address = 1;
+                            modbus_tx.update = 0;
+							first_flag = 0;
+                            reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
+                        }
+
+                    }
+                    reset_registerTick(MODBUS_TX_TICK_NO);
+
+                }
+
+            } //180s,ctrl pump every 180s
+
 
         }
-    }
+        else if (result == 2)//mqtt command
+        {
+            registerTick(MODBUS_TX_TICK_NO, 500);
+            memcpy(pb, get_config()->machine, 1);
 
+            if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //every 500ms tx
+            {
+
+                if (first_flag == 0)
+                {
+                    first_flag = 1;
+                    modbus_tx.retry_count = 3;
+                    modbus_tx.address = 1;
+                }
+                modbus_trans(modbus_tx.address, MODBUS_WRITE_ONE_CMD, CONTROLLER_REG, pb, 1, 1);
+                    if (modbus_tx.address < MODBUS_RTU_COUNT)
+                    {
+                        modbus_tx.retry_count = 3;
+                        modbus_tx.address = modbus_tx.address + 1;
+
+                    }
+                    else
+                    {
+                        modbus_tx.retry_count = 3;
+                        modbus_tx.address = 1;
+                        modbus_tx.update = 0;
+						first_flag = 0;
+                        reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
+                    }
+                reset_registerTick(MODBUS_TX_TICK_NO);
+
+            }
+
+
+        }
+  
+//        if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1) //180s,ctrl pump every 180s
+//        {
+//
+//            reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
+//            memcpy(pb, get_config()->set_tout_tmp, 2);
+//            memcpy(pb, get_config()->machine, 1);
+//
+//            registerTick(MODBUS_TX_TICK_NO, 500);
+//            if (GetTickResult(MODBUS_TX_TICK_NO) == 1)
+//            {
+//                reset_registerTick(MODBUS_TX_TICK_NO);
+//                while (modbus_trans(0, MODBUS_WRITE_ONE_CMD, TEMPERATURE_REG, pb, 1, 1) == 1)
+//                    ;
+//
+//            }
+//
+//
+//        }
+
+    }
 
     else //read pump every 3s
 #endif
@@ -283,18 +385,35 @@ void modbus_proc()
         registerTick(MODBUS_TX_TICK_NO, 3000);
         if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //周期查询
         {
-            modbus_tx.address ++;
-            if (modbus_tx.address > MODBUS_RTU_COUNT)
-                modbus_tx.address = 0;
-            //modbus_pack(MODBUS_READ_CMD, pb);
-            reset_registerTick(MODBUS_TX_TICK_NO);
-            modbus_trans(0, MODBUS_READ_CMD, CONTROLLER_REG, pb, 125, 125);
-            //modbus_trans(MODBUS_READ_CMD);
+			if (first_flag == 0)
+			{
+				first_flag = 1;
+				modbus_tx.retry_count = 3;
+				modbus_tx.address = 1;
+			}
+			if (modbus_trans(0, MODBUS_READ_CMD, CONTROLLER_REG, pb, 125, 125) == 1)
+			{
+				if (modbus_tx.address < MODBUS_RTU_COUNT)
+				{
+					modbus_tx.retry_count = 3;
+					modbus_tx.address = modbus_tx.address + 1;
+			
+				}
+				else
+				{
+					modbus_tx.retry_count = 3;
+					modbus_tx.address = 1;
+					modbus_tx.update = 0;
+					first_flag = 0;
+					reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
+				}
+			
+			}
+			reset_registerTick(MODBUS_TX_TICK_NO);
         }
         else
         {
             rs485_recv();
-
         }
 
     }

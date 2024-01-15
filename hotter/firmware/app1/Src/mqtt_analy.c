@@ -254,6 +254,7 @@ void anlysis_mqtt_recv()
         fuzzy_proc(0);  //????????
 #endif
         valid_flag = 0;
+	   
 
     }
 
@@ -704,7 +705,6 @@ void mqtt_proc()
             fuzzy_proc(1);
 #endif
             //get_pid_output(void);
-
         }
 
 
