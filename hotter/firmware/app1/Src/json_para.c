@@ -163,6 +163,7 @@ char *json_pack(mqtt_payload_stru *pb)
     cJSON_AddNumberToObject(pub_status, "Front Pressure", (pb->data[PUMP_F_INDEX]));
     cJSON_AddNumberToObject(pub_status, "After Pressure", (pb->data[PUMP_E_INDEX]));
     cJSON_AddNumberToObject(pub_status, "Status", (pb->data[DEV_STATUS_INDEX]));
+	cJSON_AddNumberToObject(pub_status, "air pump_status", (pb->data[DEV_PUMP_STATUS_INDEX]));
 
     cJSON_AddItemToObject(dev_pub, "Dev Params", pub_params = cJSON_CreateObject());
     cJSON_AddStringToObject(pub_params, "Version", (pb->version));

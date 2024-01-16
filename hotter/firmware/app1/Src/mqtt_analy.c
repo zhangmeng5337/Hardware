@@ -354,9 +354,9 @@ void upload()
     mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] << 8; //dev status
     mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] | tmp; //20bit ai but 8bit used
     mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] << 20;
-    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] |
-        get_recv_machine()->fault;
+    mqtt_payload_u.status[DEV_STATUS_INDEX] = mqtt_payload_u.status[DEV_STATUS_INDEX] ;
     mqtt_payload_u.status[DEV_MASK_INDEX] = get_config()->fault_mask;
+	mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX] = get_recv_machine()->fault;
 
     get_config()->fault_status = mqtt_payload_u.status[DEV_STATUS_INDEX] ;//fault status
     sprintf(mqtt_payload_u.version, "%s", get_config()->version);//devid

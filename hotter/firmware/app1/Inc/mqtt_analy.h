@@ -21,6 +21,7 @@
 #define DEV_STATUS_INDEX        0
 #define DEV_MASK_INDEX          1
 #define DEV_FAULT_INDEX         2
+#define DEV_PUMP_STATUS_INDEX         3
 
 
 typedef struct 
