@@ -1,8 +1,8 @@
 clc;
 step = 1/Fs;
 % [max_val max_index ] =max(original);
-start_t =41.825;
-end_t = start_t +0.01;
+start_t =44.248;
+end_t = start_t +0.05;
 % len_t = size(original);
 % len_t = len_t(1);
 % t = 0:step:len_t*step-step;   % 时间向量

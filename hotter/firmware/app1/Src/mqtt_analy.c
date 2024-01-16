@@ -139,130 +139,124 @@ mqtt_payload_stru *get_mqtt_payload()
 
 void anlysis_mqtt_recv()
 {
-    /*{
-       "??ID": "47",
-       "????": {
-           "??": 1,
-           "??": 1,
-           "?????": 0,
-           "??????": "value",
-           "??????": "value",
-           "??????": "value"
-       }
-    }*/
-    char dev_id[128];
-    unsigned char valid_flag;
-    float tmp_f;
-//    float tmp_i;
- //   unsigned char index;
+//    /*{
+//       "??ID": "47",
+//       "????": {
+//           "??": 1,
+//           "??": 1,
+//           "?????": 0,
+//           "??????": "value",
+//           "??????": "value",
+//           "??????": "value"
+//       }
+//    }*/
+//    char dev_id[128];
+//    unsigned char valid_flag;
+//    float tmp_f;
+////    float tmp_i;
+// //   unsigned char index;
+//
+//    valid_flag = 0;
+//    get_config()->update_setting = 0;
+//    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id, ",\r\n",
+//                    dev_id) == 1)
+//    {
+//        //if ((strcmp(dev_id, get_config()->user_id)) == 0)
+//            valid_flag = 1;
+//
+//    }
+//    if (valid_flag == 1)
+//    {
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Updat Frimware: ", ",\r\n",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            sprintf(&get_config()->update_firm, "%s", dev_id);//????
+//            tmp_f = atoi(&dev_id[3]);
+//            get_config()->update_firm = tmp_f;
+//
+//        }
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Reboot Dev: ", ",\r\n",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            sprintf(&get_config()->reboot, "%s", dev_id); //????
+//            tmp_f = atoi(&dev_id[3]);
+//            get_config()->reboot = tmp_f;
+//
+//
+//        }
+//        memset(dev_id, 0, 128);
+//
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Power ctrl: ", ",\r\n",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            //sprintf(&get_config()->machine, "%s", dev_id); //????
+//            tmp_f = atoi(&dev_id[3]);
+//            get_config()->machine = tmp_f;
+//
+//        }
+//        memset(dev_id, 0, 128);
+//
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Out Temp: ", ",\r\n",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            tmp_f = atof(&dev_id[3]);
+//            get_config()->set_tout = tmp_f;
+//            get_config()->set_tout_tmp = tmp_f;
+//        }
+//
+//
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Room Temp: ", ",\0D\0A",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 2;
+//            tmp_f = atof(&dev_id[3]);
+//            get_config()->set_tindoor = tmp_f;
+//
+//        }
+//
+//
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Upload Period(second): ", ",\0D\0A",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 2;
+//            tmp_f = atof(&dev_id[3]);
+//            get_config()->set_up_period = tmp_f;
+//
+//
+//        }
+//        unsigned char i;
+//        for (i = 0; i < ENVIRO_SIZE; i++)
+//        {
+//            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], ",\r\n",
+//                            dev_id) == 1)
+//            {
+//                //index = 0;
+//                get_config()->update_setting = 2;
+//                tmp_f = atof(&dev_id[3]);
+//                get_config()->indoor_temperature[i] = tmp_f;
+//
+//
+//            }
+//
+//        }
+		json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
 
-    valid_flag = 0;
-    get_config()->update_setting = 0;
-    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id, ",\r\n",
-                    dev_id) == 1)
-    {
-        //if ((strcmp(dev_id, get_config()->user_id)) == 0)
-            valid_flag = 1;
-
-    }
-    if (valid_flag == 1)
-    {
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Updat Frimware: ", ",\r\n",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 1;
-            sprintf(&get_config()->update_firm, "%s", dev_id);//????
-            tmp_f = atoi(&dev_id[3]);
-            get_config()->update_firm = tmp_f;
-
-        }
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Reboot Dev: ", ",\r\n",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 1;
-            sprintf(&get_config()->reboot, "%s", dev_id); //????
-            tmp_f = atoi(&dev_id[3]);
-            get_config()->reboot = tmp_f;
-
-
-        }
-        memset(dev_id, 0, 128);
-
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Power ctrl: ", ",\r\n",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 1;
-            //sprintf(&get_config()->machine, "%s", dev_id); //????
-            tmp_f = atoi(&dev_id[3]);
-            get_config()->machine = tmp_f;
-
-        }
-        memset(dev_id, 0, 128);
-
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Out Temp: ", ",\r\n",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 1;
-            tmp_f = atof(&dev_id[3]);
-            get_config()->set_tout = tmp_f;
-            get_config()->set_tout_tmp = tmp_f;
-        }
-
-
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Room Temp: ", ",\0D\0A",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 2;
-            tmp_f = atof(&dev_id[3]);
-            get_config()->set_tindoor = tmp_f;
-
-        }
-
-
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Upload Period(second): ", ",\0D\0A",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 2;
-            tmp_f = atof(&dev_id[3]);
-            get_config()->set_up_period = tmp_f;
-
-
-        }
-        unsigned char i;
-        for (i = 0; i < ENVIRO_SIZE; i++)
-        {
-            if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, enviro_tem[i], ",\r\n",
-                            dev_id) == 1)
-            {
-                //index = 0;
-                get_config()->update_setting = 2;
-                tmp_f = atof(&dev_id[3]);
-                get_config()->indoor_temperature[i] = tmp_f;
-
-
-            }
-
-        }
 #if CTRL_EN
         float *buf;
         buf = low_temperature_cal(get_config()->indoor_temperature, ENVIRO_SIZE);
         get_temp_cal(buf);
         fuzzy_proc(0);  //????????
 #endif
-        valid_flag = 0;
+       // valid_flag = 0;
 	   
-
-    }
-
-
-
-
-
-
 
 }
 /*
@@ -413,7 +407,7 @@ void upload()
 //mqtt_payload_u.data[WATER_O_INDEX],
 //mqtt_payload_u.data[WATER_IN_INDEX],
 //mqtt_payload_u.data[UP_PERIOD_INDEX]);
-	mqtt_send_buf = json_pack(&mqtt_payload_u);			
+		
 				
 //		    sprintf(mqtt_send_buf,"{\\0D\\0A\\
 //  \\22Dev ID\\22: %s,\\0D\\0A\\
@@ -476,25 +470,11 @@ void upload()
 
 //   sprintf(mqtt_send_buf, "test mqtt");
 //mqtt_send_buf = “test mqtt??
+
+mqtt_send_buf = json_pack(&mqtt_payload_u);		
 mqtt_at_cmd_num = AT_MPUB;
 
-//{
-//    "??ID": "47",
-//    "????": {
-//        "????": 1,
-//        "????": 2,
-//        "????": 3,
-//        "????": 4,
-//        "??????: 5
-//    },
-//    "????": {
-//        "????: 255,
-//        "??": 255,
-//        "??????": 6,
-//        "??????": 7,
-//        "??????": 8
-//    }
-//}
+
 
 
 }
@@ -691,6 +671,7 @@ void mqtt_proc()
                 reset_registerTick(MQTT_TX_TICK_NO);
                 upload();//????
                 mqtt_Info_Show();
+				free_cjson();
 
             }
             registerTick(MODBUS_TEMP_TX_TICK_NO, 180000);

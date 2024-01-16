@@ -1,14 +1,12 @@
-%新建串口对象
-s1=serial('COM15','BaudRate',9600); 
-
-%尝试代开串口
-try
-  fopen(s1);  %打开串口对象
-catch err
-  fclose(instrfind);  %关闭被占用的串口
-  error('请确认选择了正确的串口');  %输出错误提示
-end
-
-a=fscanf(s1,'%d');  %读取数据
-
-fclose(s1);  %关闭串口
+% 打开串口  
+fclose(instrfind);
+serialPort = serial('COM4', 'BaudRate', 921600); % 替换为您的串口名称和波特率  
+fopen(serialPort);  
+  
+% 创建图形窗口  
+figure;  
+  
+% 创建接收数据的回调函数  
+dataReceived = @() onSerialDataReceived(serialPort);  
+addlistener(serialPort, 'BytesAvailable', 'PostData', dataReceived);  
+  
