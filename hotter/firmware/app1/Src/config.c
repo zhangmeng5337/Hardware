@@ -154,8 +154,13 @@ void config_init()
         sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", VERSION);
+		                    if(OTA_UPDATE_TO == APP2)
+						sprintf(get_config()->http_ip, "%s",
+								"http://39.106.131.169:666/ota/b/");
+
+                    else
         sprintf(get_config()->http_ip, "%s",
-                "http://39.106.131.169:666/ota/a/866289037465624");
+                "http://39.106.131.169:666/ota/a/");
         sprintf(get_config()->http_port, "%s", "666");
         get_config()->machine = 1;
         get_config()->update_firm = 0;

@@ -152,7 +152,7 @@ char *json_pack(mqtt_payload_stru *pb)
     {
         number_data = 0;
     }
-    dev_pub = cJSON_CreateObject(); //创建根数据对象
+	dev_pub = cJSON_CreateObject(); //创建根数据对象
     cJSON_AddStringToObject(dev_pub, "Dev ID", pb->devid);  //根节点下添加数字
 
     cJSON_AddItemToObject(dev_pub, "Status Data",
@@ -171,6 +171,25 @@ char *json_pack(mqtt_payload_stru *pb)
     cJSON_AddNumberToObject(pub_params, "Set In Tem", (pb->data[WATER_IN_INDEX]));
     cJSON_AddNumberToObject(pub_params, "Upload Period(second)",
                             (pb->data[UP_PERIOD_INDEX]));
+   /* dev_pub = cJSON_CreateObject(); //创建根数据对象
+    cJSON_AddStringToObject(dev_pub, "Dev ID", pb->devid);  //根节点下添加数字
+
+    cJSON_AddItemToObject(dev_pub, "Status Data",
+                          pub_status = cJSON_CreateObject());             //根节点下添加字符
+    cJSON_AddNumberToObject(pub_status, "Out Tem",
+                            (pb->data[TOUT_INDEX]));                 //根节点下添加汉字
+    cJSON_AddNumberToObject(pub_status, "In Tem", (pb->data[TIN_INDEX]));
+    cJSON_AddNumberToObject(pub_status, "Front Pressure", (pb->data[PUMP_F_INDEX]));
+    cJSON_AddNumberToObject(pub_status, "After Pressure", (pb->data[PUMP_E_INDEX]));
+    cJSON_AddNumberToObject(pub_status, "Status", (pb->data[DEV_STATUS_INDEX]));
+	cJSON_AddNumberToObject(pub_status, "air pump_status", (pb->data[DEV_PUMP_STATUS_INDEX]));
+
+    cJSON_AddItemToObject(dev_pub, "Dev Params", pub_params = cJSON_CreateObject());
+    cJSON_AddStringToObject(pub_params, "Version", (pb->version));
+    cJSON_AddNumberToObject(pub_params, "Set Out Tem", (pb->data[WATER_O_INDEX]));
+    cJSON_AddNumberToObject(pub_params, "Set In Tem", (pb->data[WATER_IN_INDEX]));
+    cJSON_AddNumberToObject(pub_params, "Upload Period(second)\\22,
+                            (pb->data[UP_PERIOD_INDEX]));*/
 
     return cJSON_PrintUnformatted(dev_pub);
 
@@ -206,7 +225,7 @@ void free_cjson()
                "Power ctrl": "1",
                "Set Out Temp": "45",
                "Set Room Temp": "23",
-               "Set Upload Period(second)": "13"
+               "Set Upload Period(second)\\22: "13"
      }
 }*/
 
@@ -241,7 +260,7 @@ unsigned char json_analysis(char *out)
             /*    测试将JSON打印出来  */
             /***************************/
             //char *out_data = cJSON_Print(json);   //将json形式打印成正常字符串形式
-            //printf("%s",out_data);
+            //printf(\\22%s",out_data);
 
             sub_dev_ctrl = cJSON_GetObjectItem(sub_ser,"Updat Frimware");    //从json获取键值内容
             get_config()->update_firm = sub_dev_ctrl->valueint;

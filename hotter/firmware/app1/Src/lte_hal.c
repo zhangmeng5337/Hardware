@@ -1,4 +1,4 @@
-/*************笔记****************
+﻿/*************笔记****************
 1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出�?
 2、CudeMX配置huart3�?
    ------------------------------------------
@@ -148,6 +148,105 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
 
     //memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
+    //  printf("%s",TxBuffer);
+    if (ack)     //需要等待应�?
+    {
+
+        HAL_Delay(lte_recv->timeout);
+        if (lte_recv->Lpuart1RecFlag)
+        {
+            if (lte_Check_Cmd(ack))
+            {
+
+                res = 0;
+            }
+            else
+            {
+                res = 1;
+                // clear_uart_buf(1);
+            }
+            lte_recv->Lpuart1RecFlag = 0;
+
+        }
+        else
+            res = 1;
+
+    }
+
+
+    return res;
+}
+uint8_t lte_Send_Cmd_mqtt(uint8_t mode,uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
+{
+    uint8_t res = 0;
+    uint8_t TxBuffer[1024];
+	uint8_t *cmd_tmp;
+    //uint8_t len;
+
+
+    // tsLpuart1type *lte_recv;
+    // lte_recv = get_lte_recv();
+    lte_recv->timeout = WaitTime;
+	cmd_tmp = cmd;
+    memset(TxBuffer, 0, 1024);
+	unsigned char count=0;
+	unsigned int i=0;
+	if(mode == 1)
+	{
+		while(*cmd!= '\0' )
+		{
+            
+			if(count <3)
+			{
+				TxBuffer[i++] = *cmd;
+				if(*cmd == 0x22)
+					count = count +1;
+
+			}
+			else
+			{
+				if(*cmd == '\"')
+				{
+					cmd_tmp = cmd ;
+					if(*(--cmd_tmp)!='}')
+					{
+					TxBuffer[i++] = '\\';
+					TxBuffer[i++] = '2';					
+					TxBuffer[i++] = '2';					
+					}
+					else
+						break;
+						//TxBuffer[i++] =*cmd;
+
+
+
+				}
+				else if(*cmd == '\r')
+				{
+					TxBuffer[i++] = '\\';
+					TxBuffer[i++] = '0';					
+					TxBuffer[i++] = 'D';
+				}	
+			else if(*cmd == '\n')
+			{
+				TxBuffer[i++] = '\\';
+				TxBuffer[i++] = '0';					
+				TxBuffer[i++] = 'A';
+
+			}
+      else
+				TxBuffer[i++] = *cmd;
+
+			}
+			cmd++;
+		}
+	}
+    //sprintf((char *)TxBuffer, "%s", cmd);
+    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
+    clear_uart_buf(0);
+
+    //memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
+    uart_transmit(LTE_No, TxBuffer, i);
     //  printf("%s",TxBuffer);
     if (ack)     //需要等待应�?
     {
@@ -464,10 +563,10 @@ uint8_t lte_Info_Show(void)
         {
 
             Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
-			if(OTA_UPDATE_TO == APP1)
-            	sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/a/", get_config()->user_id);
-			else
-				sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/b/", get_config()->user_id);
+		//	if(OTA_UPDATE_TO == APP1)
+          //  	sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/a/", get_config()->user_id);
+			//else
+				//sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/b/", get_config()->user_id);
 
             //sprintf(get_config()->mqtt_mpubtopic, "%s%s", "mqtt_mub_", get_config()->user_id);
             // sprintf(get_config()->mqtt_subtopic, "%s%s", "mqtt_sub_", get_config()->user_id);
@@ -569,7 +668,7 @@ uint8_t lte_Info_Show(void)
         }
         break;
     case AT_HTTPPARA_2:
-        sprintf(buf, "AT+HTTPPARA=\"URL\",%s\r\n", get_config()->http_ip);//url set
+        sprintf(buf, "AT+HTTPPARA=\"URL\",%s%s\r\n", get_config()->http_ip, get_config()->user_id);//url set
         if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //查询AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;

@@ -22,6 +22,7 @@ typedef enum
     AT_MIPSTART,
     AT_MCONNECT,
     AT_MSUB,
+     AT_MSUB_1,   
     AT_MIPCLOSE,
 
     /*HTTP°æ±¾ºÅ*/
@@ -93,6 +94,7 @@ void lte_CmdShowOff(void);
 void lte_SendEN_SMS(uint8_t *phone,uint8_t *text);
 void lte_proc(void);
 void lte_init(void);
+uint8_t lte_Send_Cmd_mqtt(uint8_t mode,uint8_t *cmd, uint8_t *ack, unsigned int WaitTime);
 
 
 unsigned char  ATRec(char *s);
