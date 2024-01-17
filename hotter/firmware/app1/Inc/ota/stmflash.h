@@ -22,7 +22,7 @@
 
 #define OTA_UPDATE_TO   APP2
 #define OTA_NUM_ADDR   0x801fff0
-#define VERSION        "V1.0.1"
+#define VERSION        "V1.0.2"
 
 #if OTA_UPDATE_TO == APP2
 #define APP_NUM		0x1a

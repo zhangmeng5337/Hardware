@@ -210,55 +210,55 @@ void anlysis_mqtt_recv()
     if (valid_flag == 1)
     {
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Updat Frimware: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Updat Frimware\": ", ",",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
             sprintf(&get_config()->update_firm, "%s", dev_id);//????
-            tmp_f = atoi(&dev_id[3]);
+            tmp_f = atoi(&dev_id[0]);
             get_config()->update_firm = tmp_f;
 
         }
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Reboot Dev: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Reboot Dev\": ", ",",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
             sprintf(&get_config()->reboot, "%s", dev_id); //????
-            tmp_f = atoi(&dev_id[3]);
+            tmp_f = atoi(&dev_id[0]);
             get_config()->reboot = tmp_f;
 
 
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Power ctrl: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Power ctrl\": ", ",",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
             //sprintf(&get_config()->machine, "%s", dev_id); //????
-            tmp_f = atoi(&dev_id[3]);
+            tmp_f = atoi(&dev_id[0]);
             get_config()->machine = tmp_f;
 
         }
         memset(dev_id, 0, 128);
 
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Out Temp: ", ",\r\n",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Set Out Temp\": ", ",",
                         dev_id) == 1)
         {
             get_config()->update_setting = 1;
-            tmp_f = atof(&dev_id[3]);
+            tmp_f = atof(&dev_id[0]);
             get_config()->set_tout = tmp_f;
             get_config()->set_tout_tmp = tmp_f;
         }
 
 
         memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Set Room Temp: ", ",\0D\0A",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Set Room Temp\": ", ",",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
-            tmp_f = atof(&dev_id[3]);
+            tmp_f = atof(&dev_id[0]);
             get_config()->set_tindoor = tmp_f;
 
         }
@@ -266,25 +266,26 @@ void anlysis_mqtt_recv()
 
         memset(dev_id, 0, 128);
         if (Find_string((char *)mqtt_recv->Lpuart1RecBuff,
-                        "Set Upload Period(second): ", ",\0D\0A",
+                        "\"Set Upload Period(second)\": ", "\r\n",
                         dev_id) == 1)
         {
             get_config()->update_setting = 2;
-            tmp_f = atof(&dev_id[3]);
+            tmp_f = atof(&dev_id[0]);
             get_config()->set_up_period = tmp_f;
 
 
         }
 
         unsigned char buf[16], j, i, k;
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "Room Temp:[", ",]",
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Room Temp\": [", "\r\n",
                         dev_id) == 1)
         {
             j = 0;
             k = 0;
-            while (dev_id[i] != '\0')
+					i=0;
+            while (dev_id[i] != ']')
             {
-                if (dev_id[i] != ',')
+                if (dev_id[i] != ','&&dev_id[i] != ']')
                     buf[j++] = dev_id[i];
                 else
                 {
@@ -300,7 +301,8 @@ void anlysis_mqtt_recv()
 
             }
 
-
+ tmp_f = atof(buf);
+                    get_config()->indoor_temperature[k++] = tmp_f;
 
 
         }
@@ -406,9 +408,9 @@ void anlysis_mqtt_recv()
         mqtt_payload_u.data[TIN_INDEX] =
             get_ai_data()->temp[AI_WATER_T_IN_INDEX]; //water IN
         mqtt_payload_u.data[PUMP_F_INDEX] =
-            get_ai_data()->temp[AI_PUMP_F_INDEX]; //pump front
+            get_ai_data()->press[AI_PUMP_F_INDEX]; //pump front
         mqtt_payload_u.data[PUMP_E_INDEX] =
-            get_ai_data()->temp[AI_PUMP_E_INDEX]; //pump end
+            get_ai_data()->press[AI_PUMP_E_INDEX]; //pump end
 
         uint32_t tmp;
         tmp = get_ai_data()->channel_status;
@@ -709,6 +711,7 @@ void mqtt_proc()
 
 
     }
+	 mqtt_recv_proc();
 
 
 }

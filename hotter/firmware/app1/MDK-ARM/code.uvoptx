@@ -154,7 +154,7 @@
           <Type>0</Type>
           <LineNumber>325</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134246180</Address>
+          <Address>134243352</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,9 +168,9 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>250</LineNumber>
+          <LineNumber>213</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134239514</Address>
+          <Address>134238362</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -179,14 +179,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\mqtt_analy.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\250</Expression>
+          <Expression>\\app\../Src/mqtt_analy.c\213</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>619</LineNumber>
+          <LineNumber>280</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134248960</Address>
+          <Address>134238870</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -195,10 +195,58 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\mqtt_analy.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\619</Expression>
+          <Expression>\\app\../Src/mqtt_analy.c\280</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>292</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134238932</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\mqtt_analy.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/mqtt_analy.c\292</Expression>
+        </Bp>
+        <Bp>
+          <Number>4</Number>
+          <Type>0</Type>
+          <LineNumber>300</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134239000</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\mqtt_analy.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/mqtt_analy.c\300</Expression>
+        </Bp>
+        <Bp>
+          <Number>5</Number>
+          <Type>0</Type>
+          <LineNumber>304</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134239018</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\mqtt_analy.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/mqtt_analy.c\304</Expression>
+        </Bp>
+        <Bp>
+          <Number>6</Number>
           <Type>0</Type>
           <LineNumber>245</LineNumber>
           <EnabledFlag>1</EnabledFlag>
@@ -214,7 +262,7 @@
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>4</Number>
+          <Number>7</Number>
           <Type>0</Type>
           <LineNumber>322</LineNumber>
           <EnabledFlag>0</EnabledFlag>
@@ -230,7 +278,7 @@
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>5</Number>
+          <Number>8</Number>
           <Type>0</Type>
           <LineNumber>328</LineNumber>
           <EnabledFlag>0</EnabledFlag>
@@ -255,7 +303,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>config_usr</ItemText>
+          <ItemText>config_usr,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
@@ -352,12 +400,32 @@
           <WinNumber>1</WinNumber>
           <ItemText>TxBuffer</ItemText>
         </Ww>
+        <Ww>
+          <count>21</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>mqtt_recv</ItemText>
+        </Ww>
+        <Ww>
+          <count>22</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dev_id</ItemText>
+        </Ww>
+        <Ww>
+          <count>23</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>24</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>data_ai</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>8</SubType>
-          <ItemText>0x20008D38</ItemText>
+          <ItemText>0x8005344</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

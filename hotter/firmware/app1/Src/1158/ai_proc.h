@@ -64,7 +64,7 @@
 #define AI_PUMP_F_INDEX   		0
 #define AI_PUMP_E_INDEX   		1
 
-#define PRESS_RATIO        626.25
+#define PRESS_RATIO        641
 #define PRESS_B            -250
 #define PT100_PR          75
 
