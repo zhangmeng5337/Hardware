@@ -254,7 +254,7 @@ unsigned char json_analysis(char *out)
     else
     {
         sub_ser = cJSON_GetObjectItem(json_three, "Dev Ctrl"); //将得到的字符串解析成json形式
-        if (sub_ser != NULL)
+       // if (sub_ser != NULL)
         {
             /****************************/
             /*    测试将JSON打印出来  */
@@ -282,8 +282,8 @@ unsigned char json_analysis(char *out)
 		    get_config()->update_setting = 1;
 
         }
-        else
-            return 0;
+        //else
+          //return 0;
 
     }
     cJSON_Delete(json_three);  //释放内存
