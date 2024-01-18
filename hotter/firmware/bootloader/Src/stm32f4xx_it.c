@@ -55,7 +55,7 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+extern IWDG_HandleTypeDef hiwdg;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -190,7 +190,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
+HAL_IWDG_Refresh(&hiwdg);
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */

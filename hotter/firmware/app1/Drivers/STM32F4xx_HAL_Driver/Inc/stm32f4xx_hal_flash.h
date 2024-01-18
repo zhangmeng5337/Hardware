@@ -307,8 +307,6 @@ HAL_StatusTypeDef HAL_FLASH_Program(uint32_t TypeProgram, uint32_t Address, uint
 HAL_StatusTypeDef HAL_FLASH_Program_IT(uint32_t TypeProgram, uint32_t Address, uint64_t Data);
 /* FLASH IRQ handler method */
 void HAL_FLASH_IRQHandler(void);
-void FLASH_Program_Byte(uint32_t Address, uint8_t Data);
-
 /* Callbacks in non blocking modes */ 
 void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue);
 void HAL_FLASH_OperationErrorCallback(uint32_t ReturnValue);
