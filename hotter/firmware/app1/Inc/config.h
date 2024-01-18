@@ -10,12 +10,7 @@ index = 3 "璁剧疆鍑烘按娓╁�?: "value",
 index = 4 "璁剧疆瀹ゅ唴娓╁害": "value",
 index = 5 "鏁版嵁涓婁紶鍛ㄦ�?: "value"*/
 
-#define UPDATE_INDEX		0
-#define REBOOT_INDEX		1
-#define MACHINE_INDEX		2
-#define TOUT_INDEX			3
-#define TINDOOR_INDEX		4
-#define UP_PERIOD_INDEX		5
+
 
 #define ENVIRO_SIZE    64
 

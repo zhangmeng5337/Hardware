@@ -450,10 +450,10 @@ void upload()
                                   \\22air pump_status\\22:%d\\0D\\0A\\
                                  },\\0D\\0A\\
             \\22Dev Params\\22: {\\0D\\0A\\
-                                 \\22Version\\22: %s,\\0D\\0A\\
+                                 \\22Version\\22: \\22%s\\22,\\0D\\0A\\
                                  \\22Set Out Tem\\22: %.0f,\\0D\\0A\\
                                  \\22Set In Tem\\22: %.0f,\\0D\\0A\\
-                                 \\22Upload Period(second)\\22: %d\\0D\\0A\\
+                                 \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
                                 }\\0D\\0A\\
 }", mqtt_payload_u.devid,
 mqtt_payload_u.data[TOUT_INDEX],
@@ -685,7 +685,10 @@ void mqtt_proc()
     {
         if (mqtt_Info_Show() == SUCCESS_REC) //mqtt??????
         {
-            registerTick(MQTT_TX_TICK_NO, 10000);
+            if(get_config()->set_up_period>0&&get_config()->set_up_period<3600)
+            registerTick(MQTT_TX_TICK_NO, get_config()->set_up_period*1000);
+			else
+				registerTick(MQTT_TX_TICK_NO, 10000);
             if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
             {
                 reset_registerTick(MQTT_TX_TICK_NO);
