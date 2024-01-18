@@ -168,6 +168,11 @@ void pressure_temp_proc()
     for (i = ADC1_PR_INDEX; i < (ADC1_PR_INDEX + 8); i++) //u2/(2u1-u2)
     {
         data_ai.press[i - ADC1_PR_INDEX]  = data_ai.data_ai[i] * PRESS_RATIO + PRESS_B;//kpa
+        if(data_ai.press[i - ADC1_PR_INDEX]<0)
+			data_ai.press[i - ADC1_PR_INDEX] = 0;
+        if(data_ai.press[i - ADC1_PR_INDEX]>1)
+			data_ai.press[i - ADC1_PR_INDEX] = 1;
+				
     }
 
 	

@@ -116,6 +116,7 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
         memcpy(modbus_tx.payload, payload, len);
     }
 
+	modbus_recv.reg = modbus_tx.reg;
 
 
 
@@ -183,8 +184,25 @@ void analy_modbus_recv()
             case MODBUS_READ_CMD:
             {
                 if (modbus_recv.address > 0 && modbus_recv.address <= 3)
-                    memcpy(get_machine()->reg_data[modbus_recv.address - 1],
-                           &modbus_recv.payload[4], modbus_recv.regCount * 2);
+                	{
+                	modbus_recv.regCount = modbus_recv.payload[2];
+				memcpy(get_machine()->reg_data[modbus_recv.address - 1],
+					   &modbus_recv.payload[3], modbus_recv.regCount);
+				
+				//modbus_recv.reg = modbus_recv.reg<<8;
+				//modbus_recv.reg = modbus_recv.reg|modbus_recv.payload[3];
+
+					 if(modbus_recv.reg == FAULT_REG)
+					 	{
+					 	       unsigned int tmp;
+							   tmp = modbus_recv.payload[3];
+							   tmp = tmp<<8;
+							 
+								modbus_recv.fault = modbus_recv.fault|tmp;
+					 }
+				}
+
+				
             };
             break;
             case MODBUS_WRITE_ONE_CMD:
