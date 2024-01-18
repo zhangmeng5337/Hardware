@@ -226,7 +226,9 @@ unsigned char  modbus_ctrl()
             }
             else
                 get_config()->set_tout_tmp = u;
+
             modbus_tx.update = 3;//tx flag
+
         }
 #endif
         if (get_config()->update_setting == 1)
@@ -247,6 +249,7 @@ unsigned char  modbus_ctrl()
 }
 void modbus_tx_proc(unsigned char mode)
 {
+
     unsigned char pb[512];
     static unsigned char first_start = 0;
     if (first_start == 0)
@@ -303,11 +306,13 @@ void modbus_tx_proc(unsigned char mode)
             modbus_tx.address = 1;
             modbus_tx.update = 0;
             first_start = 0;
+
         if (mode == 2)
             reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
 
         }
         reset_registerTick(MODBUS_TX_TICK_NO);
+
 
     }
 
@@ -315,7 +320,6 @@ void modbus_tx_proc(unsigned char mode)
 }
 void modbus_proc()
 {
-
     unsigned char result, first_flag;
     result = modbus_ctrl();
 
@@ -325,6 +329,7 @@ void modbus_proc()
     }
     else
     {
+
         if (result == 3) //
         {
             if (GetTickResult(MODBUS_TEMP_TX_TICK_NO) == 1)

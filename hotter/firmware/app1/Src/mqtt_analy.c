@@ -282,10 +282,10 @@ void anlysis_mqtt_recv()
         {
             j = 0;
             k = 0;
-            i = 0;
+					i=0;
             while (dev_id[i] != ']')
             {
-                if (dev_id[i] != ',' && dev_id[i] != ']')
+                if (dev_id[i] != ','&&dev_id[i] != ']')
                     buf[j++] = dev_id[i];
                 else
                 {
@@ -305,6 +305,7 @@ void anlysis_mqtt_recv()
             get_config()->indoor_temperature[k++] = tmp_f;
 
 
+
         }
         //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
 
@@ -319,6 +320,7 @@ void anlysis_mqtt_recv()
 
     }
 }
+
 /*
 dev---->ser
 {
@@ -434,7 +436,9 @@ void upload()
 
 
 
+
 #if 1
+
     sprintf(mqtt_send_buf, "{\\0D\\0A\\
             \\22Dev ID\\22: %s,\\0D\\0A\\
             \\22Status Data\\22: {\\0D\\0A\\
@@ -469,7 +473,6 @@ mqtt_payload_u.data[TOUT_INDEX],
 
 #endif
 mqtt_at_cmd_num = AT_MPUB;
-
 
 
 }
@@ -709,7 +712,9 @@ void mqtt_proc()
 
 
     }
+
     mqtt_recv_proc();
+
 
 
 }
