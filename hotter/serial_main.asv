@@ -1,0 +1,76 @@
+clear all;
+close all;
+clc;
+dat = load('Z:\D\soft\SerialDebug\dat.txt');
+
+len = size(dat);
+len = len(1)
+len = len/2;
+len = round(len);
+len = len*2
+x = dat(1:len-2,1);
+y=x(:,1)*1000; %读取时域数据
+ 
+Fs=1000; %采集频率
+ 
+T=1/Fs; %采集时间间隔
+ 
+N=length(y); %采集信号的长度
+ 
+t=(0:1:N-1)*T; %定义整个采集时间点
+ 
+t=t';  %转置成列向量
+ 
+% figure(1)
+%  
+% plot(t,y)
+%  
+% xlabel('时间')
+%  
+% ylabel('信号值')
+%  
+% title('时域信号')
+
+
+
+
+%混合信号 Mix_Signal_1  小波滤波
+%subplot(4,1,1);
+%axis([0,1000,-5,5]);
+
+figure(2);
+ plot(t,y,'black');                                %Mix_Signal_1 原始信号
+ hold on;
+ y = kalman(y);
+ y=y(:,1);
+plot(t,y,'b');
+hold on;
+
+[xd,cxd,lxd] = wden(y,'sqtwolog','s','one',2,'db3');
+plot(t,xd,'b');                                                %Mix_Signal_1 小波滤波后信号
+
+%plot(t,y,'black');
+hold on;
+yy=smooth(xd,50);
+plot(t,yy,'r','LineWidth',2);
+title('光感强度 ');
+xlabel('time/s');
+ylabel('voltage/mV');
+legend('原始信号','卡尔曼滤波信号','小波滤波后信号2','平滑处理'); 
+
+%  ?start_time = 3*Fs; 
+% fft_fs = Fs;                                % sample frequency (Hz)
+% fft_t = 0:1/Fs:15-1/Fs;                      % 10 second span time vector
+% % x = (1.3)*sin(2*pi*15*t) ...             % 15 Hz component
+% %   + (1.7)*sin(2*pi*40*(t-2)) ...         % 40 Hz component
+% %   + 2.5*randn(size(t));                  % Gaussian noise;;
+% fft_len = size(fft_t);
+% fft_len = fft_len(2);
+% fft_y = fft(yy(1:fft_len,1));
+% fft_n = length(fft_t);          % number of samples
+% fft_f = (0:fft_n-1)*(fft_fs/fft_n);     % frequency range
+% fft_power = abs(fft_y).^2/fft_n;    % power of the DFT
+% figure(3);
+% plot(fft_f,fft_power)
+% xlabel('Frequency')
+% ylabel('Power')

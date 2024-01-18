@@ -1,0 +1,36 @@
+G04 ================== begin FILE IDENTIFICATION RECORD ==================*
+G04 Layout Name:  F:/projects/git/Hardware/magnetic/PCB/NODE/Node2.brd*
+G04 Film Name:    SilkscreenBottom*
+G04 File Format:  Gerber RS274X*
+G04 File Origin:  Cadence Allegro 16.6-2015-S108*
+G04 Origin Date:  Sun Nov 17 15:28:31 2019*
+G04 *
+G04 Layer:  REF DES/SILKSCREEN_BOTTOM*
+G04 Layer:  PACKAGE GEOMETRY/SILKSCREEN_BOTTOM*
+G04 Layer:  BOARD GEOMETRY/SILKSCREEN_BOTTOM*
+G04 Layer:  BOARD GEOMETRY/OUTLINE*
+G04 *
+G04 Offset:    (0.000 0.000)*
+G04 Mirror:    No*
+G04 Mode:      Positive*
+G04 Rotation:  0*
+G04 FullContactRelief:  No*
+G04 UndefLineWidth:     0.127*
+G04 ================== end FILE IDENTIFICATION RECORD ====================*
+%FSLAX31Y31*MOMM*%
+%IR0*IPPOS*OFA0.00000B0.00000*MIA0B0*SFA1.00000B1.00000*%
+%ADD10C,.003226*%
+G75*
+%LPD*%
+G75*
+G54D10*
+G01X312Y-234D02*
+X265Y-187D01*
+X187Y-265D01*
+X234Y-312D01*
+G02X-312Y234I-234J312D01*
+G01X-265Y187D01*
+X-187Y265D01*
+X-234Y312D01*
+G02X312Y-234I234J-312D01*
+M02*

@@ -1,0 +1,4 @@
+1、板厚：1.0mm(ant_bottom.rar、ant_mid.rar、ant_top.rar)，1.6mm(node.rar、receive.rar)
+2、板材：FR-4
+3、过孔塞绿油阻焊
+3、白色字符

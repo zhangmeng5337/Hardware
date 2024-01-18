@@ -1,0 +1,1 @@
+"src\gpio_irq.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\inc;C:\Keil_v5\C51\LIB) DEBUG OBJECTEXTEND PRINT(.\gpio_irq.lst) TABS (2) OBJECT(gpio_irq.obj)

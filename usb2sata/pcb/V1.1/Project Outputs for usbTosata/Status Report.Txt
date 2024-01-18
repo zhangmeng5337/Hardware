@@ -1,0 +1,14 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [usbTosata_V1.1.PrjPCB]
+   Generated File[PCB1-RoundHoles.TXT]
+   Generated File[PCB1-SlotHoles.TXT]
+   Generated File[PCB1.DRL]
+   Generated File[PCB1.LDP]
+   Generated File[PCB1.DRR]
+
+
+Files Generated   : 5
+Documents Printed : 0
+
+Finished Output Generation At 15:14:54 On 2020/11/16

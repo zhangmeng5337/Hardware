@@ -1,0 +1,16 @@
+#Allegro PCB Router v16-6-112 made 2012/09/12 at 23:00:45
+#Host 
+#ROUTING STATUS <<< F:/work/ZM/Frogs/Git/Hardware/Hardware/RK3399_ZM_20200316\WeChat_ZM_20200331.dsn >>>
+Start  Time: Report Time: Mon Apr 27 14:56:21 2020
+
+Nets         =      651   Connections         =     2925
+Current Wire =       28   Reroute wires       =       28
+Completion   =    0.00%   Unconnections       =     2925
+| ROUTING HISTORY ================================================================
+|     Pass     |   Conflicts |    |     |     |     |    |Red|      CPU Time     |
+|   Name   |No.| Cross| Clear|Fail|Unrte| Vias|XTalk|Len.| % |  Pass   |  Total  |
+|----------+---+------+------+----+-----+-----+-----+----+---+---------+---------|
+| Fanout   |  1|     0|     0|  28| 2925|  696|    0|   0|   |  0:00:01|  0:00:01|
+| Fanout   |  2|     0|     0|  28| 2925|  696|    0|   0|   |  0:00:00|  0:00:01|
+| Fanout   |  3|     0|     0|  28| 2925|  696|    0|   0|   |  0:00:00|  0:00:01|
+| Conflicts between polygon wires and fixed objects:   0

@@ -1,0 +1,146 @@
+Designator Footprint               Mid X         Mid Y         Ref X         Ref Y         Pad X         Pad Y TB      Rotation Comment        
+
+U2         TLP521-2GB            1919mil      -1750mil       1919mil      -1750mil   1741.835mil      -1900mil  B        360.00 TLP521-2       
+P1         HDR1X8                3431mil       -648mil       3781mil       -648mil       3781mil       -648mil  T        180.00 Header 8       
+U4         LQFP-64           2425.063mil  -1075.638mil       2179mil       -928mil       2179mil       -928mil  T        360.00 STM32F103R8T6  
+R56        0805R                 2952mil    -468.37mil       2952mil       -429mil       2952mil       -429mil  T        270.00 10K            
+R55        0603R                 2874mil   -456.528mil       2874mil       -427mil       2874mil       -427mil  T        270.00 20K            
+USB1       USB-A              680.567mil  -3154.118mil    542.772mil      -3099mil    542.772mil      -3099mil  T          0.00 Header 5       
+Q18        PowerPAK_SO-8     3209.181mil  -2951.622mil   3356.772mil      -3053mil    3319.37mil  -3026.622mil  T        180.00 SI7489DP       
+C20        1210C             2974.772mil  -2874.024mil   2974.772mil      -2938mil   2974.772mil      -2938mil  T         90.00 GRM32ER72A225KA35L
+C1         0805c              1877.37mil       -811mil       1838mil       -811mil       1838mil       -811mil  T          0.00 22pF           
+C2         0805c              1880.37mil      -1230mil       1841mil      -1230mil       1841mil      -1230mil  T          0.00 22pF           
+C4         0805c                 2082mil   -1233.63mil       2082mil      -1273mil       2082mil      -1273mil  T         90.00 100nF          
+C5         0805c              2060.37mil       -813mil       2021mil       -813mil       2021mil       -813mil  T        360.00 100nF          
+C3         0805c              1880.37mil      -1322mil       1841mil      -1322mil       1841mil      -1322mil  T          0.00 100nF          
+C6         0805c                 2256mil   -1472.63mil       2256mil      -1512mil       2256mil      -1512mil  T         90.00 100nF          
+C7         0805c                 2783mil    -888.37mil       2783mil       -849mil       2783mil       -849mil  T        270.00 100nF          
+C16        CAP_5MM            409.772mil  -1958.425mil    409.772mil      -1860mil    409.772mil      -1860mil  T        270.00 10nF/630V      
+C17        AXIAL-0.3          226.772mil      -2659mil    226.772mil      -2659mil     76.772mil      -2659mil  T        360.00 1.5nF/630V     
+L2         AXIAL-0.5              325mil      -1647mil        325mil      -1647mil        575mil      -1647mil  B        180.00 100uH          
+P3         HDR1X4                  91mil       -643mil         91mil       -793mil         91mil       -793mil  T         90.00 Header 4       
+P2         HDR1X3                 399mil       -662mil        399mil       -762mil        399mil       -762mil  T         90.00 Header 3       
+P4         HDR1X3            1620.772mil      -1134mil   1620.772mil      -1034mil   1620.772mil      -1034mil  B        270.00 Header 3       
+Q9         to220               93.772mil      -1953mil     93.772mil      -2053mil     93.772mil      -2053mil  T         90.00 BU406          
+R14        0805R                 2072mil   -1023.63mil       2072mil      -1063mil       2072mil      -1063mil  T         90.00 1MR            
+R13        0805R                 2346mil    -674.37mil       2346mil       -635mil       2346mil       -635mil  B        270.00 2K             
+R15        0805R              1879.37mil      -1405mil       1840mil      -1405mil       1840mil      -1405mil  T          0.00 10K            
+R17        0603R             1526.772mil  -1082.473mil   1526.772mil      -1112mil   1526.772mil      -1112mil  T         90.00 100            
+R12        0805R                 2436mil    -675.37mil       2436mil       -636mil       2436mil       -636mil  B        270.00 2K             
+R23        0603R                 1832mil   -1644.46mil       1832mil  -1673.987mil       1832mil  -1673.987mil  T         90.00 100            
+R24        AXIAL-0.4          283.772mil      -1117mil    283.772mil      -1117mil    283.772mil       -917mil  B        270.00 0              
+R25        AXIAL-0.4          174.772mil      -1117mil    174.772mil      -1117mil    174.772mil       -917mil  B        270.00 1.2K           
+FU2        F0805             3158.607mil       -431mil   3158.607mil       -386mil   3158.607mil       -386mil  T        270.00 500mA/6V       
+J5         SIP-4L            1078.772mil       -150mil    928.772mil       -150mil    928.772mil       -150mil  T          0.00 IIC            
+J2         SIP-4L             481.772mil       -150mil    331.772mil       -150mil    331.772mil       -150mil  T          0.00 IIC            
+J11        MG7.62                3469mil      -3222mil       3169mil      -3222mil       3169mil      -3222mil  T          0.00 Header 3       
+Y1         SMT5032               1917mil      -1027mil       1917mil      -1027mil       1917mil  -1109.678mil  T         90.00 8MHz           
+C10        1210C             2834.772mil  -2874.024mil   2834.772mil      -2938mil   2834.772mil      -2938mil  T         90.00 GRM32ER72A225KA35L
+R43        0603R             1810.527mil      -2104mil       1781mil      -2104mil       1781mil      -2104mil  T        360.00 6.37K          
+R44        0603R             1750.527mil      -2040mil       1721mil      -2040mil       1721mil      -2040mil  T        360.00 121K           
+R46        0603R             1333.472mil      -2051mil       1363mil      -2051mil       1363mil      -2051mil  T        180.00 453K           
+R47        0603R                 1880mil  -2572.472mil       1880mil      -2602mil       1880mil      -2602mil  T         90.00 100K           
+C23        AXIAL-0.4          258.772mil      -2482mil    258.772mil      -2482mil    458.772mil      -2482mil  T        180.00 47nF/630V      
+L4         6*8                191.772mil      -2909mil    191.772mil      -2909mil    141.772mil      -2909mil  T        180.00 47uH           
+R26        AXIAL-0.4           66.772mil      -1111mil     66.772mil      -1111mil     66.772mil       -911mil  B        270.00 4.7K           
+R60        AXIAL-0.4          893.772mil      -2056mil    893.772mil      -2056mil    893.772mil      -2256mil  B         90.00 10             
+C24        CAP_5MM            265.772mil  -1960.425mil    265.772mil      -1862mil    265.772mil      -1862mil  T        270.00 100p/1000v     
+HUMID1     SIP-2L             194.772mil      -3434mil    194.772mil      -3434mil    244.772mil      -3434mil  T        180.00 Header 2       
+P6         CH3.96-8P         3543.307mil  -2317.655mil   3543.307mil  -2863.326mil   3543.307mil  -2863.326mil  T         90.00 Header 8       
+Q17        SOT23-3            599.985mil    -912.37mil    550.772mil       -873mil    550.772mil       -873mil  T        180.00 S8050          
+R16        0603R             3574.244mil       -287mil   3603.772mil       -287mil   3603.772mil       -287mil  T        180.00 10K            
+R18        0603R                 2963mil   -985.528mil       2963mil       -956mil       2963mil       -956mil  T        270.00 10K            
+Q4         SOT23-3            3061.37mil   -906.787mil       3022mil       -956mil       3022mil       -956mil  T        270.00 HY0320         
+C8         1210C                 1754mil  -2612.976mil       1754mil      -2549mil       1754mil      -2549mil  T        270.00 GRM32ER72A225KA35L
+U3         SOP127P600X168_HS-8N       1706mil      -2297mil       1706mil      -2297mil       1631mil  -2399.362mil  T         90.00 LM5164DDAR     
+HUMID3     SIP-2L             165.772mil      -1438mil    165.772mil      -1438mil    215.772mil      -1438mil  T        180.00                
+R54        0603r                  492mil   -902.472mil        492mil       -932mil        492mil       -932mil  T         90.00 4.7K           
+Q16        TO-252-3S         1565.639mil      -3149mil   1619.772mil      -3149mil    1373.71mil  -3239.552mil  T         90.00 NCE4060K       
+D6         D7227             2601.772mil    -3332.5mil   2601.772mil      -3245mil   2601.772mil      -3245mil  T        270.00 1N4004         
+R53        0805R              1207.63mil      -1824mil       1247mil      -1824mil       1247mil      -1824mil  T        180.00 470k           
+R52        0805R              1209.63mil      -1729mil       1249mil      -1729mil       1249mil      -1729mil  T        180.00 22R            
+J9         SIP-2L            2844.772mil      -3379mil   2844.772mil      -3379mil   2794.772mil      -3379mil  T          0.00 OUT-C          
+R61        AXIAL-0.4          790.772mil      -2057mil    790.772mil      -2057mil    790.772mil      -2257mil  T         90.00 2.2            
+C46        AXIAL-0.4          255.772mil      -2302mil    255.772mil      -2302mil    455.772mil      -2302mil  T        180.00 47nF/630V      
+R22        0805R              330.772mil    -369.37mil    330.772mil       -330mil    330.772mil       -330mil  T        270.00 10K            
+Q3         TO-252-3S         1159.905mil      -2922mil   1105.772mil      -2922mil   1351.834mil  -3012.552mil  T         90.00 NCE4060K       
+Q2         TO-252-3S         1686.905mil      -2924mil   1632.772mil      -2924mil   1878.834mil  -3014.552mil  T         90.00 NCE4060K       
+Q1         TO-252-3S         2204.905mil      -2915mil   2150.772mil      -2915mil   2396.834mil  -3005.552mil  T         90.00 NCE4060K       
+J7         SIP-2L            1354.772mil    -3379.5mil   1354.772mil    -3379.5mil   1304.772mil    -3379.5mil  T          0.00 OUT-C          
+J6         SIP-2L            1856.272mil    -3379.5mil   1856.272mil    -3379.5mil   1806.272mil    -3379.5mil  T          0.00 OUT-B          
+J1         SIP-2L            2357.772mil    -3379.5mil   2357.772mil    -3379.5mil   2307.772mil    -3379.5mil  T          0.00 OUT-A          
+J4         SIP-4L            3453.772mil       -150mil   3303.772mil       -150mil   3303.772mil       -150mil  T        360.00 USRT           
+J3         SIP-4L            2859.772mil       -150mil   2709.772mil       -150mil   2709.772mil       -150mil  T        360.00 IIC            
+D5         D7227             1096.772mil    -3325.5mil   1096.772mil      -3238mil   1096.772mil      -3238mil  T        270.00 1N4004         
+D4         D7227             1610.258mil    -3324.5mil   1610.258mil      -3237mil   1610.258mil      -3237mil  T        270.00 1N4004         
+D1         D7227             2111.744mil    -3324.5mil   2111.745mil      -3237mil   2111.744mil      -3237mil  T        270.00 1N4004         
+U5         SOT23-5(DBV)      3462.433mil   -424.402mil   3403.378mil       -387mil   3403.378mil       -387mil  T          0.00 TLV70233DBVR   
+R11        0805R             2147.402mil   -1824.74mil   2186.772mil   -1824.74mil   2186.772mil   -1824.74mil  T        180.00 470k           
+R6         0805R             2381.402mil   -1823.74mil   2420.772mil   -1823.74mil   2420.772mil   -1823.74mil  T        180.00 470k           
+R3         0805R              1465.37mil      -1819mil       1426mil      -1819mil       1426mil      -1819mil  T          0.00 470K           
+R10        0805R             2144.402mil      -1743mil   2183.772mil      -1743mil   2183.772mil      -1743mil  T        180.00 22R            
+R5         0805R             2381.402mil      -1743mil   2420.772mil      -1743mil   2420.772mil      -1743mil  T        180.00 22R            
+R1         0805R              1459.37mil      -1729mil       1420mil      -1729mil       1420mil      -1729mil  T        360.00 22R            
+R2         0805R              492.402mil       -313mil    531.772mil       -313mil    531.772mil       -313mil  T        180.00 10K            
+R9         0805R             1620.772mil    -356.37mil   1620.772mil       -317mil   1620.772mil       -317mil  T        270.00 10K            
+R8         0805R             1821.022mil    -356.37mil   1821.022mil       -317mil   1821.022mil       -317mil  T        270.00 10K            
+R7         0805R             2021.272mil    -356.37mil   2021.272mil       -317mil   2021.272mil       -317mil  T        270.00 10K            
+R4         0805R              1094.63mil       -321mil       1134mil       -321mil       1134mil       -321mil  T        180.00 10K            
+D3         sod323            1101.244mil       -411mil       1054mil       -411mil       1054mil       -411mil  T          0.00 1N4148         
+D2         sod323             499.016mil       -408mil    451.772mil       -408mil    451.772mil       -408mil  T          0.00 1N4148         
+C27        0603C             3310.607mil   -361.528mil   3310.607mil       -332mil   3310.607mil       -332mil  T        270.00 10uF/10V       
+C26        0603C             3609.378mil   -416.473mil   3609.378mil       -446mil   3609.378mil       -446mil  T         90.00 10uF/10V       
+C28        0603C             3247.607mil   -361.473mil   3247.607mil       -391mil   3247.607mil       -391mil  T         90.00 0.1uF/10V      
+C41        1210C                 1570mil  -2620.976mil       1570mil      -2557mil       1570mil      -2557mil  T        270.00 GRM32ER71A476KE15L
+L5         SRR1210               1164mil  -2353.819mil       1164mil      -2155mil       1164mil      -2155mil  T        270.00 SRR1210-560M   
+P5         SIP-10L           1971.772mil       -150mil   1521.772mil       -150mil   1521.772mil       -150mil  T        360.00 Header 10      
+R58        0805R             2421.772mil    -356.37mil   2421.772mil       -317mil   2421.772mil       -317mil  T        270.00 10K            
+R59        0805R             2221.522mil    -356.37mil   2221.522mil    -395.74mil   2221.522mil    -395.74mil  T         90.00 10K            
+P7         CH3.96-8P          637.796mil  -2317.655mil    637.796mil  -1771.984mil    637.796mil  -1771.984mil  T        270.00 Header 8       
+HUMID2     SIP-2L             196.772mil      -3169mil    196.772mil      -3169mil    246.772mil      -3169mil  T        180.00 Header 2       
+C9         1210C             3069.772mil  -2570.024mil   3069.772mil      -2634mil   3069.772mil      -2634mil  T         90.00 GRM32ER72A225KA35L
+C42        1210C             2920.772mil  -2569.024mil   2920.772mil      -2633mil   2920.772mil      -2633mil  T         90.00 GRM32ER72A225KA35L
+C49        0603C             2731.772mil  -2334.472mil   2731.772mil      -2364mil   2731.772mil      -2364mil  T         90.00 6.8pF/100V     
+C13        0603C             2864.772mil  -2145.472mil   2864.772mil      -2175mil   2864.772mil      -2175mil  T         90.00 EMK107BB7225MA-T
+C14        0603C             2929.244mil      -2534mil   2958.772mil      -2534mil   2958.772mil      -2534mil  T        180.00 18nF/16V       
+C18        0603C             3018.021mil  -2627.472mil   3018.021mil  -2597.945mil   3018.021mil  -2597.945mil  T        270.00 18nF/16V       
+C19        1210C             3211.772mil  -2567.024mil   3211.772mil      -2631mil   3211.772mil      -2631mil  T         90.00 GRM32ER72A225KA35L
+C43        0603C             2987.772mil  -2141.528mil   2987.772mil      -2112mil   2987.772mil      -2112mil  T        270.00 0.1uF/25V      
+C47        0603C             3049.772mil  -2139.528mil   3049.772mil      -2110mil   3049.772mil      -2110mil  T        270.00 C1608X7S2A104K080AB
+C29        1210C             2220.796mil      -2573mil   2284.772mil      -2573mil   2284.772mil      -2573mil  T        180.00 GRM32ER71A476KE15L
+C48        1210C             2222.796mil      -2703mil   2286.772mil      -2703mil   2286.772mil      -2703mil  T        180.00 GRM32ER71A476KE15L
+C31        1210C             2216.796mil      -2438mil   2280.772mil      -2438mil   2280.772mil      -2438mil  T        180.00 GRM32ER71A476KE15L
+C32        0603C             2930.244mil      -2474mil   2959.772mil      -2474mil   2959.772mil      -2474mil  T        180.00 1pF/16V        
+C54        0603C             2959.647mil  -2627.472mil   2959.647mil  -2597.945mil   2959.647mil  -2597.945mil  T        270.00 470pF/16V      
+C55        0603C             2813.528mil      -2718mil       2784mil      -2718mil       2784mil      -2718mil  T        360.00 2.2uF/16V      
+L1         XAL6060           2327.772mil  -2236.528mil   2327.772mil      -2157mil   2327.772mil      -2157mil  T        270.00 XAL6060-682MEB 
+Q10        PowerPAK_SO-8     2679.363mil  -2564.378mil   2531.772mil      -2463mil   2569.174mil  -2489.378mil  T        360.00 BSC117N08NS5ATMA1
+Q15        PowerPAK_SO-8     2691.181mil  -2156.622mil   2838.772mil      -2258mil    2801.37mil  -2231.622mil  T        180.00 BSC037N08NS5ATMA1
+R31        0603R             2924.772mil  -2142.528mil   2924.772mil      -2113mil   2924.772mil      -2113mil  T        270.00 0              
+R32        0603R               3129.3mil      -2399mil   3099.772mil      -2399mil   3099.772mil      -2399mil  B        360.00 121K/1%        
+R33        0603R             3111.772mil  -2139.528mil   3111.772mil      -2110mil   3111.772mil      -2110mil  T        270.00 2.2            
+R27        0603R             2732.772mil  -2215.528mil   2732.772mil      -2186mil   2732.772mil      -2186mil  T        270.00 1.65K          
+R29        0603R             2842.772mil  -2503.528mil   2842.772mil      -2474mil   2842.772mil      -2474mil  T        270.00 2.37K          
+R64        0603R                 2714mil  -2630.528mil       2714mil      -2601mil       2714mil      -2601mil  T        270.00 20K            
+R45        0603R             2842.897mil  -2627.472mil   2842.897mil  -2597.945mil   2842.897mil  -2597.945mil  T        270.00 1.27K          
+R65        0603R             2901.272mil  -2627.472mil   2901.272mil      -2657mil   2901.272mil      -2657mil  T         90.00 18K            
+R66        0603R               2930.3mil      -2714mil   2900.772mil      -2714mil   2900.772mil      -2714mil  T        360.00 19.1           
+R67        0603R             3076.396mil  -2627.472mil   3076.396mil      -2657mil   3076.396mil      -2657mil  T         90.00 28.7K          
+R68        0603R             3134.771mil  -2627.472mil   3134.771mil      -2657mil   3134.771mil      -2657mil  T         90.00 8.06K          
+U1         QFN050P600-8N     2894.772mil      -2335mil   2894.772mil      -2335mil   2983.355mil  -2364.528mil  T         90.00 LM5145         
+R57        0603r             1382.473mil      -1651mil       1412mil      -1651mil       1412mil      -1651mil  T        180.00 100k           
+R62        0603r             1383.528mil      -1588mil       1354mil      -1588mil       1354mil      -1588mil  T        360.00 20K            
+R63        0603R              528.472mil      -1550mil        558mil      -1550mil        558mil      -1550mil  T        180.00 10K            
+C56        0603C             3681.607mil   -416.472mil   3681.607mil   -386.944mil   3681.607mil   -386.944mil  T        270.00 0.1uF/10V      
+FB1        F0805             3057.607mil       -430mil   3057.607mil       -475mil   3057.607mil       -475mil  T         90.00 100R1A         
+R69        0603R             1499.473mil      -1650mil       1529mil      -1650mil       1529mil      -1650mil  T        180.00 1K             
+R70        0603R                 1896mil   -1644.46mil       1896mil  -1673.987mil       1896mil  -1673.987mil  T         90.00 100            
+R73        0603R                 2775mil  -2629.528mil       2775mil      -2600mil       2775mil      -2600mil  T        270.00 20K            
+P8         HDR1X4                3611mil   -891.756mil       3461mil   -891.756mil       3461mil   -891.756mil  T        360.00 Header 4       
+C53        0603C             1333.472mil      -1975mil       1363mil      -1975mil       1363mil      -1975mil  T        180.00 3.3nF/16V      
+C40        0603C             1751.527mil      -1975mil       1722mil      -1975mil       1722mil      -1975mil  T        360.00 56pF/50V       
+C38        0603C             1650.472mil      -2106mil       1680mil      -2106mil       1680mil      -2106mil  T        180.00 2.2nF/50V      
+Q5         SOT23-3            512.787mil   -1445.63mil        562mil      -1485mil        562mil      -1485mil  T        360.00 si2306         
+C11        0603C             1182.472mil      -1160mil       1212mil      -1160mil       1212mil      -1160mil  T        180.00 0.1uF          
+U6         SOT23-3           1176.472mil  -1058.284mil   1225.685mil  -1097.654mil   1225.685mil  -1097.654mil  T          0.00 REF2933AIDBZT  
+
