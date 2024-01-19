@@ -53,14 +53,16 @@ void ads1158_config(unsigned char adc_No)
     writeValues[0]   = CONFIG0_DEFAULT & ~CONFIG0_MUXMOD_MASK;  // Auto-scan mode
     writeValues[1]   = CONFIG1_DEFAULT & CONFIG1_DRATE_1953SPS; // Slowest data rate
     writeValues[2]   = MUXSCH_DEFAULT;
-    writeValues[3]   = MUXDIF_DEFAULT;						  // Differential channels off
-    writeValues[4]   = 0xff;									  // Single-ended channels off
+    writeValues[3]   =
+        MUXDIF_DEFAULT;                        // Differential channels off
+    writeValues[4]   =
+        0xff;                                      // Single-ended channels off
     writeValues[5]   = 0xff;
-    writeValues[6]   = SYSRED_REF_ENABLE	  |
+    writeValues[6]   = SYSRED_REF_ENABLE      |
                        SYSRED_GAIN_ENABLE   | \
                        SYSRED_TEMP_ENABLE   | \
-                       SYSRED_VCC_ENABLE	  | \
-                       SYSRED_OFFSET_ENABLE;					  // Enable all system monitors
+                       SYSRED_VCC_ENABLE      | \
+                       SYSRED_OFFSET_ENABLE;                      // Enable all system monitors
 
     // Ensure device is powered, converting, and reset to default values
     startConversions();
@@ -167,17 +169,19 @@ void pressure_temp_proc()
     /**********************4-20mA convention**********************/
     for (i = ADC1_PR_INDEX; i < (ADC1_PR_INDEX + 8); i++) //u2/(2u1-u2)
     {
-        data_ai.press[i - ADC1_PR_INDEX]  = data_ai.data_ai[i] * PRESS_RATIO + PRESS_B;//kpa
-        data_ai.press[i - ADC1_PR_INDEX]  = data_ai.press[i - ADC1_PR_INDEX]  /1000;
-		if(data_ai.press[i - ADC1_PR_INDEX]<0)
-			data_ai.press[i - ADC1_PR_INDEX] = 0;
-        if(data_ai.press[i - ADC1_PR_INDEX]>1)
-			data_ai.press[i - ADC1_PR_INDEX] = 1;
-				
+        data_ai.press[i - ADC1_PR_INDEX]  = data_ai.data_ai[i] * PRESS_RATIO +
+                                            PRESS_B;//kpa
+        data_ai.press[i - ADC1_PR_INDEX]  = data_ai.press[i - ADC1_PR_INDEX]  /
+                                            1000; //Mpa
+        if (data_ai.press[i - ADC1_PR_INDEX] < MIN_PRESS)
+            data_ai.press[i - ADC1_PR_INDEX] = -1;
+        if (data_ai.press[i - ADC1_PR_INDEX] > MAX_PRESS)
+            data_ai.press[i - ADC1_PR_INDEX] = 2;
+
     }
 
-	
-	//**************************pt100******************************
+
+    //**************************pt100******************************
     for (i = ADC1_PT_INDEX; i < (ADC1_PT_SIZE + ADC1_PT_INDEX); i++) //u2/(2u1-u2)
     {
         volt_tmp = 2 * data_ai.data_ai[2 * i + 1]; //2u1;
@@ -196,6 +200,11 @@ void pressure_temp_proc()
         data_ai.temp[i - ADC1_PT_INDEX] = PT100_Temp(data_ai.temp[i - ADC1_PT_INDEX]);
         data_ai.temp[i - ADC1_PT_INDEX] = data_ai.temp[i - ADC1_PT_INDEX] * PT100_RATIO;
         data_ai.temp[i - ADC1_PT_INDEX] = data_ai.temp[i - ADC1_PT_INDEX] + PT100_B;
+        if (data_ai.temp[i - ADC1_PT_INDEX] < MIN_TEMP)
+            data_ai.temp[i - ADC1_PT_INDEX] = -65;
+        if (data_ai.temp[i - ADC1_PT_INDEX] > MAX_TEMP)
+            data_ai.temp[i - ADC1_PT_INDEX] = 110;
+
     }
 
     for (i = ADC2_PT_INDEX; i < (ADC2_PT_SIZE + ADC2_PT_INDEX); i++) //u2/(2u1-u2)
@@ -213,6 +222,11 @@ void pressure_temp_proc()
         data_ai.temp[index] = PT100_Temp(data_ai.temp[index]);
         data_ai.temp[index] = data_ai.temp[index] * PT100_RATIO;
         data_ai.temp[index] = data_ai.temp[index] + PT100_B;
+        if (data_ai.temp[index] < MIN_TEMP)
+            data_ai.temp[index] = -65;
+        if (data_ai.temp[index] > MAX_TEMP)
+            data_ai.temp[index] = 110;
+
     }
 
 
@@ -229,13 +243,14 @@ void ai_health_dec()
 {
     unsigned char i;
     uint32_t failure_flag;
-    
+
     for (i = 0; i < 12; i++)
     {
         failure_flag = 1;
         if (data_ai.temp[i] >= MAX_TEMP || data_ai.temp[i] <= MIN_TEMP)
         {
             failure_flag = failure_flag << i;
+
             data_ai.channel_status = data_ai.channel_status | failure_flag;
         }
         else
@@ -256,12 +271,13 @@ void ai_health_dec()
                 failure_flag = failure_flag << i;
                 data_ai.channel_status = data_ai.channel_status | failure_flag;
                 data_ai.failure_count[i] = 0;
+                //data_ai.temp[i] = 110;
             }
         }
     }
     for (i = 0; i < 8; i++)
     {
-       failure_flag = 1;
+        failure_flag = 1;
         if (data_ai.press[i] >= MAX_PRESS || data_ai.press[i] <= MIN_PRESS)
         {
             failure_flag = failure_flag << (i + 12);
@@ -271,20 +287,21 @@ void ai_health_dec()
         {
             if (data_ai.press[i] == data_ai.last_gather[i])
             {
-                data_ai.failure_count[i+12] = data_ai.failure_count[i] + 1;
+                data_ai.failure_count[i + 12] = data_ai.failure_count[i] + 1;
             }
             else
             {
-                if (data_ai.failure_count[i+12] > 0)
-                    data_ai.failure_count[i+12] = data_ai.failure_count[i+12] - 1;
-                   data_ai.last_gather[i] = data_ai.press[i];
+                if (data_ai.failure_count[i + 12] > 0)
+                    data_ai.failure_count[i + 12] = data_ai.failure_count[i + 12] - 1;
+                data_ai.last_gather[i] = data_ai.press[i];
 
             }
-            if (data_ai.failure_count[i+12] >= MAX_FAILUE)
+            if (data_ai.failure_count[i + 12] >= MAX_FAILUE)
             {
                 failure_flag = failure_flag << (i + 12);
                 data_ai.channel_status = data_ai.channel_status | failure_flag;
-                data_ai.failure_count[i+12] = 0;
+                data_ai.failure_count[i + 12] = 0;
+                //data_ai.press[i] = 2;
             }
         }
     }

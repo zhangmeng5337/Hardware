@@ -446,8 +446,8 @@ void upload()
                                   \\22In Tem\\22: %.0f,\\0D\\0A\\
                                   \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                                   \\22After Pressure\\22: %.2f,\\0D\\0A\\
-                                  \\22Status\\22: %d,\\0D\\0A\\
-                                  \\22air pump_status\\22:%d\\0D\\0A\\
+                                  \\22Status\\22: %u,\\0D\\0A\\
+                                  \\22air pump_status\\22:%u\\0D\\0A\\
                                  },\\0D\\0A\\
             \\22Dev Params\\22: {\\0D\\0A\\
                                  \\22Version\\22: \\22%s\\22,\\0D\\0A\\

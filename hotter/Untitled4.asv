@@ -1,17 +1,29 @@
-s = serial('COM3');  %定义串口对象
-set(s,'BaudRate',9600);  %设置波特率s
-fopen(s);  %打开串口对象s
- 
-interval = 10000; 
-passo = 1;
-t = 1;
-x = 0;
-while(t<interval)
-    b = str2num(fgetl(s));  %用函数fget(s)从缓冲区读取串口数据，当出现终止符（换行符）停止。
-    x = [x,b];                       %所以在Arduino程序里要使用Serial.println()
-    plot(x);
-    grid
-    t = t+passo;
-    drawnow;
+clear all;
+clc;
+delete(instrfindall);
+
+%新建串口对象
+s1=serial('COM3','BaudRate',921600); 
+
+%尝试代开串口
+try
+  fopen(s1);  %打开串口对象
+catch err
+  fclose(instrfind);  %关闭被占用的串口
+  error('请确认选择了正确的串口');  %输出错误提示
 end
-fclose(s);
+
+h = animatedline('color','r','linestyle','-.','linewidth',2,'marker','o');%指定线条特性set(gca,'XLim',[0,8*pi],'YLim',[-1,1]);;  %创建空白动态曲线
+axis([0 40 5 30])  %设置坐标系范围
+x = linspace(0,800);
+
+xlabel('时间');
+ylabel('距离');
+
+for k = 1:length(x)
+    y = (fscanf(arduino,'%d')/100.0);
+    addpoints(h,x(k),y);
+    drawnow
+end
+
+fclose(s1);  %关闭串口

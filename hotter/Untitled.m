@@ -1,43 +1,67 @@
 clear all;
 close all;
 clc;
-fclose(instrfind); 
-% 创建串口对象
-s = serial('COM3'); % 将COMx替换为实际的串口号
-set(s, 'BaudRate', 921600); % 设置串口波特率
-fopen(s);
+% 打开要读取的文本文件
+ fileID = fopen('Z:\D\soft\SerialDebug\dat_mks2.txt');% data.txt为包含浮点数据的文本文件名
+%fileID = fopen('C:\Users\zhang\Desktop\dat_mks2.txt');% data.txt为包含浮点数据的文本文件名
 
-% 初始化数据缓冲区
-N = 4096; % 假设数据点的数量为 100
-dataBuffer = zeros(N, 1); % N为数据点数
 
-% 创建图形窗口
-figure;
-
-% 绘制空曲线
-hLine = plot(dataBuffer, '-');
-ylim([0, 3]); % 根据实际情况设置y轴范围
-
-% 实时读取和绘制数据
-while true
-    % 读取数据
-    fopen(s);
-    data = fscanf(s, '%f') % 根据实际的数据格式进行读取
-fclose(s);
-    % 更新数据缓冲区
-    dataBuffer = [dataBuffer(2:end); data];
-
-    % 更新曲线数据
-    set(hLine, 'YData', dataBuffer);
-
-    % 实时刷新图形
-    drawnow;
-
-    % 控制刷新频率，调整延时时间以控制刷新频率
-   % pause(0.00001);
+if fileID == -1
+    error('无法打开文件！')
 end
+ 
+% 创建一个空的变量来存储读取到的浮点数据
+data = [];
+ i=0;
+figure;
+hold on; % 保持当前图形并添加其他元素到同一图形上
+x = 0; % x轴数据点
+y = 0; % y轴数据点
+xValue =0;
+plot(x, y, 'r', 'LineWidth', 2); % 初始绘制静态曲线
 
-% 关闭串口对象
-fclose(s);
-delete(s);
-clear s;
+title('动态曲线');
+xlabel('X轴');
+ylabel('Y轴');
+% axis manual;
+grid on;
+k=-5;
+tic;
+fs=9000;
+step = 1/9000;
+count = 0;
+last_x = 1;
+last_y=1;
+p = plot(x,y,'EraseMode','background','MarkerSize',5);
+% axis([0 40 5 30])  %设置坐标系范围
+% x = linspace(0,800);
+while ~feof(fileID) % 当没有达到文件结尾时进行循环
+    start_time = tic;
+    lineData = fgetl(fileID); % 逐行读取文本内容
+    
+    if lineData == 0 % 如果该行为注释或者为空则跳过
+        continue;
+    end
+    tokens = textscan(lineData, '%f'); % 将每行按照浮点格式提取数值部分
+    floatValues = tokens{1}; % 获得所有提取到的浮点数值
+    data = [data; floatValues]; % 将新读取到的浮点数值添加到已有数据后面   
+    xValue=xValue+step;
+
+   % 将新的点添加到坐标列表中
+     x = [x xValue];
+    y = [y floatValues];
+%     i=i+1
+    % 清除原先的图形
+    count = count +1;
+     if(count ==9000)
+         set(p,'XData',x,'YData',y); 
+        drawnow
+        k = k+0.5;
+        axis([k  k+5 0 4]);
+%          drawnow; % 立即显示更新后的图形   
+        count = 0;
+        end_time = toc(start_time);
+        fprintf('程序执行时间为 %.4fs\n', end_time);
+     end
+end
+ 

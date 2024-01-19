@@ -55,17 +55,29 @@ void rs485_recv()
             crc_tmp = rs485_u->recv_buf[len + 4];
             crc_tmp = crc_tmp << 8;
             crc_tmp = crc_tmp | rs485_u->recv_buf[len + 3];
-            crc_cal = CRC_Compute(&rs485_u->recv_buf[i], len);
+            crc_cal = CRC_Compute(&rs485_u->recv_buf[modbus_recv.dev_addr_index], len+3);
         }
         else
         {
-            len = rs485_u->recv_buf[modbus_recv.dev_addr_index + 4]; //read data len
-            len = len << 8; //read data len
-            len = len | rs485_u->recv_buf[modbus_recv.dev_addr_index + 5]; //read data len
-            crc_tmp = rs485_u->recv_buf[len + 4];
-            crc_tmp = crc_tmp << 8;
-            crc_tmp = crc_tmp | rs485_u->recv_buf[len + 3];
-            crc_cal = CRC_Compute(&rs485_u->recv_buf[i], len);
+              if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == MODBUS_WRITE_ONE_CMD)
+              {
+				len = 2; //read data len
+				crc_tmp = rs485_u->recv_buf[len + 5];
+				crc_tmp = crc_tmp << 8;
+				crc_tmp = crc_tmp | rs485_u->recv_buf[len + 4];
+				 crc_cal = CRC_Compute(&rs485_u->recv_buf[modbus_recv.dev_addr_index], len+4);
+			  }
+			  else if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == MODBUS_WRITE_MUL_CMD)
+              {
+				len = rs485_u->recv_buf[modbus_recv.dev_addr_index + 4]; //read data len
+				len = len <<8;
+				len = len |rs485_u->recv_buf[modbus_recv.dev_addr_index + 5]; //read data len
+				
+				crc_tmp = rs485_u->recv_buf[len + 7];
+				crc_tmp = crc_tmp << 8;
+				crc_tmp = crc_tmp | rs485_u->recv_buf[len + 6];
+				crc_cal = CRC_Compute(&rs485_u->recv_buf[modbus_recv.dev_addr_index], 6);
+			  } 
 
         }
 
@@ -74,7 +86,7 @@ void rs485_recv()
         if (crc_cal == crc_tmp)
         {
             memcpy(modbus_recv.payload, &rs485_u->recv_buf[modbus_recv.dev_addr_index],
-                   len);
+                   len+3);
             modbus_recv.address = modbus_recv.payload[0];
             modbus_recv.func =    modbus_recv.payload[1];
             modbus_recv.update = 1;
@@ -107,6 +119,7 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
         modbus_tx.regCount = len;
         modbus_tx.reg = reg;
         modbus_tx.retry_count = reg_count;
+		modbus_recv.reg = modbus_tx.reg;
     }
     else
     {
@@ -116,7 +129,7 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
         memcpy(modbus_tx.payload, payload, len);
     }
 
-	modbus_recv.reg = modbus_tx.reg;
+	
 
 
 
@@ -197,6 +210,7 @@ void analy_modbus_recv()
 					 	       unsigned int tmp;
 							   tmp = modbus_recv.payload[3];
 							   tmp = tmp<<8;
+							   modbus_recv.reg = 0;
 							 
 								modbus_recv.fault = modbus_recv.fault|tmp;
 					 }
@@ -219,7 +233,7 @@ void analy_modbus_recv()
             default:
                 break;
         }
-
+     modbus_recv.func = 0;
     }
 
 }
@@ -307,7 +321,7 @@ void modbus_tx_proc(unsigned char mode)
         }
 
         if (modbus_recv.address != modbus_tx.address
-                || modbus_recv.func != modbus_tx.func)
+                || modbus_recv.func != modbus_tx.func)//没返回数据接着发
         {
             modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, 1, 1);
         }
