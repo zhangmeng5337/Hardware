@@ -130,11 +130,11 @@ int main(void)
   MX_UART5_Init();
   MX_USART1_UART_Init();
   MX_SPI1_Init();
-  
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
   //hardware_init();
 	HAL_Delay(5000);
-	MX_IWDG_Init();
+	//MX_IWDG_Init();
 	 //test();
 	// Start_BootLoader();
   /* USER CODE END 2 */
@@ -214,7 +214,7 @@ static void MX_IWDG_Init(void)
   /* USER CODE END IWDG_Init 1 */
   hiwdg.Instance = IWDG;
   hiwdg.Init.Prescaler = IWDG_PRESCALER_256;
-  hiwdg.Init.Reload = 125;
+  hiwdg.Init.Reload = 4095;
   if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
   {
     Error_Handler();

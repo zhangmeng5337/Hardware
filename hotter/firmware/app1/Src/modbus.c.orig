@@ -269,6 +269,7 @@ void modbus_tx_proc(unsigned char mode)
     static unsigned char first_start = 0;
     if (first_start == 0)
     {
+        modbus_recv.address = 0;
         modbus_recv.func = 0;
         first_start = 1;
         modbus_tx.retry_count = 3;
@@ -294,7 +295,6 @@ void modbus_tx_proc(unsigned char mode)
                 memcpy(pb, get_config()->set_tout_tmp, 2);
             modbus_tx.func = MODBUS_WRITE_ONE_CMD;
             modbus_tx.reg = TEMPERATURE_REG;
-			
             break;
         case 3:
             modbus_tx.func = MODBUS_READ_CMD;
@@ -305,70 +305,69 @@ void modbus_tx_proc(unsigned char mode)
 
 
 
-        if (modbus_tx.address>0&&(modbus_recv.address != modbus_tx.address
-                                    || modbus_recv.func != modbus_tx.func))//返回数据不对
-        {
-
-            if (modbus_tx.address <= MODBUS_RTU_COUNT)
+            if (modbus_recv.address>0&&(modbus_recv.address != modbus_tx.address
+                    || modbus_recv.func != modbus_tx.func))//返回数据不对
             {
-                if(modbus_tx.address < MODBUS_RTU_COUNT)
-                    modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, 1, 1);
-                if(modbus_tx.retry_count ==0)
-                {
-                    modbus_tx.retry_count = 3;
-                    unsigned int i;
-                    i = 1;
-                    i = i << (modbus_tx.address-1);
-                    modbus_recv.fault = modbus_recv.fault | i;
 
-                    modbus_tx.address = modbus_tx.address + 1;
+                if (modbus_tx.address <= MODBUS_RTU_COUNT)
+                {
+                    if(modbus_tx.address < MODBUS_RTU_COUNT)
+                        modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, 1, 1);
+                    if(modbus_tx.retry_count ==0)
+                    {
+                        modbus_tx.retry_count = 3;
+						unsigned int i;
+						i = 1;
+						i = i << modbus_recv.address;
+						modbus_recv.fault = modbus_recv.fault | i;
+
+                        modbus_tx.address = modbus_tx.address + 1;
+                    }
+                    else
+                    {
+                        modbus_tx.retry_count = modbus_tx.retry_count -1;
+                    }
+
+
                 }
                 else
                 {
-                    modbus_tx.retry_count = modbus_tx.retry_count -1;
+                    modbus_tx.retry_count = 3;
+                    modbus_tx.address = 1;
+                    modbus_tx.update = 0;
+                    reset_registerTick(MODBUS_POLL_TICK_NO);
+
+
                 }
 
-
             }
             else
             {
-                modbus_tx.retry_count = 3;
-                modbus_tx.address = 1;
-                modbus_tx.update = 0;
-                reset_registerTick(MODBUS_POLL_TICK_NO);
+                if (modbus_tx.address <= MODBUS_RTU_COUNT)
+                {
+                    modbus_tx.retry_count = 3;
+                    modbus_tx.address = modbus_tx.address + 1;
+                    if(modbus_tx.address < MODBUS_RTU_COUNT)
+                        modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, 1, 1);
 
+                }
+                else
+                {
+                    modbus_tx.retry_count = 3;
+                    modbus_tx.address = 1;
+                    modbus_tx.update = 0;
+                    reset_registerTick(MODBUS_POLL_TICK_NO);
 
-            }
-
-        }
-        else
-        {
-            if (modbus_tx.address <= MODBUS_RTU_COUNT)
-            {
-                modbus_tx.retry_count = 3;
-                modbus_tx.address = modbus_tx.address + 1;
-                if(modbus_tx.address < MODBUS_RTU_COUNT)
-                    modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, 1, 1);
-
-            }
-            else
-            {
-                modbus_tx.retry_count = 3;
-                modbus_tx.address = 1;
-                modbus_tx.update = 0;
-                reset_registerTick(MODBUS_POLL_TICK_NO);
+                }
 
             }
-
-        }
 
 
         if (mode == 2)
             reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
-	reset_registerTick(MODBUS_TX_TICK_NO);
 
     }
-   
+    reset_registerTick(MODBUS_TX_TICK_NO);
 
 
 }

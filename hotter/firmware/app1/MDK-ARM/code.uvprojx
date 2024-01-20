@@ -274,7 +274,7 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8020000</StartAddress>
+                <StartAddress>0x8060000</StartAddress>
                 <Size>0x40000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
@@ -551,16 +551,6 @@
               <FileName>filter.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\filter.c</FilePath>
-            </File>
-            <File>
-              <FileName>cJSON.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\cJSON.c</FilePath>
-            </File>
-            <File>
-              <FileName>json_para.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\json_para.c</FilePath>
             </File>
           </Files>
         </Group>

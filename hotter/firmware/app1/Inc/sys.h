@@ -8,7 +8,9 @@ void delay_us(uint32_t nCount);
 #define MQTT_TX_TICK_NO  		1
 #define MODBUS_FRAME_TICK_NO  	2
 #define MODBUS_TX_TICK_NO  		3
-#define MODBUS_TEMP_TX_TICK_NO  4
+#define MODBUS_MQTT_PID_TICK_NO   4
+#define MODBUS_POLL_TICK_NO  5
+
 
 typedef struct
 {

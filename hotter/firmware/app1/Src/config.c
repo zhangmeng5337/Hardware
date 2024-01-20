@@ -3,7 +3,7 @@
 
 
 
-CONFIG_stru config_usr;
+static CONFIG_stru config_usr;
 
 
 void config_save()
@@ -85,69 +85,69 @@ void config_init()
     ReadFlash(CONFIG_Addr, (uint8_t *)&head, 1);
 
 
-    if (head == 0x5a)
-    {
+//    if (head == 0x5a)
+//    {
 
 
-        index = 1;
-        len = sizeof(get_config()->user);
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->user, len);
+//        index = 1;
+//        len = sizeof(get_config()->user);
+//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->user, len);
 
-        index = index + len;
-        len = sizeof(get_config()->password);
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->password, len);
+//        index = index + len;
+//        len = sizeof(get_config()->password);
+//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->password, len);
 
-        index = index + len;
-        len = sizeof(get_config()->mqtt_ip);
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_ip, len);
+//        index = index + len;
+//        len = sizeof(get_config()->mqtt_ip);
+//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_ip, len);
 
-        index = index + len;
-        len = sizeof(get_config()->mqtt_port);
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_port, len);
-
-
-        index = index + len;
-        len = sizeof(get_config()->version);
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->version, len);
+//        index = index + len;
+//        len = sizeof(get_config()->mqtt_port);
+//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_port, len);
 
 
-        index = index + len;
-        len = sizeof(get_config()->http_ip);
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_ip, len);
-
-        index = index + len;
-        len = sizeof(get_config()->http_port);
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_port, len);
+//        index = index + len;
+//        len = sizeof(get_config()->version);
+//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->version, len);
 
 
-        index = index + len;
-        len = sizeof(get_config()->set_tout);
-        ReadFlash(CONFIG_Addr + index, buf, len);
-        memcpy(&get_config()->set_tout, buf, len);
+//        index = index + len;
+//        len = sizeof(get_config()->http_ip);
+//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_ip, len);
 
-        index = index + len;
-        len = sizeof(get_config()->set_tindoor);
-        ReadFlash(CONFIG_Addr + index, buf, len);
-        memcpy(&get_config()->set_tindoor, buf, len);
-
-        index = index + len;
-        len = sizeof(get_config()->set_up_period);
-        // ReadFlash(CONFIG_Addr + index, &get_config()->set_up_period, len);
-        ReadFlash(CONFIG_Addr + index, buf, len);
-        memcpy(&get_config()->set_up_period, buf, len);
+//        index = index + len;
+//        len = sizeof(get_config()->http_port);
+//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_port, len);
 
 
-        index = index + len;
-        len = sizeof(get_config()->mode);
-        ReadFlash(CONFIG_Addr + index, &get_config()->mode, len);
+//        index = index + len;
+//        len = sizeof(get_config()->set_tout);
+//        ReadFlash(CONFIG_Addr + index, buf, len);
+//        memcpy(&get_config()->set_tout, buf, len);
 
-        index = index + len;
-        len = sizeof(get_config()->fault_mask);
-        ReadFlash(CONFIG_Addr + index, buf, len);
-        memcpy(&get_config()->fault_mask, buf, len);
+//        index = index + len;
+//        len = sizeof(get_config()->set_tindoor);
+//        ReadFlash(CONFIG_Addr + index, buf, len);
+//        memcpy(&get_config()->set_tindoor, buf, len);
 
-    }
-    else
+//        index = index + len;
+//        len = sizeof(get_config()->set_up_period);
+//        // ReadFlash(CONFIG_Addr + index, &get_config()->set_up_period, len);
+//        ReadFlash(CONFIG_Addr + index, buf, len);
+//        memcpy(&get_config()->set_up_period, buf, len);
+
+
+//        index = index + len;
+//        len = sizeof(get_config()->mode);
+//        ReadFlash(CONFIG_Addr + index, &get_config()->mode, len);
+
+//        index = index + len;
+//        len = sizeof(get_config()->fault_mask);
+//        ReadFlash(CONFIG_Addr + index, buf, len);
+//        memcpy(&get_config()->fault_mask, buf, len);
+
+//    }
+//    else
     {
         sprintf(get_config()->user, "%s", "usr");
         sprintf(get_config()->password, "%s", "7895621");
@@ -167,7 +167,7 @@ void config_init()
         get_config()->set_tout = 45;
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
-        get_config()->set_up_period = 60;
+        get_config()->set_up_period = 10;
         get_config()->mode = 1;
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;

@@ -561,7 +561,7 @@ uint8_t lte_Info_Show(void)
         }
         else
         {
-
+            memset(get_config()->user_id,0,sizeof(get_config()->user_id));
             Find_string((char *)lte_recv->Lpuart1RecBuff, "\r\n", "\r\n", get_config()->user_id);
 		//	if(OTA_UPDATE_TO == APP1)
           //  	sprintf(get_config()->http_ip, "%s%s", "http://39.106.131.169:666/ota/a/", get_config()->user_id);

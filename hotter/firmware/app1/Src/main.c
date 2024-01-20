@@ -112,11 +112,12 @@ int main(void)
   MX_UART5_Init();
   MX_USART1_UART_Init();
   MX_SPI1_Init();
-  MX_IWDG_Init();
+ // MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
   //while(1)
 	//	;
   hardware_init();
+	MX_IWDG_Init();
 	//crc16(buf, 2);
 //  CAT1_Init();
 	 //test();
@@ -200,7 +201,7 @@ static void MX_IWDG_Init(void)
   /* USER CODE END IWDG_Init 1 */
   hiwdg.Instance = IWDG;
   hiwdg.Init.Prescaler = IWDG_PRESCALER_256;
-  hiwdg.Init.Reload = 124;
+  hiwdg.Init.Reload = 4095;
   if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
   {
     Error_Handler();

@@ -41,7 +41,7 @@
  * - Avoid polling nDRDY without a timeout to avoid the possibility of software entering into an infinite loop.
  */
 
-data_ai_stru data_ai;
+static data_ai_stru data_ai;
 
 
 
@@ -273,12 +273,21 @@ void ai_health_dec()
                 data_ai.failure_count[i] = 0;
                 //data_ai.temp[i] = 110;
             }
+			else
+			{
+			failure_flag = 1;
+			failure_flag = failure_flag << (i);
+			failure_flag = ~failure_flag ;
+			data_ai.channel_status = data_ai.channel_status & failure_flag;
+			
+			}
+
         }
     }
     for (i = 0; i < 8; i++)
     {
         failure_flag = 1;
-        if (data_ai.press[i] >= MAX_PRESS || data_ai.press[i] <= MIN_PRESS)
+        if (data_ai.press[i] >= MAX_PRESS || data_ai.press[i] < MIN_PRESS)
         {
             failure_flag = failure_flag << (i + 12);
             data_ai.channel_status = data_ai.channel_status | failure_flag;
@@ -298,11 +307,20 @@ void ai_health_dec()
             }
             if (data_ai.failure_count[i + 12] >= MAX_FAILUE)
             {
+                failure_flag = 1;
                 failure_flag = failure_flag << (i + 12);
                 data_ai.channel_status = data_ai.channel_status | failure_flag;
                 data_ai.failure_count[i + 12] = 0;
                 //data_ai.press[i] = 2;
             }
+			else
+			{
+			failure_flag = 1;
+			failure_flag = failure_flag << (i + 12);
+			failure_flag = ~failure_flag ;
+			data_ai.channel_status = data_ai.channel_status & failure_flag;
+
+			}
         }
     }
 }

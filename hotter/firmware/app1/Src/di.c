@@ -1,5 +1,5 @@
 #include "di.h"
-stru_di_stru di_usr;
+static stru_di_stru di_usr;
 /*
 diNO:di通道号
 di_usr.di_status：对应通道有输入，为1
