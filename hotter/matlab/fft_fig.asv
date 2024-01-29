@@ -52,7 +52,7 @@ figure(3)
 subplot(4,1,1);
 plot(t,x_creat);
 title('信号');
-xlabel('时间 (s)');
+xlabel('时间 (s) 采样率：6000Hz');
 ylabel('幅度');
 
 hold on;
@@ -60,11 +60,15 @@ disp('输入时间范围（例如：0.5 1）:');
 start_fft_time  = input('','s');
 start_fft_time = str2num(start_fft_time);
 
+if start_fft_time(1) == 0
+    start_fft_time(1) = step;
+end
 start_fft_time(1) = round(start_fft_time(1)/step);
 start_fft_time(2) = round(start_fft_time(2)/step);
 
 % 计算FFT
 % 绘制FFT图
+
 N = length(x_creat(start_fft_time(1):start_fft_time(2)))-1;
 
 f = Fs*(0:(N/2-1))/N;
@@ -85,7 +89,10 @@ title('功率谱密度');
 xlabel('频率 (Hz)');
 ylabel('功率');
 [ma, I]=max(P(2:end));	%ma为数组的最大值，I为下标值
+fprintf(1, '*******************************');
 fprintf(1, '信号频率最强处的频率值=%f\n', I/length(P)*Fs/2);
+fprintf(1, '信号频率最强处的频率值=%f\n', I/length(P)*Fs/2);
+
 % plot3(t,f,abs(X(1:N/2+1)));
 % figure(4)
 % plot(t,x,'b');

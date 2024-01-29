@@ -80,8 +80,8 @@ result  = input('','s');
 result = str2num(result);
 if result(1) == 1
     return
-else
-        continue;
+else if result(1) == 2
+        contin
 end
 end
 

@@ -8,12 +8,12 @@ fs =44100; %采样频率
 
 T = 1/fs; %采样周期
 Tone = 0;
-     for freq=200:1:600
+     for freq=450:1:550
     freq 
     tone1 = sin(2*pi*freq*(0:T:time1))*(db2mag(vol1)); 
     Tone = [Tone,tone1]; %组合所有声音片段
     end
-sound(Tone,fs) %可以播放声音的函数 sound()
+ sound(Tone,fs) %可以播放声音的函数 sound()
 
 %存储.wav音频文件
 
