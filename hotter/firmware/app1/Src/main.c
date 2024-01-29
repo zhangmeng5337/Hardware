@@ -112,12 +112,13 @@ int main(void)
   MX_UART5_Init();
   MX_USART1_UART_Init();
   MX_SPI1_Init();
- // MX_IWDG_Init();
+ // 
   /* USER CODE BEGIN 2 */
   //while(1)
 	//	;
   hardware_init();
 	MX_IWDG_Init();
+//	MX_IWDG_Init();
 	//crc16(buf, 2);
 //  CAT1_Init();
 	 //test();
@@ -304,7 +305,7 @@ static void MX_UART4_Init(void)
 
   /* USER CODE END UART4_Init 1 */
   huart4.Instance = UART4;
-  huart4.Init.BaudRate = 115200;
+  huart4.Init.BaudRate = 9600;
   huart4.Init.WordLength = UART_WORDLENGTH_8B;
   huart4.Init.StopBits = UART_STOPBITS_1;
   huart4.Init.Parity = UART_PARITY_NONE;

@@ -111,8 +111,7 @@ void Start_BootLoader(void)
 //    }
 
     unsigned char read_flag=0;
-		read_flag = Read_Start_Mode();
-    if(read_flag&0x20)
+		read_flag = Read_Start_Mode();    if(read_flag&0x20)
 		{
 			if(read_flag == 0x20)
 			{   
