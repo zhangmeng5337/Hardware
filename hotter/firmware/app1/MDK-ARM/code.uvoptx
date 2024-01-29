@@ -154,7 +154,7 @@
           <Type>0</Type>
           <LineNumber>325</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134242896</Address>
+          <Address>134242848</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -170,7 +170,7 @@
           <Type>0</Type>
           <LineNumber>271</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134237828</Address>
+          <Address>134237780</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -186,7 +186,7 @@
           <Type>0</Type>
           <LineNumber>359</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134244820</Address>
+          <Address>134244766</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -202,7 +202,7 @@
           <Type>0</Type>
           <LineNumber>349</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134244764</Address>
+          <Address>134244710</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -216,9 +216,25 @@
         <Bp>
           <Number>4</Number>
           <Type>0</Type>
+          <LineNumber>706</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134242016</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\lte_hal.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/lte_hal.c\706</Expression>
+        </Bp>
+        <Bp>
+          <Number>5</Number>
+          <Type>0</Type>
           <LineNumber>711</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134242078</Address>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134242030</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -230,73 +246,9 @@
           <Expression>\\app\../Src/lte_hal.c\711</Expression>
         </Bp>
         <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>691</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134245774</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\mqtt_analy.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\691</Expression>
-        </Bp>
-        <Bp>
           <Number>6</Number>
           <Type>0</Type>
-          <LineNumber>686</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134245718</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\mqtt_analy.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\686</Expression>
-        </Bp>
-        <Bp>
-          <Number>7</Number>
-          <Type>0</Type>
-          <LineNumber>649</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134245388</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\mqtt_analy.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\649</Expression>
-        </Bp>
-        <Bp>
-          <Number>8</Number>
-          <Type>0</Type>
-          <LineNumber>164</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134239564</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\config.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/config.c\164</Expression>
-        </Bp>
-        <Bp>
-          <Number>9</Number>
-          <Type>0</Type>
-          <LineNumber>162</LineNumber>
+          <LineNumber>712</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -305,12 +257,12 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Src\config.c</Filename>
+          <Filename>..\Src\lte_hal.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>10</Number>
+          <Number>7</Number>
           <Type>0</Type>
           <LineNumber>322</LineNumber>
           <EnabledFlag>0</EnabledFlag>
@@ -326,7 +278,7 @@
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>11</Number>
+          <Number>8</Number>
           <Type>0</Type>
           <LineNumber>328</LineNumber>
           <EnabledFlag>0</EnabledFlag>
@@ -351,152 +303,162 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>config_usr,0x0A</ItemText>
+          <ItemText>Version_buffer</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>addr_wr</ItemText>
+          <ItemText>addr_count,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>addr_count</ItemText>
+          <ItemText>TxBuffer</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TxBuffer</ItemText>
+          <ItemText>dev_id</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dev_id</ItemText>
+          <ItemText>tmp_f</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tmp_f</ItemText>
+          <ItemText>indoor_temperature</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>indoor_temperature</ItemText>
+          <ItemText>Version_buffer</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Version_buffer</ItemText>
+          <ItemText>str</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>str</ItemText>
+          <ItemText>compare_len,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>compare_len,0x0A</ItemText>
+          <ItemText>payload_head_index,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>1</WinNumber>
-          <ItemText>payload_head_index,0x0A</ItemText>
+          <ItemText>Bin_buffer</ItemText>
         </Ww>
         <Ww>
           <count>12</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Bin_buffer</ItemText>
+          <ItemText>buf</ItemText>
         </Ww>
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf</ItemText>
+          <ItemText>dev_pub</ItemText>
         </Ww>
         <Ww>
           <count>14</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dev_pub</ItemText>
+          <ItemText>mqtt_send_buf</ItemText>
         </Ww>
         <Ww>
           <count>15</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_send_buf</ItemText>
+          <ItemText>buf</ItemText>
         </Ww>
         <Ww>
           <count>16</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf</ItemText>
+          <ItemText>json_three</ItemText>
         </Ww>
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>json_three</ItemText>
+          <ItemText>mqtt_send_buf</ItemText>
         </Ww>
         <Ww>
           <count>18</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_send_buf</ItemText>
+          <ItemText>cmd</ItemText>
         </Ww>
         <Ww>
           <count>19</count>
           <WinNumber>1</WinNumber>
-          <ItemText>cmd</ItemText>
+          <ItemText>TxBuffer</ItemText>
         </Ww>
         <Ww>
           <count>20</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TxBuffer</ItemText>
+          <ItemText>mqtt_recv</ItemText>
         </Ww>
         <Ww>
           <count>21</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_recv</ItemText>
+          <ItemText>dev_id</ItemText>
         </Ww>
         <Ww>
           <count>22</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dev_id</ItemText>
+          <ItemText>buf</ItemText>
         </Ww>
         <Ww>
           <count>23</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf</ItemText>
+          <ItemText>data_ai</ItemText>
         </Ww>
         <Ww>
           <count>24</count>
           <WinNumber>1</WinNumber>
-          <ItemText>data_ai</ItemText>
+          <ItemText>mqtt_payload_u,0x10</ItemText>
         </Ww>
         <Ww>
           <count>25</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_payload_u,0x10</ItemText>
+          <ItemText>mqtt_send_buf</ItemText>
         </Ww>
         <Ww>
           <count>26</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_send_buf</ItemText>
+          <ItemText>di_usr</ItemText>
         </Ww>
         <Ww>
           <count>27</count>
           <WinNumber>1</WinNumber>
-          <ItemText>di_usr</ItemText>
+          <ItemText>failure_flag</ItemText>
         </Ww>
         <Ww>
           <count>28</count>
           <WinNumber>1</WinNumber>
-          <ItemText>failure_flag</ItemText>
+          <ItemText>modbus_tx</ItemText>
         </Ww>
         <Ww>
           <count>29</count>
           <WinNumber>1</WinNumber>
-          <ItemText>modbus_tx</ItemText>
+          <ItemText>modbus_recv</ItemText>
         </Ww>
         <Ww>
           <count>30</count>
           <WinNumber>1</WinNumber>
-          <ItemText>modbus_recv</ItemText>
+          <ItemText>volt_tmp2</ItemText>
+        </Ww>
+        <Ww>
+          <count>31</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tmp1</ItemText>
+        </Ww>
+        <Ww>
+          <count>32</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>rs485_str</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -901,7 +863,7 @@
       <GroupNumber>5</GroupNumber>
       <FileNumber>26</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Src\ota\stmflash.c</PathWithFileName>

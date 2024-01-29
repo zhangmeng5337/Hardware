@@ -189,8 +189,19 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+	
   /* USER CODE BEGIN SysTick_IRQn 0 */
-HAL_IWDG_Refresh(&hiwdg);
+	static unsigned int idwg_cnt = 0;
+	if(idwg_cnt<=3000)
+	{
+		idwg_cnt++;
+	}
+	else
+	{
+		  idwg_cnt = 0;
+			HAL_IWDG_Refresh(&hiwdg);	
+	}
+
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
