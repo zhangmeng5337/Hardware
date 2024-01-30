@@ -6,8 +6,8 @@ cpy_size = size(original);
 i= 1;
 sel_tick = 0;
 last_tick = 0;
-for i = 1:1:cpy_size(1)-1
-    if abs(original(i+1)-original(i))>=20
+for i = 1:1:cpy_size(1)-100
+    if abs(original(i+1)-original(i))>=5
         i
         i*step
         if(abs(i*step-last_tick)>=0.01)
@@ -20,7 +20,7 @@ cpy_size = size(sel_tick);
 start_index = 0;
 end_index = 0;
 original_cpy = [];
-for i = 1:1:cpy_size(1)
+for i = 1:1:cpy_size(1)-10
     if sel_tick(i)>0
     start_index = round((sel_tick(i)+0.05)/step-50);
     end_index = round((sel_tick(i)+0.2)/step);

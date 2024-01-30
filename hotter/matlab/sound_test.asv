@@ -1,6 +1,6 @@
 clear all;
 clc;
-%    Tone=audioread('Z:\\E\prj\code\test_50_550.wav');
+   Tone=audioread('Z:\\E\prj\code\test_50_550.wav');
 %close all;
 time1 =3; %第一个声音片段的总时长
 vol1 = 80; %第一个声音片段的音量

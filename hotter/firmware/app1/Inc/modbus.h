@@ -3,6 +3,7 @@
 
 #define DEV_SIZE    3
 #define MODBUS_RTU_COUNT            3
+#define MODBUS_RETRY_COUNT          4
 
 #define CONTROLLER_REG				0x0000
 #define TEMPERATURE_REG				0x0007
@@ -33,7 +34,7 @@ typedef struct
 	unsigned char dev_addr_index;
 }modbus_stru;
 
-unsigned char modbus_trans(unsigned char addr,unsigned char func,unsigned int reg,unsigned char *payload,unsigned int reg_count,unsigned char len);
+unsigned char modbus_trans(unsigned char addr,unsigned char func,unsigned int reg,unsigned char *payload,unsigned int reg_count,unsigned char len,unsigned char retry_times);
 void modbus_proc(void);
 void modbus_pack(unsigned char mode, unsigned char *pb);
 modbus_stru *get_recv_machine(void);
