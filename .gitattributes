@@ -1,1 +1,4 @@
+version https://git-lfs.github.com/spec/v1
+oid sha256:40347ab25cf0d05ea7f765a3b832260644f182ec972bfcef6c10e796e46a57f7
+size 84
 *.wav filter=lfs diff=lfs merge=lfs -text
