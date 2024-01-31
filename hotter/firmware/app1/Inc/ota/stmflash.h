@@ -25,6 +25,7 @@
 
 
 #define OTA_NUM_ADDR   0x801fff0
+
 #if OTA_UPDATE_TO == APP2
 #define APP_NUM		0x1a
 #define VECT_OFFSET_USR	0x20000

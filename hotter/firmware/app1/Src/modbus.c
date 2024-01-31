@@ -120,7 +120,7 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
         {
 
             modbus_tx.func = MODBUS_READ_CMD;
-            modbus_tx.regCount = len;
+            modbus_tx.regCount = reg_count;
             modbus_tx.reg = reg;
             // modbus_tx.retry_count = reg_count;
             modbus_recv.reg = modbus_tx.reg;
@@ -233,23 +233,23 @@ unsigned char  modbus_ctrl()
     if (get_config()->update_setting == 1
             || (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1))
     {
-#if CTRL_EN
-        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1)//every 180s£¬cal pid out
-        {
-            float u;
-            u = get_pid_output();
-            if (u == 0)
-            {
-                get_config()->machine = 0;//power off
-                get_config()->set_tout_tmp = 20; //set out temp
-            }
-            else
-                get_config()->set_tout_tmp = u;
+		#if CTRL_EN
+		    if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1)//every 180s£¬cal pid out
+		    {
+		        float u;
+		        u = get_pid_output();
+		        if (u == 0)
+		        {
+		            get_config()->machine = 0;//power off
+		            get_config()->set_tout_tmp = 20; //set out temp
+		        }
+		        else
+		            get_config()->set_tout_tmp = u;
 
-            modbus_tx.update = 3;//pid
+		        modbus_tx.update = 3;//pid
 
-        }
-#endif
+		    }
+		#endif
         if (get_config()->update_setting == 1)
         {
             modbus_tx.update = 2;  //server setting
@@ -270,6 +270,8 @@ void modbus_tx_proc(unsigned char mode)
 {
 
     unsigned char pb[512];
+	unsigned int len;
+	len = 0;
     registerTick(MODBUS_TX_TICK_NO, 500);
     if (GetTickResult(MODBUS_TX_TICK_NO) == 1) //every 500ms tx
     {
@@ -279,6 +281,7 @@ void modbus_tx_proc(unsigned char mode)
                 memcpy(pb, get_config()->machine, 1);
                 modbus_tx.func = MODBUS_WRITE_ONE_CMD;
                 modbus_tx.reg = CONTROLLER_REG;
+				len++;
                 break;
             case 2:
                 if (get_config()->set_tindoor < 15) //below 15 no pid ctrl
@@ -289,11 +292,12 @@ void modbus_tx_proc(unsigned char mode)
                     memcpy(pb, get_config()->set_tout_tmp, 2);
                 modbus_tx.func = MODBUS_WRITE_ONE_CMD;
                 modbus_tx.reg = TEMPERATURE_REG;
+				len++;
                 break;
             case 3:
                 modbus_tx.func = MODBUS_READ_CMD;
                 modbus_tx.reg = FAULT_REG;
-
+                len = 1;
                 break;
         }
 
@@ -308,7 +312,7 @@ void modbus_tx_proc(unsigned char mode)
             {
                 if (modbus_tx.address < MODBUS_RTU_COUNT)
                 {
-                    modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, 1, 1, 3);
+                    modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, len, 1, 3);
                     if (modbus_tx.retry_count == 0)
                     {
                         modbus_tx.retry_count = MODBUS_RETRY_COUNT;
@@ -332,7 +336,7 @@ void modbus_tx_proc(unsigned char mode)
                 modbus_tx.address = modbus_tx.address + 1;
                 modbus_tx.retry_count = MODBUS_RETRY_COUNT;
                 if (modbus_tx.address < MODBUS_RTU_COUNT)
-                    modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, 1, 1, 3);
+                    modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, len, 1, 3);
 
             }
 

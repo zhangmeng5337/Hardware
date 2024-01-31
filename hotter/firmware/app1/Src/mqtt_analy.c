@@ -231,6 +231,32 @@ dev---->ser
 char mqtt_send_buf[1024];
 
 //????
+/********************************************************************
+tmp = get_ai_data()->channel_status;
+    mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //8 bit di
+    mqtt_payload_u.status[DEV_STATUS_INDEX] =
+        mqtt_payload_u.status[DEV_STATUS_INDEX] << 20; //dev status
+    mqtt_payload_u.status[DEV_STATUS_INDEX] =
+        mqtt_payload_u.status[DEV_STATUS_INDEX] | tmp; //20bit ai but 8bit used
+    mqtt_payload_u.status[DEV_STATUS_INDEX] =
+        mqtt_payload_u.status[DEV_STATUS_INDEX] ;
+    mqtt_payload_u.status[DEV_MASK_INDEX] = get_config()->fault_mask;
+    mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX] = get_recv_machine()->fault;
+
+
+    
+mqtt_payload_u.status[DEV_STATUS_INDEX]:
+
+bit 31-bit24:di7-di0
+bit 19-bit8:pt100_11-pt100_0  bit8:out temperature;bit9:in temperature
+bit 7-bit0: press_7-pt100_0   bit0:front pressure; bit1:after pressure
+
+
+mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX]
+bit 15-bit8:dev addr
+bit 7-bit0: dev error code
+
+*********************************************************************/
 void upload()
 {
 
