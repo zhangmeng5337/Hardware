@@ -552,6 +552,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\filter.c</FilePath>
             </File>
+            <File>
+              <FileName>hotter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\hotter.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
