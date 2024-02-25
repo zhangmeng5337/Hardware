@@ -1,7 +1,7 @@
 #ifndef _LTE_HAL_H
 #define _LTE_HAL_H
 #include "main.h"
-#define LTE_SHORT_DELAY_MQTT  300
+#define LTE_SHORT_DELAY_MQTT  800
 #define LTE_SHORT_DELAY  50
 #define LTE_LONG_DELAY  1000
 #define LTE_LONG_DELAY2  1000

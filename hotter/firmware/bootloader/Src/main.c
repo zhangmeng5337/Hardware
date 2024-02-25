@@ -130,11 +130,11 @@ int main(void)
   MX_UART5_Init();
   MX_USART1_UART_Init();
   MX_SPI1_Init();
-  MX_IWDG_Init();
+  //MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
   //hardware_init();
-	HAL_Delay(5000);
-	//MX_IWDG_Init();
+	HAL_Delay(3000);
+	MX_IWDG_Init();
 	 //test();
 	// Start_BootLoader();
   /* USER CODE END 2 */
@@ -144,7 +144,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+HAL_IWDG_Refresh(&hiwdg);	
     /* USER CODE BEGIN 3 */
 		Start_BootLoader();
   }

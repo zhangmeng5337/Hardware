@@ -130,7 +130,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    HAL_IWDG_Refresh(&hiwdg);	
     /* USER CODE BEGIN 3 */
 		//HAL_Delay(1000);
 		//HAL_GPIO_TogglePin(status_GPIO_Port,status_Pin );

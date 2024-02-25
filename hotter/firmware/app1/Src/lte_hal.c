@@ -1,4 +1,4 @@
-﻿/*************笔记****************
+/*************笔记****************
 1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出�?
 2、CudeMX配置huart3�?
    ------------------------------------------
@@ -280,7 +280,7 @@ uint8_t lte_Send_Cmd_mqtt(uint8_t mode,uint8_t *cmd, uint8_t *ack, unsigned int 
 void CAT1_Init(void)
 {
     Start_4G();
-    HAL_Delay(5000);
+    HAL_Delay(3000);
     at_cmds.RtyNum = 0;
     at_cmd_num = AT;
     at_cmds.net_status = NO_REC;
