@@ -20,8 +20,8 @@
 #define APP1   0
 #define APP2   1
 
-#define OTA_UPDATE_TO   APP2
-#define VERSION        "V1.0.17"
+#define OTA_UPDATE_TO   APP1
+#define VERSION        "V1.0.18"
 
 
 #define OTA_NUM_ADDR   0x801fff0
