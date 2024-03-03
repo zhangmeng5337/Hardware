@@ -277,7 +277,7 @@ void upload()
     tmp = get_ai_data()->channel_status;
     mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //8 bit di
     mqtt_payload_u.status[DEV_STATUS_INDEX] =
-        mqtt_payload_u.status[DEV_STATUS_INDEX] << 20; //dev status
+        mqtt_payload_u.status[DEV_STATUS_INDEX] << 24; //dev status
     mqtt_payload_u.status[DEV_STATUS_INDEX] =
         mqtt_payload_u.status[DEV_STATUS_INDEX] | tmp; //20bit ai but 8bit used
     mqtt_payload_u.status[DEV_STATUS_INDEX] =

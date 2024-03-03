@@ -2,7 +2,7 @@
 #define MODBUS_H_
 
 #define DEV_SIZE    3
-#define MODBUS_RTU_COUNT            3
+#define MODBUS_RTU_COUNT            4
 #define MODBUS_RETRY_COUNT          4
 
 #define CONTROLLER_REG				0x0000

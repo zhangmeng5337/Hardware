@@ -4,7 +4,7 @@
 #define DI_SIZE  8
 typedef struct
 {
-	unsigned int di_status;
+	unsigned char di_status;
 	unsigned char di_No_buf[DI_SIZE];
 } stru_di_stru;
 

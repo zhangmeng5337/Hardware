@@ -39,7 +39,7 @@ float get_pid_output()
     else
     {
         if (indoor_temp_usr.output < PID_MIN) //换算成设备温�?
-            u = 0;
+            u = MACHINE_MIN_T;
         if (indoor_temp_usr.output > PID_MAX)//换算成设备温�?
             u = MACHINE_MAX_T;
 

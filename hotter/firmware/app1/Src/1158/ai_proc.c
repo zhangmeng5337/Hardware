@@ -255,7 +255,7 @@ void ai_health_dec()
         }
         else
         {
-            if (data_ai.temp[i] == data_ai.last_gather[i])
+           /* if (data_ai.temp[i] == data_ai.last_gather[i])
             {
                 data_ai.failure_count[i] = data_ai.failure_count[i] + 1;
             }
@@ -273,7 +273,7 @@ void ai_health_dec()
                 data_ai.failure_count[i] = 0;
                 //data_ai.temp[i] = 110;
             }
-			else
+			else*/
 			{
 			failure_flag = 1;
 			failure_flag = failure_flag << (i);
@@ -294,7 +294,7 @@ void ai_health_dec()
         }
         else
         {
-            if (data_ai.press[i] == data_ai.last_gather[i])
+            /*if (data_ai.press[i] == data_ai.last_gather[i])
             {
                 data_ai.failure_count[i + 12] = data_ai.failure_count[i] + 1;
             }
@@ -313,10 +313,11 @@ void ai_health_dec()
                 data_ai.failure_count[i + 12] = 0;
                 //data_ai.press[i] = 2;
             }
-			else
+			else*/
 			{
 			failure_flag = 1;
 			failure_flag = failure_flag << (i + 12);
+			
 			failure_flag = ~failure_flag ;
 			data_ai.channel_status = data_ai.channel_status & failure_flag;
 
