@@ -20,18 +20,26 @@
 #define APP1   0
 #define APP2   1
 
+#define APP3   3
 #define OTA_UPDATE_TO   APP2
-#define VERSION        "V1.0.18"
+#define VERSION        "V1.0.19"
 
 
 #define OTA_NUM_ADDR   0x801fff0
 
-#if OTA_UPDATE_TO == APP1
+#if OTA_UPDATE_TO == APP2
 #define APP_NUM		0x1a
 #define VECT_OFFSET_USR	0x20000
-#else
+#endif
+
+#if OTA_UPDATE_TO == APP1
 #define APP_NUM		0x2a
 #define VECT_OFFSET_USR	0x60000
+#endif
+#if OTA_UPDATE_TO == APP3
+#define APP_NUM		0x2a
+#define VECT_OFFSET_USR	0x00000
+
 #endif
 
 
