@@ -41,7 +41,7 @@
 
 
 
-const unsigned int PT100_ROM[PT100_ROM_NUM]=
+const  float PT100_ROM[PT100_ROM_NUM]=
 {
 	76.33	,	//-60
 	76.53	,	//-59.5

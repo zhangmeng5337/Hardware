@@ -20,7 +20,7 @@
 #define APP1   0
 #define APP2   1
 
-#define OTA_UPDATE_TO   APP1
+#define OTA_UPDATE_TO   APP2
 #define VERSION        "V1.0.18"
 
 
