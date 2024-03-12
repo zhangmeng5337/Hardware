@@ -28,8 +28,8 @@ char send_buffer[200];
 int addr_count = 0;
 int reboot_flag = 0;
 int Erase_flag = 1;
-/*入网AT指令集*/
-/*   发送指令内容    返回内容       超时时间，    发三次超时
+/*入网AT指令�?/
+/*   发送指令内�?   返回内容       超时时间�?   发三次超�?
    {"AT\r\n",       "OK", 1000, NO_REC, 3}*/
 
 /*
@@ -40,10 +40,10 @@ int Erase_flag = 1;
         "回水温度": "value",
         "泵前压力": "value",
         "泵后压力": "value",
-        "伴热带状态": "value"
+        "伴热带状�?: "value"
     },
     "设备参数": {
-        "版本号": 255,
+        "版本�?: 255,
         "故障": 255,
         "设置出水温度": "value",
         "设置室内温度": "value",
@@ -73,17 +73,17 @@ tsATCmds ATCmds[] =
     {"ATE0\r\n", "OK", 1000, NO_REC, 3},														//关闭回显
     {"AT+CPIN?\r\n", "READY", 1000, NO_REC, 3},
     {"AT+CGSN\r\n", "OK", 2000, NO_REC, 3},													//查询Imei
-    {"AT+CCID\r\n", "OK", 1000, NO_REC, 3},													//查询ICCID											//查询当前GPRS注册状态
-    {"AT+CGATT?\r\n", "+CGATT: 1", 2000, NO_REC, 3},//查询当前GPRS附着状态	
+    {"AT+CCID\r\n", "OK", 1000, NO_REC, 3},													//查询ICCID											//查询当前GPRS注册状�?
+    {"AT+CGATT?\r\n", "+CGATT: 1", 2000, NO_REC, 3},//查询当前GPRS附着状�?
     
     //mqtt 订阅订阅主题
     {"AT+MCONFIG=", "OK", 1000, NO_REC, 3},
     {"AT+MIPSTART=", "CONNECT OK", 2000, NO_REC, 3},
-    {"AT+AT+MSUBMCONNECT=1,300\r\n", "OK", 1000, NO_REC, 3},//客户端向服务器请求会话连接
+    {"AT+AT+MSUBMCONNECT=1,300\r\n", "OK", 1000, NO_REC, 3},//客户端向服务器请求会话连�?
     {"=", "SUBACK", 2000, NO_REC, 3},//订阅消息
 
 
-    /* 下面是关于查询版本号的AT指令集*/
+    /* 下面是关于查询版本号的AT指令�?/
     {"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK", 2000, NO_REC, 3},
     {"AT+SAPBR=3,1,\"APN\",\"\"", "OK", 2000, NO_REC, 3},
     {"AT+SAPBR=1,1", "OK", 2000, NO_REC, 3},
@@ -93,7 +93,7 @@ tsATCmds ATCmds[] =
     {"AT+HTTPACTION=0\r\n", "OK", 2000, NO_REC, 3},				//操作HTTP方法
     {"AT+HTTPREAD\r\n", "+HTTPREAD:", 2000, NO_REC, 3},			//读取HTTP服务回复
 
-    /* 下面是关于下载BIN文件的AT指令集*/
+    /* 下面是关于下载BIN文件的AT指令�?/
     {"AT+HTTPINIT\r\n", "OK", 2000, NO_REC, 3},
     {"AT+HTTPPARA=\"CID\",1", "OK", 2000, NO_REC, 3},
     {"AT+HTTPPARA=\"URL\",", "OK", 2000, NO_REC, 3},   //设置HTTP参数
@@ -101,7 +101,7 @@ tsATCmds ATCmds[] =
     {"AT+HTTPREAD\r\n", "+HTTPREAD: ", 2000, NO_REC, 3},			//读取HTTP服务回复
     {"AT+HTTPTERM\r\n", "OK", 2000, NO_REC, 3},
 
-    /* 下面是关于post的AT指令集*/
+    /* 下面是关于post的AT指令�?/
     {"AT+HTTPINIT\r\n", "OK", 2000, NO_REC, 3},
     {"AT+HTTPPARA=\"CID\",1", "OK", 2000, NO_REC, 3},
     {"AT+HTTPPARA=\"URL\",", "OK", 2000, NO_REC, 3},   //设置HTTP参数
@@ -119,14 +119,14 @@ unsigned char *mqtt_send_p;
 /* AT指令发送处理逻辑 */
 void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
 {
-    //清空接收缓存区
+    //清空接收缓存�?
     if (mode == 0)
     {
         memset(Lpuart1type.Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
         ATCmds[ATCmdNum].ATStatus = NO_REC;
         ATRecCmdNum = ATCmdNum;
         printf("\r\n当前命令码：%d\r\n", ATCmdNum);
-        /* 设置topic的长度 */
+        /* 设置topic的长�?*/
         if (ATCmdNum == AT_MCONFIG)
         {
             memset(get_config()->user_id, 0x00, sizeof(get_config()->user_id));
@@ -154,7 +154,7 @@ void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
             HAL_UART_Transmit(&huart1, (uint8_t *)send_buffer, strlen(send_buffer), 0xFF);
             memset(send_buffer, 0x00, strlen(send_buffer));
         }
-        else if (ATCmdNum == AT_MPUB)//发布阅消息 
+        else if (ATCmdNum == AT_MPUB)//发布阅消�?
         {
             sprintf(send_buffer, "%s%s,%d,%d,%s\r\n", ATCmds[ATCmdNum].ATSendStr,
                     get_config()->mqtt_subtopic, 1,0,mqtt_send_p);
@@ -162,7 +162,7 @@ void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
             memset(send_buffer, 0x00, strlen(send_buffer));
         }	
         else if (ATCmdNum == AT_HTTPPARA_2||ATCmdNum == AT_HTTPPARA_4||
-			     ATCmdNum == AT_HTTPPARA_6)//发布阅消息 AT_HTTPPARA_2
+			     ATCmdNum == AT_HTTPPARA_6)//发布阅消�?AT_HTTPPARA_2
         {
             sprintf(send_buffer, "%s%s\r\n", ATCmds[ATCmdNum].ATSendStr,
                     get_config()->http_ip);
@@ -174,7 +174,7 @@ void ATSend(teATCmdNum ATCmdNum, unsigned char mode)
             HAL_UART_Transmit(&huart1, (uint8_t *)ATCmds[ATCmdNum].ATSendStr, strlen(ATCmds[ATCmdNum].ATSendStr), 0xff);
             printf("send:%s", ATCmds[ATCmdNum].ATSendStr);
         }
-        //打开超时定时器
+        //打开超时定时�?
         SetTime(&TimeCAT1, ATCmds[ATCmdNum].TimeOut);
     }
 
@@ -196,7 +196,7 @@ void ATRec(void)
         {
             ATCmds[ATRecCmdNum].ATStatus = ERROR_STATUS;;
         }
-        //printf("收到数据：%s", Lpuart1type.Lpuart1RecBuff);
+        //printf("收到数据�?s", Lpuart1type.Lpuart1RecBuff);
         Lpuart1type.Lpuart1RecFlag = 0;
         Lpuart1type.Lpuart1RecLen = 0;
     }
@@ -204,7 +204,7 @@ void ATRec(void)
 
 
 
-/*4G开机*/
+/*4G开�?/
 void Start_4G(void)
 {
     lte_init();
@@ -229,9 +229,9 @@ void CAT1_Task(void)
     {
         switch (CAT1_TaskStatus)
         {
-            case CAT1_IDIE: //空闲态
+            case CAT1_IDIE: //空闲�?
                 break;
-            case CAT1_SEND://发送命令
+            case CAT1_SEND://发送命�?
                 if (ATCurrentCmdNum != ATNextCmdNum)
                 {
                     CurrentRty = ATCmds[ATCurrentCmdNum].RtyNum;
@@ -240,7 +240,7 @@ void CAT1_Task(void)
                 CAT1_TaskStatus = CAT1_WAIT;
 
                 break;
-            case CAT1_WAIT:	//等待态，等待CAT1返回的信息
+            case CAT1_WAIT:	//等待态，等待CAT1返回的信�?
                 ATRec();	//调用接收函数
                 if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
                 {
@@ -307,7 +307,7 @@ void CAT1_Task(void)
                         }
 
                         printf("Find_Buf:%lu\r\n", compare_len);
-                        if (Erase_flag == 1)	//仅仅开始是擦除flash一次
+                        if (Erase_flag == 1)	//仅仅开始是擦除flash一�?
                         {
                             Erase_flag = 0;
 													Erase_page(Application_2_Addr, 2); //擦除2扇区
@@ -322,8 +322,8 @@ void CAT1_Task(void)
                             {
                                 Bin_buffer[b] = Lpuart1type.Lpuart1RecBuff[len + b];
                             }
-                            /* 接下来将固件写进flash内 */
-                            printf("烧录第%d包...................\r\n", addr_count);
+                            /* 接下来将固件写进flash�?*/
+                            printf("烧录�?d�?..................\r\n", addr_count);
                             WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), 1024);
                             addr_count++;
                             ATNextCmdNum = ATCurrentCmdNum;
@@ -336,9 +336,9 @@ void CAT1_Task(void)
                             {
                                 Bin_buffer[b] = Lpuart1type.Lpuart1RecBuff[len + b];
                             }
-                            /* 接下来将固件写进flash内  */
+                            /* 接下来将固件写进flash�? */
 
-                            printf("烧录第%d包...................\r\n", addr_count);
+                            printf("烧录�?d�?..................\r\n", addr_count);
                             WriteFlash((Application_2_Addr + (addr_count) * 1024), (uint8_t *)(&Bin_buffer[0]), compare_len);
                             addr_count = 0;
                             Erase_flag = 1;
@@ -363,7 +363,7 @@ void CAT1_Task(void)
                         // HAL_NVIC_SystemReset();
                         break;
                     }
-                    else if (ATCurrentCmdNum == AT_MPUB)	//表示发送完成
+                    else if (ATCurrentCmdNum == AT_MPUB)	//表示发送完�?
                     {
 						ATCurrentCmdNum = AT_MPUB_RECV;
 						ATNextCmdNum = AT_MPUB;
@@ -394,7 +394,7 @@ void CAT1_Task(void)
 
                     }
                 }
-                else if (CompareTime(&TimeCAT1)) //表示发送超时
+                else if (CompareTime(&TimeCAT1)) //表示发送超�?
                 {
                     printf("TimeOut:%s\r\n", Lpuart1type.Lpuart1RecBuff);
                     ATCmds[ATRecCmdNum].ATStatus = TIME_OUT;
@@ -412,7 +412,7 @@ void CAT1_Task(void)
                     }
                 }
                 return;
-            case CAT1_MQTT_REC:	//不需要升级，循环接受服务器命令
+            case CAT1_MQTT_REC:	//不需要升级，循环接受服务器命�?
                 ATRec();	//调用接收函数
                 if (ATCmds[ATRecCmdNum].ATStatus == SUCCESS_REC)
                 {
@@ -422,14 +422,14 @@ void CAT1_Task(void)
                         anlysis_mqtt_recv();
                     }
                 }
-                else if (ATCmds[ATRecCmdNum].ATStatus == ERROR_STATUS) //异常值
+                else if (ATCmds[ATRecCmdNum].ATStatus == ERROR_STATUS) //异常�?
                 {
                      ATCmds[ATRecCmdNum].ATStatus = NO_REC;
                     CAT1_Init();
                     return;
                 }
                 return;
-            case CAT1_ACCESS:	//成功态
+            case CAT1_ACCESS:	//成功�?
                 CAT1_TaskStatus = CAT1_IDIE;
                 break;
             default:
@@ -438,7 +438,7 @@ void CAT1_Task(void)
     }
 }
 
-/* MQTT发送报文 */
+/* MQTT发送报�?*/
 
 void MQTTSendData(unsigned char mode,unsigned char *s)
 {
@@ -464,7 +464,7 @@ void MQTTSendData(unsigned char mode,unsigned char *s)
 
 }
 
-/* 查询版本号任务 */
+/* 查询版本号任�?*/
 void Get_Version(void)
 {
     CAT1_TaskStatus = CAT1_SEND;

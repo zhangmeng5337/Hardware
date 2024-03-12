@@ -23,135 +23,355 @@ mqtt_payload_stru *get_mqtt_payload()
 {
     return &mqtt_payload_u;
 }
+char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
+{
+
+
+    char recv_buf[128];
+    static unsigned char valid_dat;
+	memset(recv_buf,0,128);
+    if (end_flag == 0)
+    {
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id,
+                        ",\r\n", recv_buf) == 1)
+        {
+            valid_dat = 1;
+        }
+
+    }
+    if (valid_dat == 1)
+    {
+        if (end_flag == 1)
+            valid_dat = 0;
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, pb_left, pb_right,
+                        recv_buf) == 1)
+            return recv_buf;
+        else
+            return NULL;
+    }
+    else
+        return NULL;
+
+}
 void anlysis_mqtt_recv()
 {
 
-    char dev_id[128];
-    unsigned char valid_flag;
+    char *dev_id;
+    unsigned char valid_flag, i, j, k;
     float tmp_f;
 
 
-    valid_flag = 0;
+    //valid_flag = 0;
     get_config()->update_setting = 0;
-    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id,
-                    ",\r\n", dev_id) == 1)
+
+
+
+
+    dev_id = find_json_string("\"Updat Frimware\": ", ",", 0);
+    if (dev_id != NULL)
     {
-        //if ((strcmp(dev_id, get_config()->user_id)) == 0)
-        valid_flag = 1;
+       // memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        sprintf(&get_config()->reboot, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+        get_config()->reboot = tmp_f;
 
     }
-    if (valid_flag == 1)
+
+    dev_id = find_json_string("\"Reboot Dev\": ", ",", 1);
+    if (dev_id != NULL)
     {
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Updat Frimware\": ", ",",
-                        dev_id) == 1)
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        sprintf(&get_config()->reboot, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+        get_config()->reboot = tmp_f;
+    }
+
+    dev_id = find_json_string("\"heatPump1\":", "}", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+		if(tmp_f == 1)
+        	get_config()->machine = get_config()->machine|0x0001;
+
+    }
+
+    dev_id = find_json_string("\"heatPump1\":", "}", 1);
+    if (dev_id != NULL)
+    {
+       // memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+		if(tmp_f == 1)
+        	get_config()->machine = get_config()->machine|0x0001;
+
+    }
+
+    dev_id = find_json_string("\"heatPump2\":", "}", 1);
+    if (dev_id != NULL)
+    {
+      //  memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+		if(tmp_f == 1)
+        	get_config()->machine = get_config()->machine|0x0002;
+
+    }
+	
+    dev_id = find_json_string("\"heatPump3\":", "}", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+		if(tmp_f == 1)
+        	get_config()->machine = get_config()->machine|0x0004;
+
+    }
+
+    dev_id = find_json_string("\"heatPump4\":", "}", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+		if(tmp_f == 1)
+        	get_config()->machine = get_config()->machine|0x0010;
+
+    }
+
+    dev_id = find_json_string("\"heatPump5\":", "}", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+		if(tmp_f == 1)
+        	get_config()->machine = get_config()->machine|0x0020;
+
+    }
+
+    dev_id = find_json_string("\"heatPump6\":", "}", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+		if(tmp_f == 1)
+        	get_config()->machine = get_config()->machine|0x0040;
+
+    }
+
+	
+
+    dev_id = find_json_string("\"Set Out Temp\": ", ",", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        tmp_f = atof(&dev_id[0]);
+        get_config()->set_tout = tmp_f;
+        get_config()->set_tout_tmp = tmp_f;
+
+
+    }
+
+    dev_id = find_json_string("\"Set Room Temp\": ", ",", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        get_config()->update_setting = 2;
+        tmp_f = atof(&dev_id[0]);
+        get_config()->set_tindoor = tmp_f;
+
+    }
+
+
+    dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+      //  memset(dev_id, 0, 128);
+        get_config()->update_setting = 2;
+        tmp_f = atof(&dev_id[0]);
+        get_config()->set_up_period = tmp_f;
+    }
+
+
+    dev_id = find_json_string("\"Room Temp\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+        unsigned char buf[32];
+        j = 0;
+        k = 0;
+        i = 0;
+        while (dev_id[i] != ']')
         {
-            get_config()->update_setting = 1;
-            sprintf(&get_config()->update_firm, "%s", dev_id);//????
-            tmp_f = atoi(&dev_id[0]);
-            get_config()->update_firm = tmp_f;
-
-        }
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Reboot Dev\": ", ",",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 1;
-            sprintf(&get_config()->reboot, "%s", dev_id); //????
-            tmp_f = atoi(&dev_id[0]);
-            get_config()->reboot = tmp_f;
-
-
-        }
-        memset(dev_id, 0, 128);
-
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Power ctrl\": ", ",",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 1;
-            //sprintf(&get_config()->machine, "%s", dev_id); //????
-            tmp_f = atoi(&dev_id[0]);
-            get_config()->machine = tmp_f;
-
-        }
-        memset(dev_id, 0, 128);
-
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Set Out Temp\": ", ",",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 1;
-            tmp_f = atof(&dev_id[0]);
-            get_config()->set_tout = tmp_f;
-            get_config()->set_tout_tmp = tmp_f;
-        }
-
-
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Set Room Temp\": ", ",",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 2;
-            tmp_f = atof(&dev_id[0]);
-            get_config()->set_tindoor = tmp_f;
-
-        }
-
-
-        memset(dev_id, 0, 128);
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff,
-                        "\"Set Upload Period(second)\": ", "\r\n",
-                        dev_id) == 1)
-        {
-            get_config()->update_setting = 2;
-            tmp_f = atof(&dev_id[0]);
-            get_config()->set_up_period = tmp_f;
-
-
-        }
-
-        unsigned char buf[16], j, i, k;
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Room Temp\": [", "\r\n",
-                        dev_id) == 1)
-        {
-            j = 0;
-            k = 0;
-            i=0;
-            while (dev_id[i] != ']')
+            if (dev_id[i] != ',' && dev_id[i] != ']')
+                buf[j++] = dev_id[i];
+            else
             {
-                if (dev_id[i] != ','&&dev_id[i] != ']')
-                    buf[j++] = dev_id[i];
-                else
-                {
-                    tmp_f = atof(buf);
-                    get_config()->indoor_temperature[k++] = tmp_f;
-                    memset(buf, 0, 16);
-                    j = 0;
-
-                }
-                i++;
-
-                get_config()->update_setting = 2;
+                tmp_f = atof(buf);
+                get_config()->indoor_temperature[k++] = tmp_f;
+                memset(buf, 0, 16);
+                j = 0;
 
             }
+            i++;
 
-            tmp_f = atof(buf);
-            get_config()->indoor_temperature[k++] = tmp_f;
-
-
+            get_config()->update_setting = 2;
 
         }
-        //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
 
-#if CTRL_EN
-        float *buf;
-        buf = low_temperature_cal(get_config()->indoor_temperature, ENVIRO_SIZE);
-        get_temp_cal(buf);
-        fuzzy_proc(0);  //????????
-#endif
-        // valid_flag = 0;
-
+        tmp_f = atof(buf);
+        get_config()->indoor_temperature[k++] = tmp_f;
 
     }
+
+
+
+
+    //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
+
+#if CTRL_EN
+    float *buf;
+    buf = low_temperature_cal(get_config()->indoor_temperature, ENVIRO_SIZE);
+    get_temp_cal(buf);
+    fuzzy_proc(0);  //????????
+#endif
+    // valid_flag = 0;
+
+
+
+
+//    if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id,
+//                    ",\r\n", dev_id) == 1)
+//    {
+//        //if ((strcmp(dev_id, get_config()->user_id)) == 0)
+//        valid_flag = 1;
+//
+//    }
+//    if (valid_flag == 1)
+//    {
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Updat Frimware\": ", ",",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            sprintf(&get_config()->update_firm, "%s", dev_id);//????
+//            tmp_f = atoi(&dev_id[0]);
+//            get_config()->update_firm = tmp_f;
+//
+//        }
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Reboot Dev\": ", ",",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            sprintf(&get_config()->reboot, "%s", dev_id); //????
+//            tmp_f = atoi(&dev_id[0]);
+//            get_config()->reboot = tmp_f;
+//
+//
+//        }
+//        memset(dev_id, 0, 128);
+//
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Power ctrl\": ", ",",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            //sprintf(&get_config()->machine, "%s", dev_id); //????
+//            tmp_f = atoi(&dev_id[0]);
+//            get_config()->machine = tmp_f;
+//
+//        }
+//        memset(dev_id, 0, 128);
+//
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Set Out Temp\": ", ",",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 1;
+//            tmp_f = atof(&dev_id[0]);
+//            get_config()->set_tout = tmp_f;
+//            get_config()->set_tout_tmp = tmp_f;
+//        }
+//
+//
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Set Room Temp\": ", ",",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 2;
+//            tmp_f = atof(&dev_id[0]);
+//            get_config()->set_tindoor = tmp_f;
+//
+//        }
+//
+//
+//        memset(dev_id, 0, 128);
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff,
+//                        "\"Set Upload Period(second)\": ", "\r\n",
+//                        dev_id) == 1)
+//        {
+//            get_config()->update_setting = 2;
+//            tmp_f = atof(&dev_id[0]);
+//            get_config()->set_up_period = tmp_f;
+//
+//
+//        }
+//
+//        unsigned char buf[16], j, i, k;
+//        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, "\"Room Temp\": [", "\r\n",
+//                        dev_id) == 1)
+//        {
+//            j = 0;
+//            k = 0;
+//            i = 0;
+//            while (dev_id[i] != ']')
+//            {
+//                if (dev_id[i] != ',' && dev_id[i] != ']')
+//                    buf[j++] = dev_id[i];
+//                else
+//                {
+//                    tmp_f = atof(buf);
+//                    get_config()->indoor_temperature[k++] = tmp_f;
+//                    memset(buf, 0, 16);
+//                    j = 0;
+//
+//                }
+//                i++;
+//
+//                get_config()->update_setting = 2;
+//
+//            }
+//
+//            tmp_f = atof(buf);
+//            get_config()->indoor_temperature[k++] = tmp_f;
+//
+//
+//
+//        }
+//        //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
+//
+//#if CTRL_EN
+//        float *buf;
+//        buf = low_temperature_cal(get_config()->indoor_temperature, ENVIRO_SIZE);
+//        get_temp_cal(buf);
+//        fuzzy_proc(0);  //????????
+//#endif
+//        // valid_flag = 0;
+
+
 }
 
 /*
@@ -244,7 +464,7 @@ tmp = get_ai_data()->channel_status;
     mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX] = get_recv_machine()->fault;
 
 
-    
+
 mqtt_payload_u.status[DEV_STATUS_INDEX]:
 
 bit 31-bit24:di7-di0
@@ -260,7 +480,7 @@ bit 7-bit0: dev error code
 void upload()
 {
 
-
+    unsigned char buf2[64];
 
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
@@ -297,6 +517,24 @@ void upload()
 
 
 #if 1
+    memset(buf2, 0, 128);
+//1,3,2,0,0,184  0x01 0x03 0x02 0x00 0x00 0xb8
+    sprintf(buf2, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u",
+            get_recv_machine()->payload[0],
+            get_recv_machine()->payload[1],
+            get_recv_machine()->payload[2],
+            get_recv_machine()->payload[3],
+            get_recv_machine()->payload[4],
+            get_recv_machine()->payload[5],
+            get_recv_machine()->payload[6],
+            get_recv_machine()->payload[7],
+            get_recv_machine()->payload[8],
+            get_recv_machine()->payload[9],
+            get_recv_machine()->payload[10],
+            get_recv_machine()->payload[11],
+            get_recv_machine()->payload[12],
+            get_recv_machine()->payload[13]);
+
 
     sprintf(mqtt_send_buf, "{\\0D\\0A\\
             \\22Dev ID\\22: %s,\\0D\\0A\\
@@ -306,7 +544,7 @@ void upload()
                                   \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                                   \\22After Pressure\\22: %.2f,\\0D\\0A\\
                                   \\22Status\\22: %u,\\0D\\0A\\
-                                  \\22air pump_status\\22: %u\\0D\\0A\\
+                                  \\22air pump_status\\22: %s\\0D\\0A\\
                                  },\\0D\\0A\\
             \\22Dev Params\\22: {\\0D\\0A\\
                                  \\22Version\\22: \\22%s\\22,\\0D\\0A\\
@@ -320,12 +558,40 @@ mqtt_payload_u.data[TOUT_INDEX],
                     mqtt_payload_u.data[PUMP_F_INDEX],
                     mqtt_payload_u.data[PUMP_E_INDEX],
                     mqtt_payload_u.status[DEV_STATUS_INDEX],
-                    mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX],
+                    buf2,
                     mqtt_payload_u.version,
                     mqtt_payload_u.data[WATER_O_INDEX],
                     mqtt_payload_u.data[WATER_IN_INDEX],
                     mqtt_payload_u.data[UP_PERIOD_INDEX]);
 
+//      sprintf(mqtt_send_buf, "{\\0D\\0A\\
+//              \\22Dev ID\\22: %s,\\0D\\0A\\
+//              \\22Status Data\\22: {\\0D\\0A\\
+//                                    \\22Out Tem\\22: %.0f,\\0D\\0A\\
+//                                    \\22In Tem\\22: %.0f,\\0D\\0A\\
+//                                    \\22Front Pressure\\22: %.2f,\\0D\\0A\\
+//                                    \\22After Pressure\\22: %.2f,\\0D\\0A\\
+//                                    \\22Status\\22: %u,\\0D\\0A\\
+//                                    \\22air pump_status\\22: %u\\0D\\0A\\
+//                                   },\\0D\\0A\\
+//              \\22Dev Params\\22: {\\0D\\0A\\
+//                                   \\22Version\\22: \\22%s\\22,\\0D\\0A\\
+//                                   \\22Set Out Tem\\22: %.0f,\\0D\\0A\\
+//                                   \\22Set In Tem\\22: %.0f,\\0D\\0A\\
+//                                   \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
+//                                  }\\0D\\0A\\
+//  }", mqtt_payload_u.devid,
+//  mqtt_payload_u.data[TOUT_INDEX],
+//                      mqtt_payload_u.data[TIN_INDEX],
+//                      mqtt_payload_u.data[PUMP_F_INDEX],
+//                      mqtt_payload_u.data[PUMP_E_INDEX],
+//                      mqtt_payload_u.status[DEV_STATUS_INDEX],
+//                      mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX],
+//                      mqtt_payload_u.version,
+//                      mqtt_payload_u.data[WATER_O_INDEX],
+//                      mqtt_payload_u.data[WATER_IN_INDEX],
+//                      mqtt_payload_u.data[UP_PERIOD_INDEX]);
+//
 
 #else
     mqtt_send_buf = json_pack(&mqtt_payload_u);
@@ -364,164 +630,161 @@ uint8_t mqtt_Info_Show(void)
     memset(buf, 0, 1024);
     switch (mqtt_at_cmd_num)
     {
-    case AT_MCONFIG:
-    {
-        sprintf(buf, "AT+MCONFIG=%s,%s,%s\0D\0A",
-                get_config()->user_id, get_config()->user, get_config()->password);
-        if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY_MQTT)) //??AT
+        case AT_MCONFIG:
         {
-            mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+            sprintf(buf, "AT+MCONFIG=%s,%s,%s\0D\0A",
+                    get_config()->user_id, get_config()->user, get_config()->password);
+            if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MIPSTART;
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
         }
-        else
+        break;
+        case AT_MIPCLOSE:
         {
-            mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MIPSTART;
+            sprintf(buf, "AT+MIPCLOSE\r\n");
+            if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MIPSTART;
 
-            //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
         }
-
-    }
-    break;
-    case AT_MIPCLOSE:
-    {
-        sprintf(buf, "AT+MIPCLOSE\r\n");
-        if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY_MQTT)) //??AT
+        case AT_MIPSTART:
         {
-            mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+            sprintf(buf, "AT+MIPSTART=\"%s\",\"%s\"\r\n", get_config()->mqtt_ip,
+                    get_config()->mqtt_port);
+            if (lte_Send_Cmd(buf, "CONNECT", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MCONNECT;
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
         }
-        else
+        break;
+        case AT_MCONNECT:
         {
-            mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MIPSTART;
+            if (lte_Send_Cmd("AT+MCONNECT=1,3000\r\n", "CONNACK OK",
+                             LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MSUB;
 
-            //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
         }
+        break;
 
-    }
-    case AT_MIPSTART:
-    {
-        sprintf(buf, "AT+MIPSTART=\"%s\",\"%s\"\r\n", get_config()->mqtt_ip,
-                get_config()->mqtt_port);
-        if (lte_Send_Cmd(buf, "CONNECT", LTE_SHORT_DELAY_MQTT)) //??AT
+        case AT_MSUB:////subscribe msg
         {
-            mqtt_at_cmd_num = AT_MIPCLOSE;
-        }
-        else
-        {
-            mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MCONNECT;
-
-            //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
-        }
-
-    }
-    break;
-    case AT_MCONNECT:
-    {
-        if (lte_Send_Cmd("AT+MCONNECT=1,3000\r\n", "CONNACK OK",
-                         LTE_SHORT_DELAY_MQTT)) //??AT
-        {
-            mqtt_at_cmd_num = AT_MIPCLOSE;
-        }
-        else
-        {
-            mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MSUB;
-
-            //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
-        }
-
-    }
-    break;
-
-    case AT_MSUB:////subscribe msg
-    {
-        //dev_sub_temp_
+            //dev_sub_temp_
 //            unsigned char str[128];
-        // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
-        sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_ctrl_", get_config()->user_id,
-                0);
-        if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
-        {
-            mqtt_at_cmd_num = AT_MIPCLOSE;
+            // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+            sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_ctrl_", get_config()->user_id,
+                    0);
+            if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MSUB_1;
+            }
+
         }
-        else
+        case AT_MSUB_1:////subscribe msg
         {
+            //dev_sub_temp_
+            //            unsigned char str[128];
+            // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+            sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_temp_", get_config()->user_id,
+                    0);
+            if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
 
-            mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MSUB_1;
-        }
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MPUB_RECV;
+            }
 
-    }
-    case AT_MSUB_1:////subscribe msg
-    {
-        //dev_sub_temp_
-        //            unsigned char str[128];
-        // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
-        sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_temp_", get_config()->user_id,
-                0);
-        if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
-        {
-            mqtt_at_cmd_num = AT_MIPCLOSE;
-        }
-        else
-        {
-
-            mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MPUB_RECV;
-        }
-
-    }
-
-    break;
-    case AT_MPUB://public msg
-    {
-
-        sprintf(buf, "AT+MPUB=\"%s%s\",%d,%d,\"%s\"\r\n", get_config()->mqtt_mpubtopic,
-                get_config()->user_id,
-                1, 0, mqtt_send_buf);
-        //lte_Send_Cmd_mqtt(1,buf, "PUBACK", LTE_LONG_DELAY)
-        if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
-        {
-            mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
-            mqtt_at_cmd_num = AT_MIPCLOSE;
-        }
-        else
-        {
-            //mqtt_init();
-            mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MPUB_RECV;
-
-            //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
         }
 
-    }
-    break;
-    case AT_MPUB_RECV://????
-    {
-
-        unsigned char status;
-        status  = ATRec("+MSUB:");
-        mqtt_at_cmds.net_status = SUCCESS_REC;
-        if (status == SUCCESS_REC) //??AT
+        break;
+        case AT_MPUB://public msg
         {
-            anlysis_mqtt_recv();
+
+            sprintf(buf, "AT+MPUB=\"%s%s\",%d,%d,\"%s\"\r\n", get_config()->mqtt_mpubtopic,
+                    get_config()->user_id,
+                    1, 0, mqtt_send_buf);
+            //lte_Send_Cmd_mqtt(1,buf, "PUBACK", LTE_LONG_DELAY)
+            if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+                //mqtt_init();
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MPUB_RECV;
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
         }
-        else if (status == ERROR_STATUS)//????
+        break;
+        case AT_MPUB_RECV://????
         {
-            mqtt_init();
+
+            unsigned char status;
+            status  = ATRec("+MSUB:");
+            mqtt_at_cmds.net_status = SUCCESS_REC;
+            if (status == SUCCESS_REC) //??AT
+            {
+                anlysis_mqtt_recv();
+            }
+            else if (status == ERROR_STATUS)//????
+            {
+                mqtt_init();
+            }
         }
+        break;
 
-    }
-    break;
-
-
-
-defautl:
-    {
-        CAT1_Init();
-    }
-    break;
+    defautl:
+        {
+            CAT1_Init();
+        }
+        break;
 
 
     }
@@ -544,10 +807,10 @@ void mqtt_proc()
     {
         if (mqtt_Info_Show() == SUCCESS_REC) //mqtt??????
         {
-            if(get_config()->set_up_period>0&&get_config()->set_up_period<3600)
+            if (get_config()->set_up_period > 0 && get_config()->set_up_period < 3600)
             {
                 uint32_t tmp;
-                tmp = get_config()->set_up_period*1000;
+                tmp = get_config()->set_up_period * 1000;
                 registerTick(MQTT_TX_TICK_NO, tmp);
             }
 

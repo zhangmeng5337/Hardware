@@ -12,17 +12,17 @@
 #define PageSize				FLASH_PAGE_SIZE
 
 /**
-	*	第一部分：BootLoader 		     起始地址:	0x0801fff0 	大小为:64K 占4 sectors
-	*	第二部分：Application_1      起始地址:	0x08020000	大小为:256K 占2 sectors
-	*	第三部分：Application_2      起始地址:	0x08060000 	大小为:256K 占2 sectors
-	*	第三部分：参数区域           起始地址:	0x08010000 	大小为:64K 占1 sectors	
+	*	第一部分：BootLoader 		     起始地址:	0x0801fff0 	大小�?64K �? sectors
+	*	第二部分：Application_1      起始地址:	0x08020000	大小�?256K �? sectors
+	*	第三部分：Application_2      起始地址:	0x08060000 	大小�?256K �? sectors
+	*	第三部分：参数区�?          起始地址:	0x08010000 	大小�?64K �? sectors	
 	*/
 #define APP1   0
 #define APP2   1
 
 #define APP3   3
-#define OTA_UPDATE_TO   APP2
-#define VERSION        "V1.0.19"
+#define OTA_UPDATE_TO   APP1
+#define VERSION        "V1.0.29"
 
 
 #define OTA_NUM_ADDR   0x801fff0
@@ -46,11 +46,11 @@
 	
 
 
-#define BootLoader_Size				0x10000U						// BootLoader的区间大小  64K
-#define Application_Size			0x40000U					// Application的区间大小 256K
+#define BootLoader_Size				0x10000U						// BootLoader的区间大�? 64K
+#define Application_Size			0x40000U					// Application的区间大�?256K
 
-#define Application_1_Addr		0x08020000U				// 应用程序1的首地址占2 sectors
-#define Application_2_Addr		0x08060000U				// 应用程序2的首地址占2 sectors
+#define Application_1_Addr		0x08020000U				// 应用程序1的首地址�? sectors
+#define Application_2_Addr		0x08060000U				// 应用程序2的首地址�? sectors
 
 
 #define CONFIG_Addr		       0x08010000

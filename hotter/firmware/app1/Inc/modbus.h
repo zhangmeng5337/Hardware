@@ -1,7 +1,7 @@
 #ifndef MODBUS_H_
 #define MODBUS_H_
 
-#define DEV_SIZE    3
+#define DEV_SIZE    10
 #define MODBUS_RTU_COUNT            4
 #define MODBUS_RETRY_COUNT          4
 
@@ -32,6 +32,8 @@ typedef struct
 	unsigned char retry_count;
 	unsigned int  fault;
 	unsigned char dev_addr_index;
+	unsigned char recv_len;
+	unsigned char dev_addr_mask;//tx to specified dev
 }modbus_stru;
 
 unsigned char modbus_trans(unsigned char addr,unsigned char func,unsigned int reg,unsigned char *payload,unsigned int reg_count,unsigned char len,unsigned char retry_times);
