@@ -72,7 +72,7 @@ void disp_dat(unsigned char seg_num, unsigned char dat,
         {
             Write_dat(0x00, seg_tab[i]);
         }
-        for (i = (seg_num * 2); i < 16; i++)
+        for (i = (seg_num * 2); i < 18; i++)
         {
             Write_dat(0x00, seg_tab[i]);
         }
