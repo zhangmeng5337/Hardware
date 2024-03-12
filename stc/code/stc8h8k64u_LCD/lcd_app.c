@@ -54,8 +54,8 @@ void disp_dat(unsigned char seg_num, unsigned char dat,
         {
             if (seg_num == 6)
             {
-                Write_dat(tab[dat] << 4, tmp);      //写数据
-                Write_dat(tab[dat], tmp + 1);  //写数据
+                Write_dat(tab[dat], tmp);      //写数据
+                Write_dat(tab[dat] << 4, tmp + 1);  //写数据
                 Write_dat(0x01, tmp + 2);  //写数据\
             }
 
@@ -107,6 +107,7 @@ void disp_proc(void)
 	
 	disp_dat(8, 7,OFF);
 	delay_ms(1000);
-
+lcd_clear();
+delay_ms(3000);
 }
 

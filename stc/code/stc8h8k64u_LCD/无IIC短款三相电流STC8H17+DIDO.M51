@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    03/12/2024  14:40:02  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    03/12/2024  20:09:44  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -29,24 +29,23 @@ LINK MAP OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
 
             * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
             XDATA   0000H     000AH     UNIT         _XDATA_GROUP_
-            XDATA   000AH     0001H     UNIT         ?XD?LCD_CLEAR?LCD_APP
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
             CODE    0003H     00D5H     UNIT         ?PR?_DISP_DAT?LCD_APP
-            CODE    00D8H     0080H     UNIT         ?PR?DISP_PROC?LCD_APP
-            CODE    0158H     0039H     UNIT         ?PR?LCD_INIT?LCD_APP
-            CODE    0191H     0035H     UNIT         ?PR?_WRITE_BYTE?LCD_DRIVER
-            CODE    01C6H     002AH     UNIT         ?PR?_WRITE_DAT?LCD_DRIVER
-            CODE    01F0H     001DH     UNIT         ?PR?_WRITE_CMD?LCD_DRIVER
-            CODE    020DH     001DH     UNIT         ?PR?LCD_CLEAR?LCD_APP
-            CODE    022AH     001CH     UNIT         ?PR?INIT?MAIN
-            CODE    0246H     000EH     UNIT         ?PR?_DELAY1?SYS
-            CODE    0254H     000EH     UNIT         ?PR?_DELAY_MS?SYS
-            CODE    0262H     000CH     UNIT         ?C_C51STARTUP
-            CODE    026EH     000BH     UNIT         ?PR?MAIN?MAIN
-            CODE    0279H     000AH     UNIT         ?CO?LCD_APP
-            CODE    0283H     0001H     UNIT         ?PR?DELAY?SYS
+            CODE    00D8H     008AH     UNIT         ?PR?DISP_PROC?LCD_APP
+            CODE    0162H     0039H     UNIT         ?PR?LCD_INIT?LCD_APP
+            CODE    019BH     0035H     UNIT         ?PR?_WRITE_BYTE?LCD_DRIVER
+            CODE    01D0H     002AH     UNIT         ?PR?_WRITE_DAT?LCD_DRIVER
+            CODE    01FAH     001DH     UNIT         ?PR?_WRITE_CMD?LCD_DRIVER
+            CODE    0217H     001DH     UNIT         ?PR?LCD_CLEAR?LCD_APP
+            CODE    0234H     001CH     UNIT         ?PR?INIT?MAIN
+            CODE    0250H     000EH     UNIT         ?PR?_DELAY1?SYS
+            CODE    025EH     000EH     UNIT         ?PR?_DELAY_MS?SYS
+            CODE    026CH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0278H     000BH     UNIT         ?PR?MAIN?MAIN
+            CODE    0283H     000AH     UNIT         ?CO?LCD_APP
+            CODE    028DH     0001H     UNIT         ?PR?DELAY?SYS
 
 
 
@@ -59,10 +58,10 @@ SEGMENT                              XDATA_GROUP
 ?C_C51STARTUP                      -----    -----
   +--> ?PR?MAIN?MAIN
 
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  14:40:02  PAGE 2
-
-
 ?PR?MAIN?MAIN                      -----    -----
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  20:09:44  PAGE 2
+
+
   +--> ?PR?INIT?MAIN
   +--> ?PR?LCD_INIT?LCD_APP
   +--> ?PR?DISP_PROC?LCD_APP
@@ -88,9 +87,13 @@ SEGMENT                              XDATA_GROUP
 ?PR?DISP_PROC?LCD_APP              -----    -----
   +--> ?PR?_DISP_DAT?LCD_APP
   +--> ?PR?_DELAY_MS?SYS
+  +--> ?PR?LCD_CLEAR?LCD_APP
 
 ?PR?_DISP_DAT?LCD_APP              0000H    0004H
   +--> ?CO?LCD_APP
+  +--> ?PR?_WRITE_DAT?LCD_DRIVER
+
+?PR?LCD_CLEAR?LCD_APP              0000H    0001H
   +--> ?PR?_WRITE_DAT?LCD_DRIVER
 
 
@@ -116,21 +119,21 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   D:00CAH         PUBLIC        P5M0
   D:00B3H         PUBLIC        P4M1
   D:00B0H         PUBLIC        P3
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  20:09:44  PAGE 3
+
+
   D:00C9H         PUBLIC        P5M1
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  14:40:02  PAGE 3
-
-
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
   D:00A8H         PUBLIC        IE
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
-  C:026EH         PUBLIC        main
+  C:0278H         PUBLIC        main
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
-  C:022AH         PUBLIC        init
+  C:0234H         PUBLIC        init
   D:00D0H         PUBLIC        PSW
   D:0094H         PUBLIC        P0M0
   -------         PROC          INIT
@@ -138,31 +141,31 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   X:0000H         SYMBOL        i
   X:0001H         SYMBOL        j
   -------         ENDDO         
-  C:022AH         LINE#         12
-  C:022AH         LINE#         13
-  C:022AH         LINE#         16
-  C:022DH         LINE#         17
-  C:0230H         LINE#         18
-  C:0232H         LINE#         19
-  C:0234H         LINE#         20
-  C:0236H         LINE#         21
-  C:0238H         LINE#         22
-  C:023AH         LINE#         23
-  C:023CH         LINE#         24
-  C:023EH         LINE#         25
-  C:0240H         LINE#         26
-  C:0243H         LINE#         27
-  C:0245H         LINE#         29
+  C:0234H         LINE#         12
+  C:0234H         LINE#         13
+  C:0234H         LINE#         16
+  C:0237H         LINE#         17
+  C:023AH         LINE#         18
+  C:023CH         LINE#         19
+  C:023EH         LINE#         20
+  C:0240H         LINE#         21
+  C:0242H         LINE#         22
+  C:0244H         LINE#         23
+  C:0246H         LINE#         24
+  C:0248H         LINE#         25
+  C:024AH         LINE#         26
+  C:024DH         LINE#         27
+  C:024FH         LINE#         29
   -------         ENDPROC       INIT
   -------         PROC          MAIN
-  C:026EH         LINE#         32
-  C:026EH         LINE#         33
-  C:026EH         LINE#         34
-  C:0271H         LINE#         35
-  C:0274H         LINE#         36
-  C:0274H         LINE#         37
-  C:0274H         LINE#         38
-  C:0277H         LINE#         39
+  C:0278H         LINE#         32
+  C:0278H         LINE#         33
+  C:0278H         LINE#         34
+  C:027BH         LINE#         35
+  C:027EH         LINE#         36
+  C:027EH         LINE#         37
+  C:027EH         LINE#         38
+  C:0281H         LINE#         39
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
@@ -176,20 +179,20 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   D:00C8H         PUBLIC        P5
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  20:09:44  PAGE 4
+
+
   D:00A8H         PUBLIC        IE
-  C:0283H         PUBLIC        delay
+  C:028DH         PUBLIC        delay
   D:00B8H         PUBLIC        IP
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  14:40:02  PAGE 4
-
-
   D:00D8H         PUBLIC        CCON
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
-  C:0246H         PUBLIC        _delay1
-  C:0254H         PUBLIC        _delay_ms
+  C:0250H         PUBLIC        _delay1
+  C:025EH         PUBLIC        _delay_ms
   D:00D0H         PUBLIC        PSW
   -------         PROC          DELAY
-  C:0283H         LINE#         2
+  C:028DH         LINE#         2
   -------         ENDPROC       DELAY
   -------         PROC          _DELAY1
   D:0007H         SYMBOL        x
@@ -197,11 +200,11 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   D:0007H         SYMBOL        y
   D:0006H         SYMBOL        z
   -------         ENDDO         
-  C:0246H         LINE#         3
-  C:0246H         LINE#         4
-  C:0246H         LINE#         6
-  C:024CH         LINE#         7
-  C:0253H         LINE#         8
+  C:0250H         LINE#         3
+  C:0250H         LINE#         4
+  C:0250H         LINE#         6
+  C:0256H         LINE#         7
+  C:025DH         LINE#         8
   -------         ENDPROC       _DELAY1
   -------         PROC          _DELAY_MS
   D:0006H         SYMBOL        x
@@ -209,11 +212,11 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   D:0007H         SYMBOL        y
   D:0006H         SYMBOL        z
   -------         ENDDO         
-  C:0254H         LINE#         10
-  C:0254H         LINE#         11
-  C:0254H         LINE#         13
-  C:025AH         LINE#         14
-  C:0261H         LINE#         15
+  C:025EH         LINE#         10
+  C:025EH         LINE#         11
+  C:025EH         LINE#         13
+  C:0264H         LINE#         14
+  C:026BH         LINE#         15
   -------         ENDPROC       _DELAY_MS
   -------         ENDMOD        SYS
 
@@ -229,37 +232,37 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   D:00F8H         PUBLIC        P7
   D:00A8H         PUBLIC        IE
   D:00B8H         PUBLIC        IP
-  C:01F0H         PUBLIC        _Write_cmd
+  C:01FAH         PUBLIC        _Write_cmd
   D:00D8H         PUBLIC        CCON
-  C:01C6H         PUBLIC        _Write_dat
+  C:01D0H         PUBLIC        _Write_dat
   D:0098H         PUBLIC        SCON
   B:00A0H.2       PUBLIC        P22
   D:0088H         PUBLIC        TCON
   B:00A0H.3       PUBLIC        P23
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  20:09:44  PAGE 5
+
+
   B:00A0H.5       PUBLIC        P25
-  C:0191H         PUBLIC        _write_byte
+  C:019BH         PUBLIC        _write_byte
   D:00D0H         PUBLIC        PSW
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  14:40:02  PAGE 5
-
-
   -------         PROC          _WRITE_BYTE
   X:0007H         SYMBOL        byte
   X:0008H         SYMBOL        length
   -------         DO            
   X:0009H         SYMBOL        i
   -------         ENDDO         
-  C:0191H         LINE#         18
-  C:0199H         LINE#         19
-  C:0199H         LINE#         21
-  C:01A7H         LINE#         22
-  C:01A7H         LINE#         23
-  C:01A9H         LINE#         24
-  C:01ACH         LINE#         25
-  C:01B4H         LINE#         26
-  C:01B8H         LINE#         27
-  C:01BAH         LINE#         28
-  C:01BDH         LINE#         29
-  C:01C5H         LINE#         30
+  C:019BH         LINE#         18
+  C:01A3H         LINE#         19
+  C:01A3H         LINE#         21
+  C:01B1H         LINE#         22
+  C:01B1H         LINE#         23
+  C:01B3H         LINE#         24
+  C:01B6H         LINE#         25
+  C:01BEH         LINE#         26
+  C:01C2H         LINE#         27
+  C:01C4H         LINE#         28
+  C:01C7H         LINE#         29
+  C:01CFH         LINE#         30
   -------         ENDPROC       _WRITE_BYTE
   -------         PROC          _WRITE_DAT
   X:0004H         SYMBOL        dat
@@ -267,24 +270,24 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   -------         DO            
   X:0006H         SYMBOL        i
   -------         ENDDO         
-  C:01C6H         LINE#         31
-  C:01CEH         LINE#         32
-  C:01CEH         LINE#         34
-  C:01D0H         LINE#         35
-  C:01D3H         LINE#         36
-  C:01D5H         LINE#         37
-  C:01DCH         LINE#         38
-  C:01E6H         LINE#         39
+  C:01D0H         LINE#         31
+  C:01D8H         LINE#         32
+  C:01D8H         LINE#         34
+  C:01DAH         LINE#         35
+  C:01DDH         LINE#         36
+  C:01DFH         LINE#         37
+  C:01E6H         LINE#         38
+  C:01F0H         LINE#         39
   -------         ENDPROC       _WRITE_DAT
   -------         PROC          _WRITE_CMD
   X:0001H         SYMBOL        cmd
-  C:01F0H         LINE#         41
-  C:01F5H         LINE#         42
-  C:01F5H         LINE#         43
-  C:01F7H         LINE#         44
-  C:01FAH         LINE#         45
-  C:01FCH         LINE#         46
-  C:0203H         LINE#         47
+  C:01FAH         LINE#         41
+  C:01FFH         LINE#         42
+  C:01FFH         LINE#         43
+  C:0201H         LINE#         44
+  C:0204H         LINE#         45
+  C:0206H         LINE#         46
+  C:020DH         LINE#         47
   -------         ENDPROC       _WRITE_CMD
   -------         ENDMOD        LCD_DRIVER
 
@@ -296,47 +299,47 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   D:00B0H         PUBLIC        P3
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  20:09:44  PAGE 6
+
+
   D:00E8H         PUBLIC        P6
   D:00F8H         PUBLIC        P7
   D:00A8H         PUBLIC        IE
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  14:40:02  PAGE 6
-
-
   D:00B8H         PUBLIC        IP
-  C:020DH         PUBLIC        lcd_clear
+  C:0217H         PUBLIC        lcd_clear
   D:00D8H         PUBLIC        CCON
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
   B:00A0H.4       PUBLIC        P24
-  C:0279H         PUBLIC        tab
+  C:0283H         PUBLIC        tab
   C:00D8H         PUBLIC        disp_proc
-  C:0158H         PUBLIC        lcd_init
+  C:0162H         PUBLIC        lcd_init
   C:0003H         PUBLIC        _disp_dat
   D:00D0H         PUBLIC        PSW
   -------         PROC          LCD_CLEAR
   -------         DO            
-  X:000AH         SYMBOL        i
+  X:0000H         SYMBOL        i
   -------         ENDDO         
-  C:020DH         LINE#         19
-  C:020DH         LINE#         20
-  C:020DH         LINE#         22
-  C:021CH         LINE#         23
-  C:0229H         LINE#         25
+  C:0217H         LINE#         19
+  C:0217H         LINE#         20
+  C:0217H         LINE#         22
+  C:0226H         LINE#         23
+  C:0233H         LINE#         25
   -------         ENDPROC       LCD_CLEAR
   -------         PROC          LCD_INIT
   -------         DO            
   X:0000H         SYMBOL        i
   -------         ENDDO         
-  C:0158H         LINE#         26
-  C:0158H         LINE#         27
-  C:0158H         LINE#         29
-  C:015AH         LINE#         30
-  C:0161H         LINE#         31
-  C:0166H         LINE#         32
-  C:016BH         LINE#         37
-  C:0170H         LINE#         38
-  C:017FH         LINE#         39
-  C:018CH         LINE#         40
+  C:0162H         LINE#         26
+  C:0162H         LINE#         27
+  C:0162H         LINE#         29
+  C:0164H         LINE#         30
+  C:016BH         LINE#         31
+  C:0170H         LINE#         32
+  C:0175H         LINE#         37
+  C:017AH         LINE#         38
+  C:0189H         LINE#         39
+  C:0196H         LINE#         40
   -------         ENDPROC       LCD_INIT
   -------         PROC          _DISP_DAT
   X:0000H         SYMBOL        seg_num
@@ -356,12 +359,12 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   C:0025H         LINE#         54
   C:0025H         LINE#         55
   C:002AH         LINE#         56
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  20:09:44  PAGE 7
+
+
   C:002AH         LINE#         57
-  C:003EH         LINE#         58
+  C:003BH         LINE#         58
   C:0050H         LINE#         59
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/12/2024  14:40:02  PAGE 7
-
-
   C:005CH         LINE#         62
   C:005CH         LINE#         64
   C:005CH         LINE#         65
@@ -398,14 +401,13 @@ SYMBOL TABLE OF MODULE:  无IIC短款三相电流STC8H17+DIDO (MAIN)
   C:0141H         LINE#         106
   C:0148H         LINE#         108
   C:0151H         LINE#         109
+  C:0158H         LINE#         110
+  C:015BH         LINE#         111
   -------         ENDPROC       DISP_PROC
   -------         ENDMOD        LCD_APP
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_DELAY1?SYS
 
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?LCD_CLEAR?LCD_APP
-
-Program Size: data=9.0 xdata=11 code=644
-LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)
+Program Size: data=9.0 xdata=10 code=654
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
