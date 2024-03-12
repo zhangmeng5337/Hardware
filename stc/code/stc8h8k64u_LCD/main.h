@@ -9,10 +9,10 @@
 #define xint   xdata unsigned int
 #define xlong  unsigned long
 	
-#define CS		P25					//片选端
+#define CS		P10					//片选端    6
 #define	RD		P24					//读数据时钟
-#define WR		P23					//写数据时钟		
-#define DATA	P22					//串行数据端
+#define WR		P11					//写数据时钟7		
+#define DATA	P37					//串行数据端8
 
 
 #endif

@@ -2,6 +2,7 @@
 #include "lcd_app.h"
 
 #include "sys.h"
+uchar code seg_tab[]={0,1,2,3,4,5,13,14,15,16,17,18,19,26,27,28,29,30};//0-5 13-19 26-30
 uchar code tab[10] =
 {
     // 数字显示0-9，任何显示数字的区域，都是调用这里的数据
@@ -17,7 +18,7 @@ uchar code tab[10] =
     0XF3  // 9
 };
 void lcd_clear(void)
-{
+{ //0-5 13-19 26-30
     unsigned char i;
     for (i = 0; i < 32; i++)
         Write_dat(0x00, i);                   //RAM清零
@@ -54,26 +55,26 @@ void disp_dat(unsigned char seg_num, unsigned char dat,
         {
             if (seg_num == 6)
             {
-                Write_dat(tab[dat], tmp);      //写数据
-                Write_dat(tab[dat] << 4, tmp + 1);  //写数据
-                Write_dat(0x01, tmp + 2);  //写数据\
+                Write_dat(tab[dat], seg_tab[tmp]);      //写数据
+                Write_dat(tab[dat] << 4, seg_tab[tmp + 1]);  //写数据
+                Write_dat(0x01, seg_tab[tmp + 2]);  //写数据\
             }
 
         }
         else
         {
-            Write_dat(tab[dat], tmp);       //写数据
-            Write_dat(tab[dat] << 4, tmp + 1);  //写数据\
+            Write_dat(tab[dat], seg_tab[tmp]);       //写数据
+            Write_dat(tab[dat] << 4, seg_tab[tmp + 1]);  //写数据\
         }
 
 
         for (i = 0; i < ((seg_num - 1) * 2); i++)
         {
-            Write_dat(0x00, i);
+            Write_dat(0x00, seg_tab[i]);
         }
         for (i = (seg_num * 2); i < 16; i++)
         {
-            Write_dat(0x00, i);
+            Write_dat(0x00, seg_tab[i]);
         }
 
     }
