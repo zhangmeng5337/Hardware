@@ -27,7 +27,7 @@ void lcd_clear(void)
 void lcd_init(void)
 {
 	unsigned char i;
-    RD = 1;
+  //  RD = 1;
     delay_ms(100);
     Write_cmd(0x01);                    //开启系统时钟
     Write_cmd(0X18);                    //内部RC震荡
@@ -90,25 +90,25 @@ void disp_proc(void)
 	disp_dat(2, 1,OFF);
 	delay_ms(1000);
 	
-	disp_dat(3, 2,OFF);
+	disp_dat(3, 1,OFF);
 	delay_ms(1000);
 	
-	disp_dat(4, 3,OFF);
+	disp_dat(4, 1,OFF);
 	delay_ms(1000);
 	
-	disp_dat(5, 4,OFF);
+	disp_dat(5, 1,OFF);
 	delay_ms(1000);
 
 	
-	disp_dat(6, 5,ON);
+	disp_dat(6, 1,ON);
 	delay_ms(1000);
 	
-	disp_dat(7, 6,OFF);
+	disp_dat(7, 1,OFF);
 	delay_ms(1000);
 	
-	disp_dat(8, 7,OFF);
+	disp_dat(8, 1,OFF);
 	delay_ms(1000);
-lcd_clear();
+//lcd_clear();
 delay_ms(3000);
 }
 
