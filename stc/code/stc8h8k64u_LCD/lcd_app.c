@@ -2,20 +2,20 @@
 #include "lcd_app.h"
 
 #include "sys.h"
-uchar code seg_tab[]={0,1,2,3,4,5,13,14,15,16,17,18,19,26,27,28,29,30};//0-5 13-19 26-30
+
 uchar code tab[10] =
 {
     // 数字显示0-9，任何显示数字的区域，都是调用这里的数据
-    0Xf5, // 0
-    0X60, // 1
-    0Xb6, // 2
-    0XF2, // 3
-    0X63, // 4
-    0XD3, // 5
-    0XD7, // 6
-    0X70, // 7
-    0XF7, // 8
-    0XF3  // 9
+    0X5f, // 0
+    0X06, // 1
+    0X6b, // 2
+    0X2f, // 3
+    0X36, // 4
+    0X3D, // 5
+    0X7D, // 6
+    0X07, // 7
+    0X7F, // 8
+    0X3F  // 9
 };
 void lcd_clear(void)
 { //0-5 13-19 26-30
@@ -45,70 +45,95 @@ void disp_dat(unsigned char seg_num, unsigned char dat,
 {
     unsigned char i;
     unsigned char tmp;
-    if (seg_num > 0)
-    {
+//    if (seg_num > 0)
+//    {
 
 
-        tmp = seg_num - 1; //h4
-        tmp = tmp * 2;      //l4
-        if (dot_status == ON)
-        {
-            if (seg_num == 6)
-            {
-                Write_dat(tab[dat], seg_tab[tmp]);      //写数据
-                Write_dat(tab[dat] << 4, seg_tab[tmp + 1]);  //写数据
-                Write_dat(0x01, seg_tab[tmp + 2]);  //写数据\
-            }
+//        tmp = seg_num - 1; //h4
+//        tmp = tmp * 2;      //l4
+//        if (dot_status == ON)
+//        {
+//            if (seg_num == 6)
+//            {
+//                Write_dat(tab[dat], seg_tab[tmp]);      //写数据
+//                Write_dat(0x01, seg_tab[tmp + 2]);  //写数据\
+//            }
 
-        }
-        else
-        {
-            Write_dat(tab[dat], seg_tab[tmp]);       //写数据
-            Write_dat(tab[dat] << 4, seg_tab[tmp + 1]);  //写数据\
-        }
+//        }
+//        else
+//        {
+//            Write_dat(tab[dat], seg_tab[tmp]);       //写数据
+//            //Write_dat(tab[dat] << 4, seg_tab[tmp + 1]);  //写数据\
+//        }
 
 
-        for (i = 0; i < ((seg_num - 1) * 2); i++)
-        {
-            Write_dat(0x00, seg_tab[i]);
-        }
-        for (i = (seg_num * 2); i < 18; i++)
-        {
-            Write_dat(0x00, seg_tab[i]);
-        }
 
-    }
-}
-}
+
+//    }
+//}
+//}
 
 }
 void disp_proc(void)
 {
-	disp_dat(1, 0,OFF);//1代表第一个数码管，0为要显示的数据，OFF代表小数点关闭
+	//disp_dat(1, 0,OFF);//1代表第一个数码管，0为要显示的数据，OFF代表小数点关闭
 	delay_ms(1000);
 	
-	disp_dat(2, 1,OFF);
-	delay_ms(1000);
-	
-	disp_dat(3, 1,OFF);
-	delay_ms(1000);
-	
-	disp_dat(4, 1,OFF);
-	delay_ms(1000);
-	
-	disp_dat(5, 1,OFF);
-	delay_ms(1000);
+//	disp_dat(2, 1,OFF);
+//	delay_ms(1000);
+//	
+//	disp_dat(3, 1,OFF);
+//	delay_ms(1000);
+//	
+//	disp_dat(4, 1,OFF);
+//	delay_ms(1000);
+//	
+//	disp_dat(5, 1,OFF);
+//	delay_ms(1000);
 
-	
-	disp_dat(6, 1,ON);
+//	
+//	disp_dat(6, 1,ON);
+//	delay_ms(1000);
+//	
+//	disp_dat(7, 1,OFF);
+//	delay_ms(1000);
+//	
+//	disp_dat(8, 1,OFF);
 	delay_ms(1000);
-	
-	disp_dat(7, 1,OFF);
-	delay_ms(1000);
-	
-	disp_dat(8, 1,OFF);
-	delay_ms(1000);
-//lcd_clear();
+lcd_clear();
 delay_ms(3000);
 }
+/*
+    0Xf5, // 0
+    0X60, // 1
+    0Xb6, // 2
+    0XF2, // 3
+    0X63, // 4
+    0XD3, // 5
+    0XD7, // 6
+    0X70, // 7
+    0XF7, // 8
+    0XF3  // 9
 
+*/
+
+test2()
+{
+	  Write_dat2(tab,1);					
+		delay_ms(65535);
+		//Write_dat2(&tab[1],2);					
+		//delay_ms(1);
+		//Write_dat2(&tab[2],3);					
+		//delay_ms(1);
+		//Write_dat2(&tab[3],4);					
+		//delay_ms(1);
+	 // Write_dat2(&tab[4],5);					
+		//delay_ms(1);
+		//Write_dat2(&tab[5],6);					
+		//delay_ms(1);
+		//Write_dat2(&tab[6],7);					
+	//	delay_ms(1);
+	//	Write_dat2(&tab[7],8);					
+	//	delay_ms(1);	
+	
+}

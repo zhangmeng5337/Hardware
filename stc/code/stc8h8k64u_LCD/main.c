@@ -8,7 +8,7 @@
 
 #include "main.h"
 #include "lcd_app.h"
-
+#include "lcd_driver.h"
 void init()
 {
 	//初始化
@@ -19,11 +19,15 @@ void init()
 
 //		P3M1=0x00;
 //		P3M0=0x00;
-    P1M0 &= ~0x03;
-  	P1M1 &= ~0x03; 
-    P3M0 &= ~0x80; 
-	  P3M1 &= ~0x80; 
+//    P1M0 &= ~0x03;
+//  	P1M1 &= ~0x03; 
+//    P3M0 &= ~0x80; 
+//	  P3M1 &= ~0x80; 
 
+  P1M0 = 0x03; 
+	P1M1 = 0x00; 
+  P3M0 = 0x80; 
+	P3M1 = 0x00; 
 
 }
 
@@ -31,10 +35,12 @@ void init()
 main() 
 {
    init();
-   lcd_init();                             //初始化
+   lcd_init();                             //初始化		
+	
 	while(1)
 	{
-		disp_proc();
+test2();
+		;//disp_proc();
 	}
 }
 
