@@ -42,7 +42,7 @@ main()
     while(1)
     {
 
-        lcd_disp();
+		lcd_disp();
 
     }
 }
