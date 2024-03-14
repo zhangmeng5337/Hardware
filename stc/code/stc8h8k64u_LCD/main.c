@@ -11,36 +11,53 @@
 #include "lcd_driver.h"
 void init()
 {
-	//初始化
-		uchar i,j;
-//		P1M1=0x00;
-//		P1M0=0x00;
-
-
-//		P3M1=0x00;
-//		P3M0=0x00;
-//    P1M0 &= ~0x03;
-//  	P1M1 &= ~0x03; 
-//    P3M0 &= ~0x80; 
-//	  P3M1 &= ~0x80; 
 
   P1M0 = 0x03; 
 	P1M1 = 0x00; 
   P3M0 = 0x80; 
-	P3M1 = 0x00; 
+	P3M1 = 0x00;                             //启动定时器
 
 }
+void Timer0_Init(void)		//1毫秒@11.0592MHz
+{
+	AUXR |= 0x80;			//定时器时钟1T模式
+	TMOD &= 0xF0;			//设置定时器模式
+	TL0 = 0xCD;				//设置定时初始值
+	TH0 = 0xD4;				//设置定时初始值
+	TF0 = 0;				//清除TF0标志
+	TR0 = 1;				//定时器0开始计时
+	ET0 = 1;                                    //使能定时器中断
+  EA = 1;
+}
+unsigned char disp_flag;
+void TM0_Isr() interrupt 1
+{
+	  static unsigned char tick=0;
+	  if(tick<50)
+			tick++;
+		else
+		{ 
+			tick = 0;
+			disp_flag=1;                                //测试端口		
+		}
 
+}
 //主函数开始
 main() 
 {
    init();
-   lcd_init();                             //初始化		
-	
+
+   Ht1621_Init();                             //初始化		
+	 Timer0_Init();	
+	//	test2();
 	while(1)
 	{
-test2();
-		;//disp_proc();
+		 disp_proc();
+    if(disp_flag ==1)
+		{
+		
+			//disp_flag = 0;			
+		}
 	}
 }
 
