@@ -2,18 +2,19 @@
 #include "lcd_app.h"
 
 #include "sys.h"
-uchar code seg_num_tab[]={
-0,//1
-2,//2
-4,//3
-13,//4
-15,//5
-17,//6
-19,//7
-27,//8
+uchar code seg_num_tab[]=
+{
+    0,//1
+    2,//2
+    4,//3
+    13,//4
+    15,//5
+    17,//6
+    19,//7
+    27,//8
 };//9
 
- uchar code seg_tab2[] =
+uchar code seg_tab2[] =
 {
     // 数字显示0-9，任何显示数字的区域，都是调用这里的数据
     0X5f, // 0
@@ -26,146 +27,111 @@ uchar code seg_num_tab[]={
     0X07, // 7
     0X7F, // 8
     0X3F,  // 9
-	  0x80   //dot
+    0x80   //dot
 };
-//0,1,//1
-//2,3,//2
-//4,5,//3
-//13,14,//4
-//15,16,//5
-//17,18,//6
-//19,26,//7
-//27,28,//8
-//29,30};//9
 
-//void lcd_clear(void)
-//{ //0-5 13-19 26-30
-//    unsigned char i;
-//    for (i = 0; i < 32; i++)
-//        Write_dat2(0x00, i);                   //RAM清零
-
-//}
-//void lcd_init(void)
-//{
-//	unsigned char i;
-//  //  RD = 1;
-//    delay_ms(100);
-//    Write_cmd(0x01);                    //开启系统时钟
-//    Write_cmd(0X18);                    //内部RC震荡
-////  Write_cmd(0X14);                    //晶体振荡
-//////    Write_cmd(0X07);          //允许WDT暂停标志输出
-//////    Write_cmd(0X88);          //允许IRQ输出
-//////    Write_cmd(0X60);          //蜂鸣频率：2KHz
-//    Write_cmd(0x29);                    //1/3偏置，4COM
-//    for (i = 0; i < 32; i++)
-//	 {
-//		Write_dat2(0,i);		//写数据
-//	 }
-//    Write_cmd(0x03);                    //开显示
-//}
-
-
-void disp_dat(unsigned char seg_num, unsigned char dat,
-              unsigned char dot_status)
+unsigned char disp_flag;
+void disp_proc(unsigned char seg_num,unsigned char dat,unsigned char dot_status)
 {
-    unsigned char i;
     unsigned char tmp;
-    if (seg_num > 0)
-    {
-        if (dot_status == ON)
-        {
-					
-					  tmp = seg_tab2[dat];
 
-            if(seg_num == 7)
-						{
-	              Ht1621WrOneData(seg_num_tab[seg_num-1],(tmp|0x80)>>4);
-	              Ht1621WrOneData(26,tmp);
-						}
-						else
-						{
-	             Ht1621WrOneData(seg_num_tab[seg_num-1],tmp>>4);
-	             Ht1621WrOneData(seg_num_tab[seg_num],tmp);				
-						}
+    tmp = seg_tab2[dat];
+    switch(seg_num)
+    {
+    case 1:
+        Ht1621WrOneData(0,tmp>>4);
+        Ht1621WrOneData(1,tmp);	      //写数据
+        break;
+    case 2:
+        Ht1621WrOneData(2,tmp>>4);
+        Ht1621WrOneData(3,tmp);	      //写数据
+        break;
+    case 3:
+        Ht1621WrOneData(4,tmp>>4);
+        Ht1621WrOneData(5,tmp);	      //写数据
+        break;
+    case 4:
+        Ht1621WrOneData(13,tmp>>4);
+        Ht1621WrOneData(14,tmp);	      //写数据
+        break;
+    case 5:
+        Ht1621WrOneData(15,tmp>>4);
+        Ht1621WrOneData(16,tmp);	      //写数据
+        break;
+    case 6:
+        Ht1621WrOneData(17,tmp>>4);
+        Ht1621WrOneData(18,tmp);	      //写数据
+        break;
+    case 7:
+        if(dot_status == ON)
+            Ht1621WrOneData(19,(tmp|0x80)>>4);
+        else
+            Ht1621WrOneData(19,(tmp)>>4);
+        Ht1621WrOneData(26,tmp);
+        break;
+    case 8:
+        Ht1621WrOneData(27,tmp>>4);
+        Ht1621WrOneData(28,tmp);	      //写数据
+        break;
+    }
+
+}
+void lcd_disp()
+{
+    static unsigned int tick=0;
+    static unsigned int i=0,j;
+    unsigned char buf[8];
+    if(disp_flag == 1)
+    {
+//        i=i+1;
+//        buf[0] = i/10000000;
+
+//        j=i%10000000;
+//        buf[1] = j/1000000;
+
+//        j=i%1000000;
+//        buf[2] = j/100000;
+//        j=i%100000;
+//        buf[3] = j/10000;
+//        j=i%10000;
+//        buf[4] = j/1000;
+//        j=i%1000;
+//        buf[5] = j/100;
+//        j=i%100;
+//        buf[6] = j/10;
+//        j=i%10;
+//        buf[7] = j/1;
+
+        if(tick>=20)//1s刷新一次，20*50=1000ms
+        {
+            disp_proc(1,0,ON);//1代表数码管1,0位要显示的数字（使用时替换成想要显示的数字就行了），ON代表显示小数点，OFF代表不显示小数点
+            disp_proc(2,1,ON);
+            disp_proc(3,2,ON);
+            disp_proc(4,3,ON);
+            disp_proc(5,4,ON);
+            disp_proc(6,5,ON);
+            disp_proc(7,6,ON);
+            disp_proc(8,7,ON);
+            i=i+1;
         }
         else
-        {
-					  tmp = seg_tab2[dat];
+            tick++;
 
-            if(seg_num == 7)
-						{
 
-	              Ht1621WrOneData(seg_num_tab[seg_num-1],tmp>>4);
-	              Ht1621WrOneData(26,tmp);	
-						}
-						else
-						{
-	             Ht1621WrOneData(seg_num_tab[seg_num-1],tmp>>4);
-	             Ht1621WrOneData(seg_num_tab[seg_num],tmp);	      //写数据						
-						}
-        }
+        disp_flag = 0;
+
     }
 }
+void TM0_Isr() interrupt 1
+{
+    static unsigned char tick=0;
+    if(tick<50) //50ms定时，外部晶振为11.0592MHZ
+        tick++;
+    else
+    {
+        tick = 0;
+        disp_flag=1;                                //测试端口
+    }
 
-
-
-//test2()
-//{
-////	static unsigned char tick_disp=0,i=1;
-////	if(tick_disp <=20)
-////		tick_disp++;
-////	else 
-////	{
-////		tick_disp = 0;
-////		i ++;
-////		if(i>=8)
-////			i=1;
-////	}
-// disp_dat(1, 1,OFF);
-// disp_dat(2, 1,OFF);
-// disp_dat(3, 1,OFF);
-// disp_dat(4, 1,OFF);
-// disp_dat(5, 1,OFF);
-// disp_dat(6, 1,OFF);
-//// disp_dat(7, 1,OFF);
-//// disp_dat(8, 1,OFF);	
-//	
-//	 //Write_dat2(tmp|0x80, seg_tab[seg_num-1]);      //写数据
-//   //Write_dat2(tmp<<4, 26);  //写数据
-//	
-//}
-void disp_proc()
-{ 
-	unsigned char i,j;
-	for(i=0;i<10;i++)
-	{	
-		for(j=1;j<9;j++)
-		{
-			disp_dat(j, i,OFF);
-		}	
-	  DelayMS(5000);
-	}
-	
-	
-//	disp_dat(1, 1,OFF);
-//	
-//	disp_dat(2, 1,OFF);
-//	
-//	disp_dat(2, 1,OFF);
-
-//	
-//	disp_dat(1, 1,OFF);
-//	DelayMS(5000);
-//	
-//	disp_dat(1, 1,OFF);
-//	DelayMS(5000);
-//	
-//	disp_dat(1, 1,OFF);
-//	DelayMS(5000);
-//	
-//	disp_dat(1, 1,OFF);
-//	DelayMS(5000);
-//	
-//	disp_dat(1, 1,OFF);
-//	DelayMS(5000);
 }
+
