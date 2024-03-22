@@ -11,7 +11,7 @@
 *.WK3
 *.o
 *.crf
-
+*.M51
 Obj/
 *.DS_Store
 History/

@@ -102,7 +102,11 @@ void lcd_disp()
 //        j=i%10;
 //        buf[7] = j/1;
 
+<<<<<<< HEAD
         if(tick>=20)//1s刷新一次，20*50=1000ms
+=======
+        if(tick>=20)//1s刷新一次
+>>>>>>> c72cc78ddfaeba6c56efd87b908343bc1063eea2
         {
             disp_proc(1,0,ON);//1代表数码管1,0位要显示的数字（使用时替换成想要显示的数字就行了），ON代表显示小数点，OFF代表不显示小数点
             disp_proc(2,1,ON);
