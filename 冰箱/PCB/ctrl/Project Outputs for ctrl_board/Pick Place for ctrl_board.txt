@@ -1,0 +1,106 @@
+Designator Footprint               Mid X         Mid Y         Ref X         Ref Y         Pad X         Pad Y TB      Rotation Comment        
+
+P8         HDR1X2                1507mil        845mil       1507mil        895mil       1507mil        895mil  T        270.00 Header 2       
+C54        0603C              328.527mil       1327mil        299mil       1327mil        299mil       1327mil  T          0.00 1uF/50V/X5R    
+C67        1210C                 1423mil   1305.976mil       1423mil       1242mil       1423mil       1242mil  T         90.00 22uF/10V       
+C68        0603C                 1115mil   1278.527mil       1115mil       1249mil       1115mil       1249mil  T         90.00 0.1uF/50V/X5R  
+C137       0603C              703.528mil       1317mil        674mil       1317mil        674mil       1317mil  T          0.00 0.01uF/50V     
+C146       0603C             1164.527mil        302mil       1135mil        302mil       1135mil        302mil  T          0.00 0.1uF/50V/X5R  
+C2         1210C              295.024mil       1447mil        359mil       1447mil        359mil       1447mil  T        180.00 47uF/25V       
+D4         SMC                    304mil   1019.874mil        304mil        887mil        304mil        887mil  T         90.00 SS54           
+D6         SOD323                1638mil    762.756mil       1638mil        810mil       1638mil        810mil  T        270.00 CESDB5V0D3     
+D8         SOD323                1753mil    755.756mil       1753mil        803mil       1753mil        803mil  T        270.00 CESDB5V0D3     
+D71        SMA                   1005mil     485.74mil       1005mil        407mil       1005mil        407mil  T         90.00 5.1V           
+F4         1812-F                1195mil    478.417mil       1195mil        567mil       1195mil        567mil  T        270.00 2A             
+J1         TYPEC_16P             2387mil    163.808mil       2387mil         87mil   2216.921mil     71.617mil  T          0.00 TYPE C_16P     
+L1         0603R                 1777mil   1983.527mil       1777mil       1954mil       1777mil       1954mil  T         90.00 MPZ1608D101BTA00
+L3         CDRH105            749.787mil   1047.787mil        549mil        847mil    574.591mil   1047.787mil  T         90.00 CDRH105NP-100NC
+P1         USB-A             1809.795mil    431.882mil       1672mil        487mil       1672mil        487mil  T          0.00 Header 6       
+P2         HDR1X2                2759mil       1509mil       2759mil       1459mil       2759mil       1459mil  T         90.00 Header 2       
+P3         3X2.54MMZ             2875mil        169mil       2775mil        169mil       2775mil        169mil  T          0.00 Header 3       
+P4         12X2MMZ            872.008mil     2440.5mil       1310mil       2433mil       1310mil       2433mil  T        180.00 Header 11      
+P6         SIP-2A                3302mil         95mil       3302mil         95mil       3352mil         95mil  T        180.00 SIP-2          
+P7         4X2.54MMZ             1697mil   2393.968mil       1847mil       2392mil       1847mil       2392mil  T        180.00 Header 4       
+P22        HDR1X4                3011mil       1375mil       3011mil       1225mil       3011mil       1225mil  T         90.00 Header 4       
+Q14        SOT-23                1505mil       1990mil       1505mil       1990mil   1467.598mil   1940.787mil  T          0.00 LH8050QLT1G    
+R9         0603R             1698.527mil       1514mil       1669mil       1514mil       1669mil       1514mil  T          0.00 49.9           
+R52        0603R                 2718mil   2033.472mil       2718mil       2063mil       2718mil       2063mil  T        270.00 2K/1%          
+R53        0603R             2758.472mil       1929mil       2788mil       1929mil       2788mil       1929mil  T        180.00 2K/1%          
+R81        0603R                 2793mil   2035.472mil       2793mil       2065mil       2793mil       2065mil  T        270.00 75             
+R179       0603R              695.528mil       1637mil        666mil       1637mil        666mil       1637mil  T          0.00 100K           
+R185       0603R             1075.472mil        721mil       1105mil        721mil       1105mil        721mil  T        180.00 120K/1%        
+R186       0603R             1075.472mil        786mil       1105mil        786mil       1105mil        786mil  T        180.00 71.5K/1%       
+U6         SOP127P600X168_HS-8N        709mil       1477mil        709mil       1477mil    811.362mil       1402mil  T        180.00 LM22676MRE-5.0/NOPB
+U10        sot-23-5              1282mil       2136mil       1282mil       2136mil   1230.819mil    2175.37mil  T          0.00 AD8615AUJZ-R2  
+U52        TO228P1435X457-6N    575.465mil    547.732mil        792mil        406mil        792mil        406mil  T        180.00 MIC29302       
+Y1         CRAY_5032         2183.835mil       1991mil       2111mil       1991mil       2111mil       1991mil  T          0.00 8MHz           
+C18        0603C                 2467mil   1095.527mil       2467mil       1066mil       2467mil       1066mil  T         90.00 1uF/50V/X5R    
+C19        0603C             2561.472mil       1721mil       2591mil       1721mil       2591mil       1721mil  T        180.00 0.1uF/50V/X5R  
+C20        0603C             1706.527mil       1366mil       1677mil       1366mil       1677mil       1366mil  T          0.00 0.1uF/50V/X5R  
+C21        0603C                 2265mil   1098.527mil       2265mil       1069mil       2265mil       1069mil  T         90.00 0.1uF/50V/X5R  
+C22        0603C                 1706mil   1985.472mil       1706mil       2015mil       1706mil       2015mil  T        270.00 0.1uF/50V/X5R  
+C23        0603C                 1921mil   1983.472mil       1921mil       2013mil       1921mil       2013mil  T        270.00 0.1uF/50V/X5R  
+C26        0603C                 2346mil   1995.527mil       2346mil       1966mil       2346mil       1966mil  T         90.00 12P 50V        
+C27        0603C             2557.472mil       1654mil       2587mil       1654mil       2587mil       1654mil  T        180.00 1uF/50V/X5R    
+C28        0603C                 2330mil   1099.527mil       2330mil       1070mil       2330mil       1070mil  T         90.00 0.1uF/50V/X5R  
+C29        0603C             1703.527mil       1298mil       1674mil       1298mil       1674mil       1298mil  T          0.00 1uF/50V/X5R    
+C30        0603C             1693.527mil       1581mil       1664mil       1581mil       1664mil       1581mil  T          0.00 0.1uF/50V/X5R  
+C31        0603C             1695.527mil       1649mil       1666mil       1649mil       1666mil       1649mil  T          0.00 1uF/50V/X5R    
+C32        0603C                 2396mil   1095.527mil       2396mil       1066mil       2396mil       1066mil  T         90.00 0.1uF/50V/X5R  
+C34        0603C                 2011mil   1985.527mil       2011mil       1956mil       2011mil       1956mil  T         90.00 12P 50V        
+R10        0603R                 2305mil   2260.472mil       2305mil       2290mil       2305mil       2290mil  T        270.00 100R           
+R31        0603R                 2433mil   1987.472mil       2433mil       2017mil       2433mil       2017mil  T        270.00 100K           
+R1         0603R                 1846mil   1983.472mil       1846mil       2013mil       1846mil       2013mil  T        270.00 10K            
+R56        0603R             1024.472mil       1494mil       1054mil       1494mil       1054mil       1494mil  T        180.00 51R            
+R57        0603R             1500.472mil       1778mil       1530mil       1778mil       1530mil       1778mil  T        180.00 4.7K           
+R58        0603R                 1628mil   1998.472mil       1628mil       2028mil       1628mil       2028mil  T        270.00 1k/1%          
+R59        0603R             1499.527mil       1853mil       1470mil       1853mil       1470mil       1853mil  T          0.00 47K            
+BEEP1      BEEP-9.5X5.5          1191mil       1773mil       1191mil       1773mil       1191mil       1673mil  T         90.00 BEEP-9.5X5.5   
+C1         0603C             2561.472mil       1785mil       2591mil       1785mil       2591mil       1785mil  T        180.00 0.1uF/50V/X5R  
+C3         1210C                 1243mil   1305.976mil       1243mil       1242mil       1243mil       1242mil  T         90.00 22uF/10V       
+C162       1210C              295.024mil       1602mil        359mil       1602mil        359mil       1602mil  T        180.00 47uF/25V       
+D5         SOD323                1872mil    756.756mil       1872mil        804mil       1872mil        804mil  T        270.00 CESDB5V0D3     
+Q1         SOT-23                2776mil        554mil       2776mil        554mil   2813.402mil    603.213mil  T        180.00 AO3400         
+Q3         SOT23-3           3365.213mil     414.63mil       3316mil        454mil       3316mil        454mil  T        180.00 MMBT9015       
+R2         0603R             2552.528mil       1563mil       2523mil       1563mil       2523mil       1563mil  T          0.00 10K            
+R3         0603R             1086.472mil       2027mil       1116mil       2027mil       1116mil       2027mil  T        180.00 100K           
+R4         0603R             1087.527mil       2097mil       1058mil       2097mil       1058mil       2097mil  T          0.00 100K           
+R5         0603R             1089.472mil       2176mil       1119mil       2176mil       1119mil       2176mil  T        180.00 20K            
+R14        0603R                 3241mil    407.527mil       3241mil        378mil       3241mil        378mil  T         90.00 10K            
+R15        0603R             3287.472mil        592mil       3317mil        592mil       3317mil        592mil  T        180.00 1k/1%          
+R16        0603R             3286.472mil        519mil       3316mil        519mil       3316mil        519mil  T        180.00 1k/1%          
+R17        RESC1608X055N_0603        310mil       1957mil        310mil       1957mil        310mil   1926.016mil  T         90.00 100k           
+R18        RESC1608X055N_0603        185mil       1922mil        185mil       1922mil    215.984mil       1922mil  T        180.00 1k/1%          
+R19        RESC1608X055N_0603         86mil       2061mil         86mil       2061mil         86mil   2091.984mil  T        270.00 10k            
+R32        0603R             2728.472mil       1342mil       2758mil       1342mil       2758mil       1342mil  T        180.00 10K            
+R63        0603R                 2227mil   2260.472mil       2227mil       2290mil       2227mil       2290mil  T        270.00 100R           
+D1         SMC                    808mil   2067.126mil        808mil       2200mil        808mil       2200mil  T        270.00 SMCJ18CA       
+D2         sod123             226.634mil       1832mil        160mil       1832mil        160mil       1832mil  T          0.00 BZT52C18       
+Q2         SOT-23                3045mil        534mil       3045mil        534mil   3007.598mil    484.787mil  T          0.00 AO3400         
+Q4         SOT23-3             190.37mil   2065.213mil        151mil       2016mil        151mil       2016mil  T        270.00 MMBT4403-7-F   
+P5         6X2MMZ            2266.571mil       2431mil       2465mil       2431mil       2465mil       2431mil  T        180.00 Header 6       
+TVS3       SOD-523               2392mil       2260mil       2392mil       2260mil       2392mil       2230mil  T         90.00 ESD5Z5.0CT1G   
+TVS4       SOD-523               2143mil       2260mil       2143mil       2260mil       2143mil       2230mil  T         90.00 ESD5Z5.0CT1G   
+C4         1206C             1130.976mil        201mil       1067mil        201mil       1067mil        201mil  T          0.00 47uF/25V       
+U1         PowerPAK_SO-8      493.622mil   2044.409mil        595mil       2192mil    568.622mil   2154.598mil  T        270.00 Si7997DP       
+U3         LQFP-64           2137.362mil   1493.937mil       2285mil       1740mil       2285mil       1740mil  T        270.00 STM32F405RGT6  
+D10        SOD323                3371mil    861.756mil       3371mil        909mil       3371mil        909mil  T        270.00 CESDB5V0D3     
+D9         SOD323                3373mil   1167.756mil       3373mil       1215mil       3373mil       1215mil  T        270.00 CESDB5V0D3     
+D3         SOD323                3371mil   1789.756mil       3371mil       1837mil       3371mil       1837mil  T        270.00 CESDB5V0D3     
+D7         SOD323                3371mil   1479.756mil       3371mil       1527mil       3371mil       1527mil  T        270.00 CESDB5V0D3     
+FB1        0805CZ                1368mil     426.37mil       1368mil        387mil       1368mil        387mil  T         90.00 JWWBW2012 M600HT
+R22        0603R                 3455mil   1153.527mil       3455mil       1124mil       3455mil       1124mil  T         90.00 1k/1%          
+R20        0603R                 3455mil   1777.527mil       3455mil       1748mil       3455mil       1748mil  T         90.00 1k/1%          
+R21        0603R                 3456mil   1462.039mil       3456mil   1432.512mil       3456mil   1432.512mil  T         90.00 1k/1%          
+R23        0603R                 3457mil    843.528mil       3457mil        814mil       3457mil        814mil  T         90.00 1k/1%          
+SW3        SW-SMD_L3.9-W3.0-P4.45       3613mil   1123.667mil       3613mil   1123.667mil    3699.02mil   1123.667mil  T        180.00 SW PUSHBUTTON  
+SW4        SW-SMD_L3.9-W3.0-P4.45       3613mil        812mil       3613mil        812mil    3699.02mil        812mil  T        180.00 SW PUSHBUTTON  
+SW1        SW-SMD_L3.9-W3.0-P4.45       3613mil       1747mil       3613mil       1747mil    3699.02mil       1747mil  T        180.00 SW PUSHBUTTON  
+SW2        SW-SMD_L3.9-W3.0-P4.45       3613mil   1435.333mil       3613mil   1435.333mil    3699.02mil   1435.333mil  T        180.00 SW PUSHBUTTON  
+P9         4X2.54MMZ             3159mil   2395.968mil       3309mil       2394mil       3309mil       2394mil  T        180.00 Header 4       
+P10        KF250NH-3.5-2P    2714.102mil       2327mil       2783mil       2327mil       2783mil       2327mil  T        180.00 Header 2       
+R54        0603r             2773.528mil        752mil       2744mil        752mil       2744mil        752mil  T          0.00 10K            
+R7         0603r                 2916mil    520.528mil       2916mil        491mil       2916mil        491mil  T         90.00 10K            
+R6         0603r             3103.472mil        673mil       3133mil        673mil       3133mil        673mil  T        180.00 10K            
+R55        0603r             2805.528mil        428mil       2776mil        428mil       2776mil        428mil  T          0.00 10K            
+
