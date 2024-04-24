@@ -1,0 +1,42 @@
+#ifndef ADC_H
+#define ADC_H
+#include "main.h"
+#include "pt100.h"
+
+#define PT_VREF 2.499
+#define R2_V 2.0
+#define V2_V  0.092
+
+#define R1_V 10.0
+#define RF_V 100
+
+
+#define V1_RATIO 10.0
+
+
+#define ROM_NUM		1220
+
+
+#define MAX_TEMP_VOL  100
+#define MIN_TEMP_VOL -60
+
+
+typedef struct
+{
+	uint16_t adc_value[5];
+	float    T_value[4];
+	float    v_value[4];
+	float    R_value[4];
+    float    V2_V_offset;  
+	float ref;
+	unsigned char update;
+
+}adc_stru;
+
+
+void adc_init(void);
+adc_stru *get_temperature(void) ;
+void adc_proc(void);
+
+#endif
+
