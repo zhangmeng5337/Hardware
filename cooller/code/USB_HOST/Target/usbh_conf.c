@@ -133,7 +133,6 @@ void HAL_HCD_SOF_Callback(HCD_HandleTypeDef *hhcd)
   */
 void HAL_HCD_Connect_Callback(HCD_HandleTypeDef *hhcd)
 {
-	printf("Connected!\r\n\r\n");
   USBH_LL_Connect(hhcd->pData);
 }
 
@@ -144,7 +143,6 @@ void HAL_HCD_Connect_Callback(HCD_HandleTypeDef *hhcd)
   */
 void HAL_HCD_Disconnect_Callback(HCD_HandleTypeDef *hhcd)
 {
-	printf("Disconnected!\r\n\r\n");
   USBH_LL_Disconnect(hhcd->pData);
 }
 
@@ -276,28 +274,23 @@ USBH_SpeedTypeDef USBH_LL_GetSpeed(USBH_HandleTypeDef *phost)
   USBH_SpeedTypeDef speed = USBH_SPEED_FULL;
 
   switch (HAL_HCD_GetCurrentSpeed(phost->pData))
-    {
-        case 0:
-            speed = USBH_SPEED_HIGH;
-            printf("USB Host [HS]\r\n");
-            break;
+  {
+  case 0 :
+    speed = USBH_SPEED_HIGH;
+    break;
 
-        case 1:
-            speed = USBH_SPEED_FULL;
-            printf("USB Host [FS]\r\n");
-            break;
+  case 1 :
+    speed = USBH_SPEED_FULL;
+    break;
 
-        case 2:
-            speed = USBH_SPEED_LOW;
-            printf("USB Host [LS]\r\n");
-            break;
+  case 2 :
+    speed = USBH_SPEED_LOW;
+    break;
 
-        default:
-            speed = USBH_SPEED_FULL;
-            printf("USB Host [FS]\r\n");
-            break;
-    }
-
+  default:
+   speed = USBH_SPEED_FULL;
+    break;
+  }
   return  speed;
 }
 
@@ -314,7 +307,7 @@ USBH_StatusTypeDef USBH_LL_ResetPort(USBH_HandleTypeDef *phost)
   hal_status = HAL_HCD_ResetPort(phost->pData);
 
   usb_status = USBH_Get_USB_Status(hal_status);
-  printf("USB Reset Port\r\n");
+
   return usb_status;
 }
 

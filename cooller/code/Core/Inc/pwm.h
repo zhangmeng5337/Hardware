@@ -23,7 +23,7 @@ typedef struct
 }pwm_stru;
 
 void air_pwm_set(uint32_t freq);
-void air_pwm_out(uint32_t freq);
+void air_pwm_out();
 void pwm_set(unsigned char pwm_num, uint32_t counter);
 
 #endif

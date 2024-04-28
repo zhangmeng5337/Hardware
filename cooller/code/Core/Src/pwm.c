@@ -1,7 +1,7 @@
 #include "pwm.h"
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
-
+extern TIM_HandleTypeDef htim4;
 pwm_stru pwm_usr;
 
 void pwm_init()
@@ -27,19 +27,19 @@ void air_pwm_set(uint32_t freq)
     {
         if (pwm_usr.air_freq > 0)
         {
-            HAL_TIM_Base_Start_IT(&htim2);
-            HAL_TIM_Base_Start(&htim2);
+            HAL_TIM_Base_Start_IT(&htim4);
+            HAL_TIM_Base_Start(&htim4);
             pwm_usr.air_counter = pwm_usr.air_freq / TIM_BASE;
         }
         else
         {
             pwm_usr.air_counter = 0;
-            HAL_TIM_Base_Stop_IT(&htim2);
-            HAL_TIM_Base_Stop(&htim2);
+            HAL_TIM_Base_Stop_IT(&htim4);
+            HAL_TIM_Base_Stop(&htim4);
         }
     }
 }
-void air_pwm_out(uint32_t freq)
+void air_pwm_out()
 {
 
     static uint32_t start_tick = 0;

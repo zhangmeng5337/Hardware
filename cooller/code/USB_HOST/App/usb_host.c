@@ -106,18 +106,23 @@ static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id)
   switch(id)
   {
   case HOST_USER_SELECT_CONFIGURATION:
+		
+	printf("HOST_USER_SELECT_CONFIGURATION\r\n");
   break;
 
   case HOST_USER_DISCONNECTION:
   Appli_state = APPLICATION_DISCONNECT;
+	printf("Appli_state = APPLICATION_DISCONNECT\r\n");
   break;
 
   case HOST_USER_CLASS_ACTIVE:
   Appli_state = APPLICATION_READY;
+	printf("Appli_state = APPLICATION_READY\r\n");
   break;
 
   case HOST_USER_CONNECTION:
   Appli_state = APPLICATION_START;
+	printf("Appli_state = APPLICATION_START\r\n");
   break;
 
   default:

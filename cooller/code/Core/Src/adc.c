@@ -27,7 +27,7 @@ void adc_proc()
     static int j = 0;
     static float buf[4][N];
     static uint32_t tick_start;
-    if ((HAL_GetTick() - tick_start) >= 100)
+    if ((HAL_GetTick() - tick_start) >= ADC_POLL_T)
     {
         tick_start = HAL_GetTick();
         if (sensor_adc_value.update == 1)

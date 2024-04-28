@@ -45,6 +45,8 @@
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
+RTC_HandleTypeDef hrtc;
+
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
@@ -59,7 +61,7 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
-
+USBH_HandleTypeDef hUSBHost;    /* USB Host处理结构体 */
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,15 +76,59 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_UART5_Init(void);
 static void MX_TIM4_Init(void);
+static void MX_RTC_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
-
+FATFS *fs[FF_VOLUMES];  
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+//static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
+//{
+//    uint32_t total, free;
+//    uint8_t res = 0;
+//    printf("id:%d\r\n", id);
 
+//    switch (id)
+//    {
+//        case HOST_USER_SELECT_CONFIGURATION:
+//            break;
+
+//        case HOST_USER_DISCONNECTION:
+//            f_mount(0, "2:", 1);        /* 卸载U盘 */
+//           // text_show_string(30, 120, 200, 16, "设备连接中...", 16, 0, RED);
+//            //lcd_fill(30, 160, 239, 220, WHITE);
+//            break;
+
+//        case HOST_USER_CLASS_ACTIVE:
+//            //text_show_string(30, 120, 200, 16, "设备连接成功!", 16, 0, RED);
+//            f_mount(fs[2], "2:", 1);    /* 重新挂载U盘 */
+//            res = exfuns_get_free("2:", &total, &free);
+
+//            if (res == 0)
+//            {
+////                lcd_show_string(30, 160, 200, 16, 16, "FATFS OK!", BLUE);
+////                lcd_show_string(30, 180, 200, 16, 16, "U Disk Total Size:     MB", BLUE);
+////                lcd_show_string(30, 200, 200, 16, 16, "U Disk  Free Size:     MB", BLUE);
+////                lcd_show_num(174, 180, total >> 10, 5, 16, BLUE);   /* 显示U盘总容量 MB */
+////                lcd_show_num(174, 200, free >> 10, 5, 16, BLUE);
+//            }
+//            else
+//            {
+//                printf("U盘存储空间获取失败\r\n");
+//            }
+
+//            break;
+
+//        case HOST_USER_CONNECTION:
+//            break;
+
+//        default:
+//            break;
+//    }
+//}
 /* USER CODE END 0 */
 
 /**
@@ -124,8 +170,11 @@ int main(void)
   MX_TIM4_Init();
   MX_FATFS_Init();
   MX_USB_HOST_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-
+  //  USBH_Init(&hUSBHost, USBH_UserProcess, 0);
+    USBH_RegisterClass(&hUSBHost, USBH_MSC_CLASS);
+    USBH_Start(&hUSBHost);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -157,8 +206,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 4;
@@ -261,6 +311,69 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* USER CODE BEGIN Check_RTC_BKUP */
+
+  /* USER CODE END Check_RTC_BKUP */
+
+  /** Initialize RTC and set the Time and Date
+  */
+  sTime.Hours = 0x0;
+  sTime.Minutes = 0x0;
+  sTime.Seconds = 0x0;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+  sDate.Month = RTC_MONTH_JANUARY;
+  sDate.Date = 0x1;
+  sDate.Year = 0x0;
+
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
 
 }
 
@@ -547,7 +660,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 9600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;

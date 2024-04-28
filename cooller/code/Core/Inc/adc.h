@@ -27,8 +27,10 @@ typedef struct
 	float    T_value[4];
 	float    v_value[4];
 	float    R_value[4];
-    float    V2_V_offset;  
+    float    V2_V_offset; 
+	float    heater_T;
 	float ref;
+	float average_T;
 	unsigned char update;
 
 }adc_stru;

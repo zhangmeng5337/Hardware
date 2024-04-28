@@ -168,6 +168,7 @@
 /  number in the path name. _VOLUME_STRS defines the drive ID strings for each
 /  logical drives. Number of items must be equal to _VOLUMES. Valid characters for
 /  the drive ID strings are: A-Z and 0-9. */
+#define FF_VOLUMES		3   /* Ö§³Ö2¸ö´ÅÅÌ */
 /* USER CODE END Volumes */
 
 #define _MULTI_PARTITION     0 /* 0:Single partition, 1:Multiple partition */

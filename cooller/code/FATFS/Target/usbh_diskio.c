@@ -87,12 +87,10 @@ DSTATUS USBH_status(BYTE lun)
 
   if(USBH_MSC_UnitIsReady(&hUSB_Host, lun))
   {
-		printf("U盘状态查询成功\r\n");
     res = RES_OK;
   }
   else
   {
-		printf("U盘状态查询失败\r\n");
     res = RES_ERROR;
   }
 
@@ -122,7 +120,6 @@ DRESULT USBH_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
   }
   else
   {
-		printf("U盘读取失败\r\n");
     USBH_MSC_GetLUNInfo(&hUSB_Host, lun, &info);
 
     switch (info.sense.asc)
@@ -167,7 +164,6 @@ DRESULT USBH_write(BYTE lun, const BYTE *buff, DWORD sector, UINT count)
   }
   else
   {
-		printf("U盘写入失败\r\n");
     USBH_MSC_GetLUNInfo(&hUSB_Host, lun, &info);
 
     switch (info.sense.asc)
@@ -224,7 +220,6 @@ DRESULT USBH_ioctl(BYTE lun, BYTE cmd, void *buff)
     {
       *(DWORD*)buff = info.capacity.block_nbr;
       res = RES_OK;
-			printf("扇区数量:%d\r\n",info.capacity.block_nbr);
     }
     else
     {
@@ -238,7 +233,6 @@ DRESULT USBH_ioctl(BYTE lun, BYTE cmd, void *buff)
     {
       *(DWORD*)buff = info.capacity.block_size;
       res = RES_OK;
-			printf("扇区大小:%d\r\n",info.capacity.block_size);
     }
     else
     {
@@ -253,7 +247,6 @@ DRESULT USBH_ioctl(BYTE lun, BYTE cmd, void *buff)
     {
       *(DWORD*)buff = info.capacity.block_size / USB_DEFAULT_BLOCK_SIZE;
       res = RES_OK;
-			 printf("每个扇区擦除块:%d\r\n",info.capacity.block_size/USB_DEFAULT_BLOCK_SIZE);
     }
     else
     {
