@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "208" width = "449" height = "63" ShapeName = "Box" ShapeNum = "20" >box</box>
+<waveform style = "fill:Black; stroke:Green; stroke-width:1" x = "71" y = "0" width = "396" height = "200" ShapeName = "Red" ShapeNum = "17" Gwidth = "40" Gheight = "40" RadianNum = "Left2Right" Direction = "Yellow" StoreType = "1" />
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "6" y = "215" width = "64.85677" height = "16.75781" ShapeName = "Transparent" ShapeNum = "11" >设定温度</text>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "79" y = "212" width = "64" height = "24" ShapeName = "14" ShapeNum = "1" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "314" y = "241" width = "64" height = "24" ShapeName = "14" ShapeNum = "4" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "241" y = "248" width = "64.85677" height = "16.75781" ShapeName = "Transparent" ShapeNum = "14" >报警温度</text>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "6" y = "245" width = "64.85677" height = "16.75781" ShapeName = "Transparent" ShapeNum = "12" >实时温度</text>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "78" y = "241" width = "64" height = "24" ShapeName = "14" ShapeNum = "2" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "239" y = "217" width = "64.85677" height = "16.75781" ShapeName = "Transparent" ShapeNum = "13" >电池电量</text>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "313" y = "209" width = "64" height = "24" ShapeName = "14" ShapeNum = "3" TextAlignType = "Center" StoreType = "Local" Direction = "No" Gwidth = "Normal" RadianNum = "" >Edit</edit>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "29" y = "0" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "10" >50℃</text>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "33" y = "74" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "8" >10℃</text>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "28" y = "186" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "5" >-50℃</text>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "30" y = "149" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "6" >-30℃</text>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "30" y = "114" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "7" >-10℃</text>
+<text style = "fill:Blue; stroke:Transparent; font-family:; font-size:10pt" x = "32" y = "35" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "9" >30℃</text>
+</vlcd>

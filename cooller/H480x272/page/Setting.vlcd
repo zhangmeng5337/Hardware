@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "0" width = "480" height = "272" ShapeName = "Box" ShapeNum = "6" >box</box>
+<check style = "fill:none; stroke:Black; stroke-width:1" x = "33" y = "19" width = "127.9453" height = "23.46093" ShapeName = "14" ShapeNum = "25" StoreType = "Local" >背光默认关</check>
+<check style = "fill:none; stroke:Black; stroke-width:1" x = "271" y = "16" width = "149.0911" height = "23.46093" ShapeName = "14" ShapeNum = "24" StoreType = "Local" >触摸屏默认关</check>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "103" y = "68" width = "169" height = "32" ShapeName = "14" ShapeNum = "7" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p10" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "103" y = "119" width = "169" height = "32" ShapeName = "14" ShapeNum = "8" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p10" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "105" y = "167" width = "169" height = "32" ShapeName = "14" ShapeNum = "9" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p10" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "105" y = "213" width = "169" height = "32" ShapeName = "14" ShapeNum = "10" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p10" >Edit</edit>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "365" y = "216" width = "90" height = "44" ShapeName = "14" ShapeNum = "23" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >返回</button>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "30" y = "73" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "28" >温度</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "39" y = "120" width = "29.73784" height = "23.46093" ShapeName = "Transparent" ShapeNum = "29" >Kp</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "41" y = "170" width = "23.43055" height = "23.46093" ShapeName = "Transparent" ShapeNum = "26" >Ki</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "35" y = "218" width = "29.73784" height = "23.46093" ShapeName = "Transparent" ShapeNum = "27" >Kd</text>
+</vlcd>

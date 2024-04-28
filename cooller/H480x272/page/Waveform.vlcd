@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "0" width = "480" height = "272" ShapeName = "Box" ShapeNum = "1" >box</box>
+<image x = "0" y = "0" width = "408" height = "272" ShapeName = ""
+ ShapeNum = "2" xlink:href = "D:\vlcds\H480x272\image\image017.bmp">
+</image>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "374" y = "216" width = "82" height = "46" ShapeName = "14" ShapeNum = "36" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >返回</button>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "66" y = "220" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "34" RadianNum = "0" >0</number>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "238" y = "218" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "35" RadianNum = "0" >0</number>
+<waveform style = "fill:Black; stroke:Green; stroke-width:1" x = "47" y = "14" width = "316" height = "183" ShapeName = "Red" ShapeNum = "9" Gwidth = "20" Gheight = "20" RadianNum = "Left2Right" Direction = "Yellow" StoreType = "2" />
+</vlcd>

@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "0" width = "480" height = "272" ShapeName = "Box" ShapeNum = "1" >box</box>
+<progress x = "104" y = "16" width = "252" height = "36" ShapeName = "14" StoreType = "Color" ShapeNum = "18" RadianNum = ""
+ xlink:href = "">
+</progress>
+<progress x = "99" y = "80" width = "222" height = "13" ShapeName = "14" StoreType = "Image" ShapeNum = "20" RadianNum = "image010.bmp"
+ xlink:href = "D:\vlcds\H480x272\image\image009.bmp">
+</progress>
+<slider x = "90" y = "125" width = "180" height = "80" ShapeName = "WhiteSmoke" ShapeNum = "26" Direction = "Horizontal" StoreType = "Local" RadianNum = "0"
+ xlink:href = "D:\vlcds\H480x272\image\image011.bmp">
+</slider>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "363" y = "120" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "5" >亮度</text>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "378" y = "158" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "28" RadianNum = "0" >0</number>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "13" y = "26" width = "80.34504" height = "23.46093" ShapeName = "Transparent" ShapeNum = "29" >进度条1</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "11" y = "75" width = "80.34504" height = "23.46093" ShapeName = "Transparent" ShapeNum = "30" >进度条2</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "23" y = "148" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "31" >滑块</text>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "356" y = "206" width = "93" height = "42" ShapeName = "14" ShapeNum = "23" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >返回</button>
+</vlcd>

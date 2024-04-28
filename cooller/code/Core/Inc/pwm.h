@@ -12,7 +12,7 @@
 #define HEATER_4		8
 
 #define AIR_FREQ		9
-
+#define TIM_BASE		500
 
 typedef struct
 {
@@ -22,6 +22,9 @@ typedef struct
 
 }pwm_stru;
 
+void air_pwm_set(uint32_t freq);
+void air_pwm_out(uint32_t freq);
+void pwm_set(unsigned char pwm_num, uint32_t counter);
 
 #endif
 

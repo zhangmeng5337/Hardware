@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "0" width = "480" height = "272" ShapeName = "Box" ShapeNum = "38" >box</box>
+<form style = "fill:WhiteSmoke; stroke:Green; stroke-width:1" x = "12" y = "16" width = "447" height = "198" ShapeName = "form" ShapeNum = "2" Gwidth = "4" Gheight = "4" RadianNum = "0" />
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "388" y = "221" width = "74" height = "37" ShapeName = "14" ShapeNum = "6" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >返回</button>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "43" y = "31" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "7" >序号</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "145" y = "32" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "8" >温度</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "263" y = "28" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "9" >压力</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "382" y = "28" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "10" >状态</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "44" y = "76" width = "59.19921" height = "23.46093" ShapeName = "Transparent" ShapeNum = "11" >主机1</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "44" y = "125" width = "59.19921" height = "23.46093" ShapeName = "Transparent" ShapeNum = "12" >主机2</text>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "48" y = "169" width = "59.19921" height = "23.46093" ShapeName = "Transparent" ShapeNum = "13" >主机3</text>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "155" y = "76" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "19" RadianNum = "0" >0</number>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "277" y = "76" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "22" RadianNum = "0" >0</number>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "157" y = "123" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "20" RadianNum = "0" >0</number>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "276" y = "126" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "23" RadianNum = "0" >0</number>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "156" y = "174" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "21" RadianNum = "0" >0</number>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "277" y = "174" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "24" RadianNum = "0" >0</number>
+<text style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:14pt" x = "375" y = "80" width = "48.5078" height = "23.46093" ShapeName = "Color" ShapeNum = "16" >正常</text>
+<text style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:14pt" x = "379" y = "127" width = "48.5078" height = "23.46093" ShapeName = "Color" ShapeNum = "17" >正常</text>
+<text style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:14pt" x = "380" y = "174" width = "48.5078" height = "23.46093" ShapeName = "Color" ShapeNum = "18" >正常</text>
+</vlcd>

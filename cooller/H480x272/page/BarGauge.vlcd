@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "0" width = "480" height = "272" ShapeName = "Box" ShapeNum = "10" >box</box>
+<battery x = "74" y = "27" width = "89" height = "170" ShapeName = "Lime" ShapeNum = "44" Direction = "Vertical" StoreType = "Local" RadianNum = "0"
+ xlink:href = "D:\vlcds\H480x272\image\image005.bmp">
+</battery>
+<waterGauge x = "241" y = "41" width = "134" height = "144" ShapeName = "Blue" ShapeNum = "42" StoreType = "Local" RadianNum = "0"
+ xlink:href = "D:\vlcds\H480x272\image\image015.bmp">
+</waterGauge>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "392" y = "218" width = "74" height = "44" ShapeName = "14" ShapeNum = "43" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >返回</button>
+</vlcd>

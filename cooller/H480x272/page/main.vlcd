@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<image x = "0" y = "0" width = "480" height = "272" ShapeName = ""
+ ShapeNum = "1" xlink:href = "D:\vlcds\H480x272\image\image007.bmp">
+</image>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "39" y = "17" width = "76" height = "73" ShapeName = "TP" ShapeNum = "2" Direction = "ChangePage" StoreType = "p8" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "145" y = "12" width = "76" height = "73" ShapeName = "TP" ShapeNum = "3" Direction = "ChangePage" StoreType = "p9" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "256" y = "19" width = "76" height = "73" ShapeName = "TP" ShapeNum = "4" Direction = "ChangePage" StoreType = "p7" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "361" y = "17" width = "76" height = "73" ShapeName = "TP" ShapeNum = "5" Direction = "ChangePage" StoreType = "p6" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "37" y = "153" width = "76" height = "73" ShapeName = "TP" ShapeNum = "6" Direction = "ChangePage" StoreType = "p2" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "141" y = "150" width = "76" height = "73" ShapeName = "TP" ShapeNum = "7" Direction = "ChangePage" StoreType = "p1" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "253" y = "150" width = "76" height = "73" ShapeName = "TP" ShapeNum = "8" Direction = "ChangePage" StoreType = "p3" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "362" y = "152" width = "76" height = "73" ShapeName = "TP" ShapeNum = "9" Direction = "ChangePage" StoreType = "p5" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image008.bmp" >Button</button>
+</vlcd>

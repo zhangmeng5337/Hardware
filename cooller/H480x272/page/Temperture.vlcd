@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "0" width = "480" height = "272" ShapeName = "Box" ShapeNum = "24" >box</box>
+<thermometer x = "84" y = "17" width = "100" height = "225" ShapeName = "Red" ShapeNum = "9" StoreType = "Local" RadianNum = "0"
+ xlink:href = "D:\vlcds\H480x272\image\image013.bmp">
+</thermometer>
+<text style = "fill:Black; stroke:Transparent; font-family:; font-size:14pt" x = "306" y = "62" width = "48.5078" height = "23.46093" ShapeName = "Transparent" ShapeNum = "12" >温度</text>
+<number style = "fill:Black; stroke:WhiteSmoke; font-family:; font-size:20pt" x = "313" y = "110" width = "24.16232" height = "33.51562" ShapeName = "Color" ShapeNum = "11" RadianNum = "0" >0</number>
+<image x = "361" y = "103" width = "32" height = "32" ShapeName = ""
+ ShapeNum = "14" xlink:href = "D:\vlcds\H480x272\image\image016.bmp">
+</image>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "348" y = "211" width = "87" height = "41" ShapeName = "14" ShapeNum = "37" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >返回</button>
+</vlcd>
