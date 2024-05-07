@@ -5,41 +5,42 @@
 float buffer[4][window_size] = {0}; //滑动窗口数据buf
 
 /*********************** 滑动窗口滤波函数 ****************************/
-float sliding_average_filter(unsigned char adc_num,float value)
+float sliding_average_filter(unsigned char adc_num, float value)
 {
-  static int data_num = 0;
-  float output[5] = {0};
-  output[adc_num] = -1;
-  if (data_num < window_size) //不满窗口，先填充
-  {
-    buffer[adc_num][data_num++] = value;
-    output[adc_num] = value; //返回相同的值
+    static int data_num = 0;
+    float output[5] = {0};
     output[adc_num] = -1;
-  }
-  else
-  {
-    int i = 0;
-    float sum[5] = {0};
-     
-    memcpy(&buffer[adc_num][0], &buffer[adc_num][1], (window_size - 1) * 4); //将1之后的数据移到0之后，即移除头部
-    buffer[adc_num][window_size - 1] = value;                       //即添加尾部
+    if (data_num < window_size) //不满窗口，先填充
+    {
+        buffer[adc_num][data_num++] = value;
+        output[adc_num] = value; //返回相同的值
+        output[adc_num] = -1;
+    }
+    else
+    {
+        int i = 0;
+        float sum[5] = {0};
 
-    for (i = 0; i < window_size; i++) //每一次都计算，可以避免累计浮点计算误差
-      sum[adc_num] += buffer[adc_num][i];
+        memcpy(&buffer[adc_num][0], &buffer[adc_num][1],
+               (window_size - 1) * 4); //将1之后的数据移到0之后，即移除头部
+        buffer[adc_num][window_size - 1] = value;                       //即添加尾部
 
-    output[adc_num] = sum[adc_num] / window_size;
-  }
+        for (i = 0; i < window_size; i++) //每一次都计算，可以避免累计浮点计算误差
+            sum[adc_num] += buffer[adc_num][i];
 
-  return output[adc_num];
+        output[adc_num] = sum[adc_num] / window_size;
+    }
+
+    return output[adc_num];
 }
 
-float filter(unsigned char adc_num,float *p)
+float filter(unsigned char adc_num, float *p)
 {
     static float *value_buf, temp, result;
     static unsigned int  i, j ;
 
     result = -1;
-	value_buf = p;
+    value_buf = p;
     //if (i >= N)
     {
         i = 0;
@@ -56,17 +57,17 @@ float filter(unsigned char adc_num,float *p)
             }
         }
         result = value_buf[(N - 1) / 2];
-		result = sliding_average_filter(adc_num,result);//
-		
-			
+        result = sliding_average_filter(adc_num, result); //
+
+
     }
-    
+
     return result;
 }
 
-float  GetMedianNum(float * bArray, int iFilterLen)
+float  GetMedianNum(float *bArray, int iFilterLen)
 {
-    int i,j;// 循环变量
+    int i, j; // 循环变量
     float bTemp;
 
     // 用冒泡法对数组进行排序
@@ -98,8 +99,26 @@ float  GetMedianNum(float * bArray, int iFilterLen)
 
     return bTemp;
 }
+static float  sum = 0, result;
+unsigned int count;
+float average_filter(float bArray)
+{
 
+    if (count <= N)
+    {
+        sum  = sum + bArray;
+        count++;
+        result = sum / count * 1000;
+    }
+    else
+    {
+			  sum = 0;
+        count = 0;
+        result = sum / N * 1000;
+    }
 
+    return result;
+}
 
 
 

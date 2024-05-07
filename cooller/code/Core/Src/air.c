@@ -4,6 +4,8 @@
 #include "adc.h"
 #include "modbus.h"
 #include "config.h"
+#include "adc.h"
+#include "usb_ctrl.h"
 
 air_stru air_usr;
 
@@ -19,6 +21,15 @@ void air_pwr_ctrl(unsigned char flag)
 
     else
         HAL_GPIO_WritePin(air_pwr_GPIO_Port, air_pwr_Pin, GPIO_PIN_RESET);
+}
+void app_init(void)
+{
+
+    adc_init();
+    config_init();
+    air_init();
+	usb_init();
+
 }
 /***************************************
 stop:300-500hz
@@ -37,7 +48,6 @@ void air_freq_ctrl()
             air_pwr_ctrl(OFF);
         }
     }
-
     else
     {
         air_pwr_ctrl(ON);
@@ -47,10 +57,6 @@ void air_freq_ctrl()
             air_usr.freq =   500;
         air_pwm_set(air_usr.freq);
     }
-
-
-
-
 }
 void air_temperature_ctrl()
 {
@@ -60,7 +66,7 @@ void air_temperature_ctrl()
     {
         tick_start = HAL_GetTick();
         tmep_T = get_temperature()->average_T;
-        air_usr.pid_out = pid_proc(tmep_T);
+        air_usr.pid_out = pid_proc(tmep_T);//制冷温度控制
         air_freq_ctrl();
     }
 
@@ -72,10 +78,10 @@ void heater_cooller_ctrl()
     if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
-        tmep_T = get_temperature()->heater_T;
-        if (tmep_T <= getConfig()->min_T)
+        tmep_T = get_temperature()->cooller_T;
+        if (tmep_T <= getConfig()->min_T)//heater ctrl
         {
-            air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);
+            air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);//风扇与加热温度控制
             pwm_set(HEATER_1,  air_usr.heat_pid_out);
 
             air_usr.heat_pid_out =  pid_proc_fan_heat(2, tmep_T);
@@ -95,9 +101,26 @@ void heater_cooller_ctrl()
             pwm_set(HEATER_3,  0);
             pwm_set(HEATER_4,  0);
 
+
+            pwm_set(COOLER_3,  500);//冷却均匀温度用
+            pwm_set(COOLER_4,  500);//冷却均匀温度用
+
         }
+        if (get_temperature()->T_value[0] >= FAN_RUN_T)
+        {
+            pwm_set(COOLER_1,  700);
+            pwm_set(COOLER_2,  700);
+        }
+
 
     }
 
 }
-
+void app()
+{
+    adc_proc();
+    heater_cooller_ctrl();
+    air_temperature_ctrl();
+    air_freq_ctrl();
+	 usb_ctrl();
+}

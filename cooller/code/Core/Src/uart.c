@@ -134,6 +134,7 @@ void uart_lcd_recv_proc()
     {
 			uart_lcd_recv.uartRecLen  = UART_CDG_DMA_REC_SIZE - __HAL_DMA_GET_COUNTER(
                                     &hdma_usart1_rx);
+			__HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_IDLE);
     //__HAL_UART_CLEAR_FLAG(&huart1, UART_CLEAR_IDLEF);
         memcpy(uart_lcd_recv.uartRecBuff,
                uart_lcd_recv.uartDMARecBuff, UART_CDG_DMA_REC_SIZE);
@@ -160,7 +161,7 @@ void uart_air_recv_proc()
                uart_air_recv.uartDMARecBuff, uart_air_recv.uartRecLen);
         uart_air_recv.uartRecFlag = 1;
         uart_air_recv.uartRecBuff_index = uart_air_recv.uartRecLen +
-                                            uart_air_recv.uartRecBuff_index;
+         __HAL_UART_CLEAR_FLAG(&huart2, UART_FLAG_IDLE);                                   uart_air_recv.uartRecBuff_index;
         if (uart_air_recv.uartRecBuff_index >= (UART_REC_SIZE - 8))
             uart_air_recv.uartRecBuff_index = 0;
     }
@@ -172,7 +173,7 @@ void uart_air_recv_proc()
 void uart_rf_recv_proc()
 {
 
-     if(__HAL_UART_GET_FLAG(&huart4, UART_FLAG_IDLE) != 0)
+     if(__HAL_UART_GET_FLAG(&huart5, UART_FLAG_IDLE) != 0)
     {
 			uart_rf_recv.uartRecLen  = UART_DMA_REC_SIZE - __HAL_DMA_GET_COUNTER(
                                       &hdma_uart5_rx);
@@ -183,6 +184,7 @@ void uart_rf_recv_proc()
                                             uart_rf_recv.uartRecBuff_index;
         if (uart_rf_recv.uartRecBuff_index >= (UART_REC_SIZE - 8))
             uart_rf_recv.uartRecBuff_index = 0;
+		__HAL_UART_CLEAR_FLAG(&huart5, UART_FLAG_IDLE);
     }
     HAL_UART_DMAStop(&huart5);
     HAL_UART_DMAResume(&huart5);

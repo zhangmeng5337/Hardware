@@ -19,7 +19,7 @@ double PIDCalc( PID *pp, double NextPoint )
     float Error;
 //    static double last_result;//,integ;
     static unsigned char index;
-    Error = pp->SetPoint - NextPoint; // Æ«²î
+    Error = NextPoint-pp->SetPoint; // Æ«²î
     if(pp->LastError==0)
         pp->LastError = Error;
     pp->NextPoint = NextPoint;

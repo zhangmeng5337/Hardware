@@ -23,12 +23,13 @@
 
 typedef struct
 {
-	uint16_t adc_value[5];
+	uint32_t adc_value[5];
 	float    T_value[4];
 	float    v_value[4];
 	float    R_value[4];
     float    V2_V_offset; 
 	float    heater_T;
+	float	 cooller_T;
 	float ref;
 	float average_T;
 	unsigned char update;
@@ -39,6 +40,7 @@ typedef struct
 void adc_init(void);
 adc_stru *get_temperature(void) ;
 void adc_proc(void);
+void set_adc_update(void);
 
 #endif
 

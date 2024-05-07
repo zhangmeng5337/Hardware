@@ -43,7 +43,7 @@ void air_pwm_out()
 {
 
     static uint32_t start_tick = 0;
-    if (pwm_usr.air_freq <= 1000)
+    if (pwm_usr.air_freq <= 10000)
     {
 
         if (pwm_usr.air_freq == 0)

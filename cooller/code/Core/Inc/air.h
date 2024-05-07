@@ -7,6 +7,8 @@
 #define FREQ_RATIO		9000.0/(PID_OUT_MAX-PID_OUT_MIN)
 #define FREQ_B		(1000-FREQ_RATIO*8000.0)
 
+
+#define FAN_RUN_T	35
 typedef struct
 {
 	
@@ -19,6 +21,8 @@ typedef struct
 
 
 
+void app_init(void);
+void app(void);
 
 
 #endif

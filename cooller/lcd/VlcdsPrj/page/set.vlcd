@@ -1,5 +1,8 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/vlcd10.dtd">
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
 <vlcd width="480" height="272">
 <desc>Vlcd picture</desc>
+<image x = "0" y = "0" width = "480" height = "272" ShapeName = ""
+ ShapeNum = "3" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image002.bmp">
+</image>
 </vlcd>
