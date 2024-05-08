@@ -6,6 +6,7 @@
 #include "config.h"
 #include "adc.h"
 #include "usb_ctrl.h"
+#include "rf_drv.h"
 
 air_stru air_usr;
 
@@ -65,7 +66,7 @@ void air_temperature_ctrl()
     if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
-        tmep_T = get_temperature()->average_T;
+        tmep_T = get_rf_status()->average_T;
         air_usr.pid_out = pid_proc(tmep_T);//ÖÆÀäÎÂ¶È¿ØÖÆ
         air_freq_ctrl();
     }
@@ -122,5 +123,6 @@ void app()
     heater_cooller_ctrl();
     air_temperature_ctrl();
     air_freq_ctrl();
-	 usb_ctrl();
+	usb_ctrl();
+	rf_ctrl_proc();
 }

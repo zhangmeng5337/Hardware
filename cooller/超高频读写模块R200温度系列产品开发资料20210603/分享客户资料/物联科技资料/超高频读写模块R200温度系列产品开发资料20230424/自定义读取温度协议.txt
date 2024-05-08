@@ -1,0 +1,23 @@
+
+定制读温度指令
+
+Header  Type  Command   PL   [   PC              EPC]                        Checksum  End
+  BB     00     C0     000E     3404    000000000000202011160697                 0A    7E
+
+
+定制读温度指令回复
+
+Header  Type  Command   PL   [   PC           EPC                     TUNE  TemperatureCount  Temperature]         Checksum  End
+  BB     01     C0     0016     3404    000000000000202011160697      0102        31FC        温度值（浮点型）         xx    7E
+
+
+
+示例
+[02:54:12.370]发→◇BB 00 C0 00 0E 34 04 00 00 00 00 00 00 20 20 11 16 06 97 0A 7E □
+[02:54:12.577]收←◆BB 01 C0 00 16 34 04 00 00 00 00 00 00 20 20 11 16 06 97 01 02 31 FC 41 D1 6A 72 32 7E 
+
+
+tune  0102
+tempc 31FD
+
+计算温度  (509 - 2 - 500)/5.4817 + 24.9 = 26.1769(浮点型表示41D16A72)

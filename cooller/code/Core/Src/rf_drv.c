@@ -1,218 +1,174 @@
 
 /**--------------File Info------------------------------------------------------------------------------
-** File name:			  rf200_drv.c
+** File name:             rf200_drv.c
 ** Last modified Date:  2018-05-30
-** Last Version:		V1.00
-** Descriptions:		RF200 FRAME HANDLE
+** Last Version:        V1.00
+** Descriptions:        RF200 FRAME HANDLE
 **------------------------------------------------------------------------------------------------------
-** Created date:		2018-05-30
-** Version:			  	V1.00
-** Descriptions:		RF200 FRAME HANDLE
+** Created date:        2018-05-30
+** Version:             V1.00
+** Descriptions:        RF200 FRAME HANDLE
 **
 ********************************************************************************************************/
 #define _RF200_DRV_MANL
-//#include "stm32f0xx.h"
-#include "rf_drv.h"
 #include "uart.h"
-#include "sys.h"
 
-uint8_t SingleInventCMD[]=	{0xBB,0x00,0x22,0x00,0x00,0x22,0x7E};
-uint8_t MultiInventCMD[]=		{0xBB,0x00,0x27,0x00,0x03,0x22,0xFF,0xFF,0x4A,0x7E};
-uint8_t StopMultiInventCMD[]=	{0xBB,0x00,0x28,0x00,0x00,0x28,0x7E };
-uint8_t SetRegionUSCMD[]=		{0xBB,0x00,0x07,0x00,0x01,0x02,0x0A,0x7E};
-uint8_t SetRegionCH2CMD[]=	{0xBB,0x00,0x07,0x00,0x01,0x01,0x09,0x7E};
-uint8_t SetSelectModeCMD[]=	{0xBB,0x00,0x12,0x00,0x01,0x00,0x13,0x7E};
-uint8_t SetSelectParaCMD[]=	{0xBB,0x00,0x0C,0x00,0x13,0x23,0x00,0x00,0x00,0x20,0x60,
-                            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xC2,0x7E};
-uint8_t ReadDataCMD[]=			{0xBB,0x00,0x39,0x00,0x09,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x00,0x04,0x49,0x7E};
-uint8_t WriteDataCMD[]=			{0xBB,0x00,0x49,0x00,0x11,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x00,0x04,
-                             0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x01,0x02,0x03,0x04,0x05,0x06,
-														 0x07,0x08,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x01,0x02,0x03,0x04,
-														 0x05,0x06,0x07,0x08,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x01,0x02,
-                             0x03,0x04,0x05,0x06,0x07,0x08,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,
-                             0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x01,0x02,0x03,0x04,0x05,0x06,
-                             0x07,0x08,0x85,0x7E };
+#include "rf_drv.h"
+unsigned char rf_cmd[11] = {0xBB, 0x00, 0xC0, 0x00, 0x0E, 0x34, 0x04, 0x00, 0x00, 0x00, 0x00};
+unsigned char id_card_num[8 * 18] = {0xBB, 0x00, 0xC0, 0x00, 0x0E, 0x34, 0x04, 0x00, 0x00, 0x00, 0x00};
+unsigned char buf[18][8] =
+{
+    {24, 01, 02, 00, 00, 00, 85},
+    {24, 01, 02, 00, 00, 00, 84},
+    {24, 01, 02, 00, 00, 00, 83},
+    {24, 01, 02, 00, 00, 00, 82},
+    {24, 01, 02, 00, 00, 00, 81},
+    {24, 01, 02, 00, 00, 00, 80},
+    {24, 01, 02, 00, 00, 00, 79},
+    {24, 01, 02, 00, 00, 00, 78},
+    {24, 01, 02, 00, 00, 00, 77},
+    {24, 01, 02, 00, 00, 00, 76},
+    {24, 01, 02, 00, 00, 00, 75},
+    {24, 01, 02, 00, 00, 00, 74},
+    {24, 01, 02, 00, 00, 00, 73},
+    {24, 01, 02, 00, 00, 00, 72},
+    {24, 01, 02, 00, 00, 00, 71},
+    {24, 01, 02, 00, 00, 00, 70},
+    {24, 01, 02, 00, 00, 00, 69},
+    {24, 01, 02, 00, 00, 00, 68}
+};
+rf_recv_stru rf_recv_usr;
 
+void rf_tx(unsigned char card_id)
+{
+    unsigned char tx_buf[21];
+    unsigned char sum;
+    memcpy(tx_buf, rf_cmd, 11);
+    memcpy(&tx_buf[11], &buf[card_id][0], 8);
+    sum = sum_Compute(&tx_buf[1], 18);
+    tx_buf[19] = sum;
+    tx_buf[20] = 0x7e;
+    uart_transmit(UART_RF, tx_buf, 21);
 
-void Usart_buff_copy(uint8_t *usart_buff,uint8_t data_len)
-{
-	uint8_t i;
-	for(i=0;i<data_len;i++)
-		RF200FRAME.dat[i]=usart_buff[i];// copy to frame handle buffer;
-	RF200FRAME.byteLen=data_len;
 }
-void Save_Tag(unsigned char *FrameDat)
+void rf_recv()
 {
-	uint8_t i;
-	for(i=0;i<12;i++)
-		TAG[TAG_Index].EPC[i]=FrameDat[i+8];// copy to frame handle buffer;
-	TAG[TAG_Index].RSSI=0XFF-FrameDat[5];
-	TAG[TAG_Index].flag = 1;
-	TAG_Index++;
-	if(TAG_Index>=MAX_TAG_NUM)
-		TAG_Index = 0;
+    uart_recv_stru *uart_rf;
+    unsigned char sig_bit;
+    unsigned char tune;
+    unsigned int temp_hbyte, temp_lbyte;
+    unsigned int temp;
+    float cal_temp;
+
+    uart_rf = get_uart_recv_stru(UART_RF);
+    if (uart_rf->uartRecFlag == 1)
+    {
+        if (uart_rf->uartRecBuff[0] == RF_HEADER)
+        {
+            if (uart_rf->uartRecBuff[1] == RF_TYPE && uart_rf->uartRecBuff[2] == RF_COMMAND)
+            {
+                sig_bit = uart_rf->uartRecBuff[19];
+                tune = uart_rf->uartRecBuff[20];
+                temp_hbyte = uart_rf->uartRecBuff[21];
+                temp_lbyte = uart_rf->uartRecBuff[22];
+                if (temp_hbyte & 0xf0 <= 0x30)
+                {
+                    temp = temp_hbyte & 0x0f;
+                    temp = temp_hbyte << 4;
+                    temp = temp_hbyte + temp_lbyte;
+                    if (sig_bit == 0x01)
+                    {
+                        cal_temp = temp - tune;
+                        cal_temp = (cal_temp - 500);
+                        cal_temp = cal_temp / 5.4817 + 24.9;
+                    }
+                    else if (sig_bit == 0x00)
+                    {
+                        cal_temp = temp + tune;
+                        cal_temp = (cal_temp - 500);
+                        cal_temp = cal_temp / 5.4817 + 24.9;
+                    }
+                    if (rf_recv_usr.wait_card_id <= 18)
+                    {
+                        rf_recv_usr.card_T[rf_recv_usr.wait_card_id] = cal_temp;
+                        rf_recv_usr.wait_card_id = RF_RECV_FLAG;
+
+                    }
+                    cal_temp = 0;
+                }
+
+            }
+        }
+		uart_rf->uartRecFlag = 0;
+    }
 }
-void Save_Tag_Data(unsigned char *FrameDat)
+
+void rf_averge()
 {
-	uint8_t i;
-	for(i=0;i<12;i++)
-		TAG_READ_DATA.EPC[i]=FrameDat[i+8];// EPC copy ;
-	TAG_READ_DATA.len=FrameDat[4]-15;
-	for(i=0;i<TAG_READ_DATA.len;i++)
-		TAG_READ_DATA.dat[i]=FrameDat[i+20];// data copy ;
-}
-uint8_t RF200_FRAME_RX_HANDLE(void)
-{
-	if(RF200FRAME.byteLen == 0) //no frame
+	unsigned char i;
+	float tmp;
+	static unsigned char averge_count;
+	averge_count = 0;
+	tmp =0;
+	for(i=0;i<18;i++)
 	{
-		return 0;//error
-	}
-	if(RF200FRAME.dat[1]==FRAME_RES)//frame type response
-	{
-		switch(RF200FRAME.dat[2])//command code
+		if(rf_recv_usr.id_status[i] == 1)
 		{
-			case CMD_STOP_MULTI :
-				RF200Status.MultiInventFlag = 0;
-				break;
-			case CMD_READ_DATA :
-				RF200Status.ReadDataFlag = 1;
-				Save_Tag_Data(RF200FRAME.dat);
-				break;
-			case CMD_WRITE_DATA :
-				RF200Status.WriteDataFlag = 1;
-				break;
-			case CMD_SET_REGION :
-				RF200Status.SetRegionFlag = 1;
-				break;
-			case CMD_SET_POWER :
-				RF200Status.SetPowerFlag = 1;
-				break;
-			case CMD_SET_SELECT_PARA :
-				RF200Status.SetSelectParaFlag = 1;
-				break;
-			case CMD_SET_INV_MODE : //select mode
-				RF200Status.SetSelectModeFlag = 1;
-				break;
-			case CMD_FAIL :
-				break;
-			default :
-				break;
+			averge_count++;
+			tmp = tmp +rf_recv_usr.card_T[i];
+			
 		}
 	}
-	else if(RF200FRAME.dat[1]==FRAME_ERROR)//frame type error
+	if(averge_count>0)
 	{
-		;
+		tmp = tmp /averge_count;
 	}
-	else if(RF200FRAME.dat[1]==FRAME_INFO)//frame type information
-	{
-		switch(RF200FRAME.dat[2])//command code
-		{
-			case CMD_SINGLE_ID :
-				Save_Tag(RF200FRAME.dat);
-			  RF200Status.InventATagFlag = 1;
-			  RF200Status.TotalTags++;
-				break;
-			case CMD_MULTI_ID :
-				Save_Tag(RF200FRAME.dat);
-			  RF200Status.InventATagFlag = 1;
-			  RF200Status.TotalTags++;
-				break;
-			default :
-				break;
-		}
-	}
-	RF200FRAME.byteLen =0;
-	return 1;
-}
-uint8_t Rf200_checksum(uint8_t * t_dat)
-{
-	uint8_t checksum,i,cmdDatLen;
-	cmdDatLen = t_dat[4];
-  checksum = t_dat[1] + t_dat[2] + t_dat[4];
-	for (i = 0; i < cmdDatLen; i++)
-	{
-		checksum += t_dat[i+5];
-	}
-	t_dat[cmdDatLen+5]=checksum;
-	return 0;
-}
-void TagReadProcess(uint8_t *t_EPC,TAG_WR_PARA_t t_TAG_WR_PARA)
-{
-	uint8_t i;
-	for (i = 0; i < 12; i++)//set epc
-	{
-		SetSelectParaCMD[i+12] = t_EPC[i];
-	}
-	SetSelectParaCMD[5] = (SetSelectParaCMD[5]&0xf0)+t_TAG_WR_PARA.MemBank;
-	Rf200_checksum(SetSelectParaCMD);
-	//SendCmdFrame(SetSelectParaCMD);
-	uart_transmit(UART_RF, SetSelectParaCMD, SetSelectParaCMD[4]+7);
-	HAL_Delay(20);//must delay 20MS;
-	//ACCESS PASSWORD
-	ReadDataCMD[5]=t_TAG_WR_PARA.AccessPW[0];
-	ReadDataCMD[6]=t_TAG_WR_PARA.AccessPW[1];
-	ReadDataCMD[7]=t_TAG_WR_PARA.AccessPW[2];
-	ReadDataCMD[8]=t_TAG_WR_PARA.AccessPW[3];
-	//MEMBANK
-	ReadDataCMD[9]=t_TAG_WR_PARA.MemBank;
-	//OFFSET
-	ReadDataCMD[10]=00;
-	ReadDataCMD[11]=t_TAG_WR_PARA.Offset;
-	//length
-	ReadDataCMD[12]=00;
-	ReadDataCMD[13]=t_TAG_WR_PARA.len;
-	Rf200_checksum(ReadDataCMD);
-	//SendCmdFrame(ReadDataCMD);
-	uart_transmit(UART_RF, ReadDataCMD, ReadDataCMD[4]+7);
-}
-void TagWriteProcess(uint8_t *t_EPC,TAG_WR_PARA_t t_TAG_WR_PARA)
-{
-	uint8_t i;
-	for (i = 0; i < 12; i++)//set epc
-	{
-		SetSelectParaCMD[i+12] = t_EPC[i];
-	}
-	SetSelectParaCMD[5] = (SetSelectParaCMD[5]&0xf0)+t_TAG_WR_PARA.MemBank;
-	Rf200_checksum(SetSelectParaCMD);
-	//SendCmdFrame(SetSelectParaCMD);
-	uart_transmit(UART_RF, SetSelectParaCMD, SetSelectParaCMD[4]+7);
-	delay_10us(40);//must delay 400us;
-	WriteDataCMD[4] = (t_TAG_WR_PARA.len*2)+9;// cmd data length
-//ACCESS PASSWORD
-	WriteDataCMD[5]=t_TAG_WR_PARA.AccessPW[0];
-	WriteDataCMD[6]=t_TAG_WR_PARA.AccessPW[1];
-	WriteDataCMD[7]=t_TAG_WR_PARA.AccessPW[2];
-	WriteDataCMD[8]=t_TAG_WR_PARA.AccessPW[3];
-	//MEMBANK
-	WriteDataCMD[9]=t_TAG_WR_PARA.MemBank;
-	//OFFSET
-	WriteDataCMD[10]=00;
-	WriteDataCMD[11]=t_TAG_WR_PARA.Offset;
-	//length
-	WriteDataCMD[12]=00;
-	WriteDataCMD[13]=t_TAG_WR_PARA.len;
-	for (i = 0; i < (t_TAG_WR_PARA.len*2); i++)//set epc
-	{
-		WriteDataCMD[i+14] = t_TAG_WR_PARA.dat[i];
-	}
-	Rf200_checksum(WriteDataCMD);
-		
+	else
+		tmp = 100;
+	rf_recv_usr.average_T = tmp;
 
-	WriteDataCMD[(t_TAG_WR_PARA.len*2)+9+6]=0x7e;//frame end
-	//SendCmdFrame(WriteDataCMD);
-	uart_transmit(UART_RF, WriteDataCMD, WriteDataCMD[4]+7);
 }
-uint8_t EPC_Compare(uint8_t *t_EPC1,uint8_t *t_EPC2)
+rf_recv_stru*get_rf_status()
 {
-	uint8_t i;
-	i=12;
-	do
-	{
-		if(t_EPC1[i-1]!=t_EPC2[i-1])
-			return 0;//different
-		i--;
-	}while(i);
-	return 1; //same
+	return &rf_recv_usr;
 }
+void rf_ctrl_proc()
+{
+    static uint32_t tick_start;
+    if ((HAL_GetTick() - tick_start) >= RF_POLL_T)
+    {
+        tick_start = HAL_GetTick();
+        if (rf_recv_usr.wait_card_id != RF_RECV_FLAG)
+        {
+            if (rf_recv_usr.retry_times < RF_RETRY_TIMES)
+            {
+                rf_recv_usr.retry_times++;
+                rf_tx(rf_recv_usr.tx_card_id);
+				
+            }
+            else
+            {
+                rf_recv_usr.retry_times = 0;
+				if(rf_recv_usr.id_status[rf_recv_usr.wait_card_id]<10)
+                rf_recv_usr.id_status[rf_recv_usr.wait_card_id] =  
+					rf_recv_usr.id_status[rf_recv_usr.wait_card_id]+1;
+                rf_recv_usr.tx_card_id++;
+                if (rf_recv_usr.tx_card_id >= 18)
+                    rf_recv_usr.tx_card_id = 0;
+                rf_recv_usr.wait_card_id = rf_recv_usr.tx_card_id;
+            }
 
-
+        }
+        else  //recv dat
+        {
+            rf_recv_usr.id_status[rf_recv_usr.wait_card_id] = 1; 
+					
+            rf_recv_usr.retry_times = 0;
+            rf_recv_usr.tx_card_id++;
+            if (rf_recv_usr.tx_card_id >= 18)
+                rf_recv_usr.tx_card_id = 0;
+            rf_recv_usr.wait_card_id = rf_recv_usr.tx_card_id;
+        }
+    }
+   rf_recv();
+}
