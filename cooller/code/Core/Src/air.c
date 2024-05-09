@@ -30,6 +30,7 @@ void app_init(void)
     config_init();
     air_init();
 	usb_init();
+	uart_init();
 
 }
 /***************************************
@@ -63,13 +64,14 @@ void air_temperature_ctrl()
 {
     float tmep_T;
     static uint32_t tick_start;
-    if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
+   // if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
         tmep_T = get_rf_status()->average_T;
         air_usr.pid_out = pid_proc(tmep_T);//制冷温度控制
         air_freq_ctrl();
     }
+	
 
 }
 void heater_cooller_ctrl()
@@ -79,9 +81,10 @@ void heater_cooller_ctrl()
     if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
-        tmep_T = get_temperature()->cooller_T;
+        tmep_T = get_temperature()->average_T;
         if (tmep_T <= getConfig()->min_T)//heater ctrl
         {
+            getConfig()->mode = 1;
             air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);//风扇与加热温度控制
             pwm_set(HEATER_1,  air_usr.heat_pid_out);
 
@@ -97,17 +100,18 @@ void heater_cooller_ctrl()
         }
         else
         {
+            getConfig()->mode = 0;
             pwm_set(HEATER_1,  0);
             pwm_set(HEATER_2,  0);
             pwm_set(HEATER_3,  0);
             pwm_set(HEATER_4,  0);
-
-
+			
             pwm_set(COOLER_3,  500);//冷却均匀温度用
             pwm_set(COOLER_4,  500);//冷却均匀温度用
-
+            air_temperature_ctrl();
+			air_freq_ctrl();
         }
-        if (get_temperature()->T_value[0] >= FAN_RUN_T)
+        if (get_temperature()->T_value[0] >= FAN_RUN_T)//charger temperature ctrl
         {
             pwm_set(COOLER_1,  700);
             pwm_set(COOLER_2,  700);
@@ -121,8 +125,6 @@ void app()
 {
     adc_proc();
     heater_cooller_ctrl();
-    air_temperature_ctrl();
-    air_freq_ctrl();
 	usb_ctrl();
 	rf_ctrl_proc();
 }

@@ -46,15 +46,19 @@ unsigned int CRC_Compute(unsigned char  *puchMsg, unsigned int usDataLen)
     }
     return ((uchCRCHi<< 8)  | (uchCRCLo)) ;
 }//uint16 crc16(uint8 *puchMsg, uint16 usDataLen)
+unsigned char  sum;
+
 unsigned char sum_Compute(unsigned char  *puchMsg, unsigned int usDataLen)
 {
-    unsigned int  sum;
+    
     unsigned char  uchCRCLo = 0xFF ;
-    uint32_t uIndex ;
+     unsigned char result =0;
     while (usDataLen--)
     {
-        sum = *puchMsg++;
+        result = result+*puchMsg++;
     }
+		sum =result;
+		result=0;
     return (unsigned char)sum ;
 }//uint16 crc16(uint8 *puchMsg, uint16 usDataLen)
 

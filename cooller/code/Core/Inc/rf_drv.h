@@ -13,7 +13,7 @@ File name:			  rf200_drv.h
 #define __RF200_DRV_H
 #include "main.h"
 #define RF_HEADER 	0xbb
-#define RF_TYPE 	0x00
+#define RF_TYPE 	0x01
 #define RF_COMMAND 	0xc0
 #define RF_RECV_FLAG 	100
 #define RF_RETRY_TIMES 	5

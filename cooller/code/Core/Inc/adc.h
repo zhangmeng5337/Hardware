@@ -21,6 +21,8 @@
 #define MIN_TEMP_VOL -60
 
 
+#define BATTERY_V    16.8
+
 typedef struct
 {
 	uint32_t adc_value[5];
@@ -29,9 +31,9 @@ typedef struct
 	float    R_value[4];
     float    V2_V_offset; 
 	float    heater_T;
-	float	 cooller_T;
+	float	 cooller_T;  
 	float ref;
-	float average_T;
+	float average_T;//制冷检测温度，通过rf得到
 	unsigned char update;
 
 }adc_stru;

@@ -1,7 +1,7 @@
 #include "adc.h"
 
 #include "filter.h"
-//#include "config.h"
+#include "config.h"
 
 extern ADC_HandleTypeDef hadc1;
 extern  DMA_HandleTypeDef hdma_adc1;
@@ -31,6 +31,12 @@ void adc_proc()
     if ((HAL_GetTick() - tick_start) >= ADC_POLL_T)
     {
         tick_start = HAL_GetTick();
+        getConfig()->record_time = getConfig()->record_time + 1;
+        if (getConfig()->record_time == getConfig()->record_interval * 10)
+        {
+            getConfig()->record_time = 0;
+            getConfig()->update_T = 1;
+        }
         if (sensor_adc_value.update == 1)
         {
             sensor_adc_value.update = 0;
@@ -45,8 +51,10 @@ void adc_proc()
                 adc_pt1_v = adc_pt1_v / 4095;
                 adc_pt2_v = sensor_adc_value.adc_value[1] * sensor_adc_value.ref;
                 adc_pt2_v = adc_pt2_v / 4095;
-
-
+                sensor_adc_value.T_value[1] = sensor_adc_value.adc_value[2] *
+                                              sensor_adc_value.ref;
+                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] / 4095;
+                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] / BATTERY_V;
                 x2 = 2 * adc_pt1_v;
                 x1 = sensor_adc_value.ref - adc_pt1_v;
                 //x1=x1-adc_pt1_v;
@@ -54,48 +62,13 @@ void adc_proc()
 
                 sensor_adc_value.v_value[i] = adc_pt1_v ;
                 pt_r =  x2 * 1000;
-//                buf[i][j] = pt_r;
-//                if (j >= N)
-//                {
-//                    j = 0;
                 sensor_adc_value.R_value[0] = average_filter(x2);
-//                    tmp = filter(0, &buf[0][0]); //filter
-//                    if (tmp != -1)
-//                        sensor_adc_value.v_value[0] = tmp;
-//                    tmp = filter(1, &buf[1][0]);
-//                    if (tmp != -1)
-//                        sensor_adc_value.v_value[1] = tmp;
-//                    tmp = filter(2, &buf[2][0]);
-//                    if (tmp != -1)
-//                        sensor_adc_value.v_value[2] = tmp;
-//                    tmp = filter(3, &buf[3][0]);
-//                    if (tmp != -1)
-//                        sensor_adc_value.v_value[3] = tmp;
-//                }
-//                else
-//                {
-//                    sensor_adc_value.R_value[i] = pt_r;
-
-//                }
                 sensor_adc_value.T_value[0] = PT100_Temp(sensor_adc_value.R_value[0]) * 0.5 -
-                                              60;
-                sensor_adc_value.T_value[1] = PT100_Temp(sensor_adc_value.R_value[1]) * 0.5 -
-                                              60;
-                sensor_adc_value.T_value[2] = PT100_Temp(sensor_adc_value.R_value[2]) * 0.5 -
-                                              60;
-                sensor_adc_value.T_value[3] = PT100_Temp(sensor_adc_value.R_value[3]) * 0.5 -
-                                              60;
+					                          60;
 
             }
-            j++;
-            // HAL_ADC_Start_DMA(&hadc1, (uint32_t *)sensor_adc_value.adc_value,
-            // 4); //  ¿ªÆôDMA
         }
-        //printf("%0.2f\r\n",sensor_adc_value.T_value[3]);
     }
-
-
-
 
 }
 adc_stru *get_temperature(void)

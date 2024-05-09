@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -805,6 +805,21 @@
               <FileName>rf_drv.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\rf_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>hmi_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\hmi_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\cmd_queue.c</FilePath>
             </File>
           </Files>
         </Group>
