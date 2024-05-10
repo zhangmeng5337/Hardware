@@ -11,5 +11,5 @@
 <edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "163" width = "80" height = "33" ShapeName = "14" ShapeNum = "7" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
 <edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "208" width = "80" height = "33" ShapeName = "14" ShapeNum = "8" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "309" y = "201" width = "55" height = "50" ShapeName = "TP" ShapeNum = "9" Direction = "UploadID" StoreType = "" RadianNum = "Char" TextAlignType = "" Gwidth = "image002.bmp" Gheight = "image002.bmp" >Button</button>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:14pt" x = "303" y = "127" width = "127.9687" height = "23.46093" ShapeName = "Transparent" ShapeNum = "10" >数据导出中...</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:14pt" x = "303" y = "127" width = "0" height = "0" ShapeName = "Transparent" ShapeNum = "10" ></text>
 </vlcd>
