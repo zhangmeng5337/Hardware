@@ -821,6 +821,16 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\cmd_queue.c</FilePath>
             </File>
+            <File>
+              <FileName>flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>stmflash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\stmflash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

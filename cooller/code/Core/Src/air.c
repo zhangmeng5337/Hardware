@@ -8,6 +8,8 @@
 #include "usb_ctrl.h"
 #include "rf_drv.h"
 
+#include "lcd.h"
+
 air_stru air_usr;
 
 void air_init()
@@ -25,12 +27,14 @@ void air_pwr_ctrl(unsigned char flag)
 }
 void app_init(void)
 {
-
+   
     adc_init();
     config_init();
+	
     air_init();
 	usb_init();
 	uart_init();
+	lcd_proc();
 
 }
 /***************************************
@@ -84,7 +88,7 @@ void heater_cooller_ctrl()
         tmep_T = get_temperature()->average_T;
         if (tmep_T <= getConfig()->min_T)//heater ctrl
         {
-            getConfig()->mode = 1;
+            getConfig()->mode = 1;//加热
             air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);//风扇与加热温度控制
             pwm_set(HEATER_1,  air_usr.heat_pid_out);
 
@@ -100,7 +104,7 @@ void heater_cooller_ctrl()
         }
         else
         {
-            getConfig()->mode = 0;
+            getConfig()->mode = 0;//制冷
             pwm_set(HEATER_1,  0);
             pwm_set(HEATER_2,  0);
             pwm_set(HEATER_3,  0);

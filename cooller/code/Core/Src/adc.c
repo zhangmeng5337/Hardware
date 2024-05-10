@@ -2,6 +2,7 @@
 
 #include "filter.h"
 #include "config.h"
+#include "stmflash.h"
 
 extern ADC_HandleTypeDef hadc1;
 extern  DMA_HandleTypeDef hdma_adc1;
@@ -9,8 +10,7 @@ adc_stru sensor_adc_value;
 
 void adc_init(void)
 {
-    //HAL_Delay(3000);
-    //HAL_ADCEx_Calibration_Start(&hadc1);
+
     HAL_ADC_Start_DMA(&hadc1, (uint32_t *)sensor_adc_value.adc_value,
                       4); //  ¿ªÆôDMA
     HAL_ADC_Start(&hadc1);//  Æô¶¯ADC×ª»»
@@ -67,9 +67,9 @@ void adc_proc()
 					                          60;
 
             }
-        }
     }
 
+ }
 }
 adc_stru *get_temperature(void)
 {

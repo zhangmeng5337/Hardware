@@ -34,36 +34,44 @@ uint8_t exfuns_init(void)
     
 
 }
+unsigned char get_usb_state()
+{
+  return Appli_state;
+}
 
+unsigned char usb_state=0;
+unsigned char *get_usb_wr()
+{
+	return &usb_state;
+}
 void usb_init()
 {
 	exfuns_init();
 
 
 }
+
 void usb_ctrl()
 {
 	if (Appli_state == APPLICATION_READY) //U盘已经加载完成
 	{
-		if (status == 0) //U盘加载后只运行一次
+		if (status == 0||usb_state==2) //U盘加载后只运行一次
 		{
 			status = 1;
 		//	retUSBH=f_mount(USB_fat[0], "0:", 1);        /* 挂载SD卡 */
- 			retUSBH =f_mount(USB_fat[1], "1:", 1);        /* 挂载SD卡 */    
+ 			retUSBH =f_mount(USB_fat[0], "0:", 1);        /* 挂载SD卡 */    
 			//retUSBH = f_mount(&USBHFatFS, (TCHAR const *)USBHPath, 1);
 			if (retUSBH == FR_OK)
 			{
 				 printf("挂载U盘成功!\r\n");
 			}
-			//写入文件测试
-			
-			
-			 
+		 
 			 printf("写入文件测试!\r\n");
-			retUSBH = f_open(&USBHFile, "0:/test.txt",
+			retUSBH = f_open(&USBHFile, "test.txt",
 							 FA_CREATE_ALWAYS | FA_WRITE);
 			if (retUSBH == FR_OK)
 			{
+			     usb_state = 1;
 				 printf("打开文件\"测试.txt\"成功!\r\n");
 			}
 	
@@ -73,7 +81,7 @@ void usb_ctrl()
 				 printf("指针移动到文件末尾成功！\r\n");
 			}
 	          FileBuf = test_txt;
-            retUSBH = f_write(&USBHFile,FileBuf,18,&bw);
+            retUSBH = f_write(&USBHFile,FileBuf,strlen(test_txt),&bw);
 
 			if (retUSBH == FR_OK)
 			{

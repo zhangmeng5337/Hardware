@@ -14,6 +14,23 @@
 
 #define TIME_100MS 100
 
+#define BATTERY_ID   	 23
+#define TEMPERATURE_ID   24
+#define WAVE_ID   		 19
+#define COOLLER_ID   	 3
+#define HEATER_ID   	 2
+
+#define UP_T_ID   	 	4
+#define DOW_T_ID   	 	5
+#define WAR_T_ID   	 	6
+#define REC_T_ID   	 	7
+#define POW_T_ID   	 	8
+
+#define USB_LOG_ID   	 	10
+
+void lcd_proc(void);
+void set_label_proc(unsigned char num);
+
 
 #endif
 

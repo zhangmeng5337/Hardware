@@ -134,6 +134,8 @@ DRESULT disk_ioctl (
   */
 __weak DWORD get_fattime (void)
 {
+
+
   return 0;
 }
 
