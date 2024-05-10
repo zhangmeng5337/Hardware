@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
+<vlcd width="480" height="272">
+<desc>Vlcd picture</desc>
+<image x = "0" y = "0" width = "480" height = "272" ShapeName = ""
+ ShapeNum = "17" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image001.bmp">
+</image>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "26" y = "221" width = "51" height = "39" ShapeName = "TP" ShapeNum = "18" Direction = "UploadID" StoreType = "p3" RadianNum = "Char" TextAlignType = "" Gwidth = "image001.bmp" Gheight = "image001.bmp" >Button</button>
+<waveform style = "fill:Black; stroke:Green; stroke-width:1" x = "240" y = "19" width = "230" height = "240" ShapeName = "Red" ShapeNum = "19" Gwidth = "40" Gheight = "40" RadianNum = "Left2Right" Direction = "Yellow" StoreType = "1" />
+<image x = "109" y = "167" width = "41" height = "40" ShapeName = ""
+ ShapeNum = "21" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image004.bmp">
+</image>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "246" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "29" >-40℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "21" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "22" >60℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "212" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "28" >-30℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "169" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "27" >-20℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "128" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "26" >-10℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "88" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "25" >0℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "50" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "30" >30℃</text>
+<text style = "fill:Lime; stroke:Transparent; font-family:; font-size:10pt" x = "148" y = "226" width = "39.56813" height = "16.75781" ShapeName = "Transparent" ShapeNum = "23" >100%</text>
+<text style = "fill:White; stroke:Transparent; font-family:; font-size:30pt" x = "60" y = "73" width = "82.06379" height = "50.27343" ShapeName = "Transparent" ShapeNum = "24" >100</text>
+</vlcd>
