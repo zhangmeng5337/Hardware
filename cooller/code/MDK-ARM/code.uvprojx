@@ -831,6 +831,11 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\stmflash.c</FilePath>
             </File>
+            <File>
+              <FileName>mystring.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\mystring.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -26,10 +26,11 @@
 #define REC_T_ID   	 	7
 #define POW_T_ID   	 	8
 
-#define USB_LOG_ID   	 	10
+#define USB_LOG_ID   	 	18
 
 void lcd_proc(void);
 void set_label_proc(unsigned char num);
+void lcd_init(void);
 
 
 #endif

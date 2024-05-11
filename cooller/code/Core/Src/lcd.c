@@ -9,6 +9,9 @@
 #include "lcd.h"
 #include "usb_ctrl.h"
 #include "usb_host.h"
+#include "stdlib.h"
+#include "string.h"
+#include "mystring.h"
 
 uint8_t cmd_buffer[CMD_MAX_SIZE];
 static uint8_t update_en = 0;
@@ -80,25 +83,25 @@ void ProcessMessage(PCTRL_MSG msg, uint16_t size)
 
 void set_label_proc(unsigned char num)
 {
-	switch(num)
-	{
-		case 0:
-		SetLableValue(Setting_PAGE,USB_LOG_ID,"");
-		break;
-	case 1:
-	SetLableValue(Setting_PAGE,USB_LOG_ID,"请插入U盘");
-	break;
-	case 2:
-	SetLableValue(Setting_PAGE,USB_LOG_ID,"未识别到U盘");
-	break;
-	case 3:
-	SetLableValue(Setting_PAGE,USB_LOG_ID,"数据导出中...");
-	break;
-	case 4:
-	SetLableValue(Setting_PAGE,USB_LOG_ID,"数据导出完成");
-	break;
+    switch (num)
+    {
+        case 0:
+            SetLableValue(Setting_PAGE, USB_LOG_ID, "");
+            break;
+        case 1:
+            SetLableValue(Setting_PAGE, USB_LOG_ID, "请插入U盘");
+            break;
+        case 2:
+            SetLableValue(Setting_PAGE, USB_LOG_ID, "未识别到U盘");
+            break;
+        case 3:
+            SetLableValue(Setting_PAGE, USB_LOG_ID, "数据导出中...");
+            break;
+        case 4:
+            SetLableValue(Setting_PAGE, USB_LOG_ID, "数据导出完成");
+            break;
 
-	}
+    }
 }
 
 
@@ -106,154 +109,100 @@ void UpdateUI()
 {
     int i;
     int value;
-
+    char str[65];
     if (page_Id == Setting_PAGE)
     {
-        if(getConfig()->export_flag == 1)
+        if (getConfig()->export_flag == 1)
         {
-			if(get_usb_state() == APPLICATION_READY)
-			{
-				set_label_proc(3);
-			}
-			else if(get_usb_state() == APPLICATION_IDLE||get_usb_state() == APPLICATION_DISCONNECT)
-			{
-				set_label_proc(1);
-			}
-			else
-			{
-				set_label_proc(2);
-			}
-		}
-		if(*get_usb_wr() == 1)
-		{
-			set_label_proc(4);
-			getConfig()->export_flag = 0;
-		}
-			
+            if (get_usb_state() == APPLICATION_READY)
+            {
+                set_label_proc(3);
+            }
+            else if (get_usb_state() == APPLICATION_IDLE
+                     || get_usb_state() == APPLICATION_DISCONNECT)
+            {
+                set_label_proc(1);
+            }
+            else
+            {
+                set_label_proc(2);
+            }
+        }
+        if (*get_usb_wr() == 1)
+        {
+            set_label_proc(4);
+            getConfig()->export_flag = 0;
+        }
+
     }
     else if (page_Id == Main_PAGE)
     {
-        unsigned char str[5];
+
         if (getConfig()->update_T == 1) //figure ctrl
         {
             static uint16_t fig_count = 0;
             getConfig()->update_T = 0;
-            sprintf(str, "%f", get_temperature()->average_T);
-            SetLableValue(page_Id, TEMPERATURE_ID, str);
+            // sprintf(str, "%f", get_temperature()->average_T);
+            //SetLableValue(page_Id, TEMPERATURE_ID, str);
             if (get_temperature()->average_T < 0)
             {
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_temperature()->average_T * 4 + 160); //       -40---0 0---160
+                // SetWaveformValue(page_Id, WAVE_ID, 1,
+                //                get_temperature()->average_T * 4 + 160); //       -40---0 0---160
 
             }
             else
             {
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_temperature()->average_T * 4 / 3 + 160);
+                //// SetWaveformValue(page_Id, WAVE_ID, 1,
+                //              get_temperature()->average_T * 4 / 3 + 160);
 
             }
             fig_count++;
             if (fig_count >= WAVE_HEIGHT)
             {
                 fig_count = 0;
-                WaveformDataClear(page_Id, WAVE_ID);
+                //   WaveformDataClear(page_Id, WAVE_ID);
 
             }
 
 
         }
-        if (getConfig()->mode  == 0) //cooller heater
+        static uint32_t last_mode = 2;
+        static uint32_t last_v_value = 0;
+        static uint32_t last_t = 0;
+        if (getConfig()->mode  == 0 && last_mode != getConfig()->mode) //cooller heater
         {
+
+            last_mode = getConfig()->mode;
             Display_Image(110, 167, COOLLER_ID);
         }
-        else
+        else if (getConfig()->mode  == 1 && last_mode != getConfig()->mode)
             Display_Image(110, 167, HEATER_ID);
 
-        if (get_temperature()->v_value[1] <= 1)
+        if (get_temperature()->T_value[1] <= 1
+                && get_temperature()->T_value[1] != last_v_value)
         {
             unsigned char tmp;
-            tmp = get_temperature()->v_value[1] * 100;
-            sprintf(str, "%u%", tmp);
+            last_v_value = get_temperature()->T_value[1];
+            tmp = get_temperature()->T_value[1] * 100;
+            float2char(tmp, str, 3);
+            str[4] = '%';
             SetLableValue(page_Id, BATTERY_ID, str);
         }
 
+        if (get_rf_status()->average_T != last_t)
+        {
 
+            float tmp2;
+            tmp2 = get_rf_status()->average_T;
+            last_t = tmp2;
 
+            float2char(tmp2, str, 4);  //浮点型数，存储的字符数组，字符数组的长度
+            // sprintf(str, "%f", tmp2);
+            SetLableValue(page_Id, TEMPERATURE_ID, str);
+        }
 
     }
-    else if (page_Id == Temperture_PAGE)
-    {
-        value = 20;
-        for (i = 0; i <= 10; i += 1)
-        {
-            SetThermometerValue(page_Id, 9, value);
-            SetNumberValue(page_Id, 11, value - 20);
-            value += 10;
-            //delay_ms(200);
-        }
 
-        value = 120;
-        for (i = 0; i <= 10; i += 1)
-        {
-            SetThermometerValue(page_Id, 9, value);
-            SetNumberValue(page_Id, 11, value - 20);
-            value -= 10;
-            //delay_ms(200);
-        }
-    }
-    else if (page_Id == Slider_PAGE)
-    {
-        value = 0;
-        for (i = 0; i < 10; i += 1)
-        {
-            SetProgressbarValue(page_Id, 18, value);
-            SetProgressbarValue(page_Id, 20, value);
-            value += 10;
-            //delay_ms(200);
-        }
-    }
-    else if (page_Id == CircleGauge_PAGE)
-    {
-        value = 0;
-        for (i = 0; i <= 10; i += 1)
-        {
-            SetCircleGaugeValue(page_Id, 37, value);
-            SetBarGaugeValue(page_Id, 40, value);
-
-            value += 10;
-            //delay_ms(200);
-        }
-
-        value = 100;
-        for (i = 0; i <= 10; i += 1)
-        {
-            SetCircleGaugeValue(page_Id, 37, value);
-            SetBarGaugeValue(page_Id, 40, value);
-
-            value -= 10;
-            //delay_ms(200);
-        }
-    }
-    else if (page_Id == BarGauge_PAGE)
-    {
-        value = 0;
-        for (i = 0; i <= 10; i += 1)
-        {
-            SetBatteryValue(page_Id, 44, value);
-            SetWaterGaugeValue(page_Id, 42, value);
-            value += 10;
-            //delay_ms(100);
-        }
-
-        value = 100;
-        for (i = 0; i <= 10; i += 1)
-        {
-            SetBatteryValue(page_Id, 44, value);
-            SetWaterGaugeValue(page_Id, 42, value);
-            value -= 10;
-            //delay_ms(100);
-        }
-    }
 }
 
 /*!
@@ -295,18 +244,18 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
 {
     //TODO: 添加用户代码
 
-    if(page_id == Setting_PAGE)
+    if (page_id == Setting_PAGE)
     {
-	    if (type == UPLOAD_CONTROL_ID && state == KEY_RELEASE)
-	    {
-	        page_Id = value;
-	        update_en = 1;
-			getConfig()->export_flag = 1;//usb
-            if(*get_usb_wr() == 1)
-				*get_usb_wr() =2;
-	    }
+        if (type == UPLOAD_CONTROL_ID && state == KEY_RELEASE)
+        {
+            //page_Id = value;
+            update_en = 1;
+            getConfig()->export_flag = 1;//usb
+            if (*get_usb_wr() == 1)
+                *get_usb_wr() = 2;
+        }
 
-	}
+    }
 
     if (type == CHANGE_PAGE && state == KEY_RELEASE)
     {
@@ -467,7 +416,7 @@ void NotifyGetEdit(PEDIT_MSG msg, uint16_t size)
                     getConfig()->power_save = atof(pb);
                     break;
             }
-			
+
         }
     }
 
@@ -497,17 +446,55 @@ void NotifyGetTouchEdit(PEDIT_MSG msg, uint16_t size)
     uint8_t status        = msg->status;
     /*msg->param[1]*/
 
-    //测试密码值为1 2 3 4 对应的ASCII值是0x31 0x32 0x33 0x34
+    if (page_id == Setting_PAGE)
+    {
+        if (status == 0x6f)
+        {
+            unsigned char pb[128];
+            unsigned char tmp[128];
+            float tt;
+            uint32_t t2;
+            memset(pb, 0, 128);
+            memcpy((char *)pb, (const char *)msg->param, size - 3);
+
+            switch (control_id)
+            {
+                case UP_T_ID:
+                    string_to_float((char *)pb, &getConfig()->max_T, &t2);
+                    // = tmp;
+                    break;
+                case DOW_T_ID:
+                    string_to_float((char *)pb, &getConfig()->min_T, &t2);
+                    //getConfig()->min_T = atof(pb);
+                    break;
+                case WAR_T_ID:
+                    string_to_float((char *)pb, &getConfig()->warn_T, &t2);
+                    //getConfig()->warn_T = atof(pb);
+                    break;
+                case REC_T_ID:
+                    string_to_float((char *)pb, &tt, &getConfig()->record_time);
+                    //getConfig()->record_time = atof(pb);
+                    break;
+                case POW_T_ID:
+                    string_to_float((char *)pb, &tt, &getConfig()->power_save);
+                    //getConfig()->power_save = atof(pb);
+                    break;
+            }
+
+        }
+
+    }
 
     if (msg->param[0] == 0x31 && msg->param[1] == 0x32 && msg->param[2] == 0x33
             && msg->param[3] == 0x34)
     {
-        ;//Display_Message(0X18,2,(unsigned char *)String04);
+        ;//Display_Message(0X18,2,(unsigned char *)String01);
     }
     else
     {
-        ;//Display_Message(0X18,2,(unsigned char *)String05);
+        ;//Display_Message(0X18,2,(unsigned char *)String02);
     }
+
 
 }
 
@@ -634,39 +621,48 @@ void NotifyWaveformDataInsert(uint8_t page_id, uint8_t control_id,
 {
     //TODO: 添加用户代码
 }
-
-void lcd_proc()
+void lcd_init()
 {
-    qsize  size = 0;
-
     queue_reset();
 
     /*显示主页面*/
     SetPage(Main_PAGE);//主页面Id号是4
     page_Id_bk = Main_PAGE;
-
+    page_Id = Main_PAGE;
     SetBackLight(50);
-    while (1)
+
+}
+void lcd_proc()
+{
+    qsize  size = 0;
+
+
+    // while (1)
     {
         static uint32_t timeout;
         size = queue_find_cmd(cmd_buffer, CMD_MAX_SIZE); //从缓冲区中获取一条指令
         if (size > 0) //接收到指令
         {
-             timeout = HAL_GetTick();
+            timeout = HAL_GetTick();
             ProcessMessage((PCTRL_MSG)cmd_buffer, size);//指令处理
         }
-		else
-		{
-			static uint32_t timeout;
-			if((HAL_GetTick()-timeout)>=15000&&getConfig()->export_flag ==0)
-			{
-			    SetPage(Main_PAGE);//主页面Id号是4
-    			page_Id_bk = Main_PAGE;
-			    timeout = HAL_GetTick();
-				if(getConfig()->update_params ==2)
-					getConfig()->update_params = 1;//update setting
-			}
-		}
+        else
+        {
+            static uint32_t timeout;
+            if ((HAL_GetTick() - timeout) >= 15000 && getConfig()->export_flag == 0)
+            {
+                if (page_Id != Main_PAGE)
+                {
+                    // SetPage(Main_PAGE);//主页面Id号是4
+                    //  page_Id_bk = Main_PAGE;
+
+                }
+
+                timeout = HAL_GetTick();
+                if (getConfig()->update_params == 2)
+                    getConfig()->update_params = 1;//update setting
+            }
+        }
 
         /****************************************************************************************************************
         特别注意
@@ -677,8 +673,9 @@ void lcd_proc()
         //TODO: 添加用户代码
         //数据有更新时，每100毫秒刷新一次
         static uint32_t timer_tick_count;
-        if (update_en && (HAL_GetTick() - timer_tick_count) >= TIME_100MS)
+        if ((HAL_GetTick() - timer_tick_count) >= TIME_100MS)
         {
+            //update_en &&
             update_en = 0;
             timer_tick_count = HAL_GetTick();
             UpdateUI();

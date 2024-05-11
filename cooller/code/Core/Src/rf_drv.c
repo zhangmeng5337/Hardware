@@ -19,7 +19,7 @@ unsigned char id_card_num[8 * 18] = {0xBB, 0x00, 0xC0, 0x00, 0x0E, 0x34, 0x04, 0
 unsigned char buf[18][8] =
 {
 
-    {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x86},
+    {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x85},
     {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x84},
     {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x83},
     {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x82},
@@ -36,7 +36,7 @@ unsigned char buf[18][8] =
     {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x71},
     {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x70},
     {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x69},
-    {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x85},
+    {0x20, 0x24, 0x01, 0x02, 0x00, 0x00, 0x00, 0x68},
 
 
 };
@@ -54,6 +54,32 @@ void rf_tx(unsigned char card_id)
     uart_transmit(UART_RF, tx_buf, 21);
 
 }
+void rf_averge()
+{
+    unsigned char i;
+    float tmp;
+    static unsigned char averge_count;
+    averge_count = 0;
+    tmp = 0;
+    for (i = 0; i < 18; i++)
+    {
+        if (rf_recv_usr.id_status[i] == 15)
+        {
+            averge_count++;
+            tmp = tmp + rf_recv_usr.card_T[i];
+            //rf_recv_usr.id_status[i]=0;
+        }
+    }
+    if (averge_count > 0)
+    {
+        tmp = tmp / averge_count;
+    }
+    else
+        tmp = 100;
+    rf_recv_usr.average_T = tmp;
+
+}
+
 void rf_recv()
 {
     uart_recv_stru *uart_rf;
@@ -95,7 +121,7 @@ void rf_recv()
                             cal_temp = (cal_temp - 500);
                             cal_temp = cal_temp / 5.4817 + 24.9;
                         }
-						unsigned char i,j;
+						unsigned char i,j,k;
 						for(i=0;i<18;i++)
 						{
 							for(j=0;j<8;j++)
@@ -107,8 +133,11 @@ void rf_recv()
 							if(j>=8)
 							{
 								rf_recv_usr.wait_card_id = i;
+								rf_recv_usr.id_status[i] = 15;
 							break;							
 							}
+							//else
+								//;rf_recv_usr.id_status[i] = 1;
 
 							
 						}
@@ -118,7 +147,8 @@ void rf_recv()
                         {
                         
                             rf_recv_usr.card_T[rf_recv_usr.wait_card_id] = cal_temp;
-							rf_recv_usr.id_status[rf_recv_usr.wait_card_id] = 11;
+							rf_recv_usr.id_status[rf_recv_usr.wait_card_id] = 15;
+							rf_averge();
                         }
 
 						rf_recv_usr.retry_times = 0;
@@ -139,31 +169,7 @@ void rf_recv()
     }
 }
 
-void rf_averge()
-{
-    unsigned char i;
-    float tmp;
-    static unsigned char averge_count;
-    averge_count = 0;
-    tmp = 0;
-    for (i = 0; i < 18; i++)
-    {
-        if (rf_recv_usr.id_status[i] == 1)
-        {
-            averge_count++;
-            tmp = tmp + rf_recv_usr.card_T[i];
 
-        }
-    }
-    if (averge_count > 0)
-    {
-        tmp = tmp / averge_count;
-    }
-    else
-        tmp = 100;
-    rf_recv_usr.average_T = tmp;
-
-}
 rf_recv_stru *get_rf_status()
 {
     return &rf_recv_usr;
@@ -185,12 +191,12 @@ void rf_ctrl_proc()
         {
             rf_recv_usr.retry_times = 0;
 			if(rf_recv_usr.id_status[rf_recv_usr.tx_card_id]<10)
-				rf_recv_usr.id_status[rf_recv_usr.tx_card_id] = rf_recv_usr.tx_card_id + 1;
+				rf_recv_usr.id_status[rf_recv_usr.tx_card_id] =rf_recv_usr.id_status[rf_recv_usr.tx_card_id] + 1;
             rf_recv_usr.tx_card_id++;
         }
         if (rf_recv_usr.tx_card_id >= 18)
             rf_recv_usr.tx_card_id = 0;
     }
     rf_recv();
-    rf_averge();
+    
 }

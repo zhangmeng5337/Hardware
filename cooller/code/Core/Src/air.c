@@ -34,7 +34,7 @@ void app_init(void)
     air_init();
 	usb_init();
 	uart_init();
-	lcd_proc();
+	lcd_init();
 
 }
 /***************************************
@@ -127,6 +127,7 @@ void heater_cooller_ctrl()
 }
 void app()
 {
+    lcd_proc();
     adc_proc();
     heater_cooller_ctrl();
 	usb_ctrl();

@@ -30,6 +30,7 @@ int fputc(int ch, FILE *f)
     HAL_UART_Transmit(&huart4, &tmp, 1, 500);
     return ch;
 }
+uint8_t push_data;
 
 void uart_init()
 {
@@ -41,6 +42,7 @@ void uart_init()
 
     //rs232 uart init for cdg
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+	//HAL_UART_Receive_IT(&huart1, &push_data, 1);
    // HAL_UART_Receive_DMA(&huart1, uart_lcd_recv.uartDMARecBuff,
                       //   UART_CDG_DMA_REC_SIZE);
 
@@ -134,18 +136,20 @@ void uart_transmit(unsigned char uart_num, uint8_t *pData, uint16_t Size)
 //    HAL_UART_Receive_DMA(&huart3, (uint8_t *)uart_debug_recv.uartDMARecBuff,
 //                         UART_DMA_REC_SIZE);
 //}
+
+
 void uart_lcd_recv_proc()
 {
 
     if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
     {
-       
-        uint8_t data;
-        uart_lcd_recv.uartRecLen  = UART_CDG_DMA_REC_SIZE - __HAL_DMA_GET_COUNTER(
-                                        &hdma_usart1_rx);
+       HAL_UART_Receive(&huart1, &push_data, 1, 10);
+        queue_push( push_data);
+        //uart_lcd_recv.uartRecLen  = UART_CDG_DMA_REC_SIZE - __HAL_DMA_GET_COUNTER(
+          //                              &hdma_usart1_rx);
         __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
-		HAL_UART_Receive_IT(&huart1, &data, 1);
-		queue_push(data);
+		//HAL_UART_Receive_IT(&huart1, & push_data, 1);
+		
 
 
 		
