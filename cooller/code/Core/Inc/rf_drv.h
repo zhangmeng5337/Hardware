@@ -24,6 +24,7 @@ typedef struct
 	unsigned char tx_card_id;
 	unsigned char retry_times;
 	unsigned char id_status[18];
+	unsigned char vaild_flag;
 	float average_T;
     float card_T[18];
 } rf_recv_stru;

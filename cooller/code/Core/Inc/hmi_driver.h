@@ -11,7 +11,7 @@
 
 #define CMD_MAX_SIZE 65        /*!<单条指令大小，根据需要调整，尽量设置大一些*/
 #define QUEUE_MAX_SIZE 128   /*!< 指令接收缓冲区大小，根据需要调整，尽量设置大一些*/
-#define TIME_100MS 100
+#define TIME_100MS 2000
 #include "main.h"
 
 

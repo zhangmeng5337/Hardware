@@ -147,6 +147,7 @@ void rf_recv()
                         {
                         
                             rf_recv_usr.card_T[rf_recv_usr.wait_card_id] = cal_temp;
+							rf_recv_usr.vaild_flag = 1;
 							rf_recv_usr.id_status[rf_recv_usr.wait_card_id] = 15;
 							rf_averge();
                         }
@@ -192,7 +193,16 @@ void rf_ctrl_proc()
             rf_recv_usr.retry_times = 0;
 			if(rf_recv_usr.id_status[rf_recv_usr.tx_card_id]<10)
 				rf_recv_usr.id_status[rf_recv_usr.tx_card_id] =rf_recv_usr.id_status[rf_recv_usr.tx_card_id] + 1;
-            rf_recv_usr.tx_card_id++;
+            unsigned char i,j;
+			j = 0;
+			for(i=0;i<18;i++)
+			{
+				if(rf_recv_usr.id_status[i] == 10)
+					j = j + 1;
+			}
+			if(j==18)
+				rf_recv_usr.vaild_flag = 0;
+			rf_recv_usr.tx_card_id++;
         }
         if (rf_recv_usr.tx_card_id >= 18)
             rf_recv_usr.tx_card_id = 0;

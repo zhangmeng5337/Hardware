@@ -10,13 +10,13 @@
 <image x = "109" y = "167" width = "41" height = "40" ShapeName = ""
  ShapeNum = "21" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image004.bmp">
 </image>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "246" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "29" >-40℃</text>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "21" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "22" >60℃</text>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "212" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "28" >-30℃</text>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "169" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "27" >-20℃</text>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "128" width = "39.38802" height = "16.75781" ShapeName = "Transparent" ShapeNum = "26" >-10℃</text>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "88" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "25" >0℃</text>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "50" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "30" >30℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "246" width = "31.7513" height = "16.75781" ShapeName = "Transparent" ShapeNum = "29" >-5℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "21" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "22" >15℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "212" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "28" >0℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "169" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "27" >3℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "128" width = "31.7513" height = "16.75781" ShapeName = "Transparent" ShapeNum = "26" >-6℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "88" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "25" >9℃</text>
+<text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "50" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "30" >12℃</text>
 <text style = "fill:Lime; stroke:Transparent; font-family:image001.bmp; font-size:10pt" x = "148" y = "226" width = "39.56813" height = "16.75781" ShapeName = "Image" ShapeNum = "23" >100%</text>
 <text style = "fill:White; stroke:Transparent; font-family:image001.bmp; font-size:30pt" x = "60" y = "73" width = "82.06379" height = "50.27343" ShapeName = "Image" ShapeNum = "24" >100</text>
 </vlcd>

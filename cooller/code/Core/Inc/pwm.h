@@ -12,13 +12,14 @@
 #define HEATER_4		8
 
 #define AIR_FREQ		9
-#define TIM_BASE		500
+#define TIM_BASE		50000
 
 typedef struct
 {
   uint32_t air_freq;
   uint32_t air_start_tick;
 	uint32_t air_counter;
+  float ratio;
 
 }pwm_stru;
 

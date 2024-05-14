@@ -21,15 +21,15 @@ void pwm_init()
 }
 void air_pwm_set(uint32_t freq)
 {
-
-    pwm_usr.air_freq = freq;
-    if (pwm_usr.air_freq <= 1000)
+ pwm_usr.air_freq = freq;
+    if (pwm_usr.air_freq <= 10000)
     {
         if (pwm_usr.air_freq > 0)
         {
             HAL_TIM_Base_Start_IT(&htim4);
             HAL_TIM_Base_Start(&htim4);
-            pwm_usr.air_counter = pwm_usr.air_freq / TIM_BASE;
+            pwm_usr.air_counter = TIM_BASE/pwm_usr.air_freq -1 ;
+		
         }
         else
         {
@@ -76,16 +76,16 @@ void pwm_set(unsigned char pwm_num, uint32_t counter)
             break;
         case COOLER_2:
             HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-            __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, counter);
+            __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, counter);
             break;
         case COOLER_3:
             HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-            __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, counter);
+            __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, counter);
             break;
 
         case COOLER_4:
             HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-            __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, counter);
+            __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, counter);
             break;
         case HEATER_1:
             HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
@@ -93,16 +93,16 @@ void pwm_set(unsigned char pwm_num, uint32_t counter)
             break;
         case HEATER_2:
             HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-            __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, counter);
+            __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, counter);
             break;
         case HEATER_3:
             HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-            __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, counter);
+            __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, counter);
             break;
 
         case HEATER_4:
             HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
-            __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, counter);
+            __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, counter);
             break;
         default :
 

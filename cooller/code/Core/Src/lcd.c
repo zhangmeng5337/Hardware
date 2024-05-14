@@ -144,16 +144,20 @@ void UpdateUI()
             getConfig()->update_T = 0;
             // sprintf(str, "%f", get_temperature()->average_T);
             //SetLableValue(page_Id, TEMPERATURE_ID, str);
-            if (get_temperature()->average_T < 0)
+            if (get_rf_status()->average_T < 0)
             {
-                // SetWaveformValue(page_Id, WAVE_ID, 1,
-                //                get_temperature()->average_T * 4 + 160); //       -40---0 0---160
+                SetWaveformValue(page_Id, WAVE_ID, 1,
+                                 get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
 
             }
             else
             {
-                //// SetWaveformValue(page_Id, WAVE_ID, 1,
-                //              get_temperature()->average_T * 4 / 3 + 160);
+                SetWaveformValue(page_Id, WAVE_ID, 1,
+                                 get_rf_status()->average_T * 20 / 3 + 40);
+//          SetWaveformValue(page_Id, WAVE_ID, 1,
+//                       get_rf_status()->average_T * 40 / 3 + 40);
+
+
 
             }
             fig_count++;
@@ -182,10 +186,14 @@ void UpdateUI()
                 && get_temperature()->T_value[1] != last_v_value)
         {
             unsigned char tmp;
+            float tmp2;
             last_v_value = get_temperature()->T_value[1];
             tmp = get_temperature()->T_value[1] * 100;
-            float2char(tmp, str, 3);
-            str[4] = '%';
+            tmp2 = tmp;
+            memset(str, 0, 65);
+            float2char(tmp2, str, 4);
+
+            str[3] = '%';
             SetLableValue(page_Id, BATTERY_ID, str);
         }
 

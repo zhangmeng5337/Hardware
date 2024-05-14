@@ -11,6 +11,5 @@
 <edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "163" width = "80" height = "33" ShapeName = "14" ShapeNum = "7" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
 <edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "208" width = "80" height = "33" ShapeName = "14" ShapeNum = "8" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "300" y = "191" width = "74" height = "68" ShapeName = "TP" ShapeNum = "9" Direction = "UploadID" StoreType = "" RadianNum = "Char" TextAlignType = "" Gwidth = "image002.bmp" Gheight = "image002.bmp" >Button</button>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:14pt" x = "283" y = "106" width = "0" height = "0" ShapeName = "Transparent" ShapeNum = "10" ></text>
-<text style = "fill:Black; stroke:Transparent; font-family:image002.bmp; font-size:14pt" x = "297" y = "115" width = "53.37195" height = "23.46093" ShapeName = "Image" ShapeNum = "18" >Lable</text>
+<text style = "fill:Red; stroke:Transparent; font-family:image002.bmp; font-size:14pt" x = "297" y = "115" width = "53.37195" height = "23.46093" ShapeName = "Image" ShapeNum = "18" >Lable</text>
 </vlcd>

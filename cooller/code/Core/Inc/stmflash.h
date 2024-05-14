@@ -49,7 +49,7 @@
 #define BootLoader_Size				0x10000U						// BootLoader的区间大�? 64K
 #define Application_Size			0x40000U					// Application的区间大�?256K
 
-#define Application_1_Addr		0x08020000U				// 应用程序1的首地址�? sectors
+#define Application_1_Addr		0x080c0000U				// 应用程序1的首地址�? sectors
 #define Application_2_Addr		0x080E0000U				// 应用程序2的首地址�? sectors
 
 

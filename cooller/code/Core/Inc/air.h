@@ -8,13 +8,14 @@
 #define FREQ_B		(1000-FREQ_RATIO*8000.0)
 
 
-#define FAN_RUN_T	35
+#define FAN_RUN_T	33
 typedef struct
 {
 	
 	uint32_t    freq;
 	float    pid_out;
 	float    heat_pid_out;
+	float ratio;
 
     unsigned char update;
 }air_stru;

@@ -27,14 +27,14 @@ void air_pwr_ctrl(unsigned char flag)
 }
 void app_init(void)
 {
-   
+
     adc_init();
     config_init();
-	
+
     air_init();
-	usb_init();
-	uart_init();
-	lcd_init();
+    usb_init();
+    uart_init();
+    lcd_init();
 
 }
 /***************************************
@@ -68,14 +68,14 @@ void air_temperature_ctrl()
 {
     float tmep_T;
     static uint32_t tick_start;
-   // if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
+    // if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
         tmep_T = get_rf_status()->average_T;
         air_usr.pid_out = pid_proc(tmep_T);//制冷温度控制
         air_freq_ctrl();
     }
-	
+
 
 }
 void heater_cooller_ctrl()
@@ -85,7 +85,13 @@ void heater_cooller_ctrl()
     if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
-        tmep_T = get_temperature()->average_T;
+        if (get_rf_status()->vaild_flag == 1)
+            tmep_T = get_rf_status()->average_T;
+        else
+            tmep_T = getConfig()->max_T + 1;
+        float tmp_v;
+        tmp_v = get_temperature()->T_value[1] * BATTERY_V;
+        air_usr.ratio = 12 / tmp_v;
         if (tmep_T <= getConfig()->min_T)//heater ctrl
         {
             getConfig()->mode = 1;//加热
@@ -109,16 +115,23 @@ void heater_cooller_ctrl()
             pwm_set(HEATER_2,  0);
             pwm_set(HEATER_3,  0);
             pwm_set(HEATER_4,  0);
-			
-            pwm_set(COOLER_3,  500);//冷却均匀温度用
-            pwm_set(COOLER_4,  500);//冷却均匀温度用
+
+            pwm_set(COOLER_3,  200 * air_usr.ratio); //冷却均匀温度用
+            pwm_set(COOLER_4,  200 * air_usr.ratio); //冷却均匀温度用
             air_temperature_ctrl();
-			air_freq_ctrl();
+            air_freq_ctrl();
         }
         if (get_temperature()->T_value[0] >= FAN_RUN_T)//charger temperature ctrl
         {
-            pwm_set(COOLER_1,  700);
-            pwm_set(COOLER_2,  700);
+
+            pwm_set(COOLER_1,  1000 * air_usr.ratio);
+            pwm_set(COOLER_2,  1000 * air_usr.ratio);
+        }
+        else
+        {
+            pwm_set(COOLER_1,  0);
+            pwm_set(COOLER_2,  0);
+
         }
 
 
@@ -130,6 +143,6 @@ void app()
     lcd_proc();
     adc_proc();
     heater_cooller_ctrl();
-	usb_ctrl();
-	rf_ctrl_proc();
+    usb_ctrl();
+    rf_ctrl_proc();
 }

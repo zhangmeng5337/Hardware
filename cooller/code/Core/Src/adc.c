@@ -52,9 +52,9 @@ void adc_proc()
                 adc_pt2_v = sensor_adc_value.adc_value[1] * sensor_adc_value.ref;
                 adc_pt2_v = adc_pt2_v / 4095;
                 sensor_adc_value.T_value[1] = sensor_adc_value.adc_value[2] *
-                                              sensor_adc_value.ref;
-                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] / 4095;
-                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] / BATTERY_V*6;
+                                              sensor_adc_value.ref/4095;
+                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] *11;
+                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] / BATTERY_V;
                 x2 = 2 * adc_pt1_v;
                 x1 = sensor_adc_value.ref - adc_pt1_v;
                 //x1=x1-adc_pt1_v;

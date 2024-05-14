@@ -7,6 +7,13 @@ config_stru config_usr;
 void config_init()
 {
      flash_init();
+	 		 getConfig()->max_T = -10;
+		 getConfig()->min_T = -30;
+		 getConfig()->record_interval = 30;//s
+		 getConfig()->warn_T = -35;
+		 getConfig()->power_save = 15;//s
+		 getConfig()->update_T = 0;
+		 getConfig()->record_time = 0;
 	config_usr.mode = 0;//0÷∆¿‰£¨1º”»»
 }
 config_stru *getConfig()
