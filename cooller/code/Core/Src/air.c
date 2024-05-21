@@ -29,7 +29,7 @@ void app_init(void)
 {
 
     adc_init();
-    config_init();
+   // config_init();
 
     air_init();
     usb_init();

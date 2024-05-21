@@ -1,9 +1,9 @@
 #include "adc.h"
-
+#include "adc.h"
 #include "filter.h"
 #include "config.h"
 #include "stmflash.h"
-
+#include "flash.h"
 extern ADC_HandleTypeDef hadc1;
 extern  DMA_HandleTypeDef hdma_adc1;
 adc_stru sensor_adc_value;
@@ -17,12 +17,39 @@ void adc_init(void)
 
 
 }
-float sensor_temp;
 
-float adc_pt1_v, adc_pt2_v, pt_r;
-float x2, x1, xb;
+void data_flash_proc(void)
+{
+    uint32_t  data_tmp;
+    float tmp;
+    unsigned char pb[4];
+
+
+		 if(get_flash_status()->vailabe_len>0)
+		 {
+		 
+		 	floatTouint32(sensor_adc_value.average_T,pb);//上限温度
+			WriteFlash(getConfig()->addr, pb, 4);getConfig()->addr = getConfig()->addr + 4;
+		     get_flash_status()->used_len=  get_flash_status()->used_len +4;	 
+
+		 }
+		 else
+		 {
+		 		Erase_page(Application_2_Addr, 1);
+				
+				 get_flash_status()->used_len= 0;
+				 floatTouint32(sensor_adc_value.average_T,pb);//上限温度
+				 WriteFlash(getConfig()->addr, pb, 4);getConfig()->addr = getConfig()->addr + 4;
+				 get_flash_status()->used_len =  get_flash_status()->used_len +4;
+		 }
+
+}
+
 void adc_proc()
 {
+float sensor_temp;
+float adc_pt1_v, adc_pt2_v, pt_r;
+float x2, x1, xb;
     float tmp;
     unsigned char i;
     static int j = 0;
@@ -36,6 +63,7 @@ void adc_proc()
         {
             getConfig()->record_time = 0;
             getConfig()->update_T = 1;
+			data_flash_proc();
         }
         if (sensor_adc_value.update == 1)
         {

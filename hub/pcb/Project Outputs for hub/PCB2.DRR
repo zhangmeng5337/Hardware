@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+NCDrill File Report For: PCB2.PcbDoc   2024/5/20  11:12:00
+---------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : PCB2-RoundHoles.TXT
+ASCII SlotHoles File : PCB2-SlotHoles.TXT
+EIA File   : PCB2.DRL
+
+Tool         Hole Size           Hole Type     Hole Count Plated       Tool Travel
+---------------------------------------------------------------------------
+T1        12mil (0.3048mm)         Round          315              41.40 Inch (1051.61 mm)
+T2        20mil (0.508mm)          Round          4                1.79 Inch (45.49 mm)
+T3        25.59mil (0.64999mm)     Slot           4                283.98 Inch (7213.03 mm)
+T4        26.38mil (0.67005mm)     Round          2                0.23 Inch (5.78 mm)
+T5        35.43mil (0.89992mm)     Round          24               10.23 Inch (259.97 mm)
+T6        39.37mil (1mm)           Round          4                0.50 Inch (12.70 mm)
+T7        99.61mil (2.53009mm)     Round          4         NPTH   8.53 Inch (216.76 mm)
+---------------------------------------------------------------------------
+Totals                                            357              346.67 Inch (8805.35 mm)
+
+Total Processing Time (hh:mm:ss) : 00:00:01

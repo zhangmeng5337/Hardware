@@ -12,7 +12,7 @@
 #define HEATER_4		8
 
 #define AIR_FREQ		9
-#define TIM_BASE		50000
+#define TIM_BASE		1000000
 
 typedef struct
 {

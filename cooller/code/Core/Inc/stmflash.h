@@ -61,12 +61,15 @@ typedef struct
 	uint32_t used_len;
 	uint32_t vailabe_len;
 	uint32_t total_len;
+	unsigned char usb_read_flag;
 }flash_struct;
 
 uint32_t GetPage(uint32_t Address);
 int Erase_page(uint32_t pageaddr, uint32_t num);
 void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len);
 void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len);
+void floatTouint32(float dat,unsigned char *buf);
+void uint32Tofloat(float dat,unsigned char *buf);
 
 #endif 
 

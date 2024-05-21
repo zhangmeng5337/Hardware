@@ -7,7 +7,7 @@ typedef struct
 	float max_T;
 	float min_T;
 	float warn_T;
-	
+	uint32_t addr;
 	uint32_t max_T_I;
 	uint32_t min_T_I;
 	uint32_t warn_T_I;	

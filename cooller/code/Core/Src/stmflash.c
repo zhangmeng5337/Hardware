@@ -1,4 +1,4 @@
-﻿#include "stmflash.h"
+#include "stmflash.h"
 #include "main.h"
 uint32_t GetSectors(uint32_t Addr)
 {
@@ -152,5 +152,24 @@ void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len)
     }
 }
 
+void floatTouint32(float dat,unsigned char *buf)
+{
+	   float a=3.14159;
+	   uint32_t b;
+	   b=*(uint32_t*)&dat;
+	   
+	   buf[0]=b>>0;
+	   buf[1]=b>>8;
+	   buf[2]=b>>16;
+	   buf[3]=b>>24;
 
+
+}
+void uint32Tofloat(float dat,unsigned char *buf)
+{
+	uint32_t tmp;
+	tmp=(buf[0]<<0)|(buf[1]<<8)|(buf[2]<<16)|(buf[3]<<24);
+	dat = *(float*)&tmp;
+
+}
 

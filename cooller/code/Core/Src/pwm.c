@@ -29,6 +29,7 @@ void air_pwm_set(uint32_t freq)
             HAL_TIM_Base_Start_IT(&htim4);
             HAL_TIM_Base_Start(&htim4);
             pwm_usr.air_counter = TIM_BASE/pwm_usr.air_freq -1 ;
+			__HAL_TIM_SET_AUTORELOAD(&htim4,pwm_usr.air_counter); 
 		
         }
         else
@@ -54,11 +55,12 @@ void air_pwm_out()
         else
         {
             start_tick = start_tick + 1;
-            if (start_tick >= pwm_usr.air_counter)
+            //if (start_tick >= pwm_usr.air_counter)
             {
                 start_tick = 0;
                 HAL_GPIO_TogglePin(air_FREQ_GPIO_Port, air_FREQ_Pin);
-
+               // __HAL_TIM_SET_COUNTER(&htim4,2999);
+               
             }
 
         }
