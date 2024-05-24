@@ -55,9 +55,14 @@ void usb_init()
 
 void usb_ctrl()
 {
-    if (Appli_state == APPLICATION_READY&&getConfig()->export_flag == 1) //U盘已经加载完成
+    static uint32_t i, addr;
+    unsigned char pb[32];
+    float dat;
+
+    if (Appli_state == APPLICATION_READY
+            && getConfig()->export_flag == 1) //U盘已经加载完成
     {
-        if (status == 0 || usb_state == 2) //U盘加载后只运行一次
+        if (get_flash_status()->usb_read_flag == 0)
         {
             status = 1;
             //  retUSBH=f_mount(USB_fat[0], "0:", 1);        /* 挂载SD卡 */
@@ -69,12 +74,12 @@ void usb_ctrl()
             }
 
             printf("写入文件测试!\r\n");
-            retUSBH = f_open(&USBHFile, "test.txt",
+            retUSBH = f_open(&USBHFile, "log.txt",
                              FA_CREATE_ALWAYS | FA_WRITE);
             if (retUSBH == FR_OK)
             {
-                usb_state = 1;
-                printf("打开文件\"测试.txt\"成功!\r\n");
+
+                printf("打开文件\"log.txt\"成功!\r\n");
             }
 
             retUSBH = f_lseek(&USBHFile, f_size(&USBHFile));
@@ -82,58 +87,73 @@ void usb_ctrl()
             {
                 printf("指针移动到文件末尾成功！\r\n");
             }
-            FileBuf = test_txt;
+
             // get_flash_status()->used_len
-            uint32_t i, addr;
-            unsigned char pb[32];
-            float dat;
-            if (get_flash_status()->usb_read_flag == 0)
+
+            // if (get_flash_status()->usb_read_flag == 0)
             {
                 i = get_flash_status()->used_len;
                 addr = Application_2_Addr;
-                while (i)
+                while (i > 0)
                 {
-                     i=i-4;
+                    i = i - 4;
                     ReadFlash(addr, pb, 4);
                     addr = addr + 4;
-                    dat=uint32Tofloat( pb); //上限温度
-                     sprintf(pb,"%.3f\r\n", dat);
-                    retUSBH = f_write(&USBHFile, pb, strlen(pb), &bw);
-                }
-                get_flash_status()->usb_read_flag = 1;
+                    dat = uint32Tofloat(pb); //上限温度
+                    sprintf(pb, "%.3f\r\n", dat);
+                    FileBuf = pb;
+                    retUSBH = f_write(&USBHFile, FileBuf, strlen(FileBuf), &bw);
+                    HAL_Delay(10);
+                    static uint32_t timer_tick_count;
+                    if ((HAL_GetTick() - timer_tick_count) >= 500)
+                    {
+                        timer_tick_count = HAL_GetTick();
+                        UpdateUI();
 
+                    }
+                }
+                retUSBH = f_close(&USBHFile);
+                getConfig()->export_flag = 0;
+                get_flash_status()->usb_read_flag = 1;
+                usb_state = 1;
             }
 
-           // retUSBH = f_write(&USBHFile, FileBuf, strlen(test_txt), &bw);
+            // retUSBH = f_write(&USBHFile, FileBuf, strlen(test_txt), &bw);
 
             if (retUSBH == FR_OK)
             {
                 printf("写入文件成功!\r\n");
             }
-            retUSBH = f_close(&USBHFile);
-            if (retUSBH == FR_OK)
-            {
-                printf("关闭文件成功!\r\n");
-            }
-            //读取文件测试
-            printf("读取文件测试!\r\n");
-            retUSBH = f_open(&USBHFile, (const char *)"测试.txt",
-                             FA_OPEN_EXISTING | FA_READ);//打开文件
-            if (retUSBH == FR_OK)
-            {
-                printf("打开文件\"测试.txt\"成功!\r\n");
-            }
-            retUSBH = f_read(&USBHFile, FileBuf, 18, &bw);
-            if (retUSBH == FR_OK)
-            {
-                printf("读取文件成功!文件内容：");
-                //HAL_UART_Transmit(&huart1, FileBuf, bw, 100);
-            }
-            retUSBH = f_close(&USBHFile);
-            if (retUSBH == FR_OK)
-            {
-                printf("关闭文件成功!\r\n");
-            }
+            //retUSBH = f_close(&USBHFile);
+//            if (retUSBH == FR_OK)
+//            {
+//                printf("关闭文件成功!\r\n");
+//            }
+//            //读取文件测试
+//            printf("读取文件测试!\r\n");
+//            retUSBH = f_open(&USBHFile, (const char *)"测试.txt",
+//                             FA_OPEN_EXISTING | FA_READ);//打开文件
+//            if (retUSBH == FR_OK)
+//            {
+//                printf("打开文件\"log.txt\"成功!\r\n");
+//            }
+//            retUSBH = f_read(&USBHFile, FileBuf, 18, &bw);
+//            if (retUSBH == FR_OK)
+//            {
+//                printf("读取文件成功!文件内容：");
+//                //HAL_UART_Transmit(&huart1, FileBuf, bw, 100);
+//            }
+//            retUSBH = f_close(&USBHFile);
+//            if (retUSBH == FR_OK)
+//            {
+//                printf("关闭文件成功!\r\n");
+//            }
+
+        }
+        else if (getConfig()->export_flag == 1)
+        {
+            get_flash_status()->usb_read_flag = 0;
+
         }
     }
 

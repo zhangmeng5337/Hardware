@@ -128,8 +128,11 @@ void UpdateUI()
                 set_label_proc(2);
             }
         }
+        else
+            set_label_proc(0);
         if (*get_usb_wr() == 1)
         {
+
             set_label_proc(4);
             getConfig()->export_flag = 0;
         }
@@ -138,7 +141,7 @@ void UpdateUI()
     else if (page_Id == Main_PAGE)
     {
 
-       // if (getConfig()->update_T == 1) //figure ctrl
+        // if (getConfig()->update_T == 1) //figure ctrl
         {
             static uint16_t fig_count = 0;
             //getConfig()->update_T = 0;
@@ -259,6 +262,7 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
             //page_Id = value;
             update_en = 1;
             getConfig()->export_flag = 1;//usb
+            //get_flash_status()->usb_read_flag = 0;
             if (*get_usb_wr() == 1)
                 *get_usb_wr() = 2;
         }
@@ -424,7 +428,7 @@ void NotifyGetEdit(PEDIT_MSG msg, uint16_t size)
                     getConfig()->power_save = atof(pb);
                     break;
             }
-			getConfig()->update_params = 2;
+            getConfig()->update_params = 2;
 
         }
     }
@@ -660,15 +664,15 @@ void lcd_proc()
             static uint32_t timeout;
             if ((HAL_GetTick() - timeout) >= 15000 && getConfig()->export_flag == 0)
             {
-							  
+
                 if (page_Id != Main_PAGE)
                 {
                     // SetPage(Main_PAGE);//Ö÷Ò³ÃæIdºÅÊÇ4
                     //  page_Id_bk = Main_PAGE;
 
                 }
-								else
-									SetBackLight(0);
+                else
+                    SetBackLight(0);
 
                 timeout = HAL_GetTick();
                 if (getConfig()->update_params == 2)
@@ -691,7 +695,7 @@ void lcd_proc()
             update_en = 0;
             timer_tick_count = HAL_GetTick();
             UpdateUI();
-			
+
         }
     }
 
