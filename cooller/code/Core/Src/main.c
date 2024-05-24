@@ -187,6 +187,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		app();
+		
   }
   /* USER CODE END 3 */
 }

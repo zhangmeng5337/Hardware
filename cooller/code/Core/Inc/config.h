@@ -24,6 +24,6 @@ typedef struct
 } config_stru;
 
 config_stru *getConfig(void);
-
+void config_init(void);
 #endif
 

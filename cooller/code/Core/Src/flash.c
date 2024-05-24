@@ -100,16 +100,17 @@ void flash_init()
         ReadFlash(addr, pb, 4);addr = addr + 4;
         
         memcpy(&flash_usr.used_len, pb, 4);
+		 flash_usr.total_len = 128 * 1024;
         flash_usr.vailabe_len = flash_usr.total_len - flash_usr.used_len;//已写入字节数
         getConfig()->addr = Application_2_Addr+flash_usr.used_len;
 		ReadFlash(addr, pb, 4);addr = addr + 4;
-		uint32Tofloat(getConfig()->max_T,pb);//上限温度
+		getConfig()->max_T=uint32Tofloat(pb);//上限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
-		uint32Tofloat(getConfig()->min_T,pb);//下限温度
+		getConfig()->min_T=uint32Tofloat(pb);//下限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
-		uint32Tofloat(getConfig()->warn_T,pb);//报警限温度
+		getConfig()->warn_T=uint32Tofloat(pb);//报警限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
 		memcpy(&getConfig()->record_interval,pb,4);//记录间隔
@@ -118,7 +119,8 @@ void flash_init()
 		memcpy(&getConfig()->record_time,pb,4);//记录时间
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
-		memcpy(&getConfig()->power_save,pb,4);//休眠模式		
+		memcpy(&getConfig()->power_save,pb,4);//休眠模式	
+		//Erase_page(Application_1_Addr, 1);
     }
     else
     {
@@ -136,7 +138,7 @@ void flash_init()
 		 getConfig()->update_T = 0;
 		 getConfig()->record_time = 0;
 		flash_save();
-
+        //Erase_page(Application_1_Addr, 1);
 
     }
 

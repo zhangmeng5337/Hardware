@@ -28,7 +28,7 @@ void air_pwm_set(uint32_t freq)
         {
             HAL_TIM_Base_Start_IT(&htim4);
             HAL_TIM_Base_Start(&htim4);
-            pwm_usr.air_counter = TIM_BASE/pwm_usr.air_freq -1 ;
+            pwm_usr.air_counter = TIM_BASE/pwm_usr.air_freq/2 -1 ;
 			__HAL_TIM_SET_AUTORELOAD(&htim4,pwm_usr.air_counter); 
 		
         }

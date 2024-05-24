@@ -165,11 +165,11 @@ void floatTouint32(float dat,unsigned char *buf)
 
 
 }
-void uint32Tofloat(float dat,unsigned char *buf)
+float uint32Tofloat(unsigned char *buf)
 {
 	uint32_t tmp;
 	tmp=(buf[0]<<0)|(buf[1]<<8)|(buf[2]<<16)|(buf[3]<<24);
-	dat = *(float*)&tmp;
+	return *(float*)&tmp;
 
 }
 

@@ -24,6 +24,7 @@ typedef struct
 
 void app_init(void);
 void app(void);
+void PVD_config(void);
 
 
 #endif

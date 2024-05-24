@@ -69,7 +69,7 @@ int Erase_page(uint32_t pageaddr, uint32_t num);
 void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len);
 void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len);
 void floatTouint32(float dat,unsigned char *buf);
-void uint32Tofloat(float dat,unsigned char *buf);
+float uint32Tofloat(unsigned char *buf);
 
 #endif 
 

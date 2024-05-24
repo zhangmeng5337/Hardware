@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "uart.h"
 #include "pwm.h"
+#include "flash.h"
 
 /* USER CODE END Includes */
 
@@ -210,6 +211,20 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles PVD interrupt through EXTI line 16.
+  */
+void PVD_IRQHandler(void)
+{
+  /* USER CODE BEGIN PVD_IRQn 0 */
+  flash_save();
+  /* USER CODE END PVD_IRQn 0 */
+  HAL_PWR_PVD_IRQHandler();
+  /* USER CODE BEGIN PVD_IRQn 1 */
+
+  /* USER CODE END PVD_IRQn 1 */
+}
 
 /**
   * @brief This function handles EXTI line1 interrupt.

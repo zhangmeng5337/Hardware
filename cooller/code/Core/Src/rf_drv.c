@@ -15,6 +15,8 @@
 #include "crc.h"
 #include "rf_drv.h"
 unsigned char rf_cmd[11] = {0xBB, 0x00, 0xC0, 0x00, 0x0E, 0x34, 0x04, 0x00, 0x00, 0x00, 0x00};
+unsigned char rf_sleep_cmd[7] = {0xBB, 0x00, 0x17, 0x00, 0x01, 0x17, 0x7e};
+
 unsigned char id_card_num[8 * 18] = {0xBB, 0x00, 0xC0, 0x00, 0x0E, 0x34, 0x04, 0x00, 0x00, 0x00, 0x00};
 unsigned char buf[18][8] =
 {
@@ -52,6 +54,12 @@ void rf_tx(unsigned char card_id)
     tx_buf[19] = sum;
     tx_buf[20] = 0x7e;
     uart_transmit(UART_RF, tx_buf, 21);
+
+}
+void rf_sleep()
+{
+	
+	uart_transmit(UART_RF, rf_sleep_cmd, 7);
 
 }
 void rf_averge()
@@ -208,5 +216,5 @@ void rf_ctrl_proc()
             rf_recv_usr.tx_card_id = 0;
     }
     rf_recv();
-    
+  // rf_sleep(); 
 }

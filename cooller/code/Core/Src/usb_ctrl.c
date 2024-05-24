@@ -55,7 +55,7 @@ void usb_init()
 
 void usb_ctrl()
 {
-    if (Appli_state == APPLICATION_READY) //U盘已经加载完成
+    if (Appli_state == APPLICATION_READY&&getConfig()->export_flag == 1) //U盘已经加载完成
     {
         if (status == 0 || usb_state == 2) //U盘加载后只运行一次
         {
@@ -91,20 +91,20 @@ void usb_ctrl()
             {
                 i = get_flash_status()->used_len;
                 addr = Application_2_Addr;
-                while (i = i - 4)
+                while (i)
                 {
-
+                     i=i-4;
                     ReadFlash(addr, pb, 4);
                     addr = addr + 4;
-                    uint32Tofloat(dat, pb); //上限温度
-                     sprintf(pb,"%.3f", dat);
-                    retUSBH = f_write(&USBHFile, FileBuf, strlen(test_txt), &bw);
+                    dat=uint32Tofloat( pb); //上限温度
+                     sprintf(pb,"%.3f\r\n", dat);
+                    retUSBH = f_write(&USBHFile, pb, strlen(pb), &bw);
                 }
                 get_flash_status()->usb_read_flag = 1;
 
             }
 
-            retUSBH = f_write(&USBHFile, FileBuf, strlen(test_txt), &bw);
+           // retUSBH = f_write(&USBHFile, FileBuf, strlen(test_txt), &bw);
 
             if (retUSBH == FR_OK)
             {
@@ -140,6 +140,7 @@ void usb_ctrl()
     if (Appli_state != APPLICATION_READY) //U盘未插入
     {
         status = 0;//等待下次U盘插入则重新写入
+        get_flash_status()->usb_read_flag = 0;
     }
 
 }

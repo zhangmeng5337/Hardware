@@ -138,10 +138,10 @@ void UpdateUI()
     else if (page_Id == Main_PAGE)
     {
 
-        if (getConfig()->update_T == 1) //figure ctrl
+       // if (getConfig()->update_T == 1) //figure ctrl
         {
             static uint16_t fig_count = 0;
-            getConfig()->update_T = 0;
+            //getConfig()->update_T = 0;
             // sprintf(str, "%f", get_temperature()->average_T);
             //SetLableValue(page_Id, TEMPERATURE_ID, str);
             if (get_rf_status()->average_T < 0)
@@ -150,10 +150,10 @@ void UpdateUI()
                                  get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
 
             }
-            else
+            else if (get_rf_status()->average_T <= 15)
             {
                 SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_rf_status()->average_T * 20 / 3 + 40);
+                                 get_rf_status()->average_T * 40 / 3 + 40);//0---40  15---240
 //          SetWaveformValue(page_Id, WAVE_ID, 1,
 //                       get_rf_status()->average_T * 40 / 3 + 40);
 
@@ -418,12 +418,13 @@ void NotifyGetEdit(PEDIT_MSG msg, uint16_t size)
                     getConfig()->warn_T = atof(pb);
                     break;
                 case REC_T_ID:
-                    getConfig()->record_time = atof(pb);
+                    getConfig()->record_interval = atof(pb);
                     break;
                 case POW_T_ID:
                     getConfig()->power_save = atof(pb);
                     break;
             }
+			getConfig()->update_params = 2;
 
         }
     }
@@ -659,12 +660,15 @@ void lcd_proc()
             static uint32_t timeout;
             if ((HAL_GetTick() - timeout) >= 15000 && getConfig()->export_flag == 0)
             {
+							  
                 if (page_Id != Main_PAGE)
                 {
                     // SetPage(Main_PAGE);//Ö÷Ò³ÃæIdºÅÊÇ4
                     //  page_Id_bk = Main_PAGE;
 
                 }
+								else
+									SetBackLight(0);
 
                 timeout = HAL_GetTick();
                 if (getConfig()->update_params == 2)
@@ -687,6 +691,7 @@ void lcd_proc()
             update_en = 0;
             timer_tick_count = HAL_GetTick();
             UpdateUI();
+			
         }
     }
 
