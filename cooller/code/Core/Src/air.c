@@ -15,7 +15,8 @@ air_stru air_usr;
 void air_init()
 {
     HAL_GPIO_WritePin(air_pwr_GPIO_Port, air_pwr_Pin, GPIO_PIN_RESET);
-    pid_init(-25, -100);
+    pid_init(31 , -40);
+	
 }
 void air_pwr_ctrl(unsigned char flag)
 {

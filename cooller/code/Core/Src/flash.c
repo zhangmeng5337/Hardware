@@ -113,7 +113,7 @@ void flash_init()
 		getConfig()->warn_T=uint32Tofloat(pb);//报警限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
-		memcpy(&getConfig()->record_interval,pb,4);//记录间隔
+				getConfig()->record_interval=uint32Tofloat(pb);//报警限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
 		memcpy(&getConfig()->record_time,pb,4);//记录时间

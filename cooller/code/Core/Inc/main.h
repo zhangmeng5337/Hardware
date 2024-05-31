@@ -32,7 +32,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #define ADC_POLL_T		100
-#define PID_POLL_T		500
+#define PID_POLL_T		100
 #define RF_POLL_T		100
 
 /* USER CODE END Includes */

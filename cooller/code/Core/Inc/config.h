@@ -15,8 +15,8 @@ typedef struct
 
 	unsigned char update_T;//temperature poll
 	
-	uint32_t record_interval;
-	uint32_t power_save;
+	float record_interval;
+	float power_save;
 	uint32_t record_time;
 	unsigned char export_flag;//usb export 
 	unsigned char update_params;//params set

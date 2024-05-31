@@ -104,14 +104,28 @@ void set_label_proc(unsigned char num)
     }
 }
 
-
 void UpdateUI()
 {
     int i;
     int value;
     char str[65];
+    static unsigned char flag;
     if (page_Id == Setting_PAGE)
     {
+        if (flag == 0)
+        {
+            flag = 1;
+            float2char(getConfig()->max_T, str, 4);
+            SetEditValue(Setting_PAGE, UP_T_ID, str);
+            float2char(getConfig()->min_T, str, 4);
+            SetEditValue(Setting_PAGE, DOW_T_ID, str);
+            float2char(getConfig()->warn_T, str, 4);
+            SetEditValue(Setting_PAGE, WAR_T_ID, str);
+            float2char(getConfig()->record_interval, str, 4);
+            SetEditValue(Setting_PAGE, REC_T_ID, str);
+            float2char(getConfig()->power_save, str, 4);
+            SetEditValue(Setting_PAGE, POW_T_ID, str);
+        }
         if (getConfig()->export_flag == 1)
         {
             if (get_usb_state() == APPLICATION_READY)
@@ -419,7 +433,7 @@ void NotifyGetEdit(PEDIT_MSG msg, uint16_t size)
                     getConfig()->min_T = atof(pb);
                     break;
                 case WAR_T_ID:
-                    getConfig()->warn_T = atof(pb);
+                    //getConfig()->warn_T = atof(pb);
                     break;
                 case REC_T_ID:
                     getConfig()->record_interval = atof(pb);
@@ -428,7 +442,6 @@ void NotifyGetEdit(PEDIT_MSG msg, uint16_t size)
                     getConfig()->power_save = atof(pb);
                     break;
             }
-            getConfig()->update_params = 2;
 
         }
     }
@@ -485,14 +498,15 @@ void NotifyGetTouchEdit(PEDIT_MSG msg, uint16_t size)
                     //getConfig()->warn_T = atof(pb);
                     break;
                 case REC_T_ID:
-                    string_to_float((char *)pb, &tt, &getConfig()->record_time);
+                    string_to_float((char *)pb, &getConfig()->record_interval, &t2);
                     //getConfig()->record_time = atof(pb);
                     break;
                 case POW_T_ID:
-                    string_to_float((char *)pb, &tt, &getConfig()->power_save);
+                    string_to_float((char *)pb, &getConfig()->power_save, &t2);
                     //getConfig()->power_save = atof(pb);
                     break;
             }
+            getConfig()->update_params = 2;
 
         }
 
