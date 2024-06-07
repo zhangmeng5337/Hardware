@@ -175,6 +175,10 @@ DocumentPath=..\ctrl\ctrl_board.PcbDoc.htm
 DItemRevisionGUID=
 
 [GeneratedDocument23]
+DocumentPath=Project Outputs for charger\Design Rule Check - charger_V1.html
+DItemRevisionGUID=
+
+[GeneratedDocument24]
 DocumentPath=Project Outputs for charger\Pick Place for charger.txt
 DItemRevisionGUID=
 
