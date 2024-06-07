@@ -25,6 +25,8 @@ typedef struct
 void app_init(void);
 void app(void);
 void PVD_config(void);
+void sys_enter_stop_mode(void);
+void sys_enter_standy_mode(void);
 
 
 #endif

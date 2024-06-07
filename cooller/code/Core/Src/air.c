@@ -9,14 +9,41 @@
 #include "rf_drv.h"
 #include "flash.h"
 #include "lcd.h"
-
+extern RTC_HandleTypeDef hrtc;
 air_stru air_usr;
+void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
+{
+    __HAL_RCC_PWR_CLK_ENABLE();
+    SystemClock_Config();
+    __HAL_RTC_WAKEUPTIMER_EXTI_DISABLE_IT();
+}
+
+void sys_enter_stop_mode()
+{
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+    uint32_t tmp;
+    tmp = getConfig()->power_save * 60;
+    HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, tmp, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+
+    HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+}
+void sys_enter_standy_mode()
+{
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+    uint32_t tmp;
+    tmp = getConfig()->power_save * 60;
+    HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, tmp, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+    HAL_PWR_EnterSTANDBYMode();
+}
 
 void air_init()
 {
     HAL_GPIO_WritePin(air_pwr_GPIO_Port, air_pwr_Pin, GPIO_PIN_RESET);
-    pid_init(31 , -40);
-	
+    pid_init(31, -40);
+
+
 }
 void air_pwr_ctrl(unsigned char flag)
 {
@@ -79,6 +106,7 @@ void air_temperature_ctrl()
 
 
 }
+
 void heater_cooller_ctrl()
 {
     float tmep_T;
@@ -93,35 +121,83 @@ void heater_cooller_ctrl()
         float tmp_v;
         tmp_v = get_temperature()->T_value[1] * BATTERY_V;
         air_usr.ratio = 12 / tmp_v;
-        if (tmep_T <= getConfig()->min_T)//heater ctrl
+        if (getConfig()->mode == MODE_HEATER)
         {
-            getConfig()->mode = 1;//加热
-            air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);//风扇与加热温度控制
-            pwm_set(HEATER_1,  air_usr.heat_pid_out);
+            if (tmep_T <= getConfig()->min_T)//heater ctrl
+            {
+                //getConfig()->mode = 1;//加热
+                air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);//风扇与加热温度控制
+                pwm_set(HEATER_1,  air_usr.heat_pid_out);
 
-            air_usr.heat_pid_out =  pid_proc_fan_heat(2, tmep_T);
-            pwm_set(HEATER_2,  air_usr.heat_pid_out);
+                air_usr.heat_pid_out =  pid_proc_fan_heat(2, tmep_T);
+                pwm_set(HEATER_2,  air_usr.heat_pid_out);
 
-            air_usr.heat_pid_out =  pid_proc_fan_heat(3, tmep_T);
-            pwm_set(HEATER_3,  air_usr.heat_pid_out);
+                air_usr.heat_pid_out =  pid_proc_fan_heat(3, tmep_T);
+                pwm_set(HEATER_3,  air_usr.heat_pid_out);
 
-            air_usr.heat_pid_out =  pid_proc_fan_heat(4, tmep_T);
-            pwm_set(HEATER_4,  air_usr.heat_pid_out);
+                air_usr.heat_pid_out =  pid_proc_fan_heat(4, tmep_T);
+                pwm_set(HEATER_4,  air_usr.heat_pid_out);
+                if (getConfig()->warn_T >= tmep_T)
+                    getConfig()->status = RUN;
+                else
+                    getConfig()->status = WARN;
+            }
+            else if (tmep_T >= getConfig()->max_T)//heater ctrl
+            {
+                pwm_set(HEATER_1,  0);
+                pwm_set(HEATER_2,  0);
+                pwm_set(HEATER_3,  0);
+                pwm_set(HEATER_4,  0);
+
+                pwm_set(COOLER_3,  150 * air_usr.ratio); //冷却均匀温度用
+                pwm_set(COOLER_4,  150 * air_usr.ratio); //冷却均匀温度用
+                if (getConfig()->warn_T >= tmep_T)
+                    getConfig()->status = SLEEP;
+                else
+                    getConfig()->status = WARN;
+            }
+            air_pwr_ctrl(OFF);
+
+        }//end heater mode************************
+        else if (getConfig()->mode == MODE_COOLLER)
+        {
+            if (tmep_T >= getConfig()->max_T)//heater ctrl
+            {
+                // getConfig()->mode = 0;//制冷
+                pwm_set(HEATER_1,  0);
+                pwm_set(HEATER_2,  0);
+                pwm_set(HEATER_3,  0);
+                pwm_set(HEATER_4,  0);
+
+                pwm_set(COOLER_3,  150 * air_usr.ratio); //冷却均匀温度用
+                pwm_set(COOLER_4,  150 * air_usr.ratio); //冷却均匀温度用
+                air_temperature_ctrl();
+                air_freq_ctrl();
+                if (getConfig()->warn_T >= tmep_T)
+                    getConfig()->status = RUN;
+                else
+                    getConfig()->status = WARN;
+
+            }
+            else if (tmep_T <= getConfig()->min_T)//heater ctrl
+            {
+                //getConfig()->mode = 0;//制冷
+                pwm_set(HEATER_1,  0);
+                pwm_set(HEATER_2,  0);
+                pwm_set(HEATER_3,  0);
+                pwm_set(HEATER_4,  0);
+
+                pwm_set(COOLER_3,  150 * air_usr.ratio); //冷却均匀温度用
+                pwm_set(COOLER_4,  150 * air_usr.ratio); //冷却均匀温度用
+                air_pwr_ctrl(OFF);
+                if (getConfig()->warn_T >= tmep_T)
+                    getConfig()->status = SLEEP;
+                else
+                    getConfig()->status = WARN;
+            }
 
         }
-        else
-        {
-            getConfig()->mode = 0;//制冷
-            pwm_set(HEATER_1,  0);
-            pwm_set(HEATER_2,  0);
-            pwm_set(HEATER_3,  0);
-            pwm_set(HEATER_4,  0);
 
-            pwm_set(COOLER_3,  150 * air_usr.ratio); //冷却均匀温度用
-            pwm_set(COOLER_4,  150 * air_usr.ratio); //冷却均匀温度用
-            air_temperature_ctrl();
-            air_freq_ctrl();
-        }
         if (get_temperature()->T_value[0] >= FAN_RUN_T)//charger temperature ctrl
         {
 
@@ -145,8 +221,9 @@ void dat_record_proc(void)
     float tmp;
     unsigned char pb[4];
 
-    if (getConfig()->update_T == 1)
+    if (getConfig()->update_T == 1 || (getConfig()->sleep_flag == 1))
     {
+        getConfig()->sleep_flag = 0;
         if (get_flash_status()->vailabe_len > 0)
         {
 
@@ -169,26 +246,27 @@ void dat_record_proc(void)
             get_flash_status()->used_len =  get_flash_status()->used_len + 4;
         }
         getConfig()->update_T = 0;
-		flash_save();
+        
     }
 
-	if(getConfig()->update_params==1)
-	{
-		flash_save();
-		getConfig()->update_params = 0;
-	}
+    if (getConfig()->update_params == 1)
+    {
+        flash_save();
+        getConfig()->update_params = 0;
+    }
 
 }
 void PVD_config(void)
 {
-	//配置PWR
-	PWR_PVDTypeDef sConfigPVD;                    
-	sConfigPVD.PVDLevel = PWR_PVDLEVEL_7;            //低于2.9V触发掉电中断
-	sConfigPVD.Mode = PWR_PVD_MODE_IT_RISING_FALLING;        //掉电后PVDO会置一，因此选择上升沿触发
-	HAL_PWR_ConfigPVD(&sConfigPVD);                  //HAL库配置PVD函数
- 
-	//使能PVD
-	HAL_PWR_EnablePVD();        //开启掉电中断
+    //配置PWR
+    PWR_PVDTypeDef sConfigPVD;
+    sConfigPVD.PVDLevel = PWR_PVDLEVEL_7;            //低于2.9V触发掉电中断
+    sConfigPVD.Mode =
+        PWR_PVD_MODE_IT_RISING_FALLING;        //掉电后PVDO会置一，因此选择上升沿触发
+    HAL_PWR_ConfigPVD(&sConfigPVD);                  //HAL库配置PVD函数
+
+    //使能PVD
+    HAL_PWR_EnablePVD();        //开启掉电中断
 }
 
 
@@ -196,6 +274,7 @@ void app()
 {
     lcd_proc();
     adc_proc();
+    //config_proc();
     heater_cooller_ctrl();
     usb_ctrl();
     rf_ctrl_proc();

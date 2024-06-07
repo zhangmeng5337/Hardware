@@ -157,9 +157,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>99</LineNumber>
+          <LineNumber>140</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134284014</Address>
+          <Address>134285352</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,12 +168,44 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Core\Src\flash.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\code\../Core/Src/flash.c\99</Expression>
+          <Expression>\\code\../Core/Src/flash.c\140</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>10</LineNumber>
+          <LineNumber>14</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134285444</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Core\Src\flash.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code\../Core/Src/flash.c\14</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>179</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134287654</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Core\Src\air.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code\../Core/Src/air.c\179</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>48</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -182,7 +214,23 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Core\Src\config.c</Filename>
+          <Filename>..\Core\Src\adc.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>4</Number>
+          <Type>0</Type>
+          <LineNumber>739</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>..\Core\Src\lcd.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -236,7 +284,7 @@
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>config_usr,0x0A</ItemText>
+          <ItemText>config_usr,0x10</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
@@ -421,7 +469,7 @@
         <Ww>
           <count>46</count>
           <WinNumber>1</WinNumber>
-          <ItemText>flash_usr,0x0A</ItemText>
+          <ItemText>flash_usr,0x10</ItemText>
         </Ww>
         <Ww>
           <count>47</count>
@@ -431,7 +479,7 @@
         <Ww>
           <count>48</count>
           <WinNumber>1</WinNumber>
-          <ItemText>flash_usr,0x0A</ItemText>
+          <ItemText>flash_usr,0x10</ItemText>
         </Ww>
         <Ww>
           <count>49</count>
@@ -463,12 +511,17 @@
           <WinNumber>1</WinNumber>
           <ItemText>str</ItemText>
         </Ww>
+        <Ww>
+          <count>55</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>timeout,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x20008770</ItemText>
+          <ItemText>0x080c0000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

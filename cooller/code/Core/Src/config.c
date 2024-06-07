@@ -11,10 +11,14 @@ void config_init()
 //		 getConfig()->min_T = 5;
 //		 getConfig()->record_interval = 60;//s
 //		 getConfig()->warn_T = -35;
-		 getConfig()->power_save = 15;//s
+		// getConfig()->power_save = 15;//s
 		 getConfig()->update_T = 0;
-		 getConfig()->record_time = 0;
-	   config_usr.mode = 0;//0制冷，1加热
+		// getConfig()->record_time = 0;
+		 getConfig()->sleep_flag = 1;
+		getConfig()->interval_tick = 0;
+		getConfig()->status = SLEEP;
+		getConfig()->mode = MODE_COOLLER;
+	   //config_usr.mode = 0;//0制冷，1加热
 }
 config_stru *getConfig()
 {

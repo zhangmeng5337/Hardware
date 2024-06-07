@@ -19,4 +19,5 @@
 <text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "204" y = "50" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "30" >12℃</text>
 <text style = "fill:Lime; stroke:Transparent; font-family:image001.bmp; font-size:10pt" x = "148" y = "226" width = "39.56813" height = "16.75781" ShapeName = "Image" ShapeNum = "23" >100%</text>
 <text style = "fill:White; stroke:Transparent; font-family:image001.bmp; font-size:30pt" x = "60" y = "73" width = "82.06379" height = "50.27343" ShapeName = "Image" ShapeNum = "24" >100</text>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "101" y = "159" width = "57" height = "52" ShapeName = "TP" ShapeNum = "36" Direction = "UploadID" StoreType = "" RadianNum = "Char" TextAlignType = "" Gwidth = "image001.bmp" Gheight = "image001.bmp" >Button</button>
 </vlcd>

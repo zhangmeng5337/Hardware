@@ -25,7 +25,8 @@
 #define WAR_T_ID   	 	6
 #define REC_T_ID   	 	7
 #define POW_T_ID   	 	8
-
+#define USB_ID  		9
+#define MODE_CHANGE_ID  36
 #define USB_LOG_ID   	 	18
 
 void lcd_proc(void);

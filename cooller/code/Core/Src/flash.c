@@ -11,6 +11,7 @@ void flash_save()
     uint32_t  data_tmp,addr;
     float tmp;
     unsigned char pb[4];
+	 __disable_irq();
          addr = Application_1_Addr;
 	     Erase_page(Application_1_Addr, 1);
 		 memcpy(pb, &flash_usr.header, 4);
@@ -36,14 +37,17 @@ void flash_save()
 		 memcpy(pb, &getConfig()->record_interval, 4);
 		 WriteFlash(addr, pb, 4);addr = addr + 4;
 		// flash_usr.used_len= flash_usr.used_len +4;
+		 floatTouint32(getConfig()->record_time,pb);//上限温度
 
-		 memcpy(pb, &getConfig()->record_time, 4);
+		 //memcpy(pb, &getConfig()->record_time, 4);
 		 WriteFlash(addr, pb, 4);addr = addr + 4;
 		 //flash_usr.used_len= flash_usr.used_len +4;
 
 		 memcpy(pb, &getConfig()->power_save, 4);
 		 WriteFlash(addr, pb, 4);addr = addr + 4;
 		//flash_usr.used_len= flash_usr.used_len +4;
+__enable_irq();
+
 
 
 	
@@ -113,10 +117,11 @@ void flash_init()
 		getConfig()->warn_T=uint32Tofloat(pb);//报警限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
-				getConfig()->record_interval=uint32Tofloat(pb);//报警限温度
+	    getConfig()->record_interval=uint32Tofloat(pb);//报警限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
-		memcpy(&getConfig()->record_time,pb,4);//记录时间
+		//memcpy(&getConfig()->record_time,pb,4);//记录时间
+		getConfig()->record_time=uint32Tofloat(pb);//下限温度
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
 		memcpy(&getConfig()->power_save,pb,4);//休眠模式	
@@ -130,10 +135,10 @@ void flash_init()
 		 flash_usr.vailabe_len = flash_usr.total_len;
 
 		 getConfig()->addr = Application_2_Addr;
-		 getConfig()->max_T = -10;
-		 getConfig()->min_T = -30;
+		 getConfig()->max_T = 4;
+		 getConfig()->min_T = 0;
 		 getConfig()->record_interval = 30;//s
-		 getConfig()->warn_T = -35;
+		 getConfig()->warn_T = 5;
 		 getConfig()->power_save = 15;//s
 		 getConfig()->update_T = 0;
 		 getConfig()->record_time = 0;

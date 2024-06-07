@@ -115,15 +115,23 @@ void UpdateUI()
         if (flag == 0)
         {
             flag = 1;
-            float2char(getConfig()->max_T, str, 4);
+			sprintf(str,"%.0f",getConfig()->max_T);
+           // float2char(getConfig()->max_T, str, 4);
             SetEditValue(Setting_PAGE, UP_T_ID, str);
-            float2char(getConfig()->min_T, str, 4);
+            //float2char(getConfig()->min_T, str, 4);
+			sprintf(str,"%.0f",getConfig()->min_T);
             SetEditValue(Setting_PAGE, DOW_T_ID, str);
-            float2char(getConfig()->warn_T, str, 4);
+
+			sprintf(str,"%.0f",getConfig()->warn_T);
+            //float2char(getConfig()->warn_T, str, 4);
             SetEditValue(Setting_PAGE, WAR_T_ID, str);
-            float2char(getConfig()->record_interval, str, 4);
+
+			sprintf(str,"%.0f",getConfig()->record_interval);
+            //float2char(getConfig()->record_interval, str, 4);
             SetEditValue(Setting_PAGE, REC_T_ID, str);
-            float2char(getConfig()->power_save, str, 4);
+
+			sprintf(str,"%.0f",getConfig()->power_save);
+            //float2char(getConfig()->power_save, str, 4);
             SetEditValue(Setting_PAGE, POW_T_ID, str);
         }
         if (getConfig()->export_flag == 1)
@@ -190,14 +198,20 @@ void UpdateUI()
         static uint32_t last_mode = 2;
         static uint32_t last_v_value = 0;
         static uint32_t last_t = 0;
-        if (getConfig()->mode  == 0 && last_mode != getConfig()->mode) //cooller heater
+        if (getConfig()->mode  == MODE_COOLLER
+                && last_mode != getConfig()->mode) //cooller heater
         {
 
             last_mode = getConfig()->mode;
             Display_Image(110, 167, COOLLER_ID);
         }
-        else if (getConfig()->mode  == 1 && last_mode != getConfig()->mode)
+        else if (getConfig()->mode  == MODE_HEATER && last_mode != getConfig()->mode)
+        {
             Display_Image(110, 167, HEATER_ID);
+            last_mode = getConfig()->mode;
+
+        }
+
 
         if (get_temperature()->T_value[1] <= 1
                 && get_temperature()->T_value[1] != last_v_value)
@@ -271,14 +285,51 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
 
     if (page_id == Setting_PAGE)
     {
-        if (type == UPLOAD_CONTROL_ID && state == KEY_RELEASE)
+        if (state == KEY_RELEASE)
         {
-            //page_Id = value;
-            update_en = 1;
-            getConfig()->export_flag = 1;//usb
-            //get_flash_status()->usb_read_flag = 0;
-            if (*get_usb_wr() == 1)
-                *get_usb_wr() = 2;
+            if (type == UPLOAD_CONTROL_ID)
+            {
+                if (control_id == USB_ID)
+                {
+                    //page_Id = value;
+                    update_en = 1;
+                    getConfig()->export_flag = 1;//usb
+                    //get_flash_status()->usb_read_flag = 0;
+                    if (*get_usb_wr() == 1)
+                        *get_usb_wr() = 2;
+                }
+                else if (control_id == MODE_CHANGE_ID)
+                {
+                    if (getConfig()->mode == MODE_COOLLER)
+                        getConfig()->mode = MODE_HEATER;
+                    else
+                        getConfig()->mode == MODE_COOLLER;
+                }
+
+            }
+
+
+
+        }
+
+    }
+    if (page_id == Main_PAGE)
+    {
+        if (state == KEY_RELEASE)
+        {
+            if (type == UPLOAD_CONTROL_ID)
+            {
+
+                if (control_id == MODE_CHANGE_ID)
+                {
+                    if (getConfig()->mode == MODE_COOLLER)
+                        getConfig()->mode = MODE_HEATER;
+                    else
+                        getConfig()->mode = MODE_COOLLER;
+                }
+
+            }
+
         }
 
     }
@@ -672,25 +723,38 @@ void lcd_proc()
         {
             timeout = HAL_GetTick();
             ProcessMessage((PCTRL_MSG)cmd_buffer, size);//指令处理
+            if (getConfig()->update_params == 2)
+                getConfig()->update_params = 1;//update setting
         }
         else
         {
             static uint32_t timeout;
-            if ((HAL_GetTick() - timeout) >= 15000 && getConfig()->export_flag == 0)
+            if ((HAL_GetTick() - timeout) >= 25000 && getConfig()->export_flag == 0)
             {
 
-                if (page_Id != Main_PAGE)
+//                if (page_Id != Main_PAGE)
+//                {
+//                    // SetPage(Main_PAGE);//主页面Id号是4
+//                    //  page_Id_bk = Main_PAGE;
+
+//                }
+//                else
                 {
-                    // SetPage(Main_PAGE);//主页面Id号是4
-                    //  page_Id_bk = Main_PAGE;
+                    SetBackLight(0);
+                    if (getConfig()->status == SLEEP)
+                    {
+                    	  flash_save();
+                          sys_enter_standy_mode();
+                          HAL_NVIC_SystemReset();
+
+                    }
+
 
                 }
-                else
-                    SetBackLight(0);
+
 
                 timeout = HAL_GetTick();
-                if (getConfig()->update_params == 2)
-                    getConfig()->update_params = 1;//update setting
+
             }
         }
 

@@ -30,14 +30,24 @@ float x2, x1, xb;
     static int j = 0;
     static float buf[4][N];
     static uint32_t tick_start;
+	static float time_cnt=0;
     if ((HAL_GetTick() - tick_start) >= ADC_POLL_T)
     {
         tick_start = HAL_GetTick();
-        getConfig()->record_time = getConfig()->record_time + 1;
-        if (getConfig()->record_time == getConfig()->record_interval * 10)
+        time_cnt = time_cnt + ADC_POLL_T/1000.0;
+		if(time_cnt>=60000)
+			{
+        getConfig()->record_time = getConfig()->record_time + time_cnt/60;
+		time_cnt =0;
+
+		}
+		getConfig()->interval_tick = getConfig()->interval_tick + ADC_POLL_T/1000.0;
+
+        if (getConfig()->interval_tick >= getConfig()->record_interval )
         {
-            getConfig()->record_time = 0;
+           // getConfig()->record_time = 0;
             getConfig()->update_T = 1;
+		   getConfig()->interval_tick = 0;
 			//data_flash_proc();
         }
         if (sensor_adc_value.update == 1)
