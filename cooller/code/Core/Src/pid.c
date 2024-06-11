@@ -125,7 +125,7 @@ void pid_init(float setvalue,float heat_T)
 
 
     PIDInit ( &sPID ); // Initialize Structure
-    sPID.Proportion =380; // Set PID Coefficients  260
+    sPID.Proportion =1500; // Set PID Coefficients  260
     sPID.Integral = 0.95;//0.95;//
     sPID.Derivative = 0.8;
     sPID.result = 0;

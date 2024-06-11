@@ -41,7 +41,7 @@ void sys_enter_standy_mode()
 void air_init()
 {
     HAL_GPIO_WritePin(air_pwr_GPIO_Port, air_pwr_Pin, GPIO_PIN_RESET);
-    pid_init(31, -40);
+    pid_init(getConfig()->max_T, getConfig()->min_T);
 
 
 }
@@ -107,7 +107,7 @@ void air_temperature_ctrl()
 
 }
 
-void heater_cooller_ctrl()
+unsigned char heater_cooller_ctrl()
 {
     float tmep_T;
     static uint32_t tick_start;
@@ -117,7 +117,8 @@ void heater_cooller_ctrl()
         if (get_rf_status()->vaild_flag == 1)
             tmep_T = get_rf_status()->average_T;
         else
-            tmep_T = getConfig()->max_T + 1;
+            return 0;
+		//tmep_T = getConfig()->max_T + 1;
         float tmp_v;
         tmp_v = get_temperature()->T_value[1] * BATTERY_V;
         air_usr.ratio = 12 / tmp_v;

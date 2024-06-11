@@ -12,6 +12,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "mystring.h"
+#include "air.h"
 
 uint8_t cmd_buffer[CMD_MAX_SIZE];
 static uint8_t update_en = 0;
@@ -115,22 +116,22 @@ void UpdateUI()
         if (flag == 0)
         {
             flag = 1;
-			sprintf(str,"%.0f",getConfig()->max_T);
-           // float2char(getConfig()->max_T, str, 4);
+            sprintf(str, "%.0f", getConfig()->max_T);
+            // float2char(getConfig()->max_T, str, 4);
             SetEditValue(Setting_PAGE, UP_T_ID, str);
             //float2char(getConfig()->min_T, str, 4);
-			sprintf(str,"%.0f",getConfig()->min_T);
+            sprintf(str, "%.0f", getConfig()->min_T);
             SetEditValue(Setting_PAGE, DOW_T_ID, str);
 
-			sprintf(str,"%.0f",getConfig()->warn_T);
+            sprintf(str, "%.0f", getConfig()->warn_T);
             //float2char(getConfig()->warn_T, str, 4);
             SetEditValue(Setting_PAGE, WAR_T_ID, str);
 
-			sprintf(str,"%.0f",getConfig()->record_interval);
+            sprintf(str, "%.0f", getConfig()->record_interval);
             //float2char(getConfig()->record_interval, str, 4);
             SetEditValue(Setting_PAGE, REC_T_ID, str);
 
-			sprintf(str,"%.0f",getConfig()->power_save);
+            sprintf(str, "%.0f", getConfig()->power_save);
             //float2char(getConfig()->power_save, str, 4);
             SetEditValue(Setting_PAGE, POW_T_ID, str);
         }
@@ -493,6 +494,7 @@ void NotifyGetEdit(PEDIT_MSG msg, uint16_t size)
                     getConfig()->power_save = atof(pb);
                     break;
             }
+			air_init();
 
         }
     }
@@ -743,9 +745,9 @@ void lcd_proc()
                     SetBackLight(0);
                     if (getConfig()->status == SLEEP)
                     {
-                    	  flash_save();
-                          sys_enter_standy_mode();
-                          HAL_NVIC_SystemReset();
+                        flash_save();
+                        sys_enter_standy_mode();
+                        HAL_NVIC_SystemReset();
 
                     }
 
