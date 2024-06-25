@@ -57,6 +57,7 @@
 
 #define Main_PAGE					2
 #define Setting_PAGE				3
+#define WAVE_PAGE				4
 
 
 

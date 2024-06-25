@@ -114,10 +114,11 @@ unsigned char heater_cooller_ctrl()
     if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
-        if (get_rf_status()->vaild_flag == 1)
-            tmep_T = get_rf_status()->average_T;
-        else
-            return 0;
+		tmep_T = get_temperature()->T_value[0];
+//        if (get_rf_status()->vaild_flag == 1)
+//            tmep_T = get_rf_status()->average_T;
+//        else
+//            return 0;
 		//tmep_T = getConfig()->max_T + 1;
         float tmp_v;
         tmp_v = get_temperature()->T_value[1] * BATTERY_V;

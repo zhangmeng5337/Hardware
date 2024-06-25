@@ -28,6 +28,7 @@
 #define USB_ID  		9
 #define MODE_CHANGE_ID  36
 #define USB_LOG_ID   	 	18
+#define RETURN_ID   	 	37
 
 void lcd_proc(void);
 void set_label_proc(unsigned char num);

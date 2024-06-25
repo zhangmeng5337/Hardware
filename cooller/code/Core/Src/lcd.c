@@ -161,30 +161,26 @@ void UpdateUI()
         }
 
     }
-    else if (page_Id == Main_PAGE)
+
+    else if (page_Id == WAVE_PAGE)
     {
 
-        // if (getConfig()->update_T == 1) //figure ctrl
+         if (getConfig()->update_T == 1) //figure ctrl
         {
             static uint16_t fig_count = 0;
             //getConfig()->update_T = 0;
             // sprintf(str, "%f", get_temperature()->average_T);
             //SetLableValue(page_Id, TEMPERATURE_ID, str);
-            if (get_rf_status()->average_T < 0)
+            if (get_temperature()->T_value[0] < 0)
             {
                 SetWaveformValue(page_Id, WAVE_ID, 1,
                                  get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
 
             }
-            else if (get_rf_status()->average_T <= 15)
+            else if (get_temperature()->T_value[0] <= 15)
             {
                 SetWaveformValue(page_Id, WAVE_ID, 1,
                                  get_rf_status()->average_T * 40 / 3 + 40);//0---40  15---240
-//          SetWaveformValue(page_Id, WAVE_ID, 1,
-//                       get_rf_status()->average_T * 40 / 3 + 40);
-
-
-
             }
             fig_count++;
             if (fig_count >= WAVE_HEIGHT)
@@ -228,12 +224,12 @@ void UpdateUI()
             str[3] = '%';
             SetLableValue(page_Id, BATTERY_ID, str);
         }
-
-        if (get_rf_status()->average_T != last_t)
+		//if (get_rf_status()->average_T != last_t)
+        if (get_temperature()->T_value[0] != last_t)
         {
 
             float tmp2;
-            tmp2 = get_rf_status()->average_T;
+            tmp2 = get_temperature()->T_value[0];
             last_t = tmp2;
 
             float2char(tmp2, str, 4);  //浮点型数，存储的字符数组，字符数组的长度
@@ -306,6 +302,11 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
                     else
                         getConfig()->mode == MODE_COOLLER;
                 }
+			else if (control_id == RETURN_ID)
+			{
+				SetPage(Main_PAGE);//主页面Id号是4
+
+			}
 
             }
 
@@ -742,6 +743,7 @@ void lcd_proc()
 //                }
 //                else
                 {
+                    SetPage(Main_PAGE);//主页面Id号是4
                     SetBackLight(0);
                     if (getConfig()->status == SLEEP)
                     {
