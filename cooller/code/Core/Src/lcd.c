@@ -748,7 +748,7 @@ void lcd_proc()
 //                else
                 {
                     SetPage(Main_PAGE);//Ö÷Ò³ÃæIdºÅÊÇ4
-                   // SetBackLight(0);
+                    SetBackLight(0);
                     if (getConfig()->status == SLEEP)
                     {
                         flash_save();
