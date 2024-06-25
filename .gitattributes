@@ -4,3 +4,4 @@ size 84
 *.wav filter=lfs diff=lfs merge=lfs -text
 标准例程-HAL库版本.zip filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
+JLinkLog.txt filter=lfs diff=lfs merge=lfs -text
