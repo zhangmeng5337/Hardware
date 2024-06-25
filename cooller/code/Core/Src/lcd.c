@@ -161,48 +161,52 @@ void UpdateUI()
         }
 
     }
+	else if (page_Id == WAVE_PAGE)
+		{
+	
+			 if (getConfig()->update_T == 1) //figure ctrl
+			{
+				static uint16_t fig_count = 0;
+				//getConfig()->update_T = 0;
+				// sprintf(str, "%f", get_temperature()->average_T);
+				//SetLableValue(page_Id, TEMPERATURE_ID, str);
+				if (get_temperature()->T_value[0] < 0)
+				{
+					SetWaveformValue(page_Id, WAVE_ID, 1,
+									 get_rf_status()->average_T * 8 + 40); //		-5---0 0---40
+	
+				}
+				else if (get_temperature()->T_value[0] <= 15)
+				{
+					SetWaveformValue(page_Id, WAVE_ID, 1,
+									 get_rf_status()->average_T * 40 / 3 + 40);//0---40  15---240
+				}
+				fig_count++;
+				if (fig_count >= WAVE_HEIGHT)
+				{
+					fig_count = 0;
+					//	 WaveformDataClear(page_Id, WAVE_ID);
+	
+				}
+	
+	
+			}
+		}
 
-    else if (page_Id == WAVE_PAGE)
+    else if (page_Id == Main_PAGE)
     {
 
-         if (getConfig()->update_T == 1) //figure ctrl
-        {
-            static uint16_t fig_count = 0;
-            //getConfig()->update_T = 0;
-            // sprintf(str, "%f", get_temperature()->average_T);
-            //SetLableValue(page_Id, TEMPERATURE_ID, str);
-            if (get_temperature()->T_value[0] < 0)
-            {
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
-
-            }
-            else if (get_temperature()->T_value[0] <= 15)
-            {
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_rf_status()->average_T * 40 / 3 + 40);//0---40  15---240
-            }
-            fig_count++;
-            if (fig_count >= WAVE_HEIGHT)
-            {
-                fig_count = 0;
-                //   WaveformDataClear(page_Id, WAVE_ID);
-
-            }
-
-
-        }
         static uint32_t last_mode = 2;
         static uint32_t last_v_value = 0;
         static uint32_t last_t = 0;
         if (getConfig()->mode  == MODE_COOLLER
-                && last_mode != getConfig()->mode) //cooller heater
+                ) //cooller heater&& last_mode != getConfig()->mode&& last_mode != getConfig()->mode
         {
 
             last_mode = getConfig()->mode;
             Display_Image(110, 167, COOLLER_ID);
         }
-        else if (getConfig()->mode  == MODE_HEATER && last_mode != getConfig()->mode)
+        else if (getConfig()->mode  == MODE_HEATER )
         {
             Display_Image(110, 167, HEATER_ID);
             last_mode = getConfig()->mode;
@@ -731,7 +735,7 @@ void lcd_proc()
         }
         else
         {
-            static uint32_t timeout;
+            //static uint32_t timeout;
             if ((HAL_GetTick() - timeout) >= 25000 && getConfig()->export_flag == 0)
             {
 
@@ -744,7 +748,7 @@ void lcd_proc()
 //                else
                 {
                     SetPage(Main_PAGE);//Ö÷Ò³ÃæIdºÅÊÇ4
-                    SetBackLight(0);
+                   // SetBackLight(0);
                     if (getConfig()->status == SLEEP)
                     {
                         flash_save();

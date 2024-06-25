@@ -33,7 +33,7 @@ void sys_enter_standy_mode()
     __HAL_RCC_PWR_CLK_ENABLE();
     __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
     uint32_t tmp;
-    tmp = getConfig()->power_save * 60;
+    tmp = getConfig()->power_save ;
     HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, tmp, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
     HAL_PWR_EnterSTANDBYMode();
 }
@@ -151,8 +151,8 @@ unsigned char heater_cooller_ctrl()
                 pwm_set(HEATER_3,  0);
                 pwm_set(HEATER_4,  0);
 
-                pwm_set(COOLER_3,  150 * air_usr.ratio); //冷却均匀温度用
-                pwm_set(COOLER_4,  150 * air_usr.ratio); //冷却均匀温度用
+                pwm_set(COOLER_3,  250 * air_usr.ratio); //冷却均匀温度用
+                pwm_set(COOLER_4,  250 * air_usr.ratio); //冷却均匀温度用
                 if (getConfig()->warn_T >= tmep_T)
                     getConfig()->status = SLEEP;
                 else

@@ -103,7 +103,7 @@ void usb_ctrl()
                     sprintf(pb, "%.3f\r\n", dat);
                     FileBuf = pb;
                     retUSBH = f_write(&USBHFile, FileBuf, strlen(FileBuf), &bw);
-                    HAL_Delay(10);
+                    HAL_Delay(5);
                     static uint32_t timer_tick_count;
                     if ((HAL_GetTick() - timer_tick_count) >= 500)
                     {
