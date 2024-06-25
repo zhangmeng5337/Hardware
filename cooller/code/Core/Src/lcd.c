@@ -735,8 +735,8 @@ void lcd_proc()
         }
         else
         {
-            //static uint32_t timeout;
-            if ((HAL_GetTick() - timeout) >= 25000 && getConfig()->export_flag == 0)
+            static uint32_t timeout2;
+            if ((HAL_GetTick() - timeout2) >= 25000 && getConfig()->export_flag == 0)
             {
 
 //                if (page_Id != Main_PAGE)
@@ -761,7 +761,7 @@ void lcd_proc()
                 }
 
 
-                timeout = HAL_GetTick();
+                timeout2 = HAL_GetTick();
 
             }
         }
