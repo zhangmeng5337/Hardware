@@ -111,21 +111,23 @@ unsigned char heater_cooller_ctrl()
 {
     float tmep_T;
     static uint32_t tick_start;
-    if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
+    if (get_temperature()->valid == 1 && (HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
-		tmep_T = get_temperature()->T_value[0];
+        tmep_T = get_temperature()->T_value[0];
 //        if (get_rf_status()->vaild_flag == 1)
 //            tmep_T = get_rf_status()->average_T;
 //        else
 //            return 0;
-		//tmep_T = getConfig()->max_T + 1;
+        //tmep_T = getConfig()->max_T + 1;
         float tmp_v;
         tmp_v = get_temperature()->T_value[1] * BATTERY_V;
         air_usr.ratio = 12 / tmp_v;
         if (getConfig()->mode == MODE_HEATER)
         {
-            if (tmep_T <= getConfig()->min_T)//heater ctrl
+            if (tmep_T <= getConfig()->min_T ||
+                    (tmep_T > getConfig()->min_T
+                     && getConfig()->min_T < getConfig()->max_T)) //heater ctrl
             {
                 //getConfig()->mode = 1;//加热
                 air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);//风扇与加热温度控制
@@ -151,19 +153,26 @@ unsigned char heater_cooller_ctrl()
                 pwm_set(HEATER_3,  0);
                 pwm_set(HEATER_4,  0);
 
-                pwm_set(COOLER_3,  250 * air_usr.ratio); //冷却均匀温度用
-                pwm_set(COOLER_4,  250 * air_usr.ratio); //冷却均匀温度用
+
                 if (getConfig()->warn_T >= tmep_T)
+                {
                     getConfig()->status = SLEEP;
+
+                    pwm_set(COOLER_3,  0); //冷却均匀温度用
+                    pwm_set(COOLER_4,  0); //冷却均匀温度用
+                }
+
                 else
                     getConfig()->status = WARN;
             }
+
             air_pwr_ctrl(OFF);
 
         }//end heater mode************************
         else if (getConfig()->mode == MODE_COOLLER)
         {
-            if (tmep_T >= getConfig()->max_T)//heater ctrl
+            if (tmep_T >= getConfig()->max_T ||
+                    (tmep_T > getConfig()->min_T && tmep_T < getConfig()->max_T)) //heater ctrl
             {
                 // getConfig()->mode = 0;//制冷
                 pwm_set(HEATER_1,  0);
@@ -189,11 +198,17 @@ unsigned char heater_cooller_ctrl()
                 pwm_set(HEATER_3,  0);
                 pwm_set(HEATER_4,  0);
 
-                pwm_set(COOLER_3,  150 * air_usr.ratio); //冷却均匀温度用
-                pwm_set(COOLER_4,  150 * air_usr.ratio); //冷却均匀温度用
+                pwm_set(COOLER_3,  0); //冷却均匀温度用
+                pwm_set(COOLER_4,  0); //冷却均匀温度用
                 air_pwr_ctrl(OFF);
                 if (getConfig()->warn_T >= tmep_T)
+                {
                     getConfig()->status = SLEEP;
+
+                    pwm_set(COOLER_3,  0); //冷却均匀温度用
+                    pwm_set(COOLER_4,  0); //冷却均匀温度用
+                }
+
                 else
                     getConfig()->status = WARN;
             }
@@ -223,7 +238,8 @@ void dat_record_proc(void)
     float tmp;
     unsigned char pb[4];
 
-    if (getConfig()->update_T == 1 || (getConfig()->sleep_flag == 1))
+    if (get_temperature()->valid == 1 && (getConfig()->update_T == 1
+                                          || (getConfig()->sleep_flag == 1)))
     {
         getConfig()->sleep_flag = 0;
         if (get_flash_status()->vailabe_len > 0)
@@ -231,7 +247,7 @@ void dat_record_proc(void)
 
             if (get_flash_status()->used_len == 0)
                 Erase_page(Application_2_Addr, 1);
-            floatTouint32(get_rf_status()->average_T, pb); //温度
+            floatTouint32(get_temperature()->T_value[0], pb); //温度
             WriteFlash(getConfig()->addr, pb, 4);
             getConfig()->addr = getConfig()->addr + 4;
             get_flash_status()->used_len =  get_flash_status()->used_len + 4;
@@ -242,13 +258,14 @@ void dat_record_proc(void)
             Erase_page(Application_2_Addr, 1);
 
             get_flash_status()->used_len = 0;
-            floatTouint32(get_rf_status()->average_T, pb); //上限温度
+            floatTouint32(get_temperature()->T_value[0], pb); //上限温度
             WriteFlash(getConfig()->addr, pb, 4);
             getConfig()->addr = getConfig()->addr + 4;
             get_flash_status()->used_len =  get_flash_status()->used_len + 4;
         }
         getConfig()->update_T = 0;
-        
+		flash_save();
+
     }
 
     if (getConfig()->update_params == 1)
@@ -274,8 +291,9 @@ void PVD_config(void)
 
 void app()
 {
-    lcd_proc();
+
     adc_proc();
+    lcd_proc();
     //config_proc();
     heater_cooller_ctrl();
     usb_ctrl();

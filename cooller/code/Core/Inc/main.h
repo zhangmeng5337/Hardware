@@ -41,6 +41,7 @@ extern "C" {
 /* USER CODE BEGIN ET */
 #define ON 0
 #define OFF 1
+#define DEBUG_EN  0
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

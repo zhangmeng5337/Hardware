@@ -104,17 +104,18 @@ unsigned int count;
 float average_filter(float bArray)
 {
 
-    if (count <= N)
+    if (count <= N2)
     {
         sum  = sum + bArray;
         count++;
-        result = sum / count * 1000;
+        result = sum / count ;
     }
     else
-    {
-			  sum = 0;
-        count = 0;
-        result = sum / N * 1000;
+    {     
+       result = sum / N2;
+	   sum = result;
+        count = 1;
+  
     }
 
     return result;

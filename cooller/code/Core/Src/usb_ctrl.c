@@ -124,7 +124,7 @@ void usb_ctrl()
             {
                 printf("写入文件成功!\r\n");
             }
-            //retUSBH = f_close(&USBHFile);
+            retUSBH = f_close(&USBHFile);
 //            if (retUSBH == FR_OK)
 //            {
 //                printf("关闭文件成功!\r\n");

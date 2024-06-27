@@ -2,7 +2,7 @@
 #define ADC_H
 #include "main.h"
 #include "pt100.h"
-
+#include "filter.h"
 #define PT_VREF 2.499
 #define R2_V 2.0
 #define V2_V  0.092
@@ -29,12 +29,14 @@ typedef struct
 	float    T_value[4];
 	float    v_value[4];
 	float    R_value[4];
+	float    M_value[N];	
     float    V2_V_offset; 
 	float    heater_T;
 	float	 cooller_T;  
 	float ref;
 	float average_T;//制冷检测温度，通过rf得到
 	unsigned char update;
+	unsigned char valid;
 
 }adc_stru;
 

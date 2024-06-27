@@ -3,13 +3,12 @@
 <vlcd width="480" height="272">
 <desc>Vlcd picture</desc>
 <image x = "0" y = "0" width = "480" height = "272" ShapeName = ""
- ShapeNum = "3" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image002.bmp">
+ ShapeNum = "40" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image006.bmp">
 </image>
-<edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "26" width = "80" height = "33" ShapeName = "14" ShapeNum = "4" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
-<edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "72" width = "80" height = "33" ShapeName = "14" ShapeNum = "5" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
-<edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "119" width = "80" height = "33" ShapeName = "14" ShapeNum = "6" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
-<edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "163" width = "80" height = "33" ShapeName = "14" ShapeNum = "7" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
-<edit style = "fill:White; stroke:Black; stroke-width:1" x = "178" y = "208" width = "80" height = "33" ShapeName = "14" ShapeNum = "8" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
-<button style = "fill:none; stroke:Black; stroke-width:1" x = "300" y = "191" width = "74" height = "68" ShapeName = "TP" ShapeNum = "9" Direction = "UploadID" StoreType = "" RadianNum = "Char" TextAlignType = "" Gwidth = "image002.bmp" Gheight = "image002.bmp" >Button</button>
-<text style = "fill:Red; stroke:Transparent; font-family:image002.bmp; font-size:14pt" x = "297" y = "115" width = "0" height = "0" ShapeName = "Image" ShapeNum = "18" ></text>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "115" y = "41" width = "74" height = "27" ShapeName = "14" ShapeNum = "4" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "112" y = "92" width = "74" height = "27" ShapeName = "14" ShapeNum = "5" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "113" y = "140" width = "74" height = "27" ShapeName = "14" ShapeNum = "6" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "341" y = "40" width = "74" height = "27" ShapeName = "14" ShapeNum = "7" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<edit style = "fill:White; stroke:Black; stroke-width:1" x = "341" y = "89" width = "74" height = "27" ShapeName = "14" ShapeNum = "8" TextAlignType = "Center" StoreType = "Global" Direction = "No" Gwidth = "Keyboard" RadianNum = "p1" >Edit</edit>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "377" y = "186" width = "80" height = "76" ShapeName = "TP" ShapeNum = "38" Direction = "ChangePage" StoreType = "p2" RadianNum = "Char" TextAlignType = "" Gwidth = "image006.bmp" Gheight = "image006.bmp" >Button</button>
 </vlcd>

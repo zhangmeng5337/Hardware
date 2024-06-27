@@ -19,6 +19,7 @@ static uint8_t update_en = 0;
 static uint8_t page_Id_bk = 0;
 static uint8_t page_Id = 0;
 static uint8_t targe_Id = 0;
+static unsigned char msg_type;
 /*!
  *  \brief  消息处理流程
  *  \param msg 待处理消息
@@ -38,45 +39,56 @@ void ProcessMessage(PCTRL_MSG msg, uint16_t size)
     {
         case NOTIFY_SET_PAGE:
             NotifySetPage(control_id);
+            msg_type = 1;
             break;
 
         case NOTIFY_TOUCH_BUTTON:
             NotifyTouchButton(page_id, control_id, status, key_type, key_value);
+            msg_type = 1;
             break;
 
         case NOTIFY_TOUCH_CHECKBOX:
             NotifyTouchCheckbox(page_id, control_id, status, key_type, key_value);
+            msg_type = 1;
             break;
 
         case NOTIFY_TOUCH_SLIDER:
             NotifyTouchSlider(page_id, control_id, status, key_type, key_value);
+            msg_type = 1;
             break;
 
         case NOTIFY_TOUCH_EDIT:
             NotifyTouchEdit(page_id, control_id, status, key_type, key_value);
+            msg_type = 1;
             break;
 
         case NOTIFY_GET_EDIT:
             NotifyGetEdit((PEDIT_MSG)cmd_buffer, size - 4); //去除帧头帧尾
+            msg_type = 1;
             break;
 
         case NOTIFY_GET_TOUCH_EDIT:
             NotifyGetTouchEdit((PEDIT_MSG)cmd_buffer, size - 4); //去除帧头帧尾
+            msg_type = 1;
             break;
 
         case NOTIFY_GET_PAGE:
             NotifyGetPage(page_id, status);
+            msg_type = 1;
             break;
 
         case NOTIFY_GET_CHECKBOX:
             NotifyGetCheckbox(page_id, control_id, status, key_type, key_value);
+            msg_type = 1;
             break;
 
         case NOTIFY_GET_SLIDER:
             NotifyGetSlider(page_id, control_id, status, key_type, key_value);
+            msg_type = 1;
             break;
 
         default:
+            msg_type = 0;
             break;
     }
 }
@@ -87,31 +99,31 @@ void set_label_proc(unsigned char num)
     switch (num)
     {
         case 0:
-            SetLableValue(Setting_PAGE, USB_LOG_ID, "");
+            SetLableValue(WAVE_PAGE, USB_LOG_ID, "");
             break;
         case 1:
-            SetLableValue(Setting_PAGE, USB_LOG_ID, "请插入U盘");
+            SetLableValue(WAVE_PAGE, USB_LOG_ID, "请插入U盘");
             break;
         case 2:
-            SetLableValue(Setting_PAGE, USB_LOG_ID, "未识别到U盘");
+            SetLableValue(WAVE_PAGE, USB_LOG_ID, "未识别到U盘");
             break;
         case 3:
-            SetLableValue(Setting_PAGE, USB_LOG_ID, "数据导出中...");
+            SetLableValue(WAVE_PAGE, USB_LOG_ID, "数据导出中...");
             break;
         case 4:
-            SetLableValue(Setting_PAGE, USB_LOG_ID, "数据导出完成");
+            SetLableValue(WAVE_PAGE, USB_LOG_ID, "数据导出完成");
             break;
 
     }
 }
 
-void UpdateUI()
+void UpdateUI(unsigned char page)
 {
     int i;
     int value;
     char str[65];
     static unsigned char flag;
-    if (page_Id == Setting_PAGE)
+    if (page_Id == Setting_PAGE && page != WAVE_PAGE)
     {
         if (flag == 0)
         {
@@ -135,6 +147,34 @@ void UpdateUI()
             //float2char(getConfig()->power_save, str, 4);
             SetEditValue(Setting_PAGE, POW_T_ID, str);
         }
+//        if (getConfig()->export_flag == 1)
+//        {
+//            if (get_usb_state() == APPLICATION_READY)
+//            {
+//                set_label_proc(3);
+//            }
+//            else if (get_usb_state() == APPLICATION_IDLE
+//                     || get_usb_state() == APPLICATION_DISCONNECT)
+//            {
+//                set_label_proc(1);
+//            }
+//            else
+//            {
+//                set_label_proc(2);
+//            }
+//        }
+//        else
+//            set_label_proc(0);
+//        if (*get_usb_wr() == 1)
+//        {
+//
+//            set_label_proc(4);
+//            getConfig()->export_flag = 0;
+//        }
+
+    }
+    else if (page_Id == WAVE_PAGE && page == WAVE_PAGE)
+    {
         if (getConfig()->export_flag == 1)
         {
             if (get_usb_state() == APPLICATION_READY)
@@ -160,55 +200,67 @@ void UpdateUI()
             getConfig()->export_flag = 0;
         }
 
-    }
-	else if (page_Id == WAVE_PAGE)
-		{
-	
-			 if (getConfig()->update_T == 1) //figure ctrl
-			{
-				static uint16_t fig_count = 0;
-				//getConfig()->update_T = 0;
-				// sprintf(str, "%f", get_temperature()->average_T);
-				//SetLableValue(page_Id, TEMPERATURE_ID, str);
-				if (get_temperature()->T_value[0] < 0)
-				{
-					SetWaveformValue(page_Id, WAVE_ID, 1,
-									 get_rf_status()->average_T * 8 + 40); //		-5---0 0---40
-	
-				}
-				else if (get_temperature()->T_value[0] <= 15)
-				{
-					SetWaveformValue(page_Id, WAVE_ID, 1,
-									 get_rf_status()->average_T * 40 / 3 + 40);//0---40  15---240
-				}
-				fig_count++;
-				if (fig_count >= WAVE_HEIGHT)
-				{
-					fig_count = 0;
-					//	 WaveformDataClear(page_Id, WAVE_ID);
-	
-				}
-	
-	
-			}
-		}
 
-    else if (page_Id == Main_PAGE)
+
+
+        if (getConfig()->update_T == 1) //figure ctrl
+        {
+            static uint16_t fig_count = 0;
+            //getConfig()->update_T = 0;
+            // sprintf(str, "%f", get_temperature()->average_T);
+            //SetLableValue(page_Id, TEMPERATURE_ID, str);
+            if (get_temperature()->T_value[0] < 0)
+            {
+                SetWaveformValue(page_Id, WAVE_ID, 1,
+                                 get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
+                fig_count++;
+            }
+#if DEBUG_EN == 0
+            else if (get_temperature()->T_value[0] <= 15)
+#else if
+            else
+#endif
+            {
+#if DEBUG_EN == 0
+                SetWaveformValue(page_Id, WAVE_ID, 1,
+                                 get_rf_status()->average_T * 40 / 4 + 40);//0---40  15---240
+
+#else if
+                SetWaveformValue(page_Id, WAVE_ID, 1,
+                                 get_rf_status()->average_T * 40 / 8.6 + 40);//0---40  15---240
+
+#endif
+
+                fig_count++;
+            }
+
+            if (fig_count >= WAVE_HEIGHT)
+            {
+                fig_count = 0;
+                //   WaveformDataClear(page_Id, WAVE_ID);
+
+            }
+
+
+        }
+    }
+
+    else if (page_Id == Main_PAGE && page != WAVE_PAGE)
     {
 
         static uint32_t last_mode = 2;
         static uint32_t last_v_value = 0;
         static uint32_t last_t = 0;
         if (getConfig()->mode  == MODE_COOLLER
-                ) //cooller heater&& last_mode != getConfig()->mode&& last_mode != getConfig()->mode
+           ) //cooller heater&& last_mode != getConfig()->mode&& last_mode != getConfig()->mode
         {
 
             last_mode = getConfig()->mode;
-            Display_Image(110, 167, COOLLER_ID);
+            Display_Image(MODE_X_POS, MODE_Y_POS, COOLLER_ID);
         }
-        else if (getConfig()->mode  == MODE_HEATER )
+        else if (getConfig()->mode  == MODE_HEATER)
         {
-            Display_Image(110, 167, HEATER_ID);
+            Display_Image(MODE_X_POS, MODE_Y_POS, HEATER_ID);
             last_mode = getConfig()->mode;
 
         }
@@ -228,7 +280,7 @@ void UpdateUI()
             str[3] = '%';
             SetLableValue(page_Id, BATTERY_ID, str);
         }
-		//if (get_rf_status()->average_T != last_t)
+        //if (get_rf_status()->average_T != last_t)
         if (get_temperature()->T_value[0] != last_t)
         {
 
@@ -290,6 +342,42 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
         {
             if (type == UPLOAD_CONTROL_ID)
             {
+//                if (control_id == USB_ID)
+//                {
+//                    //page_Id = value;
+//                    update_en = 1;
+//                    getConfig()->export_flag = 1;//usb
+//                    //get_flash_status()->usb_read_flag = 0;
+//                    if (*get_usb_wr() == 1)
+//                        *get_usb_wr() = 2;
+//                }
+//                else if (control_id == MODE_CHANGE_ID)
+//                {
+//                    if (getConfig()->mode == MODE_COOLLER)
+//                        getConfig()->mode = MODE_HEATER;
+//                    else
+//                        getConfig()->mode == MODE_COOLLER;
+//                }
+//                else
+//              if (control_id == RETURN_ID)
+//                {
+//                    SetPage(Main_PAGE);//主页面Id号是4
+//
+//                }
+
+            }
+
+
+
+        }
+
+    }
+    else  if (page_id == WAVE_PAGE)
+    {
+        if (state == KEY_RELEASE)
+        {
+            if (type == UPLOAD_CONTROL_ID)
+            {
                 if (control_id == USB_ID)
                 {
                     //page_Id = value;
@@ -299,18 +387,18 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
                     if (*get_usb_wr() == 1)
                         *get_usb_wr() = 2;
                 }
-                else if (control_id == MODE_CHANGE_ID)
-                {
-                    if (getConfig()->mode == MODE_COOLLER)
-                        getConfig()->mode = MODE_HEATER;
-                    else
-                        getConfig()->mode == MODE_COOLLER;
-                }
-			else if (control_id == RETURN_ID)
-			{
-				SetPage(Main_PAGE);//主页面Id号是4
-
-			}
+//                else if (control_id == MODE_CHANGE_ID)
+//                {
+//                    if (getConfig()->mode == MODE_COOLLER)
+//                        getConfig()->mode = MODE_HEATER;
+//                    else
+//                        getConfig()->mode == MODE_COOLLER;
+//                }
+//                else if (control_id == RETURN_ID)
+//                {
+//                    SetPage(Main_PAGE);//主页面Id号是4
+//
+//                }
 
             }
 
@@ -499,7 +587,7 @@ void NotifyGetEdit(PEDIT_MSG msg, uint16_t size)
                     getConfig()->power_save = atof(pb);
                     break;
             }
-			air_init();
+            air_init();
 
         }
     }
@@ -724,7 +812,7 @@ void lcd_proc()
 
     // while (1)
     {
-        static uint32_t timeout;
+        static uint32_t timeout, timeout2;
         size = queue_find_cmd(cmd_buffer, CMD_MAX_SIZE); //从缓冲区中获取一条指令
         if (size > 0) //接收到指令
         {
@@ -732,38 +820,31 @@ void lcd_proc()
             ProcessMessage((PCTRL_MSG)cmd_buffer, size);//指令处理
             if (getConfig()->update_params == 2)
                 getConfig()->update_params = 1;//update setting
+            if (msg_type != 0)
+            {
+                msg_type = 0;
+                timeout2 = HAL_GetTick();
+            }
+
         }
         else
         {
-            static uint32_t timeout2;
+            //  static uint32_t timeout2;
+            #if DEBUG_EN==0
             if ((HAL_GetTick() - timeout2) >= 25000 && getConfig()->export_flag == 0)
             {
-
-//                if (page_Id != Main_PAGE)
-//                {
-//                    // SetPage(Main_PAGE);//主页面Id号是4
-//                    //  page_Id_bk = Main_PAGE;
-
-//                }
-//                else
+                SetPage(Main_PAGE);//主页面Id号是4
+                SetBackLight(0);
+                if (getConfig()->status == SLEEP)
                 {
-                    SetPage(Main_PAGE);//主页面Id号是4
-                    SetBackLight(0);
-                    if (getConfig()->status == SLEEP)
-                    {
-                        flash_save();
-                        sys_enter_standy_mode();
-                        HAL_NVIC_SystemReset();
-
-                    }
-
+                    flash_save();
+                    sys_enter_standy_mode();
+                    HAL_NVIC_SystemReset();
 
                 }
-
-
                 timeout2 = HAL_GetTick();
-
             }
+			#endif
         }
 
         /****************************************************************************************************************
@@ -780,9 +861,11 @@ void lcd_proc()
             //update_en &&
             update_en = 0;
             timer_tick_count = HAL_GetTick();
-            UpdateUI();
+            UpdateUI(Main_PAGE);
 
         }
+        else
+            UpdateUI(WAVE_PAGE);
     }
 
 }

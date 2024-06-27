@@ -9,13 +9,13 @@
 #ifndef _LCD_H_
 #define _LCD_H_
 
-#define WAVE_WIDTH 		230
-#define WAVE_HEIGHT 	240
+#define WAVE_WIDTH 		300
+#define WAVE_HEIGHT 	180
 
 #define TIME_100MS 1500
 
 #define BATTERY_ID   	 23
-#define TEMPERATURE_ID   24
+#define TEMPERATURE_ID   27
 #define WAVE_ID   		 19
 #define COOLLER_ID   	 3
 #define HEATER_ID   	 2
@@ -27,8 +27,14 @@
 #define POW_T_ID   	 	8
 #define USB_ID  		9
 #define MODE_CHANGE_ID  36
-#define USB_LOG_ID   	 	18
+#define USB_LOG_ID   	 	29
 #define RETURN_ID   	 	37
+#define RETURN_ID2   	 	38
+
+
+#define MODE_X_POS   	 	372
+#define MODE_Y_POS   	 	24
+
 
 void lcd_proc(void);
 void set_label_proc(unsigned char num);
