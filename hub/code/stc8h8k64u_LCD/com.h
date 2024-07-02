@@ -5,14 +5,14 @@
 
 #define ON 0
 #define OFF 1
-#define TIME_OUT  9500
+#define TIME_OUT  950000
 typedef struct
 {
 	 unsigned char master_recv;
 	 unsigned char rec_num[8];
 
 	 unsigned char lock_port;
-	 unsigned int  timeout;
+	 unsigned long  int  timeout;
 	 
 }com_stru;
 void com_recv_proc(void);

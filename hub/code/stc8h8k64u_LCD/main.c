@@ -9,25 +9,27 @@
 #include "main.h"
 #include "com.h"
 
-void init()
-{
+//void init()
+//{
 
-    P1M0 = 0x03;
-    P1M1 = 0x00;
-    P3M0 = 0x80;
-    P3M1 = 0x00;                             //启动定时器
+//    P1M0 = 0x03;
+//    P1M1 = 0x00;
+//    P3M0 = 0x80;
+//    P3M1 = 0x00;                             //启动定时器
 
-}
+//}
 void Timer0_Isr(void) interrupt 1
-{
+{recv_timeout();
     com_recv_proc();
+	  com_tx_slaver();
+	 slave_to_master();
 }
 
 void Timer0_Init(void)      //1微秒@11.0592MHz
 {
     AUXR |= 0x80;           //定时器时钟1T模式
     TMOD &= 0xF0;           //设置定时器模式
-    TL0 = 0xF5;             //设置定时初始值
+    TL0 = 0xF2;             //设置定时初始值
     TH0 = 0xFF;             //设置定时初始值
     TF0 = 0;                //清除TF0标志
     TR0 = 1;                //定时器0开始计时
@@ -39,10 +41,10 @@ void Timer0_Init(void)      //1微秒@11.0592MHz
 
 void INT1_Isr() interrupt 2
 {
-    unsigned char port_num;
+    //unsigned char port_num;
 
    
-    com_recv_proc();
+   // com_recv_proc();
 }
 void io_init()
 {
@@ -69,9 +71,9 @@ void main()
 
     while (1)
     {
-        com_tx_to_master();
-        com_tx_slaver();
-	    P04 = !P04; 								//测试端口
+       // com_tx_to_master();
+        
+	   ;
 
     }
 }
