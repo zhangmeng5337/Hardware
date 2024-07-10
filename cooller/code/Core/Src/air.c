@@ -99,10 +99,11 @@ void air_temperature_ctrl()
     if ((HAL_GetTick() - tick_start) >= PID_POLL_T)
     {
         tick_start = HAL_GetTick();
-        tmep_T = get_rf_status()->average_T;
+        tmep_T = get_temperature()->average_T;
         air_usr.pid_out = pid_proc(tmep_T);//ÖÆÀäÎÂ¶È¿ØÖÆ
         air_freq_ctrl();
     }
+	
 
 
 }

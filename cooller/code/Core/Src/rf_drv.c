@@ -153,11 +153,15 @@ void rf_recv()
 							rf_recv_usr.wait_card_id = 19;
                         if (rf_recv_usr.wait_card_id < 18)
                         {
-                        
-                            rf_recv_usr.card_T[rf_recv_usr.wait_card_id] = cal_temp;
-							rf_recv_usr.vaild_flag = 1;
-							rf_recv_usr.id_status[rf_recv_usr.wait_card_id] = 15;
-							rf_averge();
+                           if(cal_temp>=-100&&cal_temp<=200)
+                           	{
+						   rf_recv_usr.card_T[rf_recv_usr.wait_card_id] = cal_temp;
+						   rf_recv_usr.vaild_flag = 1;
+						   rf_recv_usr.id_status[rf_recv_usr.wait_card_id] = 15;
+						   rf_averge();
+
+						   }
+
                         }
 
 						rf_recv_usr.retry_times = 0;
