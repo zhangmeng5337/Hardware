@@ -1,0 +1,297 @@
+*************************************************************
+FileName = RHR074P_D23 PCAP Test Board_Rev2.GBR
+AutoAperture = True
+*************************************************************
+Generating : M1 Board Outline
+      File : RHR074P_D23 PCAP Test Board_Rev2.GM1
+
+    Adding Layer      : M1 Board Outline
+
+
+Used DCodes :
+    D14
+    D40
+*************************************************************
+
+*************************************************************
+Generating : Top Overlay
+      File : RHR074P_D23 PCAP Test Board_Rev2.GTO
+
+    Adding Layer      : Top Overlay
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+    D13
+    D14
+    D15
+*************************************************************
+
+*************************************************************
+Generating : L3_SIG1
+      File : RHR074P_D23 PCAP Test Board_Rev2.G1
+
+    Adding Layer      : L3_SIG1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D37
+    D45
+    D46
+    D53
+*************************************************************
+
+*************************************************************
+Generating : Top Paste
+      File : RHR074P_D23 PCAP Test Board_Rev2.GTP
+
+    Adding Layer      : Top Paste
+
+    Adding Layer      : L1_TOP
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D16
+    D17
+    D18
+    D19
+    D20
+    D21
+    D22
+    D23
+*************************************************************
+
+*************************************************************
+Generating : L5 GND
+      File : RHR074P_D23 PCAP Test Board_Rev2.GP2
+
+    Adding Layer      : L5 GND
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D42
+    D49
+    D50
+    D51
+    D52
+    D54
+    D55
+*************************************************************
+
+*************************************************************
+Generating : Bottom Paste
+      File : RHR074P_D23 PCAP Test Board_Rev2.GBP
+
+    Adding Layer      : Bottom Paste
+
+    Adding Layer      : L6_BOTTOM
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D16
+    D17
+    D20
+    D21
+    D56
+    D57
+    D58
+    D59
+    D60
+    D61
+    D62
+*************************************************************
+
+*************************************************************
+Generating : L2_GND
+      File : RHR074P_D23 PCAP Test Board_Rev2.GP1
+
+    Adding Layer      : L2_GND
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D42
+    D47
+    D48
+    D49
+    D50
+    D51
+    D52
+*************************************************************
+
+*************************************************************
+Generating : Top Solder
+      File : RHR074P_D23 PCAP Test Board_Rev2.GTS
+
+    Adding Layer      : Top Solder
+
+    Adding Layer      : L1_TOP
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+    D33
+    D34
+    D35
+    D36
+*************************************************************
+
+*************************************************************
+Generating : L6_BOTTOM
+      File : RHR074P_D23 PCAP Test Board_Rev2.GBL
+
+    Adding Layer      : L6_BOTTOM
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D16
+    D17
+    D20
+    D21
+    D37
+    D38
+    D39
+    D40
+    D41
+    D42
+    D43
+    D44
+    D45
+    D46
+    D56
+    D57
+    D58
+    D59
+    D60
+    D61
+    D62
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : RHR074P_D23 PCAP Test Board_Rev2.GBS
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : L6_BOTTOM
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D25
+    D26
+    D29
+    D30
+    D33
+    D34
+    D35
+    D36
+    D63
+    D64
+    D65
+    D66
+    D67
+    D68
+    D69
+    D70
+    D71
+    D72
+*************************************************************
+
+*************************************************************
+Generating : L1_TOP
+      File : RHR074P_D23 PCAP Test Board_Rev2.GTL
+
+    Adding Layer      : L1_TOP
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D16
+    D17
+    D18
+    D19
+    D20
+    D21
+    D22
+    D23
+    D37
+    D38
+    D39
+    D40
+    D41
+    D42
+    D43
+    D44
+    D45
+    D46
+*************************************************************
+
+*************************************************************
+Generating : Bottom Overlay
+      File : RHR074P_D23 PCAP Test Board_Rev2.GBO
+
+    Adding Layer      : Bottom Overlay
+
+
+Used DCodes :
+    D10
+    D11
+    D13
+    D14
+    D15
+    D73
+*************************************************************
+
+*************************************************************
+Generating : L4 SIG2
+      File : RHR074P_D23 PCAP Test Board_Rev2.G2
+
+    Adding Layer      : L4 SIG2
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D14
+    D37
+    D39
+    D41
+    D45
+    D46
+*************************************************************
+

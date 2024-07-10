@@ -1,0 +1,100 @@
+*************************************************************
+FileName = RHR074P_D23 PCAP Test Board_Rev2.PcbDoc
+ODB++ directory structure
+*************************************************************
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\matrix\matrix
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\profile
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\stephdr
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l2_gnd\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l2_gnd\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\top_overlay\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\top_overlay\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l4_sig2\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l4_sig2\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\top_paste\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\top_paste\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l3_sig1\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l3_sig1\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l5_gnd\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l5_gnd\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\top_solder\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\top_solder\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\bottom_overlay\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\bottom_overlay\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\bottom_solder\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\bottom_solder\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\bottom_paste\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\bottom_paste\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l5_power2\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l5_power2\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l4_power1\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l4_power1\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l6_bottom\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l6_bottom\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\keep-out_layer\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\keep-out_layer\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l1_top\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\l1_top\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\m1_board_outline\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\m1_board_outline\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\drill\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\drill\attrlist
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\drill\tools
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\comp_+_top\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\comp_+_top\components
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\comp_+_bot\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\layers\comp_+_bot\components
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\steps\pcb\eda\data
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\symbols\rect29.9213x94.4882_315\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\symbols\rect29.9213x94.4882_315\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\symbols\rect33.9213x98.4882_315\features
+
+Generated File : D:\Onedrive\Start up\Coriolis\Electronics\RHR074A_D23 PCAP Test Board_Rev2\Project Outputs for RHR074A_D23 PCAP Test Board_Rev2\ODB\odb\symbols\rect29.9213x94.4882_315\features
+
