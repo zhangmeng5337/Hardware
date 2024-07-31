@@ -1,0 +1,10 @@
+1.https://docs.espressif.com/projects/esp-at/en/release-v3.0.0.0/esp32c2/Get_Started/Hardware_connection.html
+
+2.固件烧录
+https://blog.csdn.net/qq_51516964/article/details/126522984
+
+https://blog.csdn.net/thisway_diy/article/details/117449614
+
+
+3.idf 使用
+https://blog.csdn.net/i2blue/article/details/125531687

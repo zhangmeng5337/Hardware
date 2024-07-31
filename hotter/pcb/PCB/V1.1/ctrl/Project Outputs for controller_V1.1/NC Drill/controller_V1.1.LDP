@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: D:\GH0050\prj\pcb\Others\V1.1\ctrl\controller_V1.1.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=controller_v1.1-roundholes.txt|DrillLayers=gtl,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=controller_v1.1-slotholes.txt|DrillLayers=gtl,gbl

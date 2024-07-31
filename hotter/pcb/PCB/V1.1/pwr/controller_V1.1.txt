@@ -1,0 +1,10 @@
+Board Information Report
+Filename     : D:\GH0050\prj\pcb\Others\V1.1\pwr\controller_V1.1.PcbDoc
+Date         : 2024/7/17
+Time         : 15:22:46
+Time Elapsed : 00:00:00
+
+General
+    Board Size, 150.5088mmx150.5088mm
+    Components on board, 133
+count : 2

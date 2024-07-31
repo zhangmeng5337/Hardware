@@ -1,0 +1,146 @@
+Altium Designer Pick and Place Locations
+D:\GH0050\prj\pcb\Others\V1.1\pwr\Project Outputs for pwr_V1.0\Pick Place\pwr_V1.0.txt
+
+========================================================================================================================
+File Design Information:
+
+Date:       22/07/24
+Time:       12:22
+Revision:   Not in VersionControl
+Variant:    No variations
+Units used: mil
+
+Designator Comment             Layer       Footprint                        Center-X(mil) Center-Y(mil) Rotation Description                             
+D15        LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5095.000      3437.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D14        LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5098.000      2919.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D13        LL4148              BottomLayer DO-213AB/LL34/MiniMELF           3915.000      1850.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D12        LL4148              BottomLayer DO-213AB/LL34/MiniMELF           3918.000      2402.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D11        LL4148              BottomLayer DO-213AB/LL34/MiniMELF           3918.000      2918.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D10        LL4148              BottomLayer DO-213AB/LL34/MiniMELF           3928.000      3451.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D9         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           3932.000      3970.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D8         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           3931.000      4507.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D7         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           3929.000      5024.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D6         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5114.000      1337.822      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D5         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5085.000      5029.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D3         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5087.000      2376.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D2         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5087.102      1844.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+D1         LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5062.102      3986.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+P3         "Header 4X2"        TopLayer    HDR2X4                           637.402       5698.032      180      "Header, 4-Pin, Dual row"               
+P2         "Header 15X2"       TopLayer    CONN-TH_30P-P2.50_KH-A2557-2X15A 4489.235      5717.208      0        "Header, 15-Pin, Dual row"              
+C44        220uF/50V           TopLayer    Φ10×10                           1274.000      497.000       270      "Polarized Capacitor (Radial)"          
+C54        1uF                 BottomLayer 0603C                            2983.000      812.472       270      Capacitor                               
+C62        1nF/2kV             BottomLayer 1206C                            2675.976      1016.000      180      Capacitor                               
+C67        22uF/10V            BottomLayer 1210C                            2191.000      337.976       270      Capacitor                               
+C68        0.1uF               BottomLayer 0603C                            2448.000      851.528       270      Capacitor                               
+C87        0.1uF               BottomLayer 0603C                            4826.472      3849.000      0        Capacitor                               
+C88        0.1uF               BottomLayer 0603C                            4825.528      1735.000      0        Capacitor                               
+C89        0.1uF               BottomLayer 0603C                            4810.472      2276.000      0        Capacitor                               
+C90        0.1uF               BottomLayer 0603C                            4835.528      4394.000      0        Capacitor                               
+C91        0.1uF               BottomLayer 0603C                            4813.472      4911.000      0        Capacitor                               
+C93        0.1uF               BottomLayer 0603C                            4835.472      1208.822      0        Capacitor                               
+C95        0.1uF               BottomLayer 0603C                            3663.472      4919.000      0        Capacitor                               
+C98        0.1uF               BottomLayer 0603C                            3663.472      4380.000      0        Capacitor                               
+C102       0.1uF               BottomLayer 0603C                            3663.472      3842.000      0        Capacitor                               
+C104       0.1uF               BottomLayer 0603C                            3663.472      3329.000      0        Capacitor                               
+C106       0.1uF               BottomLayer 0603C                            3663.472      2788.000      0        Capacitor                               
+C107       0.1uF               BottomLayer 0603C                            3663.472      2271.000      0        Capacitor                               
+C109       0.1uF               BottomLayer 0603C                            3663.472      1741.000      0        Capacitor                               
+C110       0.1uF               BottomLayer 0603C                            4814.472      2807.000      0        Capacitor                               
+C111       0.1uF               BottomLayer 0603C                            4815.472      3321.000      0        Capacitor                               
+C129       2.2nF/400VAC        TopLayer    15x18                            754.000       4698.276      270      Capacitor                               
+C130       0.15μF/300VAC       TopLayer    15x18                            549.535       3269.000      180      Capacitor                               
+C131       2.2nF/400VAC        TopLayer    15x18                            341.260       4698.276      90       Capacitor                               
+C132       1nF/2KV             BottomLayer 1206C                            1606.024      5668.000      0        Capacitor                               
+C134       1uF/50V             BottomLayer 1210C                            1428.976      482.000       0        Capacitor                               
+C135       4.7uF/50V           BottomLayer 1210C                            2519.976      1687.000      180      Capacitor                               
+C136       10uF/50V            BottomLayer 1210C                            2521.024      1858.000      180      Capacitor                               
+C137       0.01uF              BottomLayer 0603C                            2694.472      661.000       180      Capacitor                               
+C162       22uF/10V            BottomLayer 1210C                            2346.000      340.976       270      Capacitor                               
+D4         SS54                BottomLayer SMC                              3150.000      391.874       90       "Schottky Diode"                        
+D26        SMCJ30CA            BottomLayer SMC                              1364.126      254.000       0        "Schottky Diode"                        
+D49        LL4148              BottomLayer DO-213AB/LL34/MiniMELF           5101.000      4503.000      180      VISHAY,LL4148,圆柱体MiniMELF100V/2A,ROHS   
+E138       100uF/50V           TopLayer    Φ10×10                           3939.000      783.000       180      "Polarized Capacitor (Radial)"          
+F3         6.3A/250V           TopLayer    可视开关电源保险丝座                       202.000       2206.945      90       Fuse                                    
+F4         2A                  BottomLayer 1812-F                           3782.000      318.583       90       Fuse                                    
+K1         G2RL-1-H            TopLayer    G2RL-1-H                         5184.992      4355.408      0        "Single-Pole Dual-Throw Relay"          
+K3         G2RL-1-H            TopLayer    G2RL-1-H                         4013.598      2762.638      0        "Single-Pole Dual-Throw Relay"          
+K4         G2RL-1-H            TopLayer    G2RL-1-H                         5184.992      1700.638      0        "Single-Pole Dual-Throw Relay"          
+K6         G2RL-1-H            TopLayer    G2RL-1-H                         4014.992      2243.638      0        "Single-Pole Dual-Throw Relay"          
+K7         G2RL-1-H            TopLayer    G2RL-1-H                         5185.598      4884.638      0        "Single-Pole Dual-Throw Relay"          
+K9         G2RL-1-H            TopLayer    G2RL-1-H                         4013.598      1700.638      0        "Single-Pole Dual-Throw Relay"          
+K10        G2RL-1-H            TopLayer    G2RL-1-H                         5184.992      1181.184      0        "Single-Pole Dual-Throw Relay"          
+K12        G2RL-1-H            TopLayer    G2RL-1-H                         5184.992      2762.546      0        "Single-Pole Dual-Throw Relay"          
+K13        G2RL-1-H            TopLayer    G2RL-1-H                         4013.598      4886.638      0        "Single-Pole Dual-Throw Relay"          
+K14        G2RL-1-H            TopLayer    G2RL-1-H                         5184.992      3293.500      0        "Single-Pole Dual-Throw Relay"          
+K15        G2RL-1-H            TopLayer    G2RL-1-H                         4013.598      4355.638      0        "Single-Pole Dual-Throw Relay"          
+K16        G2RL-1-H            TopLayer    G2RL-1-H                         5184.992      3824.454      0        "Single-Pole Dual-Throw Relay"          
+K17        G2RL-1-H            TopLayer    G2RL-1-H                         4013.598      3824.638      0        "Single-Pole Dual-Throw Relay"          
+K18        G2RL-1-H            TopLayer    G2RL-1-H                         5184.992      2231.592      0        "Single-Pole Dual-Throw Relay"          
+K19        G2RL-1-H            TopLayer    G2RL-1-H                         4013.598      3293.638      0        "Single-Pole Dual-Throw Relay"          
+L3         CDRH105NP-100NC     BottomLayer CDRH105                          2688.803      407.000       90       ""                                      
+LED17      5V                  TopLayer    0603LED                          1424.000      811.528       270      ""                                      
+P1         "XHD2.54mm 2*15"    TopLayer    HDR2X11                          4460.630      186.220       180      "Header, 11-Pin, Dual row"              
+P7         "Header 3"          TopLayer    KF128V-3P                        204.260       1218.000      270      "Header, 3-Pin"                         
+R25        NC                  BottomLayer 0603R                            1915.000      900.528       90       ""                                      
+R31        NC                  BottomLayer 0603r                            2217.528      1832.000      0        ""                                      
+R102       5.1K                TopLayer    0603R                            1333.000      812.528       270      R                                       
+R107       510                 BottomLayer 0603R                            5096.472      4219.000      180      ""                                      
+R122       51K                 BottomLayer 0603R                            4831.528      4314.000      180      ""                                      
+R123       51K                 BottomLayer 0603R                            4824.472      3773.000      180      ""                                      
+R124       510                 BottomLayer 0603R                            5100.472      3671.000      180      ""                                      
+R125       51K                 BottomLayer 0603R                            4820.472      1655.000      180      ""                                      
+R126       51K                 BottomLayer 0603R                            4808.472      2193.000      180      ""                                      
+R127       510                 BottomLayer 0603R                            5096.528      1559.000      180      ""                                      
+R128       510                 BottomLayer 0603R                            5099.528      2071.000      180      ""                                      
+R129       51K                 BottomLayer 0603R                            4813.528      4823.000      180      ""                                      
+R131       510                 BottomLayer 0603R                            5083.472      4731.000      180      ""                                      
+R133       51K                 BottomLayer 0603R                            4834.528      1131.822      180      ""                                      
+R135       510                 BottomLayer 0603R                            5103.528      1024.000      180      ""                                      
+R137       51K                 BottomLayer 0603R                            3663.472      4839.000      180      ""                                      
+R139       510                 BottomLayer 0603R                            3936.528      4740.000      180      ""                                      
+R141       51K                 BottomLayer 0603R                            3663.472      4300.000      180      ""                                      
+R142       510                 BottomLayer 0603R                            3924.528      4207.000      180      ""                                      
+R145       51K                 BottomLayer 0603R                            3663.472      3771.000      180      ""                                      
+R147       510                 BottomLayer 0603R                            3924.472      3685.000      180      ""                                      
+R149       51K                 BottomLayer 0603R                            3663.472      3253.000      180      ""                                      
+R150       510                 BottomLayer 0603R                            3920.528      3154.000      180      ""                                      
+R151       51K                 BottomLayer 0603R                            3663.472      2718.000      180      ""                                      
+R152       510                 BottomLayer 0603R                            3929.472      2613.000      180      ""                                      
+R153       51K                 BottomLayer 0603R                            3663.472      2196.000      180      ""                                      
+R154       510                 BottomLayer 0603R                            3932.528      2073.000      180      ""                                      
+R155       51K                 BottomLayer 0603R                            3663.472      1668.000      180      ""                                      
+R156       510                 BottomLayer 0603R                            3925.472      1577.000      180      ""                                      
+R157       51K                 BottomLayer 0603R                            4815.472      2727.000      180      ""                                      
+R158       510                 BottomLayer 0603R                            5101.472      2608.000      180      ""                                      
+R159       51K                 BottomLayer 0603R                            4814.472      3249.000      180      ""                                      
+R160       510                 BottomLayer 0603R                            5097.472      3153.000      180      ""                                      
+R173       14D561K             TopLayer    14D561K                          586.260       1506.638      90       "Varistor (Voltage-Sensitive Resistor)" 
+R174       1MΩ/2W              TopLayer    5x15.5                           565.803       3572.000      0        ""                                      
+R175       20D471K             TopLayer    20D471K                          851.000       2394.850      90       "Varistor (Voltage-Sensitive Resistor)" 
+R176       14D561K             TopLayer    14D561K                          915.260       1484.638      270      "Varistor (Voltage-Sensitive Resistor)" 
+R177       B5G3600             TopLayer    B5G3600                          707.110       1011.000      0        "Varistor (Voltage-Sensitive Resistor)" 
+R178       NC                  BottomLayer 0603r                            3406.000      1002.528      270      ""                                      
+R179       100K                BottomLayer 0603R                            2900.000      811.472       270      Resistor                                
+U6         LM22676MRE-5.0/NOPB BottomLayer SOP127P600X168_HS-8N             2688.000      807.000       0        ""                                      
+U19        AQY210S             BottomLayer sop4                             5095.000      3814.428      180      "4-Pin Phototransistor Optocoupler"     
+U20        AQY210S             BottomLayer sop4                             5095.000      1693.286      180      "4-Pin Phototransistor Optocoupler"     
+U21        AQY210S             BottomLayer sop4                             5095.000      2223.571      180      "4-Pin Phototransistor Optocoupler"     
+U23        AQY210S             BottomLayer sop4                             5095.000      4874.999      180      "4-Pin Phototransistor Optocoupler"     
+U29        AQY210S             BottomLayer sop4                             5095.000      1163.000      180      "4-Pin Phototransistor Optocoupler"     
+U31        AQY210S             BottomLayer sop4                             3929.000      4875.000      180      "4-Pin Phototransistor Optocoupler"     
+U33        AQY210S             BottomLayer sop4                             3929.000      4347.000      180      "4-Pin Phototransistor Optocoupler"     
+U35        AQY210S             BottomLayer sop4                             3929.000      3819.000      180      "4-Pin Phototransistor Optocoupler"     
+U37        AQY210S             BottomLayer sop4                             3929.000      3291.000      180      "4-Pin Phototransistor Optocoupler"     
+U38        AQY210S             BottomLayer sop4                             3929.000      2763.000      180      "4-Pin Phototransistor Optocoupler"     
+U39        AQY210S             BottomLayer sop4                             3929.000      2235.000      180      "4-Pin Phototransistor Optocoupler"     
+U40        AQY210S             BottomLayer sop4                             3929.000      1707.000      180      "4-Pin Phototransistor Optocoupler"     
+U41        AQY210S             BottomLayer sop4                             5095.000      2753.857      180      "4-Pin Phototransistor Optocoupler"     
+U42        AQY210S             BottomLayer sop4                             5095.000      3284.142      180      "4-Pin Phototransistor Optocoupler"     
+U46        AQY210S             BottomLayer sop4                             5102.000      4350.000      180      "4-Pin Phototransistor Optocoupler"     
+U47        LHE60-20B24         TopLayer    LHE60-20B24                      2248.851      3584.064      270      ""                                      
+U48        FL2D-30-222         TopLayer    TY-100P                          541.890       3970.000      180      "PCB mounting filters"                  
+U49        URB24_LD-50WR3G     TopLayer    URB24_LD-50WR3G                  2666.000      634.000       0        ""                                      
+T1         TP                  TopLayer    M3                               5629.921      196.850       0        ""                                      
+T2         TP                  TopLayer    M3                               5629.921      5708.661      0        ""                                      
+T3         TP                  TopLayer    M3                               118.110       196.850       0        ""                                      
+T4         TP                  TopLayer    M3                               118.110       5708.661      0        ""                                      
