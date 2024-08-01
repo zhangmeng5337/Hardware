@@ -45,7 +45,7 @@ void module_test()
 		di_proc(i);
 		HAL_Delay(1000);
 	}	
-	for(i=0;i<20;i++)
+	for(i=0;i<15;i++)
 	{
 		do_ctrl_proc(i,1);
 		HAL_Delay(1000);

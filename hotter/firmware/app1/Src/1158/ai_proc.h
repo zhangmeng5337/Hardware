@@ -39,7 +39,7 @@
 #include "ads1258.h"
 #include "hal.h"
 
-#define ADC1_PT_SIZE    4
+#define ADC1_PT_SIZE    0//4
 #define ADC1_PT_INDEX   0
 
 #define ADC2_PT_SIZE    8
