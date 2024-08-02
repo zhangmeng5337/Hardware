@@ -1,0 +1,38 @@
+#include "debug.h"
+uint32_t led_ms; 
+
+void led_ctrl(uint32_t delay_ms)
+{
+    static uint32_t tick_ms = 0;
+
+    if (delay_ms < 0xfffffff0)
+    {
+        if ((HAL_GetTick() - tick_ms) >= delay_ms)
+        {
+            HAL_GPIO_TogglePin(led_GPIO_Port, led_Pin);
+            tick_ms = HAL_GetTick();
+        }
+
+    }
+    else   
+    {
+       if (delay_ms == 0xffffff0)
+        {
+            HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_SET);
+        }
+	   else 
+	   	 HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_RESET);
+
+    }
+       
+}
+void led_ctrl_irq()
+{
+    led_ctrl(led_ms);
+}
+
+void set_led(uint32_t ms)
+{
+		led_ms = ms;
+}
+

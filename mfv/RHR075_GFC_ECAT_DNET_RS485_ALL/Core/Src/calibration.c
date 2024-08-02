@@ -1,0 +1,484 @@
+#include "calibration.h"
+#include "verifier.h"
+#include "relay_driver.h"
+#include "config.h"
+#include "cdg.h"
+#include "gas.h"
+#include "adc.h"
+#include "math.h"
+nozzle_stru nozzle;
+p_struct p_cal;
+
+
+calibration_stru calibration;
+cali_slope_stru cali_slope;
+
+
+nozzle_stru *get_nozzle()
+{
+    return &nozzle;
+}
+
+/******************************************************
+
+*******************************************************/
+unsigned char nozzle_sel()
+{
+    unsigned char result;
+    result = 1;
+    if (calibration.cail_nozzle_num == NOZZLE_H)
+    {
+        get_config()->flow_mode = HIGH_FLOW;
+        result = 0;
+    }
+    else if (calibration.cail_nozzle_num == NOZZLE_L)
+    {
+        result = 0;
+        get_config()->flow_mode = LOW_FLOW;
+
+    }
+    else
+        ;
+    return result;
+}
+unsigned char flow_mode_relay_sel()
+{
+    unsigned char result;
+    if (get_config()->flow_mode == HIGH_FLOW)
+    {
+        result = HIGHT_FLOW_UP_RELAY;
+    }
+    else
+    {
+        result = LOW_FLOW_UP_RELAY;
+    }
+    return result;
+}
+
+/**********************************************************
+input:
+output: 0:state steady;1:shock state
+***********************************************************/
+unsigned char pressORTime_steady_proc()
+{
+    unsigned char result;
+    static uint32_t tick = 0;;
+    result = 1;
+//  if(get_verifier()->pressure_steady>= nozzle.targe_p)
+//  {
+//      result = 0;
+//  }
+//  else
+    {
+        if (get_verifier()->pressure_steady_tTime >= calibration.target_t)
+        {
+            if ((HAL_GetTick() - tick) >= CALI_TIME_OUT)
+                result = 2;
+            else
+                result = 0;
+
+        }
+
+        else
+        {
+            tick = HAL_GetTick();
+            result = 1;
+
+        }
+
+    }
+    return result;
+}
+/***********************************************
+               pre p20
+************************************************/
+unsigned char perror_proc()
+{
+    float tmp;
+    unsigned char result;
+    result = 1;
+    tmp = get_gas()->c3 * calibration.p1;
+
+    tmp = tmp - get_verifier()->pressure_flow_steady;
+    if (tmp >= calibration.perror)
+        result = 0;
+    else
+        result = 1;
+}
+unsigned char p20error_proc()
+{
+    float tmp;
+    unsigned char result;
+    result = 1;
+    tmp = get_cdg_status()->pressure_filter_torr -
+          get_verifier()->pressure_flow_steady;
+
+    // tmp = tmp - calibration.p20;
+    if (tmp >= calibration.perror)
+        result = 0;
+    else
+        result = 1;
+}
+
+void calibration_init()
+{
+    calibration.p1 = 1;
+    calibration.v1 = 0.00094;
+    calibration.v2 = 2.8105;
+    calibration.vm = 22.4141;
+    calibration.R =  8.3138462;
+    calibration.target_t = 15000;
+    calibration.gas_type = 0x01;
+    calibration.update = 0;
+	calibration.fault = 0;
+	calibration.perror=3;
+}
+/*****************************************************************
+
+*****************************************************************/
+void gasP_cal_proc(nozzle_stru *nozz, gas_datbase_stru *gas, float *buf)
+{
+
+    //unsigned char result;
+    float abt, uso, scorr, gerr, p1, tmp, bp;
+    //result = 1;
+    abt = calibration.cali_flow * gas->mw;
+    abt = abt / gas->c1;
+    abt = log10(abt);
+    uso = gas->mw / gas->c1;
+    uso = sqrt(uso);
+    if (nozz->nozzle_num == NOZZLE_H)
+    {
+        scorr = nozz->S1_H * log10(uso);
+        scorr = scorr + nozz->S2_H;
+
+
+        gerr = nozz->Gerr2_H * abt;
+        gerr = gerr + nozz->Gerr1_H;;
+        gerr = gerr * abt;
+        gerr = gerr + nozz->Gerr0_H;
+
+        p1 = calibration.cali_flow / gas->c2;
+        p1 = p1 / gerr;
+        p1 = p1 * scorr;
+#if P1_T_SEL==0
+        get_nozzle()->T1 = get_temperature()->average_T + KT;
+#else
+        if (get_temperature()->average_P1_T >= -40
+                && get_temperature()->average_P1_T <= 100)
+            get_nozzle()->T1 = get_temperature()->average_P1_T + KT;
+        else
+            get_nozzle()->T1 = get_temperature()->average_T + KT;
+
+#endif
+        tmp = nozz->T1 / nozz->Tr_H;
+        tmp = sqrt(tmp);
+        p1 = p1 * tmp;
+        buf[0] = p1;
+
+    }
+
+    else
+    {
+        scorr = nozz->S1_L * log10(uso);
+        scorr = scorr + nozz->S2_L;
+        gerr = nozz->Gerr2_L * abt;
+        gerr = gerr + nozz->Gerr1_L;
+        gerr = gerr * abt;
+        gerr = gerr + nozz->Gerr0_L;
+
+        p1 = calibration.cali_flow / gas->c2;
+        p1 = p1 / gerr;
+        p1 = p1 * scorr;
+        get_nozzle()->T1 = get_temperature()->average_T + KT;
+
+        tmp = nozz->T1 / nozz->Tr_L;
+        tmp = sqrt(tmp);
+        p1 = p1 * tmp;
+        buf[0] = p1;//p1
+
+    }
+
+
+    bp = calibration.bp4 * abt;
+    bp = bp + calibration.bp3;
+    bp = bp * abt;
+    bp = bp + calibration.bp2;
+    bp = bp * abt;
+    bp = bp + calibration.bp1;
+    bp = bp * abt;
+    bp = bp + calibration.bp0;
+    buf[2] = calibration.cali_flow / gas->c2;
+    buf[2] =  buf[2] / bp;
+    buf[2] =  buf[2] * scorr;
+    buf[2] =  buf[2] * tmp; //p20_pre
+    buf[1] =  buf[0] * 0.45; //p21 target
+
+    calibration.p1_max_H = get_gas()->c + KT;
+    calibration.p1_max_H =   get_gas()->b / calibration.p1_max_H;
+    calibration.p1_max_H =  get_gas()->a - calibration.p1_max_H ;
+    calibration.p1_max_H = pow(10, calibration.p1_max_H);
+    calibration.p1_max_H = calibration.p1_max_H * 750;
+    calibration.p1_max_H = calibration.p1_max_H - get_gas()->d;
+    calibration.p1_max_L = calibration.p1_max_H;
+}
+unsigned char  press_cal_proc(unsigned char nozzle_num)
+{
+    float buf[6];//p1  p21 tar  p20 pre
+    nozzle.nozzle_num = NOZZLE_H;
+    gasP_cal_proc(&nozzle, get_gas(), buf);
+    nozzle.nozzle_num = NOZZLE_L;
+    gasP_cal_proc(&nozzle, get_gas(), buf + 3);
+
+    if (buf[3] >= buf[0]) //
+    {
+        if (buf[3] >= calibration.p1_max_L)
+        {
+            if (buf[0] >= calibration.p1_max_H)
+            {
+                calibration.state = 4;
+            }
+        }
+        calibration.targe_p_H = buf[1];//target
+        calibration.p20_pre_H = buf[2];//p20 pre
+        calibration.targe_p_L = buf[4];//target
+        calibration.p20_pre_L = buf[5];//p20 pre
+    }
+    else
+    {
+        calibration.state = 4;
+    }
+    float p20_error, p20_max;
+
+    if (nozzle_num == NOZZLE_L)
+        p20_error = calibration.p20_pre_L + calibration.perror;
+    else
+        p20_error = calibration.p20_pre_H + calibration.perror;
+    p20_max = FULL_SCALE;//p20<=0.85full scale
+    if (nozzle_num == NOZZLE_L)
+    {
+        if (p20_error <= p20_max) //底压没问题
+        {
+            p20_error = calibration.p20_pre_L + calibration.perror;
+            p20_error = p20_error * 2;
+//            p20_error = calibration.p20_pre_L + calibration.perror;
+//            p20_error = p20_error * 2;
+            if (p20_error <= buf[3]) //
+            {
+
+                if (calibration.targe_p_L >= FULL_SCALE)
+                {
+                    calibration.targe_p = FULL_SCALE * 0.95;
+                }
+                else
+                {
+                    calibration.targe_p = buf[4];
+                }
+                calibration.p1 = buf[3];
+                calibration.cail_nozzle_num = NOZZLE_L;
+
+            }
+            else
+            {
+                calibration.state = 4;
+            }
+        }
+        else
+        {
+            calibration.state = 4;
+
+        }
+
+    }
+    else if (nozzle_num == NOZZLE_H)
+    {
+        if (p20_error <= p20_max) //底压没问题
+        {
+            p20_error = calibration.p20_pre_H + calibration.perror;
+            p20_error = p20_error * 2;
+
+            if (p20_error <= buf[0]) //喷嘴出口压力与入口压力比满足
+            {
+
+                if (calibration.targe_p_H >= FULL_SCALE)
+                {
+                    calibration.targe_p = FULL_SCALE * 0.95;
+
+                }
+                else
+                {
+                    if (nozzle_num == NOZZLE_H)
+                        calibration.targe_p = buf[1];
+                    else
+                        calibration.targe_p = buf[4];
+                }
+                calibration.p1 = buf[0];
+                calibration.cail_nozzle_num = NOZZLE_H;
+            }
+        }
+        else
+        {
+            calibration.state = 4;
+
+        }
+    }
+    else
+    {
+        if (p20_error <= p20_max) //底压没问题
+        {
+            p20_error = calibration.p20_pre_H + calibration.perror;
+            p20_error = p20_error * 2;
+
+            if (p20_error <= buf[0]) //喷嘴出口压力与入口压力比满足
+            {
+
+                if (calibration.targe_p_H >= FULL_SCALE)
+                {
+                    calibration.targe_p = FULL_SCALE * 0.95;
+
+                }
+                else
+                {
+                    if (nozzle_num == NOZZLE_H||nozzle_num == NOZZLE_SEL)
+                        calibration.targe_p = buf[1];
+                    else
+                        calibration.targe_p = buf[4];
+                }
+                calibration.p1 = buf[0];
+                calibration.cail_nozzle_num = NOZZLE_H;
+            }
+            else
+            {
+                p20_error = calibration.p20_pre_L + calibration.perror;
+                p20_error = p20_error * 2;
+                if (p20_error <= buf[3]) //
+                {
+
+                    if (calibration.targe_p_L >= FULL_SCALE)
+                    {
+                        calibration.targe_p = FULL_SCALE * 0.95;
+                    }
+                    else
+                    {
+                        calibration.targe_p = buf[4];
+                    }
+                    calibration.p1 = buf[3];
+                    calibration.cail_nozzle_num = NOZZLE_L;
+
+                }
+                else
+                {
+                    calibration.state = 4;
+                }
+            }
+
+        }
+        else
+        {
+            calibration.state = 4;
+
+        }
+
+    }
+}
+void flow_proc()
+{
+    float tmp;
+    calibration_stru calibration_cal;
+    calibration.p20 = get_verifier()->pressure_flow_steady;
+    calibration_cal.p20 = get_verifier()->pressure_flow_steady * TORR_TO_PA;
+    //verifer_dat.pressure_flow_steady;
+
+    calibration.p21 = get_verifier()->pressure_steady;
+    calibration_cal.p21 = get_verifier()->pressure_steady * TORR_TO_PA;
+    calibration_cal.p1 = calibration.p1 * TORR_TO_PA;
+    //n0 cal
+    calibration.T = get_verifier()->flow_start_temp_averT + KT;
+    calibration.n0 = calibration_cal.p1 * calibration.v1;
+    calibration.n0 = calibration.n0 + calibration_cal.p20 * calibration.v2;
+    calibration.n0 = calibration.n0 / (calibration.R * calibration.T);
+
+    //n1 cal
+    calibration.T = get_verifier()->pressure_steady_averT  + KT;
+    calibration.n1 = calibration_cal.p21 * (calibration.v1 + calibration.v2);
+    calibration.n1 = calibration.n1 / (calibration.R * calibration.T);
+//    calibration.p1 = calibration_cal.p1*TORR_TO_PA;
+    tmp = (calibration_cal.p21 - calibration_cal.p1) * calibration.v1;
+    calibration.detalN = tmp;
+    tmp = (calibration_cal.p21 - calibration_cal.p20) * calibration.v2;
+    calibration.detalN = calibration.detalN + tmp;
+    calibration.detalN = calibration.detalN / (calibration.R * calibration.T);
+
+    tmp = calibration.detalN * calibration.vm;
+    tmp = tmp * 60000;
+    calibration.detalt = get_verifier()->pressure_steady_tTime / 1000.0;
+    calibration.F = tmp / (calibration.detalt);
+    calibration.F = calibration.F / 1000000;
+
+    calibration.update = 1;
+    if (DEBUG_LOG2_ENABLE || get_config()->debug_log)
+    {
+        printf("%.3f		%.3f		%.3f		%.3f		%.1f		%.3f	%.3f	%u\r\n",
+               get_calib()->cali_flow,
+               get_verifier()->pressure_steady_tTime / 1000.0, calibration.p20,
+               calibration.p21, 
+               get_verifier()->pressure_steady_averT,
+               get_calib()->F, calibration.p1,get_calib()->cail_nozzle_num);
+        //printf("real_flow=%.3f\r\n", get_calib()->F);
+    }
+//    else
+//        printf("real_flow=%.3f\r\n", get_calib()->F);
+    //get_verifier()->pressure_steady_tTime = 0;
+
+
+
+}
+calibration_stru *get_calib(void)
+{
+    return &calibration;
+}
+cali_slope_stru *get_calib_slop(void)
+{
+    return &cali_slope;
+}
+
+void cali_proc()
+{
+    static uint32_t tick = 0;
+
+    if (get_config()->update != 0)//debug uart cmd transmmit
+    {
+        if (calibration.state == 3)//cal p1 p20
+        {
+            calibration.state = 0;
+			calibration.update = 0;
+            get_calib()->F = 0;
+			get_verifier()->sw_flag = 0;
+            press_cal_proc(NOZZLE_SEL);
+            if (nozzle_sel() == 0)
+                get_verifier()->state = LINE_PURGED_START;
+        }
+        if (get_config()->update == 1)
+        {
+#if DEBUG_ENABLE
+            if (get_config()->cmd == NORMAL_OPERATION)
+            {
+                get_verifier()->state = NORMAL_OPERATION;
+            }
+
+            else if (get_config()->cmd == LINE_PURGED_START) //stop
+            {
+                get_verifier()->state = LINE_PURGED_START;
+            }
+#endif
+
+            get_config()->update = 0;
+        }
+    }
+
+
+
+
+
+}
+
