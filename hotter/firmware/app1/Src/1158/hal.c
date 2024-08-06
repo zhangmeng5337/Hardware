@@ -714,7 +714,7 @@ void ads1158_init()
     }
    // printf("ADS11582 id is %d\r\n",sys_ID);
     // ads_config();
-    ads1158_adc1_data.chip_No = 1;
+    ads1158_adc1_data.chip_No = 2;
 }
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {

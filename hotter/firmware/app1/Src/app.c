@@ -16,16 +16,29 @@
 
 
 stru_di_stru di_status;
+void do_off()
+{
+   unsigned char i;
+
+
+	for(i=0;i<15;i++)
+	{
+		do_ctrl_proc(i,1);
+	}
+
+
+}
 
 void hardware_init()
 {
-    ads1158_init();
+  do_off();
+  ads1158_init();
 	ads1158_config(1);
 	ads1158_config(2);
 	config_init();
 	uart_init();
 	CAT1_Init();
-    mqtt_init();
+  mqtt_init();
 	pid_init();
 
 
@@ -36,19 +49,24 @@ void system_reconfig()
 	HAL_NVIC_SystemReset();
 
 }
+
+
 void module_test()
 {
    unsigned char i;
 	di_proc(0);
-	for(i=0;i<8;i++)
-	{
-		di_proc(i);
-		HAL_Delay(1000);
-	}	
+
 	for(i=0;i<15;i++)
 	{
 		do_ctrl_proc(i,1);
 		HAL_Delay(1000);
+		//do_ctrl_proc(i,0);
+		//HAL_Delay(1000);
+	}
+	for(i=0;i<15;i++)
+	{
+		//do_ctrl_proc(i,1);
+		//HAL_Delay(1000);
 		do_ctrl_proc(i,0);
 		HAL_Delay(1000);
 	}
@@ -71,5 +89,5 @@ void app_proc()
   // control_proc();
    //config_save();
    //do_ctrl_proc(0,1);//do control
-   
+   //module_test();
 }

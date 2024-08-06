@@ -338,6 +338,7 @@ void startConversions(void)
  */
 void readData(unsigned char adc_No, readMode mode)
 {
+	   uint32_t tmp;
     uint8_t DataTx[5] = { 0 };    // Initialize all array elements to 0
     uint8_t DataRx[5] = { 0 };    // Relies on C99 [$6.7.8/10], [$6.7.8/21]
     uint8_t byteLength;
@@ -374,7 +375,7 @@ void readData(unsigned char adc_No, readMode mode)
         // data[1] = DataRx[dataPosition + 1];
         // data[2] = DataRx[dataPosition + 2];
     }
-    if (adc_No == 1) //ads1158 1采集
+    if (adc_No == 1) //ads1158 1采集   ai
     {
         data_ADC.status_byte = DataRx[dataPosition - 1] & 0x80; //判断数据是否更新
         if (data_ADC.status_byte)
@@ -387,9 +388,16 @@ void readData(unsigned char adc_No, readMode mode)
                     channel = data_ADC.ch_id - 0x08;
                 else
                     channel = data_ADC.ch_id - 0x09; //通道25没有
-                data_ADC.data_2byte[channel] = DataRx[dataPosition];
+																		
+										tmp = DataRx[dataPosition];
+										tmp = tmp<<8;
+                    data_ADC.data_2byte[channel] = tmp;
+										tmp = DataRx[dataPosition+1];
+										tmp = tmp |data_ADC.data_2byte[channel];
+										data_ADC.data_2byte[channel] =  tmp;
+               /* data_ADC.data_2byte[channel] = DataRx[dataPosition];
                 data_ADC.data_2byte[channel] = data_ADC.data_2byte[channel] << 8;
-                data_ADC.data_2byte[channel] = data_ADC.data_2byte[channel] | DataRx[dataPosition + 1];
+                data_ADC.data_2byte[channel] = data_ADC.data_2byte[channel] | DataRx[dataPosition + 1];*/
                // memcpy(data_ADC.data_inADC + 2 * channel, &DataRx[dataPosition], byteLength - 1);
 
             }
@@ -411,9 +419,15 @@ void readData(unsigned char adc_No, readMode mode)
                         channel = data_ADC.ch_id - 0x08;
                     else
                         channel = data_ADC.ch_id - 0x09;
-                    data_ADC.data2_2byte[channel] = DataRx[dataPosition];
-                    data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel] << 8;
-                    data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel] | DataRx[dataPosition +1];
+										//uint32_t tmp;
+										tmp = DataRx[dataPosition];
+										tmp = tmp<<8;
+                    data_ADC.data2_2byte[channel] = tmp;
+										tmp = DataRx[dataPosition+1];
+										tmp = tmp |data_ADC.data2_2byte[channel];
+										data_ADC.data2_2byte[channel] =  tmp;
+                    //data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel] << 8;
+                   // data_ADC.data2_2byte[channel] = data_ADC.data_2byte[channel] | DataRx[dataPosition +1];
                    // memcpy(data_ADC.data2_inADC + 2 * channel, &DataRx[dataPosition], byteLength - 1);
                     if (channel == (CHANNEL_SIZE - 1))
                         data_ADC.update = 1;//数据采集完成

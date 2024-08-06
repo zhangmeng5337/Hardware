@@ -35,7 +35,7 @@
 #define HC595_STCP_High() 		 HAL_GPIO_WritePin(IN_RCK_GPIO_Port,IN_RCK_Pin,GPIO_PIN_SET)
 #define HC595_Data_Low()   	   HAL_GPIO_WritePin(IN_SI_GPIO_Port,IN_SI_Pin,GPIO_PIN_RESET)
 #define HC595_Data_High()      HAL_GPIO_WritePin(IN_SI_GPIO_Port,IN_SI_Pin,GPIO_PIN_SET)
-#define DO_SIZE  24
+#define DO_SIZE  15
 
 void HC595_SendByte(uint8_t byte);
 void XL74HC595_MultiWrite(uint8_t *data, uint8_t Length);//»ìºÏÐ´Êý¾Ý;

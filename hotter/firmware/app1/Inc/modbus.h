@@ -2,8 +2,8 @@
 #define MODBUS_H_
 
 #define DEV_SIZE    10
-#define MODBUS_RTU_COUNT            4
-#define MODBUS_RETRY_COUNT          4
+//#define MODBUS_RTU_COUNT            4
+//#define MODBUS_RETRY_COUNT          4
 
 #define CONTROLLER_REG				0x0000
 #define TEMPERATURE_REG				0x0007
@@ -22,6 +22,9 @@
 
 typedef struct 
 {
+    unsigned char ctrl_mode;
+	unsigned char ctrl_func[10];
+	unsigned char error_count[DEV_SIZE];
 	unsigned char address;
 	unsigned char func;
 	unsigned int  reg;

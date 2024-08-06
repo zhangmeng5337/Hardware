@@ -116,8 +116,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //while(1)
 	//	;
+	 module_test();
   hardware_init();
-	MX_IWDG_Init();
+ 
+	//MX_IWDG_Init();
 //	MX_IWDG_Init();
 	//crc16(buf, 2);
 //  CAT1_Init();
@@ -130,7 +132,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    HAL_IWDG_Refresh(&hiwdg);	
+    //HAL_IWDG_Refresh(&hiwdg);	
     /* USER CODE BEGIN 3 */
 		//HAL_Delay(1000);
 		//HAL_GPIO_TogglePin(status_GPIO_Port,status_Pin );

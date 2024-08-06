@@ -148,7 +148,7 @@ void do_NO_set(unsigned int do_NO_sel,unsigned char bit_set)
 void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set)
 {
 	do_NO_set(do_NO_sel,bit_set);
-	XL74HC595_MultiWrite(do_usr.do_No_out, 3);
+	XL74HC595_MultiWrite(do_usr.do_No_out, 2);
 }
 
  

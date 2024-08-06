@@ -1,4 +1,4 @@
-/* --COPYRIGHT--,BSD
+﻿/* --COPYRIGHT--,BSD
  * Copyright (c) 2018, Texas Instruments Incorporated
  * All rights reserved.
  *
@@ -129,7 +129,7 @@ unsigned char adc_read_data(void)
                 data_ai.data_ai[i] = data_ai.data_ai[i] * data_ai.ref1;
             }
             get_ADC_data()->update = 0;
-            return 0;
+            //return 0;
         }
         else
         {
@@ -167,7 +167,7 @@ void pressure_temp_proc()
     float volt_tmp, volt_tmp2, tmp1, tmp2, tmp3, tmp4;
     unsigned char i;
     /**********************4-20mA convention**********************/
-    for (i = ADC1_PR_INDEX; i < (ADC1_PR_INDEX + 8); i++) //u2/(2u1-u2)
+    for (i = ADC1_PR_INDEX; i < 16; i++) //u2/(2u1-u2)
     {
         data_ai.press[i - ADC1_PR_INDEX]  = data_ai.data_ai[i] * PRESS_RATIO +
                                             PRESS_B;//kpa

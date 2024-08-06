@@ -1,4 +1,4 @@
-#ifndef __STMFLASH_H__
+﻿#ifndef __STMFLASH_H__
 #define __STMFLASH_H__
 
 #include "main.h"

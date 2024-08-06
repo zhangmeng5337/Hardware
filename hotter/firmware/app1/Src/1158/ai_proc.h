@@ -42,10 +42,10 @@
 #define ADC1_PT_SIZE    0//4
 #define ADC1_PT_INDEX   0
 
-#define ADC2_PT_SIZE    8
+#define ADC2_PT_SIZE    6
 #define ADC2_PT_INDEX   0
 
-#define ADC1_PR_INDEX   8
+#define ADC1_PR_INDEX   11
 #define PR_RATIO		0.08
 
 #define MAX_TEMP        100

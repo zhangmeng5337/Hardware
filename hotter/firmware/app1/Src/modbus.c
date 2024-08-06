@@ -17,6 +17,7 @@ void modbus_init()
 {
     modbus_recv.address = 0;
     modbus_tx.address = 0;
+    memset(modbus_tx.error_count, 0, DEV_SIZE);
 
 }
 modbus_stru *get_recv_machine()
@@ -130,11 +131,12 @@ void rs485_recv()
 
                 }
 
-			modbus_recv.update = 1;analy_modbus_recv();
+                modbus_recv.update = 1;
+                analy_modbus_recv();
 
             }
-		
-		
+
+
 
 
 
@@ -377,52 +379,61 @@ void modbus_tx_proc(unsigned char mode)
 
 
 //tx proc ctrl
-        if (modbus_tx.address > 0 && (modbus_recv.payload[0] != modbus_tx.address
-                                      && modbus_recv.payload[0] != 0))//返回数据不对
+
+        if (modbus_tx.ctrl_mode == 0) //global ctrl
         {
-
-
-            if (modbus_tx.address <= MODBUS_RTU_COUNT)
+            if (modbus_tx.address <= DEV_SIZE)
             {
-                if (modbus_tx.address < MODBUS_RTU_COUNT)
+                if (modbus_tx.retry_count > 0)
                 {
+                    modbus_tx.retry_count--;
                     modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, len, 1, 3);
-                    if (modbus_tx.retry_count == 0)
+                    modbus_recv.error_count[modbus_tx.address] =
+                        modbus_recv.error_count[modbus_tx.address] + 1;
+
+
+                    if (modbus_recv.error_count[modbus_tx.address] >= 5)
                     {
-                        modbus_tx.retry_count = MODBUS_RETRY_COUNT;
                         unsigned int i;
-                        i = (modbus_tx.address);
-                        i = i << 8;
+                        i = 1;
+                        i = i << modbus_tx.address;
                         modbus_recv.fault = modbus_recv.fault | i;
-                        modbus_tx.address = modbus_tx.address + 1;
                     }
+                    modbus_tx.address = modbus_tx.address + 1;
                 }
+                else
+                {
+                    modbus_tx.update = 0;
+                    modbus_tx.address = 0;
+                }
+
             }
+
         }
-        else //data ack is ok tx next addr
+        else //node ctrl
         {
-            if (modbus_tx.address <= MODBUS_RTU_COUNT)
+            if (modbus_tx.retry_count > 0)
             {
-                modbus_tx.retry_count = MODBUS_RETRY_COUNT;
-                //modbus_tx.address = 1;
-                modbus_tx.address = modbus_tx.address + 1;
-                modbus_tx.retry_count = MODBUS_RETRY_COUNT;
-                if (modbus_tx.address < MODBUS_RTU_COUNT)
-                    modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, len, 1, 3);
+                modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, len, 1, 3);
+                modbus_recv.error_count[modbus_tx.address] =
+                    modbus_recv.error_count[modbus_tx.address] + 1;
+                modbus_tx.retry_count--;
+                if (modbus_recv.error_count[modbus_tx.address] >= 5)
+                {
+                    unsigned int i;
+                    i = 1;
+                    i = i << modbus_tx.address;
+                    modbus_recv.fault = modbus_recv.fault | i;
+                }
+
+            }
+            else
+            {
+                modbus_tx.update = 0;
 
             }
 
         }
-        if (modbus_tx.address > MODBUS_RTU_COUNT)
-        {
-            modbus_tx.retry_count = MODBUS_RETRY_COUNT;
-            modbus_tx.address = 0;
-            modbus_tx.update = 0;
-            reset_registerTick(MODBUS_POLL_TICK_NO);
-
-        }
-
-
         if (mode == 2)
             reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
         reset_registerTick(MODBUS_TX_TICK_NO);
