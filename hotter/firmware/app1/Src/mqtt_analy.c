@@ -65,7 +65,7 @@ void anlysis_mqtt_recv()
     get_config()->update_setting = 0;
 
 
-
+//
 
     dev_id = find_json_string("\"Updat Frimware\": ", ",", 0);
     if (dev_id != NULL)

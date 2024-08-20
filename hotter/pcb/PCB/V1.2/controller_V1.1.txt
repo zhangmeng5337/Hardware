@@ -1,0 +1,234 @@
+Board Information Report
+Filename     : D:\GH0050\prj\pcb\Others\V1.2\controller_V1.1.PcbDoc
+Date         : 2024/8/20
+Time         : 8:13:38
+Time Elapsed : 00:00:02
+
+General
+    Board Size, 243.9924mmx150mm
+    Components on board, 439
+count : 2
+
+Routing Information
+    Routing completion, 99.90%
+    Connections, 1044
+    Connections routed, 1043
+    Connections remaining, 1
+count : 4
+
+Layer, Arcs, Pads, Vias, Tracks, Texts, Fills, Regions, ComponentBodies
+    Top Layer, 0, 781, 0, 1647, 0, 7, 20, 0
+    Bottom Layer, 0, 531, 0, 1412, 0, 1, 26, 0
+    Mechanical 1, 4, 0, 0, 4, 0, 0, 0, 0
+    Mechanical 13, 6, 0, 0, 212, 0, 11, 0, 22
+    Mechanical 15, 0, 0, 0, 173, 0, 0, 0, 0
+    Top Overlay, 46, 0, 0, 1233, 431, 0, 50, 0
+    Bottom Overlay, 22, 0, 0, 1330, 455, 0, 0, 0
+    Top Paste, 0, 0, 0, 0, 0, 0, 0, 0
+    Bottom Paste, 0, 0, 0, 0, 0, 0, 0, 0
+    Top Solder, 0, 0, 0, 0, 0, 0, 0, 0
+    Bottom Solder, 0, 0, 0, 0, 0, 0, 0, 0
+    Drill Guide, 0, 0, 0, 0, 0, 0, 0, 0
+    Keep-Out Layer, 2, 0, 0, 4, 0, 0, 0, 0
+    Drill Drawing, 0, 0, 0, 0, 0, 0, 0, 0
+    Multi-Layer, 0, 184, 8506, 0, 0, 0, 1, 0
+count : 15
+
+Drill Pairs, Vias
+    Top Layer - Bottom Layer, 8506
+count : 1
+
+Layer, Sq.In., Sq.MM., Percent of layer
+    Top Layer, 38.384, 24764.068, 68%
+    Bottom Layer, 38.771, 25013.256, 68%
+count : 2
+
+Non-Plated Hole Size, Pads, Vias
+    2.8mm, 2, 0
+    3.2mm, 2, 0
+count : 2
+
+Plated Hole Size, Pads, Vias
+    0mm, 1312, 0
+    0.3mm, 0, 50
+    0.3048mm, 0, 8384
+    0.508mm, 0, 16
+    0.635mm, 0, 49
+    0.762mm, 0, 1
+    0.8128mm, 4, 0
+    0.9mm, 83, 0
+    1mm, 0, 2
+    1.016mm, 0, 4
+    1.2mm, 1, 0
+    1.5mm, 8, 0
+    1.6mm, 2, 0
+    1.7mm, 82, 0
+count : 14
+
+Non-Plated Slot Size / Length, Pads
+count : 0
+
+Plated Slot Size / Length, Pads
+count : 0
+
+Non-Plated Square Hole Size, Pads
+count : 0
+
+Plated Square Hole Size, Pads
+count : 0
+
+Top Layer Annular Ring Size, Count
+    0.2032mm, 8384
+    0.254mm, 16
+    0.3mm, 50
+    0.381mm, 50
+    0.4572mm, 4
+    0.5mm, 2
+    0.508mm, 4
+    0.6mm, 84
+    0.6mm, 82
+    0.7mm, 4
+    0.9mm, 2
+    1mm, 4
+    1.8mm, 2
+    2.2mm, 2
+count : 14
+
+Mid Layer Annular Ring Size, Count
+    0.2032mm, 8384
+    0.254mm, 16
+    0.3mm, 50
+    0.381mm, 50
+    0.4572mm, 4
+    0.5mm, 2
+    0.508mm, 4
+    0.6mm, 84
+    0.6mm, 82
+    0.7mm, 4
+    0.9mm, 2
+    1mm, 4
+    1.8mm, 2
+    2.2mm, 2
+count : 14
+
+Bottom Layer Annular Ring Size, Count
+    0.2032mm, 8384
+    0.254mm, 16
+    0.3mm, 50
+    0.381mm, 50
+    0.4572mm, 4
+    0.5mm, 2
+    0.508mm, 4
+    0.6mm, 84
+    0.6mm, 82
+    0.7mm, 4
+    0.9mm, 2
+    1mm, 4
+    1.8mm, 2
+    2.2mm, 2
+count : 14
+
+Pad Solder Mask, Count
+    0.07mm, 96
+    0.1016mm, 1400
+count : 2
+
+Pad Paste Mask, Count
+    0mm, 1496
+count : 1
+
+Pad Pwr/Gnd Expansion, Count
+    0.508mm, 1496
+count : 1
+
+Pad Relief Conductor Width, Count
+    0.254mm, 1496
+count : 1
+
+Pad Relief Air Gap, Count
+    0.254mm, 1496
+count : 1
+
+Pad Relief Entries, Count
+    4, 1496
+count : 1
+
+Via Solder Mask, Count
+    0.1016mm, 8506
+count : 1
+
+Via Pwr/Gnd Expansion, Count
+    0.508mm, 8506
+count : 1
+
+Track Width, Count
+    0.05mm, 4
+    0.1mm, 298
+    0.1252mm, 6
+    0.127mm, 1829
+    0.1524mm, 12
+    0.1778mm, 60
+    0.18mm, 20
+    0.2mm, 249
+    0.2032mm, 119
+    0.254mm, 2673
+    0.381mm, 33
+    0.508mm, 328
+    0.635mm, 15
+    0.762mm, 26
+    1.016mm, 228
+    1.143mm, 40
+    1.27mm, 11
+    2.032mm, 64
+count : 18
+
+Arc Line Width, Count
+    0.1mm, 6
+    0.127mm, 12
+    0.1524mm, 6
+    0.18mm, 4
+    0.2mm, 19
+    0.25mm, 22
+    0.254mm, 9
+    0.6mm, 2
+count : 8
+
+Arc Radius, Count
+    0.125mm, 22
+    0.1481mm, 1
+    0.1625mm, 2
+    0.3mm, 2
+    0.3048mm, 6
+    0.3175mm, 5
+    0.45mm, 4
+    0.4745mm, 16
+    0.5mm, 6
+    2mm, 2
+    4.5223mm, 10
+    5mm, 4
+count : 12
+
+Arc Degrees, Count
+    90, 2
+    149, 5
+    151, 5
+    178, 16
+    180, 13
+    360, 39
+count : 6
+
+Text Height, Count
+    1.016mm, 886
+count : 1
+
+Text Width, Count
+    0.127mm, 886
+count : 1
+
+Net Track Width, Count
+    0.254mm, 370
+count : 1
+
+Net Via Size, Count
+    0.508mm, 370
+count : 1
