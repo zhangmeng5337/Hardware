@@ -1,7 +1,7 @@
 #ifndef MODBUS_H_
 #define MODBUS_H_
 
-#define DEV_SIZE    10
+#include "config.h"
 //#define MODBUS_RTU_COUNT            4
 //#define MODBUS_RETRY_COUNT          4
 
@@ -19,6 +19,8 @@
 
 #define DEV_ADDR  0xfe
 
+#define RETRY_COUNT		5
+#define FAULT_COUNT		4
 
 typedef struct 
 {
@@ -44,6 +46,7 @@ void modbus_proc(void);
 void modbus_pack(unsigned char mode, unsigned char *pb);
 modbus_stru *get_recv_machine(void);
 
+void modbus_init(void);
 
 #endif
 

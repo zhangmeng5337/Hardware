@@ -58,6 +58,20 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define DI_IN14_Pin GPIO_PIN_13
+#define DI_IN14_GPIO_Port GPIOC
+#define DI_IN13_Pin GPIO_PIN_14
+#define DI_IN13_GPIO_Port GPIOC
+#define DI_IN12_Pin GPIO_PIN_15
+#define DI_IN12_GPIO_Port GPIOC
+#define DI_IN8_Pin GPIO_PIN_0
+#define DI_IN8_GPIO_Port GPIOC
+#define DI_IN9_Pin GPIO_PIN_1
+#define DI_IN9_GPIO_Port GPIOC
+#define DI_IN10_Pin GPIO_PIN_2
+#define DI_IN10_GPIO_Port GPIOC
+#define DI_IN11_Pin GPIO_PIN_3
+#define DI_IN11_GPIO_Port GPIOC
 #define IN_SI_Pin GPIO_PIN_2
 #define IN_SI_GPIO_Port GPIOA
 #define IN_RCK_Pin GPIO_PIN_3
@@ -102,14 +116,10 @@ void Error_Handler(void);
 #define lte_rst_GPIO_Port GPIOB
 #define Mb_rxen1_Pin GPIO_PIN_4
 #define Mb_rxen1_GPIO_Port GPIOB
-#define SPEAKER_Pin GPIO_PIN_6
-#define SPEAKER_GPIO_Port GPIOB
+#define DI_IN15_Pin GPIO_PIN_6
+#define DI_IN15_GPIO_Port GPIOB
 #define lte_3_8V_EN_Pin GPIO_PIN_7
 #define lte_3_8V_EN_GPIO_Port GPIOB
-#define DI_IN8_Pin GPIO_PIN_8
-#define DI_IN8_GPIO_Port GPIOB
-#define DI_IN9_Pin GPIO_PIN_9
-#define DI_IN9_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

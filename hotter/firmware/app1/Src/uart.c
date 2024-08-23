@@ -23,6 +23,7 @@ void uart_init()
     HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
         HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
+		
     __HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
     HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);
 

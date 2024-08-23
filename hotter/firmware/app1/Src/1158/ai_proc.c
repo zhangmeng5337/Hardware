@@ -167,7 +167,7 @@ void pressure_temp_proc()
     float volt_tmp, volt_tmp2, tmp1, tmp2, tmp3, tmp4;
     unsigned char i;
     /**********************4-20mA convention**********************/
-    for (i = ADC1_PR_INDEX; i < 16; i++) //u2/(2u1-u2)
+    for (i = ADC1_PR_INDEX; i < (ADC1_PR_INDEX+ADC1_PR_SIZE); i++) //u2/(2u1-u2)
     {
         data_ai.press[i - ADC1_PR_INDEX]  = data_ai.data_ai[i] * PRESS_RATIO +
                                             PRESS_B;//kpa
@@ -244,7 +244,7 @@ void ai_health_dec()
     unsigned char i;
     uint32_t failure_flag;
 
-    for (i = 0; i < 12; i++)
+    for (i = 0; i < (ADC1_PT_SIZE+ADC2_PT_SIZE); i++)
     {
         failure_flag = 1;
         if (data_ai.temp[i] >= MAX_TEMP || data_ai.temp[i] <= MIN_TEMP)
@@ -284,7 +284,7 @@ void ai_health_dec()
 
         }
     }
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < ADC1_PR_SIZE; i++)
     {
         failure_flag = 1;
         if (data_ai.press[i] >= MAX_PRESS || data_ai.press[i] < MIN_PRESS)

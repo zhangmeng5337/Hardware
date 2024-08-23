@@ -16,18 +16,7 @@
 
 
 stru_di_stru di_status;
-void do_off()
-{
-   unsigned char i;
 
-
-	for(i=0;i<15;i++)
-	{
-		do_ctrl_proc(i,1);
-	}
-
-
-}
 
 void hardware_init()
 {
@@ -38,8 +27,9 @@ void hardware_init()
 	config_init();
 	uart_init();
 	CAT1_Init();
-  mqtt_init();
+    mqtt_init();
 	pid_init();
+	 modbus_init();
 
 
 	//ads_init();
@@ -59,7 +49,7 @@ void module_test()
 	for(i=0;i<15;i++)
 	{
 		do_ctrl_proc(i,1);
-		HAL_Delay(1000);
+		HAL_Delay(300);
 		//do_ctrl_proc(i,0);
 		//HAL_Delay(1000);
 	}
@@ -68,7 +58,7 @@ void module_test()
 		//do_ctrl_proc(i,1);
 		//HAL_Delay(1000);
 		do_ctrl_proc(i,0);
-		HAL_Delay(1000);
+		HAL_Delay(300);
 	}
 
 

@@ -17,6 +17,7 @@ teATStatus    mqtt_at_status;
 tsLpuart1type *mqtt_recv;
 
 //unsigned char mqtt_send_buf[128];
+ 
 
 mqtt_payload_stru mqtt_payload_u;
 mqtt_payload_stru *get_mqtt_payload()
@@ -27,9 +28,9 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
 {
 
 
-    char recv_buf[128];
+   char recv_buf[512];
     static unsigned char valid_dat;
-	memset(recv_buf,0,128);
+	memset(recv_buf,0,512);
     if (end_flag == 0)
     {
         if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id,
@@ -39,8 +40,13 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
         }
 
     }
+	else
+	{
+
+	}
     if (valid_dat == 1)
     {
+        memset(recv_buf,0,128);
         if (end_flag == 1)
             valid_dat = 0;
         if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, pb_left, pb_right,
@@ -48,6 +54,7 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
             return recv_buf;
         else
             return NULL;
+		
     }
     else
         return NULL;
@@ -78,7 +85,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"Reboot Dev\": ", ",", 1);
+    dev_id = find_json_string("\"Reboot Dev\": ", ",", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -88,19 +95,19 @@ void anlysis_mqtt_recv()
         get_config()->reboot = tmp_f;
     }
 
-    dev_id = find_json_string("\"heatPump1\":", "}", 1);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-		if(tmp_f == 1)
-        	get_config()->machine = get_config()->machine|0x0001;
+//    dev_id = find_json_string("\"heatPump1\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//		if(tmp_f == 1)
+//        	get_config()->machine = get_config()->machine|0x0001;
+//
+//    }
 
-    }
-
-    dev_id = find_json_string("\"heatPump1\":", "}", 1);
+    dev_id = find_json_string("\"heatPump1\":", "}", 0);
     if (dev_id != NULL)
     {
        // memset(dev_id, 0, 128);
@@ -112,7 +119,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"heatPump2\":", "}", 1);
+    dev_id = find_json_string("\"heatPump2\":", "}", 0);
     if (dev_id != NULL)
     {
       //  memset(dev_id, 0, 128);
@@ -124,7 +131,7 @@ void anlysis_mqtt_recv()
 
     }
 	
-    dev_id = find_json_string("\"heatPump3\":", "}", 1);
+    dev_id = find_json_string("\"heatPump3\":", "}", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -136,7 +143,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"heatPump4\":", "}", 1);
+    dev_id = find_json_string("\"heatPump4\":", "}", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -148,7 +155,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"heatPump5\":", "}", 1);
+    dev_id = find_json_string("\"heatPump5\":", "}", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -160,7 +167,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"heatPump6\":", "}", 1);
+    dev_id = find_json_string("\"heatPump6\":", "}", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -174,7 +181,7 @@ void anlysis_mqtt_recv()
 
 	
 
-    dev_id = find_json_string("\"Set Out Temp\": ", ",", 1);
+    dev_id = find_json_string("\"Set Out Temp\": ", ",", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -186,22 +193,22 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"Set Room Temp\": ", ",", 1);
+    dev_id = find_json_string("\"Set Room Temp\": ", ",", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-        get_config()->update_setting = 2;
+      //  get_config()->update_setting = 2;
         tmp_f = atof(&dev_id[0]);
         get_config()->set_tindoor = tmp_f;
 
     }
 
 
-    dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 1);
+    dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 0);
     if (dev_id != NULL)
     {
       //  memset(dev_id, 0, 128);
-        get_config()->update_setting = 2;
+       // get_config()->update_setting = 2;
         tmp_f = atof(&dev_id[0]);
         get_config()->set_up_period = tmp_f;
     }
@@ -495,7 +502,7 @@ void upload()
 
     uint32_t tmp;
     tmp = get_ai_data()->channel_status;
-    mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //8 bit di
+    mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //16 bit di
     mqtt_payload_u.status[DEV_STATUS_INDEX] =
         mqtt_payload_u.status[DEV_STATUS_INDEX] << 24; //dev status
     mqtt_payload_u.status[DEV_STATUS_INDEX] =

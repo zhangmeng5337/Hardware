@@ -1,8 +1,11 @@
-#ifndef CONFIG_H_
+﻿#ifndef CONFIG_H_
 #define CONFIG_H_
 #include "main.h"
 void delay_us(uint32_t nCount);
 #include "main.h"
+#define DEV_SIZE    10
+
+
 /*index = 0  "鍗囩�?: 1,
 index = 1 "閲嶅�?: 1,
 index = 2 "鏈虹粍寮€鍏虫満": 0,

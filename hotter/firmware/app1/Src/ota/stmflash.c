@@ -81,11 +81,11 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     /* ӁԽFLASH*/
     FLASH_EraseInitTypeDef FlashSet;
     HAL_FLASH_Unlock();
-	FLASH_WaitForLastOperation(50000);    //添加的代码
+	FLASH_WaitForLastOperation(50000);    //添加的代�?
     /* Fill EraseInit structure*/
-  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
+  __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓�?
         /* Enable data cache */
-    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓�?
 	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
                          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
@@ -96,7 +96,7 @@ int Erase_page(uint32_t secaddr, uint32_t num)
     FlashSet.Sector = GetSectors(secaddr);
     FlashSet.NbSectors = num;
     status = HAL_FLASHEx_Erase(&FlashSet, &PageError);
-	//FLASH_WaitForLastOperation(50000);    //添加的代码
+	//FLASH_WaitForLastOperation(50000);    //添加的代�?
     /* Lock the Flash to disable the flash control register access (recommended
     to protect the FLASH memory against possible unwanted operation) *********/
     HAL_FLASH_Lock();
@@ -115,10 +115,10 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
     int i = 0;
 	HAL_StatusTypeDef status;
     HAL_FLASH_Unlock();
-	FLASH_WaitForLastOperation(50000);    //添加的代码
-	__HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓存
+	FLASH_WaitForLastOperation(50000);    //添加的代�?
+	__HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓�?
         /* Enable data cache */
-    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓存
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓�?
 	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
                          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 

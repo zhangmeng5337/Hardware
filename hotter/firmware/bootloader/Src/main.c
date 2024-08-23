@@ -134,7 +134,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //hardware_init();
 	HAL_Delay(3000);
-	MX_IWDG_Init();
+	//MX_IWDG_Init();
 	 //test();
 	// Start_BootLoader();
   /* USER CODE END 2 */

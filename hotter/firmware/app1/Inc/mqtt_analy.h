@@ -13,8 +13,13 @@
 #define TIN_INDEX           7
 #define PUMP_F_INDEX        8
 #define PUMP_E_INDEX        9
+
 #define WATER_O_INDEX       10
 #define WATER_IN_INDEX      11
+#define T_MACHINE_ROOM      12
+
+#define SUPPLE_PUMP_PRE_INDEX        13
+
 //#define WATER_IN_INDEX      11
 
 //status

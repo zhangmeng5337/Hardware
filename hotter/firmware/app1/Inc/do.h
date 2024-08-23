@@ -28,6 +28,15 @@
 #define  DO_ctrl_22 	22
 #define  DO_ctrl_23 	23
 
+//*****do ctrl*********************
+#define MACHINE_PWR   		0
+#define HEATER_PWR   		1
+#define SUPPLE_PUMP_PWR   	2
+#define BASIC_PUMP_PWR		3
+#define SECONDARY_PUMP_PWR	4
+#define HEATER_INDOOR_PWR	5
+
+
 
 #define HC595_SHCP_Low()   	   HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,GPIO_PIN_RESET)
 #define HC595_SHCP_High()      HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,GPIO_PIN_SET)
@@ -49,6 +58,7 @@ typedef struct
 } stru_do_stru;
 
 void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set);
+void do_off(void);
 
 #endif
 

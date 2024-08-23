@@ -17,6 +17,8 @@ void modbus_init()
 {
     modbus_recv.address = 0;
     modbus_tx.address = 0;
+    modbus_tx.retry_count = RETRY_COUNT;
+    modbus_tx.update = 1;
     memset(modbus_tx.error_count, 0, DEV_SIZE);
 
 }
@@ -61,7 +63,7 @@ void rs485_recv()
         unsigned int crc_cal;
         unsigned char index;
         unsigned char len;
-        if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == MODBUS_READ_CMD)
+        if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == MODBUS_READ_CMD)//read
         {
             len = rs485_u->recv_buf[modbus_recv.dev_addr_index + 2]; //read data len
             crc_tmp = rs485_u->recv_buf[modbus_recv.dev_addr_index + 5];
@@ -163,6 +165,8 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
 
     if (modbus_tx.retry_count > 0)
     {
+        pb2[i++] = modbus_tx.address;
+        pb2[i++] = modbus_tx.func;
         if (func == MODBUS_READ_CMD)
         {
 
@@ -171,43 +175,54 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
             modbus_tx.reg = reg;
             // modbus_tx.retry_count = reg_count;
             modbus_recv.reg = modbus_tx.reg;
+            pb2[i++] = modbus_tx.reg >> 8;
+            pb2[i++] = modbus_tx.reg;
+
+
         }
         else
         {
             modbus_tx.func = func;
             modbus_tx.reg = reg;
             modbus_tx.regCount = reg_count;
-            memcpy(modbus_tx.payload, payload, len);
+            pb2[i++] = modbus_tx.reg >> 8;
+            pb2[i++] = modbus_tx.reg;
+
+            memcpy(modbus_tx.payload, payload, reg_count);
         }
 
 
-        pb2[i++] = modbus_tx.address;
-        pb2[i++] = modbus_tx.func;
-        pb2[i++] = 0;
-        memcpy(&pb2[i], &modbus_tx.reg, 2);
-        i = i + 1;
+//
+//        //  pb2[i++] = 0;
+//        // memcpy(&pb2[i], &modbus_tx.reg, 2);
+//
+//        pb2[i++] = modbus_tx.reg >> 8;
+//        pb2[i++] = modbus_tx.reg;
+        // i = i + 2;
 
         if (modbus_tx.func == MODBUS_READ_CMD)
         {
-            unsigned char tmp;
-            tmp =  modbus_tx.regCount;
-            pb2[i++] = 0;
-            memcpy(&pb2[i], &tmp, 1);
-            i = i + 1;
+//            unsigned char tmp;
+//            tmp =  modbus_tx.regCount;
+//            pb2[i++] = 0;
+//            memcpy(&pb2[i], &tmp, 1);
+//            i = i + 1;
+			 pb2[i++] = reg_count>>8;
+			 pb2[i++] = reg_count;			 
 
         }
         if (modbus_tx.func == MODBUS_WRITE_ONE_CMD)
         {
-            ;//memcpy(&pb[i], modbus_tx.payload, modbus_tx.regCount * 2);
-            //i = i + modbus_tx.regCount * 2;
+            memcpy(&pb2[i], modbus_tx.payload, modbus_tx.regCount);
+            i = i + modbus_tx.regCount;
 
         }
         else if (modbus_tx.func == MODBUS_WRITE_MUL_CMD)
         {
-            pb2[i++] = 0;
-            //pb2[i] = 1;
-            memcpy(&pb2[i], &modbus_tx.regCount, 1);
-            i = i + 1;
+//            pb2[i++] = 0;
+//            //pb2[i] = 1;
+//            memcpy(&pb2[i], &modbus_tx.regCount, 1);
+//            i = i + 1;
 
         }
 
@@ -230,7 +245,7 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
 
 
         //i = i + 2;
-        modbus_tx.retry_count--;
+        // modbus_tx.retry_count--;
         uart_transmit(RS485_No, pb2, i);
         result = 1;
 
@@ -252,6 +267,12 @@ void analy_modbus_recv()
             {
                 if (modbus_recv.address > 0 && modbus_recv.address <= DEV_SIZE)
                 {
+                    modbus_recv.error_count[modbus_recv.address] = 0;
+                    unsigned int i;
+                    i = 1;
+                    i = i << modbus_recv.address;
+                    i = ~i;
+                    modbus_recv.fault = modbus_recv.fault & i;
                     if (modbus_recv.reg == FAULT_REG)
                     {
                         unsigned int tmp;
@@ -281,6 +302,12 @@ void analy_modbus_recv()
             case MODBUS_WRITE_ONE_CMD:
             {
                 modbus_tx.retry_count = 0;
+				     modbus_recv.error_count[modbus_recv.address] = 0;
+                    unsigned int i;
+                    i = 1;
+                    i = i << modbus_recv.address;
+                    i = ~i;
+                    modbus_recv.fault = modbus_recv.fault & i;
             }
             break;
             case MODBUS_WRITE_MUL_CMD:
@@ -323,6 +350,8 @@ unsigned char  modbus_ctrl()
                 get_config()->set_tout_tmp = u;
 
             modbus_tx.update = 3;//pid
+            modbus_tx.retry_count = RETRY_COUNT;
+            modbus_tx.address = 0;
 
         }
 #endif
@@ -331,11 +360,25 @@ unsigned char  modbus_ctrl()
             modbus_tx.update = 2;  //server setting
             config_save();//位置不能变
             get_config()->update_setting = 0;
+            modbus_tx.retry_count = RETRY_COUNT;
+            modbus_tx.address = 0;
 
         }
 
         else
-            modbus_tx.update = 1;//normal poll
+        {
+            if (modbus_tx.update == 1)
+            {
+                modbus_tx.update = 1;//normal poll
+                modbus_tx.retry_count = RETRY_COUNT;
+
+            }
+
+            //modbus_tx.retry_count = 1;
+            // modbus_tx.address = 0;
+
+        }
+
         // modbus_tx.address = 0;
         //modbus_tx.retry_count = 3;//retry count
     }
@@ -345,7 +388,7 @@ unsigned char  modbus_ctrl()
 void modbus_tx_proc(unsigned char mode)
 {
 
-    unsigned char pb[512];
+    unsigned char pb[64];
     unsigned int len;
     len = 0;
     registerTick(MODBUS_TX_TICK_NO, 300);
@@ -354,10 +397,12 @@ void modbus_tx_proc(unsigned char mode)
         switch (mode)
         {
             case 1:
-                memcpy(pb, get_config()->machine, 1);
+                // memcpy(pb, &get_config()->machine, 2);//pwr on or off machine
+                pb[0] = get_config()->machine>>8;
+                pb[1] = get_config()->machine ;
                 modbus_tx.func = MODBUS_WRITE_ONE_CMD;
                 modbus_tx.reg = CONTROLLER_REG;
-                len++;
+                len = len + 2;
                 break;
             case 2:
                 if (get_config()->set_tindoor < 15) //below 15 no pid ctrl
@@ -392,19 +437,33 @@ void modbus_tx_proc(unsigned char mode)
                         modbus_recv.error_count[modbus_tx.address] + 1;
 
 
-                    if (modbus_recv.error_count[modbus_tx.address] >= 5)
+                    if (modbus_recv.error_count[modbus_tx.address] >= FAULT_COUNT)
                     {
                         unsigned int i;
                         i = 1;
                         i = i << modbus_tx.address;
                         modbus_recv.fault = modbus_recv.fault | i;
                     }
-                    modbus_tx.address = modbus_tx.address + 1;
+
                 }
                 else
                 {
-                    modbus_tx.update = 0;
-                    modbus_tx.address = 0;
+                    //modbus_tx.update = 0;
+                    modbus_tx.retry_count = RETRY_COUNT;
+                    modbus_tx.address = modbus_tx.address + 1;
+
+                }
+
+            }
+            else
+            {
+                modbus_tx.address = 0;
+                modbus_tx.retry_count = RETRY_COUNT;
+                modbus_tx.update = 1;
+                if (modbus_tx.update == 1)
+                {
+                    reset_registerTick(MODBUS_POLL_TICK_NO);
+                    reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
                 }
 
             }
@@ -418,24 +477,38 @@ void modbus_tx_proc(unsigned char mode)
                 modbus_recv.error_count[modbus_tx.address] =
                     modbus_recv.error_count[modbus_tx.address] + 1;
                 modbus_tx.retry_count--;
-                if (modbus_recv.error_count[modbus_tx.address] >= 5)
-                {
-                    unsigned int i;
-                    i = 1;
-                    i = i << modbus_tx.address;
-                    modbus_recv.fault = modbus_recv.fault | i;
-                }
+
 
             }
             else
             {
-                modbus_tx.update = 0;
+                if (modbus_recv.error_count[modbus_tx.address] >= FAULT_COUNT)
+                {
+                    unsigned int i;
+                    i = 1;
+                    i = i << modbus_tx.address;
+
+                    modbus_recv.fault = modbus_recv.fault | i;
+                }
+                else
+                {
+                    unsigned int i;
+                    i = 1;
+                    i = i << modbus_tx.address;
+
+                    modbus_recv.fault = modbus_recv.fault | i;
+
+                }
+                modbus_tx.update = 1;
+                modbus_tx.retry_count = RETRY_COUNT;
+                reset_registerTick(MODBUS_POLL_TICK_NO);
+                reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
 
             }
 
         }
-        if (mode == 2)
-            reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+        // if (mode == 2)
+
         reset_registerTick(MODBUS_TX_TICK_NO);
 
     }

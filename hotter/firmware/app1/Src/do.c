@@ -79,7 +79,7 @@ void XL74HC595_MultiWrite(uint8_t *data, uint8_t Length)//混合写数据
 
 /*****************************************************
 do_NO_sel：do端口号，对应寄存器
-bit_set：0/1
+bit_set：0/1, 0开，1关
 ******************************************************/
 void do_NO_set(unsigned int do_NO_sel,unsigned char bit_set)
 {
@@ -110,30 +110,30 @@ void do_NO_set(unsigned int do_NO_sel,unsigned char bit_set)
 		}
 		if(bit_set == 0)
 		{
-			shift_bit = ~shift_bit;
+			//shift_bit = ~shift_bit;
 			if(do_NO_sel<8)
 			{			
-				do_usr.do_No_out[0] = do_usr.do_No_out[0]&shift_bit;
+				do_usr.do_No_out[0] = do_usr.do_No_out[0]|shift_bit;
 			}
 			else if(do_NO_sel>=8&&do_NO_sel<16)
-				do_usr.do_No_out[1] = do_usr.do_No_out[1]&shift_bit;
+				do_usr.do_No_out[1] = do_usr.do_No_out[1]|shift_bit;
 			else if(do_NO_sel>16)
-				do_usr.do_No_out[2] = do_usr.do_No_out[2]&shift_bit;
+				do_usr.do_No_out[2] = do_usr.do_No_out[2]|shift_bit;
 			else 
 				 ;
 	
 		}
 		else if(bit_set == 1)
-		{
+		{shift_bit = ~shift_bit;
 			if(do_NO_sel<8)
 			{
 				
-				do_usr.do_No_out[0] = do_usr.do_No_out[0]|shift_bit;
+				do_usr.do_No_out[0] = do_usr.do_No_out[0]&shift_bit;
 			}
 			else if(do_NO_sel>=8&&do_NO_sel<16)
-				do_usr.do_No_out[1] = do_usr.do_No_out[1]|shift_bit;
+				do_usr.do_No_out[1] = do_usr.do_No_out[1]&shift_bit;
 			else if(do_NO_sel>=16)
-				do_usr.do_No_out[2] = do_usr.do_No_out[2]|shift_bit;
+				do_usr.do_No_out[2] = do_usr.do_No_out[2]&shift_bit;
 	
 		}
 
@@ -151,5 +151,11 @@ void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set)
 	XL74HC595_MultiWrite(do_usr.do_No_out, 2);
 }
 
- 
+void do_off()
+{
+	do_usr.do_No_out[0]=0xff;
+	do_usr.do_No_out[1]=0xff;	
+	XL74HC595_MultiWrite(do_usr.do_No_out, 2);
+
+}
 
