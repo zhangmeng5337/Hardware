@@ -24,7 +24,7 @@
 
 typedef struct 
 {
-    unsigned char ctrl_mode;
+    unsigned char ctrl_mode;//0:global pump ctrl 1:node pump
 	unsigned char ctrl_func[10];
 	unsigned char error_count[DEV_SIZE];
 	unsigned char address;
@@ -47,6 +47,7 @@ void modbus_pack(unsigned char mode, unsigned char *pb);
 modbus_stru *get_recv_machine(void);
 
 void modbus_init(void);
+modbus_stru *get_tx_machine(void);
 
 #endif
 

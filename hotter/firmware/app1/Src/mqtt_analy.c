@@ -106,6 +106,22 @@ void anlysis_mqtt_recv()
 //        	get_config()->machine = get_config()->machine|0x0001;
 //
 //    }
+    dev_id = find_json_string("\"heatPumpAll\":", "}", 0);
+    if (dev_id != NULL)
+    {
+       // memset(dev_id, 0, 128);
+        get_config()->update_setting = 1;
+        //sprintf(&get_config()->machine, "%s", dev_id); //????
+        tmp_f = atoi(&dev_id[0]);
+//		if(tmp_f == 1)
+		{
+		get_tx_machine()->ctrl_mode = 0;
+		get_config()->machine = get_config()->machine|0x0001;
+
+		}
+        	
+
+    }
 
     dev_id = find_json_string("\"heatPump1\":", "}", 0);
     if (dev_id != NULL)
@@ -114,8 +130,13 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-		if(tmp_f == 1)
-        	get_config()->machine = get_config()->machine|0x0001;
+//		if(tmp_f == 1)
+		{
+		get_tx_machine()->ctrl_mode = 1;
+		get_config()->machine = get_config()->machine|0x0001;
+
+		}
+        	
 
     }
 
@@ -126,8 +147,14 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-		if(tmp_f == 1)
-        	get_config()->machine = get_config()->machine|0x0002;
+//		if(tmp_f == 1)
+		{
+		get_tx_machine()->ctrl_mode = 1;
+		get_config()->machine = get_config()->machine|0x0002;
+
+		}
+        	
+
 
     }
 	
@@ -138,8 +165,14 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-		if(tmp_f == 1)
-        	get_config()->machine = get_config()->machine|0x0004;
+//		if(tmp_f == 1)
+		{
+		get_tx_machine()->ctrl_mode = 1;
+		get_config()->machine = get_config()->machine|0x0004;
+
+		}
+        	
+
 
     }
 
@@ -150,8 +183,14 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-		if(tmp_f == 1)
-        	get_config()->machine = get_config()->machine|0x0010;
+//		if(tmp_f == 1)
+		{
+		get_tx_machine()->ctrl_mode = 1;
+		get_config()->machine = get_config()->machine|0x0008;
+
+		}
+        	
+
 
     }
 
@@ -162,8 +201,14 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-		if(tmp_f == 1)
-        	get_config()->machine = get_config()->machine|0x0020;
+//		if(tmp_f == 1)
+		{
+		get_tx_machine()->ctrl_mode = 1;
+		get_config()->machine = get_config()->machine|0x0010;
+
+		}
+        	
+
 
     }
 
@@ -174,9 +219,12 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-		if(tmp_f == 1)
-        	get_config()->machine = get_config()->machine|0x0040;
+//		if(tmp_f == 1)
+		{
+			get_tx_machine()->ctrl_mode = 1;
+			get_config()->machine = get_config()->machine|0x0020;
 
+		}  	
     }
 
 	
