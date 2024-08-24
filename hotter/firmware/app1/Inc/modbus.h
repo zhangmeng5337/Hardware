@@ -48,6 +48,6 @@ modbus_stru *get_recv_machine(void);
 
 void modbus_init(void);
 modbus_stru *get_tx_machine(void);
-
+void modbus_test(void);
 #endif
 

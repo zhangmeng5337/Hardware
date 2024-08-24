@@ -56,8 +56,9 @@ void uart_rs485()
         memcpy(rs485_str.recv_buf,rs485_str.buff,rs485_str.recv_len);
         rs485_str.recv_update = 1;
     }
-	
+	HAL_UART_DMAStop(&huart4);
 	HAL_UART_DMAResume(&huart4);
+	memset((uint8_t*)rs485_str.buff,0,BUFFER_SIZE);
     HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);
 }
 tsLpuart1type *get_lte_recv()
