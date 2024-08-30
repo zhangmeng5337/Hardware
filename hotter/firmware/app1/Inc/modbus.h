@@ -6,6 +6,8 @@
 //#define MODBUS_RETRY_COUNT          4
 
 #define CONTROLLER_REG				0x0000
+#define CONTROLLER_REG2				0x0040
+
 #define TEMPERATURE_REG				0x0007
 #define FAULT_REG				    0x0051
 
@@ -31,13 +33,15 @@ typedef struct
 	unsigned char func;
 	unsigned int  reg;
 	unsigned int  regCount;
-	unsigned char payload[512];
+	unsigned char payload[256];
 	unsigned int  crc;
 	unsigned char update;
 	unsigned char retry_count;
 	unsigned int  fault;
 	unsigned char dev_addr_index;
 	unsigned char recv_len;
+	unsigned int last_reg;
+	unsigned char tx_index;
 	unsigned char dev_addr_mask;//tx to specified dev
 }modbus_stru;
 

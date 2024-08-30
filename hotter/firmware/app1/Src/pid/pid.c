@@ -11,7 +11,7 @@ float e_max = 60;
 float e_min = -60;
 float ec_max = 200;
 float ec_min = -200;
-float kp_max = 100;
+float kp_max = 50;
 float kp_min = 0;
 float ki_max = 0.1;
 float ki_min = -0.1;
@@ -34,16 +34,19 @@ void get_temp_cal(float *buf)
 float get_pid_output()
 {
     float  u;
-    if (indoor_temp_usr.output >= PID_MIN && indoor_temp_usr.output <= PID_MAX)//换算成设备温�?
-        u = MACHINE_RATIO * indoor_temp_usr.output + MACHINE_RATIO_B;
-    else
-    {
-        if (indoor_temp_usr.output < PID_MIN) //换算成设备温�?
-            u = MACHINE_MIN_T;
-        if (indoor_temp_usr.output > PID_MAX)//换算成设备温�?
-            u = MACHINE_MAX_T;
+//    if (indoor_temp_usr.output >= PID_MIN && indoor_temp_usr.output <= PID_MAX)//换算成设备温�?
+//        u = MACHINE_RATIO * indoor_temp_usr.output + MACHINE_RATIO_B;
+//    else
+//    {
+//        if (indoor_temp_usr.output < PID_MIN) //换算成设备温�?
+//            u = MACHINE_MIN_T;
+//        if (indoor_temp_usr.output > PID_MAX)//换算成设备温�?
+//            u = MACHINE_MAX_T;
+//
+//    }
 
-    }
+        u =  indoor_temp_usr.output ;
+
 
 
     return u;
@@ -61,8 +64,9 @@ void pid_init()
 void pid_cal(unsigned char mode)
 {
     float u;
-    indoor_temp_usr.output = get_pid_params()->kp * (erro - erro_pre) + get_pid_params()->ki * erro +
-                             get_pid_params()->kd * (erro - 2 * erro_pre + erro_ppre);
+//    indoor_temp_usr.output = get_pid_params()->kp * (erro - erro_pre) + get_pid_params()->ki * erro +
+//                             get_pid_params()->kd * (erro - 2 * erro_pre + erro_ppre);
+    indoor_temp_usr.output = get_pid_params()->kp ;
 
     erro_ppre = erro_pre;
     erro_pre = erro;

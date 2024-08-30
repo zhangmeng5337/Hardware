@@ -2,10 +2,10 @@
 #include "FuzzyPID.h"
 float Target = 600;
 float actual = 0;
-float e_max = 1000;
-float e_min = -1000;
-float ec_max = 800;
-float ec_min = -800;
+float e_max = 3;
+float e_min = -3;
+float ec_max = 3;
+float ec_min = -3;
 float kp_max = 100;
 float kp_min = -100;
 float ki_max = 0.1;

@@ -1,17 +1,27 @@
 #include "FuzzyPID.h"
 
 FuzzyPID_stru FuzzyPID_usr;
-
 const int Kp_rule_list[7][7] =
 {
-    {PB, PB, PB, PB, PM, PS, ZO}, 	//kp规则表
-    {PB, PB, PM, PM, PS, ZO, NS},
-    {PB, PM, PM, PS, ZO, NS, NS},
-    {PM, PM, PS, ZO, NS, NM, NM},
-    {PS, PS, ZO, NS, NS, NM, NM},
-    {PS, ZO, NS, NM, NM, NM, NB},
-    {ZO, ZO, NM, NB, NM, NB, NB}
+    {PB, PB, PB, PB, PS, ZO, ZO}, 	//kp规则表
+    {PB, PB, PB, PM, ZO, ZO, NS},
+    {PB, PB, PM, PS, ZO, NS, NM},
+    {PB, PM, PS, ZO, NS, NM, NB},
+    {PM, PS, ZO, NS, NM, NB, NB},
+    {PS, ZO, ZO, NM, NB, NB, NB},
+    {ZO, ZO, NS, NB, NB, NB, NB}
 };
+
+//const int Kp_rule_list[7][7] =
+//{
+//    {PB, PB, PB, PB, PM, PS, ZO}, 	//kp规则表
+//    {PB, PB, PM, PM, PS, ZO, NS},
+//    {PB, PM, PM, PS, ZO, NS, NS},
+//    {PM, PM, PS, ZO, NS, NM, NM},
+//    {PS, PS, ZO, NS, NS, NM, NM},
+//    {PS, ZO, NS, NM, NM, NM, NB},
+//    {ZO, ZO, NM, NB, NM, NB, NB}
+//};
 
 const int Ki_rule_list[7][7] = { {NB, NM, NM, NM, NM, ZO, ZO}, 	//ki规则表
     {NB, NB, NM, NS, NS, ZO, ZO},
