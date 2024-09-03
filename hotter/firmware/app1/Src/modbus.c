@@ -508,7 +508,7 @@ void modbus_tx_proc(unsigned char mode)
                 break;
             case 2:
                 // memcpy(pb, &get_config()->machine, 2);//pwr on or off machine
-                get_config()->machine = 0;
+               // get_config()->machine = 0;
                 pb[0] = get_config()->machine >> 8;
                 pb[1] = get_config()->machine ;
                 modbus_tx.func = MODBUS_WRITE_ONE_CMD;
@@ -546,7 +546,7 @@ void modbus_tx_proc(unsigned char mode)
             {
                 if (modbus_tx.retry_count > 0)
                 {
-                    if (modbus_tx.reg == modbus_read_reg_list[1])
+                    //if (modbus_tx.reg == modbus_read_reg_list[1])
                             modbus_tx.retry_count--;
                     modbus_trans(modbus_tx.address, modbus_tx.func, modbus_tx.reg, pb, len, 1, 3);
                     modbus_tx.last_reg = modbus_tx.reg;
