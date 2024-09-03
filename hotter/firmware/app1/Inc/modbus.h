@@ -33,7 +33,7 @@ typedef struct
 	unsigned char func;
 	unsigned int  reg;
 	unsigned int  regCount;
-	unsigned char payload[256];
+	unsigned char payload[512];
 	unsigned int  crc;
 	unsigned char update;
 	unsigned char retry_count;

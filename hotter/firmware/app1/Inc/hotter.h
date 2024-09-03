@@ -26,8 +26,8 @@
 
 typedef struct 
 {
-	unsigned char status[256];//设备地址;控制标志;模式选择;L4采暖回差;L5采暖设定温度;故障代码:;modbus失联
-	//unsigned char control_reg[10];
+	unsigned char status[10];//设备地址;控制标志;模式选择;L4采暖回差;L5采暖设定温度;故障代码:;modbus失联
+	unsigned char control_reg[10];
 }hotter_stru;
 
 hotter_stru *get_hotter(unsigned dev_addr);
