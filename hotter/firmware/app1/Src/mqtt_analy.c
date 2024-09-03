@@ -535,7 +535,7 @@ bit 7-bit0: dev error code
 void upload()
 {
 
-    unsigned char buf2[64];
+    unsigned char buf2[256];
 
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
@@ -572,7 +572,8 @@ void upload()
 
 
 #if 1
-    memset(buf2, 0, 128);
+    memset(buf2, 0, 256);
+
 //1,3,2,0,0,184  0x01 0x03 0x02 0x00 0x00 0xb8
     sprintf(buf2, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u",
             get_recv_machine()->payload[0],
