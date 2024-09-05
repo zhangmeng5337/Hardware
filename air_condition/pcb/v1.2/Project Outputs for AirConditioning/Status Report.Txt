@@ -1,9 +1,0 @@
-Output: Bill of Materials
-Type  : BOM
-From  : Project [AirConditioning.PrjPCB]
-
-
-Files Generated   : 0
-Documents Printed : 0
-
-Finished Output Generation At 11:00:28 On 2020/5/22
