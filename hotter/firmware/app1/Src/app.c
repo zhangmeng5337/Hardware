@@ -76,9 +76,9 @@ void app_proc()
    di_proc(0);//di detection
    mqtt_proc();//lte ,mqtt and ota
    modbus_proc();//machine control
- // modbus_test();
+  //modbus_test();
   // control_proc();
    //config_save();
    //do_ctrl_proc(0,1);//do control
-   //module_test();
+   module_test();
 }
