@@ -12,6 +12,8 @@
 *.o
 *.crf
 *.M51
+*.zip
+*.rar
 Obj/
 *.DS_Store
 History/
