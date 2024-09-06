@@ -283,7 +283,7 @@ void TIM2_IRQHandler(void)
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
-
+ 
   /* USER CODE END TIM2_IRQn 1 */
 }
 
@@ -297,6 +297,7 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
+  //getMotr()->Direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim2);
 
   /* USER CODE END USART1_IRQn 1 */
 }

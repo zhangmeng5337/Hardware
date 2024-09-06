@@ -480,7 +480,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 65535;
+  htim2.Init.Period = PWM_COUNTER;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
@@ -588,7 +588,7 @@ static void MX_TIM6_Init(void)
   htim6.Init.Prescaler = 143;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim6.Init.Period = 9999;
-  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {
     Error_Handler();
@@ -728,7 +728,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, DO_ctrl_1_Pin|RUN_Pin|LCD_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, DO_ctrl_0_Pin|EXTPROC_RS485_DIRECTION_Pin|WARN_Pin|LCD_SID_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, DO_ctrl_0_Pin|LCD_BKL_Pin|WARN_Pin|LCD_SID_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, FAULT_Pin|LCD_CLK_Pin|LATCH_AO_Pin|MCU_WL_Pin
@@ -741,6 +741,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : SW1_Pin SW2_Pin */
+  GPIO_InitStruct.Pin = SW1_Pin|SW2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
   /*Configure GPIO pin : RUN_Pin */
   GPIO_InitStruct.Pin = RUN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -748,10 +754,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(RUN_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : DO_ctrl_0_Pin EXTPROC_RS485_DIRECTION_Pin LCD_SID_Pin */
-  GPIO_InitStruct.Pin = DO_ctrl_0_Pin|EXTPROC_RS485_DIRECTION_Pin|LCD_SID_Pin;
+  /*Configure GPIO pins : DO_ctrl_0_Pin LCD_SID_Pin */
+  GPIO_InitStruct.Pin = DO_ctrl_0_Pin|LCD_SID_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LCD_BKL_Pin WARN_Pin */
+  GPIO_InitStruct.Pin = LCD_BKL_Pin|WARN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -760,13 +773,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(MHV_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : WARN_Pin */
-  GPIO_InitStruct.Pin = WARN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(WARN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : DI_IN3_Pin DI_IN1_Pin */
   GPIO_InitStruct.Pin = DI_IN3_Pin|DI_IN1_Pin;

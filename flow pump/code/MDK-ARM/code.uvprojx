@@ -597,6 +597,26 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\bldc\motor.c</FilePath>
             </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>stmflash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\stmflash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -62,12 +62,16 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define DO_ctrl_1_Pin GPIO_PIN_13
 #define DO_ctrl_1_GPIO_Port GPIOC
+#define SW1_Pin GPIO_PIN_0
+#define SW1_GPIO_Port GPIOF
+#define SW2_Pin GPIO_PIN_1
+#define SW2_GPIO_Port GPIOF
 #define RUN_Pin GPIO_PIN_3
 #define RUN_GPIO_Port GPIOC
 #define DO_ctrl_0_Pin GPIO_PIN_2
 #define DO_ctrl_0_GPIO_Port GPIOA
-#define EXTPROC_RS485_DIRECTION_Pin GPIO_PIN_3
-#define EXTPROC_RS485_DIRECTION_GPIO_Port GPIOA
+#define LCD_BKL_Pin GPIO_PIN_3
+#define LCD_BKL_GPIO_Port GPIOA
 #define MHV_Pin GPIO_PIN_4
 #define MHV_GPIO_Port GPIOA
 #define MHV_EXTI_IRQn EXTI4_IRQn

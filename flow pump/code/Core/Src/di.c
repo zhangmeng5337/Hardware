@@ -3,7 +3,7 @@
 #include "motor.h"
 
 di_stru di_usr;
-uint32_t Duty;
+
 void di_init(void)
 {
     di_usr.update = 0;
@@ -139,23 +139,51 @@ void pulse_exti(void)
 }
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    if (GPIO_Pin == GPIO_PIN_9)
-    {
-        pulse_exti();
-    }
-	if(getMotr()->Status == RUN)
-	{
-		/*1.修改三个通道的占空比*/
-		getMotr()->Duty = Duty;//将菜单中占空比赋值过来，降低程序耦合性
-		Change_PWM_Duty(getMotr()->Duty);
-		/*2.开始获取HALL值*/
-		//user_main_info("HALL的值为：%d",get_hall_state());
-		getMotr()->Hall_status = get_hall_state();
-		/*3.下面开启6步换相*///--->依据HALL值进行换向
-		//上管调制，下管驱动
-		Six_Step_Phase(getMotr()->Hall_status,getMotr()->Direction);
-	}
+//    if (GPIO_Pin == DI_IN0_Pin)
+//    {
+//        while(HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin)== 0)
+//        {
+//			HAL_Delay(20);
+//			pulse_exti();//脉冲计数
+//			break;
+//
+//		}
+//         while(HAL_GPIO_ReadPin(SW2_GPIO_Port, SW2_Pin)== 0)
+//        {
+//			HAL_Delay(20);
+//			pulse_exti();//脉冲计数
+//			break;
+//
+//		}       	
+//    }
 
+    if (GPIO_Pin == DI_IN0_Pin)
+    {
+        if(HAL_GPIO_ReadPin(DI_IN0_GPIO_Port, DI_IN0_Pin)== 0)
+        	pulse_exti();//脉冲计数
+    }
+    if (GPIO_Pin == MHU_Pin || GPIO_Pin == MHV_Pin || GPIO_Pin == MHW_Pin)
+    {
+       if(HAL_GPIO_ReadPin(MHU_GPIO_Port, MHU_Pin)== 0||
+	   	HAL_GPIO_ReadPin(MHV_GPIO_Port, MHV_Pin)== 0||
+	   	HAL_GPIO_ReadPin(MHW_GPIO_Port, MHW_Pin)== 0)
+        if (getMotr()->Status == RUN)
+        {
+
+            /*2.开始获取HALL值*/
+            //user_main_info("HALL的值为：%d",get_hall_state());
+            getMotr()->Hall_status = get_hall_state();
+            /*3.下面开启6步换相*///--->依据HALL值进行换向
+            //上管调制，下管驱动
+            Six_Step_Phase(getMotr()->Hall_status, getMotr()->Direction);
+        }
+		else
+		{
+			Six_Step_Phase(7, getMotr()->Direction);//停机
+
+		}
+
+    }
 
 }
 
