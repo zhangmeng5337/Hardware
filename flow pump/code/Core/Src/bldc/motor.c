@@ -1,6 +1,10 @@
 #include "motor.h"
+#include "key.h"
+
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim4;
+
 extern TIM_HandleTypeDef htim6;
 
 /*
@@ -22,8 +26,11 @@ void Motor_Init(void)
 //    HAL_TIM_Base_Start_IT(&GAP_TIM);                       //开启100ms定时器中断
 //    HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_2);            //开启PWM
 //    HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_1);            //开启PWM
-//    __HAL_TIM_SET_COUNTER(&htim2,
-   // 10000);                //编码器定时器初始值设定为10000
+	HAL_TIM_Base_Start_IT(&htim6);					   //开启100ms定时器中断
+
+	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);	   //开启编码器定时器
+
+    __HAL_TIM_SET_COUNTER(&htim2, 20000);                //编码器定时器初始值设定为10000
     my_motor.lastCount = 0;                                   //结构体内容初始化
     my_motor.totalCount = 0;
     my_motor.overflowNum = 0;
@@ -267,6 +274,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef
         my_motor.lastCount = my_motor.totalCount; //记录这一次的计数值
 
     }
+
+
+  if(htim->Instance==htim4.Instance)//编码器输入定时器溢出中断，用于防溢出
+  {
+     get_key_state()->encode_Direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4);
+	 if(get_key_state()->encode_Direction == 1)
+	 	{
+			get_key_state()->encode_cnt = get_key_state()->encode_cnt + 1;
+			get_key_state()->encode_update = 1;
+	 }
+	 else
+	 {
+	     if(get_key_state()->encode_cnt > 0)
+		 get_key_state()->encode_cnt = get_key_state()->encode_cnt - 1;
+         get_key_state()->encode_update = 2;
+	 }
+	 //get_key_state()->encode_update = 1;
+	  __HAL_TIM_SetCounter(&htim4, 20000);			   //重新设定初始值
+  }
+
 
 }
 

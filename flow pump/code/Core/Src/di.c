@@ -1,7 +1,7 @@
 #include "di.h"
 #include "hall.h"
 #include "motor.h"
-
+#include "key.h"
 di_stru di_usr;
 
 void di_init(void)
@@ -156,6 +156,18 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 //
 //		}       	
 //    }
+    if (GPIO_Pin == SW1_Pin)
+    {
+        if((HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin)&
+			HAL_GPIO_ReadPin(SW2_GPIO_Port, SW2_Pin)&
+			HAL_GPIO_ReadPin(KEYSW_GPIO_Port, KEYSW_Pin))==0)
+        	{
+				get_key_state()->key_press_flag = 1;
+			get_key_state()->press_delay_time = 0;
+
+			}
+
+    }
 
     if (GPIO_Pin == DI_IN0_Pin)
     {

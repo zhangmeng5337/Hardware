@@ -1,15 +1,44 @@
 #ifndef LCD_APP_H_
 #define LCD_APP_H_
 #include "main.h"
+
+#define FRESH  200
+//*****************page define*************
+#define MAIN_PAGE 1
+#define MAIN_PAGE_RUN 2
+#define MAIN_PAGE_INFO 3
+#define MAIN_PAGE_WARN 4
+#define MAIN_PAGE_SET  5
+
+
+//************************MAIN_PAGE icon define 
+#define RUN_ICON		1
+#define INFOR_ICON  	2	
+#define WARN_ICON   	3
+#define SETTING_ICON 	4
+#define RETURN_ICON  	5
 typedef struct
 {
-	uint8_t CurrentNum;	//当前索引序号:页码
-	uint8_t Enter;		//确认键
-	uint8_t Next;		//下一个
-	uint8_t Return;		//返回键
+   // unsigned char mode;
+    uint8_t CurrentNum;	//当前索引序号:页码
+	unsigned char current_icon_num;//当前icon
+	unsigned char next;
+	unsigned char mode;//1：选中
+    unsigned char max_icon_num;
 	void (*Current_Operation)(void);//当前操作(函数指针)
 }Menu_table_t;
+typedef struct
+{
+    
+	//unsigned char current_icon_num;//当前icon
+	//uint8_t CurrentNum;	//当前索引序号:页码
+	uint8_t enter_status;		//同一页面下，确认键,按一下选中再按一下取消
+	uint8_t next_status;		//同一页面下，下一个图标跳转
+	uint8_t return_status;		//同一页面下，返回键
+	uint32_t tick;
+}menu_key_stru;
 
+void lcd_proc(void);
 
 #endif
 

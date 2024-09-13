@@ -3,7 +3,7 @@
 
 #include "main.h"
 
-#include "hall.h"¡¢
+#include "hall.h"
 
 #define PID_CAL_TIME    10
 

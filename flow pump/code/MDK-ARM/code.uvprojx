@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2V8M.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -588,11 +588,6 @@
               <FilePath>..\Core\Src\ao.c</FilePath>
             </File>
             <File>
-              <FileName>hall.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\hall.c</FilePath>
-            </File>
-            <File>
               <FileName>motor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\bldc\motor.c</FilePath>
@@ -616,6 +611,21 @@
               <FileName>stmflash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\stmflash.c</FilePath>
+            </File>
+            <File>
+              <FileName>hall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\bldc\hall.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\lcd_app.c</FilePath>
             </File>
           </Files>
         </Group>

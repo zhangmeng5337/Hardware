@@ -214,7 +214,7 @@ void DisplayDots(unsigned char DotByte)
      }
 }
 
-void lcd_proc( void )
+void lcd_proc_test( void )
 {
      Delay(100);      //µÈ´ý¸´Î»
      LcmInit();
