@@ -553,15 +553,15 @@ void IapErase(int addr)
 }
 void write_add(unsigned int add,unsigned int address,uchar date)
 {
-	IapErase( address);
-	IapProgram(address, date);
+	IapErase( 0x0400+address);
+	IapProgram(0x0400+address, date);
 
 }
 unsigned char  read_add(uchar add,unsigned int address)
 {
 	uchar date;
 
-	date = IapRead(address);
+	date = IapRead(0x0400+address);
 	return date;
 
 }

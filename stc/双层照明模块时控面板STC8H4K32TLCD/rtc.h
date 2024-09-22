@@ -41,6 +41,21 @@ void RTC_config(void);
 
 
 
+void RTC_Isr() interrupt 13
+{
+    char store;
+
+    store = P_SW2;
+    P_SW2 |= 0x80;                              //使能XFR访问
+
+    if(RTCIF & 0x08)                            //判断是否秒中断
+    {
+        RTCIF &= ~0x08;                         //清中断标志
+        B1S_Flag = 1;
+    }
+
+    P_SW2 = store;
+}
 
 
 void I2CWriteDate(unsigned char miao_s,unsigned char fen_s,unsigned char shi_s,unsigned char zhou_s,unsigned char ri_s,unsigned char yue_s,unsigned char nian_s)
