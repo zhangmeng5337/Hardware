@@ -7,9 +7,10 @@ typedef struct
 {
 	unsigned char encode_Direction;
 	unsigned int encode_cnt;
-	unsigned char encode_update;//1:正转 2：反转 3：开关按下
+	unsigned char encode_update;//1:正转 2：反转
 	unsigned char press_update;//按键按下
-   
+ 	unsigned char ok_press_update;//确认按键按下 1：开关按下
+     
 	uint32_t  press_delay_time;
 	unsigned char key_press_flag;
 	unsigned char key1;

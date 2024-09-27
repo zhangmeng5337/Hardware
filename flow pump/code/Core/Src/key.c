@@ -35,7 +35,7 @@ void key_scan(void)
         if (HAL_GPIO_ReadPin(KEYSW_GPIO_Port, KEYSW_Pin))//
         {
             //key_usr.key3 = 1;
-            key_usr.encode_update = 3;
+            key_usr.ok_press_update = 1;
 
         }
         if (key_usr.encode_update == 1)
