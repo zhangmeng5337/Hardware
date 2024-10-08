@@ -153,9 +153,13 @@ void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set)
 
 void do_off()
 {
+	HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_SET);
+
+
 	do_usr.do_No_out[0]=0xff;
 	do_usr.do_No_out[1]=0xff;	
 	XL74HC595_MultiWrite(do_usr.do_No_out, 2);
+
 
 }
 

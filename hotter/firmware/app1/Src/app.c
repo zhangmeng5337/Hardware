@@ -80,5 +80,5 @@ void app_proc()
   // control_proc();
    //config_save();
    //do_ctrl_proc(0,1);//do control
-   module_test();
+  // module_test();
 }

@@ -448,6 +448,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MIBSPI1MCS1_GPIO_Port, MIBSPI1MCS1_Pin, GPIO_PIN_SET);
@@ -479,11 +480,12 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin lte_3_8V_EN_Pin */
-  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin;
+  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin|PWR_CTRL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 
   /*Configure GPIO pins : PB1 PB2 */
   GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;

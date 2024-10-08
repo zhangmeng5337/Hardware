@@ -69,7 +69,7 @@
 #define PRESS_RATIO        641     //0.393 --- 0   1.997----1
 
 #define PRESS_B            -250
-#define PT100_PR          75
+#define PT100_PR          1000
 
 #define MAX_FAILUE 100 
 typedef struct 

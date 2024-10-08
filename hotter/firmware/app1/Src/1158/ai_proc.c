@@ -1,4 +1,4 @@
-﻿/* --COPYRIGHT--,BSD
+/* --COPYRIGHT--,BSD
  * Copyright (c) 2018, Texas Instruments Incorporated
  * All rights reserved.
  *
@@ -210,7 +210,7 @@ void pressure_temp_proc()
     for (i = ADC2_PT_INDEX; i < (ADC2_PT_SIZE + ADC2_PT_INDEX); i++) //u2/(2u1-u2)
     {
         volt_tmp = 2 * data_ai.data2_ai[2 * i + 1]; //2u1;
-        volt_tmp2 = data_ai.data2_ai[i];//u2
+        volt_tmp2 = data_ai.data2_ai[2*i];//u2
         volt_tmp =  volt_tmp - volt_tmp2; //(2u1-u2)
         tmp1 = volt_tmp2 * 1000  / volt_tmp; //1000u2/(2u1-u2)=75r/75+r
         tmp2 = PT100_PR * tmp1;

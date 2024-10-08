@@ -120,6 +120,8 @@ void Error_Handler(void);
 #define DI_IN15_GPIO_Port GPIOB
 #define lte_3_8V_EN_Pin GPIO_PIN_7
 #define lte_3_8V_EN_GPIO_Port GPIOB
+#define PWR_CTRL_Pin GPIO_PIN_8
+#define PWR_CTRL_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
