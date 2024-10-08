@@ -13,14 +13,14 @@
       <uAC6>8</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>STC8H4K64TLCD Series</Device>
-          <Vendor>STC</Vendor>
-          <Cpu>IRAM(0-0xFF) XRAM(0-0x0FFF) IROM(0-0xFFF8) CLOCK(45000000)</Cpu>
+          <Device>80C51FA</Device>
+          <Vendor>Intel</Vendor>
+          <Cpu>IRAM(0-0xFF) CLOCK(20000000)</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>63524</DeviceId>
-          <RegisterFile>STC8.H</RegisterFile>
+          <DeviceId></DeviceId>
+          <RegisterFile>REG51F.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -36,8 +36,8 @@
           <BinPath></BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath>STC\</RegisterFilePath>
-          <DBRegisterFilePath>STC\</DBRegisterFilePath>
+          <RegisterFilePath>Intel\</RegisterFilePath>
+          <DBRegisterFilePath>Intel\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>STC8H4K32TLCD双层照明模块16路时控显示板12M</OutputName>
+          <OutputName>STC8H4K64TLCD双层照明模块16路时控显示板12M</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -110,11 +110,11 @@
           <SimDllName>S8051.DLL</SimDllName>
           <SimDllArguments></SimDllArguments>
           <SimDlgDll>DP51.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pDP8051</SimDlgDllArguments>
+          <SimDlgDllArguments>-p51R</SimDlgDllArguments>
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TP51.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-p51</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-p51R</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -196,8 +196,8 @@
             <UseMultipleDPTR>0</UseMultipleDPTR>
             <UseOnchipXram>0</UseOnchipXram>
             <HadIRAM>1</HadIRAM>
-            <HadXRAM>1</HadXRAM>
-            <HadIROM>1</HadIROM>
+            <HadXRAM>0</HadXRAM>
+            <HadIROM>0</HadIROM>
             <Moda2>0</Moda2>
             <Moddp2>0</Moddp2>
             <Modp2>0</Modp2>
@@ -271,9 +271,9 @@
                 <Size>0x0</Size>
               </Ocr3>
               <IRO>
-                <Type>1</Type>
+                <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0xfff9</Size>
+                <Size>0x0</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
@@ -283,7 +283,7 @@
               <XRA>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x1000</Size>
+                <Size>0x0</Size>
               </XRA>
               <XRA512>
                 <Type>0</Type>
