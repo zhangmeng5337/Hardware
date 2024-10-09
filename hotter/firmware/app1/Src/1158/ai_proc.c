@@ -213,12 +213,12 @@ void pressure_temp_proc()
         volt_tmp2 = data_ai.data2_ai[2*i];//u2
         volt_tmp =  volt_tmp - volt_tmp2; //(2u1-u2)
         tmp1 = volt_tmp2 * 1000  / volt_tmp; //1000u2/(2u1-u2)=75r/75+r
-        tmp2 = PT100_PR * tmp1;
-        tmp3 = PT100_PR - tmp1;
-        tmp4 = tmp2 / tmp3;
+        //tmp2 = PT100_PR * tmp1;
+        //tmp3 = PT100_PR - tmp1;
+        //tmp4 = tmp2 / tmp3;
         unsigned char index;
         index = i - ADC2_PT_INDEX + ADC1_PT_SIZE;
-        data_ai.temp[index] = tmp4;
+        data_ai.temp[index] = tmp1;
         data_ai.temp[index] = PT100_Temp(data_ai.temp[index]);
         data_ai.temp[index] = data_ai.temp[index] * PT100_RATIO;
         data_ai.temp[index] = data_ai.temp[index] + PT100_B;
