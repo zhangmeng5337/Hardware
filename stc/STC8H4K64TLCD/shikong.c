@@ -679,14 +679,15 @@ void dshikg(uchar ls,djd)
 //主函数开始
 main()
 {
-    pwr_init();
+   // pwr_init();
 	init();
 	time1_init();	
 	in_lcd();	//初始化LCD
 	led_init();//LED1-8初始化关	  
 	RTC_config();
 	nian=RTC_YEAR;
-	if(nian<0x22)
+	tinit();
+	//if(nian<0x28)
 	{
 		SetRTC();
 	}
@@ -696,7 +697,7 @@ main()
 	tpi=0;
 	while(1)
 	{
-	    lvd_proc();
+	  //  lvd_proc();
 		if(rlrc_p==0)
 		{
 			rcrljs_date();

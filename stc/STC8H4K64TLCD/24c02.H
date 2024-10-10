@@ -466,6 +466,61 @@ void delaya(uchar x)
 	for(y=x;y>0;y--)
 	 for(z=180;z>0;z--);
 }
+/********************************************eeprom*****************************/
+void IapIdle()
+{
+    IAP_CONTR = 0;                              //关闭IAP功能
+    IAP_CMD = 0;                                //清除命令寄存器
+    IAP_TRIG = 0;                               //清除触发寄存器
+    IAP_ADDRH = 0x80;                           //将地址设置到非IAP区域
+    IAP_ADDRL = 0;
+}
+
+char IapRead(int addr)
+{
+    char dat;
+
+    IAP_CONTR = 0x80;                           //使能IAP
+    IAP_TPS = 12;                               //设置等待参数12MHz
+    IAP_CMD = 1;                                //设置IAP读命令
+    IAP_ADDRL = addr;                           //设置IAP低地址
+    IAP_ADDRH = addr >> 8;                      //设置IAP高地址
+    IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
+    IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
+    ;
+    dat = IAP_DATA;                             //读IAP数据
+    IapIdle();                                  //关闭IAP功能
+
+    return dat;
+}
+
+void IapProgram(int addr, char dat)
+{
+    IAP_CONTR = 0x80;                           //使能IAP
+    IAP_TPS = 12;                               //设置等待参数12MHz
+    IAP_CMD = 2;                                //设置IAP写命令
+    IAP_ADDRL = addr;                           //设置IAP低地址
+    IAP_ADDRH = addr >> 8;                      //设置IAP高地址
+    IAP_DATA = dat;                             //写IAP数据
+    IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
+    IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
+    ;
+    IapIdle();                                  //关闭IAP功能
+}
+
+void IapErase(int addr)
+{
+    IAP_CONTR = 0x80;                           //使能IAP
+    IAP_TPS = 12;                               //设置等待参数12MHz
+    IAP_CMD = 3;                                //设置IAP擦除命令
+    IAP_ADDRL = addr;                           //设置IAP低地址
+    IAP_ADDRH = addr >> 8;                      //设置IAP高地址
+    IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
+    IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
+    ;                                    //
+    IapIdle();                                  //关闭IAP功能
+}
+
 //24C02起始信号
 void start()
 {
@@ -537,60 +592,6 @@ void write_add(uchar add,uchar address,uchar date)
 	
 }
 
-/********************************************eeprom*****************************/
-void IapIdle()
-{
-    IAP_CONTR = 0;                              //关闭IAP功能
-    IAP_CMD = 0;                                //清除命令寄存器
-    IAP_TRIG = 0;                               //清除触发寄存器
-    IAP_ADDRH = 0x80;                           //将地址设置到非IAP区域
-    IAP_ADDRL = 0;
-}
-
-char IapRead(int addr)
-{
-    char dat;
-
-    IAP_CONTR = 0x80;                           //使能IAP
-    IAP_TPS = 12;                               //设置等待参数12MHz
-    IAP_CMD = 1;                                //设置IAP读命令
-    IAP_ADDRL = addr;                           //设置IAP低地址
-    IAP_ADDRH = addr >> 8;                      //设置IAP高地址
-    IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
-    IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
-    ;
-    dat = IAP_DATA;                             //读IAP数据
-    IapIdle();                                  //关闭IAP功能
-
-    return dat;
-}
-
-void IapProgram(int addr, char dat)
-{
-    IAP_CONTR = 0x80;                           //使能IAP
-    IAP_TPS = 12;                               //设置等待参数12MHz
-    IAP_CMD = 2;                                //设置IAP写命令
-    IAP_ADDRL = addr;                           //设置IAP低地址
-    IAP_ADDRH = addr >> 8;                      //设置IAP高地址
-    IAP_DATA = dat;                             //写IAP数据
-    IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
-    IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
-    ;
-    IapIdle();                                  //关闭IAP功能
-}
-
-void IapErase(int addr)
-{
-    IAP_CONTR = 0x80;                           //使能IAP
-    IAP_TPS = 12;                               //设置等待参数12MHz
-    IAP_CMD = 3;                                //设置IAP擦除命令
-    IAP_ADDRL = addr;                           //设置IAP低地址
-    IAP_ADDRH = addr >> 8;                      //设置IAP高地址
-    IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
-    IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
-    ;                                    //
-    IapIdle();                                  //关闭IAP功能
-}
 
 
 //在24c02指定地址读出数据
@@ -608,7 +609,7 @@ uchar read_add(uchar add,uchar address)
 //	date=read_byte();
 //	stop();
 
-	uchar date;
+
 
 	date = IapRead(0x0400+address);
 	return date;	

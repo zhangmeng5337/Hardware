@@ -26,41 +26,42 @@ uchar   SetRTC(void)
 void SetRTC()
 {
     xchar tmp;
-    unsigned int result;
+    unsigned int result,result2;
+	  result2 = nian;
     P_SW2 |= 0x80;
-    result = nian / 16;
+    result = result2 / 16;
     tmp = result*10;
-    result = nian % 16;
+    result = result2 % 16;
     tmp = tmp + result;
     INIYEAR  = tmp;
-
-    result = yue / 16;
+ result2 = yue;
+    result = result2 / 16;
     tmp = result*10;
-    result = yue % 16;
+    result = result2 % 16;
     tmp = tmp + result;
     INIMONTH = tmp;
-
-    result = ri / 16;
+ result2 = ri;
+    result = result2 / 16;
     tmp = result*10;
-    result = ri % 16;
+    result = result2 % 16;
     tmp = tmp + result;
-    INIDAY   = ri;
-
-    result = shi / 16;
+    INIDAY   = tmp;
+result2 = shi;
+    result = result2 / 16;
     tmp = result*10;
-    result = shi % 16;
+    result = result2 % 16;
     tmp = tmp +result;
     INIHOUR  = tmp;
-
-    result = fen / 16;
+result2 = fen;
+    result = result2 / 16;
     tmp = result*10;
-    result = fen % 16;
+    result = result2 % 16;
     tmp = tmp + result;
     INIMIN   = tmp;
-
-    result = miao / 16;
+result2 = miao;
+    result = result2 / 16;
     tmp = result*10;
-    result = miao % 16;
+    result = result2 % 16;
     tmp = tmp + result;
     INISEC   = tmp;
     INISSEC  = 0;
@@ -197,4 +198,12 @@ void    RTC_read(void)
         if (zhou == 8)zhou = 1;
     }
 }
-
+void tinit()
+{
+	nian=0x24;
+	yue=0x10;
+	ri=0x10;
+	shi=0x18;
+	fen=0x1;
+	miao=0x0;
+}
