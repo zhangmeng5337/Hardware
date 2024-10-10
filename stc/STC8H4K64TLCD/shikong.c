@@ -7,11 +7,12 @@
 #include <STC8f.h>
 #include <math.h>
 #include <24c02.h>
-#include <rtc.h>
+//#include <ds1302.h>
+#include <RTC.h>
 #include <12864.h>
 #include <sun.h>
 #include <canshu.h>
-//#include <eeprom.h>
+//#include <gn1650.h>
 
 void jies_data()
 {
@@ -678,22 +679,24 @@ void dshikg(uchar ls,djd)
 //主函数开始
 main()
 {
+    pwr_init();
 	init();
 	time1_init();	
 	in_lcd();	//初始化LCD
-	led_init();//LED1-8初始化关	   
-	nian=YEAR;
+	led_init();//LED1-8初始化关	  
+	RTC_config();
+	nian=RTC_YEAR;
 	if(nian<0x22)
 	{
-		I2CWriteDate(0x48,0x58,0x08,0x03,0x31,0x08,0x22);
+		SetRTC();
 	}
-	I2CReadDate();
 	EA=1;
 	tx_tt=1;
 	mbdz=0;
 	tpi=0;
 	while(1)
 	{
+	    lvd_proc();
 		if(rlrc_p==0)
 		{
 			rcrljs_date();
@@ -779,7 +782,7 @@ void surt()interrupt 1
 			  cans=0;
 		}
 		ss_tt=~ss_tt;
-		if(cs_tt==0)I2CReadDate();
+		if(cs_tt==0)RTC_read();
 		if(ss_tt==0)
 		{
 			if(cf_bz)

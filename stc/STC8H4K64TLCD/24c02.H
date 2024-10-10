@@ -467,37 +467,77 @@ void delaya(uchar x)
 	 for(z=180;z>0;z--);
 }
 //24C02起始信号
-
+void start()
+{
+	sda=1;delay(5);
+	scl=1;delay(10);
+	sda=0;delay(10);
+	scl=0;delay(5);
+}
+//24C02终止信号
+void stop()
+{
+	scl=0;delay(10);
+	sda=0;delay(10);
+	scl=1;delay(10);
+	sda=1;delay(10);
+}
+//24C02应答信号
+void respons()
+{
+	uchar i=255;
+	sda=1;delay(10);
+	scl=1;delay(10);
+	while(sda){i--;delay(5);if(i==0)sda=0;}
+	scl=0;delay(10);
+}
+//向24C02写入一个字节
+void write_byte(uchar date)
+{
+	uchar i,temp;
+	temp=date;
+	for(i=0;i<8;i++)
+	{
+		temp=temp<<1;
+		scl=0;delay(10);
+		sda=CY;delay(10);
+		scl=1;delay(5);
+	}
+	scl=0;delay(10);
+	sda=1;delay(10);
+}
+//向24C02读出一个字节
+uchar read_byte()
+{
+	uchar i,k;
+	scl=0;delay(10);
+	sda=1;delay(10);
+	for(i=0;i<8;i++)
+	{
+		scl=1;delay(10);
+		k=(k<<1)|sda;delay(5);
+		scl=0;delay(10);
+	}
+	return k;
+}
 //在24c02指定地址写入数据
-/*void write_add(uchar add,uchar address,uchar date)
+void write_add(uchar add,uchar address,uchar date)
 {
-	start();
-	write_byte(0xa0+(add<<1));
-	respons();
-	write_byte(address);
-	respons();
-	write_byte(date);
-	respons();
-	stop();	
-}*/
-//在24c02指定地址读出数据
-/*uchar read_add(uchar add,uchar address)
-{
-	uchar date;
-	start();	
-	write_byte(0xa0+(add<<1));
-	respons();
-	write_byte(address);
-	respons();
-	start();
-	write_byte(0xa1+(add<<1));
-	respons();
-	date=read_byte();
-	stop();
-	return date;	
-}*/
-sfr     IAP_TPS     =   0xF5;
+//	start();
+//	write_byte(0xa0+(add<<1));
+//	respons();
+//	write_byte(address);
+//	respons();
+//	write_byte(date);
+//	respons();
+//	stop();	
+	IapErase( 0x0400+address);
+	IapProgram(0x0400+address, date);
 
+	
+}
+
+/********************************************eeprom*****************************/
 void IapIdle()
 {
     IAP_CONTR = 0;                              //关闭IAP功能
@@ -551,19 +591,27 @@ void IapErase(int addr)
     ;                                    //
     IapIdle();                                  //关闭IAP功能
 }
-void write_add(unsigned int add,unsigned int address,uchar date)
-{
-	IapErase( 0x0400+address);
-	IapProgram(0x0400+address, date);
 
-}
-unsigned char  read_add(uchar add,unsigned int address)
+
+//在24c02指定地址读出数据
+uchar read_add(uchar add,uchar address)
 {
+	uchar date;
+//	start();	
+//	write_byte(0xa0+(add<<1));
+//	respons();
+//	write_byte(address);
+//	respons();
+//	start();
+//	write_byte(0xa1+(add<<1));
+//	respons();
+//	date=read_byte();
+//	stop();
+
 	uchar date;
 
 	date = IapRead(0x0400+address);
-	return date;
-
+	return date;	
 }
 
 //2字节转为INT并返回
