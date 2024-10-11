@@ -153,7 +153,56 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000 -FP0($$Device:STM32F405RGTx$CMSIS\Flash\STM32F4xx_1024.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>77</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134238416</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\mqtt_analy.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/mqtt_analy.c\77</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>233</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134239066</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\mqtt_analy.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/mqtt_analy.c\233</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>318</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134237870</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\1158\ai_proc.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/1158/ai_proc.c\318</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -353,7 +402,7 @@
         <Ww>
           <count>39</count>
           <WinNumber>1</WinNumber>
-          <ItemText>lte_recv</ItemText>
+          <ItemText>lte_recv,0x10</ItemText>
         </Ww>
         <Ww>
           <count>40</count>
@@ -489,6 +538,21 @@
           <count>66</count>
           <WinNumber>1</WinNumber>
           <ItemText>data_ADC,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>67</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>68</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>mqtt_recv</ItemText>
+        </Ww>
+        <Ww>
+          <count>69</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>data_ai</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

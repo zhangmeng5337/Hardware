@@ -289,7 +289,7 @@ void ai_health_dec()
         failure_flag = 1;
         if (data_ai.press[i] >= MAX_PRESS || data_ai.press[i] < MIN_PRESS)
         {
-            failure_flag = failure_flag << (i + 12);
+            failure_flag = failure_flag << (i + ADC1_PT_SIZE+ADC2_PT_SIZE);
             data_ai.channel_status = data_ai.channel_status | failure_flag;
         }
         else

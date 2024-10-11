@@ -12,7 +12,7 @@
 #include <12864.h>
 #include <sun.h>
 #include <canshu.h>
-//#include <gn1650.h>
+#include <pwr.h>
 
 void jies_data()
 {

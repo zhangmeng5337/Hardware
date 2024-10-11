@@ -147,19 +147,22 @@ void do_NO_set(unsigned int do_NO_sel,unsigned char bit_set)
 }
 void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set)
 {
+    HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_SET);
 	do_NO_set(do_NO_sel,bit_set);
 	XL74HC595_MultiWrite(do_usr.do_No_out, 2);
 }
 
 void do_off()
 {
-	HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_RESET);
 
 
 	do_usr.do_No_out[0]=0xff;
 	do_usr.do_No_out[1]=0xff;	
 	XL74HC595_MultiWrite(do_usr.do_No_out, 2);
-
-
+}
+void relay_ctrl(unsigned char relay_num,unsigned char pwr_ctrl)
+{
+	do_ctrl_proc(relay_num,pwr_ctrl);
 }
 

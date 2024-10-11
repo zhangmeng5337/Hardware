@@ -575,7 +575,7 @@ void upload()
     memset(buf2, 0, 256);
 
 //1,3,2,0,0,184  0x01 0x03 0x02 0x00 0x00 0xb8
-    sprintf(buf2, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u",
+    sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
             get_recv_machine()->payload[0],
             get_recv_machine()->payload[1],
             get_recv_machine()->payload[2],
@@ -875,7 +875,7 @@ void mqtt_proc()
             if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
             {
                 reset_registerTick(MQTT_TX_TICK_NO);
-                upload();//????
+							upload();//????
                 mqtt_Info_Show();
                 //free_cjson();
 
