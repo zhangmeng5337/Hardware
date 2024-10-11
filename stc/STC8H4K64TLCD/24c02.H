@@ -504,7 +504,7 @@ void IapProgram(int addr, char dat)
     IAP_DATA = dat;                             //写IAP数据
     IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
     IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
-    ;
+     _nop_(); 
     IapIdle();                                  //关闭IAP功能
 }
 
@@ -517,7 +517,7 @@ void IapErase(int addr)
     IAP_ADDRH = addr >> 8;                      //设置IAP高地址
     IAP_TRIG = 0x5a;                            //写触发命令(0x5a)
     IAP_TRIG = 0xa5;                            //写触发命令(0xa5)
-    ;                                    //
+     _nop_();                                   //
     IapIdle();                                  //关闭IAP功能
 }
 

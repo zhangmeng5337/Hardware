@@ -42,7 +42,7 @@ void lvd_proc()
 
         if (PCON & LVDF)
         { 
-           IAP_CONTR = IAP_CONTR & 0xef;//disable reset 
+           IAP_CONTR = IAP_CONTR & 0xdf;//disable reset 
            goto  sleep;
         }
 		else
@@ -58,7 +58,7 @@ void pwr_init()
 {
     PCON &= ~LVDF;
     RSTCFG = LVD3V0;
-    IAP_CONTR = IAP_CONTR & 0xef;//disable reset
+    IAP_CONTR = IAP_CONTR & 0xdf;//disable reset
 
 
 //    while (1);
