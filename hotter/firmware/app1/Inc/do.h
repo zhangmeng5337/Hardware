@@ -36,7 +36,8 @@
 #define SECONDARY_PUMP_PWR	4
 #define HEATER_INDOOR_PWR	5
 
-
+#define RELAY_ON		0
+#define RELAY_OFF     1
 
 #define HC595_SHCP_Low()   	   HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,GPIO_PIN_RESET)
 #define HC595_SHCP_High()      HAL_GPIO_WritePin(IN_SCK_GPIO_Port,IN_SCK_Pin,GPIO_PIN_SET)

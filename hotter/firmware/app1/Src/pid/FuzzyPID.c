@@ -243,6 +243,8 @@ float Inverse_quantization(float maximum, float minimum, float qvalues)
 void fuzzy_init()
 {
     float membership_values[7] = {-3, -2, -1, 0, 1, 2, 3};
+   
+
     FuzzyPID_usr.num_area = 8; //划分区域个数
 
     memcpy(FuzzyPID_usr.e_membership_values, membership_values, 7); //输入e的隶属值

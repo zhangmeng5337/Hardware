@@ -12,6 +12,7 @@
 #include "water_ctrl.h"
 #include "mqtt_analy.h"
 #include "pid.h"
+#include "machine_ctrl.h"
 
 
 
@@ -76,6 +77,7 @@ void app_proc()
    di_proc(0);//di detection
    mqtt_proc();//lte ,mqtt and ota
    modbus_proc();//machine control
+   dev_ctrl();
   //modbus_test();
   // control_proc();
    //config_save();

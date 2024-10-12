@@ -302,7 +302,7 @@ void anlysis_mqtt_recv()
     float *buf;
     buf = low_temperature_cal(get_config()->indoor_temperature, ENVIRO_SIZE);
     get_temp_cal(buf);
-    fuzzy_proc(0);  //????????
+    fuzzy_proc(0);  //smart ctrl
 #endif
     // valid_flag = 0;
 

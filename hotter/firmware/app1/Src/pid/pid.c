@@ -12,7 +12,7 @@ float e_min = -60;
 float ec_max = 200;
 float ec_min = -200;
 float kp_max = 50;
-float kp_min = 0;
+float kp_min = 10;
 float ki_max = 0.1;
 float ki_min = -0.1;
 float kd_max = 0.01;
@@ -70,7 +70,7 @@ void pid_cal(unsigned char mode)
 
     erro_ppre = erro_pre;
     erro_pre = erro;
-    if (mode == 0)//智能控制
+    if (mode == 0)//智能控制 smart ctrl
     {
         if (indoor_temp_usr.temp_average >= (0.95 * get_config()->set_tindoor)) //平均温度达标
         {
@@ -89,7 +89,7 @@ void pid_cal(unsigned char mode)
             erro = get_config()->set_tindoor - indoor_temp_usr.temp_average;
 
     }
-    else  //本地控制
+    else  //本地控制  native ctrl
     {
         erro = MACHINE_IN_T - get_ai_data()->temp[AI_WATER_T_IN_INDEX];//温度加权
     }

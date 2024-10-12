@@ -274,7 +274,7 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
+                <StartAddress>0x8020000</StartAddress>
                 <Size>0x40000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
@@ -556,6 +556,11 @@
               <FileName>hotter.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\hotter.c</FilePath>
+            </File>
+            <File>
+              <FileName>machine_ctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\machine_ctrl.c</FilePath>
             </File>
           </Files>
         </Group>
