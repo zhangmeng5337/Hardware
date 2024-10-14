@@ -8,11 +8,12 @@ indoor_temp_stru indoor_temp_usr;
 float Target;
 float actual = 0;
 float e_max = 60;
-float e_min = -60;
-float ec_max = 200;
-float ec_min = -200;
+float e_min = -50;
+float ec_max = 110;
+float ec_min = -110;
 float kp_max = 50;
 float kp_min = 0;
+
 float ki_max = 0.1;
 float ki_min = -0.1;
 float kd_max = 0.01;
