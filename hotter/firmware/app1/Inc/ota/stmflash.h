@@ -1,4 +1,4 @@
-#ifndef __STMFLASH_H__
+﻿#ifndef __STMFLASH_H__
 #define __STMFLASH_H__
 
 #include "main.h"
@@ -21,7 +21,7 @@
 #define APP2   1
 
 #define APP3   3
-#define OTA_UPDATE_TO   APP2
+#define OTA_UPDATE_TO   APP1
 #define VERSION        "V1.0.33"
 
 

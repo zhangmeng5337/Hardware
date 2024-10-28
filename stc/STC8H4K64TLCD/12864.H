@@ -23,7 +23,15 @@ sbit led14=P0^6;
 sbit led15=P0^5;
 sbit led16=P5^3;
 
+void lcd_pwr()
+{
+	 CS1=1;	//芯片选通端,低有效
+	 RST=0;
+	 A0 =0;	//H:数据,L:命令
+	 SCL=0;	//串行时钟端
+	 SI =0;	//串行数据端
 
+}
 void led_init()
 {
 	led1=0;led2=0;led3=0;led4=0;
@@ -31,6 +39,12 @@ void led_init()
 	
 	led9=0;led10=0;led11=0;led12=0;
 	led13=0;led14=0;led15=0;led16=0;
+}
+void sleep()
+{
+	led9=0;led10=0;led11=0;led12=0;
+	led13=0;led14=0;led15=0;led16=0;
+
 }
 void Led_display()
 {

@@ -36,7 +36,7 @@ sfr TH1  = 0x8D;
 sfr	AUXR = 0x8E;
 sfr INT_CLKO = 0x8F;
 sfr INTCLKO  = 0x8F;
-
+sbi    EX2         =           INTCLKO^4;
 sfr P1    = 0x90;
 sfr P1M1  = 0x91;	//P1M1.n,P1M0.n 	=00--->Standard,	01--->push-pull		实际上1T的都一样
 sfr P1M0  = 0x92;	//					=10--->pure input,	11--->open drain

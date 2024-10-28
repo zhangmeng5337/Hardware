@@ -1,4 +1,4 @@
-﻿/*************笔记****************
+/*************笔记****************
 1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出�?
 2、CudeMX配置huart3�?
    ------------------------------------------
@@ -432,10 +432,10 @@ uint8_t lte_info_ota_show()
                     if (get_config()->Erase_flag ==
                             1)    //begin erase仅仅开始是擦除flash一�?
                     {
-                        if (OTA_UPDATE_TO == APP2)
-                            addr_wr = Application_2_Addr;
-                        else
+                        if (OTA_UPDATE_TO == APP1)
                             addr_wr = Application_1_Addr;
+                        else
+                            addr_wr = Application_2_Addr;
                         get_config()->Erase_flag = 0;
                         HAL_StatusTypeDef status = HAL_ERROR;
                         while (status == HAL_ERROR)

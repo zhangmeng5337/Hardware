@@ -200,7 +200,7 @@ void SysTick_Handler(void)
 //		  idwg_cnt = 0;
 //			
 //	}
-	HAL_IWDG_Refresh(&hiwdg);
+	//HAL_IWDG_Refresh(&hiwdg);
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */

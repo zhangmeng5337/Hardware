@@ -36,7 +36,7 @@ void sec_value(void)
 		case 0:		//√‹¬Î	
 		{
 			if(mima==0x04d2)
-			{
+			{   //IapErase(0);
 				for(i=0;i<34;i++)
 				{
 					write_add(i,sd[i]);

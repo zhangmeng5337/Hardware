@@ -741,7 +741,6 @@ void dshikg(uchar ls,djd)
 }
 static unsigned char result;
 
-
 //主函数开始
 main()
 {
@@ -750,13 +749,11 @@ main()
 
     //write_add(7 , 13,0x05);
     RTC_config();
-   // RTC_INT_CONFIG();
-init2:
-    result = 0;
+	RTC_INT_CONFIG();
+    init2:result = 0;
 
 
     CMP_config();
-	INTCLKO=EX2;
 
     init();
     time1_init();
@@ -772,8 +769,8 @@ init2:
     {
         //SetRTC();
     }
-
-
+	
+	
 
     EA=1;
     tx_tt=1;
@@ -781,14 +778,14 @@ init2:
     tpi=0;
     while(1)
     {
-        //if(B_1s)
-        {
-            B_1s=0;
-            //RTC_read();
-           // com_data_tx(miao);
-            Ext_Vcc_Det();
-
-        }
+        if(B_1s)
+				{
+        B_1s=0;
+		RTC_read();
+            com_data_tx(miao);
+					Ext_Vcc_Det();
+					
+				}
 
         if(result == 1)
         {

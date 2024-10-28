@@ -78,7 +78,9 @@ int Erase_page(uint32_t secaddr, uint32_t num)
 
     uint32_t PageError = 0;
     HAL_StatusTypeDef status;
-    /* ӁԽFLASH*/
+    /* ӁԽFLASH*/	
+						 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
+                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
     FLASH_EraseInitTypeDef FlashSet;
     HAL_FLASH_Unlock();
 	FLASH_WaitForLastOperation(50000);    //添加的代�?
@@ -86,8 +88,7 @@ int Erase_page(uint32_t secaddr, uint32_t num)
   __HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓�?
         /* Enable data cache */
     __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓�?
-	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
-                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
+
 
     /* Fill EraseInit structure*/
     FlashSet.TypeErase = FLASH_TYPEERASE_SECTORS;

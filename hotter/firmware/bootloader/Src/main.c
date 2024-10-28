@@ -144,7 +144,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-HAL_IWDG_Refresh(&hiwdg);	
+//HAL_IWDG_Refresh(&hiwdg);	
     /* USER CODE BEGIN 3 */
 		Start_BootLoader();
   }

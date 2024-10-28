@@ -1,74 +1,132 @@
 //#include "reg51.h"
 //#include "intrins.h"
-#include <STC8f.h>
-#define LVD2V0      0x00                        //LVD@2.0V
-#define LVD2V4      0x01                        //LVD@2.4V
-#define LVD2V7      0x02                        //LVD@2.7V
-#define LVD3V0      0x03                        //LVD@3.0V
-
-#define LVDF        0x20                        //PCON.5
-
-//sfr     RSTCFG      =   0xff;
-//#define ENLVR           0x40                    //RSTCFG.6
-//#define LVD2V0          0x00                    //LVD@2.0V
-//#define LVD2V4          0x01                    //LVD@2.4V
-//#define LVD2V7          0x02                    //LVD@2.7V
-//#define LVD3V0          0x03                    //LVD@3.0V
-//sbit    ELVD        =   IE^6;
-//#define LVDF            0x20                    //PCON.5
-//sbit    P32         =   P3^2;
-//
-//sfr     P0M1        =   0x93;
-//sfr     P0M0        =   0x94;
-//sfr     P1M1        =   0x91;
-//sfr     P1M0        =   0x92;
-//sfr     P2M1        =   0x95;
-//sfr     P2M0        =   0x96;
-//sfr     P3M1        =   0xb1;
-//sfr     P3M0        =   0xb2;
-//sfr     P4M1        =   0xb3;
-//sfr     P4M0        =   0xb4;
-//sfr     P5M1        =   0xc9;
-//sfr     P5M0        =   0xca;
-
-void lvd_proc()
+#include "stc8h.h"
+//========================================================================
+// 函数: void Ext_Vcc_Det(void)
+// 描述: 外部电源检测函数。
+// 参数: 无.
+// 返回: 无.
+// 版本: V1.0, 2022-10-10
+//========================================================================
+extern  unsigned char result;
+void pwr_init(void)
 {
-    if (PCON & LVDF)
+	EA=0;
+
+	INTCLKO=EX2;
+	EA=1;
+}
+
+void Ext_Vcc_Det(void)
+{
+    P35 = 0; //比较时，对外输出 0，做比较电路的地线
+  //  CMPCR1 |= 0x80; //使能比较器模块
+    _nop_();
+    _nop_();
+    _nop_();
+
+	        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+    if(CMPCR1 & 0x01) //判断是否 CMP+电平高于 CMP-，外部电源连接
     {
-
-    sleep:   
-		RSTCFG = LVD3V0;
-        delay();
-        PCON &= ~LVDF;
-        WKTCL = 0x0f;                               //设定掉电唤醒时钟约为1秒钟
-        WKTCH = 0x27;
-        PCON = 0x02;                            //MCU进入掉电模式
-		PCON &= ~LVDF;
-		RSTCFG = LVD3V0;
-		delay();
-
-        if (PCON & LVDF)
-        { 
-           IAP_CONTR = IAP_CONTR & 0xdf;//disable reset 
-           goto  sleep;
-        }
-		else
-		{
-			IAP_CONTR = IAP_CONTR | 0x10;//reset
-
-		}
+        CMPCR1 |= ~0x80; //使能比较器模块
+        P35 = 0;
     }
+    else
+    {
+        
 
+        CMPCR1 &= ~0x80; //关闭比较器模块
+        P35 = 1; //不比较时，对外设置为 1，I/O 口浮空，省电
+        _nop_();
+        _nop_();
+		com_data_tx(0x11);
+        sleep();
+		lcd_pwr();
+		//pwr_init();
+        PCON = 0x02; //STC8H8K64U B 版本芯片使用内部 32K 时钟，
+        //IAP_CONTR = IAP_CONTR|0x20;
+         
+		//EA=0;
+		
+		//INTCLKO=0;
+		//EA=1;
+
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+		result=1;
+    }
 }
-
-void pwr_init()
+void int2_Isr() interrupt 10
 {
-    PCON &= ~LVDF;
-    RSTCFG = LVD3V0;
-    IAP_CONTR = IAP_CONTR & 0xdf;//disable reset
 
-
-//    while (1);
 }
+
+/*****************************************************************************/
+//如果开启了比较器中断就需要编写对应的中断函数
+void CMP_Isr() interrupt 21
+{
+    CMPCR1 &= ~0x40; //清中断标志
+// P10 = CMPCR1 & 0x01; //中断方式读取比较器比较结果
+}
+
+// 函数: void CMP_config(void)
+// 描述: 比较器初始化函数。
+// 参数: 无.
+// 返回: 无.
+// 版本: V1.0, 2022-10-10
+//========================================================================
+void CMP_config(void)
+{
+	  P_SW2 |= 0x80;  //扩展寄存器(XFR)访问使能
+
+	  CMPEXCFG = 0x00;
+	//	CMPEXCFG |= 0x40;							//比较器DC迟滞输入选择，0:0mV; 0x40:10mV; 0x80:20mV; 0xc0:30mV
+	
+	//	CMPEXCFG &= ~0x04;							//P3.6为CMP-输入脚
+		CMPEXCFG |= 0x04;							//内部1.19V参考电压为CMP-输入脚
+	
+		CMPEXCFG &= ~0x03;							//P3.7为CMP+输入脚
+	//	CMPEXCFG |= 0x01;							//P5.0为CMP+输入脚
+	//	CMPEXCFG |= 0x02;							//P5.1为CMP+输入脚
+	//	CMPEXCFG |= 0x03;							//ADC输入脚为CMP+输入脚
+	
+	
+		CMPCR2 = 0x00;
+		CMPCR2 &= ~0x80;							//比较器正向输出
+	//	CMPCR2 |= 0x80; 							//比较器反向输出
+		CMPCR2 &= ~0x40;							//使能0.1us滤波
+	//	CMPCR2 |= 0x40; 							//禁止0.1us滤波
+	//	CMPCR2 &= ~0x3f;							//比较器结果直接输出
+		CMPCR2 |= 0x10; 							//比较器结果经过16个去抖时钟后输出
+	
+		CMPCR1 = 0x00;
+	   // CMPCR1 |= 0x30;							  //使能比较器边沿中断
+	//	CMPCR1 &= ~0x20;							//禁止比较器上升沿中断
+	//	CMPCR1 |= 0x20; 							//使能比较器上升沿中断
+	//	CMPCR1 &= ~0x10;							//禁止比较器下降沿中断
+	//	CMPCR1 |= 0x10; 							//使能比较器下降沿中断
+	
+	//	CMPCR1 &= ~0x02;							//禁止比较器输出
+		CMPCR1 |= 0x02; 							//使能比较器输出
+	
+		P_SW2 &= ~0x08; 							//选择P3.4作为比较器输出脚
+	//	P_SW2 |= 0x08;								//选择P4.1作为比较器输出脚
+		CMPCR1 |= 0x80; 							//使能比较器模块
+    //IAP_CONTR = IAP_CONTR&0xd0;
+
+}
+
+
+
+
 
 
