@@ -158,15 +158,10 @@ void GetSumGrad()
             if (FuzzyPID_usr.ec_grad_index[j] != -1)
             {
                 int indexKp = Kp_rule_list[FuzzyPID_usr.e_grad_index[i]][FuzzyPID_usr.ec_grad_index[j]] + 3;
-                int indexKi = Ki_rule_list[FuzzyPID_usr.e_grad_index[i]][FuzzyPID_usr.ec_grad_index[j]] + 3;
-                int indexKd = Kd_rule_list[FuzzyPID_usr.e_grad_index[i]][FuzzyPID_usr.ec_grad_index[j]] + 3;
-                //gradSums[index] = gradSums[index] + (e_gradmembership[i] * ec_gradmembership[j])* Kp_rule_list[e_grad_index[i]][ec_grad_index[j]];
+                 //gradSums[index] = gradSums[index] + (e_gradmembership[i] * ec_gradmembership[j])* Kp_rule_list[e_grad_index[i]][ec_grad_index[j]];
                 FuzzyPID_usr.KpgradSums[indexKp] = FuzzyPID_usr.KpgradSums[indexKp] + (FuzzyPID_usr.e_gradmembership[i] *
                                                    FuzzyPID_usr.ec_gradmembership[j]);
-                FuzzyPID_usr.KigradSums[indexKi] = FuzzyPID_usr.KigradSums[indexKi] + (FuzzyPID_usr.e_gradmembership[i] *
-                                                   FuzzyPID_usr.ec_gradmembership[j]);
-                FuzzyPID_usr.KdgradSums[indexKd] = FuzzyPID_usr.KdgradSums[indexKd] + (FuzzyPID_usr.e_gradmembership[i] *
-                                                   FuzzyPID_usr.ec_gradmembership[j]);
+                                          
             }
             else
             {
@@ -184,9 +179,7 @@ void GetOUT()
     for (int i = 0; i < FuzzyPID_usr.num_area - 1; i++)
     {
         FuzzyPID_usr.qdetail_kp += FuzzyPID_usr.kp_menbership_values[i] * FuzzyPID_usr.KpgradSums[i];
-        FuzzyPID_usr.qdetail_ki += FuzzyPID_usr.ki_menbership_values[i] * FuzzyPID_usr.KigradSums[i];
-        FuzzyPID_usr.qdetail_kd += FuzzyPID_usr.kd_menbership_values[i] * FuzzyPID_usr.KdgradSums[i];
-    }
+       }
 }
 
 //////////////////模糊PID控制实现函数/////////////////////////
@@ -201,24 +194,14 @@ void FuzzyPIDcontroller(float e_max, float e_min, float ec_max, float ec_min, fl
     GetSumGrad();
     GetOUT();
     FuzzyPID_usr.detail_kp = Inverse_quantization(kp_max, kp_min, FuzzyPID_usr.qdetail_kp);
-    FuzzyPID_usr.detail_ki = Inverse_quantization(ki_max, ki_min, FuzzyPID_usr.qdetail_ki);
-    FuzzyPID_usr.detail_kd = Inverse_quantization(kd_max, kd_min, FuzzyPID_usr.qdetail_kd);
-    FuzzyPID_usr.qdetail_kd = 0;
-    FuzzyPID_usr.qdetail_ki = 0;
     FuzzyPID_usr.qdetail_kp = 0;
 
     FuzzyPID_usr.kp = FuzzyPID_usr.kp + FuzzyPID_usr.detail_kp;
-    FuzzyPID_usr.ki = FuzzyPID_usr.ki + FuzzyPID_usr.detail_ki;
-    FuzzyPID_usr.kd = FuzzyPID_usr.kd + FuzzyPID_usr.detail_kd;
+
     if (FuzzyPID_usr.kp < 0)
         FuzzyPID_usr.kp = 0;
-    if (FuzzyPID_usr.ki < 0)
-        FuzzyPID_usr.ki = 0;
-    if (FuzzyPID_usr.kd < 0)
-        FuzzyPID_usr.kd = 0;
+
     FuzzyPID_usr.detail_kp = 0;
-    FuzzyPID_usr.detail_ki = 0;
-    FuzzyPID_usr.detail_kd = 0;
 
     //return output;
 }
@@ -227,7 +210,6 @@ void FuzzyPIDcontroller(float e_max, float e_min, float ec_max, float ec_min, fl
 float Quantization(float maximum, float minimum, float x)
 {
     float qvalues = 6.0 * (x - minimum) / (maximum - minimum) - 3;
-    //float qvalues=6.0*()
     return qvalues;
 
     //qvalues[1] = 3.0 * ecerro / (maximum - minimum);
@@ -250,14 +232,11 @@ void fuzzy_init()
     memcpy(FuzzyPID_usr.e_membership_values, membership_values, 7); //输入e的隶属值
     memcpy(FuzzyPID_usr.ec_membership_values, membership_values, 7);		//输入de/dt的隶属值
     memcpy(FuzzyPID_usr.kp_menbership_values, membership_values, 7); //输出增量kp的隶属值
-    memcpy(FuzzyPID_usr.ki_menbership_values, membership_values, 7); //输出增量ki的隶属值
-    memcpy(FuzzyPID_usr.kd_menbership_values, membership_values, 7); //输出增量kd的隶属值
     memcpy(FuzzyPID_usr.fuzzyoutput_menbership_values, membership_values, 7);
 
     memcpy(FuzzyPID_usr.gradSums, 0, 7);
     memcpy(FuzzyPID_usr.KpgradSums, 0, 7); //输出增量kp总的隶属度
-    memcpy(FuzzyPID_usr.KigradSums, 0, 7); //输出增量ki总的隶属度
-    memcpy(FuzzyPID_usr.KdgradSums, 0, 7); //输出增量kd总的隶属度
+   
 }
 FuzzyPID_stru *get_pid_params()
 {

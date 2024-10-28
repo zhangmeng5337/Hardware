@@ -1,5 +1,6 @@
 //#include "reg51.h"
 //#include "intrins.h"
+
 #include "stc8h.h"
 //========================================================================
 // º¯Êý: void Ext_Vcc_Det(void)
@@ -16,6 +17,7 @@ void pwr_init(void)
 	INTCLKO=EX2;
 	EA=1;
 }
+
 
 void Ext_Vcc_Det(void)
 {

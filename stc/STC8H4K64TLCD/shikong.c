@@ -17,7 +17,7 @@
 #include <sun.h>
 #include <canshu.h>
 #include <pwr.h>
-unsigned char busy;
+
 void jies_data()
 {
     switch(rp[1])
