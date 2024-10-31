@@ -757,31 +757,20 @@ init2:
 
     CMP_config();
 	INTCLKO=EX2;
-    init_dat();
+
     init();
     time1_init();
     in_lcd();	//初始化LCD
     led_init();//LED1-8初始化关
 
-    RTC_read();
+    // RTC_read();
 
-   // com_data_tx(nian);
+    com_data_tx(nian);
 
-//    nian=YEAR;
-//	yue=MONTH;
-//	ri=DAY;
-//	shi = HOUR;
-//	fen = MIN;
-//	miao = SEC;
-    if(nian<0x22||yue<=0||yue>0x12||shi>=0x24||fen>=0x60||ri>0x31||ri<=0)
+    nian=YEAR;
+    if(nian<0x22)
     {
-        nian = 0x24;
-		yue = 0x10;
-		ri=0x31;
-		shi = 0x10;
-		fen = 0x27;
-		miao = 0x00;
-        SetRTC();
+        //SetRTC();
     }
 
 

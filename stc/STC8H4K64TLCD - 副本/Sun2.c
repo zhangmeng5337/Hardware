@@ -1,72 +1,7 @@
-
-//日期序列化
-uint dateToInt(void)
-{
-	uchar year,month,day;
-	uint m;
-	uint days[]={0,31,59,90,120,151,181,212,243,273,304,334};
-
-	year=(nian>>4)*10;
-	year=year+(nian&0x0f);
-	month=(yue>>4)*10;
-	month=month+(yue&0x0f);
-	day=(ri>>4)*10;
-	day=day+(ri&0x0f);
-	m=days[month-1];
- 	m=m+day;
-	if(year%4==0)m++;
-	
-	return  m+(year/4);
-}
-
-void GetSunriseAndSunset(uchar jdu,jfen,wdu,wfen,sqd,sqf,char rlrc) 
-{
-	uint tians;
-	float xtude,ytude,shiqz,datd,datz;
-	xtude=(float)jfen/60+jdu;
-	ytude=(float)wfen/60+wdu;
-	if(jx_tt)xtude=180+xtude;
-	else xtude=180-xtude;
-	shiqz=(sqd+(float)sqf/60)*15;
-	if(sq_tt)xtude=xtude-shiqz;
-	else xtude=xtude+shiqz;
-
-	if(wx_tt)ytude=ytude*(-0.01732);
-	else ytude=ytude*0.01732;
-
-	tians=dateToInt();
-	datd=(float)6.28318*tians/365;
-
-	datz=(xtude+rlrc*acos(tan(0.3873*cos(datd))*tan(ytude))*57.4456)/0.015;
-
-	if(rlrc==1)shil=datz;
-	else shic=datz;
-}
-
-void rcrljs_date()
-{
-	GetSunriseAndSunset(jingd,jingf,weidd,weidf,shiqz,shiqf,-1);//日出
-	rics=shic/10000;
-	rics=(rics<<4)+(shic%10000/1000);
-	if(rics>=0x24)rils=rics-0x24;
-	shic=shic%1000;
-	shic=shic*60;
-	ricf=shic/10000;
-	ricf=(ricf<<4)+(shic%10000/1000);
-	GetSunriseAndSunset(jingd,jingf,weidd,weidf,shiqz,shiqf,1);//日落
-	rils=shil/10000;
-	rils=(rils<<4)+(shil%10000/1000);
-	if(rils>=0x24)rils=rils-0x24;
-	shil=shil%1000;
-	shil=shil*60;
-	rilf=shil/10000;
-	rilf=(rilf<<4)+(shil%10000/1000);
-	
-}
-/*
+#include "math.h"
 #define M_PI       3.14159265358979323846
 
-double RAD = 180.0 * 3600 /M_PI;//206264.8062470964
+double RAD = 180.0 * 3600 /M_PI;
 
 double dateToDouble(int year, int month, int day)
 {
@@ -82,8 +17,7 @@ double dateToDouble(int year, int month, int day)
 		leap = year / 100;
 		leap = 2 - leap + (int)(leap / 4);
 	}
-				//2459593.5						244.80008
-	jd = floor(365.25 * (year + 4716)) + floor(30.6*(month+1))+day+leap-1524.5;
+	jd = floor(365.25 * (year + 4716)) + floor(30.60001 * (month + 1)) + day + leap - 1524.5;
 	return jd;
 }
 
@@ -96,8 +30,8 @@ void doubleToTime(double time, int* hour, int* min, int* sec)
 	*hour = (int) t;
 	t = (t - *hour) * 60;
 	*min = (int) t;
-	t = (t - *min)*60;
-	*sec =(int)t;
+	t = (t - *min) * 60;
+	*sec = (int) t;
 }
 
 double sunHJ(double t)
@@ -155,7 +89,7 @@ double sunRiseTime(double date, double longitude, double latitude, double tz, do
 	return date - degree(H - H0) / M_PI / 2 + tz;
 }
 
-void GetSunriseAndSunset(double longitude, double latitude, double tz, int year, int month, int day)
+void GetSunriseAndSunset(double longitude, double latitude, double tz, int year, int month, int day, int* sunrise, int* sunset)
 {
 	int i;
 	int hour, min, sec;
@@ -168,14 +102,18 @@ void GetSunriseAndSunset(double longitude, double latitude, double tz, int year,
 		sun_Rise = sunRiseTime(sun_Rise, longitude, latitude, tz/24.0, &midDayTime, &dawnTime);
 
 	doubleToTime(sun_Rise, &hour, &min, &sec);
-//	sunrise[0]=hour;
-//	sunrise[1]=min;
-//	sunrise[2]=sec;
+	sunrise[0]=hour;
+	sunrise[1]=min;
+	sunrise[2]=sec;
 
 	doubleToTime(midDayTime + midDayTime - sun_Rise, &hour, &min, &sec);
-//	sunset[0]=hour;
-//	sunset[1]=min;
-//	sunset[2]=sec;
+	sunset[0]=hour;
+	sunset[1]=min;
+	sunset[2]=sec;
 }
-*/
 
+void main(void)
+{
+	int sunrise[3], sunset[3];
+	GetSunriseAndSunset(106.7166,26.58333,8,2018,7,22, sunrise, sunset);
+}

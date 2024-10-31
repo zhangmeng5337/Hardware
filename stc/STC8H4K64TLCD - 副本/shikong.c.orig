@@ -17,7 +17,7 @@
 #include <sun.h>
 #include <canshu.h>
 #include <pwr.h>
-
+unsigned char busy;
 void jies_data()
 {
     switch(rp[1])
@@ -741,7 +741,6 @@ void dshikg(uchar ls,djd)
 }
 static unsigned char result;
 
-
 //主函数开始
 main()
 {
@@ -750,41 +749,28 @@ main()
 
     //write_add(7 , 13,0x05);
     RTC_config();
-   // RTC_INT_CONFIG();
-init2:
-    result = 0;
+	RTC_INT_CONFIG();
+    init2:result = 0;
 
 
     CMP_config();
-	INTCLKO=EX2;
-    init_dat();
+
     init();
     time1_init();
     in_lcd();	//初始化LCD
     led_init();//LED1-8初始化关
 
-    RTC_read();
+    // RTC_read();
 
-   // com_data_tx(nian);
+    com_data_tx(nian);
 
-//    nian=YEAR;
-//	yue=MONTH;
-//	ri=DAY;
-//	shi = HOUR;
-//	fen = MIN;
-//	miao = SEC;
-    if(nian<0x22||yue<=0||yue>0x12||shi>=0x24||fen>=0x60||ri>0x31||ri<=0)
+    nian=YEAR;
+    if(nian<0x22)
     {
-        nian = 0x24;
-		yue = 0x10;
-		ri=0x31;
-		shi = 0x10;
-		fen = 0x27;
-		miao = 0x00;
-        SetRTC();
+        //SetRTC();
     }
-
-
+	
+	
 
     EA=1;
     tx_tt=1;
@@ -792,14 +778,14 @@ init2:
     tpi=0;
     while(1)
     {
-        //if(B_1s)
-        {
-            B_1s=0;
-            //RTC_read();
-           // com_data_tx(miao);
-            Ext_Vcc_Det();
-
-        }
+        if(B_1s)
+				{
+        B_1s=0;
+		RTC_read();
+            com_data_tx(miao);
+					Ext_Vcc_Det();
+					
+				}
 
         if(result == 1)
         {

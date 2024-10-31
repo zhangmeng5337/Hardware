@@ -36,7 +36,7 @@ void SetRTC()
     result = result2 % 16;
     tmp = tmp + result;
     INIYEAR  = tmp;
-    result2 = yue;
+ result2 = yue;
     result = result2 / 16;
     tmp = result*10;
     result = result2 % 16;

@@ -146,20 +146,20 @@ void sec_value(void)
                     for(j=0; j<14; j++)
                     {
                         buf[j]=sp[j];
-//                        com_data_tx(sp[j]);
+                        com_data_tx(sp[j]);
                         //delaya(50);
                     }
-                    write_add(7,0,sp[j]);delaya(50);
-//#if DEBUG_EN == 1
-//                    com_data_tx(0x53);
-//
-//                    for(j=0; j<14; j++)
-//                    {
-//                        com_data_tx(read_add(7, j));
-//                        //delaya(50);
-//                    }
-//
-//#endif
+                    write_add(7,0,sp[j]);
+#if DEBUG_EN == 1
+                    com_data_tx(0x53);
+
+                    for(j=0; j<14; j++)
+                    {
+                        com_data_tx(read_add(7, j));
+                        //delaya(50);
+                    }
+
+#endif
 
                     read_ee_data(2,0);
                     IapErase(2,0);
@@ -167,19 +167,19 @@ void sec_value(void)
                     for(j=0; j<16; j++)
                     {
                         buf[j]=0x7f;
-//                        com_data_tx(buf[j]);
+                        com_data_tx(buf[j]);
                         // delaya(50);
                     }
-//#if DEBUG_EN == 1
-//                    com_data_tx(0x53);
-//
-//                    for(j=0; j<16; j++)
-//                    {
-//                        com_data_tx(read_add(2, j));
-//                        //delaya(50);
-//                    }
-//
-//#endif
+#if DEBUG_EN == 1
+                    com_data_tx(0x53);
+
+                    for(j=0; j<16; j++)
+                    {
+                        com_data_tx(read_add(2, j));
+                        //delaya(50);
+                    }
+
+#endif
 
                     write_add(2,0,0x7f);
                     read_ee_data(1,0);
@@ -190,20 +190,20 @@ void sec_value(void)
                             buf[j]=0x0f;
                         else
                             buf[j]=0x08;
-//                        com_data_tx(buf[j]);
+                        com_data_tx(buf[j]);
                         //delaya(50);
                     }
-                    write_add(1,0,0x08);delaya(50);
-//#if DEBUG_EN == 1
-//                    com_data_tx(0x54);
-//
-//                    for(j=0; j<32; j++)
-//                    {
-//                        com_data_tx(read_add(1, j));
-//                        //delaya(50);
-//                    }
-//
-//#endif
+                    write_add(1,0,0x08);
+#if DEBUG_EN == 1
+                    com_data_tx(0x54);
+
+                    for(j=0; j<32; j++)
+                    {
+                        com_data_tx(read_add(1, j));
+                        //delaya(50);
+                    }
+
+#endif
 
                     WDT_CONTR=0x3c;		//看门狗
                     read_ee_data(0,0);
@@ -211,22 +211,22 @@ void sec_value(void)
                     for(j=0; j<256; j++)
                     {
                         buf[j]=0x00;
-//                        com_data_tx(buf[j]);
+                        com_data_tx(buf[j]);
 
                         // delaya(50);
                         if(j==128)WDT_CONTR=0x3c;//看门狗
                     }
-                    write_add(0,0,0x00);delaya(50);
-//#if DEBUG_EN == 1
-//                    com_data_tx(0x55);
-//
-//                    for(j=0; j<256; j++)
-//                    {
-//                        com_data_tx(read_add(0, j));
-//                        //delaya(50);
-//                    }
-//
-//#endif
+                    write_add(0,0,0x00);
+#if DEBUG_EN == 1
+                    com_data_tx(0x55);
+
+                    for(j=0; j<256; j++)
+                    {
+                        com_data_tx(read_add(0, j));
+                        //delaya(50);
+                    }
+
+#endif
 
                     init();
                     dnyr_t=0;
@@ -235,8 +235,6 @@ void sec_value(void)
                 break;
             case 0x01:	//时钟
             {
-                com_data_tx(0xaa);
-				SetRTC();
 //					I2CWriteDate(miao,fen,shi,zhou,ri,yue,nian);
             } break;
             case 0x02:
@@ -252,59 +250,131 @@ void sec_value(void)
                 buf[4]=weidf;
                 buf[5]=shiqz;
                 buf[6]=shiqf;
-                write_add(7,0,jwsq&0x07);delaya(50);
-//#if DEBUG_EN == 1
-//
-//                com_data_tx(0x56);
-//                for(j=0; j<7; j++)
-//                {
-//                    com_data_tx(buf[j]);
-//                    //delaya(50);
-//                }
-//                for(j=0; j<512; j++)
-//                {
-//                    com_data_tx(read_add(7, j));
-//                    //delaya(50);
-//                }
-//
-//#endif
+                write_add(7,0,jwsq&0x07);
+#if DEBUG_EN == 1
 
-                        break;
+                com_data_tx(0x56);
+                for(j=0; j<7; j++)
+                {
+                    com_data_tx(buf[j]);
+                    //delaya(50);
+                }
+                for(j=0; j<7; j++)
+                {
+                    com_data_tx(read_add(7, j));
+                    //delaya(50);
+                }
+
+#endif
+
+                /* read_ee_data(7,0);
+                 IapErase(0,0);
+                 delaya(50);
+                 buf[1]=jingd;
+                 write_add(7,1,jingd);
+
+                 read_ee_data(7,0);
+                 IapErase(0,0);
+                 delaya(50);
+                 buf[2]=jingf;
+                 write_add(7,2,jingf);
+
+                 read_ee_data(7,0);
+                 IapErase(0,0);
+                 delaya(50);
+                 buf[3]=weidd;
+                 write_add(7,3,weidd);
+
+                 read_ee_data(7,0);
+                 IapErase(0,0);
+                 delaya(50);
+                 buf[4]=weidf;
+                 write_add(7,4,weidf);
+
+                 read_ee_data(7,0);
+                 IapErase(0,0);
+                 delaya(50);
+                 buf[5]=shiqz;
+                 write_add(7,5,shiqz);
+
+                 read_ee_data(7,0);
+                 IapErase(0,0);
+                 delaya(50);
+                 buf[6]=shiqf;
+                 write_add(7,6,shiqf);*/
+
+
+
+
+
+                /*read_ee_data(7,0);
+                IapErase(7,0);
+                buf[0]=jwsq&0x07;
+                write_add(7,0,jwsq&0x07);
+
+                read_ee_data(7,0);
+                IapErase(0,0);
+                delaya(50);
+                buf[1]=jingd;
+                write_add(7,1,jingd);
+
+                read_ee_data(7,0);
+                IapErase(0,0);
+                delaya(50);
+                buf[2]=jingf;
+                write_add(7,2,jingf);
+
+                read_ee_data(7,0);
+                IapErase(0,0);
+                delaya(50);
+                buf[3]=jingf;
+                write_add(7,3,weidd);
+
+                read_ee_data(7,0);
+                IapErase(0,0);
+                delaya(50);
+                buf[4]=weidf;
+                write_add(7,4,weidf);
+
+                read_ee_data(7,0);
+                IapErase(0,0);
+                delaya(50);
+                buf[5]=shiqz;
+                write_add(7,5,shiqz);
+
+                read_ee_data(7,0);
+                IapErase(0,0);
+                delaya(50);
+                buf[6]=shiqf;
+                write_add(7,6,shiqf);*/
+
+
+            }
+            break;
             case 0x03:
             {
                 read_ee_data(7,0);
-//				com_data_tx(0x57);
-//                for(j=0; j<512; j++)
-//                {
-//                    com_data_tx(buf[j]);
-//                    //delaya(50);
-//                }
-
-                IapErase(7,0); delaya(50);
-
-
+                IapErase(7,0);
                 buf[7]=ipdz>>8;
                 buf[8]=ipdz&0xff;
-                buf[13]=xhao;  
+                buf[13]=xhao;
+                write_add(7,0,ipdz>>8);
+
+#if DEBUG_EN == 1
 				
-//                for(j=0; j<512; j++)
-//                {
-//                    com_data_tx(buf[j]);
-//                    //delaya(50);
-//                }
-                write_add(7,0,ipdz>>8);delaya(50);
-//
-//#if DEBUG_EN == 1
-//
-//				com_data_tx(0x58);
-//
-//                for(j=0; j<512; j++)
-//                {
-//                    com_data_tx(read_add(7, j));
-//                    //delaya(50);
-//                }
-//
-//#endif
+								com_data_tx(0x57);
+								for(j=0; j<14; j++)
+								{
+									com_data_tx(buf[j]);
+									//delaya(50);
+								}
+								for(j=0; j<14; j++)
+								{
+									com_data_tx(read_add(7, j));
+									//delaya(50);
+								}
+				
+#endif
 
                 /*write_add(7,7,ipdz>>8);
 
@@ -327,28 +397,22 @@ void sec_value(void)
                 fuz_date();
                 read_ee_data(0,0);
                 IapErase(0,0);
-				com_data_tx(0xab);
-                for(j=0; j<256; j++)
-                {
-                    com_data_tx(dsf[j]);
-                }
-
                 for(j=0; j<256; j++)
                 {
                     buf[j]=dsf[j];
                     com_data_tx(buf[j]);
                 }
-                write_add(0,0,buf[j]);delaya(50);
+                write_add(0,0,dsf[j]);
 #if DEBUG_EN == 1
+								
+												com_data_tx(0x58);
 
-                com_data_tx(0x58);
-
-                for(j=0; j<256; j++)
-                {
-                    com_data_tx(read_add(0, j));
-                    //delaya(50);
-                }
-
+												for(j=0; j<256; j++)
+												{
+													com_data_tx(read_add(0, j));
+													//delaya(50);
+												}
+								
 #endif
 
                 read_ee_data(7,0);
@@ -357,22 +421,22 @@ void sec_value(void)
                 buf[10]=rlkb;
                 buf[11]=rcga;
                 buf[12]=rcgb;
-                write_add(7,0,rlka);delaya(50);
-#if DEBUG_EN == 1
+                write_add(7,0,rlka);
+				#if DEBUG_EN == 1
+								
+												com_data_tx(0x6b);
+												for(j=0; j<13; j++)
+												{
+													com_data_tx(buf[j]);
+													//delaya(50);
+												}
 
-                com_data_tx(0x6b);
-                for(j=0; j<256; j++)
-                {
-                    com_data_tx(buf[j]);
-                    //delaya(50);
-                }
-
-                for(j=0; j<256; j++)
-                {
-                    com_data_tx(read_add(7, j));
-                    //delaya(50);
-                }
-
+												for(j=0; j<13; j++)
+												{
+													com_data_tx(read_add(7, j));
+													//delaya(50);
+												}
+								
 #endif
                 /* write_add(7,9,rlka);
                  delaya(50);
@@ -399,27 +463,26 @@ void sec_value(void)
             {
                 jiar[kgls-1]=xqbz;
                 read_ee_data(2,0);
-                IapErase(2,0);
-                com_data_tx(0x59);
+                IapErase(2,0);com_data_tx(0x59);
                 for(j=0; j<16; j++)
                 {
                     buf[j]=jiar[j];
-                    com_data_tx(buf[j]);
+					com_data_tx(buf[j]);
 
                     //delaya(50);
                 }
-                write_add(2,0,jiar[j]);delaya(50);
-
+                write_add(2,0,jiar[j]);
+			
 #if DEBUG_EN == 1
-
-
-
-                for(j=0; j<16; j++)
-                {
-                    com_data_tx(read_add(2, j));
-                    //delaya(50);
-                }
-
+							
+											
+						
+											for(j=0; j<16; j++)
+											{
+												com_data_tx(read_add(2, j));
+												//delaya(50);
+											}
+							
 #endif
 
             }
@@ -427,26 +490,25 @@ void sec_value(void)
             case 0x06:
             {
                 read_ee_data(1,0);
-                IapErase(1,0);
-                com_data_tx(0x6a);
+                IapErase(1,0);com_data_tx(0x6a);
                 for(j=0; j<32; j++)
                 {
                     buf[j]=gmkg[j];
-                    com_data_tx(buf[j]);
+					com_data_tx(buf[j]);
 
                     //delaya(50);
                 }
-                write_add(1,0,gmkg[j]);delaya(50);
+                write_add(1,0,gmkg[j]);
 #if DEBUG_EN == 1
-
-
-
-                for(j=0; j<16; j++)
-                {
-                    com_data_tx(read_add(1, j));
-                    //delaya(50);
-                }
-
+										
+														
+									
+														for(j=0; j<16; j++)
+														{
+															com_data_tx(read_add(1, j));
+															//delaya(50);
+														}
+										
 #endif
 
             }
@@ -455,20 +517,18 @@ void sec_value(void)
             {
                 read_ee_data(7,0);
                 IapErase(7,0);
-                buf[15]=xf_fig;
-                com_data_tx(0x6b);
-                com_data_tx(buf[15]);
-                write_add(7,0,xf_fig);delaya(50);
+                buf[15]=xf_fig;com_data_tx(0x6b);com_data_tx(buf[15]);
+                write_add(7,0,xf_fig);
 #if DEBUG_EN == 1
-
-
-
-                for(j=0; j<16; j++)
-                {
-                    com_data_tx(read_add(7, j));
-                    //delaya(50);
-                }
-
+														
+																		
+													
+																		for(j=0; j<16; j++)
+																		{
+																			com_data_tx(read_add(7, j));
+																			//delaya(50);
+																		}
+														
 #endif
 
                 kzhi_com();
@@ -479,7 +539,7 @@ void sec_value(void)
                 read_ee_data(7,0);
                 IapErase(7,0);
                 buf[16]=botelv_fig;
-                write_add(7,0,botelv_fig);delaya(50);
+                write_add(7,0,botelv_fig);
                 // delaya(50);
                 kzhi_com();
             }
@@ -489,7 +549,7 @@ void sec_value(void)
                 read_ee_data(7,0);
                 IapErase(7,0);
                 buf[17]=dingshi_fig;
-                write_add(7,0,dingshi_fig);delaya(50);
+                write_add(7,0,dingshi_fig);
                 // delaya(50);
             }
             break;
@@ -508,7 +568,6 @@ void sec_value(void)
         kzhi_com();
     }
 }
-		}
 uchar gmsz_dat(uchar date)
 {
     if((date&0x80))date=date&0x7f;
@@ -648,9 +707,9 @@ void up_value(void)
                     else jingd=jingd+10;
                     if(jingd>180)jingd=jingd-180;
                     if(jingd==180)jingf=0;
-
-//                    com_data_tx(0x7a);
-//                    com_data_tx(jingd);
+					
+					com_data_tx(0x7a);
+					com_data_tx(jingd);
                 }
                 else if(yiwei==3)
                 {
@@ -659,8 +718,8 @@ void up_value(void)
                     i++;
                     if(i>0x09)i=0;
                     jingd=jingd+i;
-//                    com_data_tx(0x7b);
-//                    com_data_tx(jingd);
+				com_data_tx(0x7b);
+				com_data_tx(jingd);
 
                 }
                 else if(yiwei==4)
@@ -671,8 +730,8 @@ void up_value(void)
                         else jingf=jingf+10;
                         if(jingf>59)jingf=jingf-60;
                     }
-//                    com_data_tx(0x7c);
-//                    com_data_tx(jingf);
+										com_data_tx(0x7c);
+					com_data_tx(jingd);
                 }
                 else if(yiwei==5)
                 {
@@ -684,8 +743,8 @@ void up_value(void)
                         if(i>0x09)i=0;
                         jingf=jingf+i;
                     }
-//                    com_data_tx(0x7d);
-//                    com_data_tx(jingf);
+										com_data_tx(0x7d);
+					com_data_tx(jingf);
                 }
                 else if(yiwei==6)wx_tt=~wx_tt;
                 else if(yiwei==7)
@@ -694,8 +753,8 @@ void up_value(void)
                     else weidd=weidd+10;
                     if(weidd>90)weidd=weidd-90;
                     if(weidd==90)weidf=0;
-//                    com_data_tx(0x7e);
-//                    com_data_tx(weidd);
+										com_data_tx(0x7e);
+					com_data_tx(weidd);	
                 }
                 else if(yiwei==8)
                 {
@@ -704,8 +763,8 @@ void up_value(void)
                     i++;
                     if(i>0x09)i=0;
                     weidd=weidd+i;
-//                    com_data_tx(0x7f);
-//                    com_data_tx(weidd);
+										com_data_tx(0x7f);
+					com_data_tx(weidd);	
 
                 }
                 else if(yiwei==9)
@@ -715,8 +774,8 @@ void up_value(void)
                         if(weidf==50)weidf=0;
                         else weidf=weidf+10;
                         if(weidf>59)weidf=weidf-60;
-//                        com_data_tx(0x8a);
-//                        com_data_tx(weidf);
+										com_data_tx(0x8a);
+					com_data_tx(weidf);
 
                     }
                 }
@@ -729,8 +788,8 @@ void up_value(void)
                         i++;
                         if(i>0x09)i=0;
                         weidf=weidf+i;
-//                        com_data_tx(0x8b);
-//                        com_data_tx(weidf);
+																com_data_tx(0x8b);
+					com_data_tx(weidf);
                     }
                 }
                 else if(yiwei==11)sq_tt=~sq_tt;
@@ -739,9 +798,6 @@ void up_value(void)
                     shiqz++;
                     if(shiqz>12)shiqz=0;
                     if(shiqz==12)shiqf=0;
-//				com_data_tx(0x8c);
-//				com_data_tx(shiqf);
-
                 }
                 else if(yiwei==13)
                 {
@@ -750,9 +806,6 @@ void up_value(void)
                         if(shiqf==50)shiqf=0;
                         else shiqf=shiqf+10;
                         if(shiqf>59)shiqf=shiqf-60;
-//					com_data_tx(0x8d);
-//					com_data_tx(shiqf);
-
                     }
                 }
                 else if(yiwei==14)
@@ -764,9 +817,6 @@ void up_value(void)
                         i++;
                         if(i>0x09)i=0;
                         shiqf=shiqf+i;
-//					com_data_tx(0x8d);
-//					com_data_tx(shiqf);
-
                     }
                 }
             }
@@ -778,7 +828,7 @@ void up_value(void)
                     if(ipdz>=255)ipdz=1;
                     else ipdz=ipdz+100;
                     if(ipdz>255)ipdz=ipdz-255;
-//                    com_data_tx(0x11);
+					com_data_tx(0x11);
                 }
                 else if(yiwei==2)
                 {
@@ -786,8 +836,7 @@ void up_value(void)
                     ipdz=ipdz-(i*10);
                     i++;
                     if(i>9)i=0;
-                    ipdz=ipdz+(i*10);
-//                    com_data_tx(0x12);
+                    ipdz=ipdz+(i*10);	com_data_tx(0x12);
                 }
                 else if(yiwei==3)
                 {
@@ -796,15 +845,12 @@ void up_value(void)
                     i++;
                     if(i>9)i=0;
                     ipdz=ipdz+i;
-                    if(ipdz==0)ipdz=1;
-//                    com_data_tx(0x13);
+                    if(ipdz==0)ipdz=1;	com_data_tx(0x13);
                 }
                 else if(yiwei==4)
                 {
                     xhao++;
-                    if(xhao>4)xhao=1;
-//                    com_data_tx(0x14);
-//                    com_data_tx(xhao);
+                    if(xhao>4)xhao=1;	com_data_tx(0x14);com_data_tx(xhao);
                 }
             }
             break;

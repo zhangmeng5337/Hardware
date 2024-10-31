@@ -5,7 +5,7 @@
 #define xint  xdata unsigned int
 #define ulong unsigned long
 #define xlong xdata unsigned long
-#define DEBUG_EN  1
+#define DEBUG_EN  0
 extern unsigned char busy;
 sbit led=P1^3;	//背光
 sbit sda=P7^2;
@@ -180,10 +180,10 @@ xint ipdz;
 
 xchar kgls=1;			//开关路数01-16
 xchar shid=1;			//时段1-4
-xchar kshia,kfena,gshia,gfena;//第1时段
-xchar kshib,kfenb,gshib,gfenb;//第2时段
-xchar kshic,kfenc,gshic,gfenc;//第3时段
-xchar kshid,kfend,gshid,gfend;//第4时段
+unsigned char kshia=0,kfena=0,gshia=0,gfena=0;//第1时段
+unsigned char kshib=0,kfenb=0,gshib=0,gfenb=0;//第2时段
+unsigned char kshic=0,kfenc=0,gshic=0,gfenc=0;//第3时段
+unsigned char kshid=0,kfend=0,gshid=0,gfend=0;//第4时段
 
 xchar gzdu;
 xchar cxcs=0,txcx,xsqh,txbz,sdfw,cfjs;
@@ -208,6 +208,8 @@ uchar code sp[]=
     0x01,				//波特率 1：9600
     0x00				//定时不随第一路
 };
+
+
 
 uchar code shuz[]=
 {
@@ -267,26 +269,29 @@ uchar code zhif[]=
     0x08,0xF8,0xF8,0x00,0xF8,0xF8,0x08,0x00,0x20,0x3F,0x00,0x3F,0x00,0x3F,0x20,0x00,//M38
     0x08,0xF8,0x30,0xC0,0x00,0x08,0xF8,0x08,0x20,0x3F,0x20,0x00,0x07,0x18,0x3F,0x00,//N39
     0xE0,0x10,0x08,0x08,0x08,0x10,0xE0,0x00,0x0F,0x10,0x20,0x20,0x20,0x10,0x0F,0x00,//O40
-    0x08,0xF8,0x08,0x08,0x08,0x08,0xF0,0x00,0x20,0x3F,0x21,0x01,0x01,0x01,0x00,0x00,//P
-    0xE0,0x10,0x08,0x08,0x08,0x10,0xE0,0x00,0x0F,0x18,0x24,0x24,0x38,0x50,0x4F,0x00,//Q
-    0x08,0xF8,0x88,0x88,0x88,0x88,0x70,0x00,0x20,0x3F,0x20,0x00,0x03,0x0C,0x30,0x20,//R
-    0x00,0x70,0x88,0x08,0x08,0x08,0x38,0x00,0x00,0x38,0x20,0x21,0x21,0x22,0x1C,0x00,//S
-    0x18,0x08,0x08,0xF8,0x08,0x08,0x18,0x00,0x00,0x00,0x20,0x3F,0x20,0x00,0x00,0x00,//T
-    0x08,0xF8,0x08,0x00,0x00,0x08,0xF8,0x08,0x00,0x1F,0x20,0x20,0x20,0x20,0x1F,0x00,//U
-    0x08,0x78,0x88,0x00,0x00,0xC8,0x38,0x08,0x00,0x00,0x07,0x38,0x0E,0x01,0x00,0x00,//V
-    0xF8,0x08,0x00,0xF8,0x00,0x08,0xF8,0x00,0x03,0x3C,0x07,0x00,0x07,0x3C,0x03,0x00,//W
-    0x08,0x18,0x68,0x80,0x80,0x68,0x18,0x08,0x20,0x30,0x2C,0x03,0x03,0x2C,0x30,0x20,//X
-    0x08,0x38,0xC8,0x00,0xC8,0x38,0x08,0x00,0x00,0x00,0x20,0x3F,0x20,0x00,0x00,0x00,//Y
-    0x10,0x08,0x08,0x08,0xC8,0x38,0x08,0x00,0x20,0x38,0x26,0x21,0x20,0x20,0x18,0x00,//Z
+	//0x00,0x00,0x38,0x6C,0xC6,0xC6,0xC6,0xC6,0xC6,0xC6,0x6C,0x38,0x00,0x00,0x00,0x00, // -O
+	0x08,0xF8,0x08,0x08,0x08,0x08,0xF0,0x00,0x20,0x3F,0x21,0x01,0x01,0x01,0x00,0x00,//P41
+    0xE0,0x10,0x08,0x08,0x08,0x10,0xE0,0x00,0x0F,0x18,0x24,0x24,0x38,0x50,0x4F,0x00,//Q42
+    0x08,0xF8,0x88,0x88,0x88,0x88,0x70,0x00,0x20,0x3F,0x20,0x00,0x03,0x0C,0x30,0x20,//R43
+    0x00,0x70,0x88,0x08,0x08,0x08,0x38,0x00,0x00,0x38,0x20,0x21,0x21,0x22,0x1C,0x00,//S44
+    0x18,0x08,0x08,0xF8,0x08,0x08,0x18,0x00,0x00,0x00,0x20,0x3F,0x20,0x00,0x00,0x00,//T45
+    0x08,0xF8,0x08,0x00,0x00,0x08,0xF8,0x08,0x00,0x1F,0x20,0x20,0x20,0x20,0x1F,0x00,//U46
+    0x08,0x78,0x88,0x00,0x00,0xC8,0x38,0x08,0x00,0x00,0x07,0x38,0x0E,0x01,0x00,0x00,//V47
+    0xF8,0x08,0x00,0xF8,0x00,0x08,0xF8,0x00,0x03,0x3C,0x07,0x00,0x07,0x3C,0x03,0x00,//W48
+    0x08,0x18,0x68,0x80,0x80,0x68,0x18,0x08,0x20,0x30,0x2C,0x03,0x03,0x2C,0x30,0x20,//X49
+    0x08,0x38,0xC8,0x00,0xC8,0x38,0x08,0x00,0x00,0x00,0x20,0x3F,0x20,0x00,0x00,0x00,//Y50
+    0x10,0x08,0x08,0x08,0xC8,0x38,0x08,0x00,0x20,0x38,0x26,0x21,0x20,0x20,0x18,0x00,//Z51
     0x00,0x00,0x00,0xC0,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x30,0x30,0x00,0x00,0x00,//: //52
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,//-
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//
-    0x00,0x20,0x50,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//`
-    0x00,0x40,0x30,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//'
+   // 0x00,0x00,0x02,0x08,0x02,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,//-53
+    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//54
+    0x00,0x20,0x50,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//`55
+    0x00,0x40,0x30,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//'56
     0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x00,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x00,//= 57
     0x40,0x20,0x20,0x40,0x80,0x80,0x40,0x00,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x00,//~=58
     0x00,0x00,0x00,0xFC,0xFC,0x00,0x00,0x00,0x00,0x08,0x10,0x3F,0x3F,0x10,0x08,0x00,//^ 59
     0x00,0x10,0x08,0xFC,0xFC,0x08,0x10,0x00,0x00,0x00,0x00,0x3F,0x3F,0x00,0x00,0x00,//  60
+	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x18,0x18,0x18,0x30,0x00,0x00,0x00,//61
 
 };
 
@@ -459,7 +464,10 @@ uchar code deng[]=
 //延时程序
 void delay(uchar i)
 {
-	while(i!=0){i--;}	
+    while(i!=0)
+    {
+        i--;
+    }
 }
 void delaya(uchar x)
 {
@@ -472,11 +480,11 @@ void com_data_tx(unsigned char data2)
 {
 
 
-	//EA=0;
-		SBUF=data2;
-		while(TI==0){;};
-		TI=0;
-	//EA=1;
+    //EA=0;
+    SBUF=data2;
+    while(TI==0) {;};
+    TI=0;
+    //EA=1;
 
 }//*/
 /********************************************eeprom*****************************/
@@ -528,40 +536,40 @@ void IapIdle()
 }
 int sector_cal(int add)
 {
-int tmp;
-if(add>=0&&add<1)
-{
-	tmp = 0;
-}
-else if(add>=1&&add<2)
-{
-	tmp = 512;
-}
-	else if(add>=2&&add<3)
-	{
-		tmp = 1024;
-	}
-	else if(add>=3&&add<4)
-	{
-		tmp = 1536;
-	}
-	else if(add>=4&&add<5)
-	{
-		tmp = 2048;
-	}
-	else if(add>=5&&add<6)
-	{
-		tmp = 2560;
-	}
-	else if(add>=6&&add<7)
-	{
-		tmp = 3072;
-	}
-	else if(add>=7&&add<8)
-	{
-		tmp = 3584;
-	}
-	return tmp;
+    int tmp;
+    if(add>=0&&add<1)
+    {
+        tmp = 0;
+    }
+    else if(add>=1&&add<2)
+    {
+        tmp = 512;
+    }
+    else if(add>=2&&add<3)
+    {
+        tmp = 1024;
+    }
+    else if(add>=3&&add<4)
+    {
+        tmp = 1536;
+    }
+    else if(add>=4&&add<5)
+    {
+        tmp = 2048;
+    }
+    else if(add>=5&&add<6)
+    {
+        tmp = 2560;
+    }
+    else if(add>=6&&add<7)
+    {
+        tmp = 3072;
+    }
+    else if(add>=7&&add<8)
+    {
+        tmp = 3584;
+    }
+    return tmp;
 
 }
 
@@ -608,8 +616,8 @@ void IapProgram(int addr, char dat)
 void IapErase(int add,int addr)
 {
     int add_tmp;
-	add_tmp = sector_cal( add) ;	
-	EA=0;
+    add_tmp = sector_cal( add) ;
+    EA=0;
     IAP_CONTR = 0x80;                           //使能IAP
     IAP_TPS = 12;                               //设置等待参数12MHz
     IAP_CMD = 3;                                //设置IAP擦除命令
@@ -629,56 +637,82 @@ void IapErase(int add,int addr)
 //24C02起始信号
 void start()
 {
-	sda=1;delay(5);
-	scl=1;delay(10);
-	sda=0;delay(10);
-	scl=0;delay(5);
+    sda=1;
+    delay(5);
+    scl=1;
+    delay(10);
+    sda=0;
+    delay(10);
+    scl=0;
+    delay(5);
 }
 //24C02终止信号
 void stop()
 {
-	scl=0;delay(10);
-	sda=0;delay(10);
-	scl=1;delay(10);
-	sda=1;delay(10);
+    scl=0;
+    delay(10);
+    sda=0;
+    delay(10);
+    scl=1;
+    delay(10);
+    sda=1;
+    delay(10);
 }
 //24C02应答信号
 void respons()
 {
-	uchar i=255;
-	sda=1;delay(10);
-	scl=1;delay(10);
-	while(sda){i--;delay(5);if(i==0)sda=0;}
-	scl=0;delay(10);
+    uchar i=255;
+    sda=1;
+    delay(10);
+    scl=1;
+    delay(10);
+    while(sda)
+    {
+        i--;
+        delay(5);
+        if(i==0)sda=0;
+    }
+    scl=0;
+    delay(10);
 }
 //向24C02写入一个字节
 void write_byte(uchar date)
 {
-	uchar i,temp;
-	temp=date;
-	for(i=0;i<8;i++)
-	{
-		temp=temp<<1;
-		scl=0;delay(10);
-		sda=CY;delay(10);
-		scl=1;delay(5);
-	}
-	scl=0;delay(10);
-	sda=1;delay(10);
+    uchar i,temp;
+    temp=date;
+    for(i=0; i<8; i++)
+    {
+        temp=temp<<1;
+        scl=0;
+        delay(10);
+        sda=CY;
+        delay(10);
+        scl=1;
+        delay(5);
+    }
+    scl=0;
+    delay(10);
+    sda=1;
+    delay(10);
 }
 //向24C02读出一个字节
 uchar read_byte()
 {
-	uchar i,k;
-	scl=0;delay(10);
-	sda=1;delay(10);
-	for(i=0;i<8;i++)
-	{
-		scl=1;delay(10);
-		k=(k<<1)|sda;delay(5);
-		scl=0;delay(10);
-	}
-	return k;
+    uchar i,k;
+    scl=0;
+    delay(10);
+    sda=1;
+    delay(10);
+    for(i=0; i<8; i++)
+    {
+        scl=1;
+        delay(10);
+        k=(k<<1)|sda;
+        delay(5);
+        scl=0;
+        delay(10);
+    }
+    return k;
 }
 
 //在24c02指定地址读出数据
@@ -686,7 +720,7 @@ uchar read_add(int add,uchar address)
 {
     uchar date;
     int addr,sector_addr;
-	 sector_addr = sector_cal( add) ;
+    sector_addr = sector_cal( add) ;
     addr = sector_addr+address;
 //	start();
 //	write_byte(0xa0+(add<<1));
@@ -700,9 +734,9 @@ uchar read_add(int add,uchar address)
 //	stop();
 
 
-EA=0;
+    EA=0;
     date = IapRead(addr);
-	EA=1;
+    EA=1;
     return date;
 }
 
@@ -710,45 +744,45 @@ EA=0;
 static  xchar buf[256];
 void read_ee_data(uchar add,uchar address)
 {
-	int sector_addr,i;
-	int addr;
+    int sector_addr,i;
+    int addr;
 
 
-	 sector_addr = sector_cal( add) ; ;
-	 addr = sector_addr ;
-	 EA=0;
-	 for(i=0; i<256; i++)
-	 {
-		 buf[i]=read_add(add,addr+i);
-	
-	 }
-	 EA=1;
+    sector_addr = sector_cal( add) ; ;
+    addr = sector_addr ;
+    EA=0;
+    for(i=0; i<256; i++)
+    {
+        buf[i]=read_add(add,addr+i);
+
+    }
+    EA=1;
 
 }
 void write_add(uchar add,uchar address,uchar date)
 {
     int sector_addr,i;
     int addr;
-    sector_addr = sector_cal( add) ; 
-	addr = sector_addr ;
-  /*  for(i=0; i<512; i++)
-    {
-        buf[i]=read_add(addr+i);
+    sector_addr = sector_cal( add) ;
+    addr = sector_addr ;
+    /*  for(i=0; i<512; i++)
+      {
+          buf[i]=read_add(addr+i);
 
-    }*/
-EA=0;
+      }*/
+    EA=0;
     for(i=0; i<256; i++)
     {
-       // if(i!=address)
-            IapProgram(addr+i, buf[i]);
-       // else
-         //   IapProgram(addr+i, date);
+        // if(i!=address)
+        IapProgram(addr+i, buf[i]);
+        // else
+        //   IapProgram(addr+i, date);
     }
-EA=1;
-   
+    EA=1;
 
-    
-	//IapProgram(addr, date);
+
+
+    //IapProgram(addr, date);
 
 
 
@@ -761,9 +795,10 @@ EA=1;
 //2字节转为INT并返回
 uint tchr_int(uchar ch1,ch2)
 {
-	uint ch;
-	ch=ch1;ch=(ch<<8)|ch2;
-	return(ch);
+    uint ch;
+    ch=ch1;
+    ch=(ch<<8)|ch2;
+    return(ch);
 }
 //初始化
 void init()
@@ -785,48 +820,51 @@ void init()
     P6M1=0x00;
     P7M0=0x00;
     P7M1=0x00;
-	P3M1 = 0xa0; P3M0 = 0x20; //设置为准双向口
+    P3M1 = 0xa0;
+    P3M0 = 0x20; //设置为准双向口
 // P3.5 设置开漏模式, P3.7 设置高阻输入
     SCON=0x50;		//串口1方式1
     AUXR |=0x01;	//串口1选择定时器2为波特率发生器
     AUXR |=0x04;	//定时器2时钟为Fosc,即1T
-	T2L   =0xFD;	//设定定时初值921600
-	T2H   =0xFF;	//设定定时初值
-	AUXR |=0x10;	//启动定时器2
+    T2L   =0xFD;	//设定定时初值921600
+    T2H   =0xFF;	//设定定时初值
+    AUXR |=0x10;	//启动定时器2
 
-	ES=1;			//串口1中断
+    ES=1;			//串口1中断
     //PS=1;			//串口1优先
-	PS=1;			//串口1优先
+    PS=1;			//串口1优先
 
-	TH0=0x3c;TL0=0xb0;
-	TR0=1;ET0=1;
+    TH0=0x3c;
+    TL0=0xb0;
+    TR0=1;
+    ET0=1;
     led=1;
 
     xhao=read_add(7,13);
-	delaya(50);
-   #if DEBUG_EN 
-	com_data_tx(0x5a);
+    delaya(50);
+#if DEBUG_EN
+    com_data_tx(0x5a);
     com_data_tx(xhao);
-	#endif
+#endif
     if(xhao>0x04|xhao==0)
     {
-         read_ee_data(7,0);
+        read_ee_data(7,0);
         IapErase(7,0);
         for(j=0; j<18; j++)
         {
             buf[j] = sp[j];
-           #if DEBUG_EN == 1
+#if DEBUG_EN == 1
             com_data_tx(sp[j]);
-		   #endif
-           // delaya(50);
-        } 
-		   write_add(7,0,sp[j]);
-		   delaya(50);
+#endif
+            // delaya(50);
+        }
+        write_add(7,0,sp[j]);
+        delaya(50);
     }
-	//com_data_tx('\r');
-	#if DEBUG_EN == 1
+    //com_data_tx('\r');
+#if DEBUG_EN == 1
     com_data_tx(0xa5);
-	#endif
+#endif
     for(j=0; j<18; j++)
     {
 
@@ -838,80 +876,86 @@ void init()
 
         delaya(50);
     }
-	jwsq=jwsp[0];
-	jingd=jwsp[1];jingf=jwsp[2];
-	weidd=jwsp[3];weidf=jwsp[4];
-	shiqz=jwsp[5];shiqf=jwsp[6];
-	ipdz=tchr_int(jwsp[7],jwsp[8]);
-	rlka=jwsp[9];rlkb=jwsp[10];
-	rcga=jwsp[11];rcgb=jwsp[12];
-	xhao=jwsp[13];	
-	xf_fig=jwsp[15];	//消防控制方式 1：强启 0：强切
-  botelv_fig=jwsp[16];//波特率调整 1：9600  0：4800
-	dingshi_fig=jwsp[17];; //定时设置方式 1：随第一路时间 0：自定义时间
+    jwsq=jwsp[0];
+    jingd=jwsp[1];
+    jingf=jwsp[2];
+    weidd=jwsp[3];
+    weidf=jwsp[4];
+    shiqz=jwsp[5];
+    shiqf=jwsp[6];
+    ipdz=tchr_int(jwsp[7],jwsp[8]);
+    rlka=jwsp[9];
+    rlkb=jwsp[10];
+    rcga=jwsp[11];
+    rcgb=jwsp[12];
+    xhao=jwsp[13];
+    xf_fig=jwsp[15];	//消防控制方式 1：强启 0：强切
+    botelv_fig=jwsp[16];//波特率调整 1：9600  0：4800
+    dingshi_fig=jwsp[17];; //定时设置方式 1：随第一路时间 0：自定义时间
 
     jiar[0]=read_add(2,0);
-	delaya(50);
+    delaya(50);
     if(jiar[0]==0xff)
     {
-         read_ee_data(2,0);
+        read_ee_data(2,0);
         IapErase(2,0);
         for(j=0; j<16; j++)
         {
-            
+
             buf[j] =0x7f;
         }
-		write_add(2,0,0x7f);
-			delaya(50);
+        write_add(2,0,0x7f);
+        delaya(50);
     }
-	#if DEBUG_EN == 1
-	com_data_tx(0x5b);
-	#endif
+#if DEBUG_EN == 1
+    com_data_tx(0x5b);
+#endif
     for(j=0; j<16; j++)
     {
         jiar[j]=read_add(2,j);
-		#if DEBUG_EN == 1
-		com_data_tx( jiar[j]);
-        #endif
-			delaya(50);
+#if DEBUG_EN == 1
+        com_data_tx( jiar[j]);
+#endif
+        delaya(50);
     }
     gmkg[1]=read_add(1,1);
     if(gmkg[1]>45)
     {
-             read_ee_data(1,0);
+        read_ee_data(1,0);
         IapErase(1,0);
         for(j=0; j<32; j++)
         {
             if(j&0x01)
-             buf[j] = 0x0F;
-            else 
-			 buf[j] = 0x08;
+                buf[j] = 0x0F;
+            else
+                buf[j] = 0x08;
         }
-		write_add(1,0,0x08);
-			delaya(50);
+        write_add(1,0,0x08);
+        delaya(50);
     }
-	//com_data_tx('\n');
-	com_data_tx(0x5c);
+    //com_data_tx('\n');
+    //com_data_tx(0x5c);
     for(j=0; j<32; j++)
     {
         gmkg[j]=read_add(1,j);
-		com_data_tx( gmkg[j]);
+       // com_data_tx( gmkg[j]);
         delaya(50);
     }
     dsf[0]=read_add(0,0);
     if(dsf[0]>0x23)
     {
-             read_ee_data(0,0);
+        read_ee_data(0,0);
         IapErase(0,0);
         for(j=0; j<256; j++)
         {
-             buf[j] = 0x00;
-            
-           // delaya(50);
-        }write_add(0,0,0x00);
-	delaya(50);
+            buf[j] = 0x00;
+
+            // delaya(50);
+        }
+        write_add(0,0,0x00);
+        delaya(50);
     }
-		//com_data_tx('\n');
+    //com_data_tx('\n');
 //	com_data_tx(0x5d);
 //    for(j=0; j<256; j++)
 //    {
@@ -940,177 +984,209 @@ void com_data(void)
     crc=0;
     for(i=0; i<9; i++)crc=crc+tp[i];
     tp[9]=crc;
-	//EA=0;
-	for(i=0;i<10;i++)
-	{
-		SBUF=tp[i];
-		while(TI==0){;};
-		TI=0;
+    //EA=0;
+    for(i=0; i<10; i++)
+    {
+        SBUF=tp[i];
+        while(TI==0) {;};
+        TI=0;
     }
-	//EA=1;
+    //EA=1;
 }//*/
 
 void chax_com(void)
 {
-	tp[0]=0xf5;
-	tp[1]=0x01;
-	tp[2]=cxcs;
-	tp[3]=gmkg[cxcs*4+0];
-	tp[4]=gmkg[cxcs*4+1];
-	tp[5]=gmkg[cxcs*4+2];
-	tp[6]=gmkg[cxcs*4+3];
-	tp[7]=xf_fig;
-	tp[8]=botelv_fig;
-	cxcs++;
-	if(cxcs>9)cxcs=0;
-	com_data();
+    tp[0]=0xf5;
+    tp[1]=0x01;
+    tp[2]=cxcs;
+    tp[3]=gmkg[cxcs*4+0];
+    tp[4]=gmkg[cxcs*4+1];
+    tp[5]=gmkg[cxcs*4+2];
+    tp[6]=gmkg[cxcs*4+3];
+    tp[7]=xf_fig;
+    tp[8]=botelv_fig;
+    cxcs++;
+    if(cxcs>9)cxcs=0;
+    com_data();
 }
 
 void kzhi_com(void)
 {
-	txcx=0;
-	tp[0]=0xf5;
-	tp[1]=0x02;
-	tp[2]=0x00;
-	tp[3]=ipdz;
-	tp[4]=yzbl;
-	tp[5]=jsll;
-	tp[6]=0x55;
-	tp[7]=xf_fig;
-	tp[8]=botelv_fig;
-	yzblb=yzbl;
-	jsllb=jsll;
-	com_data();
+    txcx=0;
+    tp[0]=0xf5;
+    tp[1]=0x02;
+    tp[2]=0x00;
+    tp[3]=ipdz;
+    tp[4]=yzbl;
+    tp[5]=jsll;
+    tp[6]=0x55;
+    tp[7]=xf_fig;
+    tp[8]=botelv_fig;
+    yzblb=yzbl;
+    jsllb=jsll;
+    com_data();
 }
 
 void bany_deng()
 {
-	if(rl_la)		//1路
-	{
-		dsf[0x00]=rils;dsf[0x01]=rilf;
-	}
-	if(rc_la)
-	{
-		dsf[0x02]=rics;dsf[0x03]=ricf;
-	}
-	if(rl_lb)		//2路
-	{
-		dsf[0x10]=rils;dsf[0x11]=rilf;
-	}
-	if(rc_lb)
-	{
-		dsf[0x12]=rics;dsf[0x13]=ricf;
-	}
-	if(rl_lc)		//3路
-	{
-		dsf[0x20]=rils;dsf[0x21]=rilf;
-	}
-	if(rc_lc)
-	{
-		dsf[0x22]=rics;dsf[0x23]=ricf;
-	}
-	if(rl_ld)		//4路
-	{
-		dsf[0x30]=rils;dsf[0x31]=rilf;
-	}
-	if(rc_ld)
-	{
-		dsf[0x32]=rics;dsf[0x33]=ricf;
-	}
-	if(rl_le)		//5路
-	{
-		dsf[0x40]=rils;dsf[0x41]=rilf;
-	}
-	if(rc_le)
-	{
-		dsf[0x42]=rics;dsf[0x43]=ricf;
-	}
-	if(rl_lf)		//6路
-	{
-		dsf[0x50]=rils;dsf[0x51]=rilf;
-	}
-	if(rc_lf)
-	{
-		dsf[0x52]=rics;dsf[0x53]=ricf;
-	}
-	if(rl_lg)		//7路
-	{
-		dsf[0x60]=rils;dsf[0x61]=rilf;
-	}
-	if(rc_lg)
-	{
-		dsf[0x62]=rics;dsf[0x63]=ricf;
-	}
-	if(rl_lh)		//8路
-	{
-		dsf[0x70]=rils;dsf[0x71]=rilf;
-	}
-	if(rc_lh)
-	{
-		dsf[0x72]=rics;dsf[0x73]=ricf;
-	}
-	if(rl_ha)		//9路
-	{
-		dsf[0x80]=rils;dsf[0x81]=rilf;
-	}
-	if(rc_ha)
-	{
-		dsf[0x82]=rics;dsf[0x83]=ricf;
-	}
-	if(rl_hb)		//10路
-	{
-		dsf[0x90]=rils;dsf[0x91]=rilf;
-	}
-	if(rc_hb)
-	{
-		dsf[0x92]=rics;dsf[0x93]=ricf;
-	}
-	if(rl_hc)		//11路
-	{
-		dsf[0xa0]=rils;dsf[0xa1]=rilf;
-	}
-	if(rc_hc)
-	{
-		dsf[0xa2]=rics;dsf[0xa3]=ricf;
-	}
-	if(rl_hd)		//12路
-	{
-		dsf[0xb0]=rils;dsf[0xb1]=rilf;
-	}
-	if(rc_hd)
-	{
-		dsf[0xb2]=rics;dsf[0xb3]=ricf;
-	}
-	if(rl_he)		//13路
-	{
-		dsf[0xc0]=rils;dsf[0xc1]=rilf;
-	}
-	if(rc_he)
-	{
-		dsf[0xc2]=rics;dsf[0xc3]=ricf;
-	}
-	if(rl_hf)		//14路
-	{
-		dsf[0xd0]=rils;dsf[0xd1]=rilf;
-	}
-	if(rc_hf)
-	{
-		dsf[0xd2]=rics;dsf[0xd3]=ricf;
-	}
-	if(rl_hg)		//15路
-	{
-		dsf[0xe0]=rils;dsf[0xe1]=rilf;
-	}
-	if(rc_hg)
-	{
-		dsf[0xe2]=rics;dsf[0xe3]=ricf;
-	}
-	if(rl_hh)		//16路
-	{
-		dsf[0xf0]=rils;dsf[0xf1]=rilf;
-	}
-	if(rc_hh)
-	{
-		dsf[0xf2]=rics;dsf[0xf3]=ricf;
-	}
+    if(rl_la)		//1路
+    {
+        dsf[0x00]=rils;
+        dsf[0x01]=rilf;
+    }
+    if(rc_la)
+    {
+        dsf[0x02]=rics;
+        dsf[0x03]=ricf;
+    }
+    if(rl_lb)		//2路
+    {
+        dsf[0x10]=rils;
+        dsf[0x11]=rilf;
+    }
+    if(rc_lb)
+    {
+        dsf[0x12]=rics;
+        dsf[0x13]=ricf;
+    }
+    if(rl_lc)		//3路
+    {
+        dsf[0x20]=rils;
+        dsf[0x21]=rilf;
+    }
+    if(rc_lc)
+    {
+        dsf[0x22]=rics;
+        dsf[0x23]=ricf;
+    }
+    if(rl_ld)		//4路
+    {
+        dsf[0x30]=rils;
+        dsf[0x31]=rilf;
+    }
+    if(rc_ld)
+    {
+        dsf[0x32]=rics;
+        dsf[0x33]=ricf;
+    }
+    if(rl_le)		//5路
+    {
+        dsf[0x40]=rils;
+        dsf[0x41]=rilf;
+    }
+    if(rc_le)
+    {
+        dsf[0x42]=rics;
+        dsf[0x43]=ricf;
+    }
+    if(rl_lf)		//6路
+    {
+        dsf[0x50]=rils;
+        dsf[0x51]=rilf;
+    }
+    if(rc_lf)
+    {
+        dsf[0x52]=rics;
+        dsf[0x53]=ricf;
+    }
+    if(rl_lg)		//7路
+    {
+        dsf[0x60]=rils;
+        dsf[0x61]=rilf;
+    }
+    if(rc_lg)
+    {
+        dsf[0x62]=rics;
+        dsf[0x63]=ricf;
+    }
+    if(rl_lh)		//8路
+    {
+        dsf[0x70]=rils;
+        dsf[0x71]=rilf;
+    }
+    if(rc_lh)
+    {
+        dsf[0x72]=rics;
+        dsf[0x73]=ricf;
+    }
+    if(rl_ha)		//9路
+    {
+        dsf[0x80]=rils;
+        dsf[0x81]=rilf;
+    }
+    if(rc_ha)
+    {
+        dsf[0x82]=rics;
+        dsf[0x83]=ricf;
+    }
+    if(rl_hb)		//10路
+    {
+        dsf[0x90]=rils;
+        dsf[0x91]=rilf;
+    }
+    if(rc_hb)
+    {
+        dsf[0x92]=rics;
+        dsf[0x93]=ricf;
+    }
+    if(rl_hc)		//11路
+    {
+        dsf[0xa0]=rils;
+        dsf[0xa1]=rilf;
+    }
+    if(rc_hc)
+    {
+        dsf[0xa2]=rics;
+        dsf[0xa3]=ricf;
+    }
+    if(rl_hd)		//12路
+    {
+        dsf[0xb0]=rils;
+        dsf[0xb1]=rilf;
+    }
+    if(rc_hd)
+    {
+        dsf[0xb2]=rics;
+        dsf[0xb3]=ricf;
+    }
+    if(rl_he)		//13路
+    {
+        dsf[0xc0]=rils;
+        dsf[0xc1]=rilf;
+    }
+    if(rc_he)
+    {
+        dsf[0xc2]=rics;
+        dsf[0xc3]=ricf;
+    }
+    if(rl_hf)		//14路
+    {
+        dsf[0xd0]=rils;
+        dsf[0xd1]=rilf;
+    }
+    if(rc_hf)
+    {
+        dsf[0xd2]=rics;
+        dsf[0xd3]=ricf;
+    }
+    if(rl_hg)		//15路
+    {
+        dsf[0xe0]=rils;
+        dsf[0xe1]=rilf;
+    }
+    if(rc_hg)
+    {
+        dsf[0xe2]=rics;
+        dsf[0xe3]=ricf;
+    }
+    if(rl_hh)		//16路
+    {
+        dsf[0xf0]=rils;
+        dsf[0xf1]=rilf;
+    }
+    if(rc_hh)
+    {
+        dsf[0xf2]=rics;
+        dsf[0xf3]=ricf;
+    }
 }
