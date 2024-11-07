@@ -876,6 +876,11 @@ void init()
 
         delaya(50);
     }
+//	com_data_tx(0x77);
+//    for(j=0; j<256; j++)
+//    {
+//        com_data_tx(jwsp[j]);
+//    }	
     jwsq=jwsp[0];
     jingd=jwsp[1];
     jingf=jwsp[2];
@@ -957,12 +962,12 @@ void init()
     }
     //com_data_tx('\n');
 //	com_data_tx(0x5d);
-//    for(j=0; j<256; j++)
-//    {
-//        dsf[j]=read_add(0,j);
-//	//	com_data_tx( dsf[j]);
-//        delaya(50);
-//    }
+    for(j=0; j<256; j++)
+    {
+        dsf[j]=read_add(0,j);
+	//	com_data_tx( dsf[j]);
+        delaya(50);
+    }
     xian=0;
 }
 void time1_init(void)

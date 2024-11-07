@@ -19,9 +19,13 @@ typedef struct
 	float low_temp_percent;
 	float output;
 } indoor_temp_stru;
-float get_pid_output(void);
+
+
+
+
 void fuzzy_proc(unsigned char mode);
-void pid_init(void);
+
+
 
 
 #endif

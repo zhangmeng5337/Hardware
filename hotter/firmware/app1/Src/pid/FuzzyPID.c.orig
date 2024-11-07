@@ -1,10 +1,5 @@
 #include "FuzzyPID.h"
-
-range rang;// = { 1000,-1000,800,-800,100,-100,0.1,-0.1,0.01,-0.01 };
-Error error;//
-static FuzzyPID myfuzzypid;
-
-const int Kp_rule_list[7][7] =
+ const int Kp_rule_list[7][7] =
 {
     {PB, PB, PB, PB, PS, ZO, ZO}, 	//kp规则表
     {PB, PB, PB, PM, ZO, ZO, NS},
@@ -44,9 +39,8 @@ const int Kd_rule_list[7][7] = { {NS, NS, NB, NS, NB, NM, NS}, //kd规则表
     {PB, PM, PM, PM, PS, PB, PB}
 };
 
-const int Fuzzy_rule_list[7][7] =
-{
-    {PB, PB, PB, PB, PM, ZO, ZO},
+const int Fuzzy_rule_list[7][7] = { 
+	{PB, PB, PB, PB, PM, ZO, ZO},
     {PB, PB, PB, PM, PM, ZO, ZO},
     {PB, PM, PM, PS, ZO, NS, NM},
     {PM, PM, PS, ZO, NS, NM, NM},
@@ -55,43 +49,39 @@ const int Fuzzy_rule_list[7][7] =
     {ZO, NS, NB, NB, NB, NB, NB}
 };
 
-
+ 
 
 int  Kp_rule[7][7] = { {PB,PB,PM,PM,PS,ZO,ZO},     //kp规则表
-    {PB,PB,PM,PS,PS,ZO,NS},
-    {PM,PM,PM,PS,ZO,NS,NS},
-    {PM,PM,PS,ZO,NS,NM,NM},
-    {PS,PS,ZO,NS,NS,NM,NM},
-    {PS,ZO,NS,NM,NM,NM,NB},
-    {ZO,ZO,NM,NM,NM,NB,NB}
-};
+                               {PB,PB,PM,PS,PS,ZO,NS},
+                               {PM,PM,PM,PS,ZO,NS,NS},
+                               {PM,PM,PS,ZO,NS,NM,NM},
+                               {PS,PS,ZO,NS,NS,NM,NM},
+                               {PS,ZO,NS,NM,NM,NM,NB},
+                               {ZO,ZO,NM,NM,NM,NB,NB} };
 
 int  Ki_rule[7][7] = { {NB,NB,NM,NM,NS,ZO,ZO},     //ki规则表
-    {NB,NB,NM,NS,NS,ZO,ZO},
-    {NB,NM,NS,NS,ZO,PS,PS},
-    {NM,NM,NS,ZO,PS,PM,PM},
-    {NM,NS,ZO,PS,PS,PM,PB},
-    {ZO,ZO,PS,PS,PM,PB,PB},
-    {ZO,ZO,PS,PM,PM,PB,PB}
-};
+                            {NB,NB,NM,NS,NS,ZO,ZO},
+                            {NB,NM,NS,NS,ZO,PS,PS},
+                            {NM,NM,NS,ZO,PS,PM,PM},
+                            {NM,NS,ZO,PS,PS,PM,PB},
+                            {ZO,ZO,PS,PS,PM,PB,PB},
+                            {ZO,ZO,PS,PM,PM,PB,PB} };
 
 int  Kd_rule[7][7] = { {PS,NS,NB,NB,NB,NM,PS},    //kd规则表
-    {PS,NS,NB,NM,NM,NS,ZO},
-    {ZO,NS,NM,NM,NS,NS,ZO},
-    {ZO,NS,NS,NS,NS,NS,ZO},
-    {ZO,ZO,ZO,ZO,ZO,ZO,ZO},
-    {PB,NS,PS,PS,PS,PS,PB},
-    {PB,PM,PM,PM,PS,PS,PB}
-};
+                            {PS,NS,NB,NM,NM,NS,ZO},
+                            {ZO,NS,NM,NM,NS,NS,ZO},
+                            {ZO,NS,NS,NS,NS,NS,ZO},
+                            {ZO,ZO,ZO,ZO,ZO,ZO,ZO},
+                            {PB,NS,PS,PS,PS,PS,PB},
+                            {PB,PM,PM,PM,PS,PS,PB} };
 
 int  Fuzzy_rule[7][7] = { {PB,PB,PB,PB,PM,ZO,ZO},
-    {PB,PB,PB,PM,PM,ZO,ZO},
-    {PB,PM,PM,PS,ZO,NS,NM},
-    {PM,PM,PS,ZO,NS,NM,NM},
-    {PS,PS,ZO,NM,NM,NM,NB},
-    {ZO,ZO,ZO,NM,NB,NB,NB},
-    {ZO,NS,NB,NB,NB,NB,NB}
-};
+                               {PB,PB,PB,PM,PM,ZO,ZO},
+                               {PB,PM,PM,PS,ZO,NS,NM},
+                               {PM,PM,PS,ZO,NS,NM,NM},
+                               {PS,PS,ZO,NM,NM,NM,NB},
+                               {ZO,ZO,ZO,NM,NB,NB,NB},
+                               {ZO,NS,NB,NB,NB,NB,NB} };
 float values[7] = { -3,-2,-1,0,1,2,3 }; //输入e的隶属值
 void FuzzyPID_Init(FuzzyPID* pid)  //构造函数
 {
@@ -106,16 +96,16 @@ void FuzzyPID_Init(FuzzyPID* pid)  //构造函数
     pid->qdetail_kd = 0;
     pid->qfuzzy_output = 0;
     pid->errosum = 0;
-//    for ( i = 0; i < 7; i++)
-//    {
-//        for ( j = 0; j < 7; j++)
-//        {
-//            pid->Kp_rule_list[i][j] = Kp_rule[i][j];
-//            pid->Ki_rule_list[i][j] = Ki_rule[i][j];
-//            pid->Kd_rule_list[i][j] = Kd_rule[i][j];
-//            pid->Fuzzy_rule_list[i][j] = Fuzzy_rule[i][j];
-//        }
-//    }
+    for ( i = 0; i < 7; i++)
+    {
+        for ( j = 0; j < 7; j++)
+        {
+            pid->Kp_rule_list[i][j] = Kp_rule[i][j];
+            pid->Ki_rule_list[i][j] = Ki_rule[i][j];
+            pid->Kd_rule_list[i][j] = Kd_rule[i][j];
+            pid->Fuzzy_rule_list[i][j] = Fuzzy_rule[i][j];
+        }
+    }
     for ( i = 0; i < 7; i++)
     {
         pid->e_membership_values[i] = values[i];
@@ -235,9 +225,9 @@ void GetSumGrad(FuzzyPID* pid)
         {
             if (pid->ec_grad_index[j] != -1)//误差的微分有没有爆表
             {
-                int indexKp = Kp_rule_list[pid->e_grad_index[i]][pid->ec_grad_index[j]] + 3;
-                int indexKi = Ki_rule_list[pid->e_grad_index[i]][pid->ec_grad_index[j]] + 3;
-                int indexKd = Kd_rule_list[pid->e_grad_index[i]][pid->ec_grad_index[j]] + 3;
+                int indexKp = pid->Kp_rule_list[pid->e_grad_index[i]][pid->ec_grad_index[j]] + 3;
+                int indexKi = pid->Ki_rule_list[pid->e_grad_index[i]][pid->ec_grad_index[j]] + 3;
+                int indexKd = pid->Kd_rule_list[pid->e_grad_index[i]][pid->ec_grad_index[j]] + 3;
                 //gradSums[index] = gradSums[index] + (e_gradmembership[i] * ec_gradmembership[j])* Kp_rule_list[e_grad_index[i]][ec_grad_index[j]];
                 pid->KpgradSums[indexKp] = pid->KpgradSums[indexKp] + (pid->e_gradmembership[i] * pid->ec_gradmembership[j]);
                 pid->KigradSums[indexKi] = pid->KigradSums[indexKi] + (pid->e_gradmembership[i] * pid->ec_gradmembership[j]);
@@ -266,30 +256,29 @@ void GetOUT(FuzzyPID* pid)
 }
 
 //模糊PID控制实现函数/
-float u;
-float FuzzyPIDcontroller(float Target, float actual)
+float FuzzyPIDcontroller(FuzzyPID* pid, range* rang, Error* error, float Target, float actual)
 {
-
-    error.erro_ppre = error.erro_pre;
-    error.erro_pre = error.erro;
-    error.erro = actual-Target;
-    error.erro_c = error.erro - error.erro_pre;
-    myfuzzypid.errosum += error.erro;
+    
+    error->erro_ppre = error->erro_pre;
+    error->erro_pre = error->erro;
+    error->erro = Target - actual;
+    error->erro_c = error->erro - error->erro_pre;
+    pid->errosum += error->erro;
     //Arear_dipart(e_max, e_min, ec_max, ec_min, kp_max, kp_min,ki_max,ki_min,kd_max,kd_min);
-    myfuzzypid.qerro = Quantization(rang.e_max, rang.e_min, error.erro);//区间映射
-    myfuzzypid.qerro_c = Quantization(rang.ec_max, rang.ec_min, error.erro_c);//区间映射
+    pid->qerro = Quantization(rang->e_max, rang->e_min, error->erro);//区间映射
+    pid->qerro_c = Quantization(rang->ec_max, rang->ec_min, error->erro_c);//区间映射
     //把他们缩小到0123范围内
-    Get_grad_membership(&myfuzzypid,myfuzzypid.qerro, myfuzzypid.qerro_c);
+    Get_grad_membership(pid,pid->qerro, pid->qerro_c);
     //获取输出增量kp, ki, kd的总隶属度
-    GetSumGrad(&myfuzzypid);
+    GetSumGrad(pid);
     //计算输出增量kp, kd, ki对应论域值//
-    GetOUT(&myfuzzypid);
-    myfuzzypid.detail_kp = Inverse_quantization(rang.kp_max, rang.kp_min, myfuzzypid.qdetail_kp);
-    myfuzzypid.detail_ki = Inverse_quantization(rang.ki_max, rang.ki_min, myfuzzypid.qdetail_ki);
-    myfuzzypid.detail_kd = Inverse_quantization(rang.kd_max, rang.kd_min, myfuzzypid.qdetail_kd);
-    myfuzzypid.qdetail_kd = 0;
-    myfuzzypid.qdetail_ki = 0;
-    myfuzzypid.qdetail_kp = 0;
+    GetOUT(pid);
+    pid->detail_kp = Inverse_quantization(rang->kp_max, rang->kp_min, pid->qdetail_kp);
+    pid->detail_ki = Inverse_quantization(rang->ki_max, rang->ki_min, pid->qdetail_ki);
+    pid->detail_kd = Inverse_quantization(rang->kd_max, rang->kd_min, pid->qdetail_kd);
+    pid->qdetail_kd = 0;
+    pid->qdetail_ki = 0;
+    pid->qdetail_kp = 0;
     /*if (qdetail_kp >= kp_max)
         qdetail_kp = kp_max;
     else if (qdetail_kp <= kp_min)
@@ -302,33 +291,22 @@ float FuzzyPIDcontroller(float Target, float actual)
         qdetail_kd = kd_max;
     else if (qdetail_kd <= kd_min)
         qdetail_kd = kd_min;*/
-    myfuzzypid.kp =myfuzzypid.detail_kp;
-    myfuzzypid.ki = myfuzzypid.ki + myfuzzypid.detail_ki;
-    myfuzzypid.kd  =myfuzzypid.kd + myfuzzypid.detail_kd;
+    pid->kp = pid->kp + pid->detail_kp;
+    pid->ki = pid->ki + pid->detail_ki;
+    pid->kd  =pid->kd + pid->detail_kd;
     //确定范围
-    if (myfuzzypid.kp < 0)
-        myfuzzypid.kp = 10;
-	else   if (myfuzzypid.kp>=rang.kp_max)
-        myfuzzypid.kp = rang.kp_max;
-	
-    if (myfuzzypid.ki < 0)
-        myfuzzypid.ki = 0;
-	else   if (myfuzzypid.ki>=rang.ki_max)
-        myfuzzypid.ki = rang.ki_max;
-
-    if (myfuzzypid.kd < 0)
-        myfuzzypid.kd = 0;
-	else   if (myfuzzypid.kd>=rang.kd_max)
-        myfuzzypid.kd = rang.kd_max;
-
-//    myfuzzypid.detail_kp = 0;
-//    myfuzzypid.detail_ki = 0;
-//    myfuzzypid.detail_kd = 0;
+    if (pid->kp < 0)
+        pid->kp = 0;
+    if (pid->ki < 0)
+        pid->ki = 0;
+    if (pid->kd < 0)
+        pid->kd = 0;
+    pid->detail_kp = 0;
+    pid->detail_ki = 0;
+    pid->detail_kd = 0;
     //增量式PID
-    myfuzzypid.detalO = myfuzzypid.kp * (error.erro - error.erro_pre) + myfuzzypid.ki * error.erro + myfuzzypid.kd * (error.erro - 2 * error.erro_pre + error.erro_ppre);
-	u = u + myfuzzypid.detalO;
-
-	return 0;
+    float output = pid->kp * (error->erro - error->erro_pre) + pid->ki * error->erro + pid->kd * (error->erro - 2 * error->erro_pre + error->erro_ppre);
+    return output;
 }
 
 ///区间映射函数///
@@ -348,7 +326,9 @@ float Inverse_quantization(float maximum, float minimum, float qvalues)
     return x;
 }
 
-
+range rang;// = { 1000,-1000,800,-800,100,-100,0.1,-0.1,0.01,-0.01 };
+Error error;//
+FuzzyPID myfuzzypid;
 
 void fuzzy_init(void)
 {
@@ -358,22 +338,22 @@ void fuzzy_init(void)
     rang.ec_min=-5;//误差的微分范围
     rang.kp_max=50;//p的范围
     rang.kp_min=10;
-    rang.ki_max=0.5 ;//i的范围
+    rang.ki_max=1 ;//i的范围
     rang.ki_min=0;
-    rang.kd_max=0.5;//d的范围
+    rang.kd_max=1;//d的范围
     rang.kd_min=0;
     rang.erro=0;//误差
     rang.erro_c=0;//误差的微分
     rang.erro_pre=0;//上一次的误差
     rang.erro_ppre=0;//上上次的误差
-    error.erro = 0;
-    error.erro_c= 0;
-    error.erro_pre= 0;
-    error.erro_ppre= 0;
-    FuzzyPID_Init(&myfuzzypid);
-   // float u;
-   // u = FuzzyPIDcontroller(Target, actual);
-    //actual += u;
+		error.erro = 0;
+		error.erro_c= 0;
+		error.erro_pre= 0;
+		error.erro_ppre= 0;
+		FuzzyPID_Init(&myfuzzypid);
+			float u;
+			u = FuzzyPIDcontroller(&myfuzzypid, &rang, &error, Target, actual);
+			//actual += u;
 
 
 
@@ -382,10 +362,10 @@ void fuzzy_init(void)
 
 
 
-FuzzyPID *get_fuzzy_pid_params(void)
+FUZZYPID *get_fuzzy_pid_params(void)
 {
-    return &myfuzzypid;
-
+	return &FPID;
+	
 }
 
 

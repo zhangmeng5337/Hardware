@@ -270,6 +270,7 @@ void anlysis_mqtt_recv()
         j = 0;
         k = 0;
         i = 0;
+		get_config()->tlen = 0;
         while (dev_id[i] != ']')
         {
             if (dev_id[i] != ',' && dev_id[i] != ']')
@@ -278,6 +279,7 @@ void anlysis_mqtt_recv()
             {
                 tmp_f = atof(buf);
                 get_config()->indoor_temperature[k++] = tmp_f;
+				get_config()->tlen++;
                 memset(buf, 0, 16);
                 j = 0;
 
@@ -300,7 +302,7 @@ void anlysis_mqtt_recv()
 
 #if CTRL_EN
     float *buf;
-    buf = low_temperature_cal(get_config()->indoor_temperature, ENVIRO_SIZE);
+    buf = low_temperature_cal(get_config()->indoor_temperature, get_config()->tlen+1);
     get_temp_cal(buf);
     fuzzy_proc(0);  //smart ctrl
 #endif
@@ -552,11 +554,13 @@ void upload()
     tmp = get_ai_data()->channel_status;
     mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //16 bit di
     mqtt_payload_u.status[DEV_STATUS_INDEX] =
-        mqtt_payload_u.status[DEV_STATUS_INDEX] << 24; //dev status
+        mqtt_payload_u.status[DEV_STATUS_INDEX] << 11; //dev status
     mqtt_payload_u.status[DEV_STATUS_INDEX] =
         mqtt_payload_u.status[DEV_STATUS_INDEX] | tmp; //20bit ai but 8bit used
     mqtt_payload_u.status[DEV_STATUS_INDEX] =
-        mqtt_payload_u.status[DEV_STATUS_INDEX] ;
+        mqtt_payload_u.status[DEV_STATUS_INDEX]&0x07ffffff ;
+
+		
     mqtt_payload_u.status[DEV_MASK_INDEX] = get_config()->fault_mask;
     mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX] = get_recv_machine()->fault;
 

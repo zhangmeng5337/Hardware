@@ -17,7 +17,7 @@
 #define MODBUS_WRITE_ONE_CMD        0x06
 #define MODBUS_WRITE_MUL_CMD        0x10
 
-#define CTRL_EN						0
+#define CTRL_EN						1
 
 #define DEV_ADDR  0xfe
 

@@ -5,12 +5,13 @@
 indoor_temp_stru indoor_temp_usr;
 
 
+
 float Target;
 float actual = 0;
-float e_max = 60;
-float e_min = -50;
-float ec_max = 110;
-float ec_min = -110;
+float e_max = 40;
+float e_min = 0;
+float ec_max = 40;
+float ec_min = -40;
 float kp_max = 50;
 float kp_min = 10;
 
@@ -36,16 +37,6 @@ void get_temp_cal(float *buf)
 float get_pid_output()
 {
     float  u;
-//    if (indoor_temp_usr.output >= PID_MIN && indoor_temp_usr.output <= PID_MAX)//换算成设备温�?
-//        u = MACHINE_RATIO * indoor_temp_usr.output + MACHINE_RATIO_B;
-//    else
-//    {
-//        if (indoor_temp_usr.output < PID_MIN) //换算成设备温�?
-//            u = MACHINE_MIN_T;
-//        if (indoor_temp_usr.output > PID_MAX)//换算成设备温�?
-//            u = MACHINE_MAX_T;
-//
-//    }
 
         u =  indoor_temp_usr.output ;
 
@@ -53,22 +44,13 @@ float get_pid_output()
 
     return u;
 }
-void pid_init()
-{
 
-    // Target = get_config()->set_tindoor;
-    fuzzy_init();
-
-    //u = FuzzyPIDcontroller(e_max, e_min, ec_max, ec_min, kp_max, kp_min, erro, erro_c,ki_max,ki_min,kd_max,kd_min,erro_pre,erro_ppre);
-
-    //printf("i:%d  target:%f  actual:%f  kp:%f  ki:%f  kd:%f\r\n",i,Target,actual,FuzzyPID_usr.detail_kp,FuzzyPID_usr.detail_ki,FuzzyPID_usr.detail_kd);
-}
 void pid_cal(unsigned char mode)
 {
     float u;
-//    indoor_temp_usr.output = get_pid_params()->kp * (erro - erro_pre) + get_pid_params()->ki * erro +
-//                             get_pid_params()->kd * (erro - 2 * erro_pre + erro_ppre);
-    indoor_temp_usr.output = get_pid_params()->kp ;
+	float setval;
+	float measure_val;
+	static float last_val;
 
     erro_ppre = erro_pre;
     erro_pre = erro;
@@ -81,29 +63,44 @@ void pid_cal(unsigned char mode)
                 float tmp;
                 tmp = 1 - indoor_temp_usr.low_temp_percent;
                 tmp = tmp * indoor_temp_usr.temp_average;
-                erro = get_config()->set_tindoor - tmp;//温度加权
+                erro = tmp-get_config()->set_tindoor ;//温度加权
             }
             else
 
-                erro = get_config()->set_tindoor - indoor_temp_usr.temp_average;
+                erro = indoor_temp_usr.temp_average-get_config()->set_tindoor ;
         }
         else
-            erro = get_config()->set_tindoor - indoor_temp_usr.temp_average;
+            erro = indoor_temp_usr.temp_average-get_config()->set_tindoor;
+		 setval = get_config()->set_tindoor;
+		measure_val =  indoor_temp_usr.temp_average;
 
     }
     else  //本地控制  native ctrl
     {
-        erro = MACHINE_IN_T - get_ai_data()->temp[AI_WATER_T_IN_INDEX];//温度加权
+        erro = get_ai_data()->temp[AI_WATER_T_IN_INDEX]-MACHINE_IN_T ;//温度加权
+   		 setval = MACHINE_IN_T;
+		measure_val =  get_ai_data()->temp[AI_WATER_T_IN_INDEX];     
     }
+	
+	//get_fuzzy_pid_params()->e = erro;
+	//get_fuzzy_pid_params()->de = erro_c;
+	
+	 FuzzyPIDcontroller(setval, measure_val);
+	indoor_temp_usr.output = get_fuzzy_pid_params()->kp;
+	last_val = measure_val;
 
     erro_c = erro - erro_pre;
-    actual += u;
+
 }
+//PID *get_pid_params()
+//{
+//  return &sPID;
+//}
+
+
 void fuzzy_proc(unsigned char mode)
 {
 
-    FuzzyPIDcontroller(e_max, e_min, ec_max, ec_min, kp_max, kp_min, erro, erro_c, ki_max, ki_min, kd_max, kd_min,
-                       erro_pre, erro_ppre);
     pid_cal(mode);
 }
 

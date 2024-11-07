@@ -1,4 +1,4 @@
-﻿#include "filter.h"
+#include "filter.h"
 /* 冒泡排序 */
 /* 1. 从当前元素起，向后依次比较每一对相邻元素，若逆序则交换 */
 /* 2. 对所有元素均重复以上步骤，直至最后一个元素 */
@@ -22,14 +22,14 @@ void bubbleSort(float arr[], int len)
 
 }
 float buf[3];
-float *low_temperature_cal(float arr[], int len)
+float *low_temperature_cal(unsigned int arr[], int len)
 {
 	float temp,sum;
 	
 	int i, j;
 	temp = 0;
 	sum = 0;
-	for (i = 0; i < len - 1; i++) /* 外循环为排序趟数，len个数进行len-1趟 */
+	for (i = 0; i < len ; i++) /* 外循环为排序趟数，len个数进行len-1趟 */
 	{
 
 			if (arr[i] < LOW_TEMPERATURE)

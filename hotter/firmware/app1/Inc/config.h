@@ -51,6 +51,7 @@ typedef struct
 	                          //select:bit15 ---m1;bit14---m2;bit13---m3,only for pwr ctrl
 	unsigned char update_firm;	//firmware update
 	unsigned int indoor_temperature[ENVIRO_SIZE];
+	unsigned char tlen;
 	unsigned int set_tout;  //pid cal
 	unsigned int set_tout_tmp;  //pum set
 

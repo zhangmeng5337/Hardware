@@ -756,6 +756,11 @@ uint8_t lte_Info_Show(void)
                     }
 
                 }
+								else
+								{
+								                            at_cmds.RtyNum = 0;
+                            at_cmd_num = AT_IDLE;
+								}
 
 
 

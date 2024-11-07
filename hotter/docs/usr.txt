@@ -5,3 +5,10 @@ https://39.106.131.169:8055
  mqtt IP :39.106.131.169 端口：1883  没有clientID
 服务器登录ip：39.106.131.169密码：1qaz@WSX#EDC
 以写aaa,密码aaa123吧
+
+https://39.106.131.169:22673/f16ae58d
+
+6xe5mpg5
+qqqqww11
+cd app
+docker compose start

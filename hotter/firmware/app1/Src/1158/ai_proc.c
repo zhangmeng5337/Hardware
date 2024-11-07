@@ -1,4 +1,4 @@
-/* --COPYRIGHT--,BSD
+﻿/* --COPYRIGHT--,BSD
  * Copyright (c) 2018, Texas Instruments Incorporated
  * All rights reserved.
  *
@@ -239,6 +239,7 @@ data_ai_stru *get_ai_data()
 }
 
 //检测到传感器有问题，不清零，重启设备后清零
+//bit5...0   pt100
 void ai_health_dec()
 {
     unsigned char i;

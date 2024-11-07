@@ -29,7 +29,7 @@ void hardware_init()
 	uart_init();
 	CAT1_Init();
     mqtt_init();
-	pid_init();
+	 fuzzy_init();
 	 modbus_init();
 
 

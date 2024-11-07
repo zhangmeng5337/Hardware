@@ -110,9 +110,9 @@ void jiaz_date()
 }
 void init_dat(void)
 {
-  unsigned int i;
-  for(i=0;i<256;i++)
-  	dsf[i] = 0;
+    unsigned int i;
+    for(i=0; i<256; i++)
+        dsf[i] = 0;
 }
 void fuz_date()
 {
@@ -340,30 +340,30 @@ void sec_value(void)
                     fuz_date();
                     read_ee_data(0,0);
                     IapErase(0,0);
-                   // com_data_tx(0xab);
-                    for(j=0; j<256; j++)
-                    {
-                        com_data_tx(dsf[j]);
-                    }
+                    com_data_tx(0xab);
+//                    for(j=0; j<256; j++)
+//                    {
+//                        com_data_tx(dsf[j]);
+//                    }
 
                     for(j=0; j<256; j++)
                     {
                         buf[j]=dsf[j];
-                       // com_data_tx(buf[j]);
+                        com_data_tx(buf[j]);
                     }
                     write_add(0,0,buf[j]);
                     delaya(50);
-#if DEBUG_EN == 1
+//#if DEBUG_EN == 1
 
-                  //  com_data_tx(0x58);
+                    com_data_tx(0x58);
 
-//                    for(j=0; j<256; j++)
-//                    {
-//                        com_data_tx(read_add(0, j));
-//                        //delaya(50);
-//                    }
+                    for(j=0; j<256; j++)
+                    {
+                        com_data_tx(read_add(0, j));
+                        //delaya(50);
+                    }
 
-#endif
+//#endif
 
                     read_ee_data(7,0);
                     IapErase(7,0);
@@ -371,7 +371,19 @@ void sec_value(void)
                     buf[10]=rlkb;
                     buf[11]=rcga;
                     buf[12]=rcgb;
+                    com_data_tx(0x59);
+                    for(j=0; j<256; j++)
+                    {
+                        com_data_tx(buf[j]);
+                        //delaya(50);
+                    }
                     write_add(7,0,rlka);
+                    com_data_tx(0x69);
+                    for(j=0; j<256; j++)
+                    {
+                        com_data_tx(read_add(7, j));
+                        //delaya(50);
+                    }
                     delaya(50);
 #if DEBUG_EN == 1
 
@@ -448,7 +460,7 @@ void sec_value(void)
                     for(j=0; j<32; j++)
                     {
                         buf[j]=gmkg[j];
-                       // com_data_tx(buf[j]);
+                        // com_data_tx(buf[j]);
 
                         //delaya(50);
                     }
@@ -832,22 +844,46 @@ void up_value(void)
             {
                 if(yiwei==1)
                 {
+
                     fuz_date();	//
                     kgls++;
                     if(kgls>(xhao*4))kgls=1;
+//                    com_data_tx(0x86);
+                    com_data_tx(kgls);
                     jiaz_date();//¼ÓÔØÊ±¼ä
                 }
                 else if(yiwei==2)
                 {
                     shid++;
                     if(shid>4)shid=1;
+//                    com_data_tx(0x87);
+                    //com_data_tx(shid);
                 }
                 else if(yiwei==3)
                 {
-                    if(shid==1)kshia=dshij(kshia);
-                    else if(shid==2)kshib=dshij(kshib);
-                    else if(shid==3)kshic=dshij(kshic);
-                    else if(shid==4)kshid=dshij(kshid);
+                    if(shid==1)
+                    {
+											//kshia=dshija(kshia);
+											kshia=dshij(kshia);
+                    }
+                    else if(shid==2)
+                    {
+                        kshib=dshij(kshib);
+//                        com_data_tx(0x89);
+                        com_data_tx(kshib);
+                    }
+                    else if(shid==3)
+                    {
+                        kshic=dshij(kshic);
+//                        com_data_tx(0x8a);
+                        com_data_tx(kshic);
+                    }
+                    else if(shid==4)
+                    {
+                        kshid=dshij(kshid);
+//                        com_data_tx(0x8b);
+                        com_data_tx(kshid);
+                    }
                 }
                 else if(yiwei==4)
                 {
