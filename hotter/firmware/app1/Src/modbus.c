@@ -522,10 +522,11 @@ void modbus_tx_proc(unsigned char mode)
             }
             else
                 //memcpy(pb, &u, 2);
-                pb[0] = u;
+                pb[0] = u>>8;
+						pb[1] = u;
             modbus_tx.func = MODBUS_WRITE_ONE_CMD;
             modbus_tx.reg = TEMPERATURE_REG;
-            len++;
+            len = len + 2;
             break;
 
         case 4:
@@ -557,7 +558,7 @@ void modbus_tx_proc(unsigned char mode)
                     {
                         unsigned int i;
                         i = 1;
-                        i = i << (modbus_tx.address - 1);
+                        i = i << (modbus_tx.address);
                         modbus_recv.fault = modbus_recv.fault | i;
                     }
 
@@ -573,7 +574,7 @@ void modbus_tx_proc(unsigned char mode)
             }
             else
             {
-                modbus_tx.address = 1;
+                modbus_tx.address = 0;
                 modbus_tx.retry_count = RETRY_COUNT;
                 if (modbus_tx.update != 1)
                 {
@@ -619,7 +620,7 @@ void modbus_tx_proc(unsigned char mode)
                 {
                     unsigned int i;
                     i = 1;
-                    i = i << (modbus_tx.address - 1);
+                    i = i << (modbus_tx.address);
 
                     modbus_recv.fault = modbus_recv.fault | i;
                 }

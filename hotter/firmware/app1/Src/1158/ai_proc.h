@@ -85,7 +85,8 @@ typedef struct
 	unsigned int last_gather[32];	
 	uint32_t channel_status; //fault status
 	unsigned char update;
-	
+	unsigned char pt_index_conv[10];
+	unsigned char ai_index_conv[10];
 }data_ai_stru;
 
 
@@ -93,6 +94,7 @@ typedef struct
 // Function prototypes
 //
 
+void data_ai_init(void);
 
 void ads1158_init(void);
 void ads1158_config(unsigned char adc_No);

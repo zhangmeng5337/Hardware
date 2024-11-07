@@ -38,11 +38,11 @@ float get_pid_output()
 {
     float  u;
 
-        u =  indoor_temp_usr.output ;
+        u =  get_fuzzy_pid_params()->kp ;
 
 
 
-    return u;
+    return get_fuzzy_pid_params()->kp;
 }
 
 void pid_cal(unsigned char mode)

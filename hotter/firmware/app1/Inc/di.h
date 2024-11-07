@@ -23,6 +23,7 @@ typedef struct
 {
 	unsigned int di_status;
 	unsigned int di_No_buf[DI_SIZE];
+	unsigned char di_index_conv[DI_SIZE];
 } stru_di_stru;
 
 stru_di_stru di_input_read(unsigned int diNO);

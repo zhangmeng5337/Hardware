@@ -22,6 +22,7 @@ stru_di_stru di_status;
 void hardware_init()
 {
   do_off();
+   data_ai_init();
   ads1158_init();
 	ads1158_config(1);
 	ads1158_config(2);

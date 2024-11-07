@@ -24,6 +24,7 @@ typedef struct
 
 
 void fuzzy_proc(unsigned char mode);
+float get_pid_output(void);
 
 
 

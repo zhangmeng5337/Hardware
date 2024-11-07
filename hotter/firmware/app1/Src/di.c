@@ -19,6 +19,9 @@ di_usr.di_No_buf：对应通道有输入数组置1
 #define SUPPLE_PUMP_FAULT		10
 
 */
+/*
+0-15----4 3 2 1 8 7 6 5 9 10 11 12 13 14 15 16 
+*/
 stru_di_stru di_input_read(unsigned int diNO)
 {   
 		  if(HAL_GPIO_ReadPin(DI_IN0_GPIO_Port, DI_IN0_Pin)==0)
@@ -475,6 +478,13 @@ unsigned char di_proc(unsigned char diNO)
 {
 	di_input_read( diNO);
 	return di_usr.di_No_buf[diNO] ;	
+}
+void di_init(void)
+{
+	//0-15----4 3 2 1 8 7 6 5 9 10 11 12 13 14 15 16
+	//0-15----4 3 2 1 8 7 6 5 9 10 11 12 13 14 15 16
+    unsigned char buf[DI_SIZE]={4-1,3-1,2-1,1-1,8-1,7-1,6-1,5-1,9-1,10-1,11-1,12-1,13-1,14-1,15-1,16-1};
+	memcpy(di_usr.di_index_conv,buf,DI_SIZE);
 }
 stru_di_stru *get_di_data()
 {
