@@ -1,4 +1,4 @@
-#include "stmflash.h"
+﻿#include "stmflash.h"
 #include "main.h"
 uint32_t GetSectors(uint32_t Addr)
 {
@@ -136,6 +136,32 @@ void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len)
 	}
     HAL_FLASH_Lock();
 }
+void WriteFlashBytes(uint32_t addr, uint8_t * buff, int buf_len)
+{
+
+    int i = 0;
+	HAL_StatusTypeDef status;
+    HAL_FLASH_Unlock();
+	FLASH_WaitForLastOperation(50000);    //添加的代�?
+	__HAL_FLASH_DATA_CACHE_DISABLE();//FLASH操作期间，必须禁止数据缓�?
+        /* Enable data cache */
+    __HAL_FLASH_DATA_CACHE_ENABLE();//开启数据缓�?
+	 __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP    | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | \
+                         FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
+
+    for( i= 0; i < buf_len; i+=1)
+    {
+        status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, addr+i, *(__IO uint32_t*)(buff+i));
+        while(status != HAL_OK)
+        {
+           while(status != HAL_OK)
+			status = Erase_page(addr, 1);
+		   i = 0;
+		}
+			
+	}
+    HAL_FLASH_Lock();
+}
 
 /**
 	* @bieaf ׁɴىٶ˽ߝ
@@ -152,3 +178,24 @@ void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len)
         buff[i] = *(__IO uint8_t*)(addr + i);
     }
 }
+void floatTouint32(float dat,unsigned char *buf)
+{
+	   //float a=3.14159;
+	   uint32_t b;
+	   b=*(uint32_t*)&dat;
+	   
+	   buf[0]=b>>0;
+	   buf[1]=b>>8;
+	   buf[2]=b>>16;
+	   buf[3]=b>>24;
+
+
+}
+float uint32Tofloat(unsigned char *buf)
+{
+	uint32_t tmp;
+	tmp=(buf[0]<<0)|(buf[1]<<8)|(buf[2]<<16)|(buf[3]<<24);
+	return *(float*)&tmp;
+
+}
+

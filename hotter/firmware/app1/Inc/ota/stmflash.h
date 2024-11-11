@@ -4,6 +4,11 @@
 #include "main.h"
 #include "stdio.h"
 
+#define WRITE		0
+#define READ		1
+#define SUCESS		0
+#define NOPARAMS		1
+
 //#define FLASH_BASE           0x08000000
 
 #define FLASH_SECTOR_SIZE       0x4000U  
@@ -46,12 +51,12 @@
 	
 
 
-#define BootLoader_Size				0x10000U						// BootLoader的区间大�? 64K
-#define Application_Size			0x40000U					// Application的区间大�?256K
+#define BootLoader_Size				0x10000U						// BootLoader size 64K
+#define Application_Size			0x40000U					// Application size 256K
 
-#define Application_1_Addr		0x08020000U				// 应用程序1的首地址�? sectors
-#define Application_2_Addr		0x08060000U				// 应用程序2的首地址�? sectors
-
+#define Application_1_Addr		0x08020000U				// app1 base addr
+#define Application_2_Addr		0x08060000U				// app2 base addr
+#define SYS_PARAMS_Addr        Application_2_Addr + Application_Size
 
 #define CONFIG_Addr		       0x08010000
 

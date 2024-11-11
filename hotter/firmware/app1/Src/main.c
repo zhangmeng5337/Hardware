@@ -45,6 +45,8 @@
 /* Private variables ---------------------------------------------------------*/
 IWDG_HandleTypeDef hiwdg;
 
+RTC_HandleTypeDef hrtc;
+
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi3;
 
@@ -69,6 +71,7 @@ static void MX_UART5_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_IWDG_Init(void);
+static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -113,6 +116,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_SPI1_Init();
   //MX_IWDG_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
   //while(1)
 	//	;
@@ -220,6 +224,88 @@ static void MX_IWDG_Init(void)
   /* USER CODE BEGIN IWDG_Init 2 */
 
   /* USER CODE END IWDG_Init 2 */
+
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+ 
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  /* USER CODE END RTC_Init 0 */
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+  if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* 检查是否写入过一次RTC，保证掉电不丢失RTC时钟 */
+	{ 
+	/* USER CODE END Check_RTC_BKUP */
+   
+	/** Initialize RTC and set the Time and Date
+	*/
+	sTime.Hours = 0x14;
+	sTime.Minutes = 0x30;
+	sTime.Seconds = 0x0;
+	sTime.SubSeconds = 0x0;
+	sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+	sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+	if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK)
+	{
+	  Error_Handler();
+	}
+	sDate.WeekDay = RTC_WEEKDAY_SATURDAY;
+	sDate.Month = RTC_MONTH_JUNE;
+	sDate.Date = 0x1;
+	sDate.Year = 0x24;
+	if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK)
+	{
+	  Error_Handler();
+	}
+   
+	/** Enable the Alarm A
+	*/
+//	sAlarm.AlarmTime.Hours = 0x14;
+//	sAlarm.AlarmTime.Minutes = 0x30;
+//	sAlarm.AlarmTime.Seconds = 0x20;
+//	sAlarm.AlarmTime.SubSeconds = 0x0;
+//	sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+//	sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_SS14_9;
+//	sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+//	sAlarm.AlarmDateWeekDay = 0x1;
+//	sAlarm.Alarm = RTC_ALARM_A;
+//	if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+//	{
+//	  Error_Handler();
+//	}
+	/* USER CODE BEGIN RTC_Init 2 */
+	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //这里就是将这个寄存器的标志设为刚才的那个值，下次掉电后就不会进入到这里来 
+	}
+
+
+  /* USER CODE END RTC_Init 2 */
 
 }
 
@@ -447,8 +533,8 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, IO0_Pin|LATCH_AO_MCU_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin
+                          |PWR_CTRL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MIBSPI1MCS1_GPIO_Port, MIBSPI1MCS1_Pin, GPIO_PIN_SET);
@@ -479,13 +565,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin lte_3_8V_EN_Pin */
-  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin|PWR_CTRL_Pin;
+  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin lte_3_8V_EN_Pin
+                           PWR_CTRL_Pin */
+  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin
+                          |PWR_CTRL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
 
   /*Configure GPIO pins : PB1 PB2 */
   GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;

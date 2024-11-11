@@ -1,0 +1,158 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file    rtc.c
+  * @brief   This file provides code for the configuration
+  *          of the RTC instances.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "rtc.h"
+
+/* USER CODE BEGIN 0 */
+rtc_stru rtc_usr;
+ RTC_TimeTypeDef Now_Time;//定义时间结构体
+ RTC_DateTypeDef Now_Date;//定义日期结构体
+ uint8_t Data[5];
+//extern sgp30_data_t sgp30_data;
+RTC_AlarmTypeDef sAlarm = {0};
+
+/* USER CODE END 0 */
+
+extern RTC_HandleTypeDef hrtc;
+RTC_TimeTypeDef *get_rtc_time(void)
+{
+   return &Now_Time;
+}
+/* RTC init function */
+void set_rtc_time(rtc_stru urtc)
+{
+
+    /* USER CODE BEGIN RTC_Init 0 */
+
+    /* USER CODE END RTC_Init 0 */
+
+    RTC_TimeTypeDef sTime = {0};
+    RTC_DateTypeDef sDate = {0};
+
+    if(urtc.update == 0)
+    {
+        sTime.Hours = urtc.Hours;
+        sTime.Minutes = urtc.Minutes;
+        sTime.Seconds = urtc.Seconds;
+        sTime.SubSeconds = 0;
+        sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+        sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+
+        sDate.WeekDay = urtc.WeekDay;
+        sDate.Month = urtc.Month;
+        sDate.Date = urtc.Date;
+        sDate.Year = urtc.Year;
+        if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A)			 /* 检查是否写入过一次RTC，保证掉电不丢失RTC时钟 */
+        {
+            /* USER CODE END Check_RTC_BKUP */
+
+            /** Initialize RTC and set the Time and Date
+            */
+
+            if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK)
+            {
+                Error_Handler();
+            }
+
+            if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK)
+            {
+                Error_Handler();
+            }
+
+            /* USER CODE BEGIN RTC_Init 2 */
+            HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x5A5A);  //这里就是将这个寄存器的标志设为刚才的那个值，下次掉电后就不会进入到这里来
+        }
+//        else
+//        {
+//            RTC_AlarmConfig(); 						  /* RTC的中断配置初始化以及启动 */
+//        }
+
+        urtc.update = 1;
+
+    }
+
+}
+
+
+
+/* USER CODE BEGIN 1 */
+RTC_TimeTypeDef Now_Time;//定义时间结构体
+RTC_DateTypeDef Now_Date;//定义日期结构体
+
+void GET_Time(void)//获取当前时间
+{
+    HAL_RTC_GetTime(&hrtc,&Now_Time,RTC_FORMAT_BIN);//RTC_FORMAT_BIN
+    HAL_RTC_GetDate(&hrtc,&Now_Date,RTC_FORMAT_BIN);
+}
+
+//	uint32_t next_trigger_hours = Now_Time.Hours;
+//  sAlarm.AlarmTime.Hours = next_trigger_hours;
+/* RTC的秒中断配置启动函数 */
+//void RTC_AlarmConfig(void)
+//{
+//
+//    RTC_AlarmTypeDef sAlarm = {0};
+//    HAL_RTC_GetTime(&hrtc, &Now_Time, RTC_FORMAT_BIN);
+//    HAL_RTC_GetDate(&hrtc, &Now_Date, RTC_FORMAT_BIN);
+//
+//    // 计算下一个触发时间
+//    uint32_t next_trigger_seconds = Now_Time.Seconds + 9;
+//    if (next_trigger_seconds >= 60)
+//    {
+//        next_trigger_seconds -= 60;
+//    }
+//    sAlarm.AlarmTime.Hours = Now_Time.Hours;
+//    sAlarm.AlarmTime.Minutes = Now_Time.Minutes;
+//    sAlarm.AlarmTime.Seconds = next_trigger_seconds;
+//    sAlarm.AlarmTime.SubSeconds = 0x0;
+//    sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+//    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
+//    sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;
+//    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_SS14_9;
+//    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+//    sAlarm.AlarmDateWeekDay = 0x0 ;
+//    sAlarm.Alarm = RTC_ALARM_A;
+//
+//    if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+//    {
+//        Error_Handler();
+//    }
+//
+//}
+
+
+/* RTC中断回调 */
+//void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
+//{
+//
+//    printf("20s pass\r\n");
+//// 更新下一个闹钟触发时间
+//    RTC_AlarmConfig();
+//    //  GET_Time();
+//    printf("%02d:%02d:%02d\n",Now_Time.Hours,Now_Time.Minutes,Now_Time.Seconds);
+//    printf("%02d:%02d:%02d\n",Now_Date.Year,Now_Date.Month,Now_Date.Date);
+//    printf("week%01d\n",Now_Date.WeekDay);
+//    printf("Temperature:%02d\r\n",Data[2]);
+//    printf("Humidity:%02d\r\n",Data[0]);
+//    printf("CO2_Density:%03d\r\n",sgp30_data.co2);
+//
+//}
+/* USER CODE END 1 */
+

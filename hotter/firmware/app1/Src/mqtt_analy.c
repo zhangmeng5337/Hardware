@@ -11,6 +11,8 @@
 #include "sys.h"
 #include "pid.h"
 #include "filter.h"
+#include "schedule.h"
+
 tsATCmds     mqtt_at_cmds;
 teATCmdNum    mqtt_at_cmd_num;
 teATStatus    mqtt_at_status;
@@ -60,6 +62,41 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
         return NULL;
 
 }
+void plan_analy(unsigned char *p,unsigned char index)
+{
+	//if (p != NULL)
+		{
+			//memset(dev_id, 0, 128);
+			unsigned char buf[32];
+			unsigned char buf2[PLAN_SIZE];
+			unsigned int tmp,i,j,k;
+			j = 0;
+			k = 0;
+			i = 0;
+			get_config()->tlen = 0;
+			while (p [i] != ']')
+			{
+				if (p [i] != ',' && p [i] != ']')
+					buf[j++] = p [i];
+				else
+				{
+					tmp = atoi(buf);
+					buf2[k++] = tmp;
+					memset(buf, 0, 32);
+					j = 0;
+				}
+				i++;
+	 
+			}
+			get_schedule()->buf->index = index;
+			memcpy(get_schedule()->buf,buf2,PLAN_SIZE);
+
+	
+		}
+
+}
+
+
 void anlysis_mqtt_recv()
 {
 
@@ -262,39 +299,90 @@ void anlysis_mqtt_recv()
     }
 
 
-    dev_id = find_json_string("\"Room Temp\": [", "\r\n", 1);
+
+	dev_id = find_json_string("\"Room Temp\": [", "\r\n", 1);//schedule paln
+	   if (dev_id != NULL)
+	   {
+		   //memset(dev_id, 0, 128);
+		   unsigned char buf[32];
+		   j = 0;
+		   k = 0;
+		   i = 0;
+		   get_config()->tlen = 0;
+		   while (dev_id[i] != ']')
+		   {
+			   if (dev_id[i] != ',' && dev_id[i] != ']')
+				   buf[j++] = dev_id[i];
+			   else
+			   {
+				   tmp_f = atof(buf);
+				   get_config()->indoor_temperature[k++] = tmp_f;
+				   get_config()->tlen++;
+				   memset(buf, 0, 16);
+				   j = 0;
+	
+			   }
+			   i++;
+	
+			   get_config()->update_setting = 2;
+	
+		   }
+	
+		   tmp_f = atof(buf);
+		   get_config()->indoor_temperature[k++] = tmp_f;
+	
+	   }
+
+    dev_id = find_json_string("\"Plan1\": [", "\r\n", 1);
     if (dev_id != NULL)
     {
-        //memset(dev_id, 0, 128);
-        unsigned char buf[32];
-        j = 0;
-        k = 0;
-        i = 0;
-		get_config()->tlen = 0;
-        while (dev_id[i] != ']')
-        {
-            if (dev_id[i] != ',' && dev_id[i] != ']')
-                buf[j++] = dev_id[i];
-            else
-            {
-                tmp_f = atof(buf);
-                get_config()->indoor_temperature[k++] = tmp_f;
-				get_config()->tlen++;
-                memset(buf, 0, 16);
-                j = 0;
-
-            }
-            i++;
-
-            get_config()->update_setting = 2;
-
-        }
-
-        tmp_f = atof(buf);
-        get_config()->indoor_temperature[k++] = tmp_f;
-
+    	plan_analy(dev_id,0);
     }
-
+    dev_id = find_json_string("\"Plan2\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,1);
+    }
+	    dev_id = find_json_string("\"Plan3\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,2);
+    }
+	    dev_id = find_json_string("\"Plan4\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,3);
+    }
+	    dev_id = find_json_string("\"Plan5\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,4);
+    }
+	    dev_id = find_json_string("\"Plan6\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,5);
+    }
+	    dev_id = find_json_string("\"Plan7\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,6);
+    }
+	    dev_id = find_json_string("\"Plan8\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,7);
+    }
+	    dev_id = find_json_string("\"Plan9\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,8);
+    }
+	    dev_id = find_json_string("\"Plan10\": [", "\r\n", 1);
+    if (dev_id != NULL)
+    {
+    	plan_analy(dev_id,9);
+    }
 
 
 
@@ -840,7 +928,7 @@ uint8_t mqtt_Info_Show(void)
         }
         break;
 
-    defautl:
+    default:
         {
             CAT1_Init();
         }
