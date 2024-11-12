@@ -13,6 +13,7 @@
 #include "mqtt_analy.h"
 #include "pid.h"
 #include "machine_ctrl.h"
+#include "schedule.h"
 
 
 
@@ -26,7 +27,8 @@ void hardware_init()
   ads1158_init();
 	ads1158_config(1);
 	ads1158_config(2);
-	config_init();
+	//config_init();
+	pwr_schedul_init();
 	uart_init();
 	CAT1_Init();
     mqtt_init();
@@ -76,6 +78,7 @@ void app_proc()
    TickPro(); //sys timer proc
    ai_proc();//pressure temperature sample interval 2s 
    di_proc(0);//di detection
+    pwr_schedul_set();
    mqtt_proc();//lte ,mqtt and ota
    modbus_proc();//machine control
    dev_ctrl();

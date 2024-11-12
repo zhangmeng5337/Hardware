@@ -46,7 +46,7 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
 	{
 
 	}
-    if (valid_dat == 1)
+   // if (valid_dat == 1)
     {
         memset(recv_buf,0,128);
         if (end_flag == 1)
@@ -58,8 +58,8 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
             return NULL;
 		
     }
-    else
-        return NULL;
+//    else
+     //   return NULL;
 
 }
 void plan_analy(unsigned char *p,unsigned char index)
@@ -73,7 +73,7 @@ void plan_analy(unsigned char *p,unsigned char index)
 			j = 0;
 			k = 0;
 			i = 0;
-			get_config()->tlen = 0;
+			//get_config()->tlen = 0;
 			while (p [i] != ']')
 			{
 				if (p [i] != ',' && p [i] != ']')
@@ -88,10 +88,25 @@ void plan_analy(unsigned char *p,unsigned char index)
 				i++;
 	 
 			}
-			get_schedule()->buf->index = index;
-			memcpy(get_schedule()->buf,buf2,PLAN_SIZE);
+			tmp = atoi(buf);
+			buf2[k++] = tmp;
+			i=0;
+			
+			get_schedule()->buf[index].pwr_state =buf2[i++];
+			get_schedule()->buf[index].temperature =buf2[i++];
+			get_schedule()->buf[index].shour =buf2[i++];
+			get_schedule()->buf[index].sminute =buf2[i++];
+			get_schedule()->buf[index].sweekday =buf2[i++];
+			get_schedule()->buf[index].ehour =buf2[i++];
+			get_schedule()->buf[index].eminute =buf2[i++];
+			get_schedule()->buf[index].eweekday =buf2[i++];
+			get_schedule()->buf[index].enable =1;
+			get_schedule()->buf[index].index =index;
 
-	
+				get_schedule()->save_flag = 1;
+
+ 
+			
 		}
 
 }

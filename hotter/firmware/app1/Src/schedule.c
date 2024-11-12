@@ -4,40 +4,15 @@
 
 schedule_stru schedule_u;
 
-
-void pwr_schedul_init(void)
+void pwr_schedul_reset(void)
 {
 	;//restore paln
+	
 }
-schedule_stru *get_schedule(void)
+unsigned char  boot_params_proc(unsigned char oper)
 {
-	return &schedule_u;
-}
-//void pwr_schedul_set(unsigned char init,schedule_stru dat)
-//{
-//	unsigned char i,j;
-//	if(init == 0)
-//	{
-//		j = sizeof(schedule_u.buf);
-//		for(i=0;i<SCHEDULE_SIZE;i++)
-//		{
-//		memset(schedule_u.buf,0,j);
-//		
-//		}
-//
-//
-//	}
-//	else
-//	{
-//		memcpy(schedule_u.buf[dat.buf.index],PLAN_SIZE-1);
-//	}
-//
-//}
-
-unsigned char boot_params_proc(unsigned char oper)
-{
-    unsigned char buf[512];
-    uint32_t  i;
+    unsigned char buf[512],result;
+    uint32_t  i,j;
 
     if (oper == WRITE)
     {	__disable_irq(); 
@@ -47,10 +22,12 @@ unsigned char boot_params_proc(unsigned char oper)
         memset(buf, 0, 512);
         buf[0] = 0x5a;
         i = sizeof(schedule_u.buf);
-		memcpy(buf+1,schedule_u.buf,i);
+		for(i=0;i<SCHEDULE_SIZE;i++)
+			memcpy(buf+1,schedule_u.buf[i],PLAN_SIZE);
         	
-        WriteFlashBytes(SYS_PARAMS_Addr, buf, i);
+        WriteFlashBytes(SYS_PARAMS_Addr, buf, i*PLAN_SIZE);
 	__enable_irq();
+	result = 0;
 
     }
     else
@@ -59,15 +36,70 @@ unsigned char boot_params_proc(unsigned char oper)
         ReadFlash(SYS_PARAMS_Addr, buf, 512);
         i = sizeof(schedule_u.buf);
         if (buf[0]  == 0x5a)
-        {
-			memcpy(schedule_u.buf,buf+1,i);
+        {  
+         	j = 0;
+           	for(i=0;i<SCHEDULE_SIZE;i++)
+           	{
+           	
+			get_schedule()->buf[i].pwr_state =buf[j ++];
+			get_schedule()->buf[i].temperature =buf[j ++];
+			get_schedule()->buf[i].shour =buf[j ++];
+			get_schedule()->buf[i].sminute =buf[j ++];
+			get_schedule()->buf[i].sweekday =buf[j ++];
+			get_schedule()->buf[i].ehour =buf[j ++];
+			get_schedule()->buf[i].eminute =buf[j ++];
+			get_schedule()->buf[i].eweekday =buf[j ++];
+			get_schedule()->buf[i].enable =buf[j ++];
+			get_schedule()->buf[i].index =buf[j ++];
+
+			}
+			result = 0;
+   
+
         }
 		else
 		{
-			pwr_schedul_init();
+		    result = 1;
+			pwr_schedul_reset();
 		}
     }
+	return result;
 }
+void pwr_schedul_set(void)
+{
+    static uint32_t stick;
+	if(schedule_u.save_flag == 1)
+	{
+		if((HAL_GetTick()-stick)>=3000)
+		{
+		    boot_params_proc(WRITE);
+			schedule_u.save_flag = 0;
+			
+		}
+	}
+	else
+	{
+		stick = HAL_GetTick();
+	}
+}
+
+
+void pwr_schedul_init(void)
+{
+	if( boot_params_proc(READ) == 1)
+	{
+		pwr_schedul_reset();
+	}
+	
+}
+schedule_stru *get_schedule(void)
+{
+	return &schedule_u;
+}
+
+
+
+
 
 
 

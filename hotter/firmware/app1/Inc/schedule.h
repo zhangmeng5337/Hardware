@@ -33,9 +33,12 @@ typedef struct
 {
   schedule_time buf[SCHEDULE_SIZE];
   unsigned char update_count;
+  unsigned char save_flag;
   
 } schedule_stru;
 schedule_stru *get_schedule(void);
+void pwr_schedul_set(void);
+void pwr_schedul_init(void);
 
 #endif
 
