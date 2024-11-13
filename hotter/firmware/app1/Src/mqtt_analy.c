@@ -1,4 +1,4 @@
-#include "mqtt_analy.h"
+﻿#include "mqtt_analy.h"
 #include "my_string.h"
 #include "lte_hal.h"
 #include "json_para.h"
@@ -100,7 +100,7 @@ void plan_analy(unsigned char *p,unsigned char index)
 			get_schedule()->buf[index].ehour =buf2[i++];
 			get_schedule()->buf[index].eminute =buf2[i++];
 			get_schedule()->buf[index].eweekday =buf2[i++];
-			get_schedule()->buf[index].enable =1;
+			get_schedule()->buf[index].enable =buf2[i++];
 			get_schedule()->buf[index].index =index;
 
 				get_schedule()->save_flag = 1;

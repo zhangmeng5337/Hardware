@@ -24,6 +24,9 @@
 rtc_stru rtc_usr;
  RTC_TimeTypeDef Now_Time;//定义时间结构体
  RTC_DateTypeDef Now_Date;//定义日期结构体
+ RTC_TimeTypeDef Now_Time_BIN;//定义时间结构体
+ RTC_DateTypeDef Now_Date_BIN;//定义日期结构体
+
  uint8_t Data[5];
 //extern sgp30_data_t sgp30_data;
 RTC_AlarmTypeDef sAlarm = {0};
@@ -31,10 +34,15 @@ RTC_AlarmTypeDef sAlarm = {0};
 /* USER CODE END 0 */
 
 extern RTC_HandleTypeDef hrtc;
-RTC_TimeTypeDef *get_rtc_time(void)
+RTC_TimeTypeDef *getRtcTime(void)
 {
-   return &Now_Time;
+   return &Now_Time_BIN;
 }
+RTC_DateTypeDef *getRtcDate(void)
+{
+   return &Now_Date_BIN;
+}
+
 /* RTC init function */
 void set_rtc_time(rtc_stru urtc)
 {
@@ -93,13 +101,22 @@ void set_rtc_time(rtc_stru urtc)
 
 
 /* USER CODE BEGIN 1 */
-RTC_TimeTypeDef Now_Time;//定义时间结构体
-RTC_DateTypeDef Now_Date;//定义日期结构体
+
 
 void GET_Time(void)//获取当前时间
 {
-    HAL_RTC_GetTime(&hrtc,&Now_Time,RTC_FORMAT_BIN);//RTC_FORMAT_BIN
-    HAL_RTC_GetDate(&hrtc,&Now_Date,RTC_FORMAT_BIN);
+    HAL_RTC_GetTime(&hrtc,&Now_Time,RTC_FORMAT_BCD);//RTC_FORMAT_BIN
+    HAL_RTC_GetDate(&hrtc,&Now_Date,RTC_FORMAT_BCD);
+	Now_Time_BIN.Hours = Now_Time.Hours/16*10;
+	Now_Time_BIN.Hours = Now_Time_BIN.Hours + Now_Time.Hours%16;	
+	
+	Now_Time_BIN.Minutes = Now_Time.Minutes/16*10;
+	Now_Time_BIN.Minutes = Now_Time_BIN.Minutes + Now_Time.Minutes%16;		
+	
+	Now_Date_BIN.WeekDay = Now_Date.WeekDay/16*10;	
+	Now_Date_BIN.WeekDay = Now_Date_BIN.WeekDay + Now_Date.WeekDay%16;
+
+	
 }
 
 //	uint32_t next_trigger_hours = Now_Time.Hours;
@@ -155,4 +172,9 @@ void GET_Time(void)//获取当前时间
 //
 //}
 /* USER CODE END 1 */
+void urtc_proc(void)
+{
+	GET_Time();//获取当前时间
+
+}
 

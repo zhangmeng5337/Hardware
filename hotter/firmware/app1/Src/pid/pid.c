@@ -2,6 +2,8 @@
 #include "FuzzyPID.h"
 #include "pid.h"
 #include "ai_proc.h"
+#include "schedule.h"
+
 indoor_temp_stru indoor_temp_usr;
 
 
@@ -37,14 +39,32 @@ void get_temp_cal(float *buf)
 float get_pid_output()
 {
     float  u;
+        if (get_schedule()->mode == 1)
+       	{
 
+			u = get_schedule()->buf[get_schedule()->current_plan].temperature;
+	     }
+		else
         u =  get_fuzzy_pid_params()->kp ;
 
 
 
-    return get_fuzzy_pid_params()->kp;
+    return u;
 }
+float Tsel_proc()
+{
+   float result;
+	if(get_schedule()->current_plan<SCHEDULE_SIZE)
+	{
+		result = get_schedule()->buf[get_schedule()->current_plan].temperature;
+	}
+	else
+	{
+		result = get_config()->set_tindoor;
 
+	}
+	return result;
+}
 void pid_cal(unsigned char mode)
 {
     float u;
@@ -54,7 +74,7 @@ void pid_cal(unsigned char mode)
 
     erro_ppre = erro_pre;
     erro_pre = erro;
-    if (mode == 0)//智能控制 smart ctrl
+    if (mode == 0&&get_schedule()->mode == 0)//智能控制 smart ctrl
     {
         if (indoor_temp_usr.temp_average >= (0.95 * get_config()->set_tindoor)) //平均温度达标
         {
@@ -77,9 +97,22 @@ void pid_cal(unsigned char mode)
     }
     else  //本地控制  native ctrl
     {
-        erro = get_ai_data()->temp[AI_WATER_T_IN_INDEX]-MACHINE_IN_T ;//温度加权
-   		 setval = MACHINE_IN_T;
-		measure_val =  get_ai_data()->temp[AI_WATER_T_IN_INDEX];     
+       if (get_schedule()->mode == 1)
+       	{
+       	;
+//		   erro=get_schedule()->buf[get_schedule()->current_plan].temperature-get_config()->set_tindoor;
+//		setval = get_config()->set_tindoor;
+//	   measure_val =  indoor_temp_usr.temp_average;
+
+	   }
+	   else
+	   	{
+	   erro = get_ai_data()->temp[AI_WATER_T_IN_INDEX]-MACHINE_IN_T ;//温度加权
+		setval = MACHINE_IN_T;
+	   measure_val =  get_ai_data()->temp[AI_WATER_T_IN_INDEX]; 	
+
+	   }
+
     }
 	
 	//get_fuzzy_pid_params()->e = erro;

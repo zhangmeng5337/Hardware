@@ -105,9 +105,9 @@ void pwr_schedul_init(void)
     {
         pwr_schedul_reset();
     }
-    schedule_u.last_paln = SCHEDULE_SIZE+2;
-    schedule_u.mode = 1;
-    schedule_u.current_plan_pwr_update= 1;
+	schedule_u.last_paln = SCHEDULE_SIZE+2;
+	schedule_u.mode = 1;
+	schedule_u.current_plan_pwr_update= 1;
 
 }
 schedule_pack_stru *get_schedule(void)
@@ -126,58 +126,60 @@ void plan_query(void)
           )
         {
 
-            if(getRtcDate()->WeekDay>=schedule_u.buf[i].sweekday  &&
-                    getRtcDate()->WeekDay<=schedule_u.buf[i].eweekday )
-            {
-                if(schedule_u.buf[i].enable == 1)
-                {
-                    schedule_u.current_plan= i;
-                    schedule_u.mode = 1;
-                    //schedule_u.last_paln = i;
-
-                }
-
-                break;
-            }
-        }
-        else
-        {
-            if((getRtcTime()->Hours>schedule_u.buf[i].shour&&
-                    getRtcTime()->Hours<schedule_u.buf[i].ehour)
-              )
-            {
-                if(getRtcDate()->WeekDay>=schedule_u.buf[i].sweekday	&&
+                if(getRtcDate()->WeekDay>=schedule_u.buf[i].sweekday  &&
                         getRtcDate()->WeekDay<=schedule_u.buf[i].eweekday )
-                {
-                    if(schedule_u.buf[i].enable == 1)
-                    {
-                        schedule_u.current_plan= i;
-                        schedule_u.mode = 1;
-                    }
+                	{
+						if(schedule_u.buf[i].enable == 1)
+						{
+						schedule_u.current_plan= i; 
+						schedule_u.mode = 1;
+						//schedule_u.last_paln = i;
 
-                    break;
-                }
-
-            }
-
-
+						}
+						
+                         break;
+						}
         }
+		else
+		{
+		if((getRtcTime()->Hours>schedule_u.buf[i].shour&&
+			getRtcTime()->Hours<schedule_u.buf[i].ehour)
+				  )
+			{
+				  if(getRtcDate()->WeekDay>=schedule_u.buf[i].sweekday	&&
+						  getRtcDate()->WeekDay<=schedule_u.buf[i].eweekday )
+					  {
+						  if(schedule_u.buf[i].enable == 1)
+						  {
+						  schedule_u.current_plan= i; 
+						  schedule_u.mode = 1;
+						  //schedule_u.last_paln = i;
+				  
+						  }
+						  
+						   break;
+						  }
+
+				  }
+
+
+		}
 
     }
-    if(i>=SCHEDULE_SIZE)
-    {
-        schedule_u.current_plan= SCHEDULE_SIZE;
-        schedule_u.current_plan_pwr_update= 0;
-        schedule_u.mode = 0;
-    }
-    else
-    {
-        if(schedule_u.last_paln != schedule_u.current_plan)
-        {
-            schedule_u.last_paln = schedule_u.current_plan;
-            schedule_u.current_plan_pwr_update= 1;
-        }
-    }
+	if(i>=SCHEDULE_SIZE)
+	{
+	    schedule_u.current_plan= SCHEDULE_SIZE;
+		schedule_u.current_plan_pwr_update= 0;
+		schedule_u.mode = 0;
+	}
+	else
+	{
+		if(schedule_u.last_paln != schedule_u.current_plan)
+		{
+			schedule_u.last_paln = schedule_u.current_plan;
+			schedule_u.current_plan_pwr_update= 1; 
+		}
+	}
 
 }
 void schedule_proc(void)

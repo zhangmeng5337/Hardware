@@ -7,6 +7,7 @@
 #include "crc.h"
 #include "hotter.h"
 #include "pid.h"
+#include "schedule.h"
 
 //设备地址从1开始
 //mqtt每次只发送需要操作的命令，不要什么都发
@@ -442,7 +443,8 @@ return:
 unsigned char  modbus_ctrl()
 {
     if (get_config()->update_setting == 1
-            || (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1))
+            || (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1)||
+            get_schedule()->current_plan_pwr_update == 1)
     {
 #if CTRL_EN
         if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&
@@ -457,11 +459,13 @@ unsigned char  modbus_ctrl()
 
         }
 #endif
-        if (get_config()->update_setting == 1)
+        if (get_config()->update_setting == 1||
+                get_schedule()->current_plan_pwr_update == 1)
         {
             modbus_tx.update = 2;  //server setting
             config_save();//位置不能变
             get_config()->update_setting = 0;
+					get_schedule()->current_plan_pwr_update = 2;
             modbus_tx.retry_count = RETRY_COUNT;
             modbus_tx.address = 0;
 
@@ -505,8 +509,21 @@ void modbus_tx_proc(unsigned char mode)
         case 2:
             // memcpy(pb, &get_config()->machine, 2);//pwr on or off machine
             // get_config()->machine = 0;
-            pb[0] = get_config()->machine >> 8;
-            pb[1] = get_config()->machine ;
+            if(get_schedule()->current_plan_pwr_update == 2) 
+            {
+
+               if(get_schedule()->current_plan<(SCHEDULE_SIZE))
+                {
+                    pb[0] = 0x00;
+                    pb[1] = get_schedule()->buf[get_schedule()->current_plan].pwr_state;
+                }
+            }
+            else
+            {
+                pb[0] = get_config()->machine >> 8;
+                pb[1] = get_config()->machine ;
+
+            }
             modbus_tx.func = MODBUS_WRITE_ONE_CMD;
             modbus_tx.reg = CONTROLLER_REG;
             len = len + 2;
@@ -523,7 +540,7 @@ void modbus_tx_proc(unsigned char mode)
             else
                 //memcpy(pb, &u, 2);
                 pb[0] = u>>8;
-						pb[1] = u;
+            pb[1] = u;
             modbus_tx.func = MODBUS_WRITE_ONE_CMD;
             modbus_tx.reg = TEMPERATURE_REG;
             len = len + 2;
@@ -582,7 +599,11 @@ void modbus_tx_proc(unsigned char mode)
                         reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
                     else
                     {
-
+							if(modbus_tx.update == 2)
+							{
+								if(get_schedule()->current_plan_pwr_update == 2)
+									get_schedule()->current_plan_pwr_update = 0;
+							}
                     }
                     modbus_tx.update = 1;
 

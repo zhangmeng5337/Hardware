@@ -27,7 +27,7 @@ void hardware_init()
   ads1158_init();
 	ads1158_config(1);
 	ads1158_config(2);
-	//config_init();
+	config_init();
 	pwr_schedul_init();
 	uart_init();
 	CAT1_Init();
@@ -79,9 +79,12 @@ void app_proc()
    ai_proc();//pressure temperature sample interval 2s 
    di_proc(0);//di detection
     pwr_schedul_set();
+	schedule_proc();
    mqtt_proc();//lte ,mqtt and ota
    modbus_proc();//machine control
    dev_ctrl();
+   
+   // rtc_proc();
   //modbus_test();
   // control_proc();
    //config_save();

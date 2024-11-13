@@ -26,6 +26,10 @@ typedef struct
                          This parameter must be a number between Min_Data = 0 and Max_Data = 99 */
 } rtc_stru;
 void GET_Time(void);//获取当前时间
+void urtc_proc(void);
+RTC_DateTypeDef *getRtcDate(void);
+RTC_TimeTypeDef *getRtcTime(void);
+
 
 #endif
 

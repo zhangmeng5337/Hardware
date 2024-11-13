@@ -17,7 +17,7 @@
 
 typedef struct
 {
-  unsigned pwr_state;//power on or off
+  unsigned char pwr_state;//power on or off
   unsigned char temperature;//set pump temperature
   unsigned char shour; //start hour
   unsigned char sminute;
@@ -34,9 +34,12 @@ typedef struct
   schedule_time buf[SCHEDULE_SIZE];
   unsigned char update_count;
   unsigned char save_flag;
-  
-} schedule_stru;
-schedule_stru *get_schedule(void);
+  unsigned char current_plan;
+  unsigned char last_paln;
+  unsigned char current_plan_pwr_update;
+  unsigned char mode;//0:ctrl indoor 1:ctrl pum water temp
+} schedule_pack_stru;
+schedule_pack_stru *get_schedule(void);
 void pwr_schedul_set(void);
 void pwr_schedul_init(void);
 

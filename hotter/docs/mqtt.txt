@@ -1,0 +1,29 @@
+39.106.131.169
+
+dev_pub_869020065433573
+dev_sub_ctrl_
+dev_sub_temp_
+{
+   "Dev ID":  "866289037465624",
+  "Room Temp": [12, 22, 23, 25]，
+  "Room Humid": [12, 22, 23, 25]
+}
+
+{
+   "Dev ID":  "866289037465624",
+   "Dev Ctrl": {
+               "Updat Frimware": 0,
+               "Reboot Dev": 0,
+               "Power ctrl": 1,                
+               "Set Out Temp": 45,
+               "Set Room Temp": 23,
+               "Set Upload Period(second)": 13
+     }
+}
+
+{
+   "Dev ID":  "864536074095033",
+  "Room Temp": [12, 22, 23, 25],
+  "Plan1": [1,45,18,14,1,19,23,5],
+   "Plan10": [1,45,18,14,19,23,1]
+}

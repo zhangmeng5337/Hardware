@@ -65,6 +65,7 @@ uint32_t GetPage(uint32_t Address);
 int Erase_page(uint32_t pageaddr, uint32_t num);
 void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len);
 void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len);
+void WriteFlashBytes(uint32_t addr, uint8_t * buff, int buf_len);
 
 #endif 
 
