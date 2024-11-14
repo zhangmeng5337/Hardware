@@ -71,7 +71,15 @@ void control_proc()
 {
 	
 	if(equipment_control()==0)//no fault control water
-		water_temperature_control();
+		;//water_temperature_control();
+}
+void reboot_proc(void)
+{
+		if(get_lte_recv()->timeoutReboot>=300000)
+			{
+		HAL_NVIC_SystemReset();
+
+		}
 }
 void app_proc()
 {
@@ -83,8 +91,6 @@ void app_proc()
    mqtt_proc();//lte ,mqtt and ota
    modbus_proc();//machine control
    dev_ctrl();
-   
-   // rtc_proc();
   //modbus_test();
   // control_proc();
    //config_save();

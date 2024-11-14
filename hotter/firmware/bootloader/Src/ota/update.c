@@ -67,6 +67,8 @@ void IAP_ExecuteApp(uint32_t App_Addr)
 
     if (((*(__IO uint32_t *)App_Addr) & 0x2FFE0000) == 0x20000000)	//检查栈顶地址是否合法.
     {
+			    __HAL_RCC_PWR_CLK_DISABLE();
+			 HAL_RCC_DeInit();
         JumpToApp = (Jump_Fun) * (__IO uint32_t *)(App_Addr + 4);	//用户代码区第二个字为程序开始地址(复位地址)
         MSR_MSP(* (__IO uint32_t *) App_Addr);	//初始化APP堆栈指针(用户代码区的第一个字用于存放栈顶地址)
         JumpToApp();	//跳转到APP
@@ -111,7 +113,10 @@ void Start_BootLoader(void)
 //    }
 
     unsigned char read_flag=0;
-		read_flag = Read_Start_Mode();    if(read_flag&0x20)
+		read_flag = Read_Start_Mode();
+    if(read_flag<=0x20)
+		{
+		if(read_flag&0x20)
 		{
 			if(read_flag == 0x20)
 			{   
@@ -137,7 +142,9 @@ void Start_BootLoader(void)
 
 						printf(">Jump to App1......\r\n");
 						IAP_ExecuteApp(Application_1_Addr);
-			}		
+			}			
+		}			
+	
 			printf(">Jump to App3......\r\n");
 				
 			IAP_ExecuteApp(Application_1_Addr);		

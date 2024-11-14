@@ -30,6 +30,5 @@ void urtc_proc(void);
 RTC_DateTypeDef *getRtcDate(void);
 RTC_TimeTypeDef *getRtcTime(void);
 
-
 #endif
 

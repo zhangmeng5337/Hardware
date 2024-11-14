@@ -26,8 +26,8 @@
 #define APP2   1
 
 #define APP3   3
-#define OTA_UPDATE_TO   APP3
-#define VERSION        "V1.0.34"
+#define OTA_UPDATE_TO   APP1
+#define VERSION        "V1.0.36"
 
 
 #define OTA_NUM_ADDR   0x801fff0
@@ -66,6 +66,5 @@ int Erase_page(uint32_t pageaddr, uint32_t num);
 void WriteFlash(uint32_t addr, uint8_t * buff, int buf_len);
 void ReadFlash(uint32_t addr, uint8_t * buff, int buf_len);
 void WriteFlashBytes(uint32_t addr, uint8_t * buff, int buf_len);
-
 #endif 
 

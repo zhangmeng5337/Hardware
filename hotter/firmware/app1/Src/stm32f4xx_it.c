@@ -40,7 +40,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-extern IWDG_HandleTypeDef hiwdg;
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -50,7 +50,7 @@ extern IWDG_HandleTypeDef hiwdg;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-extern IWDG_HandleTypeDef hiwdg;
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -96,6 +96,7 @@ void HardFault_Handler(void)
   while (1)
   {
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+		HAL_NVIC_SystemReset();
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }

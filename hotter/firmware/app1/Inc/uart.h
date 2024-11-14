@@ -19,6 +19,7 @@ typedef struct
 	uint16_t 	Lpuart1RecLen;
 	uint8_t 	Lpuart1DMARecBuff[LPUART1_DMA_REC_SIZE];
 	uint8_t		Lpuart1RecBuff[LPUART1_REC_SIZE];
+	uint32_t    timeoutReboot;
 }tsLpuart1type;
 extern tsLpuart1type Lpuart1type;
 /*定义串口成员变量的结构体指针*/

@@ -1,6 +1,7 @@
 #include "schedule.h"
 #include "stmflash.h"
 #include "rtc.h"
+#include "config.h"
 
 
 schedule_pack_stru schedule_u;
@@ -118,7 +119,7 @@ schedule_pack_stru *get_schedule(void)
 void plan_query(void)
 {
     unsigned char i,day,hour,minute,sec;
-
+//6:31-16:30 16:31--6:30 
     for(i=0; i<SCHEDULE_SIZE; i++)
     {
         if((getRtcTime()->Hours==schedule_u.buf[i].shour&&getRtcTime()->Minutes>=schedule_u.buf[i].sminute)  ||
@@ -140,11 +141,11 @@ void plan_query(void)
                 break;
             }
         }
-        else
+        else//6:31-16:30 16:31--6:30 
         {
-            if((getRtcTime()->Hours>schedule_u.buf[i].shour&&
-                    getRtcTime()->Hours<schedule_u.buf[i].ehour)
-              )
+//            if((getRtcTime()->Hours>schedule_u.buf[i].shour&&
+//                    getRtcTime()->Hours<schedule_u.buf[i].ehour)      
+            if(getRtcTime()->Hours<schedule_u.buf[i].ehour)
             {
                 if(getRtcDate()->WeekDay>=schedule_u.buf[i].sweekday	&&
                         getRtcDate()->WeekDay<=schedule_u.buf[i].eweekday )
@@ -153,6 +154,7 @@ void plan_query(void)
                     {
                         schedule_u.current_plan= i;
                         schedule_u.mode = 1;
+						   get_config()->set_tout = schedule_u.buf[i].temperature;
                     }
 
                     break;

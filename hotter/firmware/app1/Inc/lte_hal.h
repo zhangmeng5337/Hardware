@@ -3,7 +3,7 @@
 #include "main.h"
 #define LTE_SHORT_DELAY_MQTT  800
 #define LTE_SHORT_DELAY  50
-#define LTE_LONG_DELAY  1000
+#define LTE_LONG_DELAY  200
 #define LTE_LONG_DELAY2  1000
 
 typedef enum
@@ -13,6 +13,7 @@ typedef enum
     ATE0,
     AT_CPIN,
     AT_CGSN,
+		AT_VER,
     AT_CCID,
     AT_CGATT,
     AT_IDLE,
@@ -31,6 +32,7 @@ typedef enum
     AT_SAPBR_3,
     AT_HTTPINIT_1,
     AT_HTTPPARA_1,
+    AT_CIPGSMLOC,
     AT_HTTPPARA_2,
     AT_HTTPACTION_1,
     AT_HTTPACTION_2,

@@ -43,8 +43,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-IWDG_HandleTypeDef hiwdg;
-
 RTC_HandleTypeDef hrtc;
 
 SPI_HandleTypeDef hspi1;
@@ -70,7 +68,6 @@ static void MX_UART4_Init(void);
 static void MX_UART5_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_SPI1_Init(void);
-static void MX_IWDG_Init(void);
 static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -88,7 +85,8 @@ static void MX_RTC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+			    __HAL_RCC_PWR_CLK_DISABLE();
+			 HAL_RCC_DeInit();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -115,7 +113,6 @@ int main(void)
   MX_UART5_Init();
   MX_USART1_UART_Init();
   MX_SPI1_Init();
-  //MX_IWDG_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
   //while(1)
@@ -155,8 +152,7 @@ int main(void)
 /**
   * @brief System Clock Configuration
   * @retval None
-  */
-void SystemClock_Config(void)
+  */  void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -200,34 +196,6 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief IWDG Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_IWDG_Init(void)
-{
-
-  /* USER CODE BEGIN IWDG_Init 0 */
-
-  /* USER CODE END IWDG_Init 0 */
-
-  /* USER CODE BEGIN IWDG_Init 1 */
-
-  /* USER CODE END IWDG_Init 1 */
-  hiwdg.Instance = IWDG;
-  hiwdg.Init.Prescaler = IWDG_PRESCALER_256;
-  hiwdg.Init.Reload = 4095;
-  if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN IWDG_Init 2 */
-
-  /* USER CODE END IWDG_Init 2 */
-
-}
-
-/**
   * @brief RTC Initialization Function
   * @param None
   * @retval None
@@ -260,7 +228,7 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-  if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* 检查是否写入过一次RTC，保证掉电不丢失RTC时钟 */
+  if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ?¨?2¨|¨o??¤?D??¨¨?1y¨°????RTC?ê??à?ê??è|ì?|ì?2??a¨o?ìRTC¨o?à?¨? */
 	{ 
 	/* USER CODE END Check_RTC_BKUP */
    
@@ -301,11 +269,10 @@ static void MX_RTC_Init(void)
 //	  Error_Handler();
 //	}
 	/* USER CODE BEGIN RTC_Init 2 */
-	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //这里就是将这个寄存器的标志设为刚才的那个值，下次掉电后就不会进入到这里来 
+	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //?a¨¤??¨a¨o????a??????????|ì??à¨o??¨|¨¨?a??2?|ì??????|ì?ê??????|ì?|ì?o¨??¨a2??¨￠??¨¨?|ì??a¨¤?¨¤?? 
 	}
 
-
-  /* USER CODE END RTC_Init 2 */
+  /* USER CODE END IWDG_Init 2 */
 
 }
 
@@ -533,8 +500,8 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, IO0_Pin|LATCH_AO_MCU_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin
-                          |PWR_CTRL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MIBSPI1MCS1_GPIO_Port, MIBSPI1MCS1_Pin, GPIO_PIN_SET);
@@ -565,14 +532,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin lte_3_8V_EN_Pin
-                           PWR_CTRL_Pin */
-  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin
-                          |PWR_CTRL_Pin;
+  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin lte_3_8V_EN_Pin */
+  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin|PWR_CTRL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 
   /*Configure GPIO pins : PB1 PB2 */
   GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;
@@ -618,7 +584,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-
+HAL_NVIC_SystemReset();
   /* USER CODE END Error_Handler_Debug */
 }
 

@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>STC8H4K64TLCD双层照明模块16路时控显示板12M</OutputName>
+          <OutputName>数码管</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -385,6 +385,11 @@
               <FileName>iar.asm</FileName>
               <FileType>2</FileType>
               <FilePath>.\iar.asm</FilePath>
+            </File>
+            <File>
+              <FileName>hardware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware.c</FilePath>
             </File>
           </Files>
         </Group>
