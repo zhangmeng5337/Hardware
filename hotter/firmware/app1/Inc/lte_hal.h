@@ -3,7 +3,7 @@
 #include "main.h"
 #define LTE_SHORT_DELAY_MQTT  800
 #define LTE_SHORT_DELAY  50
-#define LTE_LONG_DELAY  200
+#define LTE_LONG_DELAY  400
 #define LTE_LONG_DELAY2  1000
 
 typedef enum
@@ -30,6 +30,9 @@ typedef enum
     AT_SAPBR_1,
     AT_SAPBR_2,
     AT_SAPBR_3,
+    AT_SAPBR_4,
+    AT_SAPBR_5,
+    AT_SAPBR_6,
     AT_HTTPINIT_1,
     AT_HTTPPARA_1,
     AT_CIPGSMLOC,

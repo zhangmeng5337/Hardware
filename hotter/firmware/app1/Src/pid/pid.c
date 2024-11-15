@@ -2,6 +2,7 @@
 #include "FuzzyPID.h"
 #include "pid.h"
 #include "ai_proc.h"
+#include "schedule.h"
 indoor_temp_stru indoor_temp_usr;
 
 
@@ -37,12 +38,31 @@ void get_temp_cal(float *buf)
 float get_pid_output()
 {
     float  u;
+        if (get_schedule()->mode == 1)
+       	{
 
+			u = get_schedule()->buf[get_schedule()->current_plan].temperature;
+	     }
+		else
         u =  get_fuzzy_pid_params()->kp ;
 
 
 
-    return get_fuzzy_pid_params()->kp;
+    return u;
+}
+
+float Tsel_proc()
+{
+   float result;
+	if(get_schedule()->current_plan<SCHEDULE_SIZE)
+	{
+		result = get_schedule()->buf[get_schedule()->current_plan].temperature;
+	}
+	else
+	{
+		result = get_config()->set_tindoor;
+	}
+	return result;
 }
 
 void pid_cal(unsigned char mode)
@@ -54,16 +74,16 @@ void pid_cal(unsigned char mode)
 
     erro_ppre = erro_pre;
     erro_pre = erro;
-    if (mode == 0)//æ™ºèƒ½æŽ§åˆ¶ smart ctrl
+    if (mode == 0&&get_schedule()->mode == 0)//ÖÇÄÜ¿ØÖÆ smart ctrl
     {
-        if (indoor_temp_usr.temp_average >= (0.95 * get_config()->set_tindoor)) //å¹³å‡æ¸©åº¦è¾¾æ ‡
+        if (indoor_temp_usr.temp_average >= (0.95 * get_config()->set_tindoor)) //Æ½¾ùÎÂ¶È´ï±ê
         {
-            if (indoor_temp_usr.low_temp_percent >= 0.2) //æœ«ç«¯æ¸©åº¦ä¸è¾¾ï¿½?
+            if (indoor_temp_usr.low_temp_percent >= 0.2) //Ä©¶ËÎÂ¶È²»´ï??
             {
                 float tmp;
                 tmp = 1 - indoor_temp_usr.low_temp_percent;
                 tmp = tmp * indoor_temp_usr.temp_average;
-                erro = tmp-get_config()->set_tindoor ;//æ¸©åº¦åŠ æƒ
+                erro = tmp-get_config()->set_tindoor ;//ÎÂ¶È¼ÓÈ¨
             }
             else
 
@@ -75,11 +95,24 @@ void pid_cal(unsigned char mode)
 		measure_val =  indoor_temp_usr.temp_average;
 
     }
-    else  //æœ¬åœ°æŽ§åˆ¶  native ctrl
+    else  //±¾µØ¿ØÖÆ  native ctrl
     {
-        erro = get_ai_data()->temp[AI_WATER_T_IN_INDEX]-MACHINE_IN_T ;//æ¸©åº¦åŠ æƒ
-   		 setval = MACHINE_IN_T;
-		measure_val =  get_ai_data()->temp[AI_WATER_T_IN_INDEX];     
+       if (get_schedule()->mode == 1)
+       	{
+       	;
+//		   erro=get_schedule()->buf[get_schedule()->current_plan].temperature-get_config()->set_tindoor;
+//		setval = get_config()->set_tindoor;
+//	   measure_val =  indoor_temp_usr.temp_average;
+
+	   }
+	   else
+	   	{
+	   erro = get_ai_data()->temp[AI_WATER_T_IN_INDEX]-MACHINE_IN_T ;//ÎÂ¶È¼ÓÈ¨
+		setval = MACHINE_IN_T;
+	   measure_val =  get_ai_data()->temp[AI_WATER_T_IN_INDEX]; 	
+
+	   }
+
     }
 	
 	//get_fuzzy_pid_params()->e = erro;
@@ -92,6 +125,11 @@ void pid_cal(unsigned char mode)
     erro_c = erro - erro_pre;
 
 }
+//PID *get_pid_params()
+//{
+//  return &sPID;
+//}
+
 //PID *get_pid_params()
 //{
 //  return &sPID;

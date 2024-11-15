@@ -25,10 +25,11 @@ typedef struct
   uint8_t Year;     /*!< Specifies the RTC Date Year.
                          This parameter must be a number between Min_Data = 0 and Max_Data = 99 */
 } rtc_stru;
-void GET_Time(void);//获取当前时间
+//void GET_Time(void);//获取当前时间
 void urtc_proc(void);
 RTC_DateTypeDef *getRtcDate(void);
 RTC_TimeTypeDef *getRtcTime(void);
+rtc_stru *rtc_value_set(void);
 
 #endif
 
