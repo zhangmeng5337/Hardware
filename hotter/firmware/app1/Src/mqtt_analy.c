@@ -124,9 +124,6 @@ void anlysis_mqtt_recv()
     //valid_flag = 0;
     get_config()->update_setting = 0;
 
-
-//
-
     dev_id = find_json_string("\"Updat Frimware\": ", ",", 0);
     if (dev_id != NULL)
     {
@@ -699,7 +696,7 @@ void upload()
 		,buf2[5]
 		,buf2[6]
 		);
-			  //strcat(buf3, numberBuffer); // 拼接到结果字符串中
+			  //strcat(buf3, numberBuffer); // 拼接到结果字符串�?
 
 
 //1,3,2,0,0,184  0x01 0x03 0x02 0x00 0x00 0xb8
@@ -912,6 +909,24 @@ uint8_t mqtt_Info_Show(void)
         // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
         sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_temp_", get_config()->user_id,
                 0);
+        if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+        {
+            mqtt_at_cmd_num = AT_MIPCLOSE;
+        }
+        else
+        {
+
+            mqtt_at_cmds.RtyNum = 0;
+            mqtt_at_cmd_num = AT_MSUB_2;
+        }
+
+    }
+    case AT_MSUB_2:////subscribe msg
+    {
+        //dev_sub_temp_
+        //            unsigned char str[128];
+        // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+        sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "dev_sub_ctrl_all",0);
         if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
         {
             mqtt_at_cmd_num = AT_MIPCLOSE;

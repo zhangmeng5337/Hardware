@@ -2,6 +2,7 @@
 #include "stmflash.h"
 #include "rtc.h"
 #include "config.h"
+#include "sys.h"
 
 
 schedule_pack_stru schedule_u;
@@ -416,7 +417,23 @@ void plan_query(void)
         {
             schedule_u.last_paln = schedule_u.current_plan;
             schedule_u.current_plan_pwr_update= 1;
+			reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+			registerTick(SCHEDU_TICK_NO,SCHEDU_POLL_TIME);
+
         }
+		else
+		{
+		if (GetTickResult(SCHEDU_TICK_NO) == 1)
+		{
+				   schedule_u.last_paln = schedule_u.current_plan;
+		   schedule_u.current_plan_pwr_update= 1;
+		reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+		registerTick(SCHEDU_TICK_NO,SCHEDU_POLL_TIME);
+		
+		}
+
+		}
+
     }
 
 }

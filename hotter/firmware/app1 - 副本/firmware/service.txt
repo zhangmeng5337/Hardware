@@ -1,1 +1,0 @@
-scp  application.bin  root@39.106.131.169:/home/TinyWebServer/bin/root/upgrade/firmware.bin

@@ -152,7 +152,8 @@ int main(void)
 /**
   * @brief System Clock Configuration
   * @retval None
-  */  void SystemClock_Config(void)
+  */
+void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -165,8 +166,9 @@ int main(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 4;
@@ -217,7 +219,7 @@ static void MX_RTC_Init(void)
   hrtc.Instance = RTC;
   hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
   hrtc.Init.AsynchPrediv = 127;
-  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.SynchPrediv = 246;//249
   hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
   hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
   hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
@@ -226,7 +228,7 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-  if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ?¡§?2¡§|¡§o??¡è?D??¡§¡§?1y¡§¡ã????RTC?¨º??¨¤?¨º??¨¨|¨¬?|¨¬?2??a¡§o?¨¬RTC¡§o?¨¤?¡§? */
+  if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ??¡ì?2?¡ì|?¡ìo???¨¨?D???¡ì?¡ì?1y?¡ì??????RTC?¡§o??¡§¡è?¡§o??¡§¡§|¡§??|¡§??2??a?¡ìo?¡§?RTC?¡ìo?¡§¡è??¡ì? */
 	{ 
 	/* USER CODE END Check_RTC_BKUP */
    
@@ -267,10 +269,10 @@ static void MX_RTC_Init(void)
 //	  Error_Handler();
 //	}
 	/* USER CODE BEGIN RTC_Init 2 */
-	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //?a¡§¡è??¡§a¡§o????a??????????|¨¬??¨¤¡§o??¡§|¡§¡§?a??2?|¨¬??????|¨¬?¨º??????|¨¬?|¨¬?o¡§??¡§a2??¡§¡é??¡§¡§?|¨¬??a¡§¡è?¡§¡è?? 
+	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //?a?¡ì?¨¨???¡ìa?¡ìo????a??????????|¡§???¡§¡è?¡ìo???¡ì|?¡ì?¡ì?a??2?|¡§???????|¡§??¡§o??????|¡§??|¡§??o?¡ì???¡ìa2???¡ì?¨¦???¡ì?¡ì?|¡§???a?¡ì?¨¨??¡ì?¨¨?? 
 	}
 
-  /* USER CODE END IWDG_Init 2 */
+  /* USER CODE END RTC_Init 2 */
 
 }
 
@@ -498,8 +500,8 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, IO0_Pin|LATCH_AO_MCU_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin
+                          |PWR_CTRL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MIBSPI1MCS1_GPIO_Port, MIBSPI1MCS1_Pin, GPIO_PIN_SET);
@@ -530,13 +532,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin lte_3_8V_EN_Pin */
-  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin|PWR_CTRL_Pin;
+  /*Configure GPIO pins : MSTART_MCU_Pin lte_rst_Pin Mb_rxen1_Pin lte_3_8V_EN_Pin
+                           PWR_CTRL_Pin */
+  GPIO_InitStruct.Pin = MSTART_MCU_Pin|lte_rst_Pin|Mb_rxen1_Pin|lte_3_8V_EN_Pin
+                          |PWR_CTRL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
 
   /*Configure GPIO pins : PB1 PB2 */
   GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;

@@ -23,7 +23,8 @@ typedef enum
     AT_MIPSTART,
     AT_MCONNECT,
     AT_MSUB,
-     AT_MSUB_1,   
+     AT_MSUB_1,
+      AT_MSUB_2, 
     AT_MIPCLOSE,
 
     /*HTTP°æ±¾ºÅ*/
