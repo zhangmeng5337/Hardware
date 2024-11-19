@@ -168,7 +168,7 @@ void config_init()
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
         get_config()->set_up_period = 10;
-        get_config()->mode = 1;
+        get_config()->mode = 2;
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;
         config_save();

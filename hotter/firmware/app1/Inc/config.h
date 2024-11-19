@@ -3,7 +3,7 @@
 #include "main.h"
 void delay_us(uint32_t nCount);
 #include "main.h"
-#define DEV_SIZE    10
+
 
 
 /*index = 0  "鍗囩�?: 1,

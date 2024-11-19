@@ -8,6 +8,19 @@
 #include "hotter.h"
 #include "pid.h"
 #include "schedule.h"
+modbus_pump_cmd_stru  modbus_cmd_list[] =
+{
+
+    {0x00,MODBUS_WRITE_ONE_CMD,CONTROLLER_REG,2,{0,1,2},true,false,0,0},
+    {0x00,MODBUS_WRITE_ONE_CMD,TEMPERATURE_REG,2,{0,1,2},true,false,0,0},
+    {0x00,MODBUS_READ_CMD,0x0000,0x0008,{0,1,2},true,true,0,0},
+    {0x00,MODBUS_READ_CMD,0x0040,72,{0,1,2},true,false,0,0}
+};
+
+modbus_cmd_pack_stru cmd_list;
+
+
+
 
 //设备地址从1开始
 //mqtt每次只发送需要操作的命令，不要什么都发
@@ -15,8 +28,30 @@ modbus_stru modbus_recv;
 modbus_stru modbus_tx;
 unsigned int modbus_read_reg_list[2] = {0x0000, 0x0040};//64-135
 unsigned int modbus_read_reg_len[2] = {8, 72};
+//modbus_pump_pack_tx modbus_pump_pack;
 
 void analy_modbus_recv(void);
+void cmd_enable(unsigned char index,unsigned char status)
+{
+    unsigned char i;
+    for(i=0; i<CMD_SIZE; i++)
+    {
+        if(i!=index)
+        {
+            cmd_list.pb[i].enable = 0;
+        }
+
+        else
+        {
+
+            cmd_list.pb[i].enable = 1;
+
+        }
+        if(status == 0)
+            cmd_list.pb[i].status = 0;
+
+    }
+}
 
 void modbus_init()
 {
@@ -25,6 +60,8 @@ void modbus_init()
     modbus_tx.retry_count = RETRY_COUNT;
     modbus_tx.update = 1;
     memset(modbus_tx.error_count, 0, DEV_SIZE);
+    cmd_list.pb = modbus_cmd_list;
+    cmd_enable(PWR_INDEX,0);
 
 }
 modbus_stru *get_recv_machine()
@@ -213,6 +250,72 @@ func:modbus数据发送函数
 return： 1 data tx;2:data tx completed and time out
 *****************************************************/
 unsigned char pb2[64];
+void modbus_trans2(modbus_pump_cmd_stru pbDat )
+{
+    unsigned char i, result = 0;
+
+    i = 0;
+    result = 0;
+
+    pb2[i++] = pbDat.addr;
+    pb2[i++] = pbDat.func;
+    if (pbDat.func == MODBUS_READ_CMD)
+    {
+
+        modbus_tx.func = MODBUS_READ_CMD;
+        modbus_tx.regCount = pbDat.regCount;
+        modbus_tx.reg = pbDat.reg;
+        pb2[i++] = pbDat.reg >> 8;
+        pb2[i++] = pbDat.reg;
+
+
+    }
+    else
+    {
+        modbus_tx.func = pbDat.func;
+        modbus_tx.reg = pbDat.reg;
+        modbus_tx.regCount = pbDat.regCount;
+        pb2[i++] = pbDat.reg >> 8;
+        pb2[i++] = pbDat.reg;
+
+
+    }
+
+
+
+    if (pbDat.func == MODBUS_READ_CMD)
+    {
+
+        pb2[i++] = pbDat.regCount >> 8;
+        pb2[i++] = pbDat.regCount;
+
+    }
+    if (modbus_tx.func == MODBUS_WRITE_ONE_CMD)
+    {
+        memcpy(&pb2[i], pbDat.payload, pbDat.regCount);
+        i = i + pbDat.regCount;
+
+    }
+    else if (pbDat.func == MODBUS_WRITE_MUL_CMD)
+    {
+//            pb2[i++] = 0;
+//            //pb2[i] = 1;
+//            memcpy(&pb2[i], &modbus_tx.regCount, 1);
+//            i = i + 1;
+
+    }
+
+
+    pbDat.crc = CRC_Compute(pb2, i);
+    pb2[i++] = pbDat.crc >> 8;
+    pb2[i++] = pbDat.crc;
+
+    uart_transmit(RS485_No, pb2, i);
+    result = 1;
+}
+
+
+
 unsigned char modbus_trans(unsigned char addr, unsigned char func,
                            unsigned int reg,
                            unsigned char *payload, unsigned int reg_count, unsigned char len,
@@ -327,6 +430,7 @@ void analy_modbus_recv()
         {
             if (modbus_recv.address > 0 && modbus_recv.address <= DEV_SIZE)
             {
+
                 modbus_recv.error_count[modbus_recv.address] = 0;
                 unsigned int i;
                 i = 1;
@@ -344,7 +448,8 @@ void analy_modbus_recv()
 //                    }
 //                    else
                 get_hotter(modbus_recv.address)->status[0] = modbus_recv.address;//设备地址
-                if (modbus_tx.last_reg == modbus_read_reg_list[0])
+                if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
+                        cmd_list.pb[0].reg)
                 {
 
                     get_hotter(modbus_recv.address)->status[2] =
@@ -366,7 +471,8 @@ void analy_modbus_recv()
                         get_hotter(modbus_recv.address)->status[1] = 1;
 
                 }
-                else  if (modbus_tx.last_reg == modbus_read_reg_list[1])
+                else  if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
+                          cmd_list.pb[STATUS1_INDEX].reg)
                 {
                     unsigned char index, sindex;
                     unsigned int i;
@@ -443,49 +549,20 @@ return:
 unsigned char  modbus_ctrl()
 {
     if (get_config()->update_setting == 1
-            || (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1)||
-            get_schedule()->current_plan_pwr_update == 1)
+            || get_schedule()->current_plan_pwr_update == 1)
     {
-#if CTRL_EN
-        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&
-                modbus_tx.update!=3)//every 180s，cal pid out
-        {
 
-
-
-            modbus_tx.update = 3;//pid
-            modbus_tx.retry_count = RETRY_COUNT;
-            modbus_tx.address = 0;
-
-        }
-#endif
         if (get_config()->update_setting == 1||
                 get_schedule()->current_plan_pwr_update == 1)
         {
             modbus_tx.update = 2;  //server setting
             config_save();//位置不能变
             get_config()->update_setting = 0;
-					get_schedule()->current_plan_pwr_update = 2;
+            get_schedule()->current_plan_pwr_update = 2;
             modbus_tx.retry_count = RETRY_COUNT;
             modbus_tx.address = 0;
 
         }
-
-        else
-        {
-            if (modbus_tx.update == 1)
-            {
-                modbus_tx.update = 1;//normal poll
-                modbus_tx.retry_count = RETRY_COUNT;
-
-            }
-            //modbus_tx.retry_count = 1;
-            // modbus_tx.address = 0;
-
-        }
-
-        // modbus_tx.address = 0;
-        //modbus_tx.retry_count = 3;//retry count
     }
 
     return modbus_tx.update;
@@ -509,10 +586,10 @@ void modbus_tx_proc(unsigned char mode)
         case 2:
             // memcpy(pb, &get_config()->machine, 2);//pwr on or off machine
             // get_config()->machine = 0;
-            if(get_schedule()->current_plan_pwr_update == 2) 
+            if(get_schedule()->current_plan_pwr_update == 2)
             {
 
-               if(get_schedule()->current_plan<(SCHEDULE_SIZE))
+                if(get_schedule()->current_plan<(SCHEDULE_SIZE))
                 {
                     pb[0] = 0x00;
                     pb[1] = get_schedule()->buf[get_schedule()->current_plan].pwr_state;
@@ -599,11 +676,11 @@ void modbus_tx_proc(unsigned char mode)
                         reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
                     else
                     {
-							if(modbus_tx.update == 2)
-							{
-								if(get_schedule()->current_plan_pwr_update == 2)
-									get_schedule()->current_plan_pwr_update = 0;
-							}
+                        if(modbus_tx.update == 2)
+                        {
+                            if(get_schedule()->current_plan_pwr_update == 2)
+                                get_schedule()->current_plan_pwr_update = 0;
+                        }
                     }
                     modbus_tx.update = 1;
 
@@ -690,8 +767,307 @@ void modbus_tx_proc(unsigned char mode)
 
 
 }
+void modbus_proc_poll()
+{
+    registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME);
 
+    if(GetTickResult(MODBUS_TX_TICK_NO)== 1)
+    {
+        if (modbus_tx.ctrl_mode == 0) //global ctrl
+        {
+            if(cmd_list.cmd_seq<CMD_SIZE&&cmd_list.pb[cmd_list.cmd_seq].enable == 1)
+            {
+                if(cmd_list.retry_count>0)
+                {
+                    modbus_cmd_list[cmd_list.cmd_seq].addr = cmd_list.addr;
+
+                    modbus_trans2(modbus_cmd_list[cmd_list.cmd_seq]);
+                    cmd_list.retry_count--;
+                    cmd_list.pb[cmd_list.cmd_seq].last_reg =
+                        cmd_list.pb[cmd_list.cmd_seq].reg;//
+                    modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr] =
+                        modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr] + 1;
+                    if (modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr] >= FAULT_COUNT)
+                    {
+                        unsigned int i;
+                        i = 1;
+                        i = i << (cmd_list.pb[cmd_list.cmd_seq].addr);
+                        modbus_recv.fault = modbus_recv.fault | i;
+						modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr]=
+							FAULT_COUNT;
+//						cmd_list.retry_count = RETRY_COUNT;
+//
+//						if(cmd_list.addr<DEV_SIZE)
+//						{
+//							cmd_list.addr++;
+//						}
+//						else
+//						{
+//							cmd_list.addr = 0;
+//							cmd_list.retry_count = RETRY_COUNT;
+//							cmd_list.pb[cmd_list.cmd_seq].status = 2;
+//							cmd_list.cmd_seq ++ ;
+//							if(cmd_list.cmd_seq<CMD_SIZE)
+//								cmd_list.pb[cmd_list.cmd_seq].status = 1;
+//
+//						}
+
+
+                    }
+
+                }
+                else
+                {
+                    cmd_list.retry_count = RETRY_COUNT;
+                    if(cmd_list.addr<DEV_SIZE)
+                    {
+                        cmd_list.addr++;
+                    }
+                    else
+                    {
+                        cmd_list.addr = 0;
+
+                        cmd_list.pb[cmd_list.cmd_seq].status = 2;
+                        cmd_list.cmd_seq ++ ;
+                        //if(cmd_list.cmd_seq>=CMD_SIZE)
+                        //	cmd_list.pb[cmd_list.cmd_seq].status = 1;
+
+                    }
+
+
+                }
+
+
+            }
+            else
+            {
+                if(cmd_list.cmd_seq>=CMD_SIZE)
+                {
+                    cmd_list.retry_count = RETRY_COUNT;
+                    cmd_list.cmd_seq = 0;
+                    cmd_list.pb[cmd_list.cmd_seq].status = 1;
+
+
+                }
+                if(cmd_list.pb[cmd_list.cmd_seq].enable == 0&&cmd_list.cmd_seq<CMD_SIZE)
+                {
+                    cmd_list.retry_count = RETRY_COUNT;
+                    cmd_list.pb[cmd_list.cmd_seq].status = 2;
+                    cmd_list.cmd_seq ++;
+                    //cmd_list.pb[cmd_list.cmd_seq].status = 1;
+
+                }
+
+
+            }
+        }
+        else  //node ctrl
+        {
+            if(cmd_list.retry_count>0)
+            {
+               cmd_list.addr = modbus_node_addr();
+			    modbus_cmd_list[cmd_list.cmd_seq].addr = cmd_list.addr;
+                modbus_trans2(modbus_cmd_list[cmd_list.cmd_seq]);
+                cmd_list.retry_count--;
+                cmd_list.pb[cmd_list.cmd_seq].last_reg =
+                    cmd_list.pb[cmd_list.cmd_seq].reg;//
+                modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr] =
+                    modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr] + 1;
+                if (modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr] >= FAULT_COUNT)
+                {
+                    unsigned int i;
+                    i = 1;
+                    i = i << (cmd_list.pb[cmd_list.cmd_seq].addr);
+                    modbus_recv.fault = modbus_recv.fault | i;
+                    cmd_list.retry_count = RETRY_COUNT;
+
+                }
+
+            }
+            else
+            {
+                cmd_list.retry_count = RETRY_COUNT;
+                cmd_list.pb[cmd_list.cmd_seq].status = 2;
+            }
+
+        }
+        reset_registerTick(MODBUS_TX_TICK_NO);
+        registerTick(MODBUS_TX_TICK_NO,MODBUS_TX_TIME);
+
+    }
+
+
+}
+void modbus_data_pack(unsigned char pack_num)
+{
+    if(pack_num == PWR_INDEX)
+    {
+        if(get_schedule()->current_plan_pwr_update == 2)
+        {
+
+            if(get_schedule()->current_plan<(SCHEDULE_SIZE))
+            {
+                cmd_list.pb[PWR_INDEX].payload[0] = 0x00;
+                cmd_list.pb[PWR_INDEX].payload[1] = get_schedule()->buf[get_schedule()->current_plan].pwr_state;
+
+            }
+        }
+        else
+        {
+
+            cmd_list.pb[PWR_INDEX].payload[0] = get_config()->machine >> 8;
+            cmd_list.pb[PWR_INDEX].payload[1] = get_config()->machine;
+
+        }
+        cmd_list.pb[PWR_INDEX].regCount = 2;
+
+    }
+    else if (pack_num == PID_INDEX)
+    {
+        unsigned int u;
+        float u1;
+        u1 = get_pid_output();
+        u = (unsigned int)u1;
+        if (get_config()->set_tindoor < 15) //below 15 no pid ctrl
+        {
+
+            memcpy(cmd_list.pb[PID_INDEX].payload, get_config()->set_tout, 2);
+        }
+        else
+        {
+            cmd_list.pb[PID_INDEX].payload[0] = u>>8;
+            cmd_list.pb[PID_INDEX].payload[1] = u;
+
+        }
+        cmd_list.pb[PWR_INDEX].regCount = 2;
+
+    }
+    else if (pack_num == STATUS1_INDEX)
+    {
+
+        ;//cmd_list.pb[STATUS1_INDEX].regCount = 2;
+
+    }
+    else if (pack_num == STATUS2_INDEX)
+    {
+		;//cmd_list.pb[STATUS2_INDEX].regCount = 2;
+
+    }
+
+
+}
 void modbus_proc()
+{
+    unsigned char result, first_flag;
+	
+	if (get_config()->update_setting == 1||
+			get_schedule()->current_plan_pwr_update == 1)
+	{
+		
+		if(modbus_tx.update == 0)
+		{
+		config_save();//位置不能变
+		modbus_tx.update = 1;  //server setting
+
+		}
+
+		get_config()->update_setting = 1;
+		if (get_schedule()->current_plan_pwr_update == 1)
+			get_schedule()->current_plan_pwr_update = 2;
+
+		modbus_data_pack(PWR_INDEX);
+
+        cmd_enable(PWR_INDEX,1);
+        if(cmd_list.pb[PWR_INDEX].status==0)
+        {
+            cmd_list.pb[PWR_INDEX].status = 1;
+            cmd_list.retry_count = RETRY_COUNT;
+            cmd_list.cmd_seq = PWR_INDEX;
+
+        }
+
+        else  if(cmd_list.pb[PWR_INDEX].status==2)
+        {
+            cmd_list.pb[PWR_INDEX].status = 0;
+            modbus_tx.update = 0;
+			get_config()->update_setting = 0;
+        }
+
+        modbus_proc_poll();//
+    }
+    else
+    {
+
+        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&get_config()->mode!=2)//pid poll
+        {
+            modbus_data_pack(PID_INDEX);
+            cmd_enable(PID_INDEX,1);
+            if(cmd_list.pb[PID_INDEX].status==0)
+            {
+                cmd_list.pb[PID_INDEX].status = 1;
+                cmd_list.retry_count = RETRY_COUNT;
+                cmd_list.cmd_seq = PID_INDEX;
+
+            }
+            else  if(cmd_list.pb[PID_INDEX].status==2)
+            {
+                reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+                registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+                cmd_list.pb[PID_INDEX].status = 0;
+
+            }
+            modbus_proc_poll();//
+        }
+        else  //read dev
+        {
+            registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+            registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+            if (GetTickResult(MODBUS_POLL_TICK_NO) == 1)
+            {
+
+               
+
+                if(cmd_list.pb[STATUS1_INDEX].status==0)
+                { 
+                    modbus_data_pack(STATUS1_INDEX);
+                    cmd_enable(STATUS1_INDEX,1);
+                    cmd_list.pb[STATUS1_INDEX].status = 1;
+                    cmd_list.retry_count = RETRY_COUNT;
+                    cmd_list.cmd_seq = STATUS1_INDEX;
+
+                }
+                else  if(cmd_list.pb[STATUS1_INDEX].status==2)
+                {
+                     modbus_data_pack(STATUS2_INDEX);
+                    cmd_enable(STATUS2_INDEX,1);
+                    //reset_registerTick(MODBUS_POLL_TICK_NO);
+                    //registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+                    cmd_list.pb[STATUS1_INDEX].status = 1;
+                    cmd_list.pb[STATUS2_INDEX].status = 1;
+                    cmd_list.retry_count = RETRY_COUNT;
+                    cmd_list.cmd_seq = STATUS2_INDEX;
+
+                }
+
+                else  if(cmd_list.pb[STATUS2_INDEX].status==2)
+                {
+                    // reset_registerTick(MODBUS_POLL_TICK_NO);
+                    // registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+                    cmd_list.pb[STATUS1_INDEX].status = 0;
+                    cmd_list.pb[STATUS2_INDEX].status = 0;
+
+                }
+                modbus_proc_poll();//
+
+            }
+        }
+    }
+
+
+    rs485_recv();
+}
+
+void modbus_proc2()
 {
     unsigned char result, first_flag;
     result = modbus_ctrl();

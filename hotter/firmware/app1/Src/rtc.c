@@ -47,6 +47,29 @@ rtc_stru *rtc_value_set(void)
 {
     return &rtc_usr;
 }
+/************************utc to rtc****************************
+
+
+**************************************************************/
+void utcTortc(uint32_t utc)
+{
+	uint32_t days = 24 * 60 * 60;
+	uint32_t months = days * 30;
+	uint32_t years = months * 12;
+	uint32_t n,y,m,d,HH,MM,SS;
+
+//	rtc_usr.Year = utc / years + 1970;
+//	rtc_usr.Year = rtc_usr.Year%100;
+//	rtc_usr.Month = utc % years / months + 1;
+//	rtc_usr.Date = utc % years % months / days + 1;
+//	rtc_usr.Hours = utc % years % months % days / 3600;
+//	rtc_usr.Minutes = utc % years % months % days % 3600 / 60;
+//	rtc_usr.Seconds = utc % years % months % days % 3600 % 60;
+//	rtc_usr.update = 1;
+
+}
+
+
 
 /* RTC init function */
 void set_rtc_time()

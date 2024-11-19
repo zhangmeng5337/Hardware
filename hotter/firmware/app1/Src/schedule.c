@@ -206,9 +206,13 @@ void plan_query(void)
                 if(schedule_u.buf[i].enable == 1)
                 {
                     schedule_u.current_plan= i;
-                    schedule_u.mode = 1;
-                    get_config()->set_tout = schedule_u.buf[i].temperature;
-                    //schedule_u.last_paln = i;
+					if(get_config()->mode!=2)
+					{
+						schedule_u.mode = 1;
+					get_config()->set_tout = schedule_u.buf[i].temperature;
+					
+					}
+
 
                 }
                 else
@@ -240,9 +244,14 @@ void plan_query(void)
                                     {
                                         if(schedule_u.buf[i].enable == 1)
                                         {
-                                            schedule_u.current_plan= i;
-                                            schedule_u.mode = 1;
+                                            
+											if(get_config()->mode!=2)
+											{schedule_u.current_plan= i;
+                                            	schedule_u.mode = 1;
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
+
+											}
+
                                         }
                                         else
                                         {
@@ -265,9 +274,13 @@ void plan_query(void)
                                     {
                                         if(schedule_u.buf[i].enable == 1)
                                         {
-                                            schedule_u.current_plan= i;
-                                            schedule_u.mode = 1;
-                                            get_config()->set_tout = schedule_u.buf[i].temperature;
+											if(get_config()->mode!=2)
+											{schedule_u.current_plan= i;
+												schedule_u.mode = 1;
+											get_config()->set_tout = schedule_u.buf[i].temperature;
+											
+											}
+
                                         }
                                         else
                                         {
@@ -292,9 +305,14 @@ void plan_query(void)
                             {
                                 if(schedule_u.buf[i].enable == 1)
                                 {
-                                    schedule_u.current_plan= i;
-                                    schedule_u.mode = 1;
-                                    get_config()->set_tout = schedule_u.buf[i].temperature;
+                                    
+									if(get_config()->mode!=2)
+									{schedule_u.current_plan= i;
+										schedule_u.mode = 1;
+									get_config()->set_tout = schedule_u.buf[i].temperature;
+									
+									}
+
                                 }
                                 else
                                 {
@@ -328,9 +346,14 @@ void plan_query(void)
                                     {
                                         if(schedule_u.buf[i].enable == 1)
                                         {
-                                            schedule_u.current_plan= i;
-                                            schedule_u.mode = 1;
+                                            
+											if(get_config()->mode!=2)
+											{schedule_u.current_plan= i;
+                                            	schedule_u.mode = 1;
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
+
+											}
+
                                         }
                                         else
                                         {
@@ -353,9 +376,14 @@ void plan_query(void)
                                     {
                                         if(schedule_u.buf[i].enable == 1)
                                         {
-                                            schedule_u.current_plan= i;
-                                            schedule_u.mode = 1;
+                                            
+											if(get_config()->mode!=2)
+											{schedule_u.current_plan= i;
+                                            	schedule_u.mode = 1;
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
+
+											}
+
                                         }
                                         else
                                         {
@@ -380,9 +408,14 @@ void plan_query(void)
                             {
                                 if(schedule_u.buf[i].enable == 1)
                                 {
-                                    schedule_u.current_plan= i;
-                                    schedule_u.mode = 1;
-                                    get_config()->set_tout = schedule_u.buf[i].temperature;
+                                    
+									if(get_config()->mode!=2)
+									{schedule_u.current_plan= i;
+										schedule_u.mode = 1;
+									    get_config()->set_tout = schedule_u.buf[i].temperature;
+									
+									}
+
                                 }
                                 else
                                 {
@@ -417,22 +450,22 @@ void plan_query(void)
         {
             schedule_u.last_paln = schedule_u.current_plan;
             schedule_u.current_plan_pwr_update= 1;
-			reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
-			registerTick(SCHEDU_TICK_NO,SCHEDU_POLL_TIME);
+            reset_registerTick(SCHEDU_TICK_NO);
+            registerTick(SCHEDU_TICK_NO,SCHEDU_POLL_TIME);
 
         }
-		else
-		{
-		if (GetTickResult(SCHEDU_TICK_NO) == 1)
-		{
-				   schedule_u.last_paln = schedule_u.current_plan;
-		   schedule_u.current_plan_pwr_update= 1;
-		reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
-		registerTick(SCHEDU_TICK_NO,SCHEDU_POLL_TIME);
-		
-		}
+        else
+        {
+            if (GetTickResult(SCHEDU_TICK_NO) == 1)
+            {
+                schedule_u.last_paln = schedule_u.current_plan;
+                schedule_u.current_plan_pwr_update= 1;
+                reset_registerTick(SCHEDU_TICK_NO);
+                registerTick(SCHEDU_TICK_NO,SCHEDU_POLL_TIME);
 
-		}
+            }
+
+        }
 
     }
 

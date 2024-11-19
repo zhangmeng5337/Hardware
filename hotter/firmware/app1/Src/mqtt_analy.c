@@ -19,6 +19,7 @@ teATCmdNum    mqtt_at_cmd_num;
 teATStatus    mqtt_at_status;
 tsLpuart1type *mqtt_recv;
 
+
 //unsigned char mqtt_send_buf[128];
 
 
@@ -172,6 +173,20 @@ void anlysis_mqtt_recv()
 
 
     }
+		dev_id = find_json_string("\"nativeMode\":", "}", 0);//native mode
+		if (dev_id != NULL)
+		{
+
+				get_config()->mode = 2;
+	
+		}
+	dev_id = find_json_string("\"smartMode\":", "}", 0);//native mode
+	if (dev_id != NULL)
+	{
+	
+			get_config()->mode = 1;
+	
+	}
 
     dev_id = find_json_string("\"heatPump1\":", "}", 0);
     if (dev_id != NULL)
@@ -301,12 +316,30 @@ void anlysis_mqtt_recv()
 
     }
 
+    dev_id = find_json_string("timestamp", ",", 0);
+    if (dev_id != NULL)
+    {
+        //  memset(dev_id, 0, 128);
+        dev_id = find_json_string("byte,", "\r\n", 0);
+			    if (dev_id != NULL)
+    {uint32_t tmp_utc;
+			unsigned char i,j;
 
+			tmp_utc = 0;
+		while(dev_id[i]!=0x0d)
+		{
+			j = dev_id[i] -0x30;
+			i++;
+			tmp_utc = tmp_utc*10 +j;
+		}
+		utcTortc(tmp_utc);
+		}
+    }
     dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 0);
     if (dev_id != NULL)
     {
         //  memset(dev_id, 0, 128);
-        // get_config()->update_setting = 2;
+        // get_config()- w  >update_setting = 2;
         tmp_f = atof(&dev_id[0]);
         get_config()->set_up_period = tmp_f;
     }
@@ -935,12 +968,33 @@ uint8_t mqtt_Info_Show(void)
         {
 
             mqtt_at_cmds.RtyNum = 0;
-            mqtt_at_cmd_num = AT_MPUB_RECV;
+            mqtt_at_cmd_num = AT_MSUB_3;
         }
 
     }
 
     break;
+	case AT_MSUB_3:////subscribe msg
+		{
+			//dev_sub_temp_
+			//			  unsigned char str[128];
+			// memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+			sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "timestamp",0);
+			if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+			{
+				mqtt_at_cmd_num = AT_MIPCLOSE;
+			}
+			else
+			{
+	
+				mqtt_at_cmds.RtyNum = 0;
+				mqtt_at_cmd_num = AT_MPUB_RECV;
+			}
+	
+		}
+	
+		break;
+
     case AT_MPUB://public msg
     {
 
@@ -1025,13 +1079,13 @@ void mqtt_proc()
                 //free_cjson();
 
             }
-            registerTick(MODBUS_MQTT_PID_TICK_NO, 180000);
+            registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
         }
 
     }
     else //???????,????????
     {
-        registerTick(MODBUS_MQTT_PID_TICK_NO, 180000);
+        registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
         if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1) //180s
         {
             //   reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
