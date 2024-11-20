@@ -336,6 +336,7 @@ void startConversions(void)
  * \param mode readMode typedef to select which read operation to use
  * \return 32-bit sign-extended conversion result (data only)
  */
+unsigned  char channel;
 void readData(unsigned char adc_No, readMode mode)
 {
 	   uint32_t tmp;
@@ -344,7 +345,7 @@ void readData(unsigned char adc_No, readMode mode)
     uint8_t byteLength;
     uint8_t dataPosition;
     bool    status_byte_enabled;
-    unsigned  char channel;
+    
     // unsigned char tmp, tmp1;
     /* Build TX array and send it */
     if (mode == DIRECT)

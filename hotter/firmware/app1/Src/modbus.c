@@ -983,6 +983,7 @@ void modbus_proc()
             cmd_list.pb[PWR_INDEX].status = 1;
             cmd_list.retry_count = RETRY_COUNT;
             cmd_list.cmd_seq = PWR_INDEX;
+			cmd_list.addr = 0;
 
         }
 
@@ -992,7 +993,7 @@ void modbus_proc()
             modbus_tx.update = 0;
 			get_config()->update_setting = 0;
         }
-
+        
         modbus_proc_poll();//
     }
     else
@@ -1007,6 +1008,7 @@ void modbus_proc()
                 cmd_list.pb[PID_INDEX].status = 1;
                 cmd_list.retry_count = RETRY_COUNT;
                 cmd_list.cmd_seq = PID_INDEX;
+				cmd_list.addr = 0;
 
             }
             else  if(cmd_list.pb[PID_INDEX].status==2)
@@ -1034,6 +1036,7 @@ void modbus_proc()
                     cmd_list.pb[STATUS1_INDEX].status = 1;
                     cmd_list.retry_count = RETRY_COUNT;
                     cmd_list.cmd_seq = STATUS1_INDEX;
+					cmd_list.addr = 0;
 
                 }
                 else  if(cmd_list.pb[STATUS1_INDEX].status==2)
@@ -1046,6 +1049,7 @@ void modbus_proc()
                     cmd_list.pb[STATUS2_INDEX].status = 1;
                     cmd_list.retry_count = RETRY_COUNT;
                     cmd_list.cmd_seq = STATUS2_INDEX;
+					cmd_list.addr = 0;
 
                 }
 

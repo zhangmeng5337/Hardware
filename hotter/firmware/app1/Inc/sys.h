@@ -4,9 +4,9 @@
 void delay_us(uint32_t nCount);
 #include "main.h"
 #define SCHEDU_POLL_TIME		300000
-#define PID_TICK_TIME			18000
+#define PID_TICK_TIME			180000
 #define MODBUS_POLL_TIME		3000
-#define MODBUS_TX_TIME  		300
+#define MODBUS_TX_TIME  		200
 
 
 #define TICK_SIZE  26

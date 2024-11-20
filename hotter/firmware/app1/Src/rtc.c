@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "rtc.h"
+#include "time.h"
 int weekday_cal(void);
 
 /* USER CODE BEGIN 0 */
@@ -51,22 +52,29 @@ rtc_stru *rtc_value_set(void)
 
 
 **************************************************************/
-void utcTortc(uint32_t utc)
+
+uint32_t n,y,m,d,HH,MM,SS;
+uint32_t tmp;
+struct tm* ptm;
+void utcTortc(uint64_t utc)
 {
-	uint32_t days = 24 * 60 * 60;
-	uint32_t months = days * 30;
-	uint32_t years = months * 12;
-	uint32_t n,y,m,d,HH,MM,SS;
 
-//	rtc_usr.Year = utc / years + 1970;
-//	rtc_usr.Year = rtc_usr.Year%100;
-//	rtc_usr.Month = utc % years / months + 1;
-//	rtc_usr.Date = utc % years % months / days + 1;
-//	rtc_usr.Hours = utc % years % months % days / 3600;
-//	rtc_usr.Minutes = utc % years % months % days % 3600 / 60;
-//	rtc_usr.Seconds = utc % years % months % days % 3600 % 60;
-//	rtc_usr.update = 1;
+    time_t tm1;
+    tm1 = utc;
+    ptm = localtime(&tm1);
+    tmp = ptm->tm_year;
+    tmp = tmp-100;
+    if(tmp==rtc_usr.Year)
+    {
+        rtc_usr.Year = tmp;
+        rtc_usr.Month = ptm->tm_mon + 1;
+        rtc_usr.Date = ptm->tm_mday;
+        rtc_usr.Hours = ptm->tm_hour + 8;
+        rtc_usr.Minutes = ptm->tm_min;
+        rtc_usr.Seconds = ptm->tm_sec;
+        rtc_usr.update = 1;
 
+    }
 }
 
 
@@ -76,49 +84,49 @@ void set_rtc_time()
 {
 
     /* USER CODE BEGIN RTC_Init 0 */
-    
+
 
     if(rtc_usr.update == 1)
     {
-		rtc_stru urtc_bcd;
-			int cal_result,tmp1;
-			weekday_cal();
-		
-			cal_result = rtc_usr.Year;
-			cal_result = cal_result/10*16;
-			cal_result = cal_result+ rtc_usr.Year%10;
-			urtc_bcd.Year = cal_result;
-		
-			cal_result = rtc_usr.Month;
-			cal_result = cal_result/10*16;
-			cal_result = cal_result+ rtc_usr.Month%10;
-			urtc_bcd.Month = cal_result;
-		
-			cal_result = rtc_usr.Date;
-			cal_result = cal_result/10*16;
-			cal_result = cal_result+ rtc_usr.Date%10;
-			urtc_bcd.Date = cal_result;
-			
-			cal_result = rtc_usr.Hours;
-			cal_result = cal_result/10*16;
-			cal_result = cal_result+ rtc_usr.Hours%10;
-			urtc_bcd.Hours = cal_result;
-				
-			cal_result = rtc_usr.Minutes;
-			cal_result = cal_result/10*16;
-			cal_result = cal_result+ rtc_usr.Minutes%10;
-			urtc_bcd.Minutes = cal_result;
-				
-			cal_result = rtc_usr.Seconds;
-			cal_result = cal_result/10*16;
-			cal_result = cal_result+ rtc_usr.Seconds%10;
-			urtc_bcd.Seconds = cal_result;
-		urtc_bcd.WeekDay = rtc_usr.WeekDay;
-		
-			/* USER CODE END RTC_Init 0 */
-		
-			RTC_TimeTypeDef sTime = {0};
-			RTC_DateTypeDef sDate = {0};
+        rtc_stru urtc_bcd;
+        int cal_result,tmp1;
+        weekday_cal();
+
+        cal_result = rtc_usr.Year;
+        cal_result = cal_result/10*16;
+        cal_result = cal_result+ rtc_usr.Year%10;
+        urtc_bcd.Year = cal_result;
+
+        cal_result = rtc_usr.Month;
+        cal_result = cal_result/10*16;
+        cal_result = cal_result+ rtc_usr.Month%10;
+        urtc_bcd.Month = cal_result;
+
+        cal_result = rtc_usr.Date;
+        cal_result = cal_result/10*16;
+        cal_result = cal_result+ rtc_usr.Date%10;
+        urtc_bcd.Date = cal_result;
+
+        cal_result = rtc_usr.Hours;
+        cal_result = cal_result/10*16;
+        cal_result = cal_result+ rtc_usr.Hours%10;
+        urtc_bcd.Hours = cal_result;
+
+        cal_result = rtc_usr.Minutes;
+        cal_result = cal_result/10*16;
+        cal_result = cal_result+ rtc_usr.Minutes%10;
+        urtc_bcd.Minutes = cal_result;
+
+        cal_result = rtc_usr.Seconds;
+        cal_result = cal_result/10*16;
+        cal_result = cal_result+ rtc_usr.Seconds%10;
+        urtc_bcd.Seconds = cal_result;
+        urtc_bcd.WeekDay = rtc_usr.WeekDay;
+
+        /* USER CODE END RTC_Init 0 */
+
+        RTC_TimeTypeDef sTime = {0};
+        RTC_DateTypeDef sDate = {0};
 
         sTime.Hours = urtc_bcd.Hours;
         sTime.Minutes = urtc_bcd.Minutes;
@@ -176,10 +184,10 @@ void GET_Time(void)//获取当前时间
 
     Now_Time_BIN.Minutes = Now_Time.Minutes/16*10;
     Now_Time_BIN.Minutes = Now_Time_BIN.Minutes + Now_Time.Minutes%16;
-	
+
     Now_Time_BIN.Seconds = Now_Time.Seconds/16*10;
     Now_Time_BIN.Seconds = Now_Time_BIN.Seconds + Now_Time.Seconds%16;
-	
+
 
     Now_Date_BIN.WeekDay = Now_Date.WeekDay/16*10;
     Now_Date_BIN.WeekDay = Now_Date_BIN.WeekDay + Now_Date.WeekDay%16;
@@ -188,7 +196,7 @@ void GET_Time(void)//获取当前时间
     Now_Date_BIN.Date = Now_Date_BIN.Date + Now_Date.Date%16;
 
 
-	
+
     Now_Date_BIN.Month = Now_Date.Month/16*10;
     Now_Date_BIN.Month = Now_Date_BIN.Month + Now_Date.Month%16;
 

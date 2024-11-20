@@ -9,12 +9,13 @@ void boot_jump(void)
 	   if(OTA_UPDATE_TO == APP2)
 	   {
 		   WriteFlash((Application_2_Addr + Application_Size - 8), &update_flag, 1);
-		   update_flag = 0x10;
+		   update_flag = 0x10;//now is app 1
 		   ReadFlash(OTA_NUM_ADDR,&tmp,1);
 		   if(tmp!=update_flag)
 		   {
 			   Erase_page(OTA_NUM_ADDR, 1);
-			   WriteFlash((OTA_NUM_ADDR), &update_flag, 1);
+			   WriteFlash((OTA_NUM_ADDR), &update_flag, 1);		   
+			   ReadFlash(OTA_NUM_ADDR,&tmp,1);
 	
 		   }
 	   }
@@ -22,7 +23,7 @@ void boot_jump(void)
 	   if(OTA_UPDATE_TO == APP1)
 	   {
 		   WriteFlash((Application_1_Addr + Application_Size - 8), &update_flag, 1);
-		   update_flag = 0x20;
+		   update_flag = 0x20;//now is app 2
 		   ReadFlash(OTA_NUM_ADDR,&tmp,1);
 	
 		   if(tmp!=update_flag)

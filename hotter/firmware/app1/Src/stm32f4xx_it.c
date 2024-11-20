@@ -30,6 +30,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 #include "hal.h"
+#include "config.h"
 
 /* USER CODE END TD */
 
@@ -201,6 +202,11 @@ void SysTick_Handler(void)
 //		  idwg_cnt = 0;
 //			
 //	}
+get_config()->timeout ++;
+  if(get_config()->timeout>=300000)
+  	{
+		HAL_NVIC_SystemReset();
+  }
 	//HAL_IWDG_Refresh(&hiwdg);
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();

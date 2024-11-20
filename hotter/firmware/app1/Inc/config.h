@@ -64,6 +64,7 @@ typedef struct
 	int addr_count ;
 	int reboot_flag ;
 	int Erase_flag ;
+	uint32_t timeout;
 	//unsigned char sub_sring[3][64];
 
 } CONFIG_stru;

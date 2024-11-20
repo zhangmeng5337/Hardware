@@ -171,6 +171,7 @@ void config_init()
         get_config()->mode = 2;
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;
+		get_config()->timeout = 0;
         config_save();
 
 
