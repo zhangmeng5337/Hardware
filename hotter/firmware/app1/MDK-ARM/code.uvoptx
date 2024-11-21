@@ -157,34 +157,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>433</LineNumber>
+          <LineNumber>95</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134390212</Address>
+          <Address>134383324</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\1158\ads1258.c</Filename>
+          <Filename>../Src/main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/1158/ads1258.c\433</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>116</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134372836</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\1158\ai_proc.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/1158/ai_proc.c\116</Expression>
+          <Expression>\\app\../Src/main.c\95</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -196,7 +180,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_recv</ItemText>
+          <ItemText>data_ai</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
@@ -456,19 +440,39 @@
         <Ww>
           <count>53</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tick_usr,0x0A</ItemText>
+          <ItemText>CONFIG_Addr</ItemText>
         </Ww>
         <Ww>
           <count>54</count>
           <WinNumber>1</WinNumber>
           <ItemText>channel</ItemText>
         </Ww>
+        <Ww>
+          <count>55</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>56</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>57</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tick_usr,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>58</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>(null)</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x801fff0</ItemText>
+          <ItemText>0x080a0000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

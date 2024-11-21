@@ -431,8 +431,8 @@ void data_ai_init(void)
 
 void ai_proc()
 {
-    registerTick(ADC_SAMP_TICK_NO, 2000);
-    //if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s
+    registerTick(ADC_SAMP_TICK_NO, ADC_SAMP_TIME);
+    if(GetTickResult(ADC_SAMP_TICK_NO)==1)//2s
     {
         reset_registerTick(ADC_SAMP_TICK_NO);
         //adc_read_data();//adc sample

@@ -6,7 +6,8 @@ void delay_us(uint32_t nCount);
 #define SCHEDU_POLL_TIME		300000
 #define PID_TICK_TIME			180000
 #define MODBUS_POLL_TIME		3000
-#define MODBUS_TX_TIME  		200
+#define MODBUS_TX_TIME  		500
+#define  ADC_SAMP_TIME         2000
 
 
 #define TICK_SIZE  26

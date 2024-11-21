@@ -11,10 +11,10 @@
 modbus_pump_cmd_stru  modbus_cmd_list[] =
 {
 
-    {0x00,MODBUS_WRITE_ONE_CMD,CONTROLLER_REG,2,{0,1,2},true,false,0,0},
-    {0x00,MODBUS_WRITE_ONE_CMD,TEMPERATURE_REG,2,{0,1,2},true,false,0,0},
-    {0x00,MODBUS_READ_CMD,0x0000,0x0008,{0,1,2},true,true,0,0},
-    {0x00,MODBUS_READ_CMD,0x0040,72,{0,1,2},true,false,0,0}
+    {0x00,MODBUS_WRITE_ONE_CMD,CONTROLLER_REG,2,{0,1,2},TRUE,FALSE,0,0},
+    {0x00,MODBUS_WRITE_ONE_CMD,TEMPERATURE_REG,2,{0,1,2},TRUE,FALSE,0,0},
+    {0x00,MODBUS_READ_CMD,0x0000,0x0008,{0,1,2},TRUE,TRUE,0,0},
+    {0x00,MODBUS_READ_CMD,0x0051,10,{0,1,2},TRUE,FALSE,0,0}
 };
 
 modbus_cmd_pack_stru cmd_list;
@@ -145,10 +145,10 @@ void rs485_recv()
         if (crc_cal == crc_tmp)
         {
 
-            modbus_recv.address = rs485_u->recv_buf[0];
+            modbus_recv.address = rs485_u->recv_buf[modbus_recv.dev_addr_index];
             if (modbus_recv.address > 1)
             {
-                modbus_recv.func =    rs485_u->recv_buf[1];
+                modbus_recv.func =    rs485_u->recv_buf[modbus_recv.dev_addr_index+1];
                 modbus_recv.reg =  rs485_u->recv_buf[3];
                 if (modbus_recv.func == MODBUS_READ_CMD)
                 {
@@ -449,7 +449,7 @@ void analy_modbus_recv()
 //                    else
                 get_hotter(modbus_recv.address)->status[0] = modbus_recv.address;//设备地址
                 if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
-                        cmd_list.pb[0].reg)
+                        cmd_list.pb[STATUS1_INDEX].reg)
                 {
 
                     get_hotter(modbus_recv.address)->status[2] =
@@ -457,7 +457,7 @@ void analy_modbus_recv()
                     get_hotter(modbus_recv.address)->status[3] =
                         modbus_recv.payload[6]; //;;模式选择
                     get_hotter(modbus_recv.address)->status[4] =
-                        modbus_recv.payload[10]; //L4采暖回差,L5采暖设定温度;
+                        modbus_recv.payload[14]; //L4采暖回差,L5采暖设定温度;
                     get_hotter(modbus_recv.address)->status[5] =
                         modbus_recv.payload[12]; //L4采暖回差,L5采暖设定温度;
 
@@ -472,7 +472,7 @@ void analy_modbus_recv()
 
                 }
                 else  if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
-                          cmd_list.pb[STATUS1_INDEX].reg)
+                          cmd_list.pb[STATUS2_INDEX].reg)
                 {
                     unsigned char index, sindex;
                     unsigned int i;
@@ -480,14 +480,14 @@ void analy_modbus_recv()
                     unsigned char buf2[256];
                     index = 4;
                     sindex = 5;
-                    memcpy(buf, &modbus_recv.payload[4], modbus_recv.recv_len);
+                   // memcpy(buf, &modbus_recv.payload[4], modbus_recv.recv_len);
 
                     for (i = 0; i < modbus_recv.recv_len / 2; i++)
                     {
                         buf2[i] = buf[i];
                     }
-                    memcpy(&get_hotter(modbus_recv.address)->status[6], buf2,
-                           modbus_recv.recv_len / 2);
+                  //  memcpy(&get_hotter(modbus_recv.address)->status[6], buf2,
+//                           modbus_recv.recv_len / 2);
 //                        get_hotter(modbus_recv.address)->status[j++] =
 //                            modbus_recv.payload[4]; //;控制标志;
 //                        get_hotter(modbus_recv.address)->status[j++] =
@@ -908,7 +908,7 @@ void modbus_data_pack(unsigned char pack_num)
             if(get_schedule()->current_plan<(SCHEDULE_SIZE))
             {
                 cmd_list.pb[PWR_INDEX].payload[0] = 0x00;
-                cmd_list.pb[PWR_INDEX].payload[1] = get_schedule()->buf[get_schedule()->current_plan].pwr_state;
+                cmd_list.pb[PWR_INDEX].payload[1] = get_schedule()->buf[get_schedule()->current_plan].pwr_state|0x40;
 
             }
         }
@@ -916,7 +916,7 @@ void modbus_data_pack(unsigned char pack_num)
         {
 
             cmd_list.pb[PWR_INDEX].payload[0] = get_config()->machine >> 8;
-            cmd_list.pb[PWR_INDEX].payload[1] = get_config()->machine;
+            cmd_list.pb[PWR_INDEX].payload[1] = get_config()->machine|0x40;
 
         }
         cmd_list.pb[PWR_INDEX].regCount = 2;
@@ -991,7 +991,10 @@ void modbus_proc()
         {
             cmd_list.pb[PWR_INDEX].status = 0;
             modbus_tx.update = 0;
+			 cmd_list.cmd_seq = PID_INDEX;
+			 cmd_list.pb[PID_INDEX].status=0;
 			get_config()->update_setting = 0;
+			registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
         }
         
         modbus_proc_poll();//
@@ -999,7 +1002,8 @@ void modbus_proc()
     else
     {
 
-        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&get_config()->mode!=2)//pid poll
+        modbus_tx.update = 0;
+        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&get_config()->mode<2)//pid poll
         {
             modbus_data_pack(PID_INDEX);
             cmd_enable(PID_INDEX,1);

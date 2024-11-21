@@ -21,9 +21,10 @@ unsigned char  boot_params_proc(unsigned char oper)
     {
         __disable_irq();
         memset(buf, 0, 512);
+		 ReadFlash(SYS_PARAMS_Addr, buf, 512);
         // ReadFlash(FACTORY_ADDR, buf, 2048);//read original data
         Erase_page(SYS_PARAMS_Addr, 1);
-        memset(buf, 0, 512);
+      //  memset(buf, 0, 512);
         buf[0] = 0x5a;
 
         j = 1;
@@ -42,7 +43,7 @@ unsigned char  boot_params_proc(unsigned char oper)
         }
 
 
-        WriteFlashBytes(SYS_PARAMS_Addr, buf, i*PLAN_SIZE);
+        WriteFlashBytes(SYS_PARAMS_Addr, buf, 512);
         __enable_irq();
         result = 0;
 
@@ -206,7 +207,7 @@ void plan_query(void)
                 if(schedule_u.buf[i].enable == 1)
                 {
                     schedule_u.current_plan= i;
-					if(get_config()->mode!=2)
+					if(get_config()->mode<2)
 					{
 						schedule_u.mode = 1;
 					get_config()->set_tout = schedule_u.buf[i].temperature;
@@ -245,7 +246,7 @@ void plan_query(void)
                                         if(schedule_u.buf[i].enable == 1)
                                         {
                                             
-											if(get_config()->mode!=2)
+											if(get_config()->mode<2)
 											{schedule_u.current_plan= i;
                                             	schedule_u.mode = 1;
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
@@ -274,7 +275,7 @@ void plan_query(void)
                                     {
                                         if(schedule_u.buf[i].enable == 1)
                                         {
-											if(get_config()->mode!=2)
+											if(get_config()->mode<2)
 											{schedule_u.current_plan= i;
 												schedule_u.mode = 1;
 											get_config()->set_tout = schedule_u.buf[i].temperature;
@@ -306,7 +307,7 @@ void plan_query(void)
                                 if(schedule_u.buf[i].enable == 1)
                                 {
                                     
-									if(get_config()->mode!=2)
+									if(get_config()->mode<2)
 									{schedule_u.current_plan= i;
 										schedule_u.mode = 1;
 									get_config()->set_tout = schedule_u.buf[i].temperature;
@@ -347,7 +348,7 @@ void plan_query(void)
                                         if(schedule_u.buf[i].enable == 1)
                                         {
                                             
-											if(get_config()->mode!=2)
+											if(get_config()->mode<2)
 											{schedule_u.current_plan= i;
                                             	schedule_u.mode = 1;
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
@@ -377,7 +378,7 @@ void plan_query(void)
                                         if(schedule_u.buf[i].enable == 1)
                                         {
                                             
-											if(get_config()->mode!=2)
+											if(get_config()->mode<2)
 											{schedule_u.current_plan= i;
                                             	schedule_u.mode = 1;
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
@@ -409,7 +410,7 @@ void plan_query(void)
                                 if(schedule_u.buf[i].enable == 1)
                                 {
                                     
-									if(get_config()->mode!=2)
+									if(get_config()->mode<2)
 									{schedule_u.current_plan= i;
 										schedule_u.mode = 1;
 									    get_config()->set_tout = schedule_u.buf[i].temperature;

@@ -178,6 +178,7 @@ void anlysis_mqtt_recv()
     {
 
         get_config()->mode = 2;
+	get_config()->update_setting = 1;
 
     }
     dev_id = find_json_string("\"smartMode\":", "}", 0);//native mode
@@ -185,6 +186,7 @@ void anlysis_mqtt_recv()
     {
 
         get_config()->mode = 1;
+	get_config()->update_setting = 1;
 
     }
 

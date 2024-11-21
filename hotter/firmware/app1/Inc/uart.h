@@ -1,7 +1,7 @@
 #ifndef UART_H_
 #define UART_H_
 #include "main.h"
-#define BUFFER_SIZE  512
+#define BUFFER_SIZE  1024
 
 
 #define LTE_No		0

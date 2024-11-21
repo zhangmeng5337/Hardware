@@ -5,7 +5,7 @@
 //#define MODBUS_RTU_COUNT            4
 //#define MODBUS_RETRY_COUNT          4
 #define CMD_SIZE		10
-#define DEV_SIZE    10
+#define DEV_SIZE    5
 
 #define PWR_INDEX				0
 #define PID_INDEX				1

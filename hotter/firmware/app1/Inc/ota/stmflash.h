@@ -27,7 +27,7 @@
 
 #define APP3   3
 #define OTA_UPDATE_TO   APP2
-#define VERSION        "V1.0.50"
+#define VERSION        "V1.0.55"
 
 
 #define OTA_NUM_ADDR   0x801fff0
@@ -58,7 +58,7 @@
 #define Application_2_Addr		0x08060000U				// app2 base addr
 #define SYS_PARAMS_Addr        Application_2_Addr + Application_Size
 
-#define CONFIG_Addr		       0x08010000
+#define CONFIG_Addr		       SYS_PARAMS_Addr
 
 
 uint32_t GetPage(uint32_t Address);
