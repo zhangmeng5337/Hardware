@@ -1,6 +1,6 @@
 #ifndef HOTTER_H_
 #define HOTTER_H_
-
+#include "modbus.h"
 //控制板--->服务端(周期性上传)
 //{
 //    "Dev ID": "866289037465624",
@@ -26,8 +26,9 @@
 
 typedef struct 
 {
-	unsigned char status[10];//设备地址;控制标志;模式选择;L4采暖回差;L5采暖设定温度;故障代码:;modbus失联
+	unsigned char status[DEV_SIZE];//设备地址;控制标志;模式选择;L4采暖回差;L5采暖设定温度;故障代码:;modbus失联
 	unsigned char control_reg[10];
+	unsigned char update[DEV_SIZE];
 }hotter_stru;
 
 hotter_stru *get_hotter(unsigned dev_addr);

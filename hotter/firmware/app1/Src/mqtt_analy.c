@@ -13,7 +13,7 @@
 #include "filter.h"
 #include "schedule.h"
 #include "rtc.h"
-
+#include "hotter.h"
 tsATCmds     mqtt_at_cmds;
 teATCmdNum    mqtt_at_cmd_num;
 teATStatus    mqtt_at_status;
@@ -760,23 +760,33 @@ void upload()
            );
     //strcat(buf3, numberBuffer); // 拼接到结果字符串�?
 
+i = 0;
+	static unsigned char addr=1;
+	//if(get_hotter(addr)->status[addr-1]==1)
+	{
+	sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++],
+			get_hotter(addr)->status[i++]);
 
-//1,3,2,0,0,184  0x01 0x03 0x02 0x00 0x00 0xb8
-    sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
-            get_recv_machine()->payload[0],
-            get_recv_machine()->payload[1],
-            get_recv_machine()->payload[2],
-            get_recv_machine()->payload[3],
-            get_recv_machine()->payload[4],
-            get_recv_machine()->payload[5],
-            get_recv_machine()->payload[6],
-            get_recv_machine()->payload[7],
-            get_recv_machine()->payload[8],
-            get_recv_machine()->payload[9],
-            get_recv_machine()->payload[10],
-            get_recv_machine()->payload[11],
-            get_recv_machine()->payload[12],
-            get_recv_machine()->payload[13]);
+	}
+
+
+	if(addr<=DEV_SIZE)
+	{
+	
+	addr++;
+
+	}
+	else 
+		addr = 1;
 
 
     sprintf(mqtt_send_buf, "{\\0D\\0A\\

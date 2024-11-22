@@ -448,7 +448,8 @@ void analy_modbus_recv()
 //                    }
 //                    else
                 get_hotter(modbus_recv.address)->status[0] = modbus_recv.address;//Éè±¸µØÖ·
-                if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
+                get_hotter(modbus_recv.address)->update[modbus_recv.address-1] = 1;
+				if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
                         cmd_list.pb[STATUS1_INDEX].reg)
                 {
 
