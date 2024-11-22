@@ -66,7 +66,8 @@ typedef struct
 	int Erase_flag ;
 	unsigned char to_index;
 	unsigned char tin_index;
-	
+	unsigned char po_index;
+	unsigned char pin_index;	
 	uint32_t timeout;
 	//unsigned char sub_sring[3][64];
 

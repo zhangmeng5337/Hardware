@@ -218,7 +218,10 @@ void config_init()
     get_config()->Erase_flag = 1;
 
     get_config()->tin_index=AI_WATER_T_IN_INDEX;
+	get_config()->to_index = AI_WATER_T_O_INDEX;
 
+    get_config()->pin_index=AI_PUMP_F_INDEX;
+	get_config()->po_index = AI_PUMP_E_INDEX;
 
 
 

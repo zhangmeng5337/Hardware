@@ -192,18 +192,26 @@ void anlysis_mqtt_recv()
 	dev_id = find_json_string("\"tin_index\": ", ",", 0);
 		if (dev_id != NULL)
 		{
-			// memset(dev_id, 0, 128);
-			//get_config()->update_setting = 1;
-			//sprintf(&get_config()->machine, "%s", dev_id); //????
 			tt = atoi(&dev_id[0]);
-	//		if(tmp_f == 1)
-			{
-				
-				get_config()->tin_index = tt;
-	
-			}
-	
-	
+			get_config()->tin_index = tt;
+		}
+	dev_id = find_json_string("\"to_index\": ", ",", 0);
+		if (dev_id != NULL)
+		{
+			tt = atoi(&dev_id[0]);
+			get_config()->to_index = tt;
+		}
+	dev_id = find_json_string("\"pin_index\": ", ",", 0);
+		if (dev_id != NULL)
+		{
+			tt = atoi(&dev_id[0]);
+			get_config()->pin_index = tt;
+		}
+	dev_id = find_json_string("\"po_index\": ", ",", 0);
+		if (dev_id != NULL)
+		{
+			tt = atoi(&dev_id[0]);
+			get_config()->po_index = tt;
 		}
 
     dev_id = find_json_string("\"heatPump1\":", "}", 0);
@@ -697,13 +705,13 @@ void upload()
     memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
     sprintf(mqtt_payload_u.devid, "%s", get_config()->user_id);//devid
-    mqtt_payload_u.data[TOUT_INDEX] = get_ai_data()->temp[AI_WATER_T_O_INDEX];
+    mqtt_payload_u.data[TOUT_INDEX] = get_ai_data()->temp[get_config()->to_index];
     mqtt_payload_u.data[TIN_INDEX] = 
         get_ai_data()->temp[get_config()->tin_index]; //water IN
     mqtt_payload_u.data[PUMP_F_INDEX] =
-        get_ai_data()->press[AI_PUMP_F_INDEX]; //pump front
+        get_ai_data()->press[get_config()->pin_index]; //pump front
     mqtt_payload_u.data[PUMP_E_INDEX] =
-        get_ai_data()->press[AI_PUMP_E_INDEX]; //pump end
+        get_ai_data()->press[get_config()->po_index]; //pump end
 
     uint32_t tmp;
     tmp = get_ai_data()->channel_status;

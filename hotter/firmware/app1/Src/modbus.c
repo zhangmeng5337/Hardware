@@ -480,13 +480,13 @@ void analy_modbus_recv()
                     unsigned char buf2[256];
                     index = 4;
                     sindex = 5;
-                   // memcpy(buf, &modbus_recv.payload[4], modbus_recv.recv_len);
+                    // memcpy(buf, &modbus_recv.payload[4], modbus_recv.recv_len);
 
                     for (i = 0; i < modbus_recv.recv_len / 2; i++)
                     {
                         buf2[i] = buf[i];
                     }
-                  //  memcpy(&get_hotter(modbus_recv.address)->status[6], buf2,
+                    //  memcpy(&get_hotter(modbus_recv.address)->status[6], buf2,
 //                           modbus_recv.recv_len / 2);
 //                        get_hotter(modbus_recv.address)->status[j++] =
 //                            modbus_recv.payload[4]; //;控制标志;
@@ -535,6 +535,7 @@ void analy_modbus_recv()
             break;
         }
         modbus_recv.func = 0;
+        modbus_recv.update = 0;
     }
 
 }
@@ -793,8 +794,8 @@ void modbus_proc_poll()
                         i = 1;
                         i = i << (cmd_list.pb[cmd_list.cmd_seq].addr);
                         modbus_recv.fault = modbus_recv.fault | i;
-						modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr]=
-							FAULT_COUNT;
+                        modbus_recv.error_count[cmd_list.pb[cmd_list.cmd_seq].addr]=
+                            FAULT_COUNT;
 //						cmd_list.retry_count = RETRY_COUNT;
 //
 //						if(cmd_list.addr<DEV_SIZE)
@@ -865,8 +866,8 @@ void modbus_proc_poll()
         {
             if(cmd_list.retry_count>0)
             {
-               cmd_list.addr = modbus_node_addr();
-			    modbus_cmd_list[cmd_list.cmd_seq].addr = cmd_list.addr;
+                cmd_list.addr = modbus_node_addr();
+                modbus_cmd_list[cmd_list.cmd_seq].addr = cmd_list.addr;
                 modbus_trans2(modbus_cmd_list[cmd_list.cmd_seq]);
                 cmd_list.retry_count--;
                 cmd_list.pb[cmd_list.cmd_seq].last_reg =
@@ -950,7 +951,7 @@ void modbus_data_pack(unsigned char pack_num)
     }
     else if (pack_num == STATUS2_INDEX)
     {
-		;//cmd_list.pb[STATUS2_INDEX].regCount = 2;
+        ;//cmd_list.pb[STATUS2_INDEX].regCount = 2;
 
     }
 
@@ -959,120 +960,122 @@ void modbus_data_pack(unsigned char pack_num)
 void modbus_proc()
 {
     unsigned char result, first_flag;
-	
-	if (get_config()->update_setting == 1||
-			get_schedule()->current_plan_pwr_update == 1)
-	{
-		
-		if(modbus_tx.update == 0)
-		{
-		config_save();//位置不能变
-		modbus_tx.update = 1;  //server setting
-
-		}
-
-		get_config()->update_setting = 1;
-		if (get_schedule()->current_plan_pwr_update == 1)
-			get_schedule()->current_plan_pwr_update = 2;
-
-		modbus_data_pack(PWR_INDEX);
-
-        cmd_enable(PWR_INDEX,1);
-        if(cmd_list.pb[PWR_INDEX].status==0)
-        {
-            cmd_list.pb[PWR_INDEX].status = 1;
-            cmd_list.retry_count = RETRY_COUNT;
-            cmd_list.cmd_seq = PWR_INDEX;
-			cmd_list.addr = 0;
-
-        }
-
-        else  if(cmd_list.pb[PWR_INDEX].status==2)
-        {
-            cmd_list.pb[PWR_INDEX].status = 0;
-            modbus_tx.update = 0;
-			 cmd_list.cmd_seq = PID_INDEX;
-			 cmd_list.pb[PID_INDEX].status=0;
-			get_config()->update_setting = 0;
-			registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-        }
-        
-        modbus_proc_poll();//
-    }
-    else
+    if(get_uart_recv(RS485_No)->recv_update == 0)
     {
-
-        modbus_tx.update = 0;
-        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&get_config()->mode<2)//pid poll
+        if (get_config()->update_setting == 1||
+                get_schedule()->current_plan_pwr_update == 1)
         {
-            modbus_data_pack(PID_INDEX);
-            cmd_enable(PID_INDEX,1);
-            if(cmd_list.pb[PID_INDEX].status==0)
+
+            if(modbus_tx.update == 0)
             {
-                cmd_list.pb[PID_INDEX].status = 1;
+                config_save();//位置不能变
+                modbus_tx.update = 1;  //server setting
+
+            }
+
+            get_config()->update_setting = 1;
+            if (get_schedule()->current_plan_pwr_update == 1)
+                get_schedule()->current_plan_pwr_update = 2;
+
+            modbus_data_pack(PWR_INDEX);
+
+            cmd_enable(PWR_INDEX,1);
+            if(cmd_list.pb[PWR_INDEX].status==0)
+            {
+                cmd_list.pb[PWR_INDEX].status = 1;
                 cmd_list.retry_count = RETRY_COUNT;
-                cmd_list.cmd_seq = PID_INDEX;
-				cmd_list.addr = 0;
+                cmd_list.cmd_seq = PWR_INDEX;
+                cmd_list.addr = 0;
 
             }
-            else  if(cmd_list.pb[PID_INDEX].status==2)
+
+            else  if(cmd_list.pb[PWR_INDEX].status==2)
             {
-                reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+                cmd_list.pb[PWR_INDEX].status = 0;
+                modbus_tx.update = 0;
+                cmd_list.cmd_seq = PID_INDEX;
+                cmd_list.pb[PID_INDEX].status=0;
+                get_config()->update_setting = 0;
                 registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-                cmd_list.pb[PID_INDEX].status = 0;
-
             }
+
             modbus_proc_poll();//
         }
-        else  //read dev
+        else
         {
-            registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-            registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
-            if (GetTickResult(MODBUS_POLL_TICK_NO) == 1)
+
+            modbus_tx.update = 0;
+            if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&get_config()->mode<2)//pid poll
             {
-
-               
-
-                if(cmd_list.pb[STATUS1_INDEX].status==0)
-                { 
-                    modbus_data_pack(STATUS1_INDEX);
-                    cmd_enable(STATUS1_INDEX,1);
-                    cmd_list.pb[STATUS1_INDEX].status = 1;
+                modbus_data_pack(PID_INDEX);
+                cmd_enable(PID_INDEX,1);
+                if(cmd_list.pb[PID_INDEX].status==0)
+                {
+                    cmd_list.pb[PID_INDEX].status = 1;
                     cmd_list.retry_count = RETRY_COUNT;
-                    cmd_list.cmd_seq = STATUS1_INDEX;
-					cmd_list.addr = 0;
+                    cmd_list.cmd_seq = PID_INDEX;
+                    cmd_list.addr = 0;
 
                 }
-                else  if(cmd_list.pb[STATUS1_INDEX].status==2)
+                else  if(cmd_list.pb[PID_INDEX].status==2)
                 {
-                     modbus_data_pack(STATUS2_INDEX);
-                    cmd_enable(STATUS2_INDEX,1);
-                    //reset_registerTick(MODBUS_POLL_TICK_NO);
-                    //registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
-                    cmd_list.pb[STATUS1_INDEX].status = 1;
-                    cmd_list.pb[STATUS2_INDEX].status = 1;
-                    cmd_list.retry_count = RETRY_COUNT;
-                    cmd_list.cmd_seq = STATUS2_INDEX;
-					cmd_list.addr = 0;
-
-                }
-
-                else  if(cmd_list.pb[STATUS2_INDEX].status==2)
-                {
-                    // reset_registerTick(MODBUS_POLL_TICK_NO);
-                    // registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
-                    cmd_list.pb[STATUS1_INDEX].status = 0;
-                    cmd_list.pb[STATUS2_INDEX].status = 0;
+                    reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+                    registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+                    cmd_list.pb[PID_INDEX].status = 0;
 
                 }
                 modbus_proc_poll();//
+            }
+            else  //read dev
+            {
+                registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+                registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+                if (GetTickResult(MODBUS_POLL_TICK_NO) == 1)
+                {
 
+
+
+                    if(cmd_list.pb[STATUS1_INDEX].status==0)
+                    {
+                        modbus_data_pack(STATUS1_INDEX);
+                        cmd_enable(STATUS1_INDEX,1);
+                        cmd_list.pb[STATUS1_INDEX].status = 1;
+                        cmd_list.retry_count = RETRY_COUNT;
+                        cmd_list.cmd_seq = STATUS1_INDEX;
+                        cmd_list.addr = 0;
+
+                    }
+                    else  if(cmd_list.pb[STATUS1_INDEX].status==2)
+                    {
+                        modbus_data_pack(STATUS2_INDEX);
+                        cmd_enable(STATUS2_INDEX,1);
+                        //reset_registerTick(MODBUS_POLL_TICK_NO);
+                        //registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+                        cmd_list.pb[STATUS1_INDEX].status = 1;
+                        cmd_list.pb[STATUS2_INDEX].status = 1;
+                        cmd_list.retry_count = RETRY_COUNT;
+                        cmd_list.cmd_seq = STATUS2_INDEX;
+                        cmd_list.addr = 0;
+
+                    }
+
+                    else  if(cmd_list.pb[STATUS2_INDEX].status==2)
+                    {
+                        // reset_registerTick(MODBUS_POLL_TICK_NO);
+                        // registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+                        cmd_list.pb[STATUS1_INDEX].status = 0;
+                        cmd_list.pb[STATUS2_INDEX].status = 0;
+
+                    }
+                    modbus_proc_poll();//
+
+                }
             }
         }
+
     }
-
-
-    rs485_recv();
+    else
+        rs485_recv();
 }
 
 void modbus_proc2()
