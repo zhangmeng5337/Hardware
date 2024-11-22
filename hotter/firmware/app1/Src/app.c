@@ -29,7 +29,7 @@ void hardware_init()
 	ads1158_config(1);
 	ads1158_config(2);
 	config_init();
-	boot_jump();
+	//boot_jump();
 	pwr_schedul_init();
 	uart_init();
 	CAT1_Init();

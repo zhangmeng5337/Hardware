@@ -120,7 +120,7 @@ void anlysis_mqtt_recv()
     char *dev_id;
     unsigned char valid_flag, i, j, k;
     float tmp_f;
-
+    unsigned int tt;
 
     //valid_flag = 0;
     get_config()->update_setting = 0;
@@ -178,7 +178,7 @@ void anlysis_mqtt_recv()
     {
 
         get_config()->mode = 2;
-	get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
 
     }
     dev_id = find_json_string("\"smartMode\":", "}", 0);//native mode
@@ -186,9 +186,25 @@ void anlysis_mqtt_recv()
     {
 
         get_config()->mode = 1;
-	get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
 
     }
+	dev_id = find_json_string("\"tin_index\": ", ",", 0);
+		if (dev_id != NULL)
+		{
+			// memset(dev_id, 0, 128);
+			//get_config()->update_setting = 1;
+			//sprintf(&get_config()->machine, "%s", dev_id); //????
+			tt = atoi(&dev_id[0]);
+	//		if(tmp_f == 1)
+			{
+				
+				get_config()->tin_index = tt;
+	
+			}
+	
+	
+		}
 
     dev_id = find_json_string("\"heatPump1\":", "}", 0);
     if (dev_id != NULL)
@@ -324,18 +340,18 @@ void anlysis_mqtt_recv()
         //  memset(dev_id, 0, 128);
         dev_id = find_json_string("byte,", "\r\n", 0);
         if (dev_id != NULL)
-        {  
+        {
             i = 0;
-					tmp_utc = 0;
+            tmp_utc = 0;
             while(dev_id[i]>=0x30&&dev_id[i]<=0x39)
             {
-            j = dev_id[i];
-							j = j -0x30;
-           // tmp_utc = 0;
-            tmp_utc = tmp_utc*10+j;
-			i++;
+                j = dev_id[i];
+                j = j -0x30;
+                // tmp_utc = 0;
+                tmp_utc = tmp_utc*10+j;
+                i++;
 
-			}
+            }
             utcTortc(tmp_utc);
 
         }
@@ -435,7 +451,7 @@ void anlysis_mqtt_recv()
         plan_analy(dev_id,9);
     }
 
-   memset(mqtt_recv->Lpuart1RecBuff,0,LPUART1_REC_SIZE);
+    memset(mqtt_recv->Lpuart1RecBuff,0,LPUART1_REC_SIZE);
 
     //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
 
@@ -682,8 +698,8 @@ void upload()
     memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
     sprintf(mqtt_payload_u.devid, "%s", get_config()->user_id);//devid
     mqtt_payload_u.data[TOUT_INDEX] = get_ai_data()->temp[AI_WATER_T_O_INDEX];
-    mqtt_payload_u.data[TIN_INDEX] =
-        get_ai_data()->temp[AI_WATER_T_IN_INDEX]; //water IN
+    mqtt_payload_u.data[TIN_INDEX] = 
+        get_ai_data()->temp[get_config()->tin_index]; //water IN
     mqtt_payload_u.data[PUMP_F_INDEX] =
         get_ai_data()->press[AI_PUMP_F_INDEX]; //pump front
     mqtt_payload_u.data[PUMP_E_INDEX] =
@@ -1105,7 +1121,7 @@ void mqtt_proc()
 
     mqtt_recv_proc();
 
-	get_config()->timeout = 0;
+    get_config()->timeout = 0;
 
 
 }

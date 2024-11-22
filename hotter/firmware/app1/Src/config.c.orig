@@ -11,11 +11,11 @@ void config_save()
 {
     //uint32_t addr_count = 0;
     uint8_t buf[512];
-    unsigned int len, index;
+	  unsigned int len, index;
     if (config_usr.update_setting)
     {
-        ReadFlash(CONFIG_Addr, buf, 512);
-        Erase_page(CONFIG_Addr, 1); //²Á³ý2ÉÈÇø
+     	ReadFlash(CONFIG_Addr, buf, 512);
+		Erase_page(CONFIG_Addr, 1); //²Á³ý2ÉÈÇø
         index = 256;
         //buf[0] = 0x5a;
 //        len = strlen(get_config()->user);
@@ -74,7 +74,7 @@ void config_save()
 //        index = index + len;
 
 
-
+        
         WriteFlashBytes((CONFIG_Addr), (uint8_t *)(buf), 512);
         config_usr.update_setting = 0;
 
@@ -84,9 +84,9 @@ void config_init()
 {
 
     unsigned char head;
-    unsigned int index, len;
+	  unsigned int index, len;
     unsigned char buf[4];
-    index =0;
+		index =0;
     ReadFlash(CONFIG_Addr+index, (uint8_t *)&head, 1);
     len = 0;
 
@@ -145,7 +145,7 @@ void config_init()
         index = 256 ;
         len = sizeof(get_config()->mode);
         ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
-        get_config()->mode = head;
+				get_config()->mode = head;
 //        index = index + len;
 //        len = sizeof(get_config()->fault_mask);
 //        ReadFlash(CONFIG_Addr + index, buf, len);
@@ -159,13 +159,13 @@ void config_init()
         sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", VERSION);
-        if(OTA_UPDATE_TO == APP2)
-            sprintf(get_config()->http_ip, "%s",
-                    "http://39.106.131.169:666/ota/b/");
+		                    if(OTA_UPDATE_TO == APP2)
+						sprintf(get_config()->http_ip, "%s",
+								"http://39.106.131.169:666/ota/b/");
 
-        else
-            sprintf(get_config()->http_ip, "%s",
-                    "http://39.106.131.169:666/ota/a/");
+                    else
+        sprintf(get_config()->http_ip, "%s",
+                "http://39.106.131.169:666/ota/a/");
         sprintf(get_config()->http_port, "%s", "666");
         get_config()->machine = 1;
         get_config()->update_firm = 0;
@@ -176,36 +176,36 @@ void config_init()
         get_config()->mode = 2;
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;
-        get_config()->timeout = 0;
+		get_config()->timeout = 0;
         config_save();
 
 
     }
 
-    sprintf(get_config()->user, "%s", "usr");
-    sprintf(get_config()->password, "%s", "7895621");
-    sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
-    sprintf(get_config()->mqtt_port, "%s", "1883");
-    sprintf(get_config()->version, "%s", VERSION);
-    if(OTA_UPDATE_TO == APP2)
-        sprintf(get_config()->http_ip, "%s",
-                "http://39.106.131.169:666/ota/b/");
-
-    else
-        sprintf(get_config()->http_ip, "%s",
-                "http://39.106.131.169:666/ota/a/");
-    sprintf(get_config()->http_port, "%s", "666");
-    get_config()->machine = 1;
-    get_config()->update_firm = 0;
-    get_config()->set_tout = 45;
-    get_config()->set_tindoor = 25;
-    get_config()->reboot = 0;
-    get_config()->set_up_period = 10;
-    //get_config()->mode = 2;
-    get_config()->fault_mask = 0xffffffff;
-    get_config()->update_setting = 1;
-    get_config()->timeout = 0;
-    //config_save();
+	sprintf(get_config()->user, "%s", "usr");
+	sprintf(get_config()->password, "%s", "7895621");
+	sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
+	sprintf(get_config()->mqtt_port, "%s", "1883");
+	sprintf(get_config()->version, "%s", VERSION);
+						if(OTA_UPDATE_TO == APP2)
+					sprintf(get_config()->http_ip, "%s",
+							"http://39.106.131.169:666/ota/b/");
+	
+				else
+	sprintf(get_config()->http_ip, "%s",
+			"http://39.106.131.169:666/ota/a/");
+	sprintf(get_config()->http_port, "%s", "666");
+	get_config()->machine = 1;
+	get_config()->update_firm = 0;
+	get_config()->set_tout = 45;
+	get_config()->set_tindoor = 25;
+	get_config()->reboot = 0;
+	get_config()->set_up_period = 10;
+	//get_config()->mode = 2;
+	get_config()->fault_mask = 0xffffffff;
+	get_config()->update_setting = 1;
+	get_config()->timeout = 0;
+	//config_save();
 
 
 
@@ -217,8 +217,8 @@ void config_init()
     //memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
     get_config()->Erase_flag = 1;
 
-    get_config()->tin_index=AI_WATER_T_IN_INDEX;
-
+	get_config()->tin_index=AI_WATER_T_IN_INDEX;
+	
 
 
 

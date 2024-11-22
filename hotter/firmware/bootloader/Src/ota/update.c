@@ -116,23 +116,23 @@ void Start_BootLoader(void)
 		read_flag = Read_Start_Mode();
     if(read_flag<=0x2a)
 		{
-		if(read_flag&0x20)
+		if(read_flag==0x20)
 		{
   
-				  read_flag = 0x10;
-			    Erase_page(OTA_NUM_ADDR, 1);
-          WriteFlash((OTA_NUM_ADDR), &read_flag, 1);	
+				 // read_flag = 0x10;
+			   // Erase_page(OTA_NUM_ADDR, 1);
+          //WriteFlash((OTA_NUM_ADDR), &read_flag, 1);	
 			printf(">Jump to App2......\r\n");
 			IAP_ExecuteApp(Application_2_Addr);
 		}
 		 
 
-			if(read_flag&0x10)
+			if(read_flag==0x10)
 			{
  
 						read_flag = 0x20;
-						Erase_page(OTA_NUM_ADDR, 1);
-						WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
+						//Erase_page(OTA_NUM_ADDR, 1);
+					//	WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
 						printf(">Jump to App1......\r\n");
 						IAP_ExecuteApp(Application_1_Addr);
 			}			
@@ -140,8 +140,8 @@ void Start_BootLoader(void)
 	
 			printf(">Jump to App3......\r\n");
 				 read_flag = 0x10;
-			    Erase_page(OTA_NUM_ADDR, 1);
-          WriteFlash((OTA_NUM_ADDR), &read_flag, 1);	
+			    //Erase_page(OTA_NUM_ADDR, 1);
+          //WriteFlash((OTA_NUM_ADDR), &read_flag, 1);	
 			IAP_ExecuteApp(Application_1_Addr);		
 
 

@@ -113,7 +113,7 @@ void plan_analy(unsigned char *p,unsigned char index)
 
 }
 
-
+uint64_t tmp_utc;
 void anlysis_mqtt_recv()
 {
 
@@ -173,20 +173,22 @@ void anlysis_mqtt_recv()
 
 
     }
-		dev_id = find_json_string("\"nativeMode\":", "}", 0);//native mode
-		if (dev_id != NULL)
-		{
+    dev_id = find_json_string("\"nativeMode\":", "}", 0);//native mode
+    if (dev_id != NULL)
+    {
 
-				get_config()->mode = 2;
-	
-		}
-	dev_id = find_json_string("\"smartMode\":", "}", 0);//native mode
-	if (dev_id != NULL)
-	{
-	
-			get_config()->mode = 1;
-	
-	}
+        get_config()->mode = 2;
+	get_config()->update_setting = 1;
+
+    }
+    dev_id = find_json_string("\"smartMode\":", "}", 0);//native mode
+    if (dev_id != NULL)
+    {
+
+        get_config()->mode = 1;
+	get_config()->update_setting = 1;
+
+    }
 
     dev_id = find_json_string("\"heatPump1\":", "}", 0);
     if (dev_id != NULL)
@@ -321,13 +323,22 @@ void anlysis_mqtt_recv()
     {
         //  memset(dev_id, 0, 128);
         dev_id = find_json_string("byte,", "\r\n", 0);
-			    if (dev_id != NULL)
-    {
-    uint64_t tmp_utc;
-				char *endptr;
-				tmp_utc = 0;
-		tmp_utc = strtol(dev_id,&endptr,10;)
-		}
+        if (dev_id != NULL)
+        {  
+            i = 0;
+					tmp_utc = 0;
+            while(dev_id[i]>=0x30&&dev_id[i]<=0x39)
+            {
+            j = dev_id[i];
+							j = j -0x30;
+           // tmp_utc = 0;
+            tmp_utc = tmp_utc*10+j;
+			i++;
+
+			}
+            utcTortc(tmp_utc);
+
+        }
     }
     dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 0);
     if (dev_id != NULL)
@@ -424,7 +435,7 @@ void anlysis_mqtt_recv()
         plan_analy(dev_id,9);
     }
 
-
+   memset(mqtt_recv->Lpuart1RecBuff,0,LPUART1_REC_SIZE);
 
     //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
 
@@ -706,24 +717,24 @@ void upload()
 #if 1
     memset(buf2, 0, 256);
     unsigned char buf3[128],numberBuffer[4],i;
-	i = 0; 
+    i = 0;
 
-	        buf2[i++] = getRtcDate()->Year;
-            buf2[i++] = getRtcDate()->Month;
-            buf2[i++] = getRtcDate()->Date;
-            buf2[i++] = getRtcDate()->WeekDay;
-		    buf2[i++] = getRtcTime()->Hours;
-            buf2[i++] = getRtcTime()->Minutes;
-            buf2[i++] = getRtcTime()->Seconds;
-		sprintf(buf3, "%u-%u-%u-%u %u:%u:%u",buf2[0]
-		,buf2[1]
-		,buf2[2]
-		,buf2[3]
-		,buf2[4]
-		,buf2[5]
-		,buf2[6]
-		);
-			  //strcat(buf3, numberBuffer); // 拼接到结果字符串�?
+    buf2[i++] = getRtcDate()->Year;
+    buf2[i++] = getRtcDate()->Month;
+    buf2[i++] = getRtcDate()->Date;
+    buf2[i++] = getRtcDate()->WeekDay;
+    buf2[i++] = getRtcTime()->Hours;
+    buf2[i++] = getRtcTime()->Minutes;
+    buf2[i++] = getRtcTime()->Seconds;
+    sprintf(buf3, "%u-%u-%u-%u %u:%u:%u",buf2[0]
+            ,buf2[1]
+            ,buf2[2]
+            ,buf2[3]
+            ,buf2[4]
+            ,buf2[5]
+            ,buf2[6]
+           );
+    //strcat(buf3, numberBuffer); // 拼接到结果字符串�?
 
 
 //1,3,2,0,0,184  0x01 0x03 0x02 0x00 0x00 0xb8
@@ -968,26 +979,26 @@ uint8_t mqtt_Info_Show(void)
     }
 
     break;
-	case AT_MSUB_3:////subscribe msg
-		{
-			//dev_sub_temp_
-			//			  unsigned char str[128];
-			// memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
-			sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "timestamp",0);
-			if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
-			{
-				mqtt_at_cmd_num = AT_MIPCLOSE;
-			}
-			else
-			{
-	
-				mqtt_at_cmds.RtyNum = 0;
-				mqtt_at_cmd_num = AT_MPUB_RECV;
-			}
-	
-		}
-	
-		break;
+    case AT_MSUB_3:////subscribe msg
+    {
+        //dev_sub_temp_
+        //			  unsigned char str[128];
+        // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+        sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "timestamp",0);
+        if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+        {
+            mqtt_at_cmd_num = AT_MIPCLOSE;
+        }
+        else
+        {
+
+            mqtt_at_cmds.RtyNum = 0;
+            mqtt_at_cmd_num = AT_MPUB_RECV;
+        }
+
+    }
+
+    break;
 
     case AT_MPUB://public msg
     {
@@ -1094,6 +1105,7 @@ void mqtt_proc()
 
     mqtt_recv_proc();
 
+	get_config()->timeout = 0;
 
 
 }

@@ -51,31 +51,64 @@ rtc_stru *rtc_value_set(void)
 /************************utc to rtc****************************
 
 
+
 **************************************************************/
+ struct tm *gm_date;
 
-uint32_t n,y,m,d,HH,MM,SS;
-uint32_t tmp;
-struct tm* ptm;
-void utcTortc(uint64_t utc)
+ void utcTortc(uint64_t utc_t)
 {
+ //将unix timestamp 转为本地时间
+unsigned int tmp;
+ time_t seconds=utc_t/1000;//unix timestamp
+ gm_date = localtime(&seconds);
+tmp = gm_date->tm_year-100;
+if(tmp==rtc_usr.Year)
+{
+	rtc_usr.Year = tmp;
+	rtc_usr.Month = gm_date->tm_mon+1;
+	rtc_usr.Date = gm_date->tm_mday;	
+	rtc_usr.Hours = gm_date->tm_hour+8;
+	if(rtc_usr.Hours>=24)
+		rtc_usr.Hours = rtc_usr.Hours - 24;
+	rtc_usr.Minutes = gm_date->tm_min;
+	rtc_usr.Seconds = gm_date->tm_sec;
+	rtc_usr.WeekDay = gm_date->tm_wday;
+	rtc_usr.update = 1;
 
-    time_t tm1;
-    tm1 = utc;
-    ptm = localtime(&tm1);
-    tmp = ptm->tm_year;
-    tmp = tmp-100;
-    if(tmp==rtc_usr.Year)
-    {
-        rtc_usr.Year = tmp;
-        rtc_usr.Month = ptm->tm_mon + 1;
-        rtc_usr.Date = ptm->tm_mday;
-        rtc_usr.Hours = ptm->tm_hour + 8;
-        rtc_usr.Minutes = ptm->tm_min;
-        rtc_usr.Seconds = ptm->tm_sec;
-        rtc_usr.update = 1;
-
-    }
 }
+
+
+
+
+// printf("年:%d \r\n",gm_date->tm_year);
+// printf("月:%d \r\n",gm_date->tm_mon);
+// printf("日:%d \r\n",gm_date->tm_mday);
+// printf("时:%d \r\n",gm_date->tm_hour);
+// printf("分:%d \r\n",gm_date->tm_min);
+// printf("秒:%d \r\n",gm_date->tm_sec);
+
+ //将本地时间转为unix timestamp 
+// gm_date->tm_year=118;//2018年,+1900就是现在的年
+// gm_date->tm_mon=3;//4月
+// gm_date->tm_mday=11;
+// gm_date->tm_hour=10;
+// gm_date->tm_min=8;
+// gm_date->tm_sec=30;
+// seconds=mktime(gm_date);
+ //printf("unix timestamp:x \r\n",seconds);
+ //unix timestamp:5acdde9e 
+ //北京时间： 2018/4/11 18:8:30
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
