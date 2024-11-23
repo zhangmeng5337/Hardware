@@ -118,7 +118,7 @@ int main(void)
   //while(1)
 	//	;
 	 //module_test();??
-  hardware_init();
+ hardware_init();
  
 	//MX_IWDG_Init();
 //	MX_IWDG_Init();

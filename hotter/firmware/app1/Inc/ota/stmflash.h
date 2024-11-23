@@ -1,4 +1,4 @@
-﻿#ifndef __STMFLASH_H__
+#ifndef __STMFLASH_H__
 #define __STMFLASH_H__
 
 #include "main.h"
@@ -26,11 +26,11 @@
 #define APP2   1
 
 #define APP3   3
-#define OTA_UPDATE_TO   APP2
-#define VERSION        "V1.0.60"
+#define OTA_UPDATE_TO   APP1
+#define VERSION        "V1.0.62"
 
 
-
+#define OTA_NUM_ADDR   0x801fff0
 
 #if OTA_UPDATE_TO == APP2
 #define APP_NUM		0x1a
@@ -53,7 +53,7 @@
 
 #define BootLoader_Size				0x10000U						// BootLoader size 64K
 #define Application_Size			0x40000U					// Application size 256K
-#define OTA_NUM_ADDR  			 	0x801fff0
+
 #define Application_1_Addr		0x08020000U				// app1 base addr
 #define Application_2_Addr		0x08060000U				// app2 base addr
 #define SYS_PARAMS_Addr        Application_2_Addr + Application_Size

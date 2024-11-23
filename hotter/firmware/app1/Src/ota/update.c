@@ -3,7 +3,7 @@
 #include "config.h"
 HAL_StatusTypeDef status = HAL_ERROR;
 
-/* 升级完成,并写入一个标志位 */
+/* ????,???????? */
 void boot_jump(void)
 {
     uint8_t update_flag = 0xAA;
@@ -137,7 +137,7 @@ void Update_Success(void)
     //WriteFlash((Application_1_Addr + Application_Size - 8), &update_flag, 1);
 }
 
-/* 升级任务 */
+/* ???? */
 void OTA_Task(void)
 {
     if (get_config()->reboot_flag == 1)

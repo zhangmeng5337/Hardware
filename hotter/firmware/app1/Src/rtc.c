@@ -24,10 +24,10 @@ int weekday_cal(void);
 
 /* USER CODE BEGIN 0 */
 rtc_stru rtc_usr;
-RTC_TimeTypeDef Now_Time;//定义时间结构体
-RTC_DateTypeDef Now_Date;//定义日期结构体
-RTC_TimeTypeDef Now_Time_BIN;//定义时间结构体
-RTC_DateTypeDef Now_Date_BIN;//定义日期结构体
+RTC_TimeTypeDef Now_Time;//?¨ò?ê±???á11ì?
+RTC_DateTypeDef Now_Date;//?¨ò?è??ú?á11ì?
+RTC_TimeTypeDef Now_Time_BIN;//?¨ò?ê±???á11ì?
+RTC_DateTypeDef Now_Date_BIN;//?¨ò?è??ú?á11ì?
 
 uint8_t Data[5];
 //extern sgp30_data_t sgp30_data;
@@ -57,22 +57,22 @@ rtc_stru *rtc_value_set(void)
 
  void utcTortc(uint64_t utc_t)
 {
- //将unix timestamp 转为本地时间
+ //??unix timestamp ×a?a±?μ?ê±??
 unsigned int tmp;
  time_t seconds=utc_t/1000;//unix timestamp
  gm_date = localtime(&seconds);
 tmp = gm_date->tm_year-100;
 if(tmp==rtc_usr.Year)
 {
-	rtc_usr.Year = tmp;
-	rtc_usr.Month = gm_date->tm_mon+1;
-	rtc_usr.Date = gm_date->tm_mday;	
+	//rtc_usr.Year = tmp;
+	//rtc_usr.Month = gm_date->tm_mon+1;
+	//rtc_usr.Date = gm_date->tm_mday;	
 	rtc_usr.Hours = gm_date->tm_hour+8;
-	if(rtc_usr.Hours>=24)
-		rtc_usr.Hours = rtc_usr.Hours - 24;
+		//rtc_usr.WeekDay = gm_date->tm_wday;
+if(rtc_usr.Hours>=24)
+			rtc_usr.Hours = rtc_usr.Hours - 24;
 	rtc_usr.Minutes = gm_date->tm_min;
 	rtc_usr.Seconds = gm_date->tm_sec;
-	rtc_usr.WeekDay = gm_date->tm_wday;
 	rtc_usr.update = 1;
 
 }
@@ -80,16 +80,16 @@ if(tmp==rtc_usr.Year)
 
 
 
-// printf("年:%d \r\n",gm_date->tm_year);
-// printf("月:%d \r\n",gm_date->tm_mon);
-// printf("日:%d \r\n",gm_date->tm_mday);
-// printf("时:%d \r\n",gm_date->tm_hour);
-// printf("分:%d \r\n",gm_date->tm_min);
-// printf("秒:%d \r\n",gm_date->tm_sec);
+// printf("?ê:%d \r\n",gm_date->tm_year);
+// printf("??:%d \r\n",gm_date->tm_mon);
+// printf("è?:%d \r\n",gm_date->tm_mday);
+// printf("ê±:%d \r\n",gm_date->tm_hour);
+// printf("·?:%d \r\n",gm_date->tm_min);
+// printf("??:%d \r\n",gm_date->tm_sec);
 
- //将本地时间转为unix timestamp 
-// gm_date->tm_year=118;//2018年,+1900就是现在的年
-// gm_date->tm_mon=3;//4月
+ //??±?μ?ê±??×a?aunix timestamp 
+// gm_date->tm_year=118;//2018?ê,+1900?íê????úμ??ê
+// gm_date->tm_mon=3;//4??
 // gm_date->tm_mday=11;
 // gm_date->tm_hour=10;
 // gm_date->tm_min=8;
@@ -97,7 +97,7 @@ if(tmp==rtc_usr.Year)
 // seconds=mktime(gm_date);
  //printf("unix timestamp:x \r\n",seconds);
  //unix timestamp:5acdde9e 
- //北京时间： 2018/4/11 18:8:30
+ //±±??ê±??￡o 2018/4/11 18:8:30
 }
 
 
@@ -124,17 +124,17 @@ void set_rtc_time()
         rtc_stru urtc_bcd;
         int cal_result,tmp1;
         weekday_cal();
-
+        rtc_usr.Year = Now_Date_BIN.Year;
         cal_result = rtc_usr.Year;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Year%10;
         urtc_bcd.Year = cal_result;
-
+rtc_usr.Month = Now_Date_BIN.Month;
         cal_result = rtc_usr.Month;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Month%10;
         urtc_bcd.Month = cal_result;
-
+rtc_usr.Date = Now_Date_BIN.Date;
         cal_result = rtc_usr.Date;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Date%10;
@@ -149,7 +149,7 @@ void set_rtc_time()
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Minutes%10;
         urtc_bcd.Minutes = cal_result;
-
+rtc_usr.WeekDay = Now_Date_BIN.WeekDay;
         cal_result = rtc_usr.Seconds;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Seconds%10;
@@ -172,7 +172,7 @@ void set_rtc_time()
         sDate.Month = urtc_bcd.Month;
         sDate.Date = urtc_bcd.Date;
         sDate.Year = urtc_bcd.Year;
-        // if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A)			 /* 检查是否写入过一次RTC，保证掉电不丢失RTC时钟 */
+        // if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A)			 /* ?ì2éê?·?D′è?1yò?′?RTC￡?±￡?¤μ?μ?2??aê§RTCê±?ó */
         {
             /* USER CODE END Check_RTC_BKUP */
 
@@ -190,11 +190,11 @@ void set_rtc_time()
             }
 
             /* USER CODE BEGIN RTC_Init 2 */
-            HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x5A5A);  //这里就是将这个寄存器的标志设为刚才的那个值，下次掉电后就不会进入到这里来
+            HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x5A5A);  //?aà??íê????a????′??÷μ?±ê??éè?a??2?μ??????μ￡???′?μ?μ?oó?í2??á??è?μ??aà?à′
         }
 //        else
 //        {
-//            RTC_AlarmConfig(); 						  /* RTC的中断配置初始化以及启动 */
+//            RTC_AlarmConfig(); 						  /* RTCμ??D??????3?ê??ˉò??°???ˉ */
 //        }
 
         rtc_usr.update = 0;
@@ -208,7 +208,7 @@ void set_rtc_time()
 /* USER CODE BEGIN 1 */
 
 
-void GET_Time(void)//获取当前时间
+void GET_Time(void)//??è?μ±?°ê±??
 {
     HAL_RTC_GetTime(&hrtc,&Now_Time,RTC_FORMAT_BCD);//RTC_FORMAT_BIN
     HAL_RTC_GetDate(&hrtc,&Now_Date,RTC_FORMAT_BCD);
@@ -241,7 +241,7 @@ void GET_Time(void)//获取当前时间
 
 //	uint32_t next_trigger_hours = Now_Time.Hours;
 //  sAlarm.AlarmTime.Hours = next_trigger_hours;
-/* RTC的秒中断配置启动函数 */
+/* RTCμ????D?????????ˉoˉêy */
 //void RTC_AlarmConfig(void)
 //{
 //
@@ -249,7 +249,7 @@ void GET_Time(void)//获取当前时间
 //    HAL_RTC_GetTime(&hrtc, &Now_Time, RTC_FORMAT_BIN);
 //    HAL_RTC_GetDate(&hrtc, &Now_Date, RTC_FORMAT_BIN);
 //
-//    // 计算下一个触发时间
+//    // ??????ò???′￥·￠ê±??
 //    uint32_t next_trigger_seconds = Now_Time.Seconds + 9;
 //    if (next_trigger_seconds >= 60)
 //    {
@@ -275,12 +275,12 @@ void GET_Time(void)//获取当前时间
 //}
 
 
-/* RTC中断回调 */
+/* RTC?D????μ÷ */
 //void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 //{
 //
 //    printf("20s pass\r\n");
-//// 更新下一个闹钟触发时间
+//// ?üD???ò??????ó′￥·￠ê±??
 //    RTC_AlarmConfig();
 //    //  GET_Time();
 //    printf("%02d:%02d:%02d\n",Now_Time.Hours,Now_Time.Minutes,Now_Time.Seconds);
@@ -364,7 +364,7 @@ int weekday_cal()
 /* USER CODE END 1 */
 void urtc_proc(void)
 {
-    GET_Time();//获取当前时间
+    GET_Time();//??è?μ±?°ê±??
     set_rtc_time();
 
 }
