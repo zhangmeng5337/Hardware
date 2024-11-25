@@ -2,6 +2,7 @@
 #define UART_H_
 #include "main.h"
 #define BUFFER_SIZE  1024
+#define RSBUFFER_SIZE  256
 
 
 #define LTE_No		0
@@ -27,8 +28,8 @@ extern tsLpuart1type Lpuart1type;
 typedef struct 
 {
 	unsigned char recv_update;
-	unsigned char buff[BUFFER_SIZE];
-	unsigned char recv_buf[BUFFER_SIZE];	
+	unsigned char buff[RSBUFFER_SIZE];
+	unsigned char recv_buf[RSBUFFER_SIZE];	
 	unsigned int recv_len;
 	unsigned int recv_dma_len;
 }rs485_stru;

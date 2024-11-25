@@ -190,7 +190,7 @@ void rs485_recv()
                 }
 
                 modbus_recv.update = 1;
-                analy_modbus_recv();
+              //  analy_modbus_recv();
 
             }
 

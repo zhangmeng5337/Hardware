@@ -25,7 +25,7 @@ void uart_init()
         HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
 		
     __HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
-    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);
+    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, RSBUFFER_SIZE);
 	rs485_str.recv_len = 0;
 	
 
@@ -66,7 +66,7 @@ void uart_rs485()
         temp = huart4.Instance->SR;
         temp = huart4.Instance->DR;
         temp = hdma_uart4_rx.Instance->NDTR;
-        rs485_str.recv_dma_len = BUFFER_SIZE - temp;
+        rs485_str.recv_dma_len = RSBUFFER_SIZE - temp;
 
 
 
@@ -80,8 +80,8 @@ void uart_rs485()
     }
 	HAL_UART_DMAStop(&huart4);
 	HAL_UART_DMAResume(&huart4);
-	memset((uint8_t*)rs485_str.buff,0,BUFFER_SIZE);
-    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);
+	memset((uint8_t*)rs485_str.buff,0,RSBUFFER_SIZE);
+    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, RSBUFFER_SIZE);
 }
 tsLpuart1type *get_lte_recv()
 {
