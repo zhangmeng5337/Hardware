@@ -95,6 +95,10 @@ void rs485_recv()
 //        if(addr_tmp>=14)
 //          addr_tmp = 0;
         unsigned char i;
+        unsigned int crc_tmp;
+        unsigned int crc_cal;
+        unsigned char index;
+        unsigned char len;
         for (i = 0; i < rs485_u->recv_len; i++)
         {
             if (rs485_u->recv_buf[i] > 0 && rs485_u->recv_buf[i] <= DEV_SIZE) //addr ok
@@ -105,16 +109,22 @@ void rs485_recv()
             }
 
         }
-        unsigned int crc_tmp;
-        unsigned int crc_cal;
-        unsigned char index;
-        unsigned char len;
+        get_hotter(1)->status[0] =rs485_u->recv_len;
+        get_hotter(1)->status[1] = rs485_u->recv_buf[modbus_recv.dev_addr_index+1];
+        get_hotter(1)->status[2] =rs485_u->recv_buf[3 + rs485_u->recv_buf[modbus_recv.dev_addr_index+2]];
+        get_hotter(1)->status[3] = rs485_u->recv_buf[2 + rs485_u->recv_buf[modbus_recv.dev_addr_index+2]];
+        crc_cal = CRC_Compute(&rs485_u->recv_buf[0],  rs485_u->recv_buf[modbus_recv.dev_addr_index+2] + 1);
+        get_hotter(1)->status[4] = crc_cal;
+        get_hotter(1)->status[5] = crc_cal>>8;
+
+
+
         if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == MODBUS_READ_CMD)//read
         {
             len = rs485_u->recv_buf[modbus_recv.dev_addr_index + 2]; //read data len
             crc_tmp = rs485_u->recv_buf[modbus_recv.dev_addr_index + 3 + len];
             crc_tmp = crc_tmp << 8;
-            crc_tmp = crc_tmp | rs485_u->recv_buf[modbus_recv.dev_addr_index + 4 + len];
+            crc_tmp = crc_tmp | rs485_u->recv_buf[modbus_recv.dev_addr_index + 2 + len];
             crc_cal = CRC_Compute(&rs485_u->recv_buf[modbus_recv.dev_addr_index], len + 3);
         }
         else
@@ -191,6 +201,7 @@ void rs485_recv()
         }
         memset(rs485_u->recv_buf, 0, BUFFER_SIZE);
         rs485_u->recv_update = 0;
+		rs485_u->recv_len = 0;
     }
 }
 unsigned int modbus_node_addr()
@@ -422,7 +433,7 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
 
 void analy_modbus_recv()
 {
-    if (modbus_recv.update == 1)
+   // if (modbus_recv.update == 1)
     {
         switch (modbus_recv.func)
         {

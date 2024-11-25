@@ -762,16 +762,16 @@ i = 0;
 	//if(get_hotter(addr)->status[addr-1]==1)
 	{
 	sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++],
-			get_hotter(addr)->status[i++]);
+			get_hotter(addr)->status[0],
+			get_hotter(addr)->status[1],
+			get_hotter(addr)->status[2],
+			get_hotter(addr)->status[3],
+			get_hotter(addr)->status[4],
+			get_hotter(addr)->status[5],
+			get_hotter(addr)->status[6],
+			get_hotter(addr)->status[7],
+			get_hotter(addr)->status[8],
+			get_hotter(addr)->status[9]);
 
 	}
 
@@ -779,7 +779,7 @@ i = 0;
 	if(addr<=DEV_SIZE)
 	{
 	
-	addr++;
+	addr=1;
 
 	}
 	else 

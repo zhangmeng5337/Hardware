@@ -29,7 +29,8 @@ typedef struct
 	unsigned char recv_update;
 	unsigned char buff[BUFFER_SIZE];
 	unsigned char recv_buf[BUFFER_SIZE];	
-	unsigned char recv_len;
+	unsigned int recv_len;
+	unsigned int recv_dma_len;
 }rs485_stru;
 
 rs485_stru *get_uart_recv(unsigned char uart_num);

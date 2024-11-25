@@ -53,29 +53,84 @@ rtc_stru *rtc_value_set(void)
 
 
 **************************************************************/
- struct tm *gm_date;
+struct tm *gm_date;
 
- void utcTortc(uint64_t utc_t)
+void utcTortc(uint64_t utc_t)
 {
- //??unix timestamp ℅a?a㊣?米?那㊣??
-unsigned int tmp;
- time_t seconds=utc_t/1000;//unix timestamp
- gm_date = localtime(&seconds);
-tmp = gm_date->tm_year-100;
-if(tmp==rtc_usr.Year)
-{
-	//rtc_usr.Year = tmp;
-	//rtc_usr.Month = gm_date->tm_mon+1;
-	//rtc_usr.Date = gm_date->tm_mday;	
-	rtc_usr.Hours = gm_date->tm_hour+8;
-		//rtc_usr.WeekDay = gm_date->tm_wday;
-if(rtc_usr.Hours>=24)
-			rtc_usr.Hours = rtc_usr.Hours - 24;
-	rtc_usr.Minutes = gm_date->tm_min;
-	rtc_usr.Seconds = gm_date->tm_sec;
-	rtc_usr.update = 1;
+//??unix timestamp ℅a?a㊣?米?那㊣??
+    unsigned int tmp;
+    time_t seconds=utc_t/1000;//unix timestamp
+    gm_date = localtime(&seconds);
+    tmp = gm_date->tm_year-100;
+    if(tmp==rtc_usr.Year)
+    {
+        //rtc_usr.Year = tmp;
+        rtc_usr.Month = gm_date->tm_mon+1;
+        rtc_usr.Date = gm_date->tm_mday;
+        rtc_usr.Hours = gm_date->tm_hour+8;
+        rtc_usr.WeekDay = gm_date->tm_wday;
+        if(rtc_usr.Hours>=24)
+        {
+            rtc_usr.Hours = rtc_usr.Hours - 24;
+            rtc_usr.Date = gm_date->tm_mday + 1;
+            if(rtc_usr.Month == 2&&rtc_usr.Date>=28)
+            {
+                if(rtc_usr.Year%4 != 0)
 
-}
+                {
+                    rtc_usr.Date =  1;
+                    rtc_usr.Month = rtc_usr.Month + 1;
+                    if(rtc_usr.WeekDay <=6)
+                        rtc_usr.WeekDay = gm_date->tm_wday + 1;
+                    else
+                        rtc_usr.WeekDay = 1;
+
+                }
+            }
+            else
+            {
+                if(rtc_usr.Month == 2&&rtc_usr.Date>=29)
+                {
+                    if(rtc_usr.Year%4 == 0||rtc_usr.Year%400 == 0)
+
+                    {
+                        rtc_usr.Date =  1;
+                        rtc_usr.Month = rtc_usr.Month + 1;
+                        if(rtc_usr.WeekDay <=6)
+                            rtc_usr.WeekDay = gm_date->tm_wday + 1;
+                        else
+                            rtc_usr.WeekDay = 1;
+
+
+                    }
+                }
+
+            }
+        }
+
+        rtc_usr.Minutes = gm_date->tm_min;
+        rtc_usr.Seconds = gm_date->tm_sec;
+        rtc_usr.update = 1;
+
+    }
+    else
+    {
+        if(rtc_usr.Month == 12&&rtc_usr.Date>=31)
+        {
+            rtc_usr.Date =	1;
+            rtc_usr.Month = 1;
+            rtc_usr.Year = rtc_usr.Year + 1;
+            if(rtc_usr.WeekDay <=6)
+                rtc_usr.WeekDay = gm_date->tm_wday + 1;
+            else
+                rtc_usr.WeekDay = 1;
+
+
+        }
+        rtc_usr.Minutes = gm_date->tm_min;
+        rtc_usr.Seconds = gm_date->tm_sec;
+        rtc_usr.update = 1;
+    }
 
 
 
@@ -87,7 +142,7 @@ if(rtc_usr.Hours>=24)
 // printf("﹞?:%d \r\n",gm_date->tm_min);
 // printf("??:%d \r\n",gm_date->tm_sec);
 
- //??㊣?米?那㊣??℅a?aunix timestamp 
+//??㊣?米?那㊣??℅a?aunix timestamp
 // gm_date->tm_year=118;//2018?那,+1900?赤那????迆米??那
 // gm_date->tm_mon=3;//4??
 // gm_date->tm_mday=11;
@@ -95,9 +150,9 @@ if(rtc_usr.Hours>=24)
 // gm_date->tm_min=8;
 // gm_date->tm_sec=30;
 // seconds=mktime(gm_date);
- //printf("unix timestamp:x \r\n",seconds);
- //unix timestamp:5acdde9e 
- //㊣㊣??那㊣??㏒o 2018/4/11 18:8:30
+//printf("unix timestamp:x \r\n",seconds);
+//unix timestamp:5acdde9e
+//㊣㊣??那㊣??㏒o 2018/4/11 18:8:30
 }
 
 
@@ -124,17 +179,17 @@ void set_rtc_time()
         rtc_stru urtc_bcd;
         int cal_result,tmp1;
         weekday_cal();
-        rtc_usr.Year = Now_Date_BIN.Year;
+        //rtc_usr.Year = Now_Date_BIN.Year;
         cal_result = rtc_usr.Year;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Year%10;
         urtc_bcd.Year = cal_result;
-rtc_usr.Month = Now_Date_BIN.Month;
+        //rtc_usr.Month = Now_Date_BIN.Month;
         cal_result = rtc_usr.Month;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Month%10;
         urtc_bcd.Month = cal_result;
-rtc_usr.Date = Now_Date_BIN.Date;
+        // rtc_usr.Date = Now_Date_BIN.Date;
         cal_result = rtc_usr.Date;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Date%10;
@@ -149,7 +204,7 @@ rtc_usr.Date = Now_Date_BIN.Date;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Minutes%10;
         urtc_bcd.Minutes = cal_result;
-rtc_usr.WeekDay = Now_Date_BIN.WeekDay;
+        //rtc_usr.WeekDay = Now_Date_BIN.WeekDay;
         cal_result = rtc_usr.Seconds;
         cal_result = cal_result/10*16;
         cal_result = cal_result+ rtc_usr.Seconds%10;
@@ -239,58 +294,7 @@ void GET_Time(void)//??豕?米㊣?～那㊣??
 
 }
 
-//	uint32_t next_trigger_hours = Now_Time.Hours;
-//  sAlarm.AlarmTime.Hours = next_trigger_hours;
-/* RTC米????D?????????‘o‘那y */
-//void RTC_AlarmConfig(void)
-//{
-//
-//    RTC_AlarmTypeDef sAlarm = {0};
-//    HAL_RTC_GetTime(&hrtc, &Now_Time, RTC_FORMAT_BIN);
-//    HAL_RTC_GetDate(&hrtc, &Now_Date, RTC_FORMAT_BIN);
-//
-//    // ??????辰???∩ㄓ﹞⊿那㊣??
-//    uint32_t next_trigger_seconds = Now_Time.Seconds + 9;
-//    if (next_trigger_seconds >= 60)
-//    {
-//        next_trigger_seconds -= 60;
-//    }
-//    sAlarm.AlarmTime.Hours = Now_Time.Hours;
-//    sAlarm.AlarmTime.Minutes = Now_Time.Minutes;
-//    sAlarm.AlarmTime.Seconds = next_trigger_seconds;
-//    sAlarm.AlarmTime.SubSeconds = 0x0;
-//    sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-//    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
-//    sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;
-//    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_SS14_9;
-//    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
-//    sAlarm.AlarmDateWeekDay = 0x0 ;
-//    sAlarm.Alarm = RTC_ALARM_A;
-//
-//    if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
-//    {
-//        Error_Handler();
-//    }
-//
-//}
 
-
-/* RTC?D????米¯ */
-//void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
-//{
-//
-//    printf("20s pass\r\n");
-//// ?邦D???辰??????車∩ㄓ﹞⊿那㊣??
-//    RTC_AlarmConfig();
-//    //  GET_Time();
-//    printf("%02d:%02d:%02d\n",Now_Time.Hours,Now_Time.Minutes,Now_Time.Seconds);
-//    printf("%02d:%02d:%02d\n",Now_Date.Year,Now_Date.Month,Now_Date.Date);
-//    printf("week%01d\n",Now_Date.WeekDay);
-//    printf("Temperature:%02d\r\n",Data[2]);
-//    printf("Humidity:%02d\r\n",Data[0]);
-//    printf("CO2_Density:%03d\r\n",sgp30_data.co2);
-//
-//}
 int weekday_cal()
 {
     int year, month, day, total_days = 0, i;

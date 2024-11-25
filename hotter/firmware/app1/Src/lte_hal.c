@@ -1,4 +1,4 @@
-﻿/*************笔记****************
+/*************笔记****************
 1、本lte模块采用huart3(串口3)，然后huart1(串口1)作为调试输出�?
 2、CudeMX配置huart3�?
    ------------------------------------------
@@ -754,7 +754,7 @@ uint8_t lte_Info_Show(void)
                 rtc_value_set()->Seconds = atoi(tbuf);
                 memset(tbuf,0,8);
                 rtc_value_set()->update = 1;
-
+								set_rtc_time();
             }
             at_cmds.RtyNum = 0;
             at_cmd_num = AT_HTTPINIT_1;

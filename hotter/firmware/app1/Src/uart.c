@@ -26,6 +26,8 @@ void uart_init()
 		
     __HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
     HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, BUFFER_SIZE);
+	rs485_str.recv_len = 0;
+	
 
     //__HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
   //  HAL_UART_Receive_DMA(&huart5, (uint8_t*)lcd_str.buff, BUFFER_SIZE);
@@ -50,11 +52,31 @@ void uart_init()
 
 void uart_rs485()
 {
-    rs485_str.recv_len  = BUFFER_SIZE - __HAL_DMA_GET_COUNTER(&hdma_uart4_rx);
-    if(rs485_str.recv_update == 0)
+    uint32_t  uart_idle_flag;
+    uart_idle_flag =  __HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE);
+
+    if((uart_idle_flag != RESET))
     {
-        memcpy(rs485_str.recv_buf,rs485_str.buff,rs485_str.recv_len);
-        rs485_str.recv_update = 1;
+        uart_idle_flag=0;
+        __HAL_UART_CLEAR_IDLEFLAG(&huart4);
+
+        uint32_t temp;
+        __HAL_UART_CLEAR_IDLEFLAG(&huart4);
+        HAL_UART_DMAStop(&huart4);
+        temp = huart4.Instance->SR;
+        temp = huart4.Instance->DR;
+        temp = hdma_uart4_rx.Instance->NDTR;
+        rs485_str.recv_dma_len = BUFFER_SIZE - temp;
+
+
+
+        //rs485_str.recv_len  = BUFFER_SIZE - __HAL_DMA_GET_COUNTER(&hdma_uart4_rx);
+        if(rs485_str.recv_update == 0)
+        {
+            rs485_str.recv_update = 1;
+        	memcpy(&rs485_str.recv_buf[rs485_str.recv_len],rs485_str.buff,rs485_str.recv_dma_len);
+        	rs485_str.recv_len += rs485_str.recv_dma_len;
+        }
     }
 	HAL_UART_DMAStop(&huart4);
 	HAL_UART_DMAResume(&huart4);
