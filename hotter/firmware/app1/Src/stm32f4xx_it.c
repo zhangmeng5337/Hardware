@@ -325,11 +325,11 @@ void USART1_IRQHandler(void)
 void UART4_IRQHandler(void)
 {
   /* USER CODE BEGIN UART4_IRQn 0 */
+  uart_rs485();
 
   /* USER CODE END UART4_IRQn 0 */
   HAL_UART_IRQHandler(&huart4);
   /* USER CODE BEGIN UART4_IRQn 1 */
-   uart_rs485();
   /* USER CODE END UART4_IRQn 1 */
 }
 

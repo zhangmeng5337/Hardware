@@ -25,7 +25,7 @@ void uart_init()
         HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
 		
     __HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
-    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, RSBUFFER_SIZE);
+    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.recv_buf, RSBUFFER_SIZE);
 	rs485_str.recv_len = 0;
 	
 
@@ -54,6 +54,7 @@ void uart_rs485()
 {
     uint32_t  uart_idle_flag;
     uart_idle_flag =  __HAL_UART_GET_FLAG(&huart4,UART_FLAG_IDLE);
+   // uart_idle_flag =  __HAL_UART_GET_FLAG(&huart4,UART_FLAG_ORE);
 
     if((uart_idle_flag != RESET))
     {
@@ -61,8 +62,6 @@ void uart_rs485()
         __HAL_UART_CLEAR_IDLEFLAG(&huart4);
 
         uint32_t temp;
-        __HAL_UART_CLEAR_IDLEFLAG(&huart4);
-        HAL_UART_DMAStop(&huart4);
         temp = huart4.Instance->SR;
         temp = huart4.Instance->DR;
         temp = hdma_uart4_rx.Instance->NDTR;
@@ -71,17 +70,18 @@ void uart_rs485()
 
 
         //rs485_str.recv_len  = BUFFER_SIZE - __HAL_DMA_GET_COUNTER(&hdma_uart4_rx);
-        if(rs485_str.recv_update == 0)
+        if(rs485_str.recv_dma_len>1)
         {
             rs485_str.recv_update = 1;
-        	memcpy(&rs485_str.recv_buf[rs485_str.recv_len],rs485_str.buff,rs485_str.recv_dma_len);
-        	rs485_str.recv_len += rs485_str.recv_dma_len;
+        	//memcpy(&rs485_str.recv_buf[rs485_str.recv_len],rs485_str.recv_buf,rs485_str.recv_dma_len);
+        	rs485_str.recv_len = rs485_str.recv_dma_len;
         }
     }
+	
 	HAL_UART_DMAStop(&huart4);
 	HAL_UART_DMAResume(&huart4);
-	memset((uint8_t*)rs485_str.buff,0,RSBUFFER_SIZE);
-    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.buff, RSBUFFER_SIZE);
+	//memset((uint8_t*)rs485_str.buff,0,RSBUFFER_SIZE);
+    HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.recv_buf, RSBUFFER_SIZE);
 }
 tsLpuart1type *get_lte_recv()
 {
@@ -117,8 +117,21 @@ void uart_transmit(unsigned char uart_num,uint8_t * pData,uint16_t Size)
     {
         HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_SET);
         HAL_UART_Transmit(&huart4, pData, Size, 100);
-        HAL_Delay(1);
-        HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);
+        HAL_Delay(3);
+		
+		__HAL_UART_DISABLE_IT(&huart4, UART_IT_IDLE);	 
+        HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);	
+		HAL_Delay(1);
+      __HAL_UART_CLEAR_IDLEFLAG(&huart4);
+	   __HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
+	   HAL_UART_DMAStop(&huart4);
+	   HAL_UART_DMAResume(&huart4);
+	   HAL_UART_Receive_DMA(&huart4, (uint8_t*)rs485_str.recv_buf, RSBUFFER_SIZE);
+
+
+			
+	rs485_str.recv_len = 0;
+	
 
     }
     break;

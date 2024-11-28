@@ -747,7 +747,8 @@ void upload()
     buf2[i++] = getRtcTime()->Hours;
     buf2[i++] = getRtcTime()->Minutes;
     buf2[i++] = getRtcTime()->Seconds;
-    sprintf(buf3, "%u-%u-%u-%u %u:%u:%u",buf2[0]
+
+    sprintf(buf3, "%u-%u-%u-%u %u:%u:%u%",buf2[0]
             ,buf2[1]
             ,buf2[2]
             ,buf2[3]
@@ -757,11 +758,24 @@ void upload()
            );
     //strcat(buf3, numberBuffer); // 拼接到结果字符串�?
 
-i = 0;
+    i = 0;
 	static unsigned char addr=1;
+	unsigned char buf4[375];
+
+
+//	buf4[0] = '[';
+//	for(i = 0;i<58;i++)
+//	{
+//    sprintf(buf4+strlen(buf4), " %u,",get_hotter(addr)->status2[i]);
+//	}
+//	sprintf(buf4+strlen(buf4), " %u",get_hotter(addr)->status2[i]);
+//	sprintf(buf4+strlen(buf4), "]");
+
+
+	
 	//if(get_hotter(addr)->status[addr-1]==1)
-	{
-	sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
+//	{
+	sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
 			get_hotter(addr)->status[0],
 			get_hotter(addr)->status[1],
 			get_hotter(addr)->status[2],
@@ -771,15 +785,28 @@ i = 0;
 			get_hotter(addr)->status[6],
 			get_hotter(addr)->status[7],
 			get_hotter(addr)->status[8],
-			get_hotter(addr)->status[9]);
+			get_hotter(addr)->status[9],
+			get_hotter(addr)->status[10],
+			get_hotter(addr)->status[11],
+			get_hotter(addr)->status[12],
+			get_hotter(addr)->status[13],
+			get_hotter(addr)->status[14],
+			get_hotter(addr)->status[15],
+			get_hotter(addr)->status[16],
+			get_hotter(addr)->status[17],
+			get_hotter(addr)->status[18],
+			get_hotter(addr)->status[19],
+			get_hotter(addr)->status[20],
+			get_hotter(addr)->status[21],
+			get_hotter(addr)->status[22]);
+//
+//	}
 
-	}
 
-
-	if(addr<=DEV_SIZE)
+	if(addr<2)
 	{
 	
-	addr=1;
+	addr++;
 
 	}
 	else 
@@ -793,8 +820,8 @@ i = 0;
                                   \\22In Tem\\22: %.0f,\\0D\\0A\\
                                   \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                                   \\22After Pressure\\22: %.2f,\\0D\\0A\\
-                                  \\22Status\\22: %u,\\0D\\0A\\
-                                  \\22air pump_status\\22: %s\\0D\\0A\\
+                                  \\22IoStatus\\22: %u,\\0D\\0A\\
+                                  \\22pumpStatus1\\22: %s\\0D\\0A\\
                                  },\\0D\\0A\\
             \\22Dev Params\\22: {\\0D\\0A\\
                                  \\22Version\\22: \\22%s\\22,\\0D\\0A\\

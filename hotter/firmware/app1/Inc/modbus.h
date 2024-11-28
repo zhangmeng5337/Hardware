@@ -5,7 +5,7 @@
 //#define MODBUS_RTU_COUNT            4
 //#define MODBUS_RETRY_COUNT          4
 #define CMD_SIZE		10
-#define DEV_SIZE    5
+#define DEV_SIZE   5
 
 #define PWR_INDEX				0
 #define PID_INDEX				1
@@ -65,7 +65,7 @@ typedef struct
 	unsigned char func;
 	unsigned int  reg;
 	unsigned int  regCount;
-	unsigned char payload[512];
+	unsigned char payload[256];
 	unsigned int  crc;
 	unsigned char update;
 	unsigned char retry_count;

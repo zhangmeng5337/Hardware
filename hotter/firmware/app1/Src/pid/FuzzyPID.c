@@ -352,12 +352,12 @@ float Inverse_quantization(float maximum, float minimum, float qvalues)
 
 void fuzzy_init(void)
 {
-    rang.e_max=5 ;//误差最大范围
-    rang.e_min=-5 ;//误差最小
-    rang.ec_max=5;//误差的微分范围
-    rang.ec_min=-5;//误差的微分范围
+    rang.e_max=3 ;//误差最大范围
+    rang.e_min=-3 ;//误差最小
+    rang.ec_max=2;//误差的微分范围
+    rang.ec_min=-2;//误差的微分范围
     rang.kp_max=50;//p的范围
-    rang.kp_min=10;
+    rang.kp_min=15;
     rang.ki_max=0.5 ;//i的范围
     rang.ki_min=0;
     rang.kd_max=0.5;//d的范围
