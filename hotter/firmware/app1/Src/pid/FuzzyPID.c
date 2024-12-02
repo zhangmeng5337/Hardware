@@ -2,7 +2,7 @@
 
 range rang;// = { 1000,-1000,800,-800,100,-100,0.1,-0.1,0.01,-0.01 };
 Error error;//
-static FuzzyPID myfuzzypid;
+ FuzzyPID myfuzzypid;
 
 const int Kp_rule_list[7][7] =
 {
@@ -272,12 +272,14 @@ float FuzzyPIDcontroller(float Target, float actual)
 
     error.erro_ppre = error.erro_pre;
     error.erro_pre = error.erro;
-    error.erro = actual-Target;
+	myfuzzypid.setvalue = Target;
+	myfuzzypid.actual_value = actual;
+    error.erro = myfuzzypid.setvalue-myfuzzypid.actual_value;
     error.erro_c = error.erro - error.erro_pre;
-    myfuzzypid.errosum += error.erro;
+    
     //Arear_dipart(e_max, e_min, ec_max, ec_min, kp_max, kp_min,ki_max,ki_min,kd_max,kd_min);
-    myfuzzypid.qerro = Quantization(rang.e_max, rang.e_min, error.erro);//区间映射
-    myfuzzypid.qerro_c = Quantization(rang.ec_max, rang.ec_min, error.erro_c);//区间映射
+    myfuzzypid.qerro = Quantization(rang.e_max, rang.e_min, -error.erro);//区间映射
+    myfuzzypid.qerro_c = Quantization(rang.ec_max, rang.ec_min, -error.erro_c);//区间映射
     //把他们缩小到0123范围内
     Get_grad_membership(&myfuzzypid,myfuzzypid.qerro, myfuzzypid.qerro_c);
     //获取输出增量kp, ki, kd的总隶属度
@@ -290,18 +292,18 @@ float FuzzyPIDcontroller(float Target, float actual)
     myfuzzypid.qdetail_kd = 0;
     myfuzzypid.qdetail_ki = 0;
     myfuzzypid.qdetail_kp = 0;
-    /*if (qdetail_kp >= kp_max)
-        qdetail_kp = kp_max;
-    else if (qdetail_kp <= kp_min)
-        qdetail_kp = kp_min;
-    if (qdetail_ki >= ki_max)
-        qdetail_ki = ki_max;
-    else if (qdetail_ki <= ki_min)
-        qdetail_ki = ki_min;
-    if (qdetail_kd >= kd_max)
-        qdetail_kd = kd_max;
-    else if (qdetail_kd <= kd_min)
-        qdetail_kd = kd_min;*/
+    if (myfuzzypid.qdetail_kp >= rang.kp_max)
+        myfuzzypid.qdetail_kp = rang.kp_max;
+    else if (myfuzzypid.qdetail_kp <= rang.kp_min)
+        myfuzzypid.qdetail_kp = rang.kp_min;
+    if (myfuzzypid.qdetail_ki >= rang.ki_max)
+        myfuzzypid.qdetail_ki = rang.ki_max;
+    else if (myfuzzypid.qdetail_ki <= rang.ki_min)
+        myfuzzypid.qdetail_ki = rang.ki_min;
+    if (myfuzzypid.qdetail_kd >= rang.kd_max)
+        myfuzzypid.qdetail_kd = rang.kd_max;
+    else if (myfuzzypid.qdetail_kd <= rang.kd_min)
+        myfuzzypid.qdetail_kd = rang.kd_min;
     myfuzzypid.kp =myfuzzypid.detail_kp;
     myfuzzypid.ki = myfuzzypid.ki + myfuzzypid.detail_ki;
     myfuzzypid.kd  =myfuzzypid.kd + myfuzzypid.detail_kd;
@@ -325,8 +327,38 @@ float FuzzyPIDcontroller(float Target, float actual)
 //    myfuzzypid.detail_ki = 0;
 //    myfuzzypid.detail_kd = 0;
     //增量式PID
-    myfuzzypid.detalO = myfuzzypid.kp * (error.erro - error.erro_pre) + myfuzzypid.ki * error.erro + myfuzzypid.kd * (error.erro - 2 * error.erro_pre + error.erro_ppre);
+	myfuzzypid.detalO = myfuzzypid.kp * (error.erro - error.erro_pre) + myfuzzypid.ki * error.erro + myfuzzypid.kd * (error.erro - 2 * error.erro_pre + error.erro_ppre);
+	    //位置式PID   
+	myfuzzypid.kp_u = 4;
+	myfuzzypid.ki_u = 0.01;		
+	myfuzzypid.kd_u = 0.05;
+
+    if(myfuzzypid.detalO_p>=myfuzzypid.out_max)
+    {
+      if(error.erro<0)
+		myfuzzypid.errosum += error.erro;
+
+	}
+	else   if(myfuzzypid.detalO_p<=myfuzzypid.out_min)
+    {
+      if(error.erro>0)
+		myfuzzypid.errosum += error.erro;
+
+	}
+	else
+		myfuzzypid.errosum += error.erro;
+		
+    myfuzzypid.detalO_p = myfuzzypid.kp_u * error.erro  + myfuzzypid.ki_u * myfuzzypid.errosum + myfuzzypid.kd_u * (error.erro - error.erro_ppre);
 	u = u + myfuzzypid.detalO;
+	if(myfuzzypid.detalO_p>=myfuzzypid.out_max)
+		myfuzzypid.detalO_p =myfuzzypid.out_max;
+
+	if(myfuzzypid.detalO_p<=myfuzzypid.out_min)
+		myfuzzypid.detalO_p =myfuzzypid.out_min;
+
+	
+	myfuzzypid.u1 = myfuzzypid.detalO_p;
+	myfuzzypid.u2 = myfuzzypid.u2+ myfuzzypid.detalO;
 
 	return 0;
 }
@@ -357,7 +389,7 @@ void fuzzy_init(void)
     rang.ec_max=2;//误差的微分范围
     rang.ec_min=-2;//误差的微分范围
     rang.kp_max=50;//p的范围
-    rang.kp_min=15;
+    rang.kp_min=0.1;
     rang.ki_max=0.5 ;//i的范围
     rang.ki_min=0;
     rang.kd_max=0.5;//d的范围
@@ -370,6 +402,8 @@ void fuzzy_init(void)
     error.erro_c= 0;
     error.erro_pre= 0;
     error.erro_ppre= 0;
+	myfuzzypid.out_max = 46;
+	myfuzzypid.out_min = 15;
     FuzzyPID_Init(&myfuzzypid);
    // float u;
    // u = FuzzyPIDcontroller(Target, actual);

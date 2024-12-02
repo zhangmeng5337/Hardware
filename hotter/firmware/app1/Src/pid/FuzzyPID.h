@@ -31,6 +31,7 @@ typedef struct FuzzyPID
     float kd;                       //PID参数kd 
     float output;
 	float detalO;
+		float detalO_p;
     float qdetail_kp;               //增量kp对应论域中的值
     float qdetail_ki;               //增量ki对应论域中的值
     float qdetail_kd;               //增量kd对应论域中的值
@@ -51,7 +52,15 @@ typedef struct FuzzyPID
     float KigradSums[7] ;   //输出增量ki总的隶属度
     float KdgradSums[7] ;   //输出增量kd总的隶属度
 
+    float kp_u;
+    float ki_u;	
+   float kd_u; 
 
+   float u1,u2;
+   float setvalue;
+   float actual_value;
+   float out_max;
+   float out_min;
 //    int  Kp_rule_list[7][7];
 //
 //    int  Ki_rule_list[7][7];

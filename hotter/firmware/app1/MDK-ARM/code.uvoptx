@@ -153,7 +153,40 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000 -FP0($$Device:STM32F405RGTx$CMSIS\Flash\STM32F4xx_1024.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>345</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134355396</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\pid\FuzzyPID.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/pid/FuzzyPID.c\345</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>339</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134355336</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\pid\FuzzyPID.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/pid/FuzzyPID.c\339</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -228,7 +261,7 @@
         <Ww>
           <count>14</count>
           <WinNumber>1</WinNumber>
-          <ItemText>config_usr</ItemText>
+          <ItemText>config_usr,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>15</count>
@@ -283,87 +316,87 @@
         <Ww>
           <count>25</count>
           <WinNumber>1</WinNumber>
-          <ItemText>indoor_temp_usr</ItemText>
+          <ItemText>buf,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>26</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf,0x0A</ItemText>
+          <ItemText>Now_Time,0x10</ItemText>
         </Ww>
         <Ww>
           <count>27</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Now_Time,0x10</ItemText>
+          <ItemText>Now_Date,0x10</ItemText>
         </Ww>
         <Ww>
           <count>28</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Now_Date,0x10</ItemText>
+          <ItemText>Now_Date_BIN,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>29</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Now_Date_BIN,0x0A</ItemText>
+          <ItemText>Now_Time_BIN,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>30</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Now_Time_BIN,0x0A</ItemText>
+          <ItemText>tmp,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>31</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tmp,0x0A</ItemText>
+          <ItemText>at_cmds</ItemText>
         </Ww>
         <Ww>
           <count>32</count>
           <WinNumber>1</WinNumber>
-          <ItemText>at_cmds</ItemText>
+          <ItemText>Bin_buffer</ItemText>
         </Ww>
         <Ww>
           <count>33</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Bin_buffer</ItemText>
+          <ItemText>rtc_usr,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>34</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rtc_usr,0x0A</ItemText>
+          <ItemText>rs485_str</ItemText>
         </Ww>
         <Ww>
           <count>35</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rs485_str</ItemText>
+          <ItemText>myfuzzypid</ItemText>
         </Ww>
         <Ww>
           <count>36</count>
           <WinNumber>1</WinNumber>
-          <ItemText>myfuzzypid</ItemText>
+          <ItemText>modbus_cmd_list</ItemText>
         </Ww>
         <Ww>
           <count>37</count>
           <WinNumber>1</WinNumber>
-          <ItemText>modbus_cmd_list</ItemText>
+          <ItemText>cmd_list</ItemText>
         </Ww>
         <Ww>
           <count>38</count>
           <WinNumber>1</WinNumber>
-          <ItemText>cmd_list</ItemText>
+          <ItemText>buf2,0x10</ItemText>
         </Ww>
         <Ww>
           <count>39</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf2,0x10</ItemText>
+          <ItemText>buf4</ItemText>
         </Ww>
         <Ww>
           <count>40</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf4</ItemText>
+          <ItemText>mqtt_send_buf</ItemText>
         </Ww>
         <Ww>
           <count>41</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_send_buf</ItemText>
+          <ItemText>indoor_temp_usr</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
