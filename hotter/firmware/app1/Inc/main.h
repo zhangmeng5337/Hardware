@@ -39,6 +39,8 @@ extern "C" {
 /* USER CODE BEGIN ET */
 #define TRUE 1
 #define FALSE 0
+#define ON 0
+#define OFF 1
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

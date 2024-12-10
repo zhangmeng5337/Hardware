@@ -83,6 +83,13 @@ void reboot_proc(void)
 
 		}
 }
+//void save(void)
+//{
+//	
+//
+//
+//
+//}
 void app_proc()
 {
    TickPro(); //sys timer proc

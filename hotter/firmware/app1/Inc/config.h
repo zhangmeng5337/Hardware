@@ -39,7 +39,8 @@ typedef struct
 	uint16_t seq_count;
 	char http_download[128];//ftp url
     //unsigned char temp[24];//temperature
-    unsigned char mode;// 0---nativeï¼?----remote
+    unsigned char mode;// 1---smart  2----native no need net 3---customer 4ctrl schedule temp
+    unsigned char dev_size;
     unsigned char ai_config[32];
     unsigned char ao_config[1];
     unsigned char di_config[8];

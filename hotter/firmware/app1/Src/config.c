@@ -1,7 +1,7 @@
 #include "config.h"
 #include "stmflash.h"
 #include "ai_proc.h"
-
+#include "modbus.h"
 
 
 static CONFIG_stru config_usr;
@@ -67,6 +67,9 @@ void config_save()
         len = sizeof(get_config()->mode);
         memcpy(buf + index, &get_config()->mode, len);
         index = index + len;
+        len = sizeof(get_config()->dev_size);
+        memcpy(buf + index, &get_config()->dev_size, len);
+        index = index + len;
 
 
 //        len = sizeof(get_config()->fault_mask);
@@ -86,11 +89,11 @@ void config_init()
     unsigned char head;
     unsigned int index, len;
     unsigned char buf[4];
-    index =0;
-    ReadFlash(CONFIG_Addr+index, (uint8_t *)&head, 1);
+    index = 0;
+    ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
     len = 0;
 
-    if ((head&0xff) == 0x5a)
+    if ((head & 0xff) == 0x5a)
     {
 
 
@@ -146,6 +149,14 @@ void config_init()
         len = sizeof(get_config()->mode);
         ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
         get_config()->mode = head;
+
+        index = index + 1;
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
+		if(head>=10)
+        get_config()->dev_size = DEV_SIZE;
+		else
+        get_config()->dev_size = head;			
+
 //        index = index + len;
 //        len = sizeof(get_config()->fault_mask);
 //        ReadFlash(CONFIG_Addr + index, buf, len);
@@ -159,7 +170,7 @@ void config_init()
         sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", VERSION);
-        if(OTA_UPDATE_TO == APP2)
+        if (OTA_UPDATE_TO == APP2)
             sprintf(get_config()->http_ip, "%s",
                     "http://39.106.131.169:666/ota/b/");
 
@@ -172,8 +183,10 @@ void config_init()
         get_config()->set_tout = 45;
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
-        get_config()->set_up_period = 10;
-        get_config()->mode = 2;
+        get_config()->set_up_period = 20;
+        get_config()->mode = 3;
+        get_config()->dev_size = DEV_SIZE;
+
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;
         get_config()->timeout = 0;
@@ -187,7 +200,7 @@ void config_init()
     sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
     sprintf(get_config()->mqtt_port, "%s", "1883");
     sprintf(get_config()->version, "%s", VERSION);
-    if(OTA_UPDATE_TO == APP2)
+    if (OTA_UPDATE_TO == APP2)
         sprintf(get_config()->http_ip, "%s",
                 "http://39.106.131.169:666/ota/b/");
 
@@ -200,7 +213,7 @@ void config_init()
     get_config()->set_tout = 45;
     get_config()->set_tindoor = 25;
     get_config()->reboot = 0;
-    get_config()->set_up_period = 10;
+    get_config()->set_up_period = 20;
     //get_config()->mode = 2;
     get_config()->fault_mask = 0xffffffff;
     get_config()->update_setting = 1;
@@ -217,11 +230,11 @@ void config_init()
     //memcpy(&get_config()->sub_sring[2][0],"dev_sub_ctrl_",strlen("dev_sub_ctrl_"));
     get_config()->Erase_flag = 1;
 
-    get_config()->tin_index=AI_WATER_T_IN_INDEX;
-	get_config()->to_index = AI_WATER_T_O_INDEX;
+    get_config()->tin_index = AI_WATER_T_IN_INDEX;
+    get_config()->to_index = AI_WATER_T_O_INDEX;
 
-    get_config()->pin_index=AI_PUMP_F_INDEX;
-	get_config()->po_index = AI_PUMP_E_INDEX;
+    get_config()->pin_index = AI_PUMP_F_INDEX;
+    get_config()->po_index = AI_PUMP_E_INDEX;
 
 
 

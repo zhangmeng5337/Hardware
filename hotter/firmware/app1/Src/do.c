@@ -99,16 +99,16 @@ void do_NO_set(unsigned int do_NO_sel,unsigned char bit_set)
 			no_tmp = do_NO_sel;
 		switch(no_tmp)
 		{
-			case 0:shift_bit = 0x01;break;
-			case 1:shift_bit = 0x02;break;
-			case 2:shift_bit = 0x04;break;
-			case 3:shift_bit = 0x08;break;
-			case 4:shift_bit = 0x10;break;
-			case 5:shift_bit = 0x20;break;
-			case 6:shift_bit = 0x40;break;
-			case 7:shift_bit = 0x80;break;	
+			case 7:shift_bit = 0x01;break;
+			case 6:shift_bit = 0x02;break;
+			case 5:shift_bit = 0x04;break;
+			case 4:shift_bit = 0x08;break;
+			case 3:shift_bit = 0x10;break;
+			case 2:shift_bit = 0x20;break;
+			case 1:shift_bit = 0x40;break;
+			case 0:shift_bit = 0x80;break;	
 		}
-		if(bit_set == 0)
+		if(bit_set == OFF)
 		{
 			//shift_bit = ~shift_bit;
 			if(do_NO_sel<8)
@@ -123,7 +123,7 @@ void do_NO_set(unsigned int do_NO_sel,unsigned char bit_set)
 				 ;
 	
 		}
-		else if(bit_set == 1)
+		else if(bit_set == ON)
 		{shift_bit = ~shift_bit;
 			if(do_NO_sel<8)
 			{
@@ -154,9 +154,6 @@ void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set)
 
 void do_off()
 {
-
-
-
 	do_usr.do_No_out[0]=0xff;
 	do_usr.do_No_out[1]=0xff;	
 	XL74HC595_MultiWrite(do_usr.do_No_out, 2);	

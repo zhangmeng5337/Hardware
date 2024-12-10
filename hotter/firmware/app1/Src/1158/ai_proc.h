@@ -59,8 +59,8 @@
 #define BAD			1
 
 
-#define AI_WATER_T_O_INDEX   	2
-#define AI_WATER_T_IN_INDEX   	5
+#define AI_WATER_T_O_INDEX   	3
+#define AI_WATER_T_IN_INDEX   	2
 
 #define AI_PUMP_F_INDEX   		5
 #define AI_PUMP_E_INDEX   		1

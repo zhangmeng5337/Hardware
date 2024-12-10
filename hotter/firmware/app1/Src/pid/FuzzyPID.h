@@ -112,6 +112,7 @@ float FuzzyPIDcontroller(float Target, float actual);
 void fuzzy_init(void);
 FuzzyPID *get_fuzzy_pid_params(void);
 
+FuzzyPID *get_pid_params(void);
 
 
 
