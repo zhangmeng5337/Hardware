@@ -875,8 +875,8 @@ void upload()
         sprintf(mqtt_send_buf, "{\\0D\\0A\\
                 \\22Dev ID\\22: %s,\\0D\\0A\\
                 \\22Status Data\\22: {\\0D\\0A\\
-                                      \\22Out Tem\\22: %.0f,\\0D\\0A\\
-                                      \\22In Tem\\22: %.0f,\\0D\\0A\\
+                                      \\22Out Tem\\22: %.1f,\\0D\\0A\\
+                                      \\22In Tem\\22: %.1f,\\0D\\0A\\
                                       \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                                       \\22After Pressure\\22: %.2f,\\0D\\0A\\
                                       \\22Status\\22: %u,\\0D\\0A\\
@@ -884,7 +884,7 @@ void upload()
                                      },\\0D\\0A\\
                 \\22Dev Params\\22: {\\0D\\0A\\
                                      \\22Ver\\22: \\22%s\\22,\\0D\\0A\\
-                                     \\22Set OT\\22: %.0f,\\0D\\0A\\
+                                     \\22Set OT\\22: %.1f,\\0D\\0A\\
                                      \\22Set IT\\22: %.1f,\\0D\\0A\\
                                      \\22out\\22: %.0f,\\0D\\0A\\
                                      \\22p\\22: %.0f,\\0D\\0A\\
@@ -913,8 +913,8 @@ else if (status_out == 2)
     sprintf(mqtt_send_buf, "{\\0D\\0A\\
             \\22Dev ID\\22: %s,\\0D\\0A\\
             \\22Status Data\\22: {\\0D\\0A\\
-                                  \\22Out Tem\\22: %.0f,\\0D\\0A\\
-                                  \\22In Tem\\22: %.0f,\\0D\\0A\\
+                                  \\22Out Tem\\22: %.1f,\\0D\\0A\\
+                                  \\22In Tem\\22: %.1f,\\0D\\0A\\
                                   \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                                   \\22After Pressure\\22: %.2f,\\0D\\0A\\
                                   \\22Status\\22: %u,\\0D\\0A\\
@@ -922,7 +922,7 @@ else if (status_out == 2)
                                  },\\0D\\0A\\
             \\22Dev Params\\22: {\\0D\\0A\\
                                  \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                                 \\22Set Out Tem\\22: %.0f,\\0D\\0A\\
+                                 \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
                                  \\22Set In Tem\\22: %.1f,\\0D\\0A\\
                                  \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
                                 }\\0D\\0A\\
@@ -944,8 +944,8 @@ else if (status_out == 3)
 sprintf(mqtt_send_buf, "{\\0D\\0A\\
         \\22Dev ID\\22: %s,\\0D\\0A\\
         \\22Status Data\\22: {\\0D\\0A\\
-                              \\22Out Tem\\22: %.0f,\\0D\\0A\\
-                              \\22In Tem\\22: %.0f,\\0D\\0A\\
+                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
+                              \\22In Tem\\22: %.1f,\\0D\\0A\\
                               \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                               \\22After Pressure\\22: %.2f,\\0D\\0A\\
                               \\22Status\\22: %u,\\0D\\0A\\
@@ -953,7 +953,7 @@ sprintf(mqtt_send_buf, "{\\0D\\0A\\
                              },\\0D\\0A\\
         \\22Dev Params\\22: {\\0D\\0A\\
                              \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                             \\22Set Out Tem\\22: %.0f,\\0D\\0A\\
+                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
                              \\22Set In Tem\\22: %.1f,\\0D\\0A\\
                              \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
                             }\\0D\\0A\\
@@ -975,8 +975,8 @@ else if (status_out == 4)
 sprintf(mqtt_send_buf, "{\\0D\\0A\\
         \\22Dev ID\\22: %s,\\0D\\0A\\
         \\22Status Data\\22: {\\0D\\0A\\
-                              \\22Out Tem\\22: %.0f,\\0D\\0A\\
-                              \\22In Tem\\22: %.0f,\\0D\\0A\\
+                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
+                              \\22In Tem\\22: %.1f,\\0D\\0A\\
                               \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                               \\22After Pressure\\22: %.2f,\\0D\\0A\\
                               \\22Status\\22: %u,\\0D\\0A\\
@@ -984,7 +984,7 @@ sprintf(mqtt_send_buf, "{\\0D\\0A\\
                              },\\0D\\0A\\
         \\22Dev Params\\22: {\\0D\\0A\\
                              \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                             \\22Set Out Tem\\22: %.0f,\\0D\\0A\\
+                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
                              \\22Set In Tem\\22: %.1f,\\0D\\0A\\
                              \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
                             }\\0D\\0A\\
@@ -1009,8 +1009,8 @@ else
 sprintf(mqtt_send_buf, "{\\0D\\0A\\
         \\22Dev ID\\22: %s,\\0D\\0A\\
         \\22Status Data\\22: {\\0D\\0A\\
-                              \\22Out Tem\\22: %.0f,\\0D\\0A\\
-                              \\22In Tem\\22: %.0f,\\0D\\0A\\
+                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
+                              \\22In Tem\\22: %.1f,\\0D\\0A\\
                               \\22Front Pressure\\22: %.2f,\\0D\\0A\\
                               \\22After Pressure\\22: %.2f,\\0D\\0A\\
                               \\22Status\\22: %u,\\0D\\0A\\
@@ -1018,7 +1018,7 @@ sprintf(mqtt_send_buf, "{\\0D\\0A\\
                              },\\0D\\0A\\
         \\22Dev Params\\22: {\\0D\\0A\\
                              \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                             \\22Set Out Tem\\22: %.0f,\\0D\\0A\\
+                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
                              \\22Set In Tem\\22: %.1f,\\0D\\0A\\
                              \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
                             }\\0D\\0A\\

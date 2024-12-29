@@ -3620,9 +3620,9 @@
       </Doc>
       <Doc>
         <Name>..\Src\modbus.c</Name>
-        <ColumnNumber>28</ColumnNumber>
+        <ColumnNumber>12</ColumnNumber>
         <TopLine>1006</TopLine>
-        <CurrentLine>1015</CurrentLine>
+        <CurrentLine>1014</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
