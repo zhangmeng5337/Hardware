@@ -1,0 +1,60 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+D:\锦洪电气\产品设计文件\仪表\HEX_new\三相多功能\数码多功能奇偶校验485DO\数码三相多功能表全功能程序\三相多功能全功能.uvproj
+Project File Date:  04/15/2023
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+compiling 多功能.c...
+多功能.C(1244): warning C280: 'cnst1': unreferenced local variable
+多功能.C(1245): warning C280: 'cnst2': unreferenced local variable
+多功能.C(1246): warning C280: 'cnst3': unreferenced local variable
+多功能.C(1247): warning C280: 'cnst4': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?K1_OUT?_郷_能
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?K2_OUT?_郷_能
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?K3_OUT?_郷_能
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?K4_OUT?_郷_能
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5AE9H
+Program Size: data=103.5 xdata=1389 code=24770
+creating hex file from "多功能带自检STC8F"...
+"多功能带自检STC8F" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BB1H
+Program Size: data=103.5 xdata=1389 code=24969
+creating hex file from "多功能带自检STC8F"...
+"多功能带自检STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BB1H
+Program Size: data=103.5 xdata=1389 code=24969
+creating hex file from "多功能奇偶STC8C"...
+"多功能奇偶STC8C" - 0 Error(s), 2 Warning(s).

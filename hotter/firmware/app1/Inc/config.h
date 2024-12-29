@@ -1,6 +1,13 @@
 ﻿#ifndef CONFIG_H_
 #define CONFIG_H_
 #include "main.h"
+
+#define NATIVE_MODE  1
+#define SMART_MODE  2
+#define SCHE_MODE   3
+#define OFF_MODE   4
+
+
 void delay_us(uint32_t nCount);
 #include "main.h"
 
@@ -39,7 +46,7 @@ typedef struct
 	uint16_t seq_count;
 	char http_download[128];//ftp url
     //unsigned char temp[24];//temperature
-    unsigned char mode;// 1---smart  2----native no need net 3---customer 4ctrl schedule temp
+    unsigned char mode;// 1---smart  2----native no need net 4---customer 3ctrl schedule temp
     unsigned char dev_size;
     unsigned char ai_config[32];
     unsigned char ao_config[1];
@@ -47,11 +54,12 @@ typedef struct
     unsigned char do_config[20];
 
     //setting params
+    unsigned char count;
 	unsigned char reboot;
 	unsigned int machine;	  //pwrctrl:bit0---m1;bit1---m2;bit2---m3;
 	                          //select:bit15 ---m1;bit14---m2;bit13---m3,only for pwr ctrl
 	unsigned char update_firm;	//firmware update
-	unsigned int indoor_temperature[ENVIRO_SIZE];
+	float indoor_temperature[ENVIRO_SIZE];
 	unsigned char tlen;
 	unsigned int set_tout;  //pid cal
 	unsigned int set_tout_tmp;  //pum set

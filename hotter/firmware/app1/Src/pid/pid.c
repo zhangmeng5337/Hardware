@@ -36,21 +36,30 @@ void get_temp_cal(float *buf)
     indoor_temp_usr.low_temp_percent =  buf[1];
     indoor_temp_usr.temp_error =    buf[2];
 }
+indoor_temp_stru *set_indoor_temp()
+{
+	return &indoor_temp_usr;
+}
+float get_indoor_temp()
+{
+	return indoor_temp_usr.temp_average;
+}
+
 float get_pid_output()
 {
     float  u;
-    if (get_schedule()->mode == 1&&get_config()->mode == 1)//ctrl water 
+    if (get_schedule()->mode == 1&&get_config()->mode == NATIVE_MODE)//ctrl water 
     {
 
 //        u = get_schedule()->buf[get_schedule()->current_plan].temperature;
 		u = get_fuzzy_pid_params()->u1;
     }
-    else  if (get_config()->mode == 2)//ctrl indoor temp
+    else  if (get_config()->mode == SMART_MODE)//ctrl indoor temp
     {
 
         u = get_fuzzy_pid_params()->u1;
     }
-    else  if (get_config()->mode == 4)//ctrl schedule temp
+    else  if (get_config()->mode == SCHE_MODE)//ctrl schedule temp
     {
 
         u = get_schedule()->buf[get_schedule()->current_plan].temperature;
@@ -86,7 +95,7 @@ void pid_cal(unsigned char mode)
 
     erro_ppre = erro_pre;
     erro_pre = erro;
-    if (mode <= 2 ) //智能控制 smart ctrl
+    if (mode <= SCHE_MODE ) //智能控制 smart ctrl
     {
         if (indoor_temp_usr.temp_average >= (0.95 *
                                              get_config()->set_tindoor)) //平均温度达标
@@ -96,15 +105,17 @@ void pid_cal(unsigned char mode)
                 float tmp;
                 tmp = 1 - indoor_temp_usr.low_temp_percent;
                 tmp = tmp * indoor_temp_usr.temp_average;
-                erro = tmp - get_config()->set_tindoor ; //温度加权
+                erro = tmp - get_schedule()->buf[get_schedule()->current_plan].temperature; ; //温度加权
             }
             else
 
-                erro = indoor_temp_usr.temp_average - get_config()->set_tindoor ;
+                erro = indoor_temp_usr.temp_average - 
+                get_schedule()->buf[get_schedule()->current_plan].temperature; ;
         }
         else
-            erro = indoor_temp_usr.temp_average - get_config()->set_tindoor;
-		if (mode == 1) //smart mode plan start
+            erro = indoor_temp_usr.temp_average - 
+            get_schedule()->buf[get_schedule()->current_plan].temperature;;
+		if (mode == NATIVE_MODE) //smart mode plan start
 		{
 			measure_val =	get_ai_data()->temp[get_config()->tin_index];
 			setval = get_schedule()->buf[get_schedule()->current_plan].temperature;
@@ -113,7 +124,7 @@ void pid_cal(unsigned char mode)
 			
 		else// mode = 2
 		{
-					setval = get_config()->set_tindoor;
+				setval = get_schedule()->buf[get_schedule()->current_plan].temperature;;//get_config()->set_tindoor;
 				measure_val =  indoor_temp_usr.temp_average;
 
 		}

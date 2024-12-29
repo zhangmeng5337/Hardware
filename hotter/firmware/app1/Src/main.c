@@ -87,6 +87,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 			 __HAL_RCC_PWR_CLK_DISABLE();
 			 HAL_RCC_DeInit();
+	__enable_irq();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

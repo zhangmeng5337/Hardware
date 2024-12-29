@@ -205,7 +205,7 @@ void SysTick_Handler(void)
 get_config()->timeout ++;
   if(get_config()->timeout>=300000)
   	{
-	;//	HAL_NVIC_SystemReset();
+	HAL_NVIC_SystemReset();
   }
 	//HAL_IWDG_Refresh(&hiwdg);
   /* USER CODE END SysTick_IRQn 0 */

@@ -137,14 +137,14 @@ uint8_t *lte_Check_Cmd(uint8_t *str)
 uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
 {
     uint8_t res = 0;
-    uint8_t TxBuffer[1024];
+    uint8_t TxBuffer[2048];
     //uint8_t len;
 
 
     // tsLpuart1type *lte_recv;
     // lte_recv = get_lte_recv();
     lte_recv->timeout = WaitTime;
-    memset(TxBuffer, 0, 1024);
+    memset(TxBuffer, 0, 2048);
     sprintf((char *)TxBuffer, "%s", cmd);
     // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//发给串口3
     clear_uart_buf(0);
@@ -435,8 +435,11 @@ uint8_t lte_info_ota_show()
                 {
                     if (OTA_UPDATE_TO == APP1)
                         addr_wr = Application_1_Addr;
-                    else
+                    else if(OTA_UPDATE_TO == APP2)
                         addr_wr = Application_2_Addr;
+                    else
+                        addr_wr = Boot_1_Addr;
+
                     get_config()->Erase_flag = 0;
                     HAL_StatusTypeDef status = HAL_ERROR;
                     while (status == HAL_ERROR)

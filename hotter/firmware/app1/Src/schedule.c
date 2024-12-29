@@ -209,10 +209,11 @@ void plan_query(void)
                 if (schedule_u.buf[i].enable == 1)
                 {
                     schedule_u.current_plan = i;
-                    if (get_config()->mode <= 2)
+                    if (get_config()->mode <= SCHE_MODE)
                     {
                         schedule_u.mode = 1;
-                        if (get_config()->mode == 1)
+						if (get_config()->mode <= SCHE_MODE)
+
                             get_config()->set_tout = schedule_u.buf[i].temperature;
 
                     }
@@ -249,11 +250,13 @@ void plan_query(void)
                                         if (schedule_u.buf[i].enable == 1)
                                         {
 
-                                            if (get_config()->mode <= 2)
+                                            if (get_config()->mode <= SCHE_MODE)
                                             {
                                                 schedule_u.current_plan = i;
                                                 schedule_u.mode = 1;
-                                                if (get_config()->mode == 1)
+												if (get_config()->mode <= SCHE_MODE)
+
+
                                                     get_config()->set_tout = schedule_u.buf[i].temperature;
 
                                             }
@@ -280,11 +283,12 @@ void plan_query(void)
                                     {
                                         if (schedule_u.buf[i].enable == 1)
                                         {
-                                            if (get_config()->mode <= 2)
+                                            if (get_config()->mode <= SCHE_MODE)
                                             {
                                                 schedule_u.current_plan = i;
                                                 schedule_u.mode = 1;
-                                                if (get_config()->mode == 1)
+												if (get_config()->mode <= SCHE_MODE)
+
                                                     get_config()->set_tout = schedule_u.buf[i].temperature;
 
                                             }
@@ -314,11 +318,13 @@ void plan_query(void)
                                 if (schedule_u.buf[i].enable == 1)
                                 {
 
-                                    if (get_config()->mode <= 2)
+                                    if (get_config()->mode <= SCHE_MODE)
                                     {
                                         schedule_u.current_plan = i;
                                         schedule_u.mode = 1;
-                                        if (get_config()->mode == 1)
+										if (get_config()->mode <= SCHE_MODE)
+
+
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
 
                                     }
@@ -357,11 +363,12 @@ void plan_query(void)
                                         if (schedule_u.buf[i].enable == 1)
                                         {
 
-                                            if (get_config()->mode <= 2)
+                                            if (get_config()->mode <= SCHE_MODE)
                                             {
                                                 schedule_u.current_plan = i;
                                                 schedule_u.mode = 1;
-                                                if (get_config()->mode == 1)
+												if (get_config()->mode <= SCHE_MODE)
+
                                                     get_config()->set_tout = schedule_u.buf[i].temperature;
 
                                             }
@@ -389,11 +396,12 @@ void plan_query(void)
                                         if (schedule_u.buf[i].enable == 1)
                                         {
 
-                                            if (get_config()->mode <= 2)
+                                            if (get_config()->mode <= SCHE_MODE)
                                             {
                                                 schedule_u.current_plan = i;
                                                 schedule_u.mode = 1;
-                                                if (get_config()->mode == 1)
+												if (get_config()->mode <= SCHE_MODE)
+
                                                     get_config()->set_tout = schedule_u.buf[i].temperature;
 
                                             }
@@ -423,11 +431,11 @@ void plan_query(void)
                                 if (schedule_u.buf[i].enable == 1)
                                 {
 
-                                    if (get_config()->mode <= 2)
+                                    if (get_config()->mode <= SCHE_MODE)
                                     {
                                         schedule_u.current_plan = i;
                                         schedule_u.mode = 1;
-                                        if (get_config()->mode == 1)
+                                        if (get_config()->mode <= SCHE_MODE)
                                             get_config()->set_tout = schedule_u.buf[i].temperature;
 
                                     }
@@ -484,10 +492,10 @@ void plan_query(void)
         }
 
     }
-    if (get_config()->mode == 2)
-        get_config()->set_tout = get_config()->set_tindoor;
+    //if (get_config()->mode == SMART_MODE)
+    //    get_config()->set_tout = get_config()->set_tindoor;
 
-    if (get_config()->mode == 3)
+    if (get_config()->mode == OFF_MODE)
         get_config()->set_tout = 40;
 
 }

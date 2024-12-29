@@ -157,9 +157,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>183</LineNumber>
+          <LineNumber>432</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134373204</Address>
+          <Address>134374738</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,39 +168,23 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\mqtt_analy.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\183</Expression>
+          <Expression>\\app\../Src/mqtt_analy.c\432</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>504</LineNumber>
+          <LineNumber>1027</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134375082</Address>
+          <Address>134384326</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\mqtt_analy.c</Filename>
+          <Filename>..\Src\modbus.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\504</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>292</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Src\pid\FuzzyPID.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\app\../Src/modbus.c\1027</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -414,12 +398,37 @@
           <WinNumber>1</WinNumber>
           <ItemText>indoor_temp_usr</ItemText>
         </Ww>
+        <Ww>
+          <count>42</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dev_id[0]</ItemText>
+        </Ww>
+        <Ww>
+          <count>43</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>44</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dev_id</ItemText>
+        </Ww>
+        <Ww>
+          <count>45</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>rs485_u</ItemText>
+        </Ww>
+        <Ww>
+          <count>46</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>indoor_temp_usr</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x80a0000</ItemText>
+          <ItemText>0x8020000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

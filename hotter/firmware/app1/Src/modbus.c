@@ -88,7 +88,7 @@ void rs485_recv()
     unsigned char len;
     unsigned int buf[32];
 
-    if (rs485_u->recv_update == 1)
+    if (rs485_u->recv_update !=0)
     {
 //          static unsigned char addr_tmp=0;
 //          if(modbus_recv.payload[0]!=rs485_u->recv_buf[0]&&rs485_u->recv_buf[0]>0)
@@ -730,6 +730,9 @@ unsigned char  modbus_ctrl()
 
 void modbus_proc_poll()
 {
+    if(get_config()->mode == OFF_MODE)
+		registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME_LONG);
+	else
     registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME);
 
     if (GetTickResult(MODBUS_TX_TICK_NO) == 1)
@@ -853,7 +856,11 @@ void modbus_proc_poll()
 
         }
         reset_registerTick(MODBUS_TX_TICK_NO);
-        registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME);
+		if(get_config()->mode == OFF_MODE)
+			registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME_LONG);
+		else
+		registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME);
+
 
     }
 
@@ -934,12 +941,11 @@ void modbus_proc()
 
             }
 
-            if (get_config()->mode != 3)
+              if (get_schedule()->current_plan_pwr_update == 1)
+                    get_schedule()->current_plan_pwr_update = 2;          
+				if (get_config()->mode != OFF_MODE)
             {
                 get_config()->update_setting = 1;
-                if (get_schedule()->current_plan_pwr_update == 1)
-                    get_schedule()->current_plan_pwr_update = 2;
-
                 modbus_data_pack(PWR_INDEX);
 
                 cmd_enable(PWR_INDEX, 1);
@@ -980,10 +986,14 @@ void modbus_proc()
             modbus_tx.update = 0;
 
             if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1
-                    && get_config()->mode <= 2) //pid poll
+                    && get_config()->mode <= OFF_MODE) //pid poll
             {
-                if (get_config()->mode != 3)
+
+
+                if (get_config()->mode != OFF_MODE)
                 {
+
+				   
                     modbus_data_pack(PID_INDEX);
                     cmd_enable(PID_INDEX, 1);
                     if (cmd_list.pb[PID_INDEX].status == 0)
@@ -999,11 +1009,32 @@ void modbus_proc()
                         reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
                         registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
                         cmd_list.pb[PID_INDEX].status = 0;
+					
+					if( get_config()->count>=3)
+					 {
+						// get_config()->count = 0;
+						 set_indoor_temp()->temp_average = 1;
+					}
+					else
+						get_config()->count++;
 
                     }
                     modbus_proc_poll();//
 
                 }
+				else
+				{
+				reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+				registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+				if( get_config()->count>=3)
+				 {
+					// get_config()->count = 0;
+					 set_indoor_temp()->temp_average = 1;
+				}
+				else
+					get_config()->count++;
+
+				}
 
             }
             else  //read dev

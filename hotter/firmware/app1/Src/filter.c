@@ -22,11 +22,11 @@ void bubbleSort(float arr[], int len)
 
 }
 float buf[3];
-float *low_temperature_cal(unsigned int arr[], int len)
+float *low_temperature_cal(float arr[], int len)
 {
 	float temp,sum;
 	
-	int i, j;
+	int i;
 	temp = 0;
 	sum = 0;
 	for (i = 0; i < len ; i++) /* 外循环为排序趟数，len个数进行len-1趟 */

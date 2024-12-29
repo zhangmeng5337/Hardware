@@ -128,8 +128,8 @@ void FuzzyPID_Init(FuzzyPID *pid)  //¹¹Ôìº¯Êý
         pid->KpgradSums[i] = 0;
         pid->KigradSums[i] = 0;
         pid->KdgradSums[i] = 0;
-        myfuzzypid.kp_u = 28;
-        myfuzzypid.ki_u = 0.008;
+        myfuzzypid.kp_u = 90;
+        myfuzzypid.ki_u = 0.08;
         myfuzzypid.kd_u = 0.0;
     }
 }
@@ -417,7 +417,7 @@ void fuzzy_init(void)
     error.erro_c = 0;
     error.erro_pre = 0;
     error.erro_ppre = 0;
-    myfuzzypid.out_max = 46;
+    myfuzzypid.out_max = 50;
     myfuzzypid.out_min = 15;
     FuzzyPID_Init(&myfuzzypid);
     // float u;

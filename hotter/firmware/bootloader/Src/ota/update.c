@@ -69,13 +69,14 @@ void IAP_ExecuteApp(uint32_t App_Addr)
     {
 			    __HAL_RCC_PWR_CLK_DISABLE();
 			 HAL_RCC_DeInit();
+			__disable_irq();
         JumpToApp = (Jump_Fun) * (__IO uint32_t *)(App_Addr + 4);	//用户代码区第二个字为程序开始地址(复位地址)
         MSR_MSP(* (__IO uint32_t *) App_Addr);	//初始化APP堆栈指针(用户代码区的第一个字用于存放栈顶地址)
         JumpToApp();	//跳转到APP
     }
     else
     {
-        printf("There is None APP to jump,ERROR!!!\r\n");
+        ;//printf("There is None APP to jump,ERROR!!!\r\n");
     }
 }
 
@@ -85,12 +86,12 @@ void IAP_ExecuteApp(uint32_t App_Addr)
 	*/
 void Start_BootLoader(void)
 {
-    printf("\r\n");
-    printf("***********************************\r\n");
-    printf("*                                 *\r\n");
-    printf("*           BootLoader            *\r\n");
-    printf("*                                 *\r\n");
-    printf("***********************************\r\n");
+//    printf("\r\n");
+//    printf("***********************************\r\n");
+//    printf("*                                 *\r\n");
+//    printf("*           BootLoader            *\r\n");
+//    printf("*                                 *\r\n");
+//    printf("***********************************\r\n");
 
 //    switch (Read_Start_Mode())									//读取是否启动应用程序
 //    {
@@ -122,7 +123,7 @@ void Start_BootLoader(void)
 				 // read_flag = 0x10;
 			   // Erase_page(OTA_NUM_ADDR, 1);
           //WriteFlash((OTA_NUM_ADDR), &read_flag, 1);	
-			printf(">Jump to App2......\r\n");
+			//printf(">Jump to App2......\r\n");
 			IAP_ExecuteApp(Application_2_Addr);
 		}
 		 
@@ -133,12 +134,12 @@ void Start_BootLoader(void)
 						read_flag = 0x20;
 						//Erase_page(OTA_NUM_ADDR, 1);
 					//	WriteFlash((OTA_NUM_ADDR), &read_flag, 1);
-						printf(">Jump to App1......\r\n");
+					//	printf(">Jump to App1......\r\n");
 						IAP_ExecuteApp(Application_1_Addr);
 			}			
 		}			
 	
-			printf(">Jump to App3......\r\n");
+			//printf(">Jump to App3......\r\n");
 				 read_flag = 0x10;
 			    //Erase_page(OTA_NUM_ADDR, 1);
           //WriteFlash((OTA_NUM_ADDR), &read_flag, 1);	

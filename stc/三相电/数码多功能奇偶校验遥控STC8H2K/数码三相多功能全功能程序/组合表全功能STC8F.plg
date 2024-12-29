@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Administrator\Desktop\数码三相组合表全功能程序\三相多功能全功能.uvproj
+Project File Date:  03/01/2022
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 多功能.c...
+linking...
+Program Size: data=100.4 xdata=1388 code=23942
+creating hex file from "DIDO8C"...
+"DIDO8C" - 0 Error(s), 0 Warning(s).

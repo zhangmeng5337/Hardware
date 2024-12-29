@@ -70,6 +70,11 @@ void config_save()
         len = sizeof(get_config()->dev_size);
         memcpy(buf + index, &get_config()->dev_size, len);
         index = index + len;
+		unsigned char buf2[4];
+		floatTouint32(get_config()->set_up_period, buf2);
+		memcpy(buf + index, buf2, 4);
+		index = index + len;
+
 
 
 //        len = sizeof(get_config()->fault_mask);
@@ -92,7 +97,7 @@ void config_init()
     index = 0;
     ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
     len = 0;
-
+    config_usr.count = 0;
     if ((head & 0xff) == 0x5a)
     {
 
@@ -157,6 +162,8 @@ void config_init()
 		else
         get_config()->dev_size = head;			
 
+
+   
 //        index = index + len;
 //        len = sizeof(get_config()->fault_mask);
 //        ReadFlash(CONFIG_Addr + index, buf, len);
@@ -184,7 +191,7 @@ void config_init()
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
         get_config()->set_up_period = 20;
-        get_config()->mode = 3;
+        get_config()->mode = OFF_MODE;
         get_config()->dev_size = DEV_SIZE;
 
         get_config()->fault_mask = 0xffffffff;

@@ -1,0 +1,209 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\86136\Desktop\20230523多功能奇偶校验遥控功能\数码多功能奇偶校验遥控\数码三相多功能表全功能程序\三相多功能全功能.uvproj
+Project File Date:  05/21/2023
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA5H
+Program Size: data=103.5 xdata=1389 code=24957
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5B99H
+Program Size: data=103.5 xdata=1389 code=24945
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA1H
+Program Size: data=103.5 xdata=1389 code=24953
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA1H
+Program Size: data=103.5 xdata=1389 code=24953
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA4H
+Program Size: data=103.5 xdata=1389 code=24956
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA4H
+Program Size: data=103.5 xdata=1389 code=24956
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA2H
+Program Size: data=103.5 xdata=1389 code=24954
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA1H
+Program Size: data=103.5 xdata=1389 code=24953
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA1H
+Program Size: data=103.5 xdata=1389 code=24953
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BA4H
+Program Size: data=103.5 xdata=1389 code=24956
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BE7H
+Program Size: data=103.5 xdata=1389 code=25023
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+多功能.C(1187): error C231: 'cnst': redefinition
+多功能.C(1198): error C202: 'time_k4out': undefined identifier
+Target not created
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BE7H
+Program Size: data=103.5 xdata=1389 code=25023
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BEBH
+Program Size: data=103.5 xdata=1389 code=25027
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BEBH
+Program Size: data=103.5 xdata=1389 code=25027
+creating hex file from "多功能奇偶STC8F"...
+"多功能奇偶STC8F" - 0 Error(s), 2 Warning(s).
+Rebuild target 'Target 1'
+compiling 多功能.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _PARITYCHECKRECIEVE
+    MODULE:  多功能.obj (_郷_能)
+    ADDRESS: 5BEEH
+Program Size: data=103.5 xdata=1389 code=25030
+creating hex file from "多功能奇偶STC8C"...
+"多功能奇偶STC8C" - 0 Error(s), 2 Warning(s).

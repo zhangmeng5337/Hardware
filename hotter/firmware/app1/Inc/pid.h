@@ -26,6 +26,8 @@ typedef struct
 void fuzzy_proc(unsigned char mode);
 float get_pid_output(void);
 
+float get_indoor_temp(void);
+indoor_temp_stru *set_indoor_temp(void);
 
 
 
