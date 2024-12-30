@@ -128,7 +128,7 @@ void FuzzyPID_Init(FuzzyPID *pid)  //¹¹Ôìº¯Êý
         pid->KpgradSums[i] = 0;
         pid->KigradSums[i] = 0;
         pid->KdgradSums[i] = 0;
-        myfuzzypid.kp_u = 90;
+        myfuzzypid.kp_u = 50;
         myfuzzypid.ki_u = 0.08;
         myfuzzypid.kd_u = 0.0;
     }
