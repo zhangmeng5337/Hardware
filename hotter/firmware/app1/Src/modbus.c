@@ -67,6 +67,7 @@ void modbus_init()
     memset(modbus_tx.error_count, 0,  get_config()->dev_size);
     cmd_list.pb = modbus_cmd_list;
     cmd_enable(PWR_INDEX, 0);
+	*get_power()=10;
 
 }
 modbus_stru *get_recv_machine()
@@ -359,17 +360,18 @@ void machine_status_anly(unsigned char status_num)
              status_num == cmd_list.pb[INSTR_ZT_INDEX].reg)
     {
 
-       // if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == 0x03 &&
+        // if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == 0x03 &&
         //        rs485_u->recv_buf[modbus_recv.dev_addr_index + 2] == 0x04)
         {
 
             pb4 = 3;
             pb3 = rs485_u->recv_buf[pb4];
-			uint32_t tmp;
-			float res;
-			tmp = uint8Touint32(&rs485_u->recv_buf[3]);
-			res = (float)tmp ;
-            *get_power() = res;//uint32Tofloat(&rs485_u->recv_buf[3]);
+            uint32_t tmp;
+            float res;
+            tmp = uint8Touint32(&rs485_u->recv_buf[3]);
+			
+            res = (float)tmp ;
+            *get_power() = 1.2;//uint32Tofloat(&rs485_u->recv_buf[3]);
 
         }
     }
@@ -493,16 +495,16 @@ void analy_modbus_recv()
                         cmd_list.cmd_seq == INSTR_ZT_INDEX)
 
                 {
-                    if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
-                            cmd_list.pb[INSTR_DELI_INDEX].reg ||
-                            cmd_list.pb[cmd_list.cmd_seq].last_reg ==
-                            cmd_list.pb[INSTR_ZT_INDEX].reg)
+//                    if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
+//                            cmd_list.pb[INSTR_DELI_INDEX].reg ||
+//                            cmd_list.pb[cmd_list.cmd_seq].last_reg ==
+//                            cmd_list.pb[INSTR_ZT_INDEX].reg)
                     {
-                        if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
-                                cmd_list.pb[INSTR_DELI_INDEX].reg)
+//                        if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
+//                                cmd_list.pb[INSTR_DELI_INDEX].reg)
                             machine_status_anly(cmd_list.pb[INSTR_DELI_INDEX].reg);
-                        else
-                            machine_status_anly(cmd_list.pb[INSTR_ZT_INDEX].reg);
+//                        else
+//                            machine_status_anly(cmd_list.pb[INSTR_ZT_INDEX].reg);
 
                     }
 
@@ -861,11 +863,11 @@ void modbus_proc()
         }
         else
         {
-			modbus_tx.update = 0;
+            modbus_tx.update = 0;
             if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1
                     && get_config()->mode <= OFF_MODE) //pid poll
             {
-                
+
 
                 if (get_config()->mode != OFF_MODE)
                 {
@@ -883,10 +885,116 @@ void modbus_proc()
                     }
                     else  if (cmd_list.pb[PID_INDEX].status == 2)
                     {
+
+                        if (get_config()->instru_num == DELI)
+                        {
+                            if (cmd_list.pb[INSTR_DELI_INDEX].status == 0)
+                            {
+                                modbus_data_pack(INSTR_DELI_INDEX);
+                                cmd_enable(INSTR_DELI_INDEX, 1);
+
+                                dev_size_tmp = get_config()->dev_size;
+                                get_config()->dev_size = DELI_ADDR;
+                                modbus_data_pack(INSTR_DELI_INDEX);
+                                cmd_enable(INSTR_DELI_INDEX, 1);
+                                cmd_list.pb[INSTR_DELI_INDEX].status = 1;
+                                cmd_list.retry_count = RETRY_COUNT;
+                                cmd_list.cmd_seq = INSTR_DELI_INDEX;
+                                cmd_list.addr = DELI_ADDR;
+                            }
+                        }
+                        else
+                        {
+                            modbus_data_pack(INSTR_ZT_INDEX);
+                            cmd_enable(INSTR_ZT_INDEX, 1);
+                            if (cmd_list.pb[INSTR_ZT_INDEX].status == 0)
+                            {
+                                dev_size_tmp = get_config()->dev_size;
+                                get_config()->dev_size = ZT_ADDR;
+                                cmd_list.pb[INSTR_ZT_INDEX].status = 1;
+                                cmd_list.retry_count = RETRY_COUNT;
+                                cmd_list.cmd_seq = INSTR_ZT_INDEX;
+                                cmd_list.addr = ZT_ADDR;
+                            }
+                        }
+
+
+                        if (cmd_list.pb[INSTR_ZT_INDEX].status == 2 ||
+                                cmd_list.pb[INSTR_DELI_INDEX].status == 2)
+                        {
+                            cmd_list.pb[INSTR_DELI_INDEX].status = 0;
+                            cmd_list.pb[INSTR_ZT_INDEX].status = 0;
+                            get_config()->dev_size = dev_size_tmp;
+                            cmd_list.cmd_seq = STATUS1_INDEX;
+                            cmd_list.pb[STATUS1_INDEX].status = 0;
+
+                            reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+                            registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+                            //reset_registerTick(MODBUS_INSTR_TICK_NO);
+                            registerTick(MODBUS_INSTR_TICK_NO, MODBUS_INSTR_POLL_TIME);
+                            cmd_list.pb[PID_INDEX].status = 0;
+
+                            if (get_config()->count >= 3)
+                            {
+                                // get_config()->count = 0;
+                                set_indoor_temp()->temp_average = 1;
+                            }
+                            else
+                                get_config()->count++;
+
+                        }
+
+                    }
+                    modbus_proc_poll();//
+
+                }
+                else
+                {
+                    if (get_config()->instru_num == DELI)
+                    {
+                        if (cmd_list.pb[INSTR_DELI_INDEX].status == 0)
+                        {
+                            modbus_data_pack(INSTR_DELI_INDEX);
+                            cmd_enable(INSTR_DELI_INDEX, 1);
+
+                            dev_size_tmp = get_config()->dev_size;
+                            get_config()->dev_size = DELI_ADDR;
+                            modbus_data_pack(INSTR_DELI_INDEX);
+                            cmd_enable(INSTR_DELI_INDEX, 1);
+                            cmd_list.pb[INSTR_DELI_INDEX].status = 1;
+                            cmd_list.retry_count = RETRY_COUNT;
+                            cmd_list.cmd_seq = INSTR_DELI_INDEX;
+                            cmd_list.addr = DELI_ADDR;
+                        }
+                    }
+                    else
+                    {
+                        modbus_data_pack(INSTR_ZT_INDEX);
+                        cmd_enable(INSTR_ZT_INDEX, 1);
+                        if (cmd_list.pb[INSTR_ZT_INDEX].status == 0)
+                        {
+                            dev_size_tmp = get_config()->dev_size;
+                            get_config()->dev_size = ZT_ADDR;
+                            cmd_list.pb[INSTR_ZT_INDEX].status = 1;
+                            cmd_list.retry_count = RETRY_COUNT;
+                            cmd_list.cmd_seq = INSTR_ZT_INDEX;
+                            cmd_list.addr = ZT_ADDR;
+                        }
+                    }
+
+					modbus_proc_poll();//
+
+                    if (cmd_list.pb[INSTR_ZT_INDEX].status == 2 ||
+                            cmd_list.pb[INSTR_DELI_INDEX].status == 2)
+                    {
+                        cmd_list.pb[INSTR_DELI_INDEX].status = 0;
+                        cmd_list.pb[INSTR_ZT_INDEX].status = 0;
+                        get_config()->dev_size = dev_size_tmp;
+                        cmd_list.cmd_seq = STATUS1_INDEX;
+                        cmd_list.pb[STATUS1_INDEX].status = 0;
+
                         reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
                         registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-                        //reset_registerTick(MODBUS_INSTR_TICK_NO);
-                        registerTick(MODBUS_INSTR_TICK_NO, MODBUS_INSTR_POLL_TIME);
                         cmd_list.pb[PID_INDEX].status = 0;
 
                         if (get_config()->count >= 3)
@@ -898,76 +1006,10 @@ void modbus_proc()
                             get_config()->count++;
 
                     }
-                    modbus_proc_poll();//
-
-                }
-                else
-                {
-                    // reset_registerTick(MODBUS_INSTR_TICK_NO);
-                    registerTick(MODBUS_INSTR_TICK_NO, MODBUS_INSTR_POLL_TIME);
-                    cmd_list.pb[PID_INDEX].status = 0;
-                    reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
-                    registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-                    if (get_config()->count >= 3)
-                    {
-                        // get_config()->count = 0;
-                        set_indoor_temp()->temp_average = 1;
-                    }
-                    else
-                        get_config()->count++;
 
                 }
 
             }
-//            else if (GetTickResult(MODBUS_INSTR_TICK_NO) == 1) //instru poll
-//            {
-//                if (get_config()->instru_num == DELI)
-//                {
-//                    if (cmd_list.pb[INSTR_DELI_INDEX].status == 0)
-//                    {
-//                        modbus_data_pack(INSTR_DELI_INDEX);
-//                        cmd_enable(INSTR_DELI_INDEX, 1);
-//
-//                        dev_size_tmp = get_config()->dev_size;
-//                        get_config()->dev_size = DELI_ADDR;
-//                        modbus_data_pack(INSTR_DELI_INDEX);
-//                        cmd_enable(INSTR_DELI_INDEX, 1);
-//                        cmd_list.pb[INSTR_DELI_INDEX].status = 1;
-//                        cmd_list.retry_count = RETRY_COUNT;
-//                        cmd_list.cmd_seq = INSTR_DELI_INDEX;
-//                        cmd_list.addr = DELI_ADDR;
-//                    }
-//                }
-//                else
-//                {
-//                    modbus_data_pack(INSTR_ZT_INDEX);
-//                    cmd_enable(INSTR_ZT_INDEX, 1);
-//                    if (cmd_list.pb[INSTR_ZT_INDEX].status == 0)
-//                    {
-//                        dev_size_tmp = get_config()->dev_size;
-//                        get_config()->dev_size = ZT_ADDR;
-//                        cmd_list.pb[INSTR_ZT_INDEX].status = 1;
-//                        cmd_list.retry_count = RETRY_COUNT;
-//                        cmd_list.cmd_seq = INSTR_ZT_INDEX;
-//                        cmd_list.addr = ZT_ADDR;
-//                    }
-//                }
-//                modbus_proc_poll();//
-//
-//                if (cmd_list.pb[INSTR_ZT_INDEX].status == 2 ||
-//                        cmd_list.pb[INSTR_DELI_INDEX].status == 2)
-//                {
-//                    cmd_list.pb[INSTR_DELI_INDEX].status = 0;
-//                    cmd_list.pb[INSTR_ZT_INDEX].status = 0;
-//                    get_config()->dev_size = dev_size_tmp;
-//                    cmd_list.cmd_seq = STATUS1_INDEX;
-//                    cmd_list.pb[STATUS1_INDEX].status = 0;
-//
-//                    reset_registerTick(MODBUS_INSTR_TICK_NO);
-//                    registerTick(MODBUS_INSTR_TICK_NO, MODBUS_INSTR_POLL_TIME);
-//                }
-
-//            }
             else  //read dev
             {
                 registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);

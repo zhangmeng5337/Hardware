@@ -159,7 +159,7 @@
           <Type>0</Type>
           <LineNumber>81</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134376982</Address>
+          <Address>134376862</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -173,18 +173,18 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>897</LineNumber>
+          <LineNumber>988</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134385232</Address>
+          <Address>0</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
+          <BreakIfRCount>0</BreakIfRCount>
           <Filename>..\Src\modbus.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/modbus.c\897</Expression>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -391,72 +391,67 @@
         <Ww>
           <count>40</count>
           <WinNumber>1</WinNumber>
-          <ItemText>mqtt_send_buf</ItemText>
+          <ItemText>indoor_temp_usr</ItemText>
         </Ww>
         <Ww>
           <count>41</count>
           <WinNumber>1</WinNumber>
-          <ItemText>indoor_temp_usr</ItemText>
+          <ItemText>buf</ItemText>
         </Ww>
         <Ww>
           <count>42</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dev_id[0]</ItemText>
+          <ItemText>dev_id</ItemText>
         </Ww>
         <Ww>
           <count>43</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf</ItemText>
+          <ItemText>rs485_u</ItemText>
         </Ww>
         <Ww>
           <count>44</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dev_id</ItemText>
+          <ItemText>indoor_temp_usr</ItemText>
         </Ww>
         <Ww>
           <count>45</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rs485_u</ItemText>
+          <ItemText>tmp_utc,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>46</count>
           <WinNumber>1</WinNumber>
-          <ItemText>indoor_temp_usr</ItemText>
+          <ItemText>rtc_usr,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>47</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tmp_utc,0x0A</ItemText>
+          <ItemText>Now_Date_BIN</ItemText>
         </Ww>
         <Ww>
           <count>48</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rtc_usr,0x0A</ItemText>
+          <ItemText>Now_Time_BIN,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>49</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Now_Date_BIN</ItemText>
+          <ItemText>urtc_bcd</ItemText>
         </Ww>
         <Ww>
           <count>50</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Now_Time_BIN,0x0A</ItemText>
+          <ItemText>pb2</ItemText>
         </Ww>
         <Ww>
           <count>51</count>
           <WinNumber>1</WinNumber>
-          <ItemText>urtc_bcd</ItemText>
+          <ItemText>buf</ItemText>
         </Ww>
         <Ww>
           <count>52</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pb2</ItemText>
-        </Ww>
-        <Ww>
-          <count>53</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>buf</ItemText>
+          <ItemText>\\app\../Src/modbus.c\pb2</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -521,7 +516,7 @@
 
   <Group>
     <GroupName>Application/MDK-ARM</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
