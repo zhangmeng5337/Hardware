@@ -34,7 +34,7 @@ typedef struct
 	unsigned char update[DEV_SIZE];
 	unsigned int status2[STATUS2_SIZE];//设备地址;故障标志位，staus2
 }hotter_stru;
-
+float *get_power(void);
 hotter_stru *get_hotter(unsigned dev_addr);
 
 

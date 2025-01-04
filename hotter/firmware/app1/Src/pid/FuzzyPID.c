@@ -1,4 +1,5 @@
 #include "FuzzyPID.h"
+#include "config.h"
 
 range rang;// = { 1000,-1000,800,-800,100,-100,0.1,-0.1,0.01,-0.01 };
 Error error;//
@@ -128,9 +129,17 @@ void FuzzyPID_Init(FuzzyPID *pid)  //¹¹Ôìº¯Êý
         pid->KpgradSums[i] = 0;
         pid->KigradSums[i] = 0;
         pid->KdgradSums[i] = 0;
-        myfuzzypid.kp_u = 50;
-        myfuzzypid.ki_u = 0.08;
-        myfuzzypid.kd_u = 0.0;
+		if(get_config()->valid_flag == 0)
+		{
+        myfuzzypid.kp_u = 30;
+        myfuzzypid.ki_u = 0.05;
+        myfuzzypid.kd_u = 0.005;
+		
+
+		}
+    myfuzzypid.out_max = 55;
+    myfuzzypid.out_min = 15;
+
     }
 }
 
@@ -362,18 +371,22 @@ float FuzzyPIDcontroller(float Target, float actual)
     else
         myfuzzypid.errosum += error.erro;
 
-    myfuzzypid.detalO_p = myfuzzypid.kp_u * error.erro  + myfuzzypid.ki_u *
-                          myfuzzypid.errosum + myfuzzypid.kd_u * (error.erro - error.erro_ppre);
-    u = u + myfuzzypid.detalO;
-    if (myfuzzypid.detalO_p >= myfuzzypid.out_max)
-        myfuzzypid.detalO_p = myfuzzypid.out_max;
+    myfuzzypid.detalO_p = myfuzzypid.kp_u * (error.erro - error.erro_pre) +
+                          myfuzzypid.ki_u * error.erro + myfuzzypid.kd_u * (error.erro - 2 * error.erro_pre +
+                                  error.erro_ppre);
 
-    if (myfuzzypid.detalO_p <= myfuzzypid.out_min)
-        myfuzzypid.detalO_p = myfuzzypid.out_min;
+//    myfuzzypid.detalO_p = myfuzzypid.kp_u * error.erro  + myfuzzypid.ki_u *
+//                          myfuzzypid.errosum + myfuzzypid.kd_u * (error.erro - error.erro_ppre);
+    //u = u + myfuzzypid.detalO;
 
 
-    myfuzzypid.u1 = myfuzzypid.detalO_p;
-    myfuzzypid.u2 = myfuzzypid.u2 + myfuzzypid.detalO;
+
+    myfuzzypid.u1 = myfuzzypid.u1 + myfuzzypid.detalO_p;
+    if (myfuzzypid.u1 >= myfuzzypid.out_max)
+         myfuzzypid.u1 = myfuzzypid.out_max;
+    if (myfuzzypid.u1 <= myfuzzypid.out_min)
+        myfuzzypid.u1 = myfuzzypid.out_min;;
+  //  myfuzzypid.u2 = myfuzzypid.u2 + myfuzzypid.detalO;
 
     return 0;
 }
@@ -417,8 +430,7 @@ void fuzzy_init(void)
     error.erro_c = 0;
     error.erro_pre = 0;
     error.erro_ppre = 0;
-    myfuzzypid.out_max = 50;
-    myfuzzypid.out_min = 15;
+
     FuzzyPID_Init(&myfuzzypid);
     // float u;
     // u = FuzzyPIDcontroller(Target, actual);

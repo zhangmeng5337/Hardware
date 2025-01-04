@@ -1031,6 +1031,7 @@ main()
 	adc_init();	
 	init();			//初始化
 	time1_init();
+	 Timer3_Init();
 	in_ht7038();	//初始化ht7038
 	k4=0;
   
@@ -1064,7 +1065,7 @@ main()
 			out_disp();
 			sx_bz=1;
 		}
-		
+		VolCurrCal();
 		key_in();		//按键输入
 		du_dldy();		//读电流电压
 		read_dnsj();	//读 电能

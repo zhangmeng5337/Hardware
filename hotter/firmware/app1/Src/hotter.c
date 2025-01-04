@@ -8,7 +8,11 @@ hotter_stru hotter_u5;
 hotter_stru hotter_u6;
 
 
-
+float ep;
+float *get_power()
+{
+	return &ep;
+}
 void init_hotter()
 {
 	

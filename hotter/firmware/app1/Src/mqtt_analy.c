@@ -175,11 +175,20 @@ void anlysis_mqtt_recv()
 
 
     }
+    dev_id = find_json_string("\"ctrlout\": ", ",", 0);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+         get_config()->update_setting = 1;
+        tmp_f = atof(&dev_id[0]);
+        get_pid_params()->out_max = tmp_f;
+    }
+
     dev_id = find_json_string("\"kp\": ", ",", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-        // get_config()->update_setting = 1;
+         get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->kp_u = tmp_f;
     }
@@ -187,7 +196,7 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-        // get_config()->update_setting = 1;
+         get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->ki_u = tmp_f;
     }
@@ -196,10 +205,22 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-        // get_config()->update_setting = 1;
+         get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->kd_u = tmp_f;
     }
+    dev_id = find_json_string("\"instru\":", "}", 0);//native mode
+    if (dev_id != NULL)
+    {
+        tmp_f = atof(&dev_id[0]);
+		if(tmp_f == 0x00)
+        get_config()->instru_num = DELI;
+		else if(tmp_f == 0x01)
+			get_config()->instru_num = ZT;
+		 get_config()->update_setting = 1;
+    }
+
+
     dev_id = find_json_string("\"scheMode\":", "}", 0);//native mode
     if (dev_id != NULL)
     {
@@ -721,6 +742,7 @@ void upload()
         mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tout;
     else
         mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor;
+	 mqtt_payload_u.data[WATER_IN_INDEX] = get_ai_data()->temp[get_config()->tin_index];
     //get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
 
@@ -877,9 +899,9 @@ void upload()
                 \\22Status Data\\22: {\\0D\\0A\\
                                       \\22Out Tem\\22: %.1f,\\0D\\0A\\
                                       \\22In Tem\\22: %.1f,\\0D\\0A\\
-                                      \\22Front Pressure\\22: %.2f,\\0D\\0A\\
-                                      \\22After Pressure\\22: %.2f,\\0D\\0A\\
-                                      \\22Status\\22: %u,\\0D\\0A\\
+                                      \\22FroP\\22: %.2f,\\0D\\0A\\
+                                      \\22AftP\\22: %.2f,\\0D\\0A\\
+                                      \\22Sta\\22: %u,\\0D\\0A\\
                                       \\22Sta1\\22: %s\\0D\\0A\\
                                      },\\0D\\0A\\
                 \\22Dev Params\\22: {\\0D\\0A\\
@@ -888,7 +910,9 @@ void upload()
                                      \\22Set IT\\22: %.1f,\\0D\\0A\\
                                      \\22out\\22: %.0f,\\0D\\0A\\
                                      \\22p\\22: %.0f,\\0D\\0A\\
-                                     \\22Up Per\\22: %.0f\\0D\\0A\\
+                                     \\22i\\22: %.3f,\\0D\\0A\\
+                                     \\22i\\22: %.1f,\\0D\\0A\\
+                                     \\22d\\22: %.3f\\0D\\0A\\
                                     }\\0D\\0A\\
     }", mqtt_payload_u.devid,
     mqtt_payload_u.data[TOUT_INDEX],
@@ -902,7 +926,9 @@ void upload()
                         mqtt_payload_u.data[WATER_IN_INDEX],
                         get_pid_params()->u1,
                         get_pid_params()->kp_u,
-                        mqtt_payload_u.data[UP_PERIOD_INDEX]);
+                        get_pid_params()->ki_u,
+                        *get_power(),
+                        get_pid_params()->kd_u);
 
 
 
@@ -915,8 +941,8 @@ else if (status_out == 2)
             \\22Status Data\\22: {\\0D\\0A\\
                                   \\22Out Tem\\22: %.1f,\\0D\\0A\\
                                   \\22In Tem\\22: %.1f,\\0D\\0A\\
-                                  \\22Front Pressure\\22: %.2f,\\0D\\0A\\
-                                  \\22After Pressure\\22: %.2f,\\0D\\0A\\
+                                  \\22FroP\\22: %.2f,\\0D\\0A\\
+                                  \\22AftP\\22: %.2f,\\0D\\0A\\
                                   \\22Status\\22: %u,\\0D\\0A\\
                                   \\22air pump_status2\\22: %s\\0D\\0A\\
                                  },\\0D\\0A\\

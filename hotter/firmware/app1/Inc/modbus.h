@@ -11,7 +11,11 @@
 #define PID_INDEX				1
 #define STATUS1_INDEX			2
 #define STATUS2_INDEX			3
+#define INSTR_DELI_INDEX		4
+#define INSTR_ZT_INDEX		    5
 
+#define DELI_ADDR   0x05
+#define ZT_ADDR     0x06
 
 #define CONTROLLER_REG				0x0000
 #define CONTROLLER_REG2				0x0040

@@ -2,6 +2,8 @@
 #include "stmflash.h"
 #include "ai_proc.h"
 #include "modbus.h"
+#include "FuzzyPID.h"
+
 
 
 static CONFIG_stru config_usr;
@@ -12,57 +14,13 @@ void config_save()
     //uint32_t addr_count = 0;
     uint8_t buf[512];
     unsigned int len, index;
+	float tmp;
     if (config_usr.update_setting)
     {
         ReadFlash(CONFIG_Addr, buf, 512);
+			buf[0] = 0x5a;
         Erase_page(CONFIG_Addr, 1); //²Á³ý2ÉÈÇø
         index = 256;
-        //buf[0] = 0x5a;
-//        len = strlen(get_config()->user);
-//        memcpy(buf + index, get_config()->user, len);
-//        index = index + len;
-
-//        len = strlen(get_config()->password);
-//        memcpy(buf + index, get_config()->password, len);
-//        index = index + len;
-
-
-//        len = strlen(get_config()->mqtt_ip);
-//        memcpy(buf + index, get_config()->mqtt_ip, len);
-//        index = index + len;
-
-
-//        len = strlen(get_config()->mqtt_port);
-//        memcpy(buf + index, get_config()->mqtt_port, len);
-//        index = index + len;
-
-
-
-//        len = strlen(get_config()->version);
-//        memcpy(buf + index, get_config()->version, len);
-//        index = index + len;
-
-
-//        len = strlen(get_config()->http_ip);
-//        memcpy(buf + index, get_config()->http_ip, len);
-//        index = index + len;
-
-
-//        len = strlen(get_config()->http_port);
-//        memcpy(buf + index, get_config()->http_port, len);
-//        index = index + len;
-
-//        len = sizeof(get_config()->set_tout);
-//        memcpy(buf + index, &get_config()->set_tout, len);
-//        index = index + len;
-
-//        len = sizeof(get_config()->set_tindoor);
-//        memcpy(buf + index, &get_config()->set_tindoor, len);
-//        index = index + len;
-
-//        len = sizeof(get_config()->set_up_period);
-//        memcpy(buf + index, &get_config()->set_up_period, len);
-//        index = index + len;
 
         len = sizeof(get_config()->mode);
         memcpy(buf + index, &get_config()->mode, len);
@@ -71,19 +29,37 @@ void config_save()
         memcpy(buf + index, &get_config()->dev_size, len);
         index = index + len;
 		unsigned char buf2[4];
-		floatTouint32(get_config()->set_up_period, buf2);
+			tmp = get_config()->set_up_period;
+		floatTouint32(tmp, buf2);
 		memcpy(buf + index, buf2, 4);
+		len = 4;
 		index = index + len;
 
+	   floatTouint32(get_pid_params()->kp_u, buf2);
+		memcpy(buf + index, buf2, 4);
+	   len = 4;
+	   index = index + len;
+	   
+	   floatTouint32(get_pid_params()->ki_u, buf2);
+		memcpy(buf + index, buf2, 4);
+	   len = 4;
+	   index = index + len;
+	   
+	   floatTouint32(get_pid_params()->kd_u, buf2);
+		memcpy(buf + index, buf2, 4);
+	   len = 4;
+	   index = index + len;
+	  
+		memcpy(buf + index, &get_config()->instru_num, 1);
+	   len = 1;
+	   index = index + len;
+	   
+	   floatTouint32(get_pid_params()->out_max, buf2);
+		memcpy(buf + index, buf2, 4);
+	   len = 4;
+	   index = index + len;
 
-
-//        len = sizeof(get_config()->fault_mask);
-//        memcpy(buf + index, &get_config()->fault_mask, len);
-//        index = index + len;
-
-
-
-        WriteFlashBytes((CONFIG_Addr), (uint8_t *)(buf), 512);
+       WriteFlashBytes((CONFIG_Addr), (uint8_t *)(buf), 512);
         config_usr.update_setting = 0;
 
     }
@@ -98,59 +74,13 @@ void config_init()
     ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
     len = 0;
     config_usr.count = 0;
+	get_config()->valid_flag = 0;
     if ((head & 0xff) == 0x5a)
     {
 
-
+        get_config()->valid_flag = 1;
         index = 256;
-//        len = sizeof(get_config()->user);
-//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->user, len);
 
-//        index = index + len;
-//        len = sizeof(get_config()->password);
-//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->password, len);
-
-//        index = index + len;
-//        len = sizeof(get_config()->mqtt_ip);
-//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_ip, len);
-
-//        index = index + len;
-//        len = sizeof(get_config()->mqtt_port);
-//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->mqtt_port, len);
-
-
-//        index = index + len;
-//        len = sizeof(get_config()->version);
-//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->version, len);
-
-
-//        index = index + len;
-//        len = sizeof(get_config()->http_ip);
-//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_ip, len);
-
-//        index = index + len;
-//        len = sizeof(get_config()->http_port);
-//        ReadFlash(CONFIG_Addr + index, (uint8_t *)get_config()->http_port, len);
-
-
-//        index = index + len;
-//        len = sizeof(get_config()->set_tout);
-//        ReadFlash(CONFIG_Addr + index, buf, len);
-//        memcpy(&get_config()->set_tout, buf, len);
-
-//        index = index + len;
-//        len = sizeof(get_config()->set_tindoor);
-//        ReadFlash(CONFIG_Addr + index, buf, len);
-//        memcpy(&get_config()->set_tindoor, buf, len);
-
-//        index = index + len;
-//        len = sizeof(get_config()->set_up_period);
-//        // ReadFlash(CONFIG_Addr + index, &get_config()->set_up_period, len);
-//        ReadFlash(CONFIG_Addr + index, buf, len);
-//        memcpy(&get_config()->set_up_period, buf, len);
-
-
-        index = 256 ;
         len = sizeof(get_config()->mode);
         ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
         get_config()->mode = head;
@@ -161,7 +91,35 @@ void config_init()
         get_config()->dev_size = DEV_SIZE;
 		else
         get_config()->dev_size = head;			
+		index = index + 1;
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
+		index = index + 4;
+		get_config()->set_up_period = uint32Tofloat(buf);
 
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
+		index = index + 4;
+		get_pid_params()->kp_u = uint32Tofloat(buf);
+
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
+		index = index + 4;
+		get_pid_params()->ki_u = uint32Tofloat(buf);
+
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
+		index = index + 4;
+		get_pid_params()->kd_u = uint32Tofloat(buf);
+		
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 1);
+		index = index + 1;
+		get_config()->instru_num = buf[0];
+		
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
+		index = index + 4;
+		get_pid_params()->out_max = uint32Tofloat(buf);
+
+
+
+		//ReadFlash(CONFIG_Addr + index, buf, 4);
+        //uint32Tofloat(unsigned char *buf)
 
    
 //        index = index + len;
@@ -192,6 +150,7 @@ void config_init()
         get_config()->reboot = 0;
         get_config()->set_up_period = 20;
         get_config()->mode = OFF_MODE;
+		get_config()->instru_num = DELI;
         get_config()->dev_size = DEV_SIZE;
 
         get_config()->fault_mask = 0xffffffff;
@@ -243,6 +202,7 @@ void config_init()
     get_config()->pin_index = AI_PUMP_F_INDEX;
     get_config()->po_index = AI_PUMP_E_INDEX;
 
+	get_config()->instru_num = DELI;
 
 
 

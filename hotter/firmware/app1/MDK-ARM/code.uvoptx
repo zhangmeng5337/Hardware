@@ -157,25 +157,25 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>432</LineNumber>
+          <LineNumber>81</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134374738</Address>
+          <Address>134376982</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\mqtt_analy.c</Filename>
+          <Filename>..\Src\config.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/mqtt_analy.c\432</Expression>
+          <Expression>\\app\../Src/config.c\81</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>1027</LineNumber>
+          <LineNumber>897</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134384326</Address>
+          <Address>134385232</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -184,7 +184,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\modbus.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\app\../Src/modbus.c\1027</Expression>
+          <Expression>\\app\../Src/modbus.c\897</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -423,12 +423,47 @@
           <WinNumber>1</WinNumber>
           <ItemText>indoor_temp_usr</ItemText>
         </Ww>
+        <Ww>
+          <count>47</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tmp_utc,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>48</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>rtc_usr,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>49</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Now_Date_BIN</ItemText>
+        </Ww>
+        <Ww>
+          <count>50</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Now_Time_BIN,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>51</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>urtc_bcd</ItemText>
+        </Ww>
+        <Ww>
+          <count>52</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pb2</ItemText>
+        </Ww>
+        <Ww>
+          <count>53</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buf</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x8020000</ItemText>
+          <ItemText>0x80a0000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

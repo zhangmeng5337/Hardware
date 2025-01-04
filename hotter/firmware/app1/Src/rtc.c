@@ -62,7 +62,7 @@ void utcTortc(uint64_t utc_t)
     time_t seconds=utc_t/1000;//unix timestamp
     gm_date = localtime(&seconds);
     tmp = gm_date->tm_year-100;
-    if(tmp==rtc_usr.Year)
+    if(tmp==rtc_usr.Year||tmp<=34)
     {
         //rtc_usr.Year = tmp;
         rtc_usr.Month = gm_date->tm_mon+1;

@@ -1,13 +1,19 @@
 #include "intrins.h"
 #include "math.h"
 
+#define FOSC        33000000UL
+#define BRT         (65536 - FOSC / 115200 / 4)
 
 
 #define ADCTIM  (*(unsigned char volatile xdata *)0xfea8)
-#define SYS_CLK 24000000
-#define BUBBLE_SORT 1
-#define SUM_LENGTH 16
+
+#define ADC_ZERO    2048    // 0点读数
+#define ADC_CALI_COFF 0.0494
+#define ADC_CALI_ICOFF  0.0006135
+
+#define SUM_LENGTH 300
 #define AdcVref 2.5
+
 #define UA_CHN   0
 #define UB_CHN   1
 #define UC_CHN   4
@@ -15,16 +21,76 @@
 #define IB_CHN   7
 #define IC_CHN   2
 
+void    ADC_convert(void);
 
+unsigned char adcPollChn[6] = {UA_CHN, IA_CHN, UB_CHN, IB_CHN, UC_CHN, IC_CHN};
 unsigned int  zero;
 unsigned int square_ok;
 
-unsigned int ua_e, ub_e, uc_e;
-unsigned ia_e, ib_e, ic_e;
+unsigned int freq_count = 0;
+unsigned int freq;
+unsigned char freq_flag;
 
-unsigned int ua, ub, uc;
-unsigned ia, ib, ic;
-unsigned int ADC_Buffer[SUM_LENGTH];
+unsigned int ua, ub, uc;//电压有效值
+unsigned ia, ib, ic;//电流有效值
+float pa, pb, pc; //有功功率
+float sa, sb, sc; //视在功率
+float qa, qb, qc; //无功功率
+
+float total_s; //总视在功率
+float total_q; //总无功功率
+float total_p; //总无功功率
+
+float fi_a;
+float fi_b;
+float fi_c;
+float fi_s;
+
+
+bit busy;
+
+unsigned int adcVolBuf[SUM_LENGTH];
+unsigned int adcCurrBuf[SUM_LENGTH];
+void UartSend(char dat)
+{
+    while (busy);
+    busy = 1;
+    SBUF = dat;
+}
+
+void UartSendStr(char *p)
+{
+    while (*p)
+    {
+        UartSend(*p++);
+    }
+}
+
+
+//void Timer0_Init(void)      //1毫秒@33.000MHz
+//{
+//    AUXR |= 0x80;           //定时器时钟1T模式
+//    TMOD &= 0xF0;           //设置定时器模式
+//    TL0 = 0x18;             //设置定时初始值
+//    TH0 = 0x7F;             //设置定时初始值
+//    TF0 = 0;                //清除TF0标志
+//    TR0 = 1;                //定时器0开始计时
+//}
+void Timer3_Init(void)		//1毫秒@33.000MHz
+{
+	T4T3M |= 0x02;			//定时器时钟1T模式
+	T3L = 0x18;				//设置定时初始值
+	T3H = 0x7F;				//设置定时初始值
+	T4T3M |= 0x08;			//定时器3开始计时
+    IE2 = ET3;                                  //使能定时器中断
+}
+void TM3_Isr() interrupt 19
+{
+    unsigned int last_vol;
+    ADC_convert();
+
+}
+
 void ADC_Isr() interrupt 5
 {
     ADC_CONTR &= ~0x20;                         //清中断标志
@@ -50,7 +116,9 @@ void adc_init()
     EADC = 1;                                   //使能ADC中断
     EA = 1;
     //ADC_CONTR |= 0x40;                          //启动AD转换
-
+    square_ok = 0;
+    zero = ADC_ZERO;
+	freq_flag = 0;
     // while (1);
 }
 #ifdef BUBBLE_SORT  //使用冒泡排序
@@ -102,92 +170,8 @@ void BubbleSort(unsigned int *pDataArry, unsigned char DataNum)
     }
 }
 #endif
-/*****************************
 
-******************************/
-void vol_assign(unsigned int chn, long unsigned int voleSquare)
-{
-   if(square_ok == 1)
-   	{
-   square_ok = 0;
-    switch (chn)
-    {
-        case UA_CHN:
-            ua = voleSquare;
-            break;
-        case UB_CHN:
-            ub = voleSquare;
-            break;
 
-        case UC_CHN:
-            uc = voleSquare;
-            break;
-
-        case IA_CHN:
-            ia = voleSquare;
-            break;
-        case IB_CHN:
-            ib = voleSquare;
-            break;
-        case IC_CHN:
-            ic = voleSquare;
-			square_ok = 1;
-            break;
-
-        default:
-            break;
-    }
-
-   }
-
-	 square_ok;
-}
-void cal_VolCurr(unsigned char chn)
-{
-   long unsigned int result;
-	if(square_ok == 1)
-	{
-    switch (chn)
-    {
-        case UA_CHN:
-            ua_e = ua/SUM_LENGTH;
-			ua_e = sqrt(ua_e);
-            break;
-        case UB_CHN:
-            ub_e = ub/SUM_LENGTH;
-			ub_e = sqrt(ub_e);
-
-            break;
-
-        case UC_CHN:
-            uc_e = uc/SUM_LENGTH;
-			uc_e = sqrt(uc_e);
-
-            break;
-
-        case IA_CHN:
-            ic_e = ia/SUM_LENGTH;
-			ic_e = sqrt(ic_e);
-
-            break;
-        case IB_CHN:
-            ib_e = ib/SUM_LENGTH;
-			ib_e = sqrt(ib_e);
-
-            break;
-        case IC_CHN:
-            ic_e = ic/SUM_LENGTH;
-			ic_e = sqrt(ic_e);
-
-			square_ok = 1;
-            break;
-
-        default:
-            break;
-    }
-
-	}
-}
 //========================================================================
 // 函数: unsigned int Get_ADC12bitResult(unsigned char channel))  //channel = 0~15
 // 描述: 查询法读一次ADC结果.
@@ -199,60 +183,204 @@ unsigned int    Get_ADC12bitResult(unsigned char channel)   //channel = 0~15
 {
     ADC_RES = 0;
     ADC_RESL = 0;
-
     ADC_CONTR = 0x80 | ADC_START | channel;
-    NOP(10);            //
-    while ((ADC_CONTR & ADC_FLAG) == 0)  ;  //等待ADC结束
-    ADC_CONTR &= ~ADC_FLAG;
-    return ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+
 }
 /***********************************
 查询方式做一次ADC, chn为通道号, chn=0~7对应P1.0~P1.7, chn=8~14对应P0.0~P0.6, chn=15对应BandGap电压.
 ***********************************/
-void    ADC_convert(unsigned char chn)
+void    ADC_convert()
 {
-    long unsigned int   j;
-    unsigned char   k;      //平均值滤波时使用
-    long  unsigned int   result;
- long  unsigned tmp;
-    Get_ADC12bitResult(
-        chn);        //参数i=0~15,查询方式做一次ADC, 切换通道后第一次转换结果丢弃. 避免采样电容的残存电压影响.
-    //Get_ADC12bitResult(chn);      //参数i=0~15,查询方式做一次ADC, 切换通道后第二次转换结果丢弃. 避免采样电容的残存电压影响.
-
-//#ifdef BUBBLE_SORT  //使用冒泡排序，去掉最高值、最低值，求中间平均值
-//
-//    for (k = 0; k < 16; k++)
-//    {
-//
-//	}
-//        ADC_Buffer[k] = Get_ADC12bitResult(chn);
-//    BubbleSort(ADC_Buffer, 16); //冒泡排序
-//    for (k = 4, j = 0; k < 12; k++)
-//        j += ADC_Buffer[k];  //取中间8个数据
-//    j = j * 10;
-//    j = j / 8;      // 求平均
-//
-//#else   //采样累加，求平均值（不需要的话可将 SUM_LENGTH 定义值改为 1 ）
-  tmp = 0;
-    for (k = 0, j = 0; k < SUM_LENGTH; k++)
+    static unsigned char i = 0, j = 0;
+    if ((ADC_CONTR & ADC_FLAG) == 1)
     {
-        j += Get_ADC12bitResult(
-                 chn);   // 采样累加和 参数0~15,查询方式做一次ADC, 返回值就是结果
 
-    if(j>=zero)
-    {
-		j = j -zero;
-	}
-	else
-	{
-		j = zero-j;	
-	}
-	tmp = tmp + j * j;
+        if (i % 2 == 0)
+            adcVolBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+        else
+            adcCurrBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+        ADC_CONTR &= ~ADC_FLAG;
+        Get_ADC12bitResult(i++);
+        if (i == 6)
+        {
+            i = 0;
+        }
+        if (j == 100)
+        {
+            j = 0;
+            square_ok = 1;
+        }
 
-	}
+    }
 
-    result = tmp;
-             vol_assign(chn, result);
 }
+
+void VolCurrCal()
+{
+    float tmp1, tmp2, tmp3;
+    float uatmp, ubtmp, uctmp;
+    float iatmp, ibtmp, ictmp;
+
+    unsigned char i;
+    if (square_ok == 1)
+    {
+        uatmp = 0;
+        ubtmp = 0;
+        uctmp = 0;
+        iatmp = 0;
+        ibtmp = 0;
+        ictmp = 0;
+        pa = 0;
+        pb = 0;
+        pc = 0;
+        sa = 0;
+		sb = 0;
+		sc = 0;
+		 qa = 0;
+		 qb = 0;
+		 qc = 0;
+         total_s = 0;
+		 total_q = 0;
+		total_p = 0;
+
+		
+        for (i = 0; i < SUM_LENGTH / 3; i++)
+        {
+            if(adcVolBuf[6 * i]>=zero)
+				tmp1 = adcVolBuf[6 * i] - zero;
+			else
+			tmp1 = zero - adcVolBuf[6 * i];
+            tmp1 = tmp1 * ADC_CALI_COFF; //电压
+            tmp2 = adcCurrBuf[1 + 6 * i] * ADC_CALI_ICOFF; //电流
+            tmp2 = tmp2 -1.25;
+			tmp2 = tmp2/62;
+			tmp2 = tmp2*2000;	
+
+            pa = tmp1 * tmp2 + pa; //单件有功功率
+            tmp1 = tmp1 * tmp1; // uk^2
+            tmp2 = tmp2 * tmp2; //ik^2
+            uatmp = uatmp + tmp1;//sum uk^2
+            iatmp = iatmp + tmp2;//sum uk^2
+        }
+        uatmp = uatmp / SUM_LENGTH;
+        uatmp = uatmp * 3;
+        uatmp = sqrt(uatmp);
+
+        iatmp = iatmp / SUM_LENGTH;
+        iatmp = iatmp * 3;
+        iatmp = sqrt(iatmp);
+
+        sa = uatmp * iatmp;
+
+        uatmp = uatmp * 10; //放大10倍
+        iatmp = iatmp * 10;
+
+        ia = (unsigned int)iatmp;
+        ua = (unsigned int)uatmp;
+
+        for (i = 0; i < SUM_LENGTH / 3; i++)
+        {
+            if(adcVolBuf[2 + 6 * i]>=zero)
+				tmp1 = adcVolBuf[2 + 6 * i] - zero;
+			else
+			tmp1 = zero - adcVolBuf[2 + 6 * i];
+
+			
+            tmp1 = tmp1 * ADC_CALI_COFF; //电压
+            tmp2 = adcCurrBuf[3 + 6 * i] * ADC_CALI_ICOFF; //电流
+            tmp2 = tmp2 -1.25;
+			tmp2 = tmp2/62;
+			tmp2 = tmp2*2000;			
+            pb = tmp1 * tmp2 + pa; //单件有功功率
+            tmp1 = tmp1 * tmp1; // uk^2
+            tmp2 = tmp2 * tmp2; //ik^2
+            uatmp = uatmp + tmp1;//sum uk^2
+            iatmp = iatmp + tmp2;//sum uk^2
+        }
+        uatmp = uatmp / SUM_LENGTH;
+        uatmp = uatmp * 3;
+        uatmp = sqrt(uatmp);
+
+        iatmp = iatmp / SUM_LENGTH;
+        iatmp = iatmp * 3;
+        iatmp = sqrt(iatmp);
+
+        sb = uatmp * iatmp;
+
+        uatmp = uatmp * 10; //放大10倍
+        iatmp = iatmp * 10;
+
+        ib = (unsigned int)iatmp;
+        ub = (unsigned int)uatmp;
+
+
+
+        for (i = 0; i < SUM_LENGTH / 3; i++)
+        {
+            if(adcVolBuf[4 + 6 * i]>=zero)
+				tmp1 = adcVolBuf[4 + 6 * i] - zero;
+			else
+			tmp1 = zero - adcVolBuf[4 + 6 * i];
+
+			
+            tmp1 = tmp1 * ADC_CALI_COFF; //电压
+            tmp2 = adcCurrBuf[5 + 6 * i] * ADC_CALI_ICOFF; //电流
+            tmp2 = tmp2 -1.25;
+			tmp2 = tmp2/62;
+			tmp2 = tmp2*2000;	
+
+            pc = tmp1 * tmp2 + pa; //单件有功功率
+            tmp1 = tmp1 * tmp1; // uk^2
+            tmp2 = tmp2 * tmp2; //ik^2
+            uatmp = uatmp + tmp1;//sum uk^2
+            iatmp = iatmp + tmp2;//sum uk^2
+        }
+        uatmp = uatmp / SUM_LENGTH;
+        uatmp = uatmp * 3;
+        uatmp = sqrt(uatmp);
+
+        iatmp = iatmp / SUM_LENGTH;
+        iatmp = iatmp * 3;
+        iatmp = sqrt(iatmp);
+
+        sc = uatmp * iatmp;//
+
+        uatmp = uatmp * 10; //放大10倍
+        iatmp = iatmp * 10;
+
+        ic = (unsigned int)iatmp;
+        uc = (unsigned int)uatmp;
+
+
+
+        for (i = 0; i < SUM_LENGTH; i++)
+        {
+            adcVolBuf[i] = 0;
+            adcCurrBuf[i] = 0;
+        }
+        square_ok = 0;
+		qa = sa - pa;
+		qb = sb - pb;
+		qc = sc - pc;
+		total_p = total_p + pa;
+		total_p = total_p + pb;
+		total_p = total_p + pc;
+
+		total_s = total_s +sa;
+		total_s = total_s +sb;
+		total_s = total_s + sc;
+		total_q = total_q + qa;
+		total_q= total_q +qb;
+		total_q = total_q + qc;
+		fi_a = pa / sa;
+		fi_b = pb / sb;
+		
+		fi_c = pc / sc;
+		fi_s = total_p / total_s;		
+    }
+}
+
+
+
 
 

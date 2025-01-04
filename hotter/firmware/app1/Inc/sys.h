@@ -3,8 +3,10 @@
 #include "main.h"
 void delay_us(uint32_t nCount);
 #include "main.h"
-#define SCHEDU_POLL_TIME		300000
-#define PID_TICK_TIME			180000
+#define MODBUS_INSTR_POLL_TIME		    600000  //10*60*1000  600000
+
+#define SCHEDU_POLL_TIME		300000//300000
+#define PID_TICK_TIME			180000//180000
 #define MODBUS_POLL_TIME		3000
 #define MODBUS_TX_TIME  		500
 #define MODBUS_TX_TIME_LONG  	500
@@ -20,6 +22,7 @@ void delay_us(uint32_t nCount);
 #define MODBUS_MQTT_PID_TICK_NO   4
 #define MODBUS_POLL_TICK_NO  5
 #define SCHEDU_TICK_NO  6
+#define MODBUS_INSTR_TICK_NO 7
 
 
 typedef struct

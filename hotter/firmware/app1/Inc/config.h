@@ -6,7 +6,8 @@
 #define SMART_MODE  2
 #define SCHE_MODE   3
 #define OFF_MODE   4
-
+#define DELI		0
+#define ZT			1
 
 void delay_us(uint32_t nCount);
 #include "main.h"
@@ -46,6 +47,7 @@ typedef struct
 	uint16_t seq_count;
 	char http_download[128];//ftp url
     //unsigned char temp[24];//temperature
+    unsigned char instru_num;
     unsigned char mode;// 1---smart  2----native no need net 4---customer 3ctrl schedule temp
     unsigned char dev_size;
     unsigned char ai_config[32];
@@ -78,6 +80,7 @@ typedef struct
 	unsigned char po_index;
 	unsigned char pin_index;	
 	uint32_t timeout;
+	unsigned char valid_flag;
 	//unsigned char sub_sring[3][64];
 
 } CONFIG_stru;
