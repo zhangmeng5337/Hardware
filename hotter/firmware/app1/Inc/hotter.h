@@ -36,6 +36,7 @@ typedef struct
 }hotter_stru;
 float *get_power(void);
 hotter_stru *get_hotter(unsigned dev_addr);
+uint32_t *get_power2(void);
 
 
 #endif

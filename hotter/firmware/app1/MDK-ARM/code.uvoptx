@@ -173,18 +173,34 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>988</LineNumber>
+          <LineNumber>944</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>134385214</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
+          <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\modbus.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\app\../Src/modbus.c\944</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>971</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134385334</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\modbus.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\app\../Src/modbus.c\971</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

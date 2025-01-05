@@ -7,12 +7,18 @@ hotter_stru hotter_u4;
 hotter_stru hotter_u5;
 hotter_stru hotter_u6;
 
+uint32_t eep;
 
 float ep;
 float *get_power()
 {
 	return &ep;
 }
+uint32_t *get_power2()
+{
+	return &eep;
+}
+
 void init_hotter()
 {
 	
