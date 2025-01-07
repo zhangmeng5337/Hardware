@@ -26,8 +26,8 @@
 #define APP2   1
 
 #define APP3   3
-#define OTA_UPDATE_TO   APP1
-#define VERSION        "V1.0.223"
+#define OTA_UPDATE_TO   APP2
+#define VERSION        "V1.0.228"
 
 
 #define OTA_NUM_ADDR   0x801fff0
@@ -69,6 +69,7 @@ void ReadFlash(uint32_t addr, uint8_t *buff, int buf_len);
 void WriteFlashBytes(uint32_t addr, uint8_t *buff, int buf_len);
 void floatTouint32(float dat,unsigned char *buf);
 float uint32Tofloat(unsigned char *buf);
+uint32_t uint8Touint322(unsigned char *buf);
 
 #endif
 

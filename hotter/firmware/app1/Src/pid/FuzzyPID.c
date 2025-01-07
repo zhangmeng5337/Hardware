@@ -131,14 +131,24 @@ void FuzzyPID_Init(FuzzyPID *pid)  //¹¹Ôìº¯Êý
         pid->KdgradSums[i] = 0;
 		if(get_config()->valid_flag == 0)
 		{
-        myfuzzypid.kp_u = 30;
-        myfuzzypid.ki_u = 0.05;
-        myfuzzypid.kd_u = 0.005;
+        	myfuzzypid.kp_u = 30;
+        	myfuzzypid.ki_u = 0.05;
+        	myfuzzypid.kd_u = 0.005;
 		
 
 		}
-    myfuzzypid.out_max = 55;
-    myfuzzypid.out_min = 15;
+		else
+		{
+			if(myfuzzypid.kp_u<=0||myfuzzypid.kp_u>=100)
+			{
+        	myfuzzypid.kp_u = 30;
+        	myfuzzypid.ki_u = 0.05;
+        	myfuzzypid.kd_u = 0.005;
+
+			}
+		}
+    		myfuzzypid.out_max = 50;
+    		myfuzzypid.out_min = 15;
 
     }
 }

@@ -205,7 +205,13 @@ uint32_t uint8Touint322(unsigned char *buf)
 	   //float a=3.14159;
 	   uint32_t b;
 	  
-	   b=(buf[0]<<24)|(buf[1]<<16)|(buf[2]<<8)|(buf[3]<<0);
+	  b=buf[0];
+	  b=b<<8;
+	  b = b|buf[1];
+	  b=b<<8;
+	  b = b|buf[2];
+	  b=b<<8;
+	  b = b|buf[3];
        return b;
 }
 

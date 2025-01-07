@@ -712,8 +712,8 @@ void upload()
          //   get_ai_data()->temp[get_config()->tin_index]; //water IN
 	mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
 
-	mqtt_payload_u.data[PUMP_F_INDEX] =
-        get_ai_data()->press[get_config()->pin_index]; //pump front
+	mqtt_payload_u.data[PUMP_F_INDEX] = *get_power();
+        //get_ai_data()->press[get_config()->pin_index]; //pump front
     mqtt_payload_u.data[PUMP_E_INDEX] =
         get_ai_data()->press[get_config()->po_index]; //pump end
 
@@ -901,17 +901,17 @@ void upload()
                                       \\22In Tem\\22: %.1f,\\0D\\0A\\
                                       \\22FroP\\22: %.2f,\\0D\\0A\\
                                       \\22AftP\\22: %.2f,\\0D\\0A\\
-                                      \\22Sta\\22: %u,\\0D\\0A\\
+                                      \\22Dsta\\22: %u,\\0D\\0A\\
                                       \\22Sta1\\22: %s\\0D\\0A\\
                                      },\\0D\\0A\\
                 \\22Dev Params\\22: {\\0D\\0A\\
                                      \\22Ver\\22: \\22%s\\22,\\0D\\0A\\
-                                     \\22Set OT\\22: %.1f,\\0D\\0A\\
-                                     \\22Set IT\\22: %.1f,\\0D\\0A\\
-                                     \\22out\\22: %.0f,\\0D\\0A\\
+                                     \\22Sett\\22: %u,\\0D\\0A\\
+                                     \\22SetOt\\22: %.1f,\\0D\\0A\\
+                                     \\22SetIt\\22: %.1f,\\0D\\0A\\
+                                     \\22cout\\22: %.0f,\\0D\\0A\\
                                      \\22p\\22: %.0f,\\0D\\0A\\
                                      \\22i\\22: %.3f,\\0D\\0A\\
-                                     \\22i\\22: %.2f,\\0D\\0A\\
                                      \\22d\\22: %.3f\\0D\\0A\\
                                     }\\0D\\0A\\
     }", mqtt_payload_u.devid,
@@ -922,12 +922,12 @@ void upload()
                         mqtt_payload_u.status[DEV_STATUS_INDEX],
                         buf2,
                         mqtt_payload_u.version,
+                        get_config()->set_tout,
                         mqtt_payload_u.data[WATER_O_INDEX],
                         mqtt_payload_u.data[WATER_IN_INDEX],
                         get_pid_params()->u1,
                         get_pid_params()->kp_u,
                         get_pid_params()->ki_u,
-                        *get_power(),
                         get_pid_params()->kd_u);
 
 

@@ -393,7 +393,9 @@ void machine_status_anly(unsigned int status_num)
             pb3 = rs485_u->recv_buf[pb4];
             uint32_t tmp;
             float res;
-            res = uint8Touint322(&rs485_u->recv_buf[3]);
+            tmp = uint8Touint322(&rs485_u->recv_buf[3]);
+
+			 res=*(float*)&tmp;
 			res= res/1000.0;
 			//*get_power2() = res;
 
