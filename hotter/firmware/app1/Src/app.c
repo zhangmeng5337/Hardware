@@ -33,10 +33,10 @@ void hardware_init()
 	pwr_schedul_init();
 	uart_init();
 	CAT1_Init();
-    mqtt_init();
+   
 	 fuzzy_init();
 	 modbus_init();
-
+ mqtt_init();
 
 	//ads_init();
 }

@@ -146,9 +146,15 @@ void FuzzyPID_Init(FuzzyPID *pid)  //¹¹Ôìº¯Êý
         	myfuzzypid.kd_u = 0.005;
 
 			}
+			if((myfuzzypid.out_min<15 || myfuzzypid.out_min > 40)||
+				myfuzzypid.out_max>45||myfuzzypid.out_max <15)
+			{
+							myfuzzypid.out_max = 45;
+							myfuzzypid.out_min = 20;
+
+				}
 		}
-    		myfuzzypid.out_max = 50;
-    		myfuzzypid.out_min = 15;
+    		
 
     }
 }

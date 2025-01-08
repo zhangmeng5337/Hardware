@@ -12,10 +12,12 @@
 #define STATUS1_INDEX			2
 #define STATUS2_INDEX			3
 #define INSTR_DELI_INDEX		4
-#define INSTR_ZT_INDEX		    5
+#define INSTR_ZT_INDEX		    6
+#define INSTR_ZT_CURR_INDEX		    5
 
 #define DELI_ADDR   0x05
 #define ZT_ADDR     0x06
+#define ZT_CURR_REG     0x0006
 
 #define CONTROLLER_REG				0x0000
 #define CONTROLLER_REG2				0x0040
@@ -41,7 +43,7 @@ typedef struct
  unsigned char func;
  unsigned int reg;
  unsigned int regCount;
- unsigned char payload[64]; 
+ unsigned char payload[32]; 
 
  unsigned char enable;// tx  poll by cpu
  unsigned char status;//to be tx 

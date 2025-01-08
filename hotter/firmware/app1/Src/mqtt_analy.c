@@ -175,13 +175,21 @@ void anlysis_mqtt_recv()
 
 
     }
-    dev_id = find_json_string("\"ctrlout\": ", ",", 0);
+    dev_id = find_json_string("\"outmax\": ", ",", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
          get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->out_max = tmp_f;
+    }
+    dev_id = find_json_string("\"outmin\": ", ",", 0);
+    if (dev_id != NULL)
+    {
+        //memset(dev_id, 0, 128);
+         get_config()->update_setting = 1;
+        tmp_f = atof(&dev_id[0]);
+        get_pid_params()->out_min = tmp_f;
     }
 
     dev_id = find_json_string("\"kp\": ", ",", 0);
@@ -899,17 +907,15 @@ void upload()
                 \\22Status Data\\22: {\\0D\\0A\\
                                       \\22Out Tem\\22: %.1f,\\0D\\0A\\
                                       \\22In Tem\\22: %.1f,\\0D\\0A\\
-                                      \\22FroP\\22: %.2f,\\0D\\0A\\
-                                      \\22AftP\\22: %.2f,\\0D\\0A\\
+                                      \\22FP\\22: %.2f,\\0D\\0A\\
+                                      \\22AP\\22: %.2f,\\0D\\0A\\
                                       \\22Dsta\\22: %u,\\0D\\0A\\
                                       \\22Sta1\\22: %s\\0D\\0A\\
                                      },\\0D\\0A\\
                 \\22Dev Params\\22: {\\0D\\0A\\
-                                     \\22Ver\\22: \\22%s\\22,\\0D\\0A\\
-                                     \\22Sett\\22: %u,\\0D\\0A\\
-                                     \\22SetOt\\22: %.1f,\\0D\\0A\\
-                                     \\22SetIt\\22: %.1f,\\0D\\0A\\
-                                     \\22cout\\22: %.0f,\\0D\\0A\\
+                                     \\22St\\22: %u,\\0D\\0A\\
+                                     \\22SOt\\22: %.1f,\\0D\\0A\\
+                                     \\22SIt\\22: %.1f,\\0D\\0A\\
                                      \\22p\\22: %.0f,\\0D\\0A\\
                                      \\22i\\22: %.3f,\\0D\\0A\\
                                      \\22d\\22: %.3f\\0D\\0A\\
@@ -921,11 +927,9 @@ void upload()
                         mqtt_payload_u.data[PUMP_E_INDEX],
                         mqtt_payload_u.status[DEV_STATUS_INDEX],
                         buf2,
-                        mqtt_payload_u.version,
                         get_config()->set_tout,
                         mqtt_payload_u.data[WATER_O_INDEX],
                         mqtt_payload_u.data[WATER_IN_INDEX],
-                        get_pid_params()->u1,
                         get_pid_params()->kp_u,
                         get_pid_params()->ki_u,
                         get_pid_params()->kd_u);
@@ -1114,6 +1118,10 @@ void mqtt_init()
     mqtt_recv = get_lte_recv();
     mqtt_at_cmds.net_status = NO_REC;
 
+}
+unsigned char get_mqtt_status(void)
+{
+		return mqtt_at_cmd_num;
 }
 uint8_t mqtt_Info_Show(void)
 {

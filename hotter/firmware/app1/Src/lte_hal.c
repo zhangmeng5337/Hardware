@@ -288,7 +288,7 @@ void CAT1_Init(void)
     at_cmd_num = AT;
     at_cmds.net_status = NO_REC;
     lte_recv = get_lte_recv();
-
+    mqtt_init();
 }
 int payload_head_index ;
 // uint8_t *tmp;

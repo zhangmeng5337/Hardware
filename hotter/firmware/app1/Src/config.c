@@ -58,6 +58,10 @@ void config_save()
 		memcpy(buf + index, buf2, 4);
 	   len = 4;
 	   index = index + len;
+	   floatTouint32(get_pid_params()->out_min, buf2);
+		memcpy(buf + index, buf2, 4);
+	   len = 4;
+	   index = index + len;
 
        WriteFlashBytes((CONFIG_Addr), (uint8_t *)(buf), 512);
         config_usr.update_setting = 0;
@@ -84,7 +88,8 @@ void config_init()
         len = sizeof(get_config()->mode);
         ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
         get_config()->mode = head;
-
+        if(get_config()->mode>=OFF_MODE)
+			get_config()->mode = OFF_MODE;
         index = index + 1;
         ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
 		if(head>=10)
@@ -116,6 +121,9 @@ void config_init()
 		index = index + 4;
 		get_pid_params()->out_max = uint32Tofloat(buf);
 
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
+		index = index + 4;
+		get_pid_params()->out_min = uint32Tofloat(buf);
 
 
 		//ReadFlash(CONFIG_Addr + index, buf, 4);
@@ -202,7 +210,7 @@ void config_init()
     get_config()->pin_index = AI_PUMP_F_INDEX;
     get_config()->po_index = AI_PUMP_E_INDEX;
 
-	get_config()->instru_num = DELI;
+	//get_config()->instru_num = DELI;
 
 
 

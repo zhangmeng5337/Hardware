@@ -85,8 +85,8 @@ static void MX_RTC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-			 __HAL_RCC_PWR_CLK_DISABLE();
-			 HAL_RCC_DeInit();
+	__HAL_RCC_PWR_CLK_DISABLE();
+	HAL_RCC_DeInit();
 	__enable_irq();
   /* USER CODE END 1 */
 
