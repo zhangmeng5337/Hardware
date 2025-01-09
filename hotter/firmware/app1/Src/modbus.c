@@ -120,7 +120,7 @@ void rs485_recv()
                 if (rs485_u->recv_buf[i] == DELI_ADDR ||
                         rs485_u->recv_buf[i] == ZT_ADDR) //addr ok
                 {
-                  //  *get_power() = 1.3;
+                    //  *get_power() = 1.3;
                     modbus_recv.dev_addr_index = i;
                     break;
 
@@ -151,7 +151,7 @@ void rs485_recv()
             if (rs485_u->recv_buf[i] == DELI_ADDR ||
                     rs485_u->recv_buf[i] == ZT_ADDR) //addr ok
             {
-            ;//    *get_power() = 1.7;
+                ;//    *get_power() = 1.7;
 
             }
 
@@ -889,6 +889,137 @@ void modbus_data_pack(unsigned char pack_num)
 
 
 }
+unsigned char cmd_proc(unsigned char num, unsigned char addr)
+{
+    unsigned char i;
+    unsigned char result;
+    result = 0;
+    for (i = 0; i < CMD_SIZE; i++)
+    {
+        if (num == i)
+            break;
+    }
+    if (i == CMD_SIZE)
+        result = 0;
+    else
+    {
+        modbus_data_pack(num);
+        cmd_enable(num, 1);
+        if (cmd_list.pb[num].status == 0)
+        {
+            cmd_list.pb[num].status = 1;
+            cmd_list.retry_count = RETRY_COUNT;
+            cmd_list.cmd_seq = num;
+            cmd_list.addr = addr;
+
+        }
+
+        else  if (cmd_list.pb[num].status == 2)
+        {
+            cmd_disable(num);
+
+            for (i = num; i < CMD_SIZE; i++)
+                cmd_list.pb[num].status = 0;
+            // cmd_list.cmd_seq = num;
+            result = 1;
+        }
+
+        modbus_proc_poll();//
+
+    }
+
+    return result;
+}
+void dev_tick_task()
+{
+	switch (cmd_list.devState)
+		{
+			case STATUS1_INDEX:
+				if (cmd_proc(STATUS1_INDEX, 0) == 1)
+				{
+					cmd_list.devState = STATUS2_INDEX;
+
+				}
+				break;
+		case STATUS2_INDEX:
+			if (cmd_proc(STATUS2_INDEX, 0) == 1)
+			{
+				cmd_list.devState = STATUS1_INDEX;
+		
+			}
+			break;
+			default:cmd_list.devState = STATUS1_INDEX;break;
+
+		}
+
+}
+void pid_tick_task()
+{
+    switch (cmd_list.state)
+    {
+        case PID_INDEX:
+            if (cmd_proc(PID_INDEX, 0) == 1)
+            {
+                if (get_config()->instru_num == DELI)//delixi
+                {
+                    cmd_list.state = INSTR_DELI_INDEX;
+                    get_config()->dev_size_tmp = DELI_ADDR;
+                }
+                else
+                {
+                    cmd_list.state = INSTR_ZT_CURR_INDEX;
+                    get_config()->dev_size_tmp = ZT_ADDR;
+
+                }
+            }
+            break;
+        case INSTR_DELI_INDEX:
+            if (cmd_proc(INSTR_DELI_INDEX, DELI_ADDR) == 1)
+            {
+                cmd_list.state = CMD_SIZE;
+            }break;
+			
+        case INSTR_ZT_CURR_INDEX:
+            if (cmd_proc(INSTR_ZT_CURR_INDEX, ZT_ADDR) == 1)
+            {
+							get_config()->dev_size_tmp = ZT_ADDR;
+                cmd_list.state = INSTR_ZT_INDEX;
+            }break;
+			case INSTR_ZT_INDEX:
+				if (cmd_proc(INSTR_ZT_INDEX, ZT_ADDR) == 1)
+				{
+					get_config()->dev_size_tmp = ZT_ADDR;
+					cmd_list.state = CMD_SIZE;
+				}
+
+            break;
+        case CMD_SIZE:
+            cmd_disable(PID_INDEX);
+            cmd_disable(INSTR_DELI_INDEX);
+            cmd_disable(INSTR_ZT_INDEX);
+            cmd_disable(INSTR_ZT_CURR_INDEX);
+
+            cmd_list.pb[PID_INDEX].status = 0;
+            cmd_list.pb[INSTR_ZT_INDEX].status = 0;
+            cmd_list.pb[INSTR_DELI_INDEX].status = 0;
+            cmd_list.pb[INSTR_ZT_CURR_INDEX].status = 0;
+            get_config()->dev_size_tmp = get_config()->dev_size;
+            cmd_list.pb[STATUS1_INDEX].status = 0;
+            reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
+            registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+
+
+            if (get_config()->count >= 3)
+            {
+                set_indoor_temp()->temp_average = 1;
+            }
+            else
+                get_config()->count++;
+            break;
+			default: cmd_list.state = PID_INDEX;break;
+    }
+
+}
 void modbus_proc()
 {
     unsigned char result, first_flag;
@@ -908,34 +1039,20 @@ void modbus_proc()
 
             if (get_schedule()->current_plan_pwr_update == 1)
                 get_schedule()->current_plan_pwr_update = 2;
+            get_config()->update_setting = 1;
+			get_config()->dev_size_tmp = get_config()->dev_size;
             if (get_config()->mode != OFF_MODE)
             {
-                get_config()->update_setting = 1;
-                modbus_data_pack(PWR_INDEX);
 
-                cmd_enable(PWR_INDEX, 1);
-                if (cmd_list.pb[PWR_INDEX].status == 0)
+                if (cmd_proc(PWR_INDEX, 0) == 1)
                 {
-                    cmd_list.pb[PWR_INDEX].status = 1;
-                    cmd_list.retry_count = RETRY_COUNT;
-                    cmd_list.cmd_seq = PWR_INDEX;
-                    cmd_list.addr = 0;
-
-                }
-
-                else  if (cmd_list.pb[PWR_INDEX].status == 2)
-                {
-                    cmd_list.pb[PWR_INDEX].status = 0;
                     modbus_tx.update = 0;
-                    cmd_list.cmd_seq = PID_INDEX;
-                    cmd_list.pb[PID_INDEX].status = 0;
                     get_config()->update_setting = 0;
-                    registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+                    //registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+
                 }
 
-                modbus_proc_poll();//
-
-            }
+           }
             else
             {
                 cmd_list.pb[PWR_INDEX].status = 0;
@@ -943,6 +1060,8 @@ void modbus_proc()
                 get_config()->update_setting = 0;
 
             }
+						registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
+            cmd_list.state = PID_INDEX;
 
         }
         else
@@ -951,198 +1070,71 @@ void modbus_proc()
             if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1
                     && get_config()->mode <= OFF_MODE) //pid poll
             {
-                if (get_config()->mode != OFF_MODE)
-                {
-                    if (cmd_list.pb[PID_INDEX].status == 0)
-                    {
-                        modbus_data_pack(PID_INDEX);
-                        cmd_enable(PID_INDEX, 1);
-                        cmd_list.pb[PID_INDEX].status = 1;
-                        cmd_list.retry_count = RETRY_COUNT;
-                        cmd_list.cmd_seq = PID_INDEX;
-                        cmd_list.addr = 0;
+                    pid_tick_task();
 
-                    }
-                    else  if (cmd_list.pb[PID_INDEX].status == 2)
-                    {
-                        cmd_disable(PID_INDEX);
-                        if (get_config()->instru_num == DELI)//delixi
-                        {
-                            modbus_data_pack(INSTR_DELI_INDEX);
-                            cmd_enable(INSTR_DELI_INDEX, 1);
-                            if (cmd_list.pb[INSTR_DELI_INDEX].status == 0)
-                            {
-                                dev_size_tmp = get_config()->dev_size;
-                                get_config()->dev_size_tmp = DELI_ADDR;
-                                cmd_list.pb[INSTR_DELI_INDEX].status = 1;
-                                cmd_list.retry_count = RETRY_COUNT;
-                                cmd_list.cmd_seq = INSTR_DELI_INDEX;
-                                cmd_list.addr = DELI_ADDR;
-                            }
-                        }
-                        else//zt
-                        {
-                            if (cmd_list.pb[INSTR_ZT_CURR_INDEX].status == 0)
-                            {
-                                modbus_data_pack(INSTR_ZT_CURR_INDEX);
-                                cmd_enable(INSTR_ZT_CURR_INDEX, 1);
-                                get_config()->dev_size_tmp = ZT_ADDR;
-                                cmd_list.pb[INSTR_ZT_CURR_INDEX].status = 1;
-                                cmd_list.retry_count = RETRY_COUNT;
-                                cmd_list.cmd_seq = INSTR_ZT_CURR_INDEX;
-                                cmd_list.addr = ZT_ADDR;
-
-                            }
-                            else if (cmd_list.pb[INSTR_ZT_CURR_INDEX].status == 2)
-                            {
-                                cmd_disable(INSTR_ZT_CURR_INDEX);
-                                modbus_data_pack(INSTR_ZT_INDEX);
-                                cmd_enable(INSTR_ZT_INDEX, 1);
-                                get_config()->dev_size_tmp = ZT_ADDR;
-                                cmd_list.pb[INSTR_ZT_CURR_INDEX].status = 1;
-
-                                cmd_list.retry_count = RETRY_COUNT;
-                                cmd_list.cmd_seq = INSTR_ZT_INDEX;
-                                cmd_list.addr = ZT_ADDR;
-                            }
-                            else   if (cmd_list.pb[INSTR_ZT_INDEX].status == 2)
-                            {
-                                cmd_disable(INSTR_ZT_INDEX);
-                                get_config()->dev_size_tmp = get_config()->dev_size;
-                                cmd_list.retry_count = RETRY_COUNT;
-                                cmd_list.cmd_seq = STATUS1_INDEX;
-                                cmd_list.addr = 0;
-                            }
-                        }
-
-                    }
-                    modbus_proc_poll();//
-
-                }
-                else//offlinemode
-                {
-                    cmd_list.pb[PID_INDEX].status = 0;
-
-                    if (get_config()->instru_num == DELI)//delixi
-                    {
-                        modbus_data_pack(INSTR_DELI_INDEX);
-                        cmd_enable(INSTR_DELI_INDEX, 1);
-                        if (cmd_list.pb[INSTR_DELI_INDEX].status == 0)
-                        {
-
-                            get_config()->dev_size_tmp = DELI_ADDR;
-                            cmd_list.pb[INSTR_DELI_INDEX].status = 1;
-                            cmd_list.retry_count = RETRY_COUNT;
-                            cmd_list.cmd_seq = INSTR_DELI_INDEX;
-                            cmd_list.addr = DELI_ADDR;
-                        }
-                    }
-                    else//zt
-                    {
-
-                        if (cmd_list.pb[INSTR_ZT_CURR_INDEX].status == 0)
-                        {
-                            modbus_data_pack(INSTR_ZT_CURR_INDEX);
-                            cmd_enable(INSTR_ZT_CURR_INDEX, 1);
-
-                            get_config()->dev_size_tmp  = ZT_ADDR;
-                            cmd_list.pb[INSTR_ZT_CURR_INDEX].status = 1;
-                            cmd_list.retry_count = RETRY_COUNT;
-                            cmd_list.cmd_seq = INSTR_ZT_CURR_INDEX;
-                            cmd_list.addr = ZT_ADDR;
-                        }
-                        else if (cmd_list.pb[INSTR_ZT_CURR_INDEX].status == 2)
-                        {
-                            cmd_disable(INSTR_ZT_CURR_INDEX);
-                            modbus_data_pack(INSTR_ZT_INDEX);
-                            cmd_enable(INSTR_ZT_INDEX, 1);
-                            get_config()->dev_size_tmp = ZT_ADDR;
-                            cmd_list.pb[INSTR_ZT_CURR_INDEX].status = 1;
-                            cmd_list.pb[INSTR_ZT_INDEX].status = 1;
-                            cmd_list.retry_count = RETRY_COUNT;
-                            cmd_list.cmd_seq = INSTR_ZT_INDEX;
-                            cmd_list.addr = ZT_ADDR;
-                        }
-                        else   if (cmd_list.pb[INSTR_ZT_INDEX].status == 2)
-                        {
-                            cmd_disable(INSTR_ZT_INDEX);
-                            get_config()->dev_size_tmp = get_config()->dev_size;
-                            cmd_list.retry_count = RETRY_COUNT;
-                            cmd_list.cmd_seq = STATUS1_INDEX;
-                            cmd_list.addr = 0;
-                        }
-                    }
-                    modbus_proc_poll();//
-
-                }
-                if (cmd_list.pb[INSTR_DELI_INDEX].status == 2 ||
-                        cmd_list.pb[INSTR_ZT_INDEX].status == 2)
-                {
-                    cmd_disable(PID_INDEX);
-                    cmd_disable(INSTR_DELI_INDEX);
-                    cmd_disable(INSTR_ZT_INDEX);
-                    cmd_disable(INSTR_ZT_CURR_INDEX);
-                    reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
-                    registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-                    cmd_list.pb[PID_INDEX].status = 0;
-                    cmd_list.pb[INSTR_ZT_INDEX].status = 0;
-                    cmd_list.pb[INSTR_DELI_INDEX].status = 0;
-                    cmd_list.pb[INSTR_ZT_CURR_INDEX].status = 0;
-                    get_config()->dev_size_tmp = get_config()->dev_size;
-                    cmd_list.pb[STATUS1_INDEX].status = 0;
-
-
-                    if (get_config()->count >= 3)
-                    {
-                        set_indoor_temp()->temp_average = 1;
-                    }
-                    else
-                        get_config()->count++;
-
-                }
             }
             else  //read dev
             {
                 flag = 0;
-							cmd_list.pb[PID_INDEX].status = 0;
+                cmd_list.pb[PID_INDEX].status = 0;
+                if (get_config()->mode != OFF_MODE)
+                {
+                    cmd_list.state = PID_INDEX;
+
+                }
+                else
+                {
+                    if (get_config()->instru_num == DELI)//delixi
+                    {
+                        cmd_list.state = INSTR_DELI_INDEX;
+                        get_config()->dev_size_tmp = DELI_ADDR;
+                    }
+                    else
+                    {
+                        cmd_list.state = INSTR_ZT_CURR_INDEX;
+                        get_config()->dev_size_tmp = ZT_ADDR;
+
+                    }
+                }
                 get_config()->dev_size_tmp = get_config()->dev_size;
                 registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
                 registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
                 if (GetTickResult(MODBUS_POLL_TICK_NO) == 1)
                 {
-                    if (cmd_list.pb[STATUS1_INDEX].status == 0)
-                    {
-                        modbus_data_pack(STATUS1_INDEX);
-                        cmd_enable(STATUS1_INDEX, 1);
-                        cmd_list.pb[STATUS1_INDEX].status = 1;
-                        cmd_list.retry_count = RETRY_COUNT;
-                        cmd_list.cmd_seq = STATUS1_INDEX;
-                        cmd_list.addr = 0;
-
-                    }
-                    else  if (cmd_list.pb[STATUS1_INDEX].status == 2)
-                    {
-                        modbus_data_pack(STATUS2_INDEX);
-                        cmd_enable(STATUS2_INDEX, 1);
-                        //reset_registerTick(MODBUS_POLL_TICK_NO);
-                        //registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
-                        cmd_list.pb[STATUS1_INDEX].status = 1;
-                        cmd_list.pb[STATUS2_INDEX].status = 1;
-                        cmd_list.retry_count = RETRY_COUNT;
-                        cmd_list.cmd_seq = STATUS2_INDEX;
-                        cmd_list.addr = 0;
-
-                    }
-
-                    else  if (cmd_list.pb[STATUS2_INDEX].status == 2)
-                    {
-                        // reset_registerTick(MODBUS_POLL_TICK_NO);
-                        // registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
-                        cmd_list.pb[STATUS1_INDEX].status = 0;
-                        cmd_list.pb[STATUS2_INDEX].status = 0;
-
-                    }
-                    modbus_proc_poll();//
+                dev_tick_task();
+//                    if (cmd_list.pb[STATUS1_INDEX].status == 0)
+//                    {
+//                        modbus_data_pack(STATUS1_INDEX);
+//                        cmd_enable(STATUS1_INDEX, 1);
+//                        cmd_list.pb[STATUS1_INDEX].status = 1;
+//                        cmd_list.retry_count = RETRY_COUNT;
+//                        cmd_list.cmd_seq = STATUS1_INDEX;
+//                        cmd_list.addr = 0;
+//
+//                    }
+//                    else  if (cmd_list.pb[STATUS1_INDEX].status == 2)
+//                    {
+//                        modbus_data_pack(STATUS2_INDEX);
+//                        cmd_enable(STATUS2_INDEX, 1);
+//                        //reset_registerTick(MODBUS_POLL_TICK_NO);
+//                        //registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+//                        cmd_list.pb[STATUS1_INDEX].status = 1;
+//                        cmd_list.pb[STATUS2_INDEX].status = 1;
+//                        cmd_list.retry_count = RETRY_COUNT;
+//                        cmd_list.cmd_seq = STATUS2_INDEX;
+//                        cmd_list.addr = 0;
+//
+//                    }
+//
+//                    else  if (cmd_list.pb[STATUS2_INDEX].status == 2)
+//                    {
+//                        // reset_registerTick(MODBUS_POLL_TICK_NO);
+//                        // registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
+//                        cmd_list.pb[STATUS1_INDEX].status = 0;
+//                        cmd_list.pb[STATUS2_INDEX].status = 0;
+//
+//                    }
+//                    modbus_proc_poll();//
 
                 }
             }

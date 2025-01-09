@@ -27,7 +27,7 @@
 
 #define APP3   3
 #define OTA_UPDATE_TO   APP2
-#define VERSION        "V1.0.238"
+#define VERSION        "V1.0.240"
 
 
 #define OTA_NUM_ADDR   0x801fff0

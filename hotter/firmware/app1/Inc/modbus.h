@@ -56,7 +56,8 @@ typedef struct
  unsigned char cmd_seq; 
  unsigned char retry_count;
  unsigned char addr;
- 
+ unsigned char state;
+  unsigned char devState;
 }modbus_cmd_pack_stru;
 
 
