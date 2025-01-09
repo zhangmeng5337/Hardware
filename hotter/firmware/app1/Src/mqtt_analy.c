@@ -753,7 +753,8 @@ void upload()
 	 mqtt_payload_u.data[WATER_IN_INDEX] = get_ai_data()->temp[get_config()->tin_index];
     //get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
-
+    if(mqtt_payload_u.data[WATER_O_INDEX] >=1000)
+		mqtt_payload_u.data[WATER_O_INDEX] = 1000;
 
 
 

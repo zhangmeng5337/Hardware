@@ -11,7 +11,7 @@
 
 //#define FLASH_BASE           0x08000000
 
-#define FLASH_SECTOR_SIZE       0x4000U
+#define FLASH_SECTOR_SIZE       0x40001
 #define FLASH_BANK_SIZE         0x100000
 
 #define PageSize                FLASH_PAGE_SIZE
@@ -26,8 +26,8 @@
 #define APP2   1
 
 #define APP3   3
-#define OTA_UPDATE_TO   APP1
-#define VERSION        "V1.0.235"
+#define OTA_UPDATE_TO   APP2
+#define VERSION        "V1.0.238"
 
 
 #define OTA_NUM_ADDR   0x801fff0
