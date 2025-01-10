@@ -15,6 +15,7 @@
 #include "machine_ctrl.h"
 #include "schedule.h"
 #include "update.h"
+#include "FuzzyPID.h"
 
 
 

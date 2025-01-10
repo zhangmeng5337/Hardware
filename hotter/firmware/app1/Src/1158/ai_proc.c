@@ -164,7 +164,7 @@ unsigned char adc_read_data(void)
 void pressure_temp_proc()
 {
 
-    float volt_tmp, volt_tmp2, tmp1, tmp2, tmp3, tmp4;
+    float volt_tmp, volt_tmp2, tmp1;
     unsigned char i;
     /**********************4-20mA convention   ai0 4 3 2 1**********************
 
@@ -192,8 +192,7 @@ void pressure_temp_proc()
 
     }
 
-    unsigned char j;
-	j = 0;
+
     //**************************pt100******************************
     for (i = ADC1_PT_INDEX; i < (ADC1_PT_SIZE + ADC1_PT_INDEX); i++) //u2/(2u1-u2)
     {

@@ -42,6 +42,7 @@ typedef struct
 schedule_pack_stru *get_schedule(void);
 void pwr_schedul_set(void);
 void pwr_schedul_init(void);
+void schedule_proc(void);
 
 #endif
 

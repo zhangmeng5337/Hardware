@@ -193,7 +193,7 @@ schedule_pack_stru *get_schedule(void)
 //}
 void plan_query(void)
 {
-    unsigned char i, day, hour, minute, sec;
+    unsigned char i;
 //6:31-16:30 16:31--6:30
     for (i = 0; i < SCHEDULE_SIZE; i++)
     {

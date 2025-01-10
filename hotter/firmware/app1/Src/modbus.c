@@ -272,10 +272,10 @@ return£º 1 data tx;2:data tx completed and time out
 unsigned char pb2[64];
 void modbus_trans2(modbus_pump_cmd_stru pbDat)
 {
-    unsigned char i, result = 0;
+    unsigned char i;
 
     i = 0;
-    result = 0;
+
 
     pb2[i++] = pbDat.addr;
     pb2[i++] = pbDat.func;
@@ -331,7 +331,7 @@ void modbus_trans2(modbus_pump_cmd_stru pbDat)
     pb2[i++] = pbDat.crc;
 
     uart_transmit(RS485_No, pb2, i);
-    result = 1;
+//    result = 1;
 }
 
 static unsigned int zt_tmp;
@@ -342,7 +342,7 @@ void machine_status_anly(unsigned int status_num)
     //  unsigned int byte_uint, index_cal;
     unsigned int pb3, pb4;
 
-    uint32_t tmp;
+
     rs485_stru *rs485_u;
     rs485_u =  get_uart_recv(RS485_No);
     // j = 1;
@@ -1022,8 +1022,8 @@ void pid_tick_task()
 }
 void modbus_proc()
 {
-    unsigned char result, first_flag;
-    static unsigned char dev_size_tmp;
+
+
     if (get_uart_recv(RS485_No)->recv_update == 0
             &&  get_mqtt_status() == AT_MPUB_RECV) //????)
     {
@@ -1102,40 +1102,6 @@ void modbus_proc()
                 if (GetTickResult(MODBUS_POLL_TICK_NO) == 1)
                 {
                 dev_tick_task();
-//                    if (cmd_list.pb[STATUS1_INDEX].status == 0)
-//                    {
-//                        modbus_data_pack(STATUS1_INDEX);
-//                        cmd_enable(STATUS1_INDEX, 1);
-//                        cmd_list.pb[STATUS1_INDEX].status = 1;
-//                        cmd_list.retry_count = RETRY_COUNT;
-//                        cmd_list.cmd_seq = STATUS1_INDEX;
-//                        cmd_list.addr = 0;
-//
-//                    }
-//                    else  if (cmd_list.pb[STATUS1_INDEX].status == 2)
-//                    {
-//                        modbus_data_pack(STATUS2_INDEX);
-//                        cmd_enable(STATUS2_INDEX, 1);
-//                        //reset_registerTick(MODBUS_POLL_TICK_NO);
-//                        //registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
-//                        cmd_list.pb[STATUS1_INDEX].status = 1;
-//                        cmd_list.pb[STATUS2_INDEX].status = 1;
-//                        cmd_list.retry_count = RETRY_COUNT;
-//                        cmd_list.cmd_seq = STATUS2_INDEX;
-//                        cmd_list.addr = 0;
-//
-//                    }
-//
-//                    else  if (cmd_list.pb[STATUS2_INDEX].status == 2)
-//                    {
-//                        // reset_registerTick(MODBUS_POLL_TICK_NO);
-//                        // registerTick(MODBUS_POLL_TICK_NO, MODBUS_POLL_TIME);
-//                        cmd_list.pb[STATUS1_INDEX].status = 0;
-//                        cmd_list.pb[STATUS2_INDEX].status = 0;
-//
-//                    }
-//                    modbus_proc_poll();//
-
                 }
             }
         }

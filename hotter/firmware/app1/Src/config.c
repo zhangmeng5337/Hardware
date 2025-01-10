@@ -72,11 +72,11 @@ void config_init()
 {
 
     unsigned char head;
-    unsigned int index, len;
+    unsigned int index;
     unsigned char buf[4];
     index = 0;
     ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
-    len = 0;
+    //len = 0;
     config_usr.count = 0;
 	get_config()->valid_flag = 0;
     if ((head & 0xff) == 0x5a)
@@ -85,7 +85,7 @@ void config_init()
         get_config()->valid_flag = 1;
         index = 256;
 
-        len = sizeof(get_config()->mode);
+       // len = sizeof(get_config()->mode);
         ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
         get_config()->mode = head;
         if(get_config()->mode>=OFF_MODE)

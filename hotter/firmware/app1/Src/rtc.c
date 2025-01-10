@@ -177,7 +177,7 @@ void set_rtc_time()
     if(rtc_usr.update == 1)
     {
         rtc_stru urtc_bcd;
-        int cal_result,tmp1;
+        int cal_result;
         weekday_cal();
         //rtc_usr.Year = Now_Date_BIN.Year;
         cal_result = rtc_usr.Year;
@@ -297,7 +297,7 @@ void GET_Time(void)//??¨¨?¦Ì¡À?¡ã¨º¡À??
 
 int weekday_cal()
 {
-    int year, month, day, total_days = 0, i;
+    int year, total_days = 0, i;
     year = rtc_usr.Year+2000;
 //    for (i = 1900; i < year; i++)
 //    {

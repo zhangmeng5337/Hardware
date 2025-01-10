@@ -266,7 +266,7 @@ void writeMultipleRegisters(unsigned char adc_No, uint8_t startAddress, uint8_t 
         // write register data bytes
         spiSendReceiveByte(regData[i]);
 
-        /* eUpdate register array */
+   /* eUpdate register array */
     registerMap[i] = regData[i];
     //}
 

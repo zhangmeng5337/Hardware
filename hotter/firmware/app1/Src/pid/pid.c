@@ -91,7 +91,7 @@ void pid_cal(unsigned char mode)
     float u;
     float setval;
     float measure_val;
-    static float last_val;
+   // static float last_val;
 
     erro_ppre = erro_pre;
     erro_pre = erro;
@@ -151,7 +151,7 @@ void pid_cal(unsigned char mode)
 
     FuzzyPIDcontroller(setval, measure_val);
     indoor_temp_usr.output = get_fuzzy_pid_params()->kp;
-    last_val = measure_val;
+  //  last_val = measure_val;
 
     erro_c = erro - erro_pre;
 

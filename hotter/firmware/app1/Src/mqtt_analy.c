@@ -515,7 +515,7 @@ void anlysis_mqtt_recv()
 
             }
 
-            unsigned char buf[32];
+          
             j = 0;
             k = 0;
             i = 0;
