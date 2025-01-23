@@ -1024,8 +1024,8 @@ void modbus_proc()
 {
 
 
-    if (get_uart_recv(RS485_No)->recv_update == 0
-            &&  get_mqtt_status() == AT_MPUB_RECV) //????)
+    if ((get_uart_recv(RS485_No)->recv_update == 0
+            &&  get_mqtt_status() == AT_MPUB_RECV)||get_config()->connectTimeOut>=10) //????)
     {
         if (get_config()->update_setting == 1 ||
                 get_schedule()->current_plan_pwr_update == 1)//server command

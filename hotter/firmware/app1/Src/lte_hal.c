@@ -289,6 +289,8 @@ void CAT1_Init(void)
     at_cmds.net_status = NO_REC;
     lte_recv = get_lte_recv();
     mqtt_init();
+	if(get_config()->connectTimeOut <= 10)
+		get_config()->connectTimeOut ++;
 }
 int payload_head_index ;
 // uint8_t *tmp;
@@ -887,6 +889,7 @@ uint8_t lte_Info_Show(void)
         else
         {
             at_cmd_num = AT_IDLE;
+			get_config()->connectTimeOut = 0;
             at_cmd_ota_num = AT_HTTPPARA_2;
             at_cmds_ota.net_status = NET_CONNECT;
 

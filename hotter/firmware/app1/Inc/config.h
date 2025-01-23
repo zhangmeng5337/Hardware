@@ -82,6 +82,7 @@ typedef struct
 	unsigned char pin_index;	
 	uint32_t timeout;
 	unsigned char valid_flag;
+	unsigned char connectTimeOut;
 	//unsigned char sub_sring[3][64];
 
 } CONFIG_stru;

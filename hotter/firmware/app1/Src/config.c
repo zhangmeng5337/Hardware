@@ -209,6 +209,7 @@ void config_init()
 
     get_config()->pin_index = AI_PUMP_F_INDEX;
     get_config()->po_index = AI_PUMP_E_INDEX;
+	get_config()->connectTimeOut = 0;
 
 	//get_config()->instru_num = DELI;
 

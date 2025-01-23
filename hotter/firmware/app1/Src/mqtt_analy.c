@@ -1391,7 +1391,7 @@ void mqtt_proc()
     else //???????,????????
     {
         registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1) //180s
+        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&get_config()->connectTimeOut>=10) //180s
         {
             //   reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
 #if CTRL_EN

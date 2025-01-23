@@ -7,9 +7,10 @@
 
 #define ADCTIM  (*(unsigned char volatile xdata *)0xfea8)
 
-#define ADC_ZERO    2048    // 0点读数
-#define ADC_CALI_COFF 0.0494
-#define ADC_CALI_ICOFF  0.0006135
+#define ADC_VZERO    1024    // 0点读数
+#define ADC_CZERO    1024    // 0点读数
+#define ADC_CALI_COFF 0.196581 //3/483 0.00621  0.001221
+#define ADC_CALI_ICOFF 0.039377
 
 #define SUM_LENGTH 300
 #define AdcVref 2.5
@@ -24,7 +25,7 @@
 void    ADC_convert(void);
 
 unsigned char adcPollChn[6] = {UA_CHN, IA_CHN, UB_CHN, IB_CHN, UC_CHN, IC_CHN};
-unsigned int  zero;
+unsigned int  vzero,czero;
 unsigned int square_ok;
 
 unsigned int freq_count = 0;
@@ -53,8 +54,7 @@ unsigned int adcVolBuf[SUM_LENGTH];
 unsigned int adcCurrBuf[SUM_LENGTH];
 void UartSend(char dat)
 {
-    while (busy);
-    busy = 1;
+    while (TI);
     SBUF = dat;
 }
 
@@ -86,7 +86,22 @@ void Timer3_Init(void)		//1毫秒@33.000MHz
 }
 void TM3_Isr() interrupt 19
 {
-    unsigned int last_vol;
+     static unsigned int last_vol;
+	 last_vol ++;
+	if(freq_flag == 1)
+	{
+	    
+		freq_count++;
+		freq_flag = 0;
+		if(last_vol>=5000)
+		{
+			freq = freq_count*10/last_vol;//freq times 10
+			last_vol = 0;
+			freq_count = 0;
+		}
+
+	}
+
     ADC_convert();
 
 }
@@ -117,7 +132,8 @@ void adc_init()
     EA = 1;
     //ADC_CONTR |= 0x40;                          //启动AD转换
     square_ok = 0;
-    zero = ADC_ZERO;
+    vzero = ADC_VZERO;
+	czero = ADC_CZERO;
 	freq_flag = 0;
     // while (1);
 }
@@ -194,18 +210,38 @@ void    ADC_convert()
     static unsigned char i = 0, j = 0;
     if ((ADC_CONTR & ADC_FLAG) == 1)
     {
-
-        if (i % 2 == 0)
-            adcVolBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
-        else
-            adcCurrBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+         switch(i)
+         {
+			case 0:i=5;//ua
+				adcVolBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+			break;
+			case 1:i = 3;//ub
+				adcVolBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+			break;
+			case 4:i = 2;//uc
+				adcVolBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+			break;
+			case 5: i = 1;//ia
+				adcCurrBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+			break;
+			case 3:  i = 4;
+				adcCurrBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+				break;//ib
+			case 2: i = 0;
+				adcCurrBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+			break;//ic
+		 }
+//        if (i % 2 == 0)
+//            adcVolBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
+//        else
+//            adcCurrBuf[j++] = ((unsigned int)ADC_RES * 256 + (unsigned int)ADC_RESL);
         ADC_CONTR &= ~ADC_FLAG;
-        Get_ADC12bitResult(i++);
-        if (i == 6)
-        {
-            i = 0;
-        }
-        if (j == 100)
+        Get_ADC12bitResult(i);
+//        if (i == 6)
+//        {
+//            i = 0;
+//        }
+        if (j == SUM_LENGTH)
         {
             j = 0;
             square_ok = 1;
@@ -246,15 +282,20 @@ void VolCurrCal()
 		
         for (i = 0; i < SUM_LENGTH / 3; i++)
         {
-            if(adcVolBuf[6 * i]>=zero)
-				tmp1 = adcVolBuf[6 * i] - zero;
+            if(adcVolBuf[6 * i]>=vzero)
+				tmp1 = adcVolBuf[6 * i] - vzero;
 			else
-			tmp1 = zero - adcVolBuf[6 * i];
+			tmp1 = vzero - adcVolBuf[6 * i];
+            if(adcVolBuf[1 + 6 * i]>=czero)
+				tmp2 = adcVolBuf[6 * i] - czero;
+			else
+			tmp2 = czero - adcVolBuf[1 + 6 * i];
+
             tmp1 = tmp1 * ADC_CALI_COFF; //电压
-            tmp2 = adcCurrBuf[1 + 6 * i] * ADC_CALI_ICOFF; //电流
-            tmp2 = tmp2 -1.25;
-			tmp2 = tmp2/62;
-			tmp2 = tmp2*2000;	
+            tmp2 = tmp2 * ADC_CALI_ICOFF; //电流
+//            tmp2 = tmp2 -1.25;
+//			tmp2 = tmp2/62;
+//			tmp2 = tmp2*2000;	
 
             pa = tmp1 * tmp2 + pa; //单件有功功率
             tmp1 = tmp1 * tmp1; // uk^2
@@ -280,17 +321,22 @@ void VolCurrCal()
 
         for (i = 0; i < SUM_LENGTH / 3; i++)
         {
-            if(adcVolBuf[2 + 6 * i]>=zero)
-				tmp1 = adcVolBuf[2 + 6 * i] - zero;
+            if(adcVolBuf[2+6 * i]>=vzero)
+				tmp1 = adcVolBuf[2+6 * i] - vzero;
 			else
-			tmp1 = zero - adcVolBuf[2 + 6 * i];
+			tmp1 = vzero - adcVolBuf[2+6 * i];
+            if(adcVolBuf[3 + 6 * i]>=czero)
+				tmp2 = adcVolBuf[3+6 * i] - czero;
+			else
+			tmp2 = czero - adcVolBuf[3 + 6 * i];
+
 
 			
             tmp1 = tmp1 * ADC_CALI_COFF; //电压
-            tmp2 = adcCurrBuf[3 + 6 * i] * ADC_CALI_ICOFF; //电流
-            tmp2 = tmp2 -1.25;
-			tmp2 = tmp2/62;
-			tmp2 = tmp2*2000;			
+            tmp2 = tmp2 * ADC_CALI_ICOFF; //电流
+//            tmp2 = tmp2 -1.25;
+//			tmp2 = tmp2/62;
+//			tmp2 = tmp2*2000;			
             pb = tmp1 * tmp2 + pa; //单件有功功率
             tmp1 = tmp1 * tmp1; // uk^2
             tmp2 = tmp2 * tmp2; //ik^2
@@ -317,17 +363,22 @@ void VolCurrCal()
 
         for (i = 0; i < SUM_LENGTH / 3; i++)
         {
-            if(adcVolBuf[4 + 6 * i]>=zero)
-				tmp1 = adcVolBuf[4 + 6 * i] - zero;
+            if(adcVolBuf[4+6 * i]>=vzero)
+				tmp1 = adcVolBuf[4+6 * i] - vzero;
 			else
-			tmp1 = zero - adcVolBuf[4 + 6 * i];
+			tmp1 = vzero - adcVolBuf[4+6 * i];
+            if(adcVolBuf[5 + 6 * i]>=czero)
+				tmp2 = adcVolBuf[5+6 * i] - czero;
+			else
+			tmp2 = czero - adcVolBuf[5 + 6 * i];
+
 
 			
             tmp1 = tmp1 * ADC_CALI_COFF; //电压
-            tmp2 = adcCurrBuf[5 + 6 * i] * ADC_CALI_ICOFF; //电流
-            tmp2 = tmp2 -1.25;
-			tmp2 = tmp2/62;
-			tmp2 = tmp2*2000;	
+            tmp2 = tmp2 * ADC_CALI_ICOFF; //电流
+//            tmp2 = tmp2 -1.25;
+//			tmp2 = tmp2/62;
+//			tmp2 = tmp2*2000;	
 
             pc = tmp1 * tmp2 + pa; //单件有功功率
             tmp1 = tmp1 * tmp1; // uk^2
