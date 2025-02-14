@@ -22,26 +22,35 @@
     *   第三部分：Application_2      起始地址: 0x08060000  大小�?256K �? sectors
     *   第三部分：参数区�?          起始地址:  0x08010000  大小�?64K �? sectors
     */
-#define APP1   0
-#define APP2   1
+#define UAPP1   0
+#define UAPP2   1
 
-#define APP3   3
-#define OTA_UPDATE_TO   APP1
-#define VERSION        "V1.0.241"
+#define UAPP3   3
+
+#define VERSION        "V1.0.244"
 
 
 #define OTA_NUM_ADDR   0x801fff0
+#ifdef APP1
+#define OTA_UPDATE_TO   UAPP2
+#endif
+#ifdef APP2
+#define OTA_UPDATE_TO   UAPP1
+#endif
+#ifdef BOOTLOADER
+#define OTA_UPDATE_TO  UAPP3
+#endif
 
-#if OTA_UPDATE_TO == APP2
+#if OTA_UPDATE_TO == UAPP2
 #define APP_NUM     0x1a
 #define VECT_OFFSET_USR 0x20000
 #endif
 
-#if OTA_UPDATE_TO == APP1
+#if OTA_UPDATE_TO == UAPP1
 #define APP_NUM     0x2a
 #define VECT_OFFSET_USR 0x60000
 #endif
-#if OTA_UPDATE_TO == APP3
+#if OTA_UPDATE_TO == UAPP3
 #define APP_NUM     0x2a
 #define VECT_OFFSET_USR 0x00000
 

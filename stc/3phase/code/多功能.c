@@ -1028,11 +1028,15 @@ void k4_out()
 main() 
 {
 	uchar i;
-	adc_init();	
+//	adc_init();	
+
+
 	init();			//初始化
+
 	time1_init();
-	 Timer3_Init();
-	in_ht7038();	//初始化ht7038
+	
+	// Timer3_Init();
+	//in_ht7038();	//初始化ht7038
 	k4=0;
   
 	while(1)

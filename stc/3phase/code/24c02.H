@@ -36,19 +36,19 @@ bit fig_out_k3;
 bit fig_out_k4; //输出延时标志
 bit fig_tongxun = 0; //通讯点 亮显示标志
 
-sbit scl = P1 ^ 0;
-sbit sda = P1 ^ 1; //IIC
+sbit scl = P2 ^ 6;
+sbit sda = P2 ^ 7; //IIC
 
-sbit dia = P2 ^ 0; //输入
-sbit dib = P2 ^ 1; //输入
-sbit dic = P2 ^ 2; //输入
-sbit did = P2 ^ 3; //输入
+sbit dia = P3 ^ 0; //输入
+sbit dib = P3 ^ 1; //输入
+sbit dic = P3 ^ 2; //输入
+sbit did = P3 ^ 3; //输入
 
 
-sbit k1 = P2 ^ 4; //输出
-sbit k2 = P2 ^ 5; //输出
-sbit k3 = P2 ^ 6; //输出
-sbit k4 = P2 ^ 7; //输出
+sbit k1 = P3 ^ 4; //输出
+sbit k2 = P3 ^ 5; //输出
+sbit k3 = P3 ^ 6; //输出
+sbit k4 = P3 ^ 7; //输出
 
 sbit r485 = P3 ^ 2;
 //位申明

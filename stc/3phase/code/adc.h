@@ -54,8 +54,9 @@ unsigned int adcVolBuf[SUM_LENGTH];
 unsigned int adcCurrBuf[SUM_LENGTH];
 void UartSend(char dat)
 {
-    while (TI);
+    
     SBUF = dat;
+	while (TI==0);
 }
 
 void UartSendStr(char *p)
@@ -101,6 +102,7 @@ void TM3_Isr() interrupt 19
 		}
 
 	}
+	UartSend(4);
 
     ADC_convert();
 

@@ -4,7 +4,7 @@
  *      *** Do not modify ! ***
  *
  * Project: 'code' 
- * Target:  'bootloader' 
+ * Target:  'app2' 
  */
 
 #ifndef RTE_COMPONENTS_H

@@ -85,9 +85,12 @@ static void MX_RTC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	 #if defined(APP1)||defined(APP2)||defined(APP3)
+	//__disable_irq();NVIC_SystemReset();//¸´Î»º¯Êý
 	__HAL_RCC_PWR_CLK_DISABLE();
 	HAL_RCC_DeInit();
 	__enable_irq();
+	#endif
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -103,7 +106,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+__HAL_RCC_CLEAR_RESET_FLAGS();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -116,11 +119,20 @@ int main(void)
   MX_SPI1_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-  //while(1)
-	//	;
-	 //module_test();??
+	#ifdef BOOTLOADER
+HAL_Delay(3000);
+
+  while (1)
+  {
+    /* USER CODE END WHILE */
+//HAL_IWDG_Refresh(&hiwdg);	
+    /* USER CODE BEGIN 3 */
+		Start_BootLoader();
+  }
+	#endif
+	 #if defined(APP1)||defined(APP2)||defined(APP3)
  hardware_init();
- 
+ #endif
 	//MX_IWDG_Init();
 //	MX_IWDG_Init();
 	//crc16(buf, 2);
@@ -145,7 +157,9 @@ int main(void)
 //        HAL_Delay(1);
 //        HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);
 //		HAL_Delay(1000);
+#if defined(APP1)||defined(APP2)||defined(APP3)
 		app_proc();
+#endif
   }
   /* USER CODE END 3 */
 }

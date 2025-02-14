@@ -1,6 +1,6 @@
 /*定义控制端口*/
-sbit Din=P3^6;	//定义DIN数据端口
-sbit CLK=P3^7;	//定义CLK数据端口
+sbit Din=P2^5;	//定义DIN数据端口
+sbit CLK=P2^4;	//定义CLK数据端口
 	
 /*Start函数*/
 void I2CStart()

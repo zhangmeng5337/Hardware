@@ -17,5 +17,6 @@ void IAP_ExecuteApp (uint32_t App_Addr);
 void Start_BootLoader(void);
 void test(void);
 void boot_jump(void);
+void Update_To_Sel(void);
 
 #endif
