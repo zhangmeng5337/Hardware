@@ -40,7 +40,7 @@ modbus_reg_cmdCheck_stru  modbus_reg_list[REG_COUNT] =
 void modbus_init()
 {
     //modbus_cmd_list.pb = modbus_reg_list.RegCmd;
-    modbus_usr.DevAddr = GetReg()->pb[eREG_DEV_ADDR].val_u;
+    modbus_usr.DevAddr = GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat;
     modbus_cmd_list.RegNum = GetReg()->pb;
     modbus_cmd_list.RegCmdDat = modbus_reg_list;
 
@@ -56,7 +56,8 @@ unsigned char cmd_support_check(void)
     {
 //    modbus_cmd_list.RegNum = &(GetReg()->pb[i]);
 //              reg_remap = modbus_cmd_list.RegNum[i].reg_remap;
-        if (modbus_usr.RegStart == GetReg()->pb[i].reg_remap)
+        if (modbus_usr.RegStart == GetReg()->pb[i].reg_remap
+                && GetReg()->pb[i].enable == 1)
         {
             modbus_cmd_list.RegNum = &GetReg()->pb[i];
             modbus_cmd_list.RegCmdDat = &modbus_reg_list[i];
@@ -138,11 +139,11 @@ unsigned char ModbusResponseAnalyMaster(unsigned char *pb)
 unsigned char ModbusResponseAnalySlave()
 {
 //    unsigned char func;
-   // unsigned char i;
+    // unsigned char i;
     unsigned char j;
     unsigned int crcRecv, crcCal;
     unsigned char *pb;
-   // i = 0;
+    // i = 0;
     for (j = 0; j <= getuart()->index; j++)
     {
         if (getuart()->rx_buf[j] == modbus_usr.DevAddr || getuart()->rx_buf[j] == 0xff)
@@ -193,13 +194,13 @@ unsigned char ModbusResponseAnalySlave()
                 ;
             }
         }
-        else if (modbus_usr.Func == PC_FUNC_REG_WRITE ||
-                 modbus_usr.Func == MODBUS_FUNC_ONE_WRITE)
+        else if ( modbus_usr.Func == MODBUS_FUNC_ONE_WRITE)
         {
             modbus_usr.RegStart = pb[2];
             modbus_usr.RegStart = modbus_usr.RegStart << 8;
             modbus_usr.RegStart = modbus_usr.RegStart | pb[3];
             modbus_usr.RegCount = 1;
+
             modbus_usr.len =  modbus_usr.RegCount * 2;
             crcRecv = pb[ modbus_usr.len + 4];
             crcRecv = crcRecv << 8;
@@ -213,6 +214,30 @@ unsigned char ModbusResponseAnalySlave()
             {
                 memset(modbus_usr.payload, 0, MODBUS_RECV_SIZE);
                 memcpy(modbus_usr.payload, pb + 2, modbus_usr.len + 2);
+            }
+        }		
+        else if (modbus_usr.Func == PC_FUNC_REG_WRITE )
+        {
+            modbus_usr.RegStart = pb[2];
+            modbus_usr.RegStart = modbus_usr.RegStart << 8;
+            modbus_usr.RegStart = modbus_usr.RegStart | pb[3];
+            modbus_usr.RegCount = pb[4];
+            modbus_usr.RegCount = modbus_usr.RegCount << 8;
+            modbus_usr.RegCount = modbus_usr.RegCount | pb[5];
+            modbus_usr.len = pb[6];
+            crcRecv = pb[ modbus_usr.len + 7];
+            crcRecv = crcRecv << 8;
+            crcRecv = crcRecv | pb[ modbus_usr.len + 8];
+            crcCal = CRC_Compute(pb,  modbus_usr.len + 7);
+            if (crcCal != crcRecv)
+            {
+                if(modbus_usr.RegCount == 0x0001)
+                return 0;
+            }
+            else  //data to be write
+            {
+                memset(modbus_usr.payload, 0, MODBUS_RECV_SIZE);
+                memcpy(modbus_usr.payload, pb + 2, modbus_usr.len + 6);
             }
         }
         else if (modbus_usr.Func == PC_FUNC_SET_REGS_WRITE)
@@ -297,9 +322,10 @@ void modbus_read_pack(void)
 
         for (k = 0; k < modbus_usr.RegCount; k++)
         {
-            DatConvToModbus(modbus_usr.RegStart + k, &modbus_usr.tx_buf[i]);
+            RegDatToModbus(modbus_usr.RegStart + k, &modbus_usr.tx_buf[i]);
             i = i + 2;
         }
+
 //        modbus_usr.crc =  CRC_Compute(tx_buf, modbus_usr.len + 3);
 //
 //        tx_buf[i++] = modbus_usr.crc;
@@ -309,7 +335,142 @@ void modbus_read_pack(void)
 //    uart_tx(tx_buf, i);
 //    SysTickDelay(5);
 }
+void private_reg_Readpack(unsigned int regnum)
+{
+    unsigned char i, k;
+    i = 0;
+    uint32_t tmp;
+    switch (regnum)
+    {
+        case INS_DEV_REG:
+            modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+            modbus_usr.tx_buf[i++] = modbus_usr.Func;
+            modbus_usr.tx_buf[i++] = 2;
+            modbus_usr.tx_buf[i++] = 0;
+            modbus_usr.tx_buf[i++] = VERSION;
+            for (k = 0; k < strlen(partNo); k++)
+                modbus_usr.tx_buf[i++] = partNo[k];
+            modbus_usr.tx_buf[2] = i - 3;
+           // modbus_tx(modbus_usr.tx_buf, modbus_usr.tx_buf[2] + 3);
+            break;
+        case INS_ADC_REG1H:
+            modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+            modbus_usr.tx_buf[i++] = modbus_usr.Func;
+            modbus_usr.tx_buf[i++] = 4;
+            tmp = *(uint32_t *)(& getadc()->adc_ori);
+            modbus_usr.tx_buf[i++] = tmp >> 24;
+            modbus_usr.tx_buf[i++] = tmp >> 16;
+            modbus_usr.tx_buf[i++] = tmp >> 8;
+            modbus_usr.tx_buf[i++] = tmp;
+           // modbus_tx(modbus_usr.tx_buf, i);
+            break;
+	case INS_TYPE_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 2;
+	    modbus_usr.tx_buf[i++] = 0;
+		modbus_usr.tx_buf[i++] = GetRegPrivate()->typ;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case PGA_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 2;
+	    modbus_usr.tx_buf[i++] = 0;
+		modbus_usr.tx_buf[i++] = GetRegPrivate()->pga;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case CUR_CONS_REGH:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->cur_set);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case FAC_UNIT_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 2;
+	    modbus_usr.tx_buf[i++] = 0;
+		modbus_usr.tx_buf[i++] = GetRegPrivate()->unit;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case FAC_COE_H:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->coe);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case FAC_OFFSET_HREG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->offset);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case COE1_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->coe1);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;
+		///modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case COE2_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->coe2);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case COE3_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->coe3);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;
+		//modbus_tx(modbus_usr.tx_buf, i);
+		break;
+	case COE4_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->coe4);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;
+		
+		break;
+   default:break;
 
+
+    }
+	modbus_tx(modbus_usr.tx_buf, i);
+}
 void modbus_Usr_read_pack(void)
 {
     // unsigned char tx_buf[128];
@@ -320,32 +481,8 @@ void modbus_Usr_read_pack(void)
     {
         if (modbus_usr.Func == PC_FUNC_REG_READ)
         {
-            if (modbus_usr.RegStart == 0x0000) //read ver range PartNo
-            {
+                private_reg_Readpack(modbus_usr.RegStart);
 
-                modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
-                modbus_usr.tx_buf[i++] = modbus_usr.Func;
-                modbus_usr.tx_buf[i++] = 2;
-                modbus_usr.tx_buf[i++] = 0;
-                modbus_usr.tx_buf[i++] = VERSION;
-                for (k = 0; k < strlen(partNo); k++)
-                    modbus_usr.tx_buf[i++] = partNo[k];
-                modbus_usr.tx_buf[2] = i - 3;
-                modbus_tx(modbus_usr.tx_buf, modbus_usr.tx_buf[2] + 3);
-            }
-            else if (modbus_usr.RegStart == 0x0001) //read ver range PartNo
-            {
-
-                modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
-                modbus_usr.tx_buf[i++] = modbus_usr.Func;
-                modbus_usr.tx_buf[i++] = 2;
-                modbus_usr.tx_buf[i++] = 0;
-                modbus_usr.tx_buf[i++] = VERSION;
-                for (k = 0; k < strlen(partNo); k++)
-                    modbus_usr.tx_buf[i++] = partNo[k];
-                modbus_usr.tx_buf[2] = i - 3;
-                modbus_tx(modbus_usr.tx_buf, modbus_usr.tx_buf[2] + 3);
-            }
         }
         else if (modbus_usr.Func == PC_FUNC_READ_REGS)
         {
@@ -359,7 +496,7 @@ void modbus_Usr_read_pack(void)
                 REGDatConvToPC(modbus_usr.RegStart + k, &modbus_usr.tx_buf[i]);
                 i = i + 2;
             }
-            modbus_tx(modbus_usr.tx_buf, modbus_usr.len + 3);
+            modbus_tx(modbus_usr.tx_buf, modbus_usr.len + 5);
         }
     }
 }
@@ -372,15 +509,15 @@ void modbus_oneReg_write_pack(void)
     i = 0;
     if (modbus_usr.Func == MODBUS_FUNC_ONE_WRITE)
     {
-        RegDatConv(modbus_usr.RegStart, &modbus_usr.payload[0], CHANGE_DAT);
+        ModbusDatToRegDat(modbus_usr.RegStart, &modbus_usr.payload[0], CHANGE_DAT);
         if (modbus_usr.RegStart == GetReg()->pb[eREG_RATE].reg_remap ||
                 modbus_usr.RegStart == GetReg()->pb[eREG_CHECK].reg_remap)
         {
-            getuart()->reconfig = 1;
+            getuart()->reconfig = 2;
         }
         if (modbus_usr.RegStart == GetReg()->pb[eREG_ADC_RATE].reg_remap)
         {
-            *getAdcReconfig() = 1;
+            *getAdcReconfig() = 2;
         }
         modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
         modbus_usr.tx_buf[i++] = modbus_usr.Func;
@@ -394,10 +531,10 @@ void modbus_oneReg_write_pack(void)
         modbus_tx(modbus_usr.tx_buf, modbus_usr.len + 4);
 
     }
-    if (modbus_usr.Func == PC_FUNC_READ_REGS)
-    {
-        ModbusSetReg(modbus_usr.RegStart, &modbus_usr.payload[2]);
-    }
+//    if (modbus_usr.Func == PC_FUNC_READ_REGS)
+//    {
+//        ModbusREADSetReg(modbus_usr.RegStart, &modbus_usr.payload[2]);
+//    }
 
     modbus_usr.tick = GetTick();
 }
@@ -416,15 +553,16 @@ void modbus_mulReg_write_pack(void)
         for (i = 0; i < modbus_usr.RegCount; i++)
         {
             if ((modbus_usr.RegStart + i) == GetReg()->pb[eREG_RATE].reg_remap ||
-                (modbus_usr.RegStart + i) == GetReg()->pb[eREG_CHECK].reg_remap)
+                    (modbus_usr.RegStart + i) == GetReg()->pb[eREG_CHECK].reg_remap)
             {
-                getuart()->reconfig = 1;
+                getuart()->reconfig = 2;
             }
             if ((modbus_usr.RegStart + i) == GetReg()->pb[eREG_ADC_RATE].reg_remap)
             {
-                *getAdcReconfig() = 1;
+                *getAdcReconfig() = 2;
             }
-            RegDatConv(modbus_usr.RegStart + i, &modbus_usr.payload[k + 2], CHANGE_DAT);
+            ModbusDatToMulRegDat(modbus_usr.RegStart + i, &modbus_usr.payload[k + 2],
+                                 CHANGE_DAT);
             k = k + 2;
         }
     }
@@ -441,72 +579,88 @@ void modbus_mulReg_write_pack(void)
     modbus_tx(modbus_usr.tx_buf, 6);
 
     modbus_usr.tick = GetTick();
-	
+
 }
 void modbus_PrivaReg_write_pack(void)
 {
 //  unsigned char tx_buf[128];
     unsigned char i, k;
-    uint32_t tmp;
+
 //  unsigned int reg_tmp;
 
-//  tx_buf[i++] = modbus_usr.DevAddr;
-//  tx_buf[i++] = modbus_usr.Func;
 
-    if (modbus_usr.Func == MODBUS_FUNC_MUL_WRITE)
+
+
+    if (modbus_usr.Func == PC_FUNC_REG_WRITE)
     {
-        k = 3;
+
+        k = 5;
         for (i = 0; i < modbus_usr.RegCount; i++)
         {
-		
-			if ((modbus_usr.RegStart + i) == 0x0006)
-			{
-				GetRegPrivate()->typ = modbus_usr.payload[k];
-				GetRegPrivate()->typ = modbus_usr.payload[k + 1];				
-			}
-			else if ((modbus_usr.RegStart + i) == 0x0007)
-			{
-				GetRegPrivate()->pga = modbus_usr.payload[k];
-				GetRegPrivate()->pga = modbus_usr.payload[k + 1];					
-			}
-			else if ((modbus_usr.RegStart + i) == 0x0008)
-			{
-				GetRegPrivate()->sei = modbus_usr.payload[k];
-				GetRegPrivate()->sei = modbus_usr.payload[k + 1];					
-			}
-			else if ((modbus_usr.RegStart + i) == 0x0009)
-			{
-				GetRegPrivate()->unit = modbus_usr.payload[k];
-				GetRegPrivate()->unit = modbus_usr.payload[k + 1];				
-			}
-			else if ((modbus_usr.RegStart + i) == 0x000a)
-			{
-			   GetRegPrivate()->coe = uint32TofloatR(&modbus_usr.payload[k]);
-				
-			}
-			else if ((modbus_usr.RegStart + i) == 0x000c)
-			{
-				GetRegPrivate()->offset = modbus_usr.payload[k];
-//				GetRegPrivate()->offset = GetRegPrivate()->offset << 8 +
-					               //       modbus_usr.payload[k + 1];				
-			}
-			else if ((modbus_usr.RegStart + i) == 0x000d)
-			{
-				GetRegPrivate()->coe1 = uint32TofloatR(&modbus_usr.payload[k]);				
-			}
-			else if ((modbus_usr.RegStart + i) == 0x000f)
-			{
-				GetRegPrivate()->coe2 = uint32TofloatR(&modbus_usr.payload[k]);				
-			}
-			 else if ((modbus_usr.RegStart + i) == 0x0011)
-			 {
-				 GetRegPrivate()->coe3 = uint32TofloatR(&modbus_usr.payload[k]); 			 
-			 }
-			 else if ((modbus_usr.RegStart + i) == 0x0013)
-			 {
-				 GetRegPrivate()->coe4 = uint32TofloatR(&modbus_usr.payload[k]); 			 
-			 }
-		     k = k + 2;
+
+            if ((modbus_usr.RegStart + i) == INS_TYPE_REG)
+            {
+                GetRegPrivate()->typ = modbus_usr.payload[k];
+                GetRegPrivate()->typ = modbus_usr.payload[k + 1];
+            }
+            else if ((modbus_usr.RegStart + i) == PGA_REG)
+            {
+                GetRegPrivate()->pga = modbus_usr.payload[k];
+                GetRegPrivate()->pga = modbus_usr.payload[k + 1];
+            }
+            else if ((modbus_usr.RegStart + i) == CUR_CONS_REGH)
+            {
+//                GetRegPrivate()->cur_set = modbus_usr.payload[k];
+//                GetRegPrivate()->cur_set = modbus_usr.payload[k + 1];
+				 GetRegPrivate()->cur_set = uint32TofloatR(&modbus_usr.payload[k]);
+            }
+            else if ((modbus_usr.RegStart + i) == FAC_UNIT_REG)
+            {
+                GetRegPrivate()->unit = modbus_usr.payload[k];
+                GetRegPrivate()->unit = modbus_usr.payload[k + 1];
+            }
+            else if ((modbus_usr.RegStart + i) == FAC_COE_H)
+            {
+                GetRegPrivate()->coe = uint32TofloatR(&modbus_usr.payload[k]);
+
+            }
+            else if ((modbus_usr.RegStart + i) == FAC_OFFSET_HREG)
+            {
+                GetRegPrivate()->offset = uint32TofloatR(&modbus_usr.payload[k]);
+            }
+            else if ((modbus_usr.RegStart + i) == COE1_REG)
+            {
+                GetRegPrivate()->coe1 = uint32TofloatR(&modbus_usr.payload[k]);
+            }
+            else if ((modbus_usr.RegStart + i) == COE2_REG)
+            {
+                GetRegPrivate()->coe2 = uint32TofloatR(&modbus_usr.payload[k]);
+            }
+            else if ((modbus_usr.RegStart + i) == COE3_REG)
+            {
+                GetRegPrivate()->coe3 = uint32TofloatR(&modbus_usr.payload[k]);
+            }
+            else if ((modbus_usr.RegStart + i) == COE4_REG)
+            {
+                GetRegPrivate()->coe4 = uint32TofloatR(&modbus_usr.payload[k]);
+            }
+            else if ((modbus_usr.RegStart + i) == SAVE_REG)
+            {
+                GetRegPrivate()->save = modbus_usr.payload[k];
+                GetRegPrivate()->save = modbus_usr.payload[k + 1];
+            }
+            else if ((modbus_usr.RegStart + i) == ZERO_REG)
+            {
+                GetRegPrivate()->zero_cmd = modbus_usr.payload[k];
+                GetRegPrivate()->zero_cmd = modbus_usr.payload[k + 1];
+            }
+            else if ((modbus_usr.RegStart + i) == FACTOR_MODE_REG)
+            {
+                GetRegPrivate()->mode = modbus_usr.payload[k];
+                GetRegPrivate()->mode = modbus_usr.payload[k + 1];
+            }
+
+            k = k + 2;
         }
     }
     i = 0;
@@ -538,7 +692,8 @@ void modbus_mulRegChange_write_pack(void)
         k = 0;
         for (i = 0; i < modbus_usr.RegCount; i++)
         {
-            RegDatConv(modbus_usr.RegStart + i, &modbus_usr.payload[k + 2], CHANGE_REG);
+            ModbusDatToRegDat(modbus_usr.RegStart + i, &modbus_usr.payload[k + 2],
+                              CHANGE_REG);
             k = k + 2;
         }
     }
@@ -562,6 +717,7 @@ void modbus_analy_func(unsigned char func)
 
     switch (func)
     {
+        case PC_FUNC_READ_REGS:
         case PC_FUNC_REG_READ:
             modbus_Usr_read_pack();
             break;
@@ -585,9 +741,9 @@ void modbus_analy_func(unsigned char func)
         case PC_FUNC_SET_REGS_WRITE:
             modbus_mulRegChange_write_pack();
             break;
-		case PC_FUNC_REG_WRITE:
-				modbus_PrivaReg_write_pack();
-			break;
+        case PC_FUNC_REG_WRITE:
+            modbus_PrivaReg_write_pack();
+            break;
 
 //        case USR_FUNC_ONE_WRITE:
 //            if (cmd_support_check())
@@ -609,31 +765,31 @@ void modbus_recv_proc()
 //    unsigned char res;
     // res = 1;
 
-   if(getKey()->update == 0)
-   	{
-   p = getuart();
-   
-   if (p->recv_update == 1)
-   {
-	   modbus_usr.Func = ModbusResponseAnalySlave();
-	   modbus_analy_func(modbus_usr.Func);
-	   p->recv_update = 0;
-	   memset(p->rx_buf, 0, RX_BUF_SIZE);
-	   p->index = 0;
-   }
-   if ((GetTick() - modbus_usr.tick) >= 5000
-		   && modbus_usr.tick != 0) //delay 5s write to flash
-   {
-	   modbus_usr.tick = 0;
-	   GetReg()->update = 1;
-   }
+    if (getKey()->update == 0)
+    {
+        p = getuart();
 
-   }
-   else
-   	{
-   	    
-		 modbus_usr.DevAddr =  getKey()->indat[0].addr;
-   }
+        if (p->recv_update == 1)
+        {
+            modbus_usr.Func = ModbusResponseAnalySlave();
+            modbus_analy_func(modbus_usr.Func);
+            p->recv_update = 0;
+            memset(p->rx_buf, 0, RX_BUF_SIZE);
+            p->index = 0;
+        }
+        if ((GetTick() - modbus_usr.tick) >= 5000
+                && modbus_usr.tick != 0) //delay 5s write to flash
+        {
+            modbus_usr.tick = 0;
+            GetReg()->update = 1;
+        }
+
+    }
+    else
+    {
+
+        modbus_usr.DevAddr =  getKey()->indat[0].addr;
+    }
 
 
 }

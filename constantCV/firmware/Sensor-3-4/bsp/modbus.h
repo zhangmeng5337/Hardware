@@ -27,20 +27,36 @@
 
 
 #define INS_DEV_REG			0x0000
-#define INS_ADC_REG    	 	0x0001
-#define INS_TYPE_REG        0x0006
-#define PGA_REG  			0x0007
-#define CUR_CONS_REG        0x0008
-#define FAC_UNIT_REG        0x0009
-#define FAC_COE_H     		0x000a
-#define FAC_COE_L     		0x000b
-#define FAC_OFFSET_REG      0x000c
-#define COE1_REG			0x000d
-#define COE2_REG			0x000f
-#define COE3_REG			0x0011
-#define COE4_REG			0x0013
-#define SAVE_REG			0x0015
-#define ZERO_REG			0x0016
+#define INS_ADC_REG1H    	 	0x0001
+#define INS_ADC_REG1L    	 	0x0002
+#define INS_ADC_REG2H    	 	0x0003
+#define INS_ADC_REG2L    	 	0x0004
+#define INS_ADC_REG3H    	 	0x0005
+#define INS_ADC_REG3L    	 	0x0006
+#define INS_ADC_REG4H    	 	0x0007
+#define INS_ADC_REG4L    	 	0x0008
+#define INS_ADC_REG5H    	 	0x0009
+#define INS_ADC_REG5L    	 	0x000a
+
+#define INS_TYPE_REG        0x000B
+#define PGA_REG  			0x000C
+#define CUR_CONS_REGH        0x000D
+#define CUR_CONS_REGL        0x000D
+
+#define FAC_UNIT_REG        0x000E
+#define FAC_COE_H     		0x000F
+#define FAC_COE_L     		0x0010
+#define FAC_OFFSET_HREG     0x0011
+#define FAC_OFFSET_LREG     0x0012
+                            
+#define COE1_REG			0x0013
+#define COE2_REG			0x0015
+#define COE3_REG			0x0017
+#define COE4_REG			0x0019
+#define SAVE_REG			0x001b
+#define ZERO_REG			0x001c
+#define FACTOR_MODE_REG		0x001d
+
 
 
 typedef struct

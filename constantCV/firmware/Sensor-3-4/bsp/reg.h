@@ -67,14 +67,16 @@ typedef struct
  unsigned int reg;
  unsigned int reg_remap;
  unsigned char reg_count;
- unsigned char val_c;
- unsigned int val_u;
- int val_i;
- float val_f;
+// unsigned char val_c;
+// unsigned int val_u;
+// int val_i;
+// float val_f;
  uint32_t val_u32ToFloat;
+ uint32_t val_u32ToFloat_defaut;
  unsigned char dat_type;//0:unsigned char 1:unsigned int 2:int 3:float
  unsigned char dat_pos;//0:float hight 16bit 1:float low 16bit
  unsigned char record_flag;//0:not record 1:record
+ unsigned char enable;
  
 }reg_dat_pack;
 
@@ -90,12 +92,16 @@ typedef struct
   float offset;//before zero value
   float full_rang;
  float coe;
- float cur_set;//1:1ma
+ float cur_set;//set current 0.4  0.8
  float vol_set;//1:1V
  unsigned char typ;//0:temperature 1:pressure
  unsigned char pga;
- unsigned char sei;//0:1ma
+ //unsigned char sei;//0:1ma
  unsigned char unit;//0
+ //unsigned char factory;
+ unsigned char mode;//0;1:factory cali 2:recovery factory
+ unsigned char zero_cmd;//0:minus 1:no minus
+ unsigned char save;
  float coe1;
  float coe2;
  float coe3;
@@ -104,12 +110,16 @@ typedef struct
 
 void reg_init(void);
 reg_stru*GetReg(void);
-void DatConvToModbus(uint16_t RegNum, uint8_t *dat);
-void ModbusToDatConv(uint16_t RegNum, uint8_t *dat);
-void reg_proc(void);
-void ModbusSetReg(uint16_t RegNum, uint8_t *dat);
+void FlshDatToRegDat(reg_dat_pack *pb, uint8_t *dat, unsigned char type);
+void FlshDatToRegDat(reg_dat_pack *pb, uint8_t *dat, unsigned char type);
+void ModbusDatToRegDat(uint16_t RegNum, uint8_t *dat, unsigned char dir);
+void RegDatToModbus(uint16_t RegNum, uint8_t *dat);
 void REGDatConvToPC(uint16_t RegNum, uint8_t *dat);
-void RegDatConv(uint16_t RegNum, uint8_t *dat, unsigned char dir);
+void reg_proc(void);
+void ModbusDatToRegFloatDat(reg_dat_pack *pb, uint8_t *dat,
+                           unsigned char dat_pos);
+void ModbusDatToMulRegDat(uint16_t RegNum, uint8_t *dat, unsigned char dir);
+
 params_private_stru *GetRegPrivate(void);
 void RegWrite(void);
 

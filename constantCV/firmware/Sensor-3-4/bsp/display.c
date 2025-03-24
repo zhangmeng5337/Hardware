@@ -91,7 +91,7 @@ uint32_t datx_proc(float dat)
 {
     uint32_t result;
     unsigned int decm_bit ;
-    decm_bit = GetReg()->pb[eREG_DECM_BIT].val_u;
+    decm_bit = GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat;
     if (dis_usr.signedFlag == 0)
     {
         if (dat <= 1) //1.002
@@ -601,8 +601,8 @@ void display_led(unsigned char Cusor, unsigned BitSel)
 void display(void)
 {
     static uint32_t tick_tmp;
-    static unsigned char i = 1;
-	unsigned char tmp_dat;
+
+
 	//dis_usr.update_cycle = 5;
     if ((GetTick() - tick_tmp) >= dis_usr.update_cycle)
     {

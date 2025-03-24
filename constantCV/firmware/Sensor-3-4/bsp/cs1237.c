@@ -146,6 +146,33 @@ void cs1237_send_byte(uint8_t byte)
         delay_us(1);
     	}
 }
+unsigned char getPga(unsigned char pga_dat)
+{
+    unsigned char result; 
+	switch (pga_dat)
+	{
+	case DEV_PGA_1:
+		result = 1;
+		break;
+	case DEV_PGA_2:
+		result = 2;
+
+		break;
+	case DEV_PGA_64:
+		result = 64;
+		break;
+	case DEV_PGA_128:
+		result = 128;
+
+		break;
+	default:
+		result = 1;
+		break;
+	}
+
+ return result;
+}
+
 
 /**
  * @name: cs1237_init
@@ -246,7 +273,7 @@ uint8_t cs1237_init(struct cs1237_device *dev, enum dev_frequency frequency, enu
     dev->get_adc_data = calculate_adc_num(dev);
     dev->get_adc_config = cs1237_read_config(dev);
     dev->adc_config = cs1237_config;
-
+    SysTickDelay(1000);    
     ret = cs1237_check(dev);
     if (ret != 0)
     {

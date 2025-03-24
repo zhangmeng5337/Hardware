@@ -128,11 +128,11 @@ int32_t main(void)
 
 
 
-
-    GPIO_SWD2GPIO();
-
-    REGBITS_CLR(CW_GPIOA->ANALOG, bv7 | bv8);       //设置PA07/PA08为数字功能
-    REGBITS_CLR(CW_GPIOA->DIR, bv7 | bv8); //设置PA07为输入，PA08为输出
+//
+//    GPIO_SWD2GPIO();
+//
+//    REGBITS_CLR(CW_GPIOA->ANALOG, bv7 | bv8);       //设置PA07/PA08为数字功能
+//    REGBITS_CLR(CW_GPIOA->DIR, bv7 | bv8); //设置PA07为输入，PA08为输出
 
 
     //配置GPIO

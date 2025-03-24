@@ -8,7 +8,7 @@ void flash_write_byte(uint32_t WriteAddr, uint8_t *pWrBuf, uint16_t count);
 void flash_read_byte(uint32_t ReadAddr, uint8_t *pWrBuf, uint16_t count);
 void floatTouint32(float dat,unsigned char *pb);
 uint32_t uint32Tofloat(unsigned char *buf);
-void floatTouint32_pos(float dat,unsigned char *pb,unsigned char pos);
+void floatTouint32_pos(uint32_t dat,unsigned char *pb,unsigned char pos);
 uint32_t  uint32Tofloat_pos(unsigned char *pb,unsigned char pos);
 void floatTouint32_m(float dat,unsigned char *pb);
 float uint32TofloatR(unsigned char *buf);

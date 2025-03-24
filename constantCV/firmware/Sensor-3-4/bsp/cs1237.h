@@ -88,5 +88,6 @@ struct cs1237_device
 /* 外部调用函数 */
 uint8_t cs1237_init(struct cs1237_device *dev, enum dev_frequency frequency, enum dev_pga pga, enum dev_ch ch);
 int32_t calculate_adc_num(struct cs1237_device *dev);
+unsigned char getPga(unsigned char pga_dat);
 
 #endif /* __CS1237_H__ */

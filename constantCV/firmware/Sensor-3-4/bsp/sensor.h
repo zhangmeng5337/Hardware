@@ -16,6 +16,7 @@ typedef struct
 {
 	int32_t adc_ori;
 	float adc_filter;
+	float adc_vol;
 	float dat_unit_factory;
 	float data_unit_app;
 }adc_stru;

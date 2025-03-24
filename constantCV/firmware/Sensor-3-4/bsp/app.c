@@ -24,6 +24,6 @@ void app_proc()
 	display_menu();
 	modbus_recv_proc();
     reg_proc();
-	pwm_ctrl(0.8);
+	pwm_ctrl(1);
 	 uart_proc();
 }

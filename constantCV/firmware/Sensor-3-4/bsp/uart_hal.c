@@ -70,17 +70,44 @@ void uart_config()
 {
 
     UART_InitTypeDef UART_InitStructure = {0};
-    if (uart_usr.reconfig == 1)
+    if (uart_usr.reconfig )
     {
        if(getKey()->indat[0].baud <= 7)
        	{
-			GetReg()->pb[eREG_RATE].val_u = getKey()->indat[0].baud;
+       	    if(uart_usr.reconfig == 1)
+       	    {
+			GetReg()->pb[eREG_RATE].val_u32ToFloat = getKey()->indat[0].baud;
+			
 			uart_usr.baudrate = getKey()->indat[0].baud;
+
+			}
+			else
+			{
+			//GetReg()->pb[eREG_RATE].val_u32ToFloat = GetReg()->pb[eREG_CHECK];
+			
+			uart_usr.baudrate = GetReg()->pb[eREG_RATE].val_u32ToFloat;
+
+			}
+
 	   }
 	if(getKey()->indat[0].par <= 2)
 	 {
-		 GetReg()->pb[eREG_CHECK].val_u = getKey()->indat[0].par;
-		 uart_usr.parity =  getKey()->indat[0].par;
+
+	if(uart_usr.reconfig == 1)
+	{
+	GetReg()->pb[eREG_CHECK].val_u32ToFloat = getKey()->indat[0].par;
+	uart_usr.parity =  getKey()->indat[0].par;
+
+	
+	}
+	else
+	{
+	
+	uart_usr.parity =  GetReg()->pb[eREG_CHECK].val_u32ToFloat;
+
+	
+	}
+
 	}
 	
 
@@ -164,8 +191,8 @@ void uart_init(void)
 {
     uart_usr.index = 0;
     uart_usr.reconfig = 0;
-	uart_usr.parity = GetReg()->pb[eREG_CHECK].val_u;
-	uart_usr.baudrate = GetReg()->pb[eREG_RATE].val_u;
+	uart_usr.parity = GetReg()->pb[eREG_CHECK].val_u32ToFloat;
+	uart_usr.baudrate = GetReg()->pb[eREG_RATE].val_u32ToFloat;
 	uart_usr.reconfig = 1;
 	uart_config();
 

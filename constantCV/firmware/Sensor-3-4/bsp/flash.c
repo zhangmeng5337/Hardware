@@ -43,10 +43,10 @@ void floatTouint32_m(float dat,unsigned char *pb)
 	pb[0] = b>>24;
 }
 
-void floatTouint32_pos(float dat,unsigned char *pb,unsigned char pos)
+void floatTouint32_pos(uint32_t dat,unsigned char *pb,unsigned char pos)
 {
 	uint32_t b;
-	b = *(uint32_t*)&dat;
+	b = dat;
 	if(pos == 1) //0x3f8ccd
 	{
 		

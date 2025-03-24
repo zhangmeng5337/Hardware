@@ -139,12 +139,12 @@ void save2_menu(void)//password menu
 				GetRegPrivate()->coe = key_irq_usr.indat[0].coe;
             if(key_irq_usr.indat[0].oft<=50000)
 				GetRegPrivate()->offset = key_irq_usr.indat[0].oft;		
-			GetReg()->pb[eREG_DEV_ADDR].val_u = key_irq_usr.indat[0].addr;
-			GetReg()->pb[eREG_RATE].val_u = key_irq_usr.indat[0].baud;
-			GetReg()->pb[eREG_CHECK].val_u = key_irq_usr.indat[0].par;
-			GetReg()->pb[eREG_DECM_BIT].val_u = key_irq_usr.indat[0].dot;
-            GetReg()->pb[eREG_UNIT].val_u = key_irq_usr.indat[0].unit;
-			GetReg()->pb[eREG_ADC_RATE].val_u =  key_irq_usr.indat[0].spd;
+			GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat = key_irq_usr.indat[0].addr;
+			GetReg()->pb[eREG_RATE].val_u32ToFloat = key_irq_usr.indat[0].baud;
+			GetReg()->pb[eREG_CHECK].val_u32ToFloat = key_irq_usr.indat[0].par;
+			GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat = key_irq_usr.indat[0].dot;
+            GetReg()->pb[eREG_UNIT].val_u32ToFloat = key_irq_usr.indat[0].unit;
+			GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat =  key_irq_usr.indat[0].spd;
 
 
 //typedef enum 
@@ -392,7 +392,7 @@ void oft2_menu(void)//password menu
 
     }
 
-	  unsigned int tmp; // 99.23 1.234  999.1
+	
 //    key_irq_usr.indat[0].passw[0] = key_irq_usr.indat[0].oft / 1000;
 //    key_irq_usr.indat[0].passw[1] = key_irq_usr.indat[0].oft % 1000 / 100;
 //    key_irq_usr.indat[0].passw[2] = key_irq_usr.indat[0].oft % 100 / 10;
@@ -963,13 +963,13 @@ void password_menu(void)//password menu
 void key_init(void)
 {
     display_init();
-    input_dat[0].addr = GetReg()->pb[eREG_DEV_ADDR].val_u;
-    input_dat[0].baud = GetReg()->pb[eREG_RATE].val_u;
+    input_dat[0].addr = GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat;
+    input_dat[0].baud = GetReg()->pb[eREG_RATE].val_u32ToFloat;
     input_dat[0].baud = input_dat[0].baud ;
-    input_dat[0].par  =  GetReg()->pb[eREG_CHECK].val_u;
-    input_dat[0].spd  =  GetReg()->pb[eREG_ADC_RATE].val_u;
-    input_dat[0].unit = GetReg()->pb[eREG_UNIT].val_u;
-    input_dat[0].dot  =  GetReg()->pb[eREG_DECM_BIT].val_u;
+    input_dat[0].par  =  GetReg()->pb[eREG_CHECK].val_u32ToFloat;
+    input_dat[0].spd  =  GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat;
+    input_dat[0].unit = GetReg()->pb[eREG_UNIT].val_u32ToFloat;
+    input_dat[0].dot  =  GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat;
     input_dat[0].coe  =  GetRegPrivate()->coe;
 	input_dat[0].oft = GetRegPrivate()->offset;
 
