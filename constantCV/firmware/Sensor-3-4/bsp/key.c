@@ -50,6 +50,8 @@ void dot2_menu(void);//password menu
 void oft2_menu(void);//password menu
 void coe2_menu(void);//password menu
 void save2_menu(void);//password menu
+void zero_menu(void);//password menu
+
 //显示逻辑：上电显示版本号，3s后切换到正常显示
 meun_task_stru task_table[] =
 {
@@ -73,7 +75,8 @@ meun_task_stru task_table[] =
     {16, 7, 16, 16, 0, dot2_menu},
     {17, 8, 17, 17, 0, oft2_menu},
     {18, 9, 18, 18, 0, coe2_menu},
-    {19, 19, 19, 19, 0, save2_menu}
+    {19, 19, 19, 19, 0, save2_menu},
+    {20, 20, 20, 20, 0, zero_menu}
 
 };
 key_irq_stru *getKey()
@@ -96,6 +99,67 @@ unsigned char log_out(void)
 	#endif
 	return 0;
 }
+void zero_menu(void)//password menu
+{
+    if (task_table[task_index].move == MOVE)
+    {
+        task_table[task_index].move = NO_PRE;
+        if (key_irq_usr.bit_sel > 0)
+            key_irq_usr.bit_sel = key_irq_usr.bit_sel - 1;
+        else
+            key_irq_usr.bit_sel = BIT_SEL;
+
+    }
+    if (key_irq_usr.double_check == INC)
+    {
+        key_irq_usr.double_check = NO_PRE;
+
+        if (key_irq_usr.indat[0].status >= 1 && key_irq_usr.indat[0].status < 2)
+        {
+            key_irq_usr.indat[0].status ++;
+
+        }
+        else
+            key_irq_usr.indat[0].status = 1;
+    }
+
+    if (key_irq_usr.indat[0].status == 1)//yes
+    {
+
+        GetDisp()->dis_buf[0] = 0x00;
+        GetDisp()->dis_buf[1] = 0x6e;
+        GetDisp()->dis_buf[2] = 0x79;
+        GetDisp()->dis_buf[3] = 0x6d;
+        display_led(1, key_irq_usr.bit_sel);
+        if (key_irq_usr.double_check == SHORT_PRE)
+        {
+            key_irq_usr.double_check = NO_PRE;
+            key_irq_usr.update = 1;
+			GetRegPrivate()->zero_cmd = 0;  
+            task_index = 0;
+
+        }
+
+    }
+    else //no
+    {
+        GetDisp()->dis_buf[0] = 0x00;
+        GetDisp()->dis_buf[1] = 0x00;
+        GetDisp()->dis_buf[2] = 0x37;
+        GetDisp()->dis_buf[3] = 0x5c;
+        display_led(1, key_irq_usr.bit_sel);
+        if (key_irq_usr.double_check == SHORT_PRE)
+        {
+            key_irq_usr.double_check = NO_PRE;
+			GetRegPrivate()->zero_cmd = 1;	
+			task_index = 0;
+
+        }
+
+    }
+	GetDisp()->cusor = 0;
+}
+
 void save2_menu(void)//password menu
 {
     if (task_table[task_index].move == MOVE)
@@ -949,6 +1013,34 @@ void password_menu(void)//password menu
                 key_irq_usr.indat[0].passw[0] == 0x00
            )
             task_index = 2;
+		else  if (key_irq_usr.indat[0].passw[3] == 0x06 &&
+                key_irq_usr.indat[0].passw[2] == 0x07 &&
+                key_irq_usr.indat[0].passw[1] == 0x08 &&
+                key_irq_usr.indat[0].passw[0] == 0x09
+           )
+			{
+		   		task_index = 0;
+		   		GetRegPrivate()->mode = 2;
+		        getuart()->reconfig = 1;
+		       *getAdcReconfig() = 1;
+
+		   }
+	else  if (key_irq_usr.indat[0].passw[3] == 0x06 &&
+			key_irq_usr.indat[0].passw[2] == 0x03 &&
+			key_irq_usr.indat[0].passw[1] == 0x00 &&
+			key_irq_usr.indat[0].passw[0] == 0x00
+	   )
+		{
+			task_index = 20;
+			GetRegPrivate()->mode = 2;
+			getuart()->reconfig = 1;
+		   *getAdcReconfig() = 1;
+	        GetDisp()->dis_buf[0] = 0x00;
+        GetDisp()->dis_buf[1] = 0x6e;
+        GetDisp()->dis_buf[2] = 0x79;
+        GetDisp()->dis_buf[3] = 0x6d;
+	   }
+
     }
 
 

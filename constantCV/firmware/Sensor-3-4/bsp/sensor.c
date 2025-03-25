@@ -6,6 +6,7 @@
 #include "reg.h"
 #include "key.h"
 extern struct cs1237_device g_cs1237_device_st;
+kalman g_kfp_st = {0};
 
 adc_stru adc_usr;
 adc_stru *getadc(void)
@@ -21,6 +22,7 @@ void adc_init(void)
     //cs1237_init(&g_cs1237_device_st, DEV_FREQUENCY_10, DEV_PGA_1, DEV_CH_A);
     cs1237_init(&g_cs1237_device_st, GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat + 1,
                 GetRegPrivate()->pga, DEV_CH_A);
+	kalman_init(&g_kfp_st);
 
 
 }
@@ -225,16 +227,21 @@ void dat_cal_proc(float dat)
 
     }
 }
+
+
 void adc_proc(void)
 {
     float tmp1, tmp2, tmp3;
 	int32_t tmp4;
+	
     if (g_cs1237_device_st.reconfig)
         adc_config();
     else
     {
         calculate_adc_num(&g_cs1237_device_st);
         adc_usr.adc_ori = g_cs1237_device_st.adc_calculate_deal_data;
+		
+		
 	   if(GetRegPrivate()->zero_cmd == 0)
 	   	{
 	   	tmp4 = *(int32_t *)&GetRegPrivate()->offset;
@@ -249,6 +256,7 @@ void adc_proc(void)
        adc_usr.adc_vol = adc_usr.adc_ori*2.5;
 		 adc_usr.adc_vol =  adc_usr.adc_vol /getPga(GetRegPrivate()->pga);
 		adc_usr.adc_vol =  adc_usr.adc_vol /8388607.0;
+		adc_usr.adc_filter =kalman_filter(&g_kfp_st, adc_usr.adc_vol);
         tmp1 = adc_usr.adc_vol * adc_usr.adc_vol;
         tmp2 = tmp1;
         tmp1 = tmp1 * adc_usr.adc_vol;

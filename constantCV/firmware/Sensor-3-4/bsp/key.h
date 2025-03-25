@@ -9,7 +9,7 @@
 
 #define SHORT_PRES 1000
 #define LONG_PRES 5000
-#define KEY_TIMEOUT 600000
+#define KEY_TIMEOUT 600000    //key press time out 
 #define NORMAL_MENU  		0
 #define PASS_MENU    		2
 #define ADDR_MENU  		    4

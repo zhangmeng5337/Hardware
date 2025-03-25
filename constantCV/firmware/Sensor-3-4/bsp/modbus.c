@@ -5,7 +5,7 @@
 #include "uart_hal.h"
 #include "sensor.h"
 #include "key.h"
-
+#include "cs1237.h"
 #include "flash.h"
 
 // 鍋囪浠庣珯瀵勫瓨鍣ㄦ暟�?
@@ -602,17 +602,23 @@ void modbus_PrivaReg_write_pack(void)
             {
                 GetRegPrivate()->typ = modbus_usr.payload[k];
                 GetRegPrivate()->typ = modbus_usr.payload[k + 1];
+			if(GetRegPrivate()->typ >1)
+				GetRegPrivate()->pga = 1;
+
             }
             else if ((modbus_usr.RegStart + i) == PGA_REG)
             {
                 GetRegPrivate()->pga = modbus_usr.payload[k];
                 GetRegPrivate()->pga = modbus_usr.payload[k + 1];
+				if(GetRegPrivate()->pga >DEV_PGA_128)
+					GetRegPrivate()->pga = DEV_PGA_128;
             }
             else if ((modbus_usr.RegStart + i) == CUR_CONS_REGH)
             {
 //                GetRegPrivate()->cur_set = modbus_usr.payload[k];
 //                GetRegPrivate()->cur_set = modbus_usr.payload[k + 1];
 				 GetRegPrivate()->cur_set = uint32TofloatR(&modbus_usr.payload[k]);
+
             }
             else if ((modbus_usr.RegStart + i) == FAC_UNIT_REG)
             {
@@ -771,7 +777,7 @@ void modbus_recv_proc()
 
         if (p->recv_update == 1)
         {
-            modbus_usr.Func = ModbusResponseAnalySlave();
+            modbus_usr.Func = ModbusResponseAnalySlave();//rs485 data analy
             modbus_analy_func(modbus_usr.Func);
             p->recv_update = 0;
             memset(p->rx_buf, 0, RX_BUF_SIZE);

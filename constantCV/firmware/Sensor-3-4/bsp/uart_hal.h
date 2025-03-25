@@ -11,7 +11,7 @@
 #ifndef __UART_HAL_H
 #define __UART_HAL_H
 #include "main.h"
-#define LOG_ENABLE  1
+#define LOG_ENABLE  0
 
 #define TX_BUF_SIZE		128
 #define RX_BUF_SIZE		128

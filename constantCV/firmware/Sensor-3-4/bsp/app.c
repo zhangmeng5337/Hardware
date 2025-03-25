@@ -19,11 +19,17 @@ void app_init()
 
 void app_proc()
 {
-   /* uart_proc();*/ 
+   /* uart_proc();*/
+	if (getuart()->recv_update == 0)
+	{
 	adc_proc();
+	}
+
 	display_menu();
 	modbus_recv_proc();
+	 uart_proc();
     reg_proc();
 	pwm_ctrl(1);
-	 uart_proc();
+
+
 }

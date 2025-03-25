@@ -94,7 +94,7 @@ typedef struct
  float coe;
  float cur_set;//set current 0.4  0.8
  float vol_set;//1:1V
- unsigned char typ;//0:temperature 1:pressure
+ unsigned char typ;//1:temperature 0:pressure
  unsigned char pga;
  //unsigned char sei;//0:1ma
  unsigned char unit;//0

@@ -344,10 +344,10 @@ void SysTick_IRQnHandler(void)
 	uint32_t tick;
 	tick++;
 	 KeyProc();
-//	if(getTaskIndex() == 0)
-//		display();
-//	else
-//	display_led(GetDisp()->cusor, getKey()->bit_sel);
+	if(getTaskIndex() == 0)
+		display();
+	else
+	display_led(GetDisp()->cusor, getKey()->bit_sel);
 
 }
 
