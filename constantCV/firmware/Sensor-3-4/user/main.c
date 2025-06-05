@@ -128,13 +128,13 @@ int32_t main(void)
 
 
 
+  #ifdef DISPLAY_DEBUG
+//    GPIO_SWD2GPIO();
+//
+//    REGBITS_CLR(CW_GPIOA->ANALOG, bv7 | bv8);       //设置PA07/PA08为数字功能
+//    REGBITS_CLR(CW_GPIOA->DIR, bv7 | bv8); //设置PA07为输入，PA08为输出
 
-    GPIO_SWD2GPIO();
-
-    REGBITS_CLR(CW_GPIOA->ANALOG, bv7 | bv8);       //设置PA07/PA08为数字功能
-    REGBITS_CLR(CW_GPIOA->DIR, bv7 | bv8); //设置PA07为输入，PA08为输出
-
-
+#endif
     //配置GPIO
     GPIO_Configuration();
 
@@ -240,6 +240,8 @@ void GPIO_Configuration(void)
 
 
 
+	PB07_AFx_GPIO();
+	GPIO_RST2GPIO();
 
 
     //display
@@ -285,6 +287,21 @@ void GPIO_Configuration(void)
 
     PB00_AFx_GPIO();
     PB01_AFx_GPIO();
+	
+#ifdef HW_VER2
+	
+    GPIO_InitStruct.Pins =  DIAG2_GPIO_PIN | DIAG3_GPIO_PIN|DIAG4_GPIO_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.IT = GPIO_IT_NONE;
+    GPIO_Init(CW_GPIOB, &GPIO_InitStruct);
+    GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
+    GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
+    GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
+
+	
+#endif
+#ifdef HW_VER1
+		
 
     GPIO_InitStruct.Pins =  DIAG2_GPIO_PIN | DIAG3_GPIO_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -293,15 +310,20 @@ void GPIO_Configuration(void)
     GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_RESET);
     GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_RESET);
 
+#endif
 
 
 
     //cs1237 #define
-    GPIO_InitStruct.Pins = CS1237_SCL_Pin | CS1237_DOUT_Pin;
+    GPIO_InitStruct.Pins = CS1237_SCL_Pin ;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.IT = GPIO_IT_NONE;
     GPIO_Init(CS1237_SCL_GPIO_Port, &GPIO_InitStruct);
-
+    GPIO_InitStruct.Pins =  CS1237_DOUT_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.IT = GPIO_IT_NONE;
+    GPIO_Init(CS1237_SCL_GPIO_Port, &GPIO_InitStruct);
+	GPIO_WritePin(DIAG3_GPIO_PORT, CS1237_DOUT_Pin, GPIO_Pin_RESET);
 
 
 

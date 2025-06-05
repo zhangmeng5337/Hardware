@@ -4,6 +4,7 @@ ao_stru ao_usr;
 void ao_init()
 {
     ao_usr.range = 1;//д╛хо4-20ma
+	ao_usr.current = 0;
 
     AD5410xInit(ao_usr.range);
 }
@@ -16,6 +17,7 @@ void ao_ModeChange()
 }
 void ao_proc()
 {
+    ao_ModeChange();
     if (ao_usr.range == 1)
     {
         if (ao_usr.current >= 4)
@@ -26,6 +28,11 @@ void ao_proc()
 		        AD5410xWriteDataReg( ao_usr.current_dac);
 
         }
+		else
+		{
+
+		}
+			
         
 
     }
@@ -40,6 +47,7 @@ void ao_proc()
         }
 
     }
+	
 
 }
 

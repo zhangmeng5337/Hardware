@@ -5,20 +5,21 @@
 #include "uart_hal.h"
 
 #define A 0x77
-#define D 0x5e
-#define R 0x50
 #define B 0x7C
-#define U 0x3e
-#define P 0x73
-#define S 0x6d
-#define N 0x37
-#define I 0x06
-#define T 0x78
-#define O 0x5c
-#define F 0x71
-#define E 0x79
-#define Y 0x6e
 #define C 0x58
+#define D 0x5e
+#define E 0x79
+#define F 0x71
+#define I 0x06
+#define N 0x37
+#define U 0x3e
+#define O 0x5c
+#define P 0x73
+#define R 0x50
+#define S 0x6d
+#define T 0x78
+#define Y 0x6e
+
 
 unsigned char task_index = 0;
 key_irq_stru key_irq_usr;
@@ -81,14 +82,14 @@ meun_task_stru task_table[] =
 };
 key_irq_stru *getKey()
 {
- return &key_irq_usr;
+    return &key_irq_usr;
 }
 
 unsigned char log_out(void)
 {
     //static unsigned char last_index;
     static uint32_t tick;
-	#if LOG_ENABLE
+#if LOG_ENABLE
     if ((GetTick() - tick) >= 1000)
     {
         tick =  GetTick();
@@ -96,8 +97,8 @@ unsigned char log_out(void)
     }
     else
         return 0;
-	#endif
-	return 0;
+#endif
+    return 0;
 }
 void zero_menu(void)//password menu
 {
@@ -114,7 +115,7 @@ void zero_menu(void)//password menu
     {
         key_irq_usr.double_check = NO_PRE;
 
-        if (key_irq_usr.indat[0].status >= 1 && key_irq_usr.indat[0].status < 2)
+        if (key_irq_usr.indat[0].status >= 1 && key_irq_usr.indat[0].status < 3)
         {
             key_irq_usr.indat[0].status ++;
 
@@ -135,13 +136,14 @@ void zero_menu(void)//password menu
         {
             key_irq_usr.double_check = NO_PRE;
             key_irq_usr.update = 1;
-			GetRegPrivate()->zero_cmd = 0;  
+            GetRegPrivate()->zero_cmd = 1;
+            GetRegPrivate()->zero_value = getadc()->data_unit_app;
             task_index = 0;
 
         }
 
     }
-    else //no
+    else if (key_irq_usr.indat[0].status == 2)//yes //no
     {
         GetDisp()->dis_buf[0] = 0x00;
         GetDisp()->dis_buf[1] = 0x00;
@@ -150,14 +152,28 @@ void zero_menu(void)//password menu
         display_led(1, key_irq_usr.bit_sel);
         if (key_irq_usr.double_check == SHORT_PRE)
         {
+            key_irq_usr.update = 1;
             key_irq_usr.double_check = NO_PRE;
-			GetRegPrivate()->zero_cmd = 1;	
-			task_index = 0;
-
+            GetRegPrivate()->zero_cmd = 0;
+            task_index = 0;
         }
-
     }
-	GetDisp()->cusor = 0;
+    else //rst
+    {
+        GetDisp()->dis_buf[0] = 0x00;
+        GetDisp()->dis_buf[1] = 0x50;
+        GetDisp()->dis_buf[2] = 0x6d;
+        GetDisp()->dis_buf[3] = 0x78;
+        // display_led(1, key_irq_usr.bit_sel);
+        if (key_irq_usr.double_check == SHORT_PRE)
+        {
+            key_irq_usr.double_check = NO_PRE;
+            //GetRegPrivate()->zero_cmd = 1;
+            task_index = 0;
+        }
+    }
+
+    GetDisp()->cusor = 0;
 }
 
 void save2_menu(void)//password menu
@@ -195,54 +211,22 @@ void save2_menu(void)//password menu
         if (key_irq_usr.double_check == SHORT_PRE)
         {
             key_irq_usr.double_check = NO_PRE;
-			
-           // if (log_out() == 1)
+
+            // if (log_out() == 1)
             {
-            key_irq_usr.update = 1;
-            if(key_irq_usr.indat[0].coe>=0&&key_irq_usr.indat[0].coe<=1.9999)
-				GetRegPrivate()->coe = key_irq_usr.indat[0].coe;
-            if(key_irq_usr.indat[0].oft<=50000)
-				GetRegPrivate()->offset = key_irq_usr.indat[0].oft;		
-			GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat = key_irq_usr.indat[0].addr;
-			GetReg()->pb[eREG_RATE].val_u32ToFloat = key_irq_usr.indat[0].baud;
-			GetReg()->pb[eREG_CHECK].val_u32ToFloat = key_irq_usr.indat[0].par;
-			GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat = key_irq_usr.indat[0].dot;
-            GetReg()->pb[eREG_UNIT].val_u32ToFloat = key_irq_usr.indat[0].unit;
-			GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat =  key_irq_usr.indat[0].spd;
+                key_irq_usr.update = 1;
+                if (key_irq_usr.indat[0].coe >= 0 && key_irq_usr.indat[0].coe <= 1.9999)
+                    GetRegPrivate()->coe = key_irq_usr.indat[0].coe;
+                if (key_irq_usr.indat[0].oft <= 50000)
+                    GetRegPrivate()->offset = key_irq_usr.indat[0].oft;
+                GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat = key_irq_usr.indat[0].addr;
+                GetReg()->pb[eREG_RATE].val_u32ToFloat = key_irq_usr.indat[0].baud;
+                GetReg()->pb[eREG_CHECK].val_u32ToFloat = key_irq_usr.indat[0].par;
+                GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat = key_irq_usr.indat[0].dot;
+                GetReg()->pb[eREG_UNIT].val_u32ToFloat = key_irq_usr.indat[0].unit;
+                GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat =  key_irq_usr.indat[0].spd;
 
 
-//typedef enum 
-//{
-// eREG_X100, 			
-// eREG_X10 ,			
-// eREG_HF16 ,			
-// eREG_LF16 ,			
-// eREG_RANGZ_HF16 ,		
-// eREG_RANGZ_LF16 ,		
-// eREG_RANGF_HF16, 		
-// eREG_RANGF_LF16 ,		
-// eREG_OFFSET_HF16 ,	
-// eREG_OFFSET_LF16 ,	
-// eREG_DEV_ADDR ,		
-// eREG_RATE,			
-// eREG_CHECK ,			
-// eREG_DECM_BIT ,		
-// eREG_UNIT,			
-// eREG_ADC_RATE 		
-//} reg_index;			  // cs1237 通道选择
-
-
-			
-//				key_irq_usr.indat[0].addr
-//				baud_sel(key_irq_usr.indat[0].baud);
-//				key_irq_usr.indat[0].par
-//				key_irq_usr.indat[0].spd
-//				key_irq_usr.indat[0].unit
-//				key_irq_usr.indat[0].dot
-//				key_irq_usr.indat[0].oft
-//				key_irq_usr.indat[0].coe
-
-			
                 printf("addr=%d\r\n", key_irq_usr.indat[0].addr);
                 SysTickDelay(100);
                 printf("baud=%d\r\n", key_irq_usr.indat[0].baud);
@@ -259,32 +243,42 @@ void save2_menu(void)//password menu
                 SysTickDelay(100);
                 printf("coe=.4%f\r\n", key_irq_usr.indat[0].coe);
                 SysTickDelay(100);
-                
+
             }
             task_index = 0;
 
         }
 
     }
-    else //no
+    else
     {
         GetDisp()->dis_buf[0] = 0x00;
         GetDisp()->dis_buf[1] = 0x00;
         GetDisp()->dis_buf[2] = 0x37;
         GetDisp()->dis_buf[3] = 0x5c;
         display_led(1, key_irq_usr.bit_sel);
-        if (key_irq_usr.double_check == SHORT_PRE)
+        if (key_irq_usr.indat[0].status == 2)//no
         {
-            key_irq_usr.double_check = NO_PRE;
+
+            if (key_irq_usr.double_check == SHORT_PRE)
+            {
+                key_irq_usr.double_check = NO_PRE;
+                task_index = 0;
+            }
+            if (log_out() == 1)
+                printf("%d\r\n", key_irq_usr.indat[0].status);
 
         }
-        if (log_out() == 1)
-            printf("%d\r\n", key_irq_usr.indat[0].status);
+        else
+        {
+            key_irq_usr.double_check = NO_PRE;
+        }
 
     }
 
+
     //display_led(GetDisp()->cusor, getKey()->bit_sel);
-	GetDisp()->cusor = 0;
+    GetDisp()->cusor = 0;
 
 
 
@@ -293,7 +287,7 @@ void save2_menu(void)//password menu
 void coe2_menu(void)//password menu
 {
 
-     uint32_t tmp = 0;
+    uint32_t tmp = 0;
     if (task_table[task_index].move == MOVE)
     {
         task_table[task_index].move = NO_PRE;
@@ -316,12 +310,12 @@ void coe2_menu(void)//password menu
         // if(log_out() == 1)
         //printf("%.4f\r\n",key_irq_usr.indat[0].coe);
 
-         
+
         tmp = key_irq_usr.indat[0].passw[0] * 1000 ;
         tmp = tmp + key_irq_usr.indat[0].passw[1] * 100;
         tmp = tmp + key_irq_usr.indat[0].passw[2] * 10;
         tmp = tmp + key_irq_usr.indat[0].passw[3];
-         key_irq_usr.indat[0].coe  = tmp / 1000.0 ;
+        key_irq_usr.indat[0].coe  = tmp / 1000.0 ;
 
 
 
@@ -359,8 +353,8 @@ void coe2_menu(void)//password menu
     GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
     GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
     GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-   // display_led(1, key_irq_usr.bit_sel);
-	GetDisp()->cusor = 1;
+    // display_led(1, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 1;
 
 
 
@@ -388,52 +382,52 @@ void oft2_menu(void)//password menu
 
         if (key_irq_usr.indat[0].passw[key_irq_usr.bit_sel - 1] > 9)
             key_irq_usr.indat[0].passw[key_irq_usr.bit_sel - 1] = 0;
-        if( key_irq_usr.indat[0].dot == 0)
+        if (key_irq_usr.indat[0].dot == 0)
         {
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0] * 1000 ;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[1] * 100;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[2] * 10;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[3];
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0] * 1000 ;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[1] * 100;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[2] * 10;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[3];
 
-		}
-		else   if( key_irq_usr.indat[0].dot == 1)//999.4
+        }
+        else   if (key_irq_usr.indat[0].dot == 1)//999.4
         {
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0] * 100 ;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[1] * 10;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[2] ;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[3]/10.0;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0] * 100 ;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[1] * 10;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[2] ;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[3] / 10.0;
 
-		}
-		else   if( key_irq_usr.indat[0].dot == 2)//99.23
+        }
+        else   if (key_irq_usr.indat[0].dot == 2)//99.23
         {
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0] * 10 ;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[1] ;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[2] /100.0;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[3]/10.0;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0] * 10 ;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[1] ;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[2] / 100.0;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[3] / 10.0;
 
-		}
-		else   if( key_irq_usr.indat[0].dot == 3)//9.234
+        }
+        else   if (key_irq_usr.indat[0].dot == 3)//9.234
         {
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0]  ;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[1] /10.0;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[2] / 100.0;
-        key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
-                                   key_irq_usr.indat[0].passw[3]/1000.0;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].passw[0]  ;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[1] / 10.0;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[2] / 100.0;
+            key_irq_usr.indat[0].oft = key_irq_usr.indat[0].oft +
+                                       key_irq_usr.indat[0].passw[3] / 1000.0;
 
-		}
-		else
-			;
+        }
+        else
+            ;
 
 //        if (key_irq_usr.indat[0].oft >= -2 && key_irq_usr.indat[0].oft < 2)
 //        {
@@ -456,51 +450,51 @@ void oft2_menu(void)//password menu
 
     }
 
-	
+
 //    key_irq_usr.indat[0].passw[0] = key_irq_usr.indat[0].oft / 1000;
 //    key_irq_usr.indat[0].passw[1] = key_irq_usr.indat[0].oft % 1000 / 100;
 //    key_irq_usr.indat[0].passw[2] = key_irq_usr.indat[0].oft % 100 / 10;
 //    key_irq_usr.indat[0].passw[3] = key_irq_usr.indat[0].oft % 10;
 
-     if( key_irq_usr.indat[0].dot == 0)
-        {
-		GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
-		GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
-		GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
-		GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
+    if (key_irq_usr.indat[0].dot == 0)
+    {
+        GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
+        GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
+        GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
+        GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
 
-     	}
-	 else if( key_irq_usr.indat[0].dot == 1)
-        {
-		GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
-		GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1])|0x80;
-		GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
-		GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
+    }
+    else if (key_irq_usr.indat[0].dot == 1)
+    {
+        GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
+        GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]) | 0x80;
+        GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
+        GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
 
-     	} 
-	else if( key_irq_usr.indat[0].dot == 2)
-	   {
-	   GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
-	   GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
-	   GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2])|0x80;
-	   GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
+    }
+    else if (key_irq_usr.indat[0].dot == 2)
+    {
+        GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
+        GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
+        GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]) | 0x80;
+        GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
 
-	   }
-	else if( key_irq_usr.indat[0].dot == 3)
-	   {
-	   GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
-	   GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
-	   GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
-	   GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3])|0x80;
+    }
+    else if (key_irq_usr.indat[0].dot == 3)
+    {
+        GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
+        GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
+        GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
+        GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]) | 0x80;
 
-	   }
+    }
 //
 //    GetDisp()->dis_buf[0] = GetSeg(key_irq_usr.indat[0].passw[0]);
 //    GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
 //    GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
 //    GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-   // display_led(1, key_irq_usr.bit_sel);
-	GetDisp()->cusor = 1;
+    // display_led(1, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 1;
 
 
 
@@ -540,8 +534,8 @@ void dot2_menu(void)//password menu
     GetDisp()->dis_buf[1] = 0;
     GetDisp()->dis_buf[2] = 0;
     GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-  //  display_led(1, key_irq_usr.bit_sel);
-	GetDisp()->cusor = 1;
+    //  display_led(1, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 1;
 
 
 }
@@ -581,8 +575,8 @@ void unit2_menu(void)//password menu
     GetDisp()->dis_buf[1] = 0;
     GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
     GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-   // display_led(1, key_irq_usr.bit_sel);
-	GetDisp()->cusor = 1;
+    // display_led(1, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 1;
 
 
 }
@@ -602,16 +596,28 @@ void spd2_menu(void)//password menu
     {
         key_irq_usr.double_check = NO_PRE;
 
-        if (key_irq_usr.indat[0].spd < 1)
+        if (key_irq_usr.indat[0].spd == 0)
         {
-            key_irq_usr.indat[0].spd ++;
+            key_irq_usr.indat[0].spd = 1;
 
         }
         else
             key_irq_usr.indat[0].spd = 0;
         if (log_out() == 1)
             printf("%d\r\n", key_irq_usr.indat[0].spd);
-	    *getAdcReconfig() = 1;
+        *getAdcReconfig() = 1;
+
+
+//        key_irq_usr.indat[0].spd = key_irq_usr.indat[0].passw[2] * 10;
+//        key_irq_usr.indat[0].spd = key_irq_usr.indat[0].spd +
+//                                   key_irq_usr.indat[0].passw[3];
+        if (key_irq_usr.indat[0].spd == 1 ||
+                key_irq_usr.indat[0].spd == 0)
+            ;
+        else
+            key_irq_usr.indat[0].spd == 0;
+
+
 
     }
 
@@ -630,8 +636,8 @@ void spd2_menu(void)//password menu
         GetDisp()->dis_buf[3] = GetSeg(0x00);
 
     }
-  //  display_led(1, key_irq_usr.bit_sel);
-	GetDisp()->cusor = 1;
+    //  display_led(1, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 1;
 
 
 }
@@ -660,32 +666,38 @@ void par2_menu(void)//password menu
             key_irq_usr.indat[0].par = 0;
         if (log_out() == 1)
             printf("%d\r\n", key_irq_usr.indat[0].par);
-		getuart()->reconfig = 1;
+        getuart()->reconfig = 1;
     }
 
 
     if (key_irq_usr.indat[0].par == 1)
     {
-        GetDisp()->dis_buf[3] = 0x37;
+        GetDisp()->dis_buf[3] = N;
 
     }
     else    if (key_irq_usr.indat[0].par == 2)
     {
-        GetDisp()->dis_buf[3] = 0x5c;
+        GetDisp()->dis_buf[3] = O ;
 
     }
     else    if (key_irq_usr.indat[0].par == 3)
     {
-        GetDisp()->dis_buf[3] = 0x79;
+        GetDisp()->dis_buf[3] = E;
 
     }
+    else
+    {
+        GetDisp()->dis_buf[3] = N;
+
+    }
+
 
     GetDisp()->dis_buf[0] = 0;
     GetDisp()->dis_buf[1] = 0;
     GetDisp()->dis_buf[2] = 00;
-    GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-   // display_led(1, 4);
-	GetDisp()->cusor = 1;
+    //GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
+    // display_led(1, 4);
+    GetDisp()->cusor = 1;
 
 
 }
@@ -749,7 +761,7 @@ void baud2_menu(void)//password menu
     {
         key_irq_usr.double_check = NO_PRE;
 
-        if ( key_irq_usr.indat[0].baud < 7)
+        if (key_irq_usr.indat[0].baud < 7)
         {
             key_irq_usr.indat[0].baud ++;
 
@@ -763,7 +775,7 @@ void baud2_menu(void)//password menu
         key_irq_usr.indat[0].passw[1] = result % 1000 / 100;
         key_irq_usr.indat[0].passw[2] = result % 100 / 10;
         key_irq_usr.indat[0].passw[3] = result % 10;
-		getuart()->reconfig = 1;
+        getuart()->reconfig = 1;
         if (log_out() == 1)
             printf("%d\r\n", result);
     }
@@ -774,8 +786,8 @@ void baud2_menu(void)//password menu
     GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
     GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
     GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-   // display_led(1, key_irq_usr.bit_sel);
-	GetDisp()->cusor = 1;
+    // display_led(1, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 1;
 
 
 }
@@ -835,8 +847,8 @@ void addr2_menu(void)//password menu
     GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
     GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
     GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-   // display_led(1, key_irq_usr.bit_sel);
-	GetDisp()->cusor = 1;
+    // display_led(1, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 1;
 
 
 }
@@ -846,8 +858,10 @@ void save_menu(void)//password menu
     GetDisp()->dis_buf[0] = S;
     GetDisp()->dis_buf[1] = A;
     GetDisp()->dis_buf[2] = U;
-    GetDisp()->dis_buf[3] = E;GetDisp()->cusor = 0;
-  //  display_led(0, key_irq_usr.bit_sel);
+    GetDisp()->dis_buf[3] = E;
+    GetDisp()->cusor = 0;
+    key_irq_usr.indat[0].status = 0;
+    //  display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
 
@@ -867,8 +881,9 @@ void coe_menu(void)//password menu
     GetDisp()->dis_buf[0] = 0;
     GetDisp()->dis_buf[1] = C;
     GetDisp()->dis_buf[2] = O;
-    GetDisp()->dis_buf[3] = E;GetDisp()->cusor = 0;
-   // display_led(0, key_irq_usr.bit_sel);
+    GetDisp()->dis_buf[3] = E;
+    GetDisp()->cusor = 0;
+    // display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
 
@@ -879,7 +894,8 @@ void oft_menu(void)//password menu
     GetDisp()->dis_buf[0] = 0;
     GetDisp()->dis_buf[1] = O;
     GetDisp()->dis_buf[2] = F;
-    GetDisp()->dis_buf[3] = T;GetDisp()->cusor = 0;
+    GetDisp()->dis_buf[3] = T;
+    GetDisp()->cusor = 0;
     //display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
@@ -892,8 +908,8 @@ void dot_menu(void)//password menu
     GetDisp()->dis_buf[1] = D;
     GetDisp()->dis_buf[2] = O;
     GetDisp()->dis_buf[3] = T;
-	GetDisp()->cusor = 0;
-   /// display_led(0, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 0;
+    /// display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
 
@@ -907,7 +923,8 @@ void unit_menu(void)//password menu
     GetDisp()->dis_buf[0] = U;
     GetDisp()->dis_buf[1] = N;
     GetDisp()->dis_buf[2] = I;
-    GetDisp()->dis_buf[3] = T;GetDisp()->cusor = 0;
+    GetDisp()->dis_buf[3] = T;
+    GetDisp()->cusor = 0;
     //display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
@@ -919,8 +936,9 @@ void spd_menu(void)//password menu
     GetDisp()->dis_buf[0] = 0;
     GetDisp()->dis_buf[1] = S;
     GetDisp()->dis_buf[2] = P;
-    GetDisp()->dis_buf[3] = D;GetDisp()->cusor = 0;
-   // display_led(0, key_irq_usr.bit_sel);
+    GetDisp()->dis_buf[3] = D;
+    GetDisp()->cusor = 0;
+    // display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
 
@@ -932,8 +950,9 @@ void par_menu(void)//password menu
     GetDisp()->dis_buf[0] = 0;
     GetDisp()->dis_buf[1] = P;
     GetDisp()->dis_buf[2] = A;
-    GetDisp()->dis_buf[3] = R;GetDisp()->cusor = 0;
-   // display_led(0, key_irq_usr.bit_sel);
+    GetDisp()->dis_buf[3] = R;
+    GetDisp()->cusor = 0;
+    // display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
 
@@ -956,7 +975,7 @@ void baud_menu(void)//password menu
     GetDisp()->dis_buf[1] = A;
     GetDisp()->dis_buf[2] = U;
     GetDisp()->dis_buf[3] = D;
-	GetDisp()->cusor = 0;
+    GetDisp()->cusor = 0;
     //display_led(0, key_irq_usr.bit_sel);
     key_irq_usr.bit_sel = BIT_SEL;
 
@@ -975,13 +994,17 @@ void addr_menu(void)//password menu
     GetDisp()->dis_buf[2] = D;
     GetDisp()->dis_buf[3] = R;
     key_irq_usr.bit_sel = BIT_SEL;
-	GetDisp()->cusor = 0;
-   // display_led(0, key_irq_usr.bit_sel);
+    GetDisp()->cusor = 0;
+    // display_led(0, key_irq_usr.bit_sel);
 
 }
 void normal_menu(void)//password menu
 {
     ;//display();
+    key_irq_usr.indat[0].passw[0] = 0;
+    key_irq_usr.indat[0].passw[1] = 0;
+    key_irq_usr.indat[0].passw[2] = 0;
+    key_irq_usr.indat[0].passw[3] = 0;
 }
 
 
@@ -1013,33 +1036,33 @@ void password_menu(void)//password menu
                 key_irq_usr.indat[0].passw[0] == 0x00
            )
             task_index = 2;
-		else  if (key_irq_usr.indat[0].passw[3] == 0x06 &&
-                key_irq_usr.indat[0].passw[2] == 0x07 &&
-                key_irq_usr.indat[0].passw[1] == 0x08 &&
-                key_irq_usr.indat[0].passw[0] == 0x09
-           )
-			{
-		   		task_index = 0;
-		   		GetRegPrivate()->mode = 2;
-		        getuart()->reconfig = 1;
-		       *getAdcReconfig() = 1;
+        else  if (key_irq_usr.indat[0].passw[3] == 0x06 &&
+                  key_irq_usr.indat[0].passw[2] == 0x07 &&
+                  key_irq_usr.indat[0].passw[1] == 0x08 &&
+                  key_irq_usr.indat[0].passw[0] == 0x09
+                 )
+        {
+            task_index = 0;
+            GetRegPrivate()->mode = 2;
+            getuart()->reconfig = 1;
+            *getAdcReconfig() = 1;
 
-		   }
-	else  if (key_irq_usr.indat[0].passw[3] == 0x06 &&
-			key_irq_usr.indat[0].passw[2] == 0x03 &&
-			key_irq_usr.indat[0].passw[1] == 0x00 &&
-			key_irq_usr.indat[0].passw[0] == 0x00
-	   )
-		{
-			task_index = 20;
-			GetRegPrivate()->mode = 2;
-			getuart()->reconfig = 1;
-		   *getAdcReconfig() = 1;
-	        GetDisp()->dis_buf[0] = 0x00;
-        GetDisp()->dis_buf[1] = 0x6e;
-        GetDisp()->dis_buf[2] = 0x79;
-        GetDisp()->dis_buf[3] = 0x6d;
-	   }
+        }
+        else  if (key_irq_usr.indat[0].passw[3] == 0x06 &&
+                  key_irq_usr.indat[0].passw[2] == 0x03 &&
+                  key_irq_usr.indat[0].passw[1] == 0x00 &&
+                  key_irq_usr.indat[0].passw[0] == 0x00
+                 )
+        {
+            task_index = 20;
+            GetRegPrivate()->mode = 2;
+            getuart()->reconfig = 1;
+            *getAdcReconfig() = 1;
+            GetDisp()->dis_buf[0] = 0x00;
+            GetDisp()->dis_buf[1] = 0x6e;
+            GetDisp()->dis_buf[2] = 0x79;
+            GetDisp()->dis_buf[3] = 0x6d;
+        }
 
     }
 
@@ -1048,9 +1071,9 @@ void password_menu(void)//password menu
     GetDisp()->dis_buf[1] = GetSeg(key_irq_usr.indat[0].passw[1]);
     GetDisp()->dis_buf[2] = GetSeg(key_irq_usr.indat[0].passw[2]);
     GetDisp()->dis_buf[3] = GetSeg(key_irq_usr.indat[0].passw[3]);
-	GetDisp()->cusor = 1;
+    GetDisp()->cusor = 1;
 
-	//display_led(1, key_irq_usr.bit_sel);
+    //display_led(1, key_irq_usr.bit_sel);
 }
 void key_init(void)
 {
@@ -1062,8 +1085,10 @@ void key_init(void)
     input_dat[0].spd  =  GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat;
     input_dat[0].unit = GetReg()->pb[eREG_UNIT].val_u32ToFloat;
     input_dat[0].dot  =  GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat;
+    if (input_dat[0].dot > 3)
+        input_dat[0].dot = 1;
     input_dat[0].coe  =  GetRegPrivate()->coe;
-	input_dat[0].oft = GetRegPrivate()->offset;
+    input_dat[0].oft = GetRegPrivate()->offset;
 
 
     key_irq_usr.indat[0].passw[0] = 0;
@@ -1108,6 +1133,11 @@ void KeyProc(void)
         task_index = 0;
         key_irq_usr.key_irq_status = 0;
         key_irq_usr.state = 0 ;
+        key_irq_usr.update = 0;
+        if (*getAdcReconfig() == 1)
+            *getAdcReconfig() = 0;
+        if (getuart()->reconfig == 1)
+            getuart()->reconfig = 0;
 
     }
     else
@@ -1126,7 +1156,8 @@ void KeyProc(void)
                             key_irq_usr.state ++ ;
                         }
                         else
-                        {  //key2 3 1
+                        {
+                            //key2 3 1
                             if (GPIO_ReadPin(KEY1_GPIO_PORT, KEY1_GPIO_PIN))
                             {
                                 key_irq_usr.key_irq_status = key_irq_usr.key_irq_status & 0xfb;
@@ -1200,31 +1231,31 @@ void KeyProc(void)
 
 unsigned char getTaskIndex()
 {
-	return task_index;
+    return task_index;
 }
 void display_menu(void)
 {
 
-   // KeyProc();
+    // KeyProc();
     task_table[task_index].current_operation();
 
 }
 void GPIOA_IRQHandlerCallback(void)
 {
 
-		
-		if (CW_GPIOA->ISR_f.PIN3)
-		{
-			GPIOA_INTFLAG_CLR(bv3);
-			key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x04;
-			key_irq_usr.delay_tick = GetTick();
-		}
-		if (CW_GPIOA->ISR_f.PIN4)
-		{
-			GPIOA_INTFLAG_CLR(bv4);
-			key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x02;
-			key_irq_usr.delay_tick = GetTick();
-		}
+
+    if (CW_GPIOA->ISR_f.PIN3)
+    {
+        GPIOA_INTFLAG_CLR(bv3);
+        key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x04;
+        key_irq_usr.delay_tick = GetTick();
+    }
+    if (CW_GPIOA->ISR_f.PIN4)
+    {
+        GPIOA_INTFLAG_CLR(bv4);
+        key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x02;
+        key_irq_usr.delay_tick = GetTick();
+    }
 
 
 
@@ -1241,7 +1272,7 @@ void GPIOB_IRQHandlerCallback(void)
 //    }
 
 #ifdef HW_VER1
-	
+
     if (CW_GPIOB->ISR_f.PIN2)
     {
         GPIOB_INTFLAG_CLR(bv2);
@@ -1262,7 +1293,7 @@ void GPIOB_IRQHandlerCallback(void)
 
     }
 
-	
+
 #endif
 
 }

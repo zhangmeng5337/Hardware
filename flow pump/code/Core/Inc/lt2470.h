@@ -19,6 +19,7 @@ typedef struct
 	float current;
 }ai_stru;
 
+unsigned char ai_read(void);
 
 
 

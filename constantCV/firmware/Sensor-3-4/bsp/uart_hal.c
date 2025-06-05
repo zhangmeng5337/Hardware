@@ -68,12 +68,7 @@ size_t __write(int handle, const unsigned char *buffer, size_t size)
 
 void uart_config()
 {
-    if (getKey()->update == 1)
-    {
-        RegWrite();
-        getKey()->update = 0;
 
-    }
 
     UART_InitTypeDef UART_InitStructure = {0};
     if (uart_usr.reconfig)
@@ -87,7 +82,7 @@ void uart_config()
                 uart_usr.baudrate = getKey()->indat[0].baud;
 
             }
-            else
+            else  if (uart_usr.reconfig == 2)
             {
                 //GetReg()->pb[eREG_RATE].val_u32ToFloat = GetReg()->pb[eREG_CHECK];
 
@@ -106,7 +101,7 @@ void uart_config()
 
 
             }
-            else
+            else  if (uart_usr.reconfig == 2)
             {
 
                 uart_usr.parity =  GetReg()->pb[eREG_CHECK].val_u32ToFloat;
@@ -115,70 +110,75 @@ void uart_config()
 
         }
 
-
-        UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, DISABLE);
-        switch (uart_usr.parity)
+        if (uart_usr.reconfig == 2 || uart_usr.reconfig == 1)
         {
-            case parityNone:
-                UART_InitStructure.UART_Parity = UART_Parity_No ;
-                break;
-            case parityEven:
-                UART_InitStructure.UART_Parity = UART_Parity_Even ;
-                break;
-            case parityOdd:
-                UART_InitStructure.UART_Parity = UART_Parity_Odd ;
-                break;
-            default:
-                UART_InitStructure.UART_Parity = UART_Parity_No ;
-                break;
+            UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, DISABLE);
+            switch (uart_usr.parity)
+            {
+                case parityNone:
+                    UART_InitStructure.UART_Parity = UART_Parity_No ;
+                    break;
+                case parityEven:
+                    UART_InitStructure.UART_Parity =UART_Parity_Odd  ;
+                    break;
+                case parityOdd:
+                    UART_InitStructure.UART_Parity = UART_Parity_Even ;
+                    break;
+                default:
+                    UART_InitStructure.UART_Parity = UART_Parity_No ;
+                    break;
+            }
+
+            switch (uart_usr.baudrate)
+            {
+                case 0:
+                    UART_InitStructure.UART_BaudRate = baudrate_1200;
+                    break;
+                case 1:
+                    UART_InitStructure.UART_BaudRate = baudrate_2400;
+                    break;
+                case 2:
+                    UART_InitStructure.UART_BaudRate = baudrate_4800;
+                    break;
+                case 3:
+                    UART_InitStructure.UART_BaudRate = baudrate_9600;
+                    break;
+                case 4:
+                    UART_InitStructure.UART_BaudRate = baudrate_19200;
+                    break;
+                case 5:
+                    UART_InitStructure.UART_BaudRate = baudrate_38400;
+                    break;
+                case 6:
+                    UART_InitStructure.UART_BaudRate = baudrate_57600;
+                    break;
+                case 7:
+                    UART_InitStructure.UART_BaudRate = baudrate_115200;
+                    break;
+                default:
+                    UART_InitStructure.UART_BaudRate = baudrate_9600;
+                    break;
+            }
+
+            // UART_InitStructure.UART_BaudRate = DEBUG_UART_BaudRate;
+            UART_InitStructure.UART_Over = UART_Over_16;
+            UART_InitStructure.UART_Source = UART_Source_PCLK;
+            UART_InitStructure.UART_UclkFreq = DEBUG_UART_UclkFreq;
+            UART_InitStructure.UART_StartBit = UART_StartBit_FE;
+            UART_InitStructure.UART_StopBits = UART_StopBits_1;
+            //UART_InitStructure.UART_Parity = UART_Parity_No ;
+            UART_InitStructure.UART_HardwareFlowControl = UART_HardwareFlowControl_None;
+            UART_InitStructure.UART_Mode = UART_Mode_Rx | UART_Mode_Tx;
+            UART_Init(DEBUG_UARTx, &UART_InitStructure);
+            uart_usr.reconfig = 0;
+            UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, ENABLE);
+            UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RC);
+            UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RXIDLE);
+            uart_usr.reconfig =  0;
+
         }
 
-        switch (uart_usr.baudrate)
-        {
-            case 0:
-                UART_InitStructure.UART_BaudRate = baudrate_1200;
-                break;
-            case 1:
-                UART_InitStructure.UART_BaudRate = baudrate_2400;
-                break;
-            case 2:
-                UART_InitStructure.UART_BaudRate = baudrate_4800;
-                break;
-            case 3:
-                UART_InitStructure.UART_BaudRate = baudrate_9600;
-                break;
-            case 4:
-                UART_InitStructure.UART_BaudRate = baudrate_19200;
-                break;
-            case 5:
-                UART_InitStructure.UART_BaudRate = baudrate_38400;
-                break;
-            case 6:
-                UART_InitStructure.UART_BaudRate = baudrate_57600;
-                break;
-            case 7:
-                UART_InitStructure.UART_BaudRate = baudrate_115200;
-                break;
-            default:
-                UART_InitStructure.UART_BaudRate = baudrate_9600;
-                break;
-        }
 
-        // UART_InitStructure.UART_BaudRate = DEBUG_UART_BaudRate;
-        UART_InitStructure.UART_Over = UART_Over_16;
-        UART_InitStructure.UART_Source = UART_Source_PCLK;
-        UART_InitStructure.UART_UclkFreq = DEBUG_UART_UclkFreq;
-        UART_InitStructure.UART_StartBit = UART_StartBit_FE;
-        UART_InitStructure.UART_StopBits = UART_StopBits_1;
-        //UART_InitStructure.UART_Parity = UART_Parity_No ;
-        UART_InitStructure.UART_HardwareFlowControl = UART_HardwareFlowControl_None;
-        UART_InitStructure.UART_Mode = UART_Mode_Rx | UART_Mode_Tx;
-        UART_Init(DEBUG_UARTx, &UART_InitStructure);
-        uart_usr.reconfig = 0;
-        UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, ENABLE);
-        UART_ClearITPendingBit(CW_UART1, UART_IT_RC);
-        UART_ClearITPendingBit(CW_UART1, UART_IT_RXIDLE);
-        uart_usr.reconfig =  0;
 
 
 
@@ -193,8 +193,11 @@ void uart_init(void)
     uart_usr.reconfig = 0;
     uart_usr.parity = GetReg()->pb[eREG_CHECK].val_u32ToFloat;
     uart_usr.baudrate = GetReg()->pb[eREG_RATE].val_u32ToFloat;
-    uart_usr.reconfig = 1;
+    uart_usr.reconfig = 2;
     uart_config();
+	uart_usr.recv_update = 0;
+	uart_usr.index = 0;
+
 
 }
 uart_stru  *getuart(void)

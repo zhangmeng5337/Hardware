@@ -75,6 +75,7 @@ uint32_t uint32Tofloat(unsigned char *buf)
 	
 	return tmp;
 }
+
 float uint32TofloatR(unsigned char *buf)
 {
 	uint32_t tmp;
@@ -102,7 +103,7 @@ uint32_t  uint32Tofloat_pos(unsigned char *pb,unsigned char pos)
 
 void flash_write_byte(uint32_t WriteAddr, uint8_t *pWrBuf, uint16_t count)
 {
-    uint8_t buf[256];
+    uint8_t buf[READ_SIZE];
     uint32_t i;
     uint16_t  j;
 	uint8_t  Flag;

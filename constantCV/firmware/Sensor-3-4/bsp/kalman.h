@@ -9,6 +9,7 @@
 #define __KALMAN_H__
 
 #include "main.h"
+#define	ADC_CAPTURE			25		//采集数量
 
 typedef struct
 {
@@ -26,5 +27,7 @@ typedef struct
 void kalman_init(kalman *kfp);
 float kalman_filter(kalman *kfp, float input);
 kalman *kalman_kfp_get(void);
+float SilderFilter(float _value);
+float  GetMedianNum(float bArray);
 
 #endif /* __KALMAN_H__ */

@@ -40,8 +40,8 @@ extern "C"
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 #define MAIN_FREQ   48000000
-#define VERSION 0x10//1.0
-
+#define VERSION 0x15//1.0
+#define DISPLAY_DEBUG 0
 
 //UARTx
 #define  DEBUG_UARTx                   CW_UART1
@@ -90,7 +90,30 @@ extern "C"
 #define  KEY3_GPIO_PORT                   CW_GPIOA
 #endif
 
+#ifdef HW_VER1
 
+#define  DIAG1_GPIO_PIN                   GPIO_PIN_8
+#define  DIAG1_GPIO_PORT                  CW_GPIOA
+#define  DIAG2_GPIO_PIN                   GPIO_PIN_1
+#define  DIAG2_GPIO_PORT                  CW_GPIOB
+#define  DIAG3_GPIO_PIN                   GPIO_PIN_0
+#define  DIAG3_GPIO_PORT                  CW_GPIOB
+#define  DIAG4_GPIO_PIN                   GPIO_PIN_1
+#define  DIAG4_GPIO_PORT                  CW_GPIOB
+
+#endif
+#ifdef HW_VER2
+
+#define  DIAG1_GPIO_PIN                   GPIO_PIN_7
+#define  DIAG1_GPIO_PORT                  CW_GPIOA
+#define  DIAG2_GPIO_PIN                   GPIO_PIN_1
+#define  DIAG2_GPIO_PORT                  CW_GPIOB
+#define  DIAG3_GPIO_PIN                   GPIO_PIN_0
+#define  DIAG3_GPIO_PORT                  CW_GPIOB
+#define  DIAG4_GPIO_PIN                   GPIO_PIN_2
+#define  DIAG4_GPIO_PORT                  CW_GPIOB
+
+#endif
 
 
 //display
@@ -101,14 +124,6 @@ extern "C"
 #define  IN_RCK_GPIO_PIN                  GPIO_PIN_2
 #define  IN_RCKGPIO_PORT                  CW_GPIOA
 
-#define  DIAG1_GPIO_PIN                   GPIO_PIN_8
-#define  DIAG1_GPIO_PORT                  CW_GPIOA
-#define  DIAG2_GPIO_PIN                   GPIO_PIN_1
-#define  DIAG2_GPIO_PORT                  CW_GPIOB
-#define  DIAG3_GPIO_PIN                   GPIO_PIN_0
-#define  DIAG3_GPIO_PORT                  CW_GPIOB
-#define  DIAG4_GPIO_PIN                   GPIO_PIN_1
-#define  DIAG4_GPIO_PORT                  CW_GPIOB
 
 
 

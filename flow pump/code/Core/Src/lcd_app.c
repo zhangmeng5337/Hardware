@@ -1,5 +1,9 @@
 #include "lcd_app.h"
 #include "key.h"
+#include "sys.h"
+#include "draw.h"
+#include "lcd_string.h"
+#include "pump_config.h"
 
 uint8_t taskIndex = 0;  //任务调度序号
 menu_key_stru menu_key_usr;
@@ -19,6 +23,30 @@ void l3_main_page_info_Interface(void);
   */
 void l1_main_page_Interface(void)
 {
+	LCD12864_Write_SuperString(0, 0, "运行");
+	// LCD_Clear_GDRAM();
+	LCD12864_Fixpicture(1, 4, 0, 2, 16, (unsigned char *)INFO_B);
+	LCD12864_Fixpicture(1, 5, 0, 2, 16, (unsigned char *)WARN_B);
+	LCD12864_Fixpicture(1, 6, 0, 2, 16, (unsigned char *)SET2_B);
+	LCD12864_Fixpicture(1, 7, 0, 2, 16, (unsigned char *)BACK_B);
+	LCD12864_Fixpicture(2, 1, 0, 2, 16, (unsigned char *)STOP_B);
+	LCD12864_Write_Numberf(2, 1, get_pump_params()->flow_real);
+	if(get_pump_params()->flow_real<=100)
+		get_pump_params()->flow_real++;
+	else
+		get_pump_params()->flow_real = 0;
+	if(get_pump_params()->unit == 0)
+		LCD12864_Write_SuperString(2, 4, "ml/h");
+	else
+		LCD12864_Write_SuperString(2, 4, "L/h");
+	LCD12864_Write_SuperString(3, 0, "手动");
+	LCD12864_Write_Numberf(3, 3, get_pump_params()->set_flow);
+
+
+	LCD12864_Fixpicture(4, 1, 0, 2, 16, (unsigned char *)FLOW_CTRL_B);
+	LCD12864_Fixpicture(4, 7, 0, 2, 16, (unsigned char *)EMPTY_B);
+	//LCD12864_Write_Numberf(2,1,float number)
+
 }
 
 void l2_main_page_info_Interface(void)
@@ -68,7 +96,7 @@ Menu_table_t taskTable[] =
     //菜单界面函数 -- 一级界面
 
     //*************main page *****************************************
-    {MAIN_PAGE, RUN_ICON, MAIN_PAGE_RUN, 0, l1_main_page_Interface, 0, 1},
+    {MAIN_PAGE, RUN_ICON, MAIN_PAGE_RUN, 0, l1_main_page_Interface, 0, 0},
     {MAIN_PAGE, INFOR_ICON, MAIN_PAGE_INFO, 0, l2_main_page_info_Interface, 0, 0},
     {MAIN_PAGE, WARN_ICON, MAIN_PAGE_WARN, 0, l2_main_page_warn_Interface, 0, 0},
     {MAIN_PAGE, SETTING_ICON, MAIN_PAGE_SET, 0, l2_main_page_set_Interface, 0, 0},
@@ -133,6 +161,7 @@ Menu_table_t taskTable[] =
 void menu_init()
 {
     taskIndex = 0;
+	 lcd_init();
 
 }
 void Menu_Interface_manage()
@@ -213,11 +242,12 @@ void Menu_Interface_manage()
 }
 void menu_change_proc()
 {
-    Menu_Interface_manage();
+    
 
 }
 void menu_manage()
 {
+    Menu_Interface_manage();
     if (menu_key_usr.next_status == 1) //切换画面
     {
         //taskIndex = taskTable[taskIndex].next;
@@ -231,7 +261,7 @@ void menu_manage()
         taskTable[taskIndex].mode = 0;
     }
 
-    menu_change_proc();
+  
 
 }
 
@@ -239,11 +269,16 @@ void lcd_proc()
 {
     static uint32_t tick;
 
-    menu_manage();
-    if ((HAL_GetTick() - tick) >= FRESH)
-    {
-        tick = HAL_GetTick();
-        taskTable[taskIndex].Current_Operation();//执行函数
-    }
+    
+    registerTick(LCD_FUCN_SW_TICK,FRESH_TIME);
+	if(GetTickResult(LCD_FUCN_SW_TICK) == 1)
+	{
+	    menu_manage();
+		taskTable[taskIndex].Current_Operation();//执行函数
+		reset_registerTick(LCD_FUCN_SW_TICK);
+//	    lcd_proc_test();
+	}
+	
+
 }
 

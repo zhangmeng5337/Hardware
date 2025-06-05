@@ -20,6 +20,9 @@ void spiSendReceiveArrays(uint8_t DataTx[], uint8_t DataRx[], uint8_t byteLength
     ltc2470_TransmitReceive(DataTx, DataRx, byteLength);
 
 }
+/*****
+	result: 3 normal
+**/
 unsigned char ai_read()
 {
 	uint8_t DataTx[2];

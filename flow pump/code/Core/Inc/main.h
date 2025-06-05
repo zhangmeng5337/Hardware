@@ -32,6 +32,11 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #define PWM_COUNTER  4999
+#define FRESH_TIME  100  //display swtich cycle
+#define ADC_POLL_TIME 10
+#define LCD_BLINK_TIME 500
+
+#define MAX_CURR  5000
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -5,6 +5,7 @@
 #define REG_SIZE 50
 #define CHANGE_REG   0x00
 #define CHANGE_DAT 0x01
+#define CHANGE_DAT_DEGAULT 0x02
 
 #define REG_X100 			0x0000
 #define REG_X10 			0x0001
@@ -22,7 +23,10 @@
 #define REG_DECM_BIT 		0x012F
 #define REG_UNIT			0x0130
 #define REG_ADC_RATE 		0x0131  
+#define REG_CLR_ZEROE 		0x0023  
 
+
+#define DEV_ADDR_MAX   247
 
 typedef enum 
 {
@@ -44,7 +48,7 @@ typedef enum
 
 typedef enum 
 {
- eREG_X100, 			
+ eREG_X100=0, 			
  eREG_X10 ,			
  eREG_HF16 ,			
  eREG_LF16 ,			
@@ -59,7 +63,8 @@ typedef enum
  eREG_CHECK ,			
  eREG_DECM_BIT ,		
  eREG_UNIT,			
- eREG_ADC_RATE 		
+ eREG_ADC_RATE,
+ eREG_CLR_ZEROE
 } reg_index;			  // cs1237 閫氶亾閫夋嫨
 
 typedef struct
@@ -89,7 +94,8 @@ typedef struct
 }reg_stru;
 typedef struct
 {
-  float offset;//before zero value
+  float offset;//offset
+  float zero_value;//before zero value  
   float full_rang;
  float coe;
  float cur_set;//set current 0.4  0.8
@@ -106,6 +112,18 @@ typedef struct
  float coe2;
  float coe3;
  float coe4;
+ float cal1ADC;
+ float cal2ADC;
+ float cal3ADC;
+ float cal4ADC;
+ float cal5ADC;
+ float cal1val;
+ float cal2val;
+ float cal3val;
+ float cal4val;
+ float cal5val;
+ float maskzero;//%
+
 }params_private_stru;
 
 void reg_init(void);
@@ -119,6 +137,7 @@ void reg_proc(void);
 void ModbusDatToRegFloatDat(reg_dat_pack *pb, uint8_t *dat,
                            unsigned char dat_pos);
 void ModbusDatToMulRegDat(uint16_t RegNum, uint8_t *dat, unsigned char dir);
+void FlshDatToRegDatNoDefault(reg_dat_pack *pb, uint8_t *dat, unsigned char type);
 
 params_private_stru *GetRegPrivate(void);
 void RegWrite(void);

@@ -14,6 +14,7 @@ void do_init(void)
 {
     HAL_GPIO_WritePin(DO_ctrl_0_GPIO_Port, DO_ctrl_0_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(DO_ctrl_1_GPIO_Port, DO_ctrl_1_Pin, GPIO_PIN_SET);
+	//getMotr()->Status = RUN;
 }
 void do_ctrl(unsigned char relay_num)
 {
@@ -22,7 +23,7 @@ void do_ctrl(unsigned char relay_num)
     if (relay_num == 2)
         HAL_GPIO_WritePin(DO_ctrl_1_GPIO_Port, DO_ctrl_1_Pin, GPIO_PIN_RESET);
 }
-di_stru di_input_read()
+void di_input_read()
 {
     GPIO_PinState status;
     status =  HAL_GPIO_ReadPin(DI_IN1_GPIO_Port, DI_IN1_Pin)&
@@ -112,18 +113,6 @@ di_stru di_input_read()
 
         }
 
-        if (HAL_GPIO_ReadPin(DI_IN1_GPIO_Port, DI_IN1_Pin) == 0)
-        {
-            di_usr.update = di_usr.update | 0x40;
-            di_usr.status  = di_usr.status | 0x40;
-
-        }
-        else
-        {
-            di_usr.update = di_usr.update & (~0x40);
-            di_usr.status  = di_usr.status & (~0x40);
-
-        }
 
     }
 
@@ -139,23 +128,6 @@ void pulse_exti(void)
 }
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-//    if (GPIO_Pin == DI_IN0_Pin)
-//    {
-//        while(HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin)== 0)
-//        {
-//			HAL_Delay(20);
-//			pulse_exti();//脉冲计数
-//			break;
-//
-//		}
-//         while(HAL_GPIO_ReadPin(SW2_GPIO_Port, SW2_Pin)== 0)
-//        {
-//			HAL_Delay(20);
-//			pulse_exti();//脉冲计数
-//			break;
-//
-//		}       	
-//    }
     if (GPIO_Pin == SW1_Pin)
     {
         if((HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin)&
@@ -176,10 +148,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
     if (GPIO_Pin == MHU_Pin || GPIO_Pin == MHV_Pin || GPIO_Pin == MHW_Pin)
     {
-       if(HAL_GPIO_ReadPin(MHU_GPIO_Port, MHU_Pin)== 0||
-	   	HAL_GPIO_ReadPin(MHV_GPIO_Port, MHV_Pin)== 0||
-	   	HAL_GPIO_ReadPin(MHW_GPIO_Port, MHW_Pin)== 0)
-        if (getMotr()->Status == RUN)
+//       if(HAL_GPIO_ReadPin(MHU_GPIO_Port, MHU_Pin)== 0||
+//	   	HAL_GPIO_ReadPin(MHV_GPIO_Port, MHV_Pin)== 0||
+//	   	HAL_GPIO_ReadPin(MHW_GPIO_Port, MHW_Pin)== 0)
+			 {
+				 getMotr()->Hall_status = get_hall_state();
+				  Six_Step_Phase(getMotr()->Hall_status, getMotr()->Direction);
+	        if (getMotr()->Status == RUN)
         {
 
             /*2.开始获取HALL值*/
@@ -193,11 +168,30 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		{
 			Six_Step_Phase(7, getMotr()->Direction);//停机
 
-		}
+		}		 
+			 }
+
 
     }
 
 }
+void warn_read(void)
+{
+	if(get_di_status()->status & LOW_L)
+	{
 
+	}
+	if(get_di_status()->status & EMPITY)
+	{
+
+	}
+
+}
+void Di_Do_proc(void)
+{
+	di_input_read();
+	warn_read();
+
+}
 
 

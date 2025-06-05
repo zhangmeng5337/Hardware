@@ -2,7 +2,7 @@
 #define LCD_APP_H_
 #include "main.h"
 
-#define FRESH  200
+
 //*****************page define*************
 #define MAIN_PAGE 1
 #define MAIN_PAGE_RUN 2
@@ -64,6 +64,7 @@ typedef struct
 } menu_key_stru;
 
 void lcd_proc(void);
+void menu_init(void);
 
 #endif
 

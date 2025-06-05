@@ -9,7 +9,7 @@
 #include "flash.h"
 
 // 鍋囪浠庣珯瀵勫瓨鍣ㄦ暟�?
-unsigned char partNo[] = {"BS-6AS"};
+unsigned char partNo[] = {"CNG-35"};
 modbus_stru modbus_usr;
 modbus_reg_cmd_stru modbus_cmd_list;
 //{0x0000,   {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},    2,          0,      0,     0,           0},
@@ -32,7 +32,8 @@ modbus_reg_cmdCheck_stru  modbus_reg_list[REG_COUNT] =
     {REG_CHECK,         {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
     {REG_DECM_BIT,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
     {REG_UNIT,          {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
-    {REG_ADC_RATE,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4}
+    {REG_ADC_RATE,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
+    {REG_CLR_ZEROE,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4}
 
 };
 
@@ -41,8 +42,14 @@ void modbus_init()
 {
     //modbus_cmd_list.pb = modbus_reg_list.RegCmd;
     modbus_usr.DevAddr = GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat;
+	if(modbus_usr.DevAddr >DEV_ADDR_MAX)
+		modbus_usr.DevAddr = 1;
     modbus_cmd_list.RegNum = GetReg()->pb;
     modbus_cmd_list.RegCmdDat = modbus_reg_list;
+
+		getuart()->recv_update = 0;
+		memset(getuart()->rx_buf, 0, RX_BUF_SIZE);
+		getuart()->index = 0;
 
 }
 
@@ -50,6 +57,7 @@ unsigned char cmd_support_check(void)
 {
     unsigned int i, j;
     unsigned char result;
+	unsigned char cmdsize;
     //unsigned int reg_remap;
     result = 0;
     for (i = 0; i < REG_SIZE; i++)
@@ -61,7 +69,8 @@ unsigned char cmd_support_check(void)
         {
             modbus_cmd_list.RegNum = &GetReg()->pb[i];
             modbus_cmd_list.RegCmdDat = &modbus_reg_list[i];
-            for (j = 0; j < modbus_cmd_list.RegCmdDat[j].CmdSize; j++)
+			cmdsize  = modbus_cmd_list.RegCmdDat->CmdSize;
+            for (j = 0; j < cmdsize; j++)
             {
 
                 if (modbus_cmd_list.RegCmdDat->SupportCmd[j] == modbus_usr.Func)
@@ -465,6 +474,121 @@ void private_reg_Readpack(unsigned int regnum)
 		modbus_usr.tx_buf[i++] = tmp ;
 		
 		break;
+   case CAL1_REG:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal1ADC);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   
+	   break;
+   case CAL2_REG:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal2ADC);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   
+	   break;
+   case CAL3_REG:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal3ADC);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   
+	   break;
+   case CAL4_REG:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal4ADC);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   
+	   break;
+   case CAL5_REG:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal5ADC);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   break;
+   case CAL1_VAL:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal1val);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   break;
+   case CAL2_VAL:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal2val);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   break;
+   case CAL3_VAL:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal3val);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   break;
+   case CAL4_VAL:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal4val);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   break;
+   case CAL5_VAL:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->cal5val);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   break;
+   case MASK_ZERO:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 4;
+	   tmp = *(uint32_t *)(&GetRegPrivate()->maskzero);
+	   modbus_usr.tx_buf[i++] = tmp >> 24;
+	   modbus_usr.tx_buf[i++] = tmp >> 16;
+	   modbus_usr.tx_buf[i++] = tmp >> 8;
+	   modbus_usr.tx_buf[i++] = tmp ;
+	   break;
+
    default:break;
 
 
@@ -490,11 +614,11 @@ void modbus_Usr_read_pack(void)
             i = 0;
             modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
             modbus_usr.tx_buf[i++] = modbus_usr.Func;
-            modbus_usr.tx_buf[i++] = modbus_usr.len ;
+            modbus_usr.tx_buf[i++] = modbus_usr.len*2 ;
             for (k = 0; k < modbus_usr.RegCount; k++)
             {
                 REGDatConvToPC(modbus_usr.RegStart + k, &modbus_usr.tx_buf[i]);
-                i = i + 2;
+                i = i + 4;
             }
             modbus_tx(modbus_usr.tx_buf, modbus_usr.len + 5);
         }
@@ -513,13 +637,26 @@ void modbus_oneReg_write_pack(void)
         if (modbus_usr.RegStart == GetReg()->pb[eREG_RATE].reg_remap ||
                 modbus_usr.RegStart == GetReg()->pb[eREG_CHECK].reg_remap)
         {
-            getuart()->reconfig = 2;
+            getuart()->reconfig = 3;
         }
         if (modbus_usr.RegStart == GetReg()->pb[eREG_ADC_RATE].reg_remap)
         {
             *getAdcReconfig() = 2;
-        }
-        modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		if(GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 0||
+			GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 1)
+			;
+		else
+		 GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 0;
+
+        }                
+        if (modbus_usr.RegStart == GetReg()->pb[eREG_CLR_ZEROE].reg_remap)
+        {
+        	GetRegPrivate()->zero_cmd = GetReg()->pb[eREG_CLR_ZEROE].val_u32ToFloat;
+        }                
+
+
+
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
         modbus_usr.tx_buf[i++] = modbus_usr.Func;
         //tx_buf[i++] = modbus_usr.len;
         for (j = 0; j < (modbus_usr.len + 2); j++)
@@ -555,11 +692,17 @@ void modbus_mulReg_write_pack(void)
             if ((modbus_usr.RegStart + i) == GetReg()->pb[eREG_RATE].reg_remap ||
                     (modbus_usr.RegStart + i) == GetReg()->pb[eREG_CHECK].reg_remap)
             {
-                getuart()->reconfig = 2;
+                getuart()->reconfig = 3;
             }
             if ((modbus_usr.RegStart + i) == GetReg()->pb[eREG_ADC_RATE].reg_remap)
             {
                 *getAdcReconfig() = 2;
+			if(GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 10||
+				GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 40)
+				;
+			else
+			 GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 10;
+
             }
             ModbusDatToMulRegDat(modbus_usr.RegStart + i, &modbus_usr.payload[k + 2],
                                  CHANGE_DAT);
@@ -585,7 +728,8 @@ void modbus_PrivaReg_write_pack(void)
 {
 //  unsigned char tx_buf[128];
     unsigned char i, k;
-
+    unsigned char result;
+	result = 0;
 //  unsigned int reg_tmp;
 
 
@@ -595,7 +739,7 @@ void modbus_PrivaReg_write_pack(void)
     {
 
         k = 5;
-        for (i = 0; i < modbus_usr.RegCount; i++)
+        for (i = 0; i < 1; i++)
         {
 
             if ((modbus_usr.RegStart + i) == INS_TYPE_REG)
@@ -604,71 +748,130 @@ void modbus_PrivaReg_write_pack(void)
                 GetRegPrivate()->typ = modbus_usr.payload[k + 1];
 			if(GetRegPrivate()->typ >1)
 				GetRegPrivate()->pga = 1;
+			result = 1;
 
             }
             else if ((modbus_usr.RegStart + i) == PGA_REG)
             {
                 GetRegPrivate()->pga = modbus_usr.payload[k];
                 GetRegPrivate()->pga = modbus_usr.payload[k + 1];
-				if(GetRegPrivate()->pga >DEV_PGA_128)
-					GetRegPrivate()->pga = DEV_PGA_128;
+				//if(GetRegPrivate()->pga >DEV_PGA_128)
+					//GetRegPrivate()->pga = DEV_PGA_128;
+				*getAdcReconfig() = 2;result = 1;
             }
             else if ((modbus_usr.RegStart + i) == CUR_CONS_REGH)
             {
 //                GetRegPrivate()->cur_set = modbus_usr.payload[k];
 //                GetRegPrivate()->cur_set = modbus_usr.payload[k + 1];
 				 GetRegPrivate()->cur_set = uint32TofloatR(&modbus_usr.payload[k]);
+			result = 1;
 
             }
             else if ((modbus_usr.RegStart + i) == FAC_UNIT_REG)
             {
                 GetRegPrivate()->unit = modbus_usr.payload[k];
-                GetRegPrivate()->unit = modbus_usr.payload[k + 1];
+                GetRegPrivate()->unit = modbus_usr.payload[k + 1];result = 1;
             }
             else if ((modbus_usr.RegStart + i) == FAC_COE_H)
             {
-                GetRegPrivate()->coe = uint32TofloatR(&modbus_usr.payload[k]);
+                GetRegPrivate()->coe = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
 
             }
             else if ((modbus_usr.RegStart + i) == FAC_OFFSET_HREG)
             {
-                GetRegPrivate()->offset = uint32TofloatR(&modbus_usr.payload[k]);
+                GetRegPrivate()->offset = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
             else if ((modbus_usr.RegStart + i) == COE1_REG)
             {
-                GetRegPrivate()->coe1 = uint32TofloatR(&modbus_usr.payload[k]);
+                GetRegPrivate()->coe1 = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
             else if ((modbus_usr.RegStart + i) == COE2_REG)
             {
-                GetRegPrivate()->coe2 = uint32TofloatR(&modbus_usr.payload[k]);
+                GetRegPrivate()->coe2 = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
             else if ((modbus_usr.RegStart + i) == COE3_REG)
             {
-                GetRegPrivate()->coe3 = uint32TofloatR(&modbus_usr.payload[k]);
+                GetRegPrivate()->coe3 = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
             else if ((modbus_usr.RegStart + i) == COE4_REG)
             {
-                GetRegPrivate()->coe4 = uint32TofloatR(&modbus_usr.payload[k]);
+                GetRegPrivate()->coe4 = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
             else if ((modbus_usr.RegStart + i) == SAVE_REG)
             {
                 GetRegPrivate()->save = modbus_usr.payload[k];
-                GetRegPrivate()->save = modbus_usr.payload[k + 1];
+                GetRegPrivate()->save = modbus_usr.payload[k + 1];result = 1;
             }
             else if ((modbus_usr.RegStart + i) == ZERO_REG)
             {
                 GetRegPrivate()->zero_cmd = modbus_usr.payload[k];
                 GetRegPrivate()->zero_cmd = modbus_usr.payload[k + 1];
+				GetRegPrivate()->zero_value = getadc()->data_unit_app;result = 1;
             }
             else if ((modbus_usr.RegStart + i) == FACTOR_MODE_REG)
             {
                 GetRegPrivate()->mode = modbus_usr.payload[k];
                 GetRegPrivate()->mode = modbus_usr.payload[k + 1];
+				if(GetRegPrivate()->mode == 2)
+				{
+				  GetRegPrivate()->save = 1;
+				   getuart()->reconfig = 2;
+				  *getAdcReconfig() = 2;
+				result = 1;
+
+
+				}
+            }
+            else if ((modbus_usr.RegStart + i) == CAL1_REG)
+            {
+                GetRegPrivate()->cal1ADC = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL2_REG)
+            {
+                GetRegPrivate()->cal2ADC = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL3_REG)
+            {
+                GetRegPrivate()->cal3ADC = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL4_REG)
+            {
+                GetRegPrivate()->cal4ADC = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL5_REG)
+            {
+                GetRegPrivate()->cal5ADC = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL1_VAL)
+            {
+                GetRegPrivate()->cal1val = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL2_VAL)
+            {
+                GetRegPrivate()->cal2val = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL3_VAL)
+            {
+                GetRegPrivate()->cal3val = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL4_VAL)
+            {
+                GetRegPrivate()->cal4val = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == CAL5_VAL)
+            {
+                GetRegPrivate()->cal5val = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+            else if ((modbus_usr.RegStart + i) == MASK_ZERO)
+            {
+                GetRegPrivate()->maskzero = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
 
             k = k + 2;
         }
     }
+	if(result == 1)
+	{
     i = 0;
     modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
     modbus_usr.tx_buf[i++] = modbus_usr.Func;
@@ -681,7 +884,10 @@ void modbus_PrivaReg_write_pack(void)
     //      tx_buf[i++] = crc_cal >> 8;
     modbus_tx(modbus_usr.tx_buf, 6);
 
-    modbus_usr.tick = GetTick();
+	}
+
+
+   // modbus_usr.tick = GetTick();
 }
 
 void modbus_mulRegChange_write_pack(void)
@@ -783,11 +989,14 @@ void modbus_recv_proc()
             memset(p->rx_buf, 0, RX_BUF_SIZE);
             p->index = 0;
         }
-        if ((GetTick() - modbus_usr.tick) >= 5000
-                && modbus_usr.tick != 0) //delay 5s write to flash
+        if (GetRegPrivate()->save == 1||GetRegPrivate()->mode == 2) //delay 5s write to flash
         {
             modbus_usr.tick = 0;
             GetReg()->update = 1;
+			if (GetRegPrivate()->save == 1)
+				getuart()->reconfig = 2;			
+			GetRegPrivate()->save = 0;
+
         }
 
     }

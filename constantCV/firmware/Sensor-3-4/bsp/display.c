@@ -2,14 +2,14 @@
 #include "74hc595.h"
 #include "reg.h"
 #include "main.h"
-
-dis_stru dis_usr;
+#include "sensor.h"
+static dis_stru dis_usr;
 //共阳极数码管的编码：
 
 //unsigned char ledcode[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e,0xff,0x8c}; //0-F,空白，P
 
 //共阴极数码管的编码：
-unsigned char ledcode[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x00, 0x39, 0x5e, 0x79, 0x71, 0x00, 0x73}; //0-F,空白，P
+unsigned char ledcode[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x00, 0x39, 0x5e, 0x79, 0x71, 0x00, 0x73, 0x00}; //0-F,空白，P
 unsigned char dot_dat = 0x80;//.
 unsigned char neg_dat = 0xfb;//- 11111011
 
@@ -17,54 +17,58 @@ void display_sel(unsigned char led_num, unsigned char status)
 {
     switch (led_num)
     {
-        case 1:
+        case 1:           
+
+			GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             if (status == 0)
-                PA08_SETLOW();
+                PA07_SETLOW();
             else
-                PA08_SETHIGH();
+                PA07_SETHIGH();
 
             // GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_RESET);
-            GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
-            GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
-            // GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
+
             break;
         case 2:
-              GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET); 
+			GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             if (status == 0)
                 GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_RESET);
             else
                 GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
-            GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
-            // GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             break;
         case 3:
-             GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             if (status == 0)
                 GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_RESET);
             else
                 GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
 
-            GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
-
-            // GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             break;
         case 4:
-             GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
             GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
             GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
-            // GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_RESET);
+            if (status == 0)
+                GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_RESET);
+            else
+                GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             break;
         case 5:
-             GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
             GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
             GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
-            // GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             break;
         default:
-             GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG1_GPIO_PORT, DIAG1_GPIO_PIN, GPIO_Pin_SET);
             GPIO_WritePin(DIAG2_GPIO_PORT, DIAG2_GPIO_PIN, GPIO_Pin_SET);
             GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
-            // GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
+            GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
             break;
 
 
@@ -73,7 +77,7 @@ void display_sel(unsigned char led_num, unsigned char status)
 
 void display_init()
 {
-    dis_usr.update_cycle = 5;
+    dis_usr.update_cycle =5;
     dis_usr.dot_pos = 4;
     dis_usr.mode = NUM_MODE;
 
@@ -92,6 +96,8 @@ uint32_t datx_proc(float dat)
     uint32_t result;
     unsigned int decm_bit ;
     decm_bit = GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat;
+    if (decm_bit > 3)
+        decm_bit = 1;
     if (dis_usr.signedFlag == 0)
     {
         if (dat <= 1) //1.002
@@ -99,7 +105,7 @@ uint32_t datx_proc(float dat)
 
             if (decm_bit == 0)//no dot
             {
-                result =dat;
+                result = dat;
                 dis_usr.dot_pos = 4;
                 dis_usr.dat_bits = 1;
             }
@@ -107,7 +113,7 @@ uint32_t datx_proc(float dat)
             {
                 dis_usr.dot_pos = 3;
                 dis_usr.dat_bits = 2;
-                result =dat * 10;
+                result = dat * 10;
             }
 
             else if (decm_bit == 2)
@@ -206,7 +212,7 @@ uint32_t datx_proc(float dat)
             else if (decm_bit == 2)
             {
                 dis_usr.dot_pos = 3;
-                result =dat * 10;
+                result = dat * 10;
                 dis_usr.dat_bits = 4;
             }
             else if (decm_bit == 3)
@@ -367,7 +373,7 @@ uint32_t datx_proc(float dat)
 
 }
 void disp_dat_proc()
-{
+{ 
 
     if (dis_usr.signedFlag == 0)
     {
@@ -382,7 +388,7 @@ void disp_dat_proc()
         }
         else if (dis_usr.dat_bits == 3)
         {
-            dis_usr.dis_buf[0] = 11; //0.1*1000 = 100 0.01
+            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
             dis_usr.dis_buf[1] = dis_usr.dis_val_u  / 100;
             dis_usr.dis_buf[2] = dis_usr.dis_val_u % 100 / 10;
             dis_usr.dis_buf[3] = dis_usr.dis_val_u % 10;
@@ -391,8 +397,8 @@ void disp_dat_proc()
         }
         else if (dis_usr.dat_bits == 2)
         {
-            dis_usr.dis_buf[0] = 11; //0.1*1000 = 100 0.01
-            dis_usr.dis_buf[1] = 11;
+            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
+            dis_usr.dis_buf[1] = 0x0b;
             dis_usr.dis_buf[2] = dis_usr.dis_val_u / 10;
             dis_usr.dis_buf[3] = dis_usr.dis_val_u % 10;
 
@@ -401,9 +407,9 @@ void disp_dat_proc()
 
         else if (dis_usr.dat_bits == 1)
         {
-            dis_usr.dis_buf[0] = 11; //0.1*1000 = 100 0.01
-            dis_usr.dis_buf[1] = 11;
-            dis_usr.dis_buf[2] = 11;
+            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
+            dis_usr.dis_buf[1] = 0x0b;
+            dis_usr.dis_buf[2] = 0x0b;
             dis_usr.dis_buf[3] = dis_usr.dis_val_u / 10;
 
         }
@@ -415,15 +421,15 @@ void disp_dat_proc()
 
         if (dis_usr.dat_bits == 4)
         {
-            dis_usr.dis_buf[0] = 11; //0.1*1000 = 100 0.01
-            dis_usr.dis_buf[1] = 11;
-            dis_usr.dis_buf[2] = 11;
-            dis_usr.dis_buf[3] = 11;
+            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
+            dis_usr.dis_buf[1] = 0x0b;
+            dis_usr.dis_buf[2] = 0x0b;
+            dis_usr.dis_buf[3] = 0x0b;
 
         }
         else if (dis_usr.dat_bits == 3)
         {
-            dis_usr.dis_buf[0] = 11; //0.1*1000 = 100 0.01
+            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
             dis_usr.dis_buf[1] = dis_usr.dis_val_u  / 100;
             dis_usr.dis_buf[2] = dis_usr.dis_val_u % 100 / 10;
             dis_usr.dis_buf[3] = dis_usr.dis_val_u % 10;
@@ -432,8 +438,8 @@ void disp_dat_proc()
         }
         else if (dis_usr.dat_bits == 2)
         {
-            dis_usr.dis_buf[0] = 11; //0.1*1000 = 100 0.01
-            dis_usr.dis_buf[1] = 11;
+            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
+            dis_usr.dis_buf[1] = 0xfb;
             dis_usr.dis_buf[2] = dis_usr.dis_val_u / 10;
             dis_usr.dis_buf[3] = dis_usr.dis_val_u % 10;
 
@@ -442,9 +448,9 @@ void disp_dat_proc()
 
         else if (dis_usr.dat_bits == 1)
         {
-            dis_usr.dis_buf[0] = 11; //0.1*1000 = 100 0.01
-            dis_usr.dis_buf[1] = 11;
-            dis_usr.dis_buf[2] = 11;
+            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
+            dis_usr.dis_buf[1] = 0x0b;
+            dis_usr.dis_buf[2] = 0x0b;
             dis_usr.dis_buf[3] = dis_usr.dis_val_u / 10;
 
         }
@@ -454,92 +460,114 @@ void disp_dat_proc()
     }
 
 }
+
+static unsigned char bit_count = 1;
+static	  unsigned char tmp_dat = 0;
+
 void display_val_proc(unsigned char dis_mode)
 {
     float tmp;
-    static unsigned char i = 1;
+    static uint32_t tick_tmp;
+		  
+
+    if (bit_count > 4)
+        bit_count = 1;
 
 
     if (dis_mode == NUM_MODE)
     {
         dis_usr.dot_pos = 4;
         dis_usr.signedFlag = 0;
-        dis_usr.dis_val = 10.789;
+        // dis_usr.dis_val = 9998;
+	//	if ((GetTick() - tick_tmp) >= 10)
+		  {
+			  dis_usr.dis_val =	getadc()->data_unit_app;
+			  tick_tmp = GetTick();
+		
+		  }
+//			else
+//				 dis_usr.dis_val =	dis_usr.dis_val;
+
+		 
         tmp = dis_usr.dis_val;
+		
         if (tmp < 0)
         {
             dis_usr.signedFlag = 1;
+			if(dis_usr.dis_val<-9999)
+		   	dis_usr.dis_val = -9999;
             dis_usr.dis_val = fabs(dis_usr.dis_val);
         }
         else
         {
+           //if(dis_usr.dis_val<0.001)
+		   //	dis_usr.dis_val = 0;
+			if(dis_usr.dis_val>9999)
+			 dis_usr.dis_val = 9998;
+
             dis_usr.signedFlag = 0;
         }
-        if (dis_usr.dis_val <= 1) //1
-        {
-
 
             dis_usr.dis_val_u = datx_proc(dis_usr.dis_val);
 
-
-        }
-        else  if (dis_usr.dis_val < 10) //10.001
-        {
-            dis_usr.dis_val_u = datx_proc( dis_usr.dis_val);
-
-        }
-        else  if (dis_usr.dis_val < 100) //100.1
-        {
-            dis_usr.dis_val_u = datx_proc( dis_usr.dis_val);
-
-        }
-        else
-        {
-            dis_usr.dis_val_u = datx_proc( dis_usr.dis_val);
-
-        }
         disp_dat_proc();
 
 
     }
-    unsigned char tmp_dat;
-	tmp_dat = 0;
-	XL74HC595_MultiWrite(&tmp_dat, 1); //
+
+    //XL74HC595_MultiWrite(&tmp_dat, 1); //
 
     if (dis_usr.signedFlag == 0)
     {
-        if ((dis_usr.dot_pos) == i)
+        if ((dis_usr.dot_pos) == bit_count)
         {
-            tmp_dat = ledcode[dis_usr.dis_buf[i - 1]] | dot_dat;
+            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | dot_dat;
 
         }
         else
         {
-            tmp_dat = ledcode[dis_usr.dis_buf[i - 1]];
+            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]];
 
         }
-        XL74HC595_MultiWrite(&tmp_dat, 1); //
+        // XL74HC595_MultiWrite(&tmp_dat, 1); //
     }
     if (dis_usr.signedFlag == 1)
     {
 
-        if ((dis_usr.dat_bits + i) == 4)
+        if ((dis_usr.dat_bits + bit_count) == 4)
         {
-            tmp_dat = ledcode[dis_usr.dis_buf[i - 1]] | neg_dat;
+            if(dis_usr.dis_buf[bit_count - 1]<=0x0f)
+            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | neg_dat;
+			else
+			tmp_dat = 0;	
         }
         else
-        {
-            tmp_dat = ledcode[dis_usr.dis_buf[i - 1]] ;
+        {	if(dis_usr.dis_buf[bit_count - 1]<=0x0f)
+            	tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] ;
+			else
+				tmp_dat = 0;	
         }
 
-        
+
     }
-    display_sel(i++, 0);
-	XL74HC595_MultiWrite(&tmp_dat, 1); //
-    if (i > 4)
-        i = 1;
+    display_sel(bit_count++, 0);//bit_count++
+
+  XL74HC595_MultiWrite(&tmp_dat, 1); //
+
+}
+void dis_test()
+{static uint32_t delay_tick = 0, tick_tmp = 0;
+if ((GetTick() - tick_tmp) >= dis_usr.update_cycle)
+{ 
+	tick_tmp = GetTick();
+
+	  display_sel(bit_count++, 0);//bit_count++
+	  XL74HC595_MultiWrite(&tmp_dat, 1); //
+	  if (bit_count > 4)
+		  bit_count = 1;
 }
 
+}
 void display_led(unsigned char Cusor, unsigned BitSel)
 {
     unsigned char tmp_dat;
@@ -548,8 +576,8 @@ void display_led(unsigned char Cusor, unsigned BitSel)
     if ((GetTick() - tick_tmp) >= dis_usr.update_cycle)
     {
         tick_tmp = GetTick();
-		
-		 tmp_dat = 0;
+
+        tmp_dat = 0;
         XL74HC595_MultiWrite(&tmp_dat, 1); //
         if (Cusor == 1)
         {
@@ -586,28 +614,24 @@ void display_led(unsigned char Cusor, unsigned BitSel)
         }
 
         display_sel(i, 0);
-		XL74HC595_MultiWrite(&tmp_dat, 1); //
-
-		i++;
+        XL74HC595_MultiWrite(&tmp_dat, 1); //
+        i++;
         if (i > 4)
             i = 1;
-
     }
-
-
-
-
 }
-void display(void)
+void display()
 {
     static uint32_t tick_tmp;
 
 
-	//dis_usr.update_cycle = 5;
+
+    //dis_usr.update_cycle = 5;
     if ((GetTick() - tick_tmp) >= dis_usr.update_cycle)
     {
         tick_tmp = GetTick();
-        display_val_proc(dis_usr.mode);
+
+		display_val_proc(dis_usr.mode);
     }
 
 }

@@ -30,5 +30,8 @@ void display_init(void);
 dis_stru *GetDisp(void);
 void display_led(unsigned char Cusor,unsigned BitSel);
 unsigned char GetSeg(unsigned char dat);
+void display_val_proc(unsigned char dis_mode);
+void dis_action(void);
+void dis_test(void);
 
 #endif /* __KALMAN_H__ */

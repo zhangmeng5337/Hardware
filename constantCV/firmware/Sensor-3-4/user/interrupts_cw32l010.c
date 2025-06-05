@@ -343,12 +343,13 @@ void SysTick_IRQnHandler(void)
 {
 	uint32_t tick;
 	tick++;
-	 KeyProc();
+	 
+	  #ifdef DISPLAY_DEBUG 
 	if(getTaskIndex() == 0)
-		display();
+		 display();
 	else
 	display_led(GetDisp()->cusor, getKey()->bit_sel);
-
+#endif
 }
 
 /**

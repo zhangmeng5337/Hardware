@@ -158,7 +158,7 @@ void I2C_eepromHandleIRQ(I2C_TypeDef* I2Cx)
             {
                 if (IsDataAddrTransferCplt == 2)
                 {
-                    // 读数据的地址已发送完毕
+                    // 读数据的地址已发送完�?
                     I2C_Send7bitAddress(I2Cx, gEEPROMInstance.EE_DeviceAddr, I2C_Direction_Receiver);
                     cnt = gEEPROMInstance.EE_RecvLen;
                     IsDataAddrTransferCplt = 0;
@@ -170,7 +170,7 @@ void I2C_eepromHandleIRQ(I2C_TypeDef* I2Cx)
                 }
             }             
             break;
-        // 发送
+        // 发�?
         case 0x18:
             I2C_SendData(I2Cx, (uint8_t)gEEPROMInstance.EE_DataAddr);               
             break;        
@@ -204,17 +204,17 @@ void I2C_eepromHandleIRQ(I2C_TypeDef* I2Cx)
             {
                 if (IsDataAddrTransferCplt == 1)
                 {
-                    //重发起始信号，切换到读                    
+                    //重发起始信号，切换到�?                   
                     I2C_GenerateSTART(I2Cx, ENABLE); 
                     IsDataAddrTransferCplt = 2;                    
                 }
             }
             break;
-        case 0x20:    //已发送 SLA+W，已接收 NACK            
-        case 0x30:    // 已发送 I2C_DR 中的数据，已接收 NACK
-        case 0x38:    // 主机在发送 SLA+W 阶段或者发送数据阶段丢失仲裁
-        case 0x48:    // 已发送 SLA+R，已接收 NACK
-        case 0x58:    // 已接收数据字节，NACK 已返回
+        case 0x20:    //已发�?SLA+W，已接收 NACK            
+        case 0x30:    // 已发�?I2C_DR 中的数据，已接收 NACK
+        case 0x38:    // 主机在发�?SLA+W 阶段或者发送数据阶段丢失仲�?
+        case 0x48:    // 已发�?SLA+R，已接收 NACK
+        case 0x58:    // 已接收数据字节，NACK 已返�?
             I2C_GenerateSTOP(I2Cx);
             IsDataAddrTransferCplt = 0;
             *gEEPROMInstance.EE_RecvBuffPtr =  I2C_ReceiveData(I2Cx);
@@ -230,10 +230,10 @@ void I2C_eepromHandleIRQ(I2C_TypeDef* I2Cx)
             break;
 
         // 接收
-        case 0x40:    //已发送 SLA+R，已接收 ACK
+        case 0x40:    //已发�?SLA+R，已接收 ACK
             I2C_AcknowledgeConfig(I2Cx, ENABLE);                 
             break;
-        case 0x50:    // 已接收数据字节，ACK 已返回
+        case 0x50:    // 已接收数据字节，ACK 已返�?
             *gEEPROMInstance.EE_RecvBuffPtr =  I2C_ReceiveData(I2Cx);
             gEEPROMInstance.EE_RecvBuffPtr++;
             cnt--;

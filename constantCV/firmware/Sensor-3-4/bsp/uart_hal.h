@@ -22,7 +22,7 @@ typedef struct
 	unsigned char rx_buf[RX_BUF_SIZE];	
 	unsigned char recv_update;
 	unsigned int index;
-	unsigned char reconfig;
+	unsigned char reconfig;//1:key set 2:pc set 3:no save
 	unsigned char baudrate;
 	unsigned char parity; 
 		enum brate_index
