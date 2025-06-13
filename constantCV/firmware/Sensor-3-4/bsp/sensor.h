@@ -14,10 +14,11 @@
 #define PWM_COUNTER  1000
 typedef struct
 {
-	int32_t adc_ori;
+	long adc_ori;
 	float adc_filter;
 	float adc_ori_filter;
 	float adc_vol;
+	float dat_cal;
 	float dat_unit_factory;
 	float data_unit_app;
 }adc_stru;
@@ -26,8 +27,8 @@ void adc_init(void);
 void pwm_ctrl(float ratio);
 adc_stru *getadc(void);
 unsigned char *getAdcReconfig(void);
-adc_stru *getadc(void);
 void cal_press(void);
+void data_filter(void);
 
 #endif /*__CW32L010_SPI_H */
 

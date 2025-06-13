@@ -38,12 +38,15 @@ struct cs1237_device
 #define CS1237_DEFAULT_FREQUENCY 10 // 默认输出频率
 #define RAW_DATA_MAX_NUM 3			// 用于滤波, 连续读取 RAW_DATA_MAX_NUM 次数据然后去掉最�? 最�? 
 									// 再计算平均�?平均值带入卡尔曼滤波�?
-	int32_t adc_data;                                 // 读取到的数据, 原始adc数据, 单次读取
-    int32_t adc_calculate_raw_data[RAW_DATA_MAX_NUM]; // 读取数据后存�? 用于滤波, 连续采集12�?  
-    int32_t adc_calculate_deal_data;                  // 读取数据后存�? 用于滤波
-    uint8_t adc_config;                               // 模块配置参数
+	long adc_data;                                 // 读取到的数据, 原始adc数据, 单次读取
+    long adc_calculate_raw_data[RAW_DATA_MAX_NUM]; // 读取数据后存�? 用于滤波, 连续采集12�?  
+    long adc_calculate_deal_data;                  // 读取数据后存�? 用于滤波
+	long adc_ori_data;
+
+	uint8_t adc_config;                               // 模块配置参数
     uint16_t output_frequency;                        // 模块输出频率
     unsigned char reconfig;
+	unsigned char update;
     enum dev_ch
     {
         DEV_CH_NONE,          // 默认状�?        
@@ -90,5 +93,9 @@ uint8_t cs1237_init(struct cs1237_device *dev, enum dev_frequency frequency, enu
 int32_t calculate_adc_num(struct cs1237_device *dev);
 unsigned int getPga(unsigned char pga_dat);
 unsigned char getPgaToADC(unsigned char pga_dat);
+void cs1237_pwr_pd(void);
+void get_adc_update(uint32_t dat);
+long adc_dat_filter(void);
+void read_data(void);
 
 #endif /* __CS1237_H__ */

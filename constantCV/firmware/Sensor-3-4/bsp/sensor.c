@@ -1,5 +1,7 @@
 #include "sensor.h"
 #include "cs1237.h"
+//#include "cs1237_32.h"
+
 #include "main.h"
 #include "kalman.h"
 #include "cw32l010_gtim.h"
@@ -10,6 +12,8 @@ extern struct cs1237_device g_cs1237_device_st;
 kalman g_kfp_st = {0};
 
 adc_stru adc_usr;
+
+
 adc_stru *getadc(void)
 {
     return &adc_usr;
@@ -23,6 +27,9 @@ void adc_init(void)
     //cs1237_init(&g_cs1237_device_st, DEV_FREQUENCY_10, DEV_PGA_1, DEV_CH_A);
     cs1237_init(&g_cs1237_device_st, GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat + 1,
                 getPgaToADC(GetRegPrivate()->pga), DEV_CH_A);
+
+
+
     kalman_init(&g_kfp_st);
 
 
@@ -248,69 +255,112 @@ void dat_cal_proc(float dat)
     }
 }
 
+extern uint32_t time_cal;
 
 float tmp6;
 void adc_proc(void)
 {
     float tmp1, tmp2, tmp3;
+    int32_t tmp_adc;
     //int32_t tmp4;
 
     if (g_cs1237_device_st.reconfig)
         adc_config();
     else
     {
-        if (calculate_adc_num(&g_cs1237_device_st) != 0)
+        g_cs1237_device_st.adc_calculate_deal_data = calculate_adc_num(
+                    &g_cs1237_device_st);
+        if (g_cs1237_device_st.adc_calculate_deal_data != 0)
         {
             adc_usr.adc_ori = g_cs1237_device_st.adc_calculate_deal_data;
-            if (adc_usr.adc_ori != 0)
-            {
-                if (GetRegPrivate()->zero_cmd == 1)
-                {
-                    adc_usr.adc_ori = adc_usr.adc_ori -
-                                      GetRegPrivate()->zero_value;
-                }
-
-                else
-                    adc_usr.adc_ori = adc_usr.adc_ori;
-
-                adc_usr.adc_vol =  adc_usr.adc_ori;
-                //cal_press();
-
-            }
+            time_cal = 0;
+            cal_press();
+            time_cal = 0;
 
         }
     }
 
 }
+
 void cal_press(void)
 {
     float tmp1_conv1, tmp2_conv2;
     float tmp1, tmp2, tmp3;
+    tmp2 = adc_usr.adc_ori;
 
+    if (GetRegPrivate()->pga > 6) // 128
+    {
+        tmp2 = tmp2 / 300.0;//400 300
+        adc_usr.adc_ori = tmp2;
+
+    }
+    else if (GetRegPrivate()->pga > 1) //64
+    {
+        tmp2 = tmp2 / 200.0;//300 200
+        adc_usr.adc_ori = tmp2;
+
+    }
+    else if (GetRegPrivate()->pga >= 1) //1
+    {
+        tmp2 = tmp2 / 100.0;//200 100
+        adc_usr.adc_ori = tmp2;
+
+    }
+    else//1
+    {
+        tmp2 = tmp2 / 100.0;//150 100
+        adc_usr.adc_ori = tmp2;
+
+    }
+
+    //tmp2 = tmp2 / 1.0;
+    // adc_usr.adc_ori = tmp2;
+
+
+    tmp2 = kalman_filter(&g_kfp_st, tmp2);
+
+
+    //tmp2 = SilderFilter(tmp2);
+    adc_usr.adc_ori_filter = tmp2;
+
+//      printf("    %.6f    \r\n",tmp2);
+
+    if (adc_usr.adc_ori_filter != 0)
+    {
+        if (GetRegPrivate()->zero_cmd == 1)
+        {
+            adc_usr.adc_ori_filter = adc_usr.adc_ori -
+                                     GetRegPrivate()->zero_value;
+        }
+
+        else
+            adc_usr.adc_ori_filter = adc_usr.adc_ori_filter;
+
+        adc_usr.adc_vol =  adc_usr.adc_ori_filter;
+
+    }
 
     tmp1_conv1 = GetRegPrivate()->cal5ADC - GetRegPrivate()->cal1ADC;
     tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
 
     tmp2_conv2 = adc_usr.adc_vol - GetRegPrivate()->cal1ADC;
     tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
-
+    float tmp4, tmp5;
     tmp2_conv2 = tmp2_conv2 / tmp1_conv1;
-    adc_usr.adc_ori_filter = tmp2_conv2;
-    adc_usr.adc_filter = adc_usr.adc_ori_filter;
-    tmp1 = adc_usr.adc_filter * adc_usr.adc_filter;
-    tmp2 = tmp1;
-    tmp1 = tmp1 * adc_usr.adc_filter;
-    tmp3 = adc_usr.adc_filter;
+    adc_usr.dat_cal = tmp2_conv2;
+    tmp4 = adc_usr.dat_cal;//1
+    tmp1 = adc_usr.dat_cal * adc_usr.dat_cal;
+    tmp2 = tmp1;//2
+    tmp1 = tmp1 * adc_usr.dat_cal;//3
+    tmp3 = adc_usr.dat_cal;//1
     tmp3  = GetRegPrivate()->coe1 * tmp1;
-    tmp3 = tmp3 + tmp2 * GetRegPrivate()->coe2;
-    tmp3 = tmp3 + adc_usr.adc_filter * GetRegPrivate()->coe3;
-    adc_usr.adc_filter = tmp3 + GetRegPrivate()->coe4;
-
-    adc_usr.adc_filter =    adc_usr.adc_filter -
-                            GetRegPrivate()->offset;
-    //  printf("%.6f  \r\n",adc_usr.adc_filter);
-    adc_usr.dat_unit_factory = SilderFilter(adc_usr.adc_filter);
-    //kalman_filter(&g_kfp_st, adc_usr.adc_filter);
+    tmp5 = tmp2 * GetRegPrivate()->coe2;
+    tmp3 = tmp3 + tmp5;
+    tmp5 = tmp4 * GetRegPrivate()->coe3;
+    tmp3 = tmp3 + tmp5 ;
+    tmp4 = tmp3 + GetRegPrivate()->coe4;
+    tmp4 =    tmp4 - GetRegPrivate()->offset;
+    adc_usr.dat_unit_factory = tmp4;
     dat_cal_proc(adc_usr.dat_unit_factory);
 
 }

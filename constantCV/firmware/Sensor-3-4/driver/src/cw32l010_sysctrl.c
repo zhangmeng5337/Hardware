@@ -10,18 +10,18 @@
  */
  /*******************************************************************************
  *
- * 代码许可和免责信息
+ * 代码许可和免责信�?
  * 武汉芯源半导体有限公司授予您使用所有编程代码示例的非专属的版权许可，您可以由此
- * 生成根据您的特定需要而定制的相似功能。根据不能被排除的任何法定保证，武汉芯源半
- * 导体有限公司及其程序开发商和供应商对程序或技术支持（如果有）不提供任何明示或暗
+ * 生成根据您的特定需要而定制的相似功能。根据不能被排除的任何法定保证，武汉芯源�?
+ * 导体有限公司及其程序开发商和供应商对程序或技术支持（如果有）不提供任何明示或�?
  * 含的保证或条件，包括但不限于暗含的有关适销性、适用于某种特定用途和非侵权的保证
- * 或条件。
+ * 或条件�?
  * 无论何种情形，武汉芯源半导体有限公司及其程序开发商或供应商均不对下列各项负责，
  * 即使被告知其发生的可能性时，也是如此：数据的丢失或损坏；直接的、特别的、附带的
  * 或间接的损害，或任何后果性经济损害；或利润、业务、收入、商誉或预期可节省金额的
- * 损失。
- * 某些司法辖区不允许对直接的、附带的或后果性的损害有任何的排除或限制，因此某些或
- * 全部上述排除或限制可能并不适用于您。
+ * 损失�?
+ * 某些司法辖区不允许对直接的、附带的或后果性的损害有任何的排除或限制，因此某些�?
+ * 全部上述排除或限制可能并不适用于您�?
  *
  *******************************************************************************/
 
@@ -43,7 +43,7 @@ const uint32_t hsiprs_tbl[] = {16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 /* Public_Functions ----------------------------------------------------------*/
 
 /**
- * @brief 配置SysClk 到 HCLK的分频系数
+ * @brief 配置SysClk �?HCLK的分频系�?
  *
  * @param HCLKPRS ：SYSCTRL_HCLK_DIV1/2/4/8/16/32/64/128
  */
@@ -53,7 +53,7 @@ void SYSCTRL_HCLKPRS_Config(uint32_t HCLKPRS)
     CW_SYSCTRL->CR0 = ((CW_SYSCTRL->CR0 & (~(SYSCTRL_KEY_MASK | SYSCTRL_CR0_HCLKPRS_Msk))) | SYSCTRL_KEY | HCLKPRS);
 }
 /**
- * @brief 配置HCLK 到 PCLK的分频系数
+ * @brief 配置HCLK �?PCLK的分频系�?
  *
  * @param PCLKPRS ：SYSCTRL_PCLK_DIV1/2/4/8
  */
@@ -99,7 +99,7 @@ void SYSCTRL_CCS_Config(uint32_t CCS, FunctionalState NewState)
 /**
  * @brief 配置LSELOCK功能：使能后软件无法关闭LSE时钟
  *
- * @param LSELOCK ： SYSCTRL_LSELOCKEN  SYSCTRL_LSELOCKDIS
+ * @param LSELOCK �?SYSCTRL_LSELOCKEN  SYSCTRL_LSELOCKDIS
  */
 void SYSCTRL_LSELOCK_Config(uint32_t LSELOCK)
 {
@@ -199,9 +199,9 @@ void SYSCTRL_SystemCoreClockUpdate(uint32_t NewFreq)
 }
 
 /**
- * @brief 获得系统时钟（HCLK）频率值
+ * @brief 获得系统时钟（HCLK）频率�?
  *
- * @return uint32_t   HCLK频率值(Hz)
+ * @return uint32_t   HCLK频率�?Hz)
  */
 uint32_t SYSCTRL_GetHClkFreq(void)
 {
@@ -240,9 +240,9 @@ uint32_t SYSCTRL_GetHClkFreq(void)
 }
 
 /**
- * @brief 获得外设时钟（PCLK）频率值
+ * @brief 获得外设时钟（PCLK）频率�?
  *
- * @return uint32_t    PCLK频率值(Hz)
+ * @return uint32_t    PCLK频率�?Hz)
  */
 uint32_t SYSCTRL_GetPClkFreq(void)
 {
@@ -385,14 +385,14 @@ void SYSCTRL_HEXEnablePinPolSet(uint32_t Polarity)
 *
 * @param  FreqIn: 4000000Hz ~ 32000000Hz
 *
-* @param  Driver: SYSCTRL_HSE_DRIVER_LEVEL0~SYSCTRL_HSE_DRIVER_LEVEL9 0:最小
+* @param  Driver: SYSCTRL_HSE_DRIVER_LEVEL0~SYSCTRL_HSE_DRIVER_LEVEL9 0:最�?
 *
 * @param  Flt: SYSCTRL_HSE_FLT_OPEN,
 *              SYSCTRL_HSE_FLT_CLOSE
 *
 * @retval None
 
-注意：1、选择负载电容小的晶体更容易起振。
+注意�?、选择负载电容小的晶体更容易起振�?
 2、Flt: 强干扰环境打开,一般不打开
 */
 int SYSCTRL_HSE_Enable(uint32_t Mode, uint32_t FreqIn, uint8_t Driver, uint32_t Flt)
@@ -402,7 +402,7 @@ int SYSCTRL_HSE_Enable(uint32_t Mode, uint32_t FreqIn, uint8_t Driver, uint32_t 
     assert_param(IS_SYSCTRL_HSE_MODE(Mode));
    
   
-    //根据HSE模式设置IO口功能
+    //根据HSE模式设置IO口功�?
     CW_SYSCTRL->AHBEN |= SYSCTRL_AHBEN_GPIOA_Msk; //Open GPIOF Clk
     if (Mode == SYSCTRL_HSE_MODE_OSC)                 //Oscillator
     {
@@ -421,7 +421,7 @@ int SYSCTRL_HSE_Enable(uint32_t Mode, uint32_t FreqIn, uint8_t Driver, uint32_t 
                       (SYSCTRL_HSE_WAITCYCLE_131072) | \
                        (Driver) | \
                        (Flt);
-    //使能HSE,同时使能CLKCCS和HSECCS，使能时钟失效切换
+    //使能HSE,同时使能CLKCCS和HSECCS，使能时钟失效切�?
     CW_SYSCTRL->CR1 |= SYSCTRL_KEY | SYSCTRL_CR1_CLKCCS_Msk | SYSCTRL_CR1_HSECCS_Msk | SYSCTRL_CR1_HSEEN_Msk;  //Enable HSE
     //等待HSE稳定
     while (((CW_SYSCTRL->HSE & SYSCTRL_HSE_STABLE_Msk) != SYSCTRL_HSE_STABLE_Msk) && timeout--);        //Wait stable
@@ -447,9 +447,9 @@ void SYSCTRL_HSE_Disable(void)
 *                 SYSCTRL_LSE_MODE_CLK: Input Clk
 * @param  Driver: SYSCTRL_LSE_DRIVER_LEVEL0~15
 *
-* @retval  0：succes， 1：fault
+* @retval  0：succes�?1：fault
 
-驱动配置建议：
+驱动配置建议�?
 Driver：SYSCTRL_LSE_DRIVER_LEVEL2
 */
 
@@ -477,7 +477,7 @@ int SYSCTRL_LSE_Enable(uint32_t Mode, uint8_t Driver)
     //设置LSE参数
     CW_SYSCTRL->LSE = 0x00000A20 |(Mode) | (Driver);
 
-    //LSE使能,同时使能CLKCCS和LSECCS，使能时钟失效切换
+    //LSE使能,同时使能CLKCCS和LSECCS，使能时钟失效切�?
     CW_SYSCTRL->CR1 |= SYSCTRL_KEY | SYSCTRL_CLKCCSEN | SYSCTRL_CR1_LSECCS_Msk | SYSCTRL_CR1_LSEEN_Msk;                    //Enable LSE
 
     //等待LSE稳定
@@ -511,7 +511,7 @@ void SYSCTRL_LSE_Disable(void)
 *                SYSCTRL_SYSCLKSRC_LSE
 * @retval 0: PASS, 1: Fail
 *
-* NOTE:调用此函数之前需要保证新时钟源已经使能（ENABLE函数中已包含等待时钟稳定过程）。
+* NOTE:调用此函数之前需要保证新时钟源已经使能（ENABLE函数中已包含等待时钟稳定过程）�?
 */
 
 int SYSCTRL_SysClk_Switch(uint32_t NewClk)
@@ -578,9 +578,9 @@ void SYSCTRL_ITConfig(uint32_t SYSCTRL_IT, FunctionalState NewState)
 }
 
 /**
- * @brief 获取SYSCTRL指定中断状态
+ * @brief 获取SYSCTRL指定中断状�?
  *
- * @param SYSCTRL_IT ： SYSCTRL_IT_LSEFAULT    SYSCTRL_IT_LSEFAIL
+ * @param SYSCTRL_IT �?SYSCTRL_IT_LSEFAULT    SYSCTRL_IT_LSEFAIL
  *                 SYSCTRL_IT_LSERDY     SYSCTRL_IT_LSIRDY
  *                 SYSCTRL_IT_HSIRDY
  *
@@ -610,7 +610,7 @@ void SYSCTRL_ClearITPendingBit(uint32_t SYSCTRL_IT)
 }
 
 /**
- * @brief 获取指定时钟源稳定标志
+ * @brief 获取指定时钟源稳定标�?
  *
  * @param SYSCTRL_STABLEFLAG ：SYSCTRL_FLAG_HSISTABLE  SYSCTRL_FLAG_HEXSTABLE
  *                         SYSCTRL_FLAG_LSESTABLE
@@ -627,7 +627,7 @@ FlagStatus SYSCTRL_GetStableFlag(uint32_t SYSCTRL_STABLEFLAG)
 /**
  * @brief  获取所有时钟源稳定标志
  *
- * @return uint32_t ：返回ISR寄存器内容
+ * @return uint32_t ：返回ISR寄存器内�?
  */
 uint32_t SYSCTRL_GetAllStableFlag(void)
 {
@@ -659,7 +659,7 @@ void SYSCTRL_AHBPeriphClk_Enable(uint32_t Periph, FunctionalState NewState)
 /**
  * @brief APB外设时钟设置1
  *
- * @param Periph   ：  SYSCTRL_APB1_PERIPH_ATIM    SYSCTRL_APB1_PERIPH_GTIM1 
+ * @param Periph   �? SYSCTRL_APB1_PERIPH_ATIM    SYSCTRL_APB1_PERIPH_GTIM1 
  *                     SYSCTRL_APB1_PERIPH_UART2   SYSCTRL_APB1_PERIPH_UART1
  *                     SYSCTRL_APB1_PERIPH_SPI    SYSCTRL_APB1_PERIPH_VC
  *                     SYSCTRL_APB1_PERIPH_ADC    
@@ -682,7 +682,7 @@ void SYSCTRL_APBPeriphClk_Enable1(uint32_t Periph, FunctionalState NewState)
 /**
  * @brief APB外设时钟设置2
  *
- * @param Periph ：  SYSCTRL_APB2_PERIPH_I2C       SYSCTRL_APB2_PERIPH_LPTIM
+ * @param Periph �? SYSCTRL_APB2_PERIPH_I2C       SYSCTRL_APB2_PERIPH_LPTIM
  *                   SYSCTRL_APB2_PERIPH_IWDT      SYSCTRL_APB2_PERIPH_RTC
  *                   SYSCTRL_APB2_PERIPH_BTIM123   
  * @param NewState :  ENABLE  DISABLE
@@ -725,7 +725,7 @@ void SYSCTRL_AHBPeriphReset(uint32_t Periph, FunctionalState NewState)
 /**
  * @brief APB外设复位设置1
  *
- * @param Periph   ：  SYSCTRL_APB1_PERIPH_ATIM    SYSCTRL_APB1_PERIPH_GTIM1 
+ * @param Periph   �? SYSCTRL_APB1_PERIPH_ATIM    SYSCTRL_APB1_PERIPH_GTIM1 
  *                     SYSCTRL_APB1_PERIPH_UART2   SYSCTRL_APB1_PERIPH_UART1
  *                     SYSCTRL_APB1_PERIPH_SPI1    SYSCTRL_APB1_PERIPH_VC
  *                     SYSCTRL_APB1_PERIPH_ADC 
@@ -748,7 +748,7 @@ void SYSCTRL_APBPeriphReset1(uint32_t Periph, FunctionalState NewState)
 /**
  * @brief APB外设复位设置2
  *
- * @param Periph ：  SYSCTRL_APB2_PERIPH_I2C       SYSCTRL_APB2_PERIPH_LPTIM
+ * @param Periph �? SYSCTRL_APB2_PERIPH_I2C       SYSCTRL_APB2_PERIPH_LPTIM
  *                   SYSCTRL_APB2_PERIPH_IWDT      SYSCTRL_APB2_PERIPH_RTC
  *                   SYSCTRL_APB2_PERIPH_BTIM123 
  * @param NewState : ENABLE  DISABLE
@@ -768,7 +768,7 @@ void SYSCTRL_APBPeriphReset2(uint32_t Periph, FunctionalState NewState)
 }
 
 /**
- * @brief 获取指定的系统复位标志
+ * @brief 获取指定的系统复位标�?
  *
  * @param SYSCTRL_RSTFLAG  ：SYSCTRL_FLAG_PORRST   SYSCTRL_FLAG_SYSRESETREQRST
  *                           SYSCTRL_FLAG_LVDRST   SYSCTRL_FLAG_LOCKUPRST
@@ -783,7 +783,7 @@ FlagStatus SYSCTRL_GetRstFlag(uint32_t SYSCTRL_RSTFLAG)
 }
 
 /**
- * @brief 获取复位标志寄存器内容
+ * @brief 获取复位标志寄存器内�?
  *
  * @return uint32_t
  */
@@ -793,7 +793,7 @@ uint32_t SYSCTRL_GetAllRstFlag(void)
 }
 
 /**
- * @brief 清除指定或者全部复位标志
+ * @brief 清除指定或者全部复位标�?
  *
  * @param SYSCTRL_RSTFLAG  ：SYSCTRL_FLAG_PORRST   SYSCTRL_FLAG_SYSRESETREQRST
  *                           SYSCTRL_FLAG_LVDRST   SYSCTRL_FLAG_LOCKUPRST

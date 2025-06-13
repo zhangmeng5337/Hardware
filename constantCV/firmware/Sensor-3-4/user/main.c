@@ -120,14 +120,12 @@ volatile TestStatus TransferStatus = FAILED;
 int32_t main(void)
 {
     uint32_t tmp32;
-    RCC_Configuration();
     SYSCTRL_SystemCoreClockUpdate(MAIN_FREQ);//36mhz  8000000
+    RCC_Configuration();
+    
 
     InitTick(MAIN_FREQ);
     SysTickDelay(2000);
-
-
-
   #ifdef DISPLAY_DEBUG
 //    GPIO_SWD2GPIO();
 //
@@ -449,6 +447,7 @@ void NVIC_Configuration(void)
     NVIC_EnableIRQ(SysTick_IRQn);
 
 
+
     __enable_irq();
 
 }
@@ -481,12 +480,11 @@ void PWM_OutputConfig(void)
 
 void delay_us(uint32_t a)
 {
-    unsigned char i, j;
+    unsigned char i;
     uint32_t b;
     for (b = 0; b < a; b++)
     {
-        i = 1;
-        j = 1;
+        i = 5;
         do
         {
             //while (--j);

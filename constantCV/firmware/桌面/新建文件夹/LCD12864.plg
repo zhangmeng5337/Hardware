@@ -1,0 +1,16 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+I:\LCH\ResWeld\2022新实验\C1_SPI_LCD12864(实验板液晶显示)OK\LCD12864.uv2
+Project File Date:  12/03/2021
+
+<h2>Output:</h2>
+Load "I:\\LCH\\ResWeld\\2022新实验\\C1_SPI_LCD12864(实验板液晶显示)OK\\LCD12864" 
+Flash Erase Done.
+Flash Image Update Complete. 
+Beginning programming...
+Flash Program Done: 1385 bytes programmed.
+Checksum:0x2c65
+Flash Verify Done: 1385 bytes verified.
