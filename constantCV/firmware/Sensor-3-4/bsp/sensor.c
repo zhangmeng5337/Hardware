@@ -290,25 +290,25 @@ void cal_press(void)
 
     if (GetRegPrivate()->pga > 6) // 128
     {
-        tmp2 = tmp2 / 300.0;//400 300
+        tmp2 = tmp2 / 300.0;//400 300 50
         adc_usr.adc_ori = tmp2;
 
     }
     else if (GetRegPrivate()->pga > 1) //64
     {
-        tmp2 = tmp2 / 200.0;//300 200
+        tmp2 = tmp2 / 300.0;//300 200 50
         adc_usr.adc_ori = tmp2;
 
     }
     else if (GetRegPrivate()->pga >= 1) //1
     {
-        tmp2 = tmp2 / 100.0;//200 100
+        tmp2 = tmp2 / 200.0;//200 100
         adc_usr.adc_ori = tmp2;
 
     }
     else//1
     {
-        tmp2 = tmp2 / 100.0;//150 100
+        tmp2 = tmp2 / 200.0;//150 100
         adc_usr.adc_ori = tmp2;
 
     }
@@ -368,9 +368,16 @@ void pwm_ctrl(float ratio)
 {
     unsigned int pulse;
     float tmp;
+    if(GetRegPrivate()->cur_set >= 0.39&&
+		GetRegPrivate()->cur_set <= 0.5)
+    {
+    tmp = 0.2 / 5;  //pcb resistor changed 1K
 
-    tmp = GetRegPrivate()->cur_set / 5;  //pcb resistor changed 1K
-    pulse = tmp * PWM_COUNTER;
+	}
+		else
+		tmp = GetRegPrivate()->cur_set / 5;	
+
+    pulse = tmp* PWM_COUNTER;
     if (pulse <= PWM_COUNTER)
         GTIM_SetCompare3(CW_GTIM1, pulse - 1); // 1*4   1khz 1000  250-1
 }

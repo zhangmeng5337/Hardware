@@ -120,8 +120,9 @@ volatile TestStatus TransferStatus = FAILED;
 int32_t main(void)
 {
     uint32_t tmp32;
+	RCC_Configuration();
     SYSCTRL_SystemCoreClockUpdate(MAIN_FREQ);//36mhz  8000000
-    RCC_Configuration();
+    
     
 
     InitTick(MAIN_FREQ);
