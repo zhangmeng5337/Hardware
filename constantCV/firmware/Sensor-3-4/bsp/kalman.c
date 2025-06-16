@@ -88,6 +88,47 @@ float  GetMedianNum(float bArray)
     return bTemp;
 }
 
+float medium_aver(float dat)
+{
+    float sum, change;
+    unsigned char i, j;
+    static unsigned char index = 0, index_tmp = 0;
+    sum = 0;
+    uiChannel1Buffer[index_tmp] = dat;
+
+    if (index < FILTER_CAPTURE)
+        index ++ ;
+
+    if (index_tmp < FILTER_CAPTURE)
+        index_tmp ++ ;
+    else
+        index_tmp = 0;
+
+    if (index >= FILTER_CAPTURE)
+    {
+        for (i = 1; i < FILTER_CAPTURE; i++)
+            for (j = 0; j < FILTER_CAPTURE - i; j++)
+            {
+                if (uiChannel1Buffer[j] > uiChannel1Buffer[j + 1])
+                {
+                    change = uiChannel1Buffer[j];
+                    uiChannel1Buffer[j] = uiChannel1Buffer[j + 1];
+                    uiChannel1Buffer[j + 1] = change;
+                }
+            }
+        for (i = 1; i < FILTER_CAPTURE - 1; i++)
+            sum = sum + uiChannel1Buffer[i];
+        return sum / (FILTER_CAPTURE - 2);
+    }
+    else
+    {
+        for (i = 0; i < index; i++)
+            sum = sum + uiChannel1Buffer[i];
+        return sum / (index);
+
+    }
+
+}
 
 float SilderFilter(float _value)
 {
@@ -169,3 +210,7 @@ float kalman_filter(kalman *kfp, float input)
     kfp->Last_P = (1 - kfp->Kg) * kfp->Now_P;
     return kfp->out;
 }
+
+
+
+

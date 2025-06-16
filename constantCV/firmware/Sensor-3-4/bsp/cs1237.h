@@ -97,5 +97,6 @@ void cs1237_pwr_pd(void);
 void get_adc_update(uint32_t dat);
 long adc_dat_filter(void);
 void read_data(void);
+unsigned char get_adc_flag(void);
 
 #endif /* __CS1237_H__ */

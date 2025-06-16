@@ -243,7 +243,7 @@
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf</ItemText>
+          <ItemText>tmp_f</ItemText>
         </Ww>
         <Ww>
           <count>18</count>
@@ -399,6 +399,21 @@
           <count>48</count>
           <WinNumber>1</WinNumber>
           <ItemText>val</ItemText>
+        </Ww>
+        <Ww>
+          <count>49</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ti,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>50</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>uiChannel1Buffer</ItemText>
+        </Ww>
+        <Ww>
+          <count>51</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>AD_Res_Last,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

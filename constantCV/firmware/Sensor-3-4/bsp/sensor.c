@@ -1,6 +1,7 @@
 #include "sensor.h"
 #include "cs1237.h"
 //#include "cs1237_32.h"
+#include <math.h>
 
 #include "main.h"
 #include "kalman.h"
@@ -203,7 +204,7 @@ unsigned char factory_unit_convert(float dat)
 void dat_cal_proc(float dat)
 {
     uint32_t tmp;
-
+    float tmp_f;
     float cal_val1, cal_val2;
     if (factory_unit_convert(dat) == 1)//factory unit to pa or T
     {
@@ -216,8 +217,46 @@ void dat_cal_proc(float dat)
 
 
         tmp = *((uint32_t *)& cal_val1);
+		tmp_f = cal_val1 * 10000.0;
+		tmp = round(tmp_f);
+		tmp_f = tmp / 10000.0;
+        tmp = *((uint32_t *)& tmp_f);
+
+        GetReg()->pb[eREG_HF16_4].val_u32ToFloat = tmp;
+        GetReg()->pb[eREG_LF16_4].val_u32ToFloat = tmp;
+
+
+        unsigned int decm_bit;
+        decm_bit = GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat;
+        switch (decm_bit)
+        {
+            case 0:
+                tmp_f = round(cal_val1);
+                break;
+            case 1:
+                cal_val1 = cal_val1 * 10;
+                tmp = round(cal_val1);
+                tmp_f = tmp / 10.0;
+                break;
+
+            case 2:
+                cal_val1 = cal_val1 * 100;
+                tmp_f = round(cal_val1);
+                tmp = tmp / 100.0;
+                break;
+            case 3:
+                cal_val1 = cal_val1 * 1000;
+                tmp = round(cal_val1);
+                tmp_f = tmp / 1000.0;
+                break;
+            default :
+                tmp_f = round(cal_val1);
+                break;
+        }
+				tmp = *((uint32_t *)& tmp_f);
         GetReg()->pb[eREG_HF16].val_u32ToFloat = tmp;
         GetReg()->pb[eREG_LF16].val_u32ToFloat = tmp;
+		adc_usr.data_unit_app = tmp_f; 
         cal_val1 = adc_usr.data_unit_app;
         cal_val1 = cal_val1 * 10;
         tmp = cal_val1;
@@ -268,16 +307,21 @@ void adc_proc(void)
         adc_config();
     else
     {
-        g_cs1237_device_st.adc_calculate_deal_data = calculate_adc_num(
-                    &g_cs1237_device_st);
-        if (g_cs1237_device_st.adc_calculate_deal_data != 0)
+        if (get_adc_flag() == 1)
         {
-            adc_usr.adc_ori = g_cs1237_device_st.adc_calculate_deal_data;
-            time_cal = 0;
-            cal_press();
-            time_cal = 0;
+            g_cs1237_device_st.adc_calculate_deal_data = calculate_adc_num(
+                        &g_cs1237_device_st);
+            if (g_cs1237_device_st.adc_calculate_deal_data != 0)
+            {
+                adc_usr.adc_ori = g_cs1237_device_st.adc_calculate_deal_data;
+                
+                cal_press();
+                 g_cs1237_device_st.update = 0;
+
+            }
 
         }
+
     }
 
 }
@@ -290,25 +334,25 @@ void cal_press(void)
 
     if (GetRegPrivate()->pga > 6) // 128
     {
-        tmp2 = tmp2 / 300.0;//400 300 50
+        tmp2 = tmp2 / 150.0;//400 300 50
         adc_usr.adc_ori = tmp2;
 
     }
     else if (GetRegPrivate()->pga > 1) //64
     {
-        tmp2 = tmp2 / 300.0;//300 200 50
+        tmp2 = tmp2 / 150.0;//300 200 50
         adc_usr.adc_ori = tmp2;
 
     }
     else if (GetRegPrivate()->pga >= 1) //1
     {
-        tmp2 = tmp2 / 200.0;//200 100
+        tmp2 = tmp2 / 100.0;//200 100
         adc_usr.adc_ori = tmp2;
 
     }
     else//1
     {
-        tmp2 = tmp2 / 200.0;//150 100
+        tmp2 = tmp2 / 100.0;//150 100
         adc_usr.adc_ori = tmp2;
 
     }
@@ -317,19 +361,19 @@ void cal_press(void)
     // adc_usr.adc_ori = tmp2;
 
 
-    tmp2 = kalman_filter(&g_kfp_st, tmp2);
+    // tmp2 = kalman_filter(&g_kfp_st, tmp2);
 
 
-    //tmp2 = SilderFilter(tmp2);
+    tmp2 = medium_aver(tmp2);
     adc_usr.adc_ori_filter = tmp2;
-
-//      printf("    %.6f    \r\n",tmp2);
+    tmp3 = adc_usr.adc_ori;
+     // printf("    %.6f   %.6f\r\n",tmp2,tmp3);
 
     if (adc_usr.adc_ori_filter != 0)
     {
         if (GetRegPrivate()->zero_cmd == 1)
         {
-            adc_usr.adc_ori_filter = adc_usr.adc_ori -
+            adc_usr.adc_ori_filter = adc_usr.adc_ori_filter -
                                      GetRegPrivate()->zero_value;
         }
 
@@ -368,16 +412,16 @@ void pwm_ctrl(float ratio)
 {
     unsigned int pulse;
     float tmp;
-    if(GetRegPrivate()->cur_set >= 0.39&&
-		GetRegPrivate()->cur_set <= 0.5)
+    if (GetRegPrivate()->cur_set >= 0.39 &&
+            GetRegPrivate()->cur_set <= 0.5)
     {
-    tmp = 0.2 / 5;  //pcb resistor changed 1K
+        tmp = 0.2 / 5;  //pcb resistor changed 1K
 
-	}
-		else
-		tmp = GetRegPrivate()->cur_set / 5;	
+    }
+    else
+        tmp = GetRegPrivate()->cur_set / 5;
 
-    pulse = tmp* PWM_COUNTER;
+    pulse = tmp * PWM_COUNTER;
     if (pulse <= PWM_COUNTER)
         GTIM_SetCompare3(CW_GTIM1, pulse - 1); // 1*4   1khz 1000  250-1
 }

@@ -57,7 +57,9 @@ reg_dat_pack reg_dat_usr[REG_SIZE] =
     {REG_DECM_BIT,    0,  1, 0,          2,          1,  0,      1, 1},
     {REG_UNIT,        0,  1, 2,          3,          1,  0,      1, 1},
     {REG_ADC_RATE,    0,  1, 0,          1,          1,  0,      1, 1},
-    {REG_CLR_ZEROE,   0,  1,0x01,    0x01,          1,  0,      1, 1}
+    {REG_CLR_ZEROE,   0,  1,0x01,    0x01,          1,  0,      1, 1},
+    {REG_HF16_4,        0,  1, 0x3fcccccd, 0x40266666,  3,  0,     0, 1},
+    {REG_LF16_4,        0,  1, 0x3fcccccd, 0x40266666,  3,  1,     0, 1}
 
 
 

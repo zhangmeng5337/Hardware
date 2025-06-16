@@ -69,6 +69,10 @@ void get_adc_update(uint32_t dat)
 {
     g_cs1237_device_st.update = dat;
 }
+unsigned char get_adc_flag()
+{
+    return g_cs1237_device_st.update;
+}
 /**
  * @name: cs1237_nop
  * @msg: cs1237 模块内部使用延时 调用一??60ns
@@ -752,21 +756,23 @@ unsigned char getPgaToADC(unsigned char pga_dat)
 
 extern uint32_t time_cal;
 float val;
+uint32_t ti;
 void read_data()
 {
+    ti++;
     g_cs1237_device_st.adc_ori_data = cs1237_read_data(&g_cs1237_device_st);
 
 }
 long Read_12Bit_AD(void)
 {
-    float out, c, e;
-    static uint32_t d;
-    static float last_val = 0;
-    float tmp, tmp2, tmp3, tmp4;
-    out = AD_Res_Last;
-    if (g_cs1237_device_st.update == 1)
+    float out, adc_val, adc_Newval, e;
+    float tmp, tmp2;
+	unsigned int pga;
+    static unsigned char i = 0;
+    adc_val = AD_Res_Last;
+    //if (g_cs1237_device_st.update == 1)
     {
-        g_cs1237_device_st.update = 0;
+
         time_cal = 0;
         e =  g_cs1237_device_st.adc_ori_data;
 
@@ -774,72 +780,60 @@ long Read_12Bit_AD(void)
         {
             // g_cs1237_device_st.adc_ori_data = e;
             time_cal = 0;
-            c = GetMedianNum(e);
+            adc_Newval = GetMedianNum(e);
 
-            tmp = c - out;
+            tmp = adc_Newval - adc_val;
             tmp = fabs(tmp);
-//          if(GetRegPrivate()->pga>=6)//64 128
-//          {
-//              if (tmp <= 100)
-//              {
-//                  d++;
-//                  if (out != 0)
-//                      c = out;
-//              }
-//
-//              else
-//                  d = d;
-//          }
-//          else if(GetRegPrivate()->pga>=4)//32
-//          {
-//              if (tmp <= 50)
-//              {
-//                  d++;
-//                  if (out != 0)
-//                      c = out;
-//              }
-//
-//              else
-//                  d = d;
-//          }
-//          else
-//          {
-//              if (tmp <= 10)
-//              {
-//                  d++;
-//                  if (out != 0)
-//                      c = out;
-//              }
-//
-//              else
-//                  d = d;
-//          }
-
-            if (out != 0 && tmp <= 10)
-                c = out;
-
-
-            if (c != 0) // 读到正确数据
+            pga = getPga(GetRegPrivate()->pga);
+			if(pga <= 1)
+				pga = 30;
+			else if(pga <= 64)
+				pga = 100;
+			else if(pga <= 128)
+				pga = 300; 
+			else
+				pga = 30;
+            if (adc_val != 0 && tmp >= pga)
+                adc_val = adc_Newval;
+            else
             {
-                out = out * Lv_Bo + c * (1 - Lv_Bo);
-                tmp4 = out;//把这次的计算结果放到全局变量里面保护
-                tmp2 = tmp4;
-                tmp3 = tmp2;//GetMedianNum(tmp2);
-                AD_Res_Last = tmp3 ;
-                last_val = c;
-                time_cal = 0;
+                if (adc_val == 0)
+                    adc_val = adc_Newval;
+
             }
 
 
-            return AD_Res_Last;
+            if (adc_val == adc_Newval)
+            {
+                i++;
+                if (i > SLID_SIZE)
+                {
+                    i = 0;
+                    adc_val = adc_Newval;
+                    if (adc_val != 0) // 读到正确数据
+                    {
+                        adc_val = adc_val * Lv_Bo + adc_Newval * (1 - Lv_Bo);
+                        tmp2 = adc_val;//把这次的计算结果放到全局变量里面保护
+                        AD_Res_Last = tmp2 ;
+                    }
+
+
+                    
+
+                }
+            }
+            else
+                i = 0;
+
+		return AD_Res_Last;
+
 
         }
         else
             return 0;
 
     }
-    else
-        return 0;
+
 
 
 
