@@ -833,7 +833,7 @@ void modbus_data_pack(unsigned char pack_num)
             {
                 cmd_list.pb[PWR_INDEX].payload[0] = 0x00;
                 cmd_list.pb[PWR_INDEX].payload[1] =
-                    get_schedule()->buf[get_schedule()->current_plan].pwr_state | 0x40;
+                    get_schedule()->buf[get_schedule()->current_plan].pwr_state | 0x72;
 
             }
         }

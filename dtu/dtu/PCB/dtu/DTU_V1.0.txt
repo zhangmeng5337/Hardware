@@ -1,0 +1,254 @@
+Board Information Report
+Filename     : D:\GH0050\pcb\Others\hubei\dtu\DTU_V1.0.PcbDoc
+Date         : 2025/5/22
+Time         : 10:51:30
+Time Elapsed : 00:00:02
+
+General
+    Board Size, 7874.016milsx4133.858mils
+    Components on board, 331
+count : 2
+
+Routing Information
+    Routing completion, 100.00%
+    Connections, 840
+    Connections routed, 840
+    Connections remaining, 0
+count : 4
+
+Layer, Arcs, Pads, Vias, Tracks, Texts, Fills, Regions, ComponentBodies
+    Top Layer, 2, 755, 0, 1406, 0, 0, 982, 0
+    Bottom Layer, 0, 342, 0, 987, 0, 0, 580, 0
+    Mechanical 1, 2, 0, 0, 4, 0, 0, 0, 1
+    Mechanical 3, 0, 35, 0, 0, 0, 0, 0, 0
+    Mechanical 6, 13, 0, 0, 0, 0, 0, 32, 0
+    Mechanical 10, 0, 0, 0, 140, 35, 0, 0, 0
+    Mechanical 12, 0, 0, 0, 140, 0, 0, 0, 35
+    Mechanical 13, 4, 0, 0, 104, 0, 0, 0, 10
+    Mechanical 14, 0, 0, 0, 210, 0, 0, 0, 0
+    Mechanical 15, 2, 0, 0, 262, 0, 0, 405, 0
+    Multi-Layer, 0, 146, 2035, 0, 0, 0, 1, 0
+    Top Paste, 0, 0, 0, 0, 0, 0, 0, 0
+    Top Overlay, 35, 0, 0, 1142, 414, 1, 25, 0
+    Top Solder, 0, 0, 0, 0, 0, 0, 0, 0
+    Bottom Solder, 0, 0, 0, 0, 0, 0, 0, 0
+    Bottom Overlay, 17, 0, 0, 626, 296, 0, 0, 0
+    Bottom Paste, 0, 0, 0, 0, 0, 0, 0, 0
+    Drill Guide, 0, 0, 0, 0, 0, 0, 0, 0
+    Keep-Out Layer, 2, 0, 0, 4, 0, 0, 0, 0
+    Drill Drawing, 0, 0, 0, 0, 0, 0, 0, 0
+count : 20
+
+Drill Pairs, Vias
+    Top Layer - Bottom Layer, 2035
+count : 1
+
+Layer, Sq.In., Sq.MM., Percent of layer
+    Top Layer, 18.097, 11675.245, 56%
+    Bottom Layer, 21.699, 13999.153, 67%
+count : 2
+
+Non-Plated Hole Size, Pads, Vias
+    0mils, 35, 0
+count : 1
+
+Plated Hole Size, Pads, Vias
+    0mils, 1097, 0
+    12mils, 0, 1987
+    20mils, 0, 12
+    25mils, 0, 17
+    26.378mils, 2, 0
+    30mils, 0, 14
+    32mils, 2, 0
+    35.433mils, 12, 0
+    40mils, 0, 1
+    43.308mils, 2, 0
+    47.244mils, 1, 0
+    50mils, 0, 4
+    59.055mils, 4, 0
+    60mils, 40, 0
+    62.992mils, 75, 0
+    98.425mils, 4, 0
+count : 16
+
+Non-Plated Slot Size / Length, Pads
+count : 0
+
+Plated Slot Size / Length, Pads
+    25.591mil / 66.929mil, 4
+count : 1
+
+Non-Plated Square Hole Size, Pads
+count : 0
+
+Plated Square Hole Size, Pads
+count : 0
+
+Top Layer Annular Ring Size, Count
+    0mils, 2
+    8mils, 1987
+    10mils, 26
+    15mils, 17
+    18mils, 2
+    20mils, 5
+    23.622mils, 13
+    27.558mils, 2
+    27.559mils, 4
+    31.496mils, 75
+    50mils, 40
+    57.087mils, 4
+    59.055mils, 4
+count : 13
+
+Mid Layer Annular Ring Size, Count
+    0mils, 2
+    8mils, 1987
+    10mils, 26
+    15mils, 17
+    18mils, 2
+    20mils, 5
+    23.622mils, 13
+    27.558mils, 2
+    27.559mils, 4
+    31.496mils, 75
+    50mils, 40
+    57.087mils, 4
+    59.055mils, 4
+count : 13
+
+Bottom Layer Annular Ring Size, Count
+    0mils, 2
+    8mils, 1987
+    10mils, 26
+    15mils, 17
+    18mils, 2
+    20mils, 5
+    23.622mils, 13
+    27.558mils, 2
+    27.559mils, 4
+    31.496mils, 75
+    50mils, 40
+    57.087mils, 4
+    59.055mils, 4
+count : 13
+
+Pad Solder Mask, Count
+    1.969mils, 2
+    4mils, 1276
+count : 2
+
+Pad Paste Mask, Count
+    0mils, 1278
+count : 1
+
+Pad Pwr/Gnd Expansion, Count
+    20mils, 1278
+count : 1
+
+Pad Relief Conductor Width, Count
+    10mils, 1278
+count : 1
+
+Pad Relief Air Gap, Count
+    10mils, 1278
+count : 1
+
+Pad Relief Entries, Count
+    4, 1278
+count : 1
+
+Via Solder Mask, Count
+    4mils, 2035
+count : 1
+
+Via Pwr/Gnd Expansion, Count
+    20mils, 2035
+count : 1
+
+Track Width, Count
+    1.969mils, 40
+    2mils, 154
+    3.937mils, 614
+    4.929mils, 6
+    5mils, 1068
+    6mils, 16
+    7.087mils, 40
+    7.874mils, 166
+    8mils, 528
+    10mils, 1631
+    11.811mils, 96
+    15mils, 26
+    20mils, 389
+    30mils, 65
+    40mils, 84
+    50mils, 23
+    70mils, 79
+count : 17
+
+Arc Line Width, Count
+    2mils, 2
+    3.937mils, 4
+    5mils, 7
+    7.087mils, 8
+    7.874mils, 9
+    9.843mils, 5
+    10mils, 14
+    11.811mils, 12
+    15.748mils, 2
+    19.685mils, 8
+    23.622mils, 4
+    40mils, 2
+count : 12
+
+Arc Radius, Count
+    4.921mils, 5
+    5.831mils, 1
+    5.91mils, 12
+    6.398mils, 1
+    7.87mils, 2
+    9.84mils, 8
+    11.811mils, 4
+    12.5mils, 8
+    17.717mils, 4
+    18.681mils, 8
+    19.685mils, 4
+    19.69mils, 8
+    20mils, 7
+    80.28mils, 1
+    100mils, 1
+    413.386mils, 2
+    413.39mils, 1
+count : 17
+
+Arc Degrees, Count
+    90, 2
+    178, 8
+    180, 18
+    360, 49
+count : 4
+
+Text Height, Count
+    15.748mils, 31
+    19.685mils, 1
+    31.496mils, 3
+    40mils, 662
+    60mils, 48
+count : 5
+
+Text Width, Count
+    3.15mils, 31
+    3.937mils, 1
+    5mils, 662
+    5.906mils, 1
+    6.299mils, 2
+    10mils, 48
+count : 6
+
+Net Track Width, Count
+    5mils, 278
+    10mils, 6
+count : 2
+
+Net Via Size, Count
+    50mils, 284
+count : 1

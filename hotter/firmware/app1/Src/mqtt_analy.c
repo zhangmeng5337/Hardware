@@ -1405,7 +1405,7 @@ void mqtt_proc()
 
     mqtt_recv_proc();
 
-    get_config()->timeout = 0;
+    
 
 
 }

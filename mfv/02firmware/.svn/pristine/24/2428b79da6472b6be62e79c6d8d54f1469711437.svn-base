@@ -1,0 +1,204 @@
+#include <stdbool.h>
+#include "cmsis_os2.h"                          // CMSIS RTOS header file
+#include "main.h"
+#include "usb_device.h"
+#include "commsAPI.h"
+#include "protocol.h"
+#include "semtaskcomms.h"
+#include "nvmem.h"
+#include "modbus.h"
+
+extern UART_HandleTypeDef huart2;
+extern TIM_HandleTypeDef htim3;
+
+osTimerId_t one_shot_id_startautobaud;
+
+static void one_shot_Callback_startautobaud (void *argument) {
+  int32_t arg = (int32_t)argument; // cast back argument '0' 
+  // do something, i.e. set thread/event flags
+}
+
+/*----------------------------------------------------------------------------
+ *      Semaphore creation & usage
+ *---------------------------------------------------------------------------*/
+ 
+osSemaphoreId_t sid_Semaphore_comms_uart;                  // semaphore id
+ 
+osThreadId_t tid_Thread_Semaphore_comms_uart;              // thread id
+static uint64_t thread_stk_comms_uart[256];
+
+const osThreadAttr_t thread_comms_uart_attr = {
+  .stack_mem = &thread_stk_comms_uart[0],
+  .stack_size = sizeof(thread_stk_comms_uart),
+  //.priority = osPriorityAboveNormal
+};
+ 
+void Thread_Semaphore_comms_uart (void *argument);         // thread function
+
+int Init_Semaphore_comms_uart (void) {
+ 
+  sid_Semaphore_comms_uart = osSemaphoreNew(1U, 0U, NULL);
+  if (sid_Semaphore_comms_uart == NULL) {
+    ; // Semaphore object not created, handle failure
+  }
+
+  tid_Thread_Semaphore_comms_uart = osThreadNew(Thread_Semaphore_comms_uart, NULL, &thread_comms_uart_attr);
+  if (tid_Thread_Semaphore_comms_uart == NULL) {
+    return(-1);
+  }        
+
+  return(0);
+}
+
+void Resume_thread_comms_uart(void) {
+    osSemaphoreRelease(sid_Semaphore_comms_uart);              // return a token back to a semaphore
+}
+ 
+void Thread_Semaphore_comms_uart (void *argument) {
+  int32_t val;
+
+  val = osSemaphoreAcquire(sid_Semaphore_comms_uart, osWaitForever);       // sync block
+#ifndef BOOTLOADER  
+  init_UART_MB_API(nvmem.app.network.address);
+#endif  
+  init_UART_API(nvmem.app.network.extproc);  
+
+  pconfig(nvmem.app.network.length, nvmem.app.network.parity, nvmem.app.network.stopbits, &TOOLINTERFACE.Init.WordLength, &TOOLINTERFACE.Init.Parity, &TOOLINTERFACE.Init.StopBits);
+  pbaudrate(nvmem.app.network.defaultbaudrate, &TOOLINTERFACE.Init.BaudRate, 0);
+  setbuadrate(&TOOLINTERFACE, TOOLINTERFACE.Init.BaudRate);
+  __HAL_UART_DISABLE_IT(&TOOLINTERFACE, UART_IT_IDLE|UART_IT_ORE|UART_IT_NE|UART_IT_FE|UART_IT_ERR); 
+  htim3.Init.Period = TIM3PERIOD;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+    
+#ifndef BOOTLOADER    
+  modbus_sm(&uart_mb_api);
+#endif  
+  protocol_sm(&uart_api);
+
+  while (1) {
+    ; // Insert thread code here... 
+    val = osSemaphoreAcquire(sid_Semaphore_comms_uart, osWaitForever);       // wait for post
+    switch (val) {
+      case osOK:        
+        ; // Use protected code here...  
+        a_protocol = panalyzer(&uart_com_driver);      
+        switch (a_protocol) {
+          case 1:
+            #ifndef BOOTLOADER
+            do {
+              modbus_sm(&uart_mb_api);
+            } while (uart_mb_api.current_state != RXWAIT);
+            #endif
+            break;          
+          case 0:
+            do {
+              protocol_sm(&uart_api);
+            } while (uart_api.current_state != RXWAIT);
+            break;         
+          default:
+            uart_com_driver.rx.pending = 0;
+            uart_com_driver.rx.ctr = 0;
+            uart_com_driver.rx.length = 0;
+            __nop();  // what?
+            break;
+        }
+        break;
+      case osErrorResource:
+        break;
+      case osErrorParameter:
+        break;
+      default:
+        break;
+    }
+ 
+    osThreadYield();                                    // suspend thread
+  }
+}
+
+/*----------------------------------------------------------------------------
+ *      Semaphore creation & usage
+ *---------------------------------------------------------------------------*/
+ 
+osSemaphoreId_t sid_Semaphore_comms_usbd;                  // semaphore id
+ 
+osThreadId_t tid_Thread_Semaphore_comms_usbd;              // thread id
+static uint64_t thread_stk_comms_usbd[256];
+
+const osThreadAttr_t thread_comms_usbd_attr = {
+  .stack_mem = &thread_stk_comms_usbd[0],
+  .stack_size = sizeof(thread_stk_comms_usbd)
+};
+ 
+void Thread_Semaphore_comms_usbd (void *argument);         // thread function
+ 
+int Init_Semaphore_comms_usbd (void) {
+ 
+  sid_Semaphore_comms_usbd = osSemaphoreNew(1U, 0U, NULL);
+  if (sid_Semaphore_comms_usbd == NULL) {
+    ; // Semaphore object not created, handle failure
+  }
+ 
+  tid_Thread_Semaphore_comms_usbd = osThreadNew(Thread_Semaphore_comms_usbd, NULL, &thread_comms_usbd_attr);
+  if (tid_Thread_Semaphore_comms_usbd == NULL) {
+    return(-1);
+  }
+  
+  MX_USB_Device_Init();
+  init_USBD_API();
+
+  return(0);
+}
+
+void Resume_thread_comms_usbd(void) {
+    osSemaphoreRelease(sid_Semaphore_comms_usbd);              // return a token back to a semaphore
+}
+ 
+void Thread_Semaphore_comms_usbd (void *argument) {
+  int32_t val;
+  
+//  val = osSemaphoreAcquire(sid_Semaphore_comms_usbd, osWaitForever);       // sync block
+#ifndef BOOTLOADER  
+  init_USB_MB_API(nvmem.app.network.address);
+#endif  
+  protocol_sm(&usbd_api);
+#ifndef BOOTLOADER  
+  modbus_sm(&usb_mb_api);
+#endif
+  
+  while (1) {
+    ; // Insert thread code here...
+ 
+    val = osSemaphoreAcquire(sid_Semaphore_comms_usbd, osWaitForever);       // wait for post
+    switch (val) {
+      case osOK:
+        ; // Use protected code here...
+        a_protocol = panalyzer(&usbd_com_driver);      
+        switch (a_protocol) {
+          case 1:
+            #ifndef BOOTLOADER
+            do {
+              modbus_sm(&usb_mb_api);
+            } while (usb_mb_api.current_state != RXWAIT);
+            #endif
+            break;
+          default:
+            do {
+              protocol_sm(&usbd_api);
+            } while (usbd_api.current_state != RXWAIT);
+            break;        
+        }
+        break;
+      case osErrorResource:
+        break;
+      case osErrorParameter:
+        break;
+      default:
+        break;
+    }
+ 
+    osThreadYield();                                    // suspend thread
+  }
+}

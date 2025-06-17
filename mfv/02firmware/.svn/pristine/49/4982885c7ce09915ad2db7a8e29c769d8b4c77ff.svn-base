@@ -1,0 +1,95 @@
+#include <string.h>
+#include "cmsis_os2.h"                          // CMSIS RTOS header file
+#include "main.h"
+#include "nvmem.h"
+#include "protocol.h"
+#include "streaming.h"
+#include "adc.h"
+#include "cdg.h"
+#include "semtasksigproc.h"
+#include "semtaskecat.h"
+#include "app.h"
+  
+/*----------------------------------------------------------------------------
+ *      Semaphore creation & usage
+ *---------------------------------------------------------------------------*/
+uint8_t sem_app_BM = 0; 
+osSemaphoreId_t sid_Semaphore_sigproc;                  // semaphore id
+ 
+osThreadId_t tid_Thread_Semaphore_sigproc;              // thread id
+static uint64_t thread_stk_sigproc[2048];
+
+const osThreadAttr_t thread_sigproc_attr = {
+  .stack_mem = &thread_stk_sigproc[0],
+  .stack_size = sizeof(thread_stk_sigproc),
+  //.priority = osPriorityRealtime
+};
+ 
+void Thread_Semaphore_sigproc (void *argument);         // thread function
+ 
+int Init_Semaphore_sigproc (void) {
+ 
+  sid_Semaphore_sigproc = osSemaphoreNew(1U, 0U, NULL);
+  if (sid_Semaphore_sigproc == NULL) {
+    ; // Semaphore object not created, handle failure
+  }
+ 
+  tid_Thread_Semaphore_sigproc = osThreadNew(Thread_Semaphore_sigproc, NULL, &thread_sigproc_attr);
+  if (tid_Thread_Semaphore_sigproc == NULL) {
+    return(-1);
+  }
+    
+  return(0);
+}
+
+void Resume_thread_sigproc(void) {
+  osSemaphoreRelease(sid_Semaphore_sigproc);              // return a token back to a semaphore
+  sem_app_BM = 1;
+}
+
+void init_app_BM() {
+  app_init();
+  startSigproc();
+}
+
+void app_BM() {
+  if (sem_app_BM) {
+    app_proc();
+    sem_app_BM = 0;
+  }
+}
+
+void Thread_Semaphore_sigproc (void *argument) {
+  int32_t val;
+  
+//  val = osSemaphoreAcquire(sid_Semaphore_sigproc, osWaitForever);       // sync block
+  
+//  init_CDG_API();
+//  init_SDADC();
+//  start_SDADC();
+//  startSigproc();
+  
+  app_init();
+      
+  Resume_thread_comms_ecat();  
+
+  startSigproc();
+  while (1) {
+    ; // Insert thread code here... 
+    val = osSemaphoreAcquire(sid_Semaphore_sigproc, osWaitForever);       // wait for post    
+    switch (val) {
+      case osOK:
+        ; // Use protected code here...                             
+        app_proc();
+        break;
+      case osErrorResource:
+        break;
+      case osErrorParameter:
+        break;
+      default:
+        break;
+    }
+ 
+    osThreadYield();                                    // suspend thread
+  }
+}

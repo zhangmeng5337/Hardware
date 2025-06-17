@@ -1,0 +1,250 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.h
+  * @brief          : Header for main.c file.
+  *                   This file contains the common defines of the application.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __MAIN_H
+#define __MAIN_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "stm32g4xx_hal.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
+
+/* Exported types ------------------------------------------------------------*/
+/* USER CODE BEGIN ET */
+typedef union {  
+  int8_t  _sint8;
+	int16_t _sint16;
+	int32_t _sint32;
+	int64_t _sint64;
+	uint8_t  _uint8;
+	uint16_t _uint16;
+	uint32_t _uint32;
+	uint64_t _uint64;
+	float   _float;
+	uint8_t _uint8Arr[8];
+} binary;
+/* USER CODE END ET */
+
+/* Exported constants --------------------------------------------------------*/
+/* USER CODE BEGIN EC */
+#define FW_REVISION_MAJOR   6
+#define FW_REVISION_MINOR   0
+#define FW_REVISION_PATCH   0
+
+#define FW_BL_REVISION_MAJOR   6
+#define FW_BL_REVISION_MINOR   1
+#define FW_BL_REVISION_PATCH   0
+
+#define ALG_REVISION_MAJOR   0
+#define ALG_REVISION_MINOR   0
+#define ALG_REVISION_PATCH   1
+
+#define FIRMWARE_ID   "GFC"
+/* USER CODE END EC */
+
+/* Exported macro ------------------------------------------------------------*/
+/* USER CODE BEGIN EM */
+
+/* USER CODE END EM */
+
+/* Exported functions prototypes ---------------------------------------------*/
+void Error_Handler(void);
+
+/* USER CODE BEGIN EFP */
+
+/* USER CODE END EFP */
+
+/* Private defines -----------------------------------------------------------*/
+#define TIM6PS 0
+#define TIM6PERIOD 0
+#define TIM7PS 0
+#define TIM7PERIOD 0
+#define TIM3PS 0
+#define TIM3PERIOD 0
+#define TIM5PS 0
+#define TIM5PERIOD 0
+#define TIM1PS 0
+#define TIM1PERIOD 0
+#define TIM2PS 0
+#define TIM2PERIOD 0
+#define TIM4PERIOD 0
+#define TIM4PS 0
+#define RS485_TX_Pin GPIO_PIN_2
+#define RS485_TX_GPIO_Port GPIOA
+#define RS485_RX_Pin GPIO_PIN_3
+#define RS485_RX_GPIO_Port GPIOA
+#define relay_ctrl_1_Pin GPIO_PIN_4
+#define relay_ctrl_1_GPIO_Port GPIOA
+#define relay_ctrl_2_Pin GPIO_PIN_5
+#define relay_ctrl_2_GPIO_Port GPIOA
+#define relay_ctrl_3_Pin GPIO_PIN_6
+#define relay_ctrl_3_GPIO_Port GPIOA
+#define relay_ctrl_5_Pin GPIO_PIN_7
+#define relay_ctrl_5_GPIO_Port GPIOA
+#define led_Pin GPIO_PIN_0
+#define led_GPIO_Port GPIOB
+#define ERR_Pin GPIO_PIN_2
+#define ERR_GPIO_Port GPIOB
+#define RS485_EN_Pin GPIO_PIN_13
+#define RS485_EN_GPIO_Port GPIOB
+#define relay_ctrl_4_Pin GPIO_PIN_15
+#define relay_ctrl_4_GPIO_Port GPIOB
+#define CDG_ZERO_Pin GPIO_PIN_8
+#define CDG_ZERO_GPIO_Port GPIOA
+#define CDG_TX_Pin GPIO_PIN_9
+#define CDG_TX_GPIO_Port GPIOA
+#define CDG_RX_Pin GPIO_PIN_10
+#define CDG_RX_GPIO_Port GPIOA
+#define ECAT_SPI3_SCK_Pin GPIO_PIN_3
+#define ECAT_SPI3_SCK_GPIO_Port GPIOB
+#define ECAT_SPI3_MISO_Pin GPIO_PIN_4
+#define ECAT_SPI3_MISO_GPIO_Port GPIOB
+#define ECAT_SPI3_MOSI_Pin GPIO_PIN_5
+#define ECAT_SPI3_MOSI_GPIO_Port GPIOB
+#define ECAT_SPI3_CS_Pin GPIO_PIN_6
+#define ECAT_SPI3_CS_GPIO_Port GPIOB
+#define PROC_RST_Pin GPIO_PIN_7
+#define PROC_RST_GPIO_Port GPIOB
+
+/* USER CODE BEGIN Private defines */
+// PWM output for ADC MCO in Hz
+#define TIM1_FREQUENCY  8192000
+// Display /WR Tclk 7KHz
+#define TIM2_FREQUENCY  200000
+// UART Character timeout in Hz
+#define TIM3_FREQUENCY  20000
+// EtherCAT timer 500Hz
+#define TIM4_FREQUENCY  500
+// Signal Processing Rate in Hz
+#define TIM5_FREQUENCY  500
+#define SIGPROC_PERIOD  0.002
+#define SIGPROC_PERIOD_MS 2
+// HAL tick timer in Hz
+#define TIM6_FREQUENCY  1000
+// USB Character timeout in Hz
+#define TIM7_FREQUENCY  2000
+
+#undef TIM1PS
+#undef TIM2PS
+#undef TIM3PS
+#undef TIM4PS
+#undef TIM5PS
+#undef TIM6PS
+#undef TIM7PS
+
+#undef TIM1PERIOD
+#undef TIM2PERIOD
+#undef TIM3PERIOD
+#undef TIM4PERIOD
+#undef TIM5PERIOD
+#undef TIM6PERIOD
+#undef TIM7PERIOD
+
+#define TIM1PS  (uint32_t) ((SystemCoreClock  / 10000000) - 1)  
+#define TIM2PS  (uint32_t) ((SystemCoreClock  / 10000000) - 1)  
+#define TIM3PS  (uint32_t) ((SystemCoreClock  / 10000000) - 1)  
+#define TIM4PS  (uint32_t) ((SystemCoreClock  / 10000000) - 1)
+#define TIM5PS  (uint32_t) ((SystemCoreClock  / 10000000) - 1)  
+#define TIM6PS  (uint32_t) ((SystemCoreClock  / 10000000) - 1)  
+#define TIM7PS  (uint32_t) ((SystemCoreClock  / 10000000) - 1) 
+
+#define TIM1PERIOD (8192000-1)
+#define TIM2PERIOD SystemCoreClock / (htim2.Init.Prescaler + 1) / TIM2_FREQUENCY
+#define TIM3PERIOD SystemCoreClock / (htim3.Init.Prescaler + 1) / TIM3_FREQUENCY
+#define TIM4PERIOD SystemCoreClock / (htim4.Init.Prescaler + 1) / TIM4_FREQUENCY
+#define TIM5PERIOD SystemCoreClock / (htim5.Init.Prescaler + 1) / TIM5_FREQUENCY
+#define TIM6PERIOD SystemCoreClock / (htim6.Init.Prescaler + 1) / TIM6_FREQUENCY
+#define TIM7PERIOD SystemCoreClock / (htim7.Init.Prescaler + 1) / TIM7_FREQUENCY
+
+#define IWDG_WINDOW IWDG_WINDOW_DISABLE
+// RL = [(TIMEOUT_MS * 32000) / (4 * 2^PR * 1000)] - 1
+#define IWDG_RELOAD 3999
+
+extern uint8_t fw_major;
+extern uint8_t fw_minor;
+extern uint8_t fw_patch;
+extern uint8_t alg_major;
+extern uint8_t alg_minor;
+extern uint8_t alg_patch;
+extern uint8_t reset_device;
+extern uint8_t a_protocol;
+
+extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
+extern I2C_HandleTypeDef hi2c1;
+extern SPI_HandleTypeDef hspi3;
+extern TIM_HandleTypeDef htim2;
+extern IWDG_HandleTypeDef hiwdg;
+
+#define CDGINTERFACE  huart1
+#define TOOLINTERFACE huart2
+
+#define ECAT_IF hspi3
+#define CSLOW()  HAL_GPIO_WritePin(ECAT_SPI3_CS_GPIO_Port, ECAT_SPI3_CS_Pin, GPIO_PIN_RESET)
+#define CSHIGH()  HAL_GPIO_WritePin(ECAT_SPI3_CS_GPIO_Port, ECAT_SPI3_CS_Pin, GPIO_PIN_SET)
+#define HW_ClearTimer()
+#define HW_GetTimer()            ECAT_TIMER_INC_P_MS
+#define LAN9252_RESET HAL_GPIO_WritePin(PROC_RST_GPIO_Port, PROC_RST_Pin, GPIO_PIN_RESET);
+#define LAN9252_RUN HAL_GPIO_WritePin(PROC_RST_GPIO_Port, PROC_RST_Pin, GPIO_PIN_SET);
+
+#define RS485_RXEN  HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
+#define RS485_TXEN  HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_SET);
+
+#define NETX90_RUN_Pin RS485_EN_Pin
+#define NETX90_RUN_GPIO_Port RS485_EN_GPIO_Port
+#define NETX90_RUN  HAL_GPIO_WritePin(NETX90_RUN_GPIO_Port, NETX90_RUN_Pin, GPIO_PIN_SET);
+#define NETX90_ALTBOOT  HAL_GPIO_WritePin(NETX90_RUN_GPIO_Port, NETX90_RUN_Pin, GPIO_PIN_RESET);
+
+#define NETX90_RESET_Pin EXTPROC_SPI2_ADC_CS3_Pin
+#define NETX90_RESET_GPIO_Port EXTPROC_SPI2_ADC_CS3_GPIO_Port
+#define NETX90_NORMAL  HAL_GPIO_WritePin(NETX90_RESET_GPIO_Port, NETX90_RESET_Pin, GPIO_PIN_SET);
+#define NETX90_NRESET  HAL_GPIO_WritePin(NETX90_RESET_GPIO_Port, NETX90_RESET_Pin, GPIO_PIN_RESET);
+
+/**
+  @brief V1 defines
+*/
+#define ADC_LOG_ENABLE    0
+#define DEBUG_LOG1_ENABLE 0
+#define DEBUG_LOG2_ENABLE 0
+#define P1_T_SEL  1// 0:average 1: 
+#define SLOPE_DEBUG  0
+
+
+#define RS_485	0
+#define RS_232  1
+#define COM_TYPE	RS_485
+
+
+extern void startSigproc(void);
+/* USER CODE END Private defines */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __MAIN_H */

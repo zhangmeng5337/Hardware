@@ -1,0 +1,264 @@
+#
+#Component attribute names
+#
+@0 .comp_mount_type
+@1 .comp_height
+
+# CMP 0
+CMP 14 0.655 -0.965 180 N SW3 KH-4.5X4.5X7H-STM ;0=1,1=0.0000
+PRP Max_Operating_Temperature '70 degC'
+PRP Min_Operating_Temperature '-25 degC'
+PRP PartNumber 'J1L0503110'
+TOP 0 0.78295 -1.024055 180 N 51 43 1
+TOP 1 0.52705 -1.024055 180 N 51 47 2
+TOP 2 0.78295 -0.905945 180 N 6 5 3
+TOP 3 0.52705 -0.905945 180 N 6 6 4
+#
+# CMP 1
+CMP 7 0.684 -0.831 180 N R22 1K/1% ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '1K'
+TOP 0 0.7149843 -0.831 180 N 6 8 1
+TOP 1 0.6530157 -0.831 180 N 5 9 2
+#
+# CMP 2
+CMP 7 0.78 -0.788 90 N R21 10K ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10K'
+TOP 0 0.78 -0.7570157 90 N 17 16 1
+TOP 1 0.78 -0.8189843 90 N 6 7 2
+#
+# CMP 3
+CMP 2 0.685 -0.759 180 N C14 Capacitor_0603 ;0=1,1=0.0362
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Current_Rating ''
+PRP Manufacturer 'KEMET'
+PRP Package '0603'
+PRP PartNumber 'C0603C104M5RACTU'
+PRP Power_Rating ''
+PRP SupplierDescription 'CAP CER 0.1UF 50V X7R 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance '[tol]'
+PRP Value '0.1u'
+PRP Voltage_Rating '[voltage]'
+TOP 0 0.7159843 -0.759 180 N 5 7 1
+TOP 1 0.655 -0.759 180 N 51 45 2
+#
+# CMP 4
+CMP 2 0.19 -0.802 270 N C13 Capacitor_0603 ;0=1,1=0.0362
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Current_Rating ''
+PRP Manufacturer 'KEMET'
+PRP Package '0603'
+PRP PartNumber 'C0603C104M5RACTU'
+PRP Power_Rating ''
+PRP SupplierDescription 'CAP CER 0.1UF 50V X7R 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance '[tol]'
+PRP Value '470nF/50V'
+PRP Voltage_Rating '[voltage]'
+TOP 0 0.19 -0.8329843 270 N 51 58 1
+TOP 1 0.19 -0.772 270 N 8 4 2
+#
+# CMP 5
+CMP 7 0.9456665 -0.363 270 N R20 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 0.9456665 -0.3939843 270 N 22 1 1
+TOP 1 0.9456665 -0.3320157 270 N 9 1 2
+#
+# CMP 6
+CMP 7 0.8723332 -0.363 270 N R19 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 0.8723332 -0.3939843 270 N 23 2 1
+TOP 1 0.8723332 -0.3320157 270 N 10 0 2
+#
+# CMP 7
+CMP 7 0.68 -0.26 0 N R18 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 0.6490157 -0.26 0 N 24 3 1
+TOP 1 0.7109843 -0.26 0 N 11 5 2
+#
+# CMP 8
+CMP 7 0.7256666 -0.363 270 N R17 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 0.7256666 -0.3939843 270 N 25 2 1
+TOP 1 0.7256666 -0.3320157 270 N 12 4 2
+#
+# CMP 9
+CMP 7 0.6523333 -0.363 270 N R16 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 0.6523333 -0.3939843 270 N 26 2 1
+TOP 1 0.6523333 -0.3320157 270 N 13 5 2
+#
+# CMP 10
+CMP 7 0.796 -0.364 270 N R15 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 0.796 -0.3949843 270 N 27 1 1
+TOP 1 0.796 -0.3330157 270 N 14 3 2
+#
+# CMP 11
+CMP 7 1.0189998 -0.363 90 N R14 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 1.0189998 -0.3320157 90 N 28 2 1
+TOP 1 1.0189998 -0.3939843 90 N 15 2 2
+#
+# CMP 12
+CMP 7 0.579 -0.363 90 N R8 510 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-1075KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 75K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '510'
+TOP 0 0.579 -0.3320157 90 N 29 2 1
+TOP 1 0.579 -0.3939843 90 N 16 5 2
+#
+# CMP 13
+CMP 14 0.33 -0.965 180 N SW2 KH-4.5X4.5X7H-STM ;0=1,1=0.0000
+PRP Max_Operating_Temperature '70 degC'
+PRP Min_Operating_Temperature '-25 degC'
+PRP PartNumber 'J1L0503110'
+TOP 0 0.45795 -1.024055 180 N 51 57 1
+TOP 1 0.20205 -1.024055 180 N 51 60 2
+TOP 2 0.45795 -0.905945 180 N 20 8 3
+TOP 3 0.20205 -0.905945 180 N 20 10 4
+#
+# CMP 14
+CMP 14 0.99 -0.965 180 N SW1 KH-4.5X4.5X7H-STM ;0=1,1=0.0000
+PRP Max_Operating_Temperature '70 degC'
+PRP Min_Operating_Temperature '-25 degC'
+PRP PartNumber 'J1L0503110'
+TOP 0 1.11795 -1.024055 180 N 51 41 1
+TOP 1 0.86205 -1.024055 180 N 51 40 2
+TOP 2 1.11795 -0.905945 180 N 21 10 3
+TOP 3 0.86205 -0.905945 180 N 21 12 4
+#
+# CMP 15
+CMP 6 0.65 -0.393027 0 N LED2 FJ5461AH__色 ;0=2,1=0.0295
+PRP Add_into_BOM 'yes'
+PRP Convert_to_PCB 'yes'
+PRP Datasheet 'https://atta.szlcsc.com/upload/public/pdf/source/20151111/1457707576636.pdf'
+PRP Device 'FJ5461AH 红色'
+PRP Digit/Alpha_Size(inch) '0.56'
+PRP Display_Type '7段'
+PRP JLCPCB_Part_Class 'Extended Part'
+PRP LCSC_Part_Name '4位0.56英寸红色数码管 共阴极'
+PRP LED_Polarity '共阴极'
+PRP Luminous_Color '红色'
+PRP Manufacturer '志浩'
+PRP Manufacturer_Part 'FJ5461AH 红色'
+PRP Module_Size '-'
+PRP Number_of_Characters '4位'
+PRP Power_Dissipation '-'
+PRP Supplier 'LCSC'
+PRP Supplier_Footprint '插件'
+PRP Supplier_Part 'C54396'
+PRP Symbol 'FJ5461AH red'
+TOP 0 0.4 -0.595 0 N 25 3 1
+TOP 1 0.5 -0.595 0 N 26 3 2
+TOP 2 0.6 -0.595 0 N 22 2 3
+TOP 3 0.7 -0.595 0 N 27 2 4
+TOP 4 0.8 -0.595 0 N 23 3 5
+TOP 5 0.9 -0.595 0 N 1 0 6
+TOP 6 0.9 -0.191054 0 N 28 3 7
+TOP 7 0.8 -0.191054 0 N 2 0 8
+TOP 8 0.7 -0.191054 0 N 3 0 9
+TOP 9 0.6 -0.191054 0 N 24 2 10
+TOP 10 0.5 -0.191054 0 N 29 3 11
+TOP 11 0.4 -0.191054 0 N 4 0 12
+#
+# CMP 16
+CMP 0 1.105 -0.055 0 N F2 BSMD0603-010-33V ;0=1,1=0.0295
+TOP 0 1.105 -0.055 0 N 55 5 1
+TOP 1 1.1640551 -0.055 0 N 42 4 2
+#
+# CMP 17
+CMP 0 0.8 -0.055 180 N F1 BSMD0603-010-33V ;0=1,1=0.0295
+TOP 0 0.8 -0.055 180 N 56 6 1
+TOP 1 0.7409449 -0.055 180 N 43 4 2
+#

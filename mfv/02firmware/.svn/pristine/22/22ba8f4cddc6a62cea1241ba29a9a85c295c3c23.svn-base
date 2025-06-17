@@ -1,0 +1,65 @@
+#ifndef CDG_H
+#define  CDG_H
+#include "main.h"
+
+#define CDG_SEND_STR_LEN		7
+#define UNIT_MBAR   0
+#define UNIT_TORR   1
+#define UNIT_PA     2
+
+#define PREE_SIZE   32
+
+#define CMD_MAX_SIZE 32
+
+typedef struct
+{
+    unsigned char dat_len;
+	unsigned char page_NO;
+	unsigned char status;
+	unsigned char error;
+	unsigned char value_high_byte;
+	unsigned char value_low_byte;
+	unsigned char read_command;
+	unsigned char sensor_type;
+	unsigned char checksum;
+
+	uint32_t rec_count;
+}CDG_stru;
+typedef struct
+{
+    float factor_a;
+    float factor_b;
+    float fsr;
+    float fsr_exp;	
+	unsigned char unit;
+	float pressure;
+	float pressure_pa;
+	float pressure_torr;
+	float pressure_filter_torr;
+	float pressure_nofilter_torr;
+
+
+	float pressure_filter_pa;
+
+	float buf[PREE_SIZE];
+		unsigned char zero_flag;
+}CDG_PRESSURE_stru;
+typedef struct
+{
+    unsigned char len;
+    unsigned char command;
+    unsigned char addr;
+    unsigned char dat;
+    unsigned char checksum;
+	unsigned char update;
+
+
+}CDG_config_stru;
+CDG_config_stru *get_cdg_config(void);
+void cdg_config(void);
+CDG_PRESSURE_stru *get_cdg_status(void);
+void sensor_cdg_proc(void);
+void cdg_zero(void);
+
+#endif
+

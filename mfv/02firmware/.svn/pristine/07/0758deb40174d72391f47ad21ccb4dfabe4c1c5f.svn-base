@@ -1,0 +1,107 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+#include "main.h"
+
+
+#define STEADY_TIME  40000  //flow pressure steady thres  time
+#define STEADY_TIME2  30000 //pressure steady thres time
+#define SLOPE_THRE  0.0008  //flow pressure steady thres1  high flow  0.0007
+#define SLOPE_THRE3 0.0008//flow pressure steady thres2 low flow   0.0004
+#define SLOPE_THRE2  0.0004//pressure steady thres1
+//#define SLOPE_THRE4  0.00001//pressure steady thres2
+
+
+#define PT		0	
+#define THER		1	
+
+
+#define SENSOR_TYPE	PT
+
+
+
+#define FLOW_THRE   30
+
+#define SLOPE_PERIOD  5
+
+
+#define HIGH_FLOW 0
+#define LOW_FLOW  1
+#define CMD_START  LINE_PURGED_START
+#define CMD_STOP   NORMAL_OPERATION
+
+#define VACUUM_STEADY           0
+#define FLOW_STEADY             1
+#define PRESSURE_STEADY         2
+
+#define NORMAL_OPERATION  	    1
+#define LINE_PURGED_START     	2
+#define FLOW_SET_POINT_START  	3
+#define FLOW_SET_POINT_STEADY  	4
+#define PRESSURE_RISE_START  	5
+#define PRESSURE_STEADY_START  	6
+
+#define FLOW_SET_POINT_SHOCK  	7
+#define PRESSURE_STEADY_SHOCK  	8
+#define DEBUG_STEADY		  	9
+#define PRESSURE_STEADY_END  	10
+#define IDLE_STATE          	11
+#define IDLE_STATE_2			12
+#define FLOW_SET_POINT_STEADY2  13
+#define FLOW_SET_POINT_SHOCK2  	14
+#define NORMAL_OPERATION2       15
+
+#define PH_SCTRL				28
+
+#define PURGE_START				29
+#define PURGE_STOP				30
+#define DRAIN_START				31
+#define DRAIN_END				32
+#define VAVLE_SCTRL				33
+
+
+
+
+#define RE_CMD  		0
+#define RE_FLOAT		1
+#define RE_CHAR 		2
+#define RE_STRING 		3
+
+
+
+typedef struct
+{
+	unsigned char flow_mode;//high flow or low flow
+	unsigned char cmd;// start or stop
+	float pressure_error;
+	float flow_steady_perror;
+	float vac_val; //cacuum value
+	float flow_setpoint; //steady flow
+	float pressure_val; //steady pressure
+	unsigned char update;
+
+	float res_float;
+	unsigned char res_char;
+	unsigned char res_cmd;
+	unsigned char debug_cmd;
+	unsigned char *string;
+	unsigned char debug;
+	unsigned char debug_log;
+	float tC;
+
+}CONFIG_STRU;
+typedef struct
+{
+float cali_flow;
+unsigned int gas_type;
+unsigned int test_count;
+
+}TEST_STRU;
+
+
+CONFIG_STRU *get_config(void);
+unsigned char config_proc(void);
+void config_init(void);
+TEST_STRU *get_test(void);
+
+
+#endif

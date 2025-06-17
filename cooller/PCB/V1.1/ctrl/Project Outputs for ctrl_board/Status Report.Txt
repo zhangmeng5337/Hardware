@@ -1,14 +1,32 @@
-Output: NC Drill Files
-Type  : NC Drill
-From  : Project [ctrl_board.PrjPCB]
-   Generated File[ctrl_board-RoundHoles.TXT]
-   Generated File[ctrl_board-SlotHoles.TXT]
-   Generated File[ctrl_board.DRL]
-   Generated File[ctrl_board.LDP]
-   Generated File[ctrl_board.DRR]
+Output: ODB++ Files
+Type  : ODB
+From  : Variant [Voltage] of PCB Document [ctrl_boardV1.1.PcbDoc]
+   Generated File[profile]
+   Generated File[stephdr]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[tools]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[components]
+   Generated File[features]
+   Generated File[components]
+   Generated File[data]
+   Generated File[netlist]
+   Generated File[matrix]
+   Generated File[ctrl_boardV1.1.REP]
 
 
-Files Generated   : 5
+Files Generated   : 23
 Documents Printed : 0
 
-Finished Output Generation At 11:27:33 On 2024/4/22
+Finished Output Generation At 12:57:01 On 2025/3/20

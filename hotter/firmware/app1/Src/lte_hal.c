@@ -140,6 +140,7 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
     uint8_t TxBuffer[2048];
     //uint8_t len;
 
+	get_config()->timeout = 0;
 
     // tsLpuart1type *lte_recv;
     // lte_recv = get_lte_recv();

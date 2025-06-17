@@ -1,0 +1,1 @@
+firmwareupdate COM35 19200 encrypted -i
