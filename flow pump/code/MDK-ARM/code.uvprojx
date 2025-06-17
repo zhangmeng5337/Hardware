@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -593,11 +593,6 @@
               <FilePath>..\Core\Src\bldc\motor.c</FilePath>
             </File>
             <File>
-              <FileName>lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\lcd.c</FilePath>
-            </File>
-            <File>
               <FileName>pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\pid.c</FilePath>
@@ -626,6 +621,36 @@
               <FileName>lcd_app.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\lcd_app.c</FilePath>
+            </File>
+            <File>
+              <FileName>app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\app.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\sys.c</FilePath>
+            </File>
+            <File>
+              <FileName>filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>draw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\draw.c</FilePath>
+            </File>
+            <File>
+              <FileName>pump_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\pump_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd_g.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\lcd_g.c</FilePath>
             </File>
           </Files>
         </Group>

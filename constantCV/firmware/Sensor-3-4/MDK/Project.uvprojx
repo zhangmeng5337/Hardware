@@ -547,11 +547,6 @@
               <FilePath>..\bsp\crc.c</FilePath>
             </File>
             <File>
-              <FileName>cs1237.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\cs1237.c</FilePath>
-            </File>
-            <File>
               <FileName>cw32_eval_spi_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\cw32_eval_spi_flash.c</FilePath>
@@ -572,11 +567,6 @@
               <FilePath>..\bsp\kalman.c</FilePath>
             </File>
             <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\key.c</FilePath>
-            </File>
-            <File>
               <FileName>modbus.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\modbus.c</FilePath>
@@ -595,6 +585,16 @@
               <FileName>uart_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\uart_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>cs1237.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\cs1237.c</FilePath>
             </File>
           </Files>
         </Group>

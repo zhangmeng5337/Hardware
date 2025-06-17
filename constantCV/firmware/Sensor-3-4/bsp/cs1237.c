@@ -6,17 +6,40 @@
  * @LastEditors: TOTHTOT
  * @FilePath: \MDK-ARMe:\Work\MCU\stm32\read_cs1237_STM32F103C8T6(HAL+FreeRTOS)\HARDWARE\CS1237\cs1237.c
  */
+#include "math.h"
 #include "cs1237.h"
 #include "stdio.h"
 #include "main.h"
+#include "kalman.h"
+#include "reg.h"
+static long AD_Res_Last = 0; //上一轮的ADC数值保存
+
 #define setbit(x, y) x |= (1 << y)     // x的y位置1
 #define clrbit(x, y) x &= ~(1 << y)    // x的y位置0
 #define reversebit(x, y) x ^= (1 << y) // x的y位异??#define getbit(x, y) ((x) >> (y)&1)    // 获取x的第y??
+#define One_CLK  CS1237_SCL_H;delay_us(1);CS1237_SCL_L;delay_us(1);
+#define ADC_Bit  24 //ADC有效位数，带符号位 最高24位
+#define Lv_Bo 0.05  //滤波系数 小于1
 
 int32_t cs1237_read_data(struct cs1237_device *dev);
 uint8_t cs1237_read_config(struct cs1237_device *dev);
 int32_t calculate_adc_num(struct cs1237_device *dev);
 struct cs1237_device g_cs1237_device_st;
+void DATAIN_IRQ(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    /*Configure GPIO pin : PB9 */
+//    GPIO_InitStruct.Pins = CS1237_DOUT_Pin;
+//    GPIO_InitStruct.Mode = GPIO_MODE_INPUT_PULLUP;
+//    GPIO_Init(CS1237_DOUT_GPIO_Port, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pins = CS1237_DOUT_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT_PULLUP;
+    GPIO_InitStruct.IT = GPIO_IT_FALLING;
+    GPIO_Init(CS1237_DOUT_GPIO_Port, &GPIO_InitStruct);
+
+}
 void DATAIN(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -25,6 +48,12 @@ void DATAIN(void)
     GPIO_InitStruct.Pins = CS1237_DOUT_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT_PULLUP;
     GPIO_Init(CS1237_DOUT_GPIO_Port, &GPIO_InitStruct);
+
+//    GPIO_InitStruct.Pins = CS1237_DOUT_Pin;
+//    GPIO_InitStruct.Mode = GPIO_MODE_INPUT_PULLUP;
+//    GPIO_InitStruct.IT = GPIO_IT_FALLING;
+//    GPIO_Init(CS1237_DOUT_GPIO_Port, &GPIO_InitStruct);
+
 }
 
 void DATAOUT(void)
@@ -36,7 +65,14 @@ void DATAOUT(void)
     GPIO_Init(CS1237_DOUT_GPIO_Port, &GPIO_InitStruct);
 }
 //???500US 25MHZ
-
+void get_adc_update(uint32_t dat)
+{
+    g_cs1237_device_st.update = dat;
+}
+unsigned char get_adc_flag()
+{
+    return g_cs1237_device_st.update;
+}
 /**
  * @name: cs1237_nop
  * @msg: cs1237 模块内部使用延时 调用一??60ns
@@ -100,29 +136,35 @@ uint8_t cs1237_read_bit(uint8_t time_us)
  */
 uint8_t cs1237_check(struct cs1237_device *dev)
 {
-    uint32_t retry = 0;
+    static uint32_t retry = 0;
 
-    // dev->dev_state_em = dev_online;
-
-    CS1237_SCL_L; // 时钟拉低
-    DATAOUT();
-    CS1237_SDA_H; // OUT引脚拉高
-    DATAIN();
-    while (CS1237_SDA_READ == 1) // 等待CS237准备??    {
-        delay_us(1);
-    retry++;
-    if (retry > 30000000)
+    CS1237_SCL_L;
+    DATAIN_IRQ();
+    while (g_cs1237_device_st.update == 0)
     {
-        DATAOUT();
-        CS1237_SDA_H; // OUT引脚拉高
-        CS1237_SCL_H; // CLK引脚拉高
-//            ERROR_PRINT("time out\r\n");
-        return 1; // 超时，则直接退出程??        }
+        static uint32_t retry = 0;
+        retry++;
+        if (retry >= 30000000)
+        {
+            retry = 0;
+            return 1;
+
+        }
+
     }
+
+
+
 
     return 0;
 }
+void cs1237_pwr_pd(void)
+{
 
+    CS1237_SDA_H; // OUT引脚拉高
+    // delay_us(100000);
+
+}
 /**
  * @name: cs1237_send_byte
  * @msg: 发??字节
@@ -146,91 +188,91 @@ void cs1237_send_byte(uint8_t byte)
         delay_us(1);
     }
 }
-unsigned int getPga(unsigned char pga_dat)
-{
-    unsigned int result;
-    switch (pga_dat)
-    {
-        case 0:
-            result = 1;
-            break;
-        case 1:
-            result = 2;
-
-            break;
-        case 2:
-            result = 4;
-            break;
-        case 3:
-            result = 8;
-            break;
-        case 4:
-            result = 16;
-            break;
-        case 5:
-            result = 32;
-            break;
-        case 6:
-            result = 64;
-            break;
-        case 7:
-            result = 128;
-            break;
-        case 8:
-            result = 256;
-            break;
-
-        default:
-            result = 1;
-            break;
-    }
-
-    return result;
-}
-
-
-
-unsigned char getPgaToADC(unsigned char pga_dat)
-{
-    unsigned int result;
-    switch (pga_dat)
-    {
-        case 0://1
-            result = 1;
-            break;
-        case 1://2
-            result = 2;
-
-            break;
-        case 2://4
-            result = 1;
-            break;
-        case 3:
-            result = 1;
-            break;
-        case 4:
-            result = 1;
-            break;
-        case 5:
-            result = 1;
-            break;
-        case 6://64
-            result = 3;
-            break;
-        case 7://128
-            result = 4;
-            break;
-        case 8:
-            result = 1;
-            break;
-
-        default:
-            result = 1;
-            break;
-    }
-
-    return result;
-}
+//unsigned int getPga(unsigned char pga_dat)
+//{
+//    unsigned int result;
+//    switch (pga_dat)
+//    {
+//        case 0:
+//            result = 1;
+//            break;
+//        case 1:
+//            result = 2;
+//
+//            break;
+//        case 2:
+//            result = 4;
+//            break;
+//        case 3:
+//            result = 8;
+//            break;
+//        case 4:
+//            result = 16;
+//            break;
+//        case 5:
+//            result = 32;
+//            break;
+//        case 6:
+//            result = 64;
+//            break;
+//        case 7:
+//            result = 128;
+//            break;
+//        case 8:
+//            result = 256;
+//            break;
+//
+//        default:
+//            result = 1;
+//            break;
+//    }
+//
+//    return result;
+//}
+//
+//
+//
+//unsigned char getPgaToADC(unsigned char pga_dat)
+//{
+//    unsigned int result;
+//    switch (pga_dat)
+//    {
+//        case 0://1
+//            result = 1;
+//            break;
+//        case 1://2
+//            result = 2;
+//
+//            break;
+//        case 2://4
+//            result = 1;
+//            break;
+//        case 3:
+//            result = 1;
+//            break;
+//        case 4:
+//            result = 1;
+//            break;
+//        case 5:
+//            result = 1;
+//            break;
+//        case 6://64
+//            result = 3;
+//            break;
+//        case 7://128
+//            result = 4;
+//            break;
+//        case 8:
+//            result = 1;
+//            break;
+//
+//        default:
+//            result = 1;
+//            break;
+//    }
+//
+//    return result;
+//}
 
 
 /**
@@ -334,14 +376,14 @@ uint8_t cs1237_init(struct cs1237_device *dev, enum dev_frequency frequency,
     dev->get_adc_config = cs1237_read_config(dev);
     dev->adc_config = cs1237_config;
     SysTickDelay(1000);
+
     ret = cs1237_check(dev);
-    if (ret != 0)
+    if (ret == 1)
     {
-        dev->dev_state_em = DEV_OFFLINE;
-        // ERROR_PRINT("cs1237_check failed!\r\n");
         return 1;
     }
     dev->dev_state_em = DEV_ONLINE;
+    DATAIN();
 
     /* 配置 CS1237 工作模式 */
     // 发????9个脉??
@@ -411,6 +453,8 @@ uint8_t cs1237_init(struct cs1237_device *dev, enum dev_frequency frequency,
     delay_us(CONFIG_DELAY);
     dev->get_adc_config = cs1237_read_config(dev);
     //INFO_PRINT("adc config = %x\r\n", cs1237_config);
+    AD_Res_Last = 0;
+    DATAIN_IRQ();
     return 0;
 }
 
@@ -426,12 +470,12 @@ uint8_t cs1237_read_config(struct cs1237_device *dev)
     uint8_t ret = 0;
 
     ret = cs1237_check(dev);
-    if (ret != 0)
+    if (ret == 1)
     {
-        dev->dev_state_em = DEV_OFFLINE;
-        // ERROR_PRINT("cs1237_check failed!\r\n");
         return 1;
     }
+    DATAIN();
+
 
     for (i = 0; i < 29; i++) // 产生????9个时??
     {
@@ -515,6 +559,52 @@ uint8_t cs1237_read_config(struct cs1237_device *dev)
 
     return dat;
 }
+//读取ADC数据，返回的是一个有符号数据
+long Read_CS1237(void)
+{
+    unsigned char i;
+    long dat = 0; //读取到的数据
+    unsigned char count_i = 0; //溢出计时器
+//        DOUT = 1;//端口锁存1，51必备
+    CS1237_SCL_L;//时钟拉低
+    DATAOUT();
+    //CS1237_SDA_H; // OUT引脚拉高
+    DATAIN();
+
+    while (CS1237_SDA_READ ==
+            1) //芯片准备好数据输出  时钟已经为0，数据也需要等CS1237拉低为0才算都准备好
+    {
+        delay_us(50);
+        count_i++;
+        if (count_i > 300)
+        {
+            CS1237_SCL_H;
+            CS1237_SDA_H;
+            return 0;//超时，则直接退出程序
+        }
+    }
+//        DOUT = 1;//端口锁存1，51必备
+    dat = 0;
+    for (i = 0; i < 24; i++) //获取24位有效转换
+    {
+        CS1237_SCL_H;
+        delay_us(1);
+        dat <<= 1;
+        if (CS1237_SDA_READ == 1)
+            dat ++;
+        CS1237_SCL_L;
+        delay_us(1);
+    }
+    for (i = 0; i < 3; i++) //一共输入27个脉冲
+    {
+        One_CLK;
+    }
+    //CS1237_SDA_H;
+    //先根据宏定义里面的有效位，丢弃一些数据
+    i = 24 - ADC_Bit;//i表示将要丢弃的位数
+    dat >>= i;//丢弃多余的位数
+    return dat;
+}
 
 /**
  * @name: cs1237_read_data
@@ -529,94 +619,240 @@ int32_t cs1237_read_data(struct cs1237_device *dev)
     uint32_t dat = 0; // 读取到的数据
     uint8_t ret = 0;
 
-    ret = cs1237_check(dev);
-    if (ret != 0)
+
+//     ret = cs1237_check(dev);
+//    if (ret != 0)
+//    {
+//        dev->dev_state_em = DEV_OFFLINE;
+//        //ERROR_PRINT("cs1237_check failed!\r\n");
+//        return 0;
+//    }
+
+    //if( g_cs1237_device_st.update == 1)
     {
-        dev->dev_state_em = DEV_OFFLINE;
-        //ERROR_PRINT("cs1237_check failed!\r\n");
-        return 1;
+        // g_cs1237_device_st.update = 0;
+        dev->dev_state_em = DEV_ONLINE;
+        dat = 0;
+        // DATAOUT();
+        CS1237_SDA_L;
+        DATAIN();
+        for (i = 0; i < 24; i++) // 获取24位有效转??
+        {
+            CS1237_SCL_H; // CLK=1;
+            delay_us(1);
+            dat <<= 1;
+            if (CS1237_SDA_READ == 1)
+                dat++;
+            CS1237_SCL_L; // CLK=0;
+            delay_us(1);
+        }
+
+        for (i = 0; i < 3; i++) // 接着前面的时??再来3个时??
+        {
+            cs1237_send_bit(1, 1);
+        }
+
+
+        DATAOUT();
+        CS1237_SDA_H; // OUT = 1;
+        DATAIN_IRQ();
+        if (dat & 0x00800000) // 判断是负??最高位24位是符号??    {
+            dev->adc_data = -(((~dat) & 0x007FFFFF) + 1); // 补码变源??    }
+        else
+            dev->adc_data = dat; // 正数的补码就是源??
+        dev->adc_data = dev->adc_data;
+        return dev->adc_data;
     }
 
-    dev->dev_state_em = DEV_ONLINE;
-    dat = 0;
-    DATAOUT();
-    CS1237_SDA_L;
-    DATAIN();
-    for (i = 0; i < 24; i++) // 获取24位有效转??
-    {
-        CS1237_SCL_H; // CLK=1;
-        delay_us(1);
-        dat <<= 1;
-        if (CS1237_SDA_READ == 1)
-            dat++;
-        CS1237_SCL_L; // CLK=0;
-        delay_us(1);
-    }
 
-    for (i = 0; i < 3; i++) // 接着前面的时??再来3个时??
-    {
-        cs1237_send_bit(1, 1);
-    }
-
-    DATAOUT();
-    CS1237_SDA_H; // OUT = 1;
-
-    if (dat & 0x00800000) // 判断是负??最高位24位是符号??    {
-        dev->adc_data = -(((~dat) & 0x007FFFFF) + 1); // 补码变源??    }
-    else
-        dev->adc_data = dat; // 正数的补码就是源??
-    return dev->adc_data;
 }
 
-/**
- * @name: calculate_adc_num
- * @msg:
- * @param {cs1237_device} *dev
- * @return {*}
- * @author: TOTHTOT
- * @date:
- */
-//int32_t calculate_adc_num(struct cs1237_device *dev)
-//{
-//    int32_t max = 0, max_2 = 0, max_pos = 0, max_2_pos = 0;
-//    int32_t min = 0, min_pos = 0;
-//
-//    // 采集 RAW_DATA_MAX_NUM ??数据去掉最高和最??
-//    for (uint8_t i = 0; i < RAW_DATA_MAX_NUM; i++)
-//    {
-//        dev->adc_calculate_raw_data[i] = cs1237_read_data(dev);
-//        if (dev->adc_calculate_raw_data[i] > max)
-//        {
-//            max = dev->adc_calculate_raw_data[i];
-//            max_pos = i;
-//            // INFO_PRINT("max = %d, pos = %d\r\n", max, max_pos);
-//        }
-//        if (i == 0)
-//        {
-//            min = dev->adc_calculate_raw_data[0];
-//            min_pos = 0;
-//            // INFO_PRINT("min = %d, pos = %d\r\n", min, min_pos);
-//        }
-//        if (dev->adc_calculate_raw_data[i] < min)
-//        {
-//            min = dev->adc_calculate_raw_data[i];
-//            min_pos = i;
-//            // INFO_PRINT("min = %d, pos = %d\r\n", min, min_pos);
-//        }
-//    }
-//    dev->adc_calculate_deal_data = 0;
-//    for (uint8_t i = 0; i < RAW_DATA_MAX_NUM; i++)
-//    {
-//        if (i == max_pos || i == min_pos)
-//        {
-//            continue;
-//        }
-//
-//        dev->adc_calculate_deal_data += dev->adc_calculate_raw_data[i];
-//    }
-//    return (int)(dev->adc_calculate_deal_data = dev->adc_calculate_deal_data /
-//                 (RAW_DATA_MAX_NUM - 2));
-//}
+
+unsigned int getPga(unsigned char pga_dat)
+{
+    unsigned int result;
+    switch (pga_dat)
+    {
+        case 0:
+            result = 1;
+            break;
+        case 1:
+            result = 2;
+
+            break;
+        case 2:
+            result = 4;
+            break;
+        case 3:
+            result = 8;
+            break;
+        case 4:
+            result = 16;
+            break;
+        case 5:
+            result = 32;
+            break;
+        case 6:
+            result = 64;
+            break;
+        case 7:
+            result = 128;
+            break;
+        case 8:
+            result = 256;
+            break;
+
+        default:
+            result = 1;
+            break;
+    }
+
+    return result;
+}
+
+
+
+unsigned char getPgaToADC(unsigned char pga_dat)
+{
+    unsigned int result;
+    switch (pga_dat)
+    {
+        case 0://1
+            result = 1;
+            break;
+        case 1://2
+            result = 2;
+
+            break;
+        case 2://4
+            result = 1;
+            break;
+        case 3:
+            result = 1;
+            break;
+        case 4:
+            result = 1;
+            break;
+        case 5:
+            result = 1;
+            break;
+        case 6://64
+            result = 3;
+            break;
+        case 7://128
+            result = 4;
+            break;
+        case 8:
+            result = 1;
+            break;
+
+        default:
+            result = 1;
+            break;
+    }
+
+    return result;
+}
+
+extern uint32_t time_cal;
+float val;
+uint32_t ti;
+void read_data()
+{
+    unsigned char pga;
+
+
+	
+    g_cs1237_device_st.adc_ori_data = cs1237_read_data(&g_cs1237_device_st);
+	 pga = getPga(GetRegPrivate()->pga);
+	if(pga <= 2)
+		 g_cs1237_device_st.adc_ori_data  = 
+		  g_cs1237_device_st.adc_ori_data >>6;
+	else if(pga <= 64)
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>7;
+
+	else if(pga <= 128)
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>8;
+
+	else
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>6;
+
+
+}
+long Read_12Bit_AD(void)
+{
+    float out, adc_val, adc_Newval, e;
+    float tmp, tmp2;
+	unsigned int pga;
+    static unsigned char i = 0;
+    adc_val = AD_Res_Last;
+    //if (g_cs1237_device_st.update == 1)
+    {
+
+        time_cal = 0;
+        e =  g_cs1237_device_st.adc_ori_data;
+
+        if (e != 0)
+        {
+             pga = getPga(GetRegPrivate()->pga);
+			if(pga <= 1)
+				pga = 10;
+			else if(pga <= 64)
+				pga = 100;
+			else if(pga <= 128)
+				pga = 50; //100 80 
+			else
+				pga = 30;           
+			// g_cs1237_device_st.adc_ori_data = e;
+            time_cal = 0;
+            adc_Newval = GetMedianNum(e);
+
+            tmp = adc_Newval - adc_val;
+            tmp = fabs(tmp);
+
+            if (adc_val != 0 && tmp >= pga)
+                adc_val = adc_Newval;
+            else
+            {
+                if (adc_val == 0)
+                    adc_val = adc_Newval;
+            }
+
+
+            if (adc_val == adc_Newval)
+            {
+                i++;
+                if (i > SLID_SIZE)
+                {
+                    i = 0;
+                    adc_val = adc_Newval;
+                    if (adc_val != 0) // 读到正确数据
+                    {
+                        adc_val = adc_val * Lv_Bo + adc_Newval * (1 - Lv_Bo);
+                        tmp2 = adc_val;//把这次的计算结果放到全局变量里面保护
+                        AD_Res_Last = tmp2 ;
+                    }
+
+                }
+            }
+            else
+                i = 0;
+
+		return AD_Res_Last;
+        }
+        else
+            return 0;
+
+    }
+
+
+
+
+}
+
 
 /**
  * @name: calculate_adc_num
@@ -634,48 +870,6 @@ int32_t calculate_adc_num(struct cs1237_device *dev)
     // 采集 RAW_DATA_MAX_NUM ??数据去掉最高和最??
     //for ( i = 0; i < RAW_DATA_MAX_NUM; i++)
     {
-        dev->adc_calculate_raw_data[i] = cs1237_read_data(dev);
-        if (dev->adc_calculate_raw_data[i] > max)
-        {
-            max = dev->adc_calculate_raw_data[i];
-            max_pos = i;
-            // INFO_PRINT("max = %d, pos = %d\r\n", max, max_pos);
-        }
-        if (i == 0)
-        {
-            min = dev->adc_calculate_raw_data[0];
-            min_pos = 0;
-            // INFO_PRINT("min = %d, pos = %d\r\n", min, min_pos);
-        }
-        if (dev->adc_calculate_raw_data[i] < min)
-        {
-            min = dev->adc_calculate_raw_data[i];
-            min_pos = i;
-            // INFO_PRINT("min = %d, pos = %d\r\n", min, min_pos);
-        }
-        i++;
+        return  Read_12Bit_AD();
     }
-    if (i >= RAW_DATA_MAX_NUM)
-    {
-        dev->adc_calculate_deal_data = 0;
-        for ( i = 0; i < RAW_DATA_MAX_NUM; i++)
-        {
-            if (i == max_pos || i == min_pos)
-            {
-                continue;
-            }
-
-            dev->adc_calculate_deal_data += dev->adc_calculate_raw_data[i];
-        }
-		i = 0;
-        return (int)(dev->adc_calculate_deal_data = dev->adc_calculate_deal_data /
-                     (RAW_DATA_MAX_NUM - 2));
-
-    }
-    else
-        return (int) dev->adc_calculate_deal_data;
-//
-//    return (int)(dev->adc_calculate_deal_data = dev->adc_calculate_deal_data /
-//                 (RAW_DATA_MAX_NUM - 2));
 }
-

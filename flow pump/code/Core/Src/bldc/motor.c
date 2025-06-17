@@ -1,11 +1,16 @@
 #include "motor.h"
 #include "key.h"
+#include "filter.h"
+#include "sys.h"
 
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim4;
 
 extern TIM_HandleTypeDef htim6;
+
+extern ADC_HandleTypeDef hadc1;
+extern DMA_HandleTypeDef hdma_adc1;
 
 /*
 PWM频率计算：
@@ -18,7 +23,26 @@ PWM频率计算：
 
 /*定义一个电机的结构体*/
 MOTOR my_motor = {1, 0, 20, 0, 0}; //定义一个电机结构体
+void Current_Sense_Init(void)
+{
+    HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
+    HAL_ADC_Start_DMA(&hadc1, (uint32_t *)my_motor.current_adc, ADC_BUF_SIZE);
+    HAL_ADC_Start(&hadc1);
+    registerTick(ADC_CAL_TICK, 10);
+}
+void Current_Sense_Proc(void)
+{
+    float adc_vol;
+    if (GetTickResult(ADC_CAL_TICK) == 1)
+    {
+        adc_vol = my_motor.current_adc * ADC_REF / 4096;
+        adc_vol = adc_vol / 0.1;
+        my_motor.current = average_filter(adc_vol);
+        reset_registerTick(ADC_CAL_TICK);
+        registerTick(ADC_CAL_TICK, ADC_POLL_TIME);
 
+    }
+}
 void Motor_Init(void)
 {
 //    HAL_TIM_Encoder_Start(&ENCODER_TIM, TIM_CHANNEL_ALL);      //开启编码器定时器
@@ -26,16 +50,28 @@ void Motor_Init(void)
 //    HAL_TIM_Base_Start_IT(&GAP_TIM);                       //开启100ms定时器中断
 //    HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_2);            //开启PWM
 //    HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_1);            //开启PWM
-	HAL_TIM_Base_Start_IT(&htim6);					   //开启100ms定时器中断
+    HAL_TIM_Base_Start_IT(&htim6);                     //开启100ms定时器中断
+    __HAL_TIM_CLEAR_FLAG(&htim2, TIM_IT_UPDATE);
 
-	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);	   //开启编码器定时器
+    HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);    //开启编码器定时器
 
-    __HAL_TIM_SET_COUNTER(&htim2, 20000);                //编码器定时器初始值设定为10000
+    __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_UPDATE);
+    __HAL_TIM_SET_COUNTER(&htim2,
+                          20000);               //编码器定时器初始值设定为10000
+
+    __HAL_TIM_CLEAR_FLAG(&htim4, TIM_IT_UPDATE);
+    HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_1 | TIM_CHANNEL_2); //开启编码器定时器
+
+    __HAL_TIM_ENABLE_IT(&htim4, TIM_IT_UPDATE);
+
+
+
     my_motor.lastCount = 0;                                   //结构体内容初始化
     my_motor.totalCount = 0;
     my_motor.overflowNum = 0;
     my_motor.Speed = 0;
     my_motor.Direction = 0;
+    Current_Sense_Init();
 }
 
 
@@ -232,40 +268,33 @@ float Speed_Low_Filter(float new_Spe, float *speed_Record)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef
                                    *htim)//定时器回调函数，用于计算速度
 {
-//    if(htim->Instance==htim2.Instance)//编码器输入定时器溢出中断，用于防溢出
-//    {
-//        if(COUNTERNUM < 10000) my_motor.overflowNum++;       //如果是向上溢出
-//        else if(COUNTERNUM >= 10000) my_motor.overflowNum--; //如果是向下溢出
-//        __HAL_TIM_SetCounter(&htim2, 10000);             //重新设定初始值
-//    }
-//    else if(htim->Instance==htim6)//间隔定时器中断，是时候计算速度了
-//    {
-//        my_motor.Direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim2);//如果向上计数（正转），返回值为0，否则返回值为1
-//        my_motor.totalCount = COUNTERNUM + my_motor.overflowNum * RELOADVALUE;//一个周期内的总计数值等于目前计数值加上溢出的计数值
-//        my_motor.Speed = (float)(my_motor.totalCount - my_motor.lastCount) / (4 * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * 10;//算得每秒多少转
-//        //motor1.speed = (float)(motor1.totalCount - motor1.lastCount) / (4 * MOTOR_SPEED_RERATIO * PULSE_PRE_ROUND) * 10 * LINE_SPEED_C//算得车轮线速度每秒多少毫米
-//        my_motor.lastCount = my_motor.totalCount; //记录这一次的计数值
-//    }
+    if (htim->Instance == htim4.Instance) //编码器输入定时器溢出中断，用于防溢出
+    {
+        my_motor.Direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(
+                                 &htim2);//如果向上计数（正转
+    }
+
     if (htim->Instance == htim6.Instance) //编码器输入定时器溢出中断，用于防溢出
     {
+
         my_motor.Direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(
                                  &htim2);//如果向上计数（正转），返回值为0，否则返回值为1
         my_motor.totalCount = COUNTERNUM + my_motor.overflowNum *
                               RELOADVALUE;//一个周期内的总计数值等于目前计数值加上溢出的计数值
 
-        if (my_motor.lastCount - my_motor.totalCount >
-                19000) // 在计数值溢出时进行防溢出处理
+        if (my_motor.lastCount - my_motor.totalCount > 19000)
         {
             my_motor.overflowNum++;
             my_motor.totalCount = COUNTERNUM + my_motor.overflowNum *
                                   RELOADVALUE;//一个周期内的总计数值等于目前计数值加上溢出的计数值
+
         }
-        else if (my_motor.totalCount - my_motor.lastCount >
-                 19000) // 在计数值溢出时进行防溢出处理
+        else if (my_motor.totalCount - my_motor.lastCount > 19000)
         {
             my_motor.overflowNum--;
             my_motor.totalCount = COUNTERNUM + my_motor.overflowNum *
                                   RELOADVALUE;//一个周期内的总计数值等于目前计数值加上溢出的计数值
+
         }
 
         my_motor.Speed = (float)(my_motor.totalCount - my_motor.lastCount) /
@@ -273,54 +302,101 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef
                          10;//算得每秒多少转,除以4是因为4倍频
         my_motor.lastCount = my_motor.totalCount; //记录这一次的计数值
 
+///////////////////////////////////////////////button
+        get_key_state()->encode_Direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4);
+        get_key_state()->totalCount = __HAL_TIM_GetCounter(&htim4) +
+                                      get_key_state()->overnumber *
+                                      __HAL_TIM_GetAutoreload(&htim4);
+        if (get_key_state()->lastCount - get_key_state()->totalCount > 9900)
+        {
+            get_key_state()->overnumber++;
+            get_key_state()->totalCount = __HAL_TIM_GetCounter(&htim4) +
+                                          get_key_state()->overnumber *
+                                          __HAL_TIM_GetAutoreload(&htim4);
+        }
+        else if (get_key_state()->totalCount - get_key_state()->lastCount > 9900)
+        {
+            get_key_state()->overnumber--;
+            get_key_state()->totalCount = __HAL_TIM_GetCounter(&htim4) +
+                                          get_key_state()->overnumber *
+                                          __HAL_TIM_GetAutoreload(&htim4);
+
+        }
+        if (get_key_state()->encode_Direction != get_key_state()->encode_last_Direction)
+        {
+            if (get_key_state()->encode_cnt == 0)
+            {
+                get_key_state()->encode_nodivcnt = 0;
+
+
+            }
+            get_key_state()->encode_Direction = get_key_state()->encode_last_Direction;
+
+        }
+
+
+        if (get_key_state()->lastCount != get_key_state()->totalCount)
+        {
+
+            get_key_state()->detal_cnt = (get_key_state()->totalCount -
+                                          get_key_state()->lastCount) ;
+            get_key_state()->encode_nodivcnt = get_key_state()->encode_nodivcnt +
+                                               get_key_state()->detal_cnt;
+            get_key_state()->encode_cnt =   get_key_state()->encode_nodivcnt / 4;
+
+            if (get_key_state()->encode_cnt <= 0)
+                get_key_state()->encode_cnt = 0;
+            get_key_state()->lastCount = get_key_state()->totalCount;
+
+        }
+
+
+
+
     }
-
-
-  if(htim->Instance==htim4.Instance)//编码器输入定时器溢出中断，用于防溢出
-  {
-     get_key_state()->encode_Direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4);
-	 if(get_key_state()->encode_Direction == 1)
-	 	{
-			get_key_state()->encode_cnt = get_key_state()->encode_cnt + 1;
-			get_key_state()->encode_update = 1;
-	 }
-	 else
-	 {
-	     if(get_key_state()->encode_cnt > 0)
-		 get_key_state()->encode_cnt = get_key_state()->encode_cnt - 1;
-         get_key_state()->encode_update = 2;
-	 }
-	 //get_key_state()->encode_update = 1;
-	  __HAL_TIM_SetCounter(&htim4, 20000);			   //重新设定初始值
-  }
-
-
 }
 
 void motor_ctrl(void)
 {
     static uint32_t tick;
-    if (getMotr()->Status == RUN)
+    if (getMotr()->current >= MAX_CURR)
     {
-        HAL_TIM_Base_Start(&htim6); 
-        HAL_TIM_Base_Start_IT(&htim6);
-        if ((HAL_GetTick() - tick) >= PID_CAL_TIME)
-        {
 
-            getMotr()->Duty = PID_realize(getMotr()->Set_Speed);
-            Change_PWM_Duty(getMotr()->Duty);
+    }
+    else
+    {
+
+        if (getMotr()->Status == RUN)
+        {
+            HAL_TIM_Base_Start(&htim6);
+            HAL_TIM_Base_Start_IT(&htim6);
+            if ((HAL_GetTick() - tick) >= PID_CAL_TIME)
+            {
+
+                getMotr()->Duty = PID_realize(getMotr()->Set_Speed);
+                Change_PWM_Duty(getMotr()->Duty);//ctrl pulse width
+            }
+            else
+            {
+                PID_init();
+                Motor_Stop();
+            }
         }
         else
         {
-            PID_init();
+            HAL_TIM_Base_Stop(&htim6);
+            HAL_TIM_Base_Stop_IT(&htim6);
             Motor_Stop();
         }
     }
-	else
-	{
-	    HAL_TIM_Base_Stop(&htim6); 
-		HAL_TIM_Base_Stop_IT(&htim6);
-	}
+
+
+}
+void motor_ctrl_proc(void)
+{
+    Current_Sense_Proc();
+    //motor_ctrl();
+    Motor_Stop();
 
 }
 

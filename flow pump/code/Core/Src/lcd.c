@@ -1,242 +1,342 @@
+// file code :SYSTEM
 
-//***************************************************************************
-//连线表: CPU=89C52  SystemClock=12Mhz                                      *
-//CS=P1.0            SCLK=P1.2          SID=P1.1       Reset=RC in Board    *
-//***************************************************************************
+ /******************************************************************************* 
+【产品型号】：BJ12864M-1
+【点 阵 数】：128X64
+【外型尺寸】：93X70
+【视域尺寸】：72X40
+【定位尺寸】：88X64
+【点 间 距】：0.52X0.52
+【点 大 小】：0.48X0.48
+【控制器类型】：ST7920
+【简单介绍】：带字库，SPI串并口，3.3V或5V
 
+  2015-7-12 程序更新了!
+更新记录：
+1.增加了24*32大字体显示功能；
+2.增加了16*32大字体显示功能；
+3.优化了读LCD忙的代码；
+4.新增了是sprintf的任意位数数字直接显示；
+5.新增了CGRAM的写入，读出操作函数；
+6.优化了绘图GDRAM函数的操作，绘图速度提高；
+ 控制器 : ST7920  
+ 
+1、ST7920 内部固化了8192 个16×16 点阵的中文字型在CGROM里。
+2、固化有126 个16×8 点阵的西文字符在HCGROM里。
+3、提供4个16×16点阵自造字符的存储空间CGRAM。
+4、提供128×64的点阵绘图共1024个字节的存储空间GDRAM。
+5、提供1个16×15点阵图标的存储空间IRAM（ICON RAM）。
 
+DDRAM地址
+0x80  0x81  0x82  0x83  0x84  0x85  0x86  0x87    //第一行汉字位置
+0x90  0x91  0x92  0x93  0x94  0x95  0x96  0x97    //第二行汉字位置
+0x88  0x89  0x8a  0x8b  0x8c  0x8d  0x8e  0x8f     //第三行汉字位置
+0x98  0x99  0x9a  0x9b  0x9c  0x9d  0x9e  0x9f     //第四行汉字位置
+
+*******************************************************************************/  
 #include "lcd.h"
-#include "lcd_string.h"
-
-
-//sbit Key=P1^4;
+#include "sys.h"
 
 
 
-//串口发送一个字节
-void SendByte(unsigned char Dbyte)
+
+/*  以串行方式发送一字节数据 */ 
+static void SendByte(u8 sendData)
 {
-     unsigned char i,tmp;
-	 tmp = Dbyte;
-     for(i=0;i<8;i++)
-     {
-           LCD_CLK_L
-		   	if(tmp&0x80)
-				LCD_SID_H
-			else
-				LCD_SID_L
-           tmp=tmp<<1;      //左移一位
-           LCD_CLK_H
-           LCD_CLK_L
-     }
+  u8 i;
+  for (i = 0; i < 8; i++)
+  {
+    if (sendData&0x80)
+      LCD_SID_HIGH;
+    else
+      LCD_SID_LOW;
+    LCD_CLK_LOW;
+     delay_us(10); //延时10个us等待上一条指令执行完毕
+    LCD_CLK_HIGH;
+     sendData=sendData<<1;
+   }
 }
 
-//串口接收一个字节
-//仅在读取数据的时候用到
-//而读出的数据是一次只能读出4bit的
-unsigned char ReceiveByte(void)
+
+/* 串行接受一个字节的数据  */
+static u8 ReceiveByte(void)
 {
-     unsigned char i,temp1,temp2;
-     temp1=temp2=0;
-     for(i=0;i<8;i++)
-     {
-           temp1=temp1<<1;
-            LCD_CLK_L 
-		  	LCD_CLK_H
-            LCD_CLK_L
-           if(LCD_SID_R)
-		   	 temp1++;
-     }
-     for(i=0;i<8;i++)
-     {
-           temp2=temp2<<1;
-		   LCD_CLK_L 
-		   LCD_CLK_H
-		   LCD_CLK_L
-           if(LCD_SID_R) temp2++;
-     }
-     return ((0xf0&temp1)+(0x0f&temp2));
+   u8 i,d1,d2;
+   for (i = 0; i < 8; i++)
+   {
+    LCD_CLK_LOW;
+    delay_us(10);
+    LCD_CLK_HIGH;
+    
+    if (LCD_SID) d1++;
+    d1 = d1<<1;
+   }
+   
+   for (i = 0; i < 8; i++)
+   {
+    LCD_CLK_LOW;
+     delay_us(1);
+    LCD_CLK_HIGH;   
+    if (LCD_SID) d2++;
+    d2 = d2<<1;
+   }
+   return (d1&0xf0 + d2&0x0f);
 }
 
-void CheckBusy( void )
+//检测数据寄存器的最高位，判断忙标志
+ static u8 ReadBF(void)
 {
-     do   SendByte(0xfc);      //11111,RW(1),RS(0),0
-     while(0x80&ReceiveByte());      //BF(.7)=1 Busy
+  SendByte(READ_STATE);
+  u8 data = ReceiveByte();
+  if (data > 0x7f) return 1;
+  else  return 0;
 }
 
-void WriteCommand( unsigned char Cbyte )
+void LCD_WriteCMD(u8 data)
 {
-     LCD_CS_H
-     CheckBusy();
-     SendByte(0xf8);            //11111,RW(0),RS(0),0
-     SendByte(0xf0&Cbyte);      //高四位
-     SendByte(0xf0&Cbyte<<4);//低四位(先执行<<)
-     LCD_CS_L
+  LCD_CS_HIGH;
+  while (ReadBF());
+  SendByte(writecommand); //发送串口控制格式
+  SendByte(data&0xf0);  //高四位
+  SendByte((data&0x0f)<<4); //低四位
+  while (ReadBF());
+  LCD_CS_LOW;
+}
+      
+void LCD_WriteDATA(u8 data)
+{
+  LCD_CS_HIGH;
+  while (ReadBF());
+  SendByte(writedata); //发送串口控制格式
+  SendByte(data&0xf0);   //发送高4位
+  SendByte((data&0x0f)<<4); //发送低4位
+  while (ReadBF());
+  LCD_CS_LOW;
+ }
+
+/*******************************************************************************
+清屏函数，清除整屏的文字显示，非绘图
+出口参数: 无
+********************************************************************************/
+void LCD_Clear_DDRAM(void)
+{
+  LCD_WriteCMD(0x01);  //基本指令集
+  HAL_Delay(2);        //datasheet >=1.4ms 
 }
 
-void WriteData( unsigned char Dbyte )
-{
-     LCD_CS_H
-     CheckBusy();
-     SendByte(0xfa);            //11111,RW(0),RS(1),0
-     SendByte(0xf0&Dbyte);      //高四位
-     SendByte(0xf0&Dbyte<<4);//低四位(先执行<<)
-    LCD_CS_L
+//一种算法，测试OK xianhuitu test OK
+// 测试发现整个执行完大概需要2~3S
+ void LCD_Clear_GDRAM(void)  //test OK
+{    
+  u8 j, i;
+  LCD_WriteCMD(0x36);
+  for(j=0;j<32;j++) //上半屏32点行
+  {
+    LCD_WriteCMD(0x80+j);
+    LCD_WriteCMD(0x80);//X坐标
+    for(i=0;i<32;i++)//32表示如1行写完,自动写第3行
+    {
+      LCD_WriteDATA(0x00);  
+    }
+  }
+  LCD_WriteCMD(0x30);     //基本指令 
 }
 
-unsigned char ReadData( void )
-{
-     CheckBusy();
-     SendByte(0xfe);            //11111,RW(1),RS(1),0
-     return ReceiveByte();
+void LCD_Init(void)
+{  
+  //配置与LCD相连接的GPIO引脚
+  
+// PA6--MISO--(not used) // you omit this IO
+// PB13--SCK--CLK--E
+// PB14--NSS--CS--RS
+// PB15--MOSI--SDIO--R/W
+
+// PB1--BLK
+  
+
+  //  1>芯片上电；
+  //2>延时40ms以上；
+  //3>复位操作：RST出现一个上升沿（RST=1;RST=0;RST=1;）
+     HAL_Delay(50);  // this delay is necessary !
+     LCD_WriteCMD(0x30);//功能设置，一次送8位数据，基本指令集
+     LCD_WriteCMD(0x0C);//0000,1100  显示状态开关：整体显示ON，光标显示OFF，光标显示反白OFF
+     //LCD_WriteCMD(0x0f);//整体显示 ON C=1； 游标ON(方块闪烁) B=1； 游标位置(游标下划线)ON
+     //如果有按键输入数字，则开光标，左右移动：LCD_WriteCMD(0x10); LCD_WriteCMD(0x10);  
+     LCD_WriteCMD(0x01);//0000,0001 清除显示DDRAM
+     LCD_WriteCMD(0x02);//0000,0010 DDRAM地址归位
+//   LCD_WriteCMD(0x80);//1000,0000 设定DDRAM 7位地址000，0000到地址计数器AC
+//   LCD_WriteCMD(0x04);//点设定，显示字符/光标从左到右移位，DDRAM地址加1
+     LCD_WriteCMD(0x06); //点设定，画面不移动,游标右移，DDRAM位地址加1
+     HAL_Delay(10);  // this delay is necessary !
 }
 
-void Delay(unsigned int MS)
-{
-     unsigned char us,usn;
-     while(MS!=0)            //for 12M
-           { usn = 2;
-                 while(usn!=0)
-                       {
-                             us=0xf5;
-                             while (us!=0){us--;};
-                             usn--;
-                       }
-                 MS--;
-           }
+/******************************************************************************* 
+* 名称 :  LCD_SetPos
+* 功能 : 设定显示位置,只适用于标准指令集 
+* 输入 :  x (0~3)行
+          y (0~127)列
+* 输出 : 无 
+*******************************************************************************/  
+void LCD_SetPos(u8 row, u8 col)  
+{  
+    u8 pos;  
+    if( row == 0)  
+            row = 0x80;  
+    else if(row == 1)  
+            row = 0x90;  
+    else if(row == 2)  
+            row = 0x88;  
+    else if(row == 3)  
+            row = 0x98;     
+    pos = row + col;  
+    LCD_WriteCMD(pos);//在写入数据前先指定显示地址 
+    delay_us(8);
+}  
+
+
+/******************************************************************** 
+* 名称 : ShowCharPos 
+* 功能 : 在当前坐标位置显示单个字符,col=0,1,2,每个col占16dot
+* 输入 : u8 row, u8 col,u8 dat
+* 输出 : 无 
+***********************************************************************/ 
+void ShowCharPos(u8 row, u8 col,u8 dat)
+{    
+  LCD_SetPos(row, col);
+  LCD_WriteDATA(dat);
 }
 
-//维捷登测试架专用延时函数
-void DelayKey(unsigned int Second , unsigned int MS100)
-{                              //输入精确到0.1S,是用","
-     unsigned int i;
-     for(i=0;i<Second*100+MS100*10;i++)
-     {
-          // if(Key==0)
-          // {
-                 Delay(20);
-          //       while(Key==0) {Delay(20);}
-           //      break;
-          // }
-          // else Delay(10);
-     }
+/******************************************************************************* 
+* 名称 : ShowEnString(u8 *s)  
+* 功能 : 显示英文字符串  col=0,1,2,1 col=16dot
+* 输入 : *s 
+* 输出 : 无 
+*******************************************************************************/  
+void ShowString(u8 *s)  
+{    
+    u8  i = 0;  
+    while(s[i] != '\0')  
+    {   
+      LCD_WriteDATA(s[i++]);      
+    }  
+}  
+
+void ShowStringPos(u8 row, u8 col,u8 *s)     //col is full char wide 
+{  
+     u8  i = 0;  
+     LCD_SetPos(row, col);    
+    while(s[i] != '\0')  
+    {       
+      LCD_WriteDATA(s[i++]);        
+      if((2*col+i)%(16)==0)     //must 16, is OK
+      {          
+        LCD_SetPos(++row,0);     //display start at next row.
+      }
+   
+    }  
+}  
+
+
+/******************************************************************************* 
+* 名称 : ShowGB 
+* 功能 : 显示单个汉字
+* 输入 : i 
+* 输出 : 无 
+********************************************************************************/  
+void ShowGB( unsigned char *HZ)
+{
+   LCD_WriteDATA(HZ[0]);                //写入汉字的高八位数据
+   LCD_WriteDATA(HZ[1]);                //写入汉字的低八位数据 
 }
 
-void LcmInit( void )
+void ShowGBPos(u8 row, u8 col, u8 *HZ)
 {
-     WriteCommand(0x30);      //8BitMCU,基本指令集合
-     WriteCommand(0x03);      //AC归0,不改变DDRAM内容
-     WriteCommand(0x0C);      //显示ON,游标OFF,游标位反白OFF
-     WriteCommand(0x01);      //清屏,AC归0
-     WriteCommand(0x06);      //写入时,游标右移动
+   LCD_SetPos(row, col);
+   ShowGB(HZ);
 }
 
-//文本区清RAM函数
-void LcmClearTXT( void )
+
+/******************************************************************** 
+* 名称 : ShowGBStringPos 
+* 功能 : 显示多个汉字
+* 输入 : u8 row, u8 col :汉字串的起始地址
+* 输出 : 无 
+* 说明 : 自动换行:lcm默认换行顺序是乱的，0--2--1--3--0
+***********************************************************************/  
+void ShowGBStringPos(u8 row, u8 col, u8 *s)
 {
-     unsigned char i;
-     WriteCommand(0x30);      //8BitMCU,基本指令集合
-     WriteCommand(0x80);      //AC归起始位
-     for(i=0;i<64;i++)
-        WriteData(0x20);
+  u8 i = 0;
+  LCD_SetPos(row, col);
+  while (s[i] != '\0')
+  {
+    ShowGB(s+i);
+    i+=2;   
+    if((2*col+i)%(16)==0)                 //如果满一行
+    {            
+       LCD_SetPos(++row,0);            //重新设置显示的起始地址
+    }     
+  } 
 }
 
-//图形区和文本区显示在两个不同的RAM区
-//图形区清RAM函数
-void LcmClearBMP( void )
+
+
+/******************************************************************** 
+* 名称 : ShowBlankPos 
+* 功能 : 
+* 输入 : col = 0~7 1num =1半宽字符
+* 功能 : 黑板擦功能，擦除不显示的内容
+***********************************************************************/ 
+void ShowBlankPos(u8 row, u8 col, u8 num)
 {
-     unsigned char i,j;
-     WriteCommand(0x34);      //8Bit扩充指令集,即使是36H也要写两次
-     WriteCommand(0x36);      //绘图ON,基本指令集里面36H不能开绘图
-     for(i=0;i<32;i++)            //12864实际为256x32
-     {
-           WriteCommand(0x80|i);      //行位置
-           WriteCommand(0x80);      //列位置
-           for(j=0;j<32;j++)            //256/8=32 byte
-                WriteData(0);
-     }
+  u8 i ;
+  LCD_SetPos(row,col);   
+  for (i = 0; i < num;i++) 
+    LCD_WriteDATA(0x20); //写空格
 }
 
-void PutStr(unsigned char row,unsigned char col,unsigned char *puts)
-{
-     WriteCommand(0x30);      //8BitMCU,基本指令集合
-     WriteCommand(AC_TABLE[8*row+col]);      //起始位置
-     while(*puts != '\0')      //判断字符串是否显示完毕
-     {
-           if(col==8)            //判断换行
-           {            //若不判断,则自动从第一行到第三行
-                 col=0;
-                 row++;
-           }
-           if(row==4) row=0;      //一屏显示完,回到屏左上角
-           WriteCommand(AC_TABLE[8*row+col]);
-           WriteData(*puts);      //一个汉字要写两次
-           puts++;
-           WriteData(*puts);
-           puts++;
-           col++;
-     }
+
+/******************************************************************** 
+* 名称 : ShowNumPos
+* 功能 : 
+* 输入 : u8 row, u8 col 起始地址 col=0,1,2,每个col占16dot
+* 输出 : 无 
+* 说明 : 自动换行:lcm默认换行顺序是乱的，0--2--1--3--0
+***********************************************************************/ 
+void ShowNumPos(u8 row, u8 col, u16 num,u8 DecOrHex)//col is full char wide 
+{     
+    char buf[16]; 
+    if(DecOrHex==10)  // dex 
+    sprintf(buf, "%d", num);
+    else
+    sprintf(buf,"%X",num);  //"0x%X"
+    ShowStringPos(row,col,(u8 *)(buf));
 }
 
-void PutBMP(unsigned char *puts)
-{
-     unsigned int x=0;
-     unsigned char i,j;
-     WriteCommand(0x34);      //8Bit扩充指令集,即使是36H也要写两次
-     WriteCommand(0x36);      //绘图ON,基本指令集里面36H不能开绘图
-     for(i=0;i<32;i++)            //12864实际为256x32
-     {
-           WriteCommand(0x80|i);      //行位置
-           WriteCommand(0x80);      //列位置
-           for(j=0;j<32;j++)      //256/8=32 byte
-           {            //列位置每行自动增加
-                 WriteData(puts[x]);
-                 x++;
-           }
-     }
-}
 
-//维捷登测试用点阵显示
-void DisplayDots(unsigned char DotByte)
-{
-     unsigned char i,j;
-     WriteCommand(0x34);      //8Bit扩充指令集,即使是36H也要写两次
-     WriteCommand(0x36);      //绘图ON,基本指令集里面36H不能开绘图
-     for(i=0;i<32;i++)            //12864实际为256x32
-     {
-           WriteCommand(0x80|i);      //行位置
-           WriteCommand(0x80);      //列位置
-           for(j=0;j<32;j++)      //256/8=32 byte
-           {            //列位置每行自动增加
-                 WriteData(DotByte);                  
-           }
-           DotByte=~DotByte;
-     }
-}
-
-void lcd_proc_test( void )
-{
-     Delay(100);      //等待复位
-     LcmInit();
-     LcmClearTXT();
-     LcmClearBMP();
-     while(1)
-     {
-           LcmClearTXT();
-           PutBMP(bmp1);
-           DelayKey(1,5);
-           
-           DisplayDots(0x55);
-           DelayKey(1,5);
-           
-           LcmClearBMP();
-           PutStr(0,0,str1);
-           DelayKey(1,5);
-                       
-           LcmClearTXT();
-           DisplayDots(0xaa);
-           DelayKey(1,5);
-     }
+/******************************************************************** 
+* 名称 : Show2NumPos
+* 功能 : 显示2位数字,十位不足补零,0~99
+* 输入 : u8 row, u8 col 起始地址 col=0,1,2,每个col占16dot
+* 输出 : 无 
+* 说明 : 自动换行:lcm默认换行顺序是乱的，0--2--1--3--0
+***********************************************************************/ 
+void Show2NumPos(u8 row, u8 col, u8 num)//col is full char wide 
+{     
+    char buf[1]; 
+	char buf1[2]="0";
+    
+	if(num <10)
+	 {
+		sprintf(buf, "%d", num);  	 
+		strcat (buf1, buf);	//buf link to the buf1
+		ShowStringPos(row,col,(u8 *)buf1);	//06
+	 }
+	else
+	{
+        sprintf(buf1, "%d", num);  
+		ShowStringPos(row,col,(u8 *)buf1);	//06
+	}
+   
 }
 
 

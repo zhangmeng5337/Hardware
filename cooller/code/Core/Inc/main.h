@@ -41,7 +41,7 @@ extern "C" {
 /* USER CODE BEGIN ET */
 #define ON 0
 #define OFF 1
-#define DEBUG_EN  0
+//#define DEBUG_EN  1
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -78,12 +78,16 @@ void Error_Handler(void);
 #define dec_Pin GPIO_PIN_4
 #define dec_GPIO_Port GPIOC
 #define dec_EXTI_IRQn EXTI4_IRQn
+#define PWR_EN_Pin GPIO_PIN_12
+#define PWR_EN_GPIO_Port GPIOB
 #define SPEAK_Pin GPIO_PIN_15
 #define SPEAK_GPIO_Port GPIOB
 #define air_FREQ_Pin GPIO_PIN_6
 #define air_FREQ_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+#define PWR_EN_Pin GPIO_PIN_12
+#define PWR_EN_GPIO_Port GPIOB
 
 /* USER CODE END Private defines */
 

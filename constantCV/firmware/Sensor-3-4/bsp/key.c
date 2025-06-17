@@ -3,6 +3,7 @@
 #include "display.h"
 #include "sensor.h"
 #include "uart_hal.h"
+#include "cs1237.h"
 
 #define A 0x77
 #define B 0x7C
@@ -1292,6 +1293,15 @@ void GPIOB_IRQHandlerCallback(void)
         key_irq_usr.delay_tick = GetTick();
 
     }
+    if (CW_GPIOB->ISR_f.PIN6)
+    {
+        GPIOB_INTFLAG_CLR(bv6);
+	    get_adc_update(1);
+	    read_data();
+
+
+    }
+
 
 
 #endif

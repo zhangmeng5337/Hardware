@@ -211,7 +211,7 @@ void uart_recv_proc(unsigned char recv_dat, unsigned char irq_flag)
     if (uart_usr.index >= RX_BUF_SIZE)
     {
         uart_usr.index = 0;
-        memset(uart_usr.rx_buf, 0, RX_BUF_SIZE);
+        //memset(uart_usr.rx_buf, 0, RX_BUF_SIZE);
 
     }
 

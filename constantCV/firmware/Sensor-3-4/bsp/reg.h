@@ -24,6 +24,9 @@
 #define REG_UNIT			0x0130
 #define REG_ADC_RATE 		0x0131  
 #define REG_CLR_ZEROE 		0x0023  
+#define REG_HF16_4 			0x0045  
+#define REG_LF16_4 			0x0046 
+
 
 
 #define DEV_ADDR_MAX   247
@@ -64,7 +67,9 @@ typedef enum
  eREG_DECM_BIT ,		
  eREG_UNIT,			
  eREG_ADC_RATE,
- eREG_CLR_ZEROE
+ eREG_CLR_ZEROE,
+ eREG_HF16_4,
+ eREG_LF16_4
 } reg_index;			  // cs1237 閫氶亾閫夋嫨
 
 typedef struct

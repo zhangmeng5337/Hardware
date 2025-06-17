@@ -132,10 +132,17 @@ DRESULT disk_ioctl (
   * @param  None
   * @retval Time in DWORD
   */
+<<<<<<< HEAD
 //__weak DWORD get_fattime (void)
 //{
 //  return 0;
 //}
+=======
+__weak DWORD get_fattime (void)
+{
+  return 0;
+}
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

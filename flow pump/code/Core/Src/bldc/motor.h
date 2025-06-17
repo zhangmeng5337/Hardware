@@ -6,6 +6,8 @@
 #include "hall.h"
 
 #define PID_CAL_TIME    10
+#define ADC_BUF_SIZE    1
+#define ADC_REF			2.5
 
 #define WL_ON HAL_GPIO_WritePin(MCU_WL_GPIO_Port, MCU_WL_Pin,GPIO_PIN_RESET);
 #define WL_OFF HAL_GPIO_WritePin(MCU_WL_GPIO_Port, MCU_WL_Pin,GPIO_PIN_SET);
@@ -38,12 +40,14 @@ typedef struct
 	float Speed;//速度
 	float Speed_Filter;//速度	
 	uint8_t Duty;//占空比
-	uint8_t Status;//电机状态
+	uint8_t Status;//电机状态 1：RUN
 	uint8_t Hall_status;//HALL状态值
+    uint32_t current_adc;
+    float current;
 
-	uint32_t totalCount;
-	uint32_t lastCount;
-	uint32_t overflowNum;
+	int32_t totalCount;
+	int32_t lastCount;
+	int32_t overflowNum;
 } MOTOR;
 
 
@@ -53,6 +57,7 @@ void Change_PWM_Duty(uint16_t duty);
 void Motor_Stop(void);
 void Motor_Start(void);
 MOTOR *getMotr(void);
+void motor_ctrl_proc(void);
 
 #endif
 

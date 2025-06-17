@@ -49,7 +49,11 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>code\</OutputDirectory>
+<<<<<<< HEAD
           <OutputName>code</OutputName>
+=======
+          <OutputName>code_V1.1</OutputName>
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>

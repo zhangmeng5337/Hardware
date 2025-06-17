@@ -83,7 +83,14 @@ void Error_Handler(void);
 #define air_FREQ_Pin GPIO_PIN_6
 #define air_FREQ_GPIO_Port GPIOB
 
+<<<<<<< HEAD
 /* USER CODE BEGIN Private defines */
+=======
+
+/* USER CODE BEGIN Private defines */
+#define PWR_EN_Pin GPIO_PIN_12
+#define PWR_EN_GPIO_Port GPIOB
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
 
 /* USER CODE END Private defines */
 

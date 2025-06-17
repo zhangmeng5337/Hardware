@@ -58,6 +58,7 @@ void floatTouint32_pos(uint32_t dat,unsigned char *pb,unsigned char pos)
 		
 	pb[0] = b>>24;
 	pb[1] = b>>16;	
+	
 	}
 }
 

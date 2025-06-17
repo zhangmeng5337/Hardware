@@ -479,14 +479,14 @@ void display_val_proc(unsigned char dis_mode)
         dis_usr.dot_pos = 4;
         dis_usr.signedFlag = 0;
         // dis_usr.dis_val = 9998;
-		if ((GetTick() - tick_tmp) >= 100)
+	//	if ((GetTick() - tick_tmp) >= 10)
 		  {
 			  dis_usr.dis_val =	getadc()->data_unit_app;
 			  tick_tmp = GetTick();
 		
 		  }
-			else
-				 dis_usr.dis_val =	dis_usr.dis_val;
+//			else
+//				 dis_usr.dis_val =	dis_usr.dis_val;
 
 		 
         tmp = dis_usr.dis_val;

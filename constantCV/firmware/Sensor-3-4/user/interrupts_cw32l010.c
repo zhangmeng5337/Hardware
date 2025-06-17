@@ -339,11 +339,12 @@ void BTIM3_IRQHandler(void)
 
     /* USER CODE END */
 }
+
 void SysTick_IRQnHandler(void)
 {
 	uint32_t tick;
 	tick++;
-	 
+
 	  #ifdef DISPLAY_DEBUG 
 	if(getTaskIndex() == 0)
 		 display();

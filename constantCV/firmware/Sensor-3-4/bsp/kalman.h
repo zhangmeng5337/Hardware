@@ -9,6 +9,10 @@
 #define __KALMAN_H__
 
 #include "main.h"
+//#define	ADC_CAPTURE			11		//采集数量
+#define	FILTER_CAPTURE			20		//采集数量
+#define WINDOW_SIZE        15
+#define SLID_SIZE        3
 
 typedef struct
 {
@@ -18,7 +22,12 @@ typedef struct
     float Kg;     // 鍗″皵鏇煎鐩?    
     float Q;      // 杩囩▼鍣０鍗忔柟宸?
     float R;      // 瑙傛祴鍣０鍗忔柟宸?
+    float medi;
     } kalman;
+
+
+
+
 
 
 
@@ -26,5 +35,9 @@ typedef struct
 void kalman_init(kalman *kfp);
 float kalman_filter(kalman *kfp, float input);
 kalman *kalman_kfp_get(void);
+float SilderFilter(float _value);
+float  GetMedianNum(float bArray);
+float *swap_buff(float dat);
+float medium_aver(float dat);
 
 #endif /* __KALMAN_H__ */

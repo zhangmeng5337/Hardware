@@ -187,7 +187,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		app();
+<<<<<<< HEAD
 		
+=======
+		HAL_GPIO_WritePin(PWR_EN_GPIO_Port, PWR_EN_Pin, GPIO_PIN_SET);
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
   }
   /* USER CODE END 3 */
 }
@@ -736,6 +740,16 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPEAK_Pin|air_FREQ_Pin, GPIO_PIN_RESET);
+<<<<<<< HEAD
+=======
+  
+  GPIO_InitStruct.Pin = PWR_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(PWR_EN_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(PWR_EN_GPIO_Port, PWR_EN_Pin, GPIO_PIN_SET);
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
 
   /*Configure GPIO pin : air_pwr_Pin */
   GPIO_InitStruct.Pin = air_pwr_Pin;

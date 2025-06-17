@@ -830,7 +830,7 @@ void lcd_proc()
         else
         {
             //  static uint32_t timeout2;
-            #if DEBUG_EN==0
+            #if DEBUG_EN
             if ((HAL_GetTick() - timeout2) >= 25000 && getConfig()->export_flag == 0)
             {
                 SetPage(Main_PAGE);//Ö÷Ò³ÃæIdºÅÊÇ4

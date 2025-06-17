@@ -1,7 +1,15 @@
 #include "key.h"
 key_stru key_usr;
 
+void key_init()
+{
+	key_usr.detal_cnt = 0;
+	key_usr.encode_cnt = 0;
+	key_usr.encode_Direction = 0;
+	key_usr.encode_nodivcnt = 0;
+	key_usr.overnumber = 0;
 
+}
 key_stru *get_key_state()
 {
     return &key_usr;
@@ -36,7 +44,6 @@ void key_scan(void)
         {
             //key_usr.key3 = 1;
             key_usr.ok_press_update = 1;
-
         }
         if (key_usr.encode_update == 1)
         {

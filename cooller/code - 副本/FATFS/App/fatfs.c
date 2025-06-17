@@ -45,6 +45,7 @@ void MX_FATFS_Init(void)
 DWORD get_fattime(void)
 {
   /* USER CODE BEGIN get_fattime */
+<<<<<<< HEAD
 
   	DWORD time = 0;
 	RTC_TimeTypeDef Time;
@@ -63,6 +64,9 @@ DWORD get_fattime(void)
 	time |= Time.Seconds >> 1;
 
   return time;
+=======
+  return 0;
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
   /* USER CODE END get_fattime */
 }
 

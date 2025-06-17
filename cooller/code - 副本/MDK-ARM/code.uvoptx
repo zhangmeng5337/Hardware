@@ -120,7 +120,10 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+<<<<<<< HEAD
           <Name>d</Name>
+=======
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,18 +160,46 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
+<<<<<<< HEAD
           <LineNumber>35</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>134252534</Address>
+=======
+          <LineNumber>190</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134289160</Address>
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
+<<<<<<< HEAD
           <Filename>..\Core\Src\pt100.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\code\../Core/Src/pt100.c\35</Expression>
+=======
+          <Filename>../Core/Src/main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code_V1\../Core/Src/main.c\190</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>161</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134289080</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>../Core/Src/main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\code_V1\../Core/Src/main.c\161</Expression>
+>>>>>>> 1ae077bb4952fdb979a8f9608a90611b9cba3ce6
         </Bp>
       </Breakpoint>
       <WatchWindow1>
