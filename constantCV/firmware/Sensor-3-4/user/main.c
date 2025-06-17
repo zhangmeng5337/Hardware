@@ -120,14 +120,14 @@ volatile TestStatus TransferStatus = FAILED;
 int32_t main(void)
 {
     uint32_t tmp32;
-	RCC_Configuration();
+    RCC_Configuration();
     SYSCTRL_SystemCoreClockUpdate(MAIN_FREQ);//36mhz  8000000
-    
-    
+
+
 
     InitTick(MAIN_FREQ);
     SysTickDelay(2000);
-  #ifdef DISPLAY_DEBUG
+#ifdef DISPLAY_DEBUG
 //    GPIO_SWD2GPIO();
 //
 //    REGBITS_CLR(CW_GPIOA->ANALOG, bv7 | bv8);       //设置PA07/PA08为数字功能
@@ -162,7 +162,25 @@ int32_t main(void)
 void RCC_Configuration(void)
 {
 //打开FLASH时钟
-    SYSCTRL_HSI_Enable(SYSCTRL_HSIOSC_DIV1);  //配置系统时钟为HSI 48M
+    switch (MAIN_FREQ / 1000000)
+    {
+        case 48:
+            SYSCTRL_HSI_Enable(SYSCTRL_HSIOSC_DIV1);
+            break; //配置系统时钟为HSI 48M
+        case 24:
+            SYSCTRL_HSI_Enable(SYSCTRL_HSIOSC_DIV2);
+            break; //配置系统时钟为HSI 48M
+        case 12:
+            SYSCTRL_HSI_Enable(SYSCTRL_HSIOSC_DIV4);
+            break; //配置系统时钟为HSI 48M
+        case 6:
+            SYSCTRL_HSI_Enable(SYSCTRL_HSIOSC_DIV8);
+            break; //配置系统时钟为HSI 48M
+        default:
+            SYSCTRL_HSI_Enable(SYSCTRL_HSIOSC_DIV1);
+            break;
+    }
+   // SYSCTRL_HSI_Enable(SYSCTRL_HSIOSC_DIV1);  //配置系统时钟为HSI 48M
     __SYSCTRL_FLASH_CLK_ENABLE();
     __SYSCTRL_GPIOB_CLK_ENABLE();
     __SYSCTRL_GPIOA_CLK_ENABLE();
@@ -239,8 +257,8 @@ void GPIO_Configuration(void)
 
 
 
-	PB07_AFx_GPIO();
-	GPIO_RST2GPIO();
+    PB07_AFx_GPIO();
+    GPIO_RST2GPIO();
 
 
     //display
@@ -286,10 +304,10 @@ void GPIO_Configuration(void)
 
     PB00_AFx_GPIO();
     PB01_AFx_GPIO();
-	
+
 #ifdef HW_VER2
-	
-    GPIO_InitStruct.Pins =  DIAG2_GPIO_PIN | DIAG3_GPIO_PIN|DIAG4_GPIO_PIN;
+
+    GPIO_InitStruct.Pins =  DIAG2_GPIO_PIN | DIAG3_GPIO_PIN | DIAG4_GPIO_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.IT = GPIO_IT_NONE;
     GPIO_Init(CW_GPIOB, &GPIO_InitStruct);
@@ -297,10 +315,10 @@ void GPIO_Configuration(void)
     GPIO_WritePin(DIAG3_GPIO_PORT, DIAG3_GPIO_PIN, GPIO_Pin_SET);
     GPIO_WritePin(DIAG4_GPIO_PORT, DIAG4_GPIO_PIN, GPIO_Pin_SET);
 
-	
+
 #endif
 #ifdef HW_VER1
-		
+
 
     GPIO_InitStruct.Pins =  DIAG2_GPIO_PIN | DIAG3_GPIO_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -322,7 +340,7 @@ void GPIO_Configuration(void)
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.IT = GPIO_IT_NONE;
     GPIO_Init(CS1237_SCL_GPIO_Port, &GPIO_InitStruct);
-	GPIO_WritePin(DIAG3_GPIO_PORT, CS1237_DOUT_Pin, GPIO_Pin_RESET);
+    GPIO_WritePin(DIAG3_GPIO_PORT, CS1237_DOUT_Pin, GPIO_Pin_RESET);
 
 
 

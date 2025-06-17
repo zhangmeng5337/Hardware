@@ -116,9 +116,9 @@ float medium_aver(float dat)
                     uiChannel1Buffer[j + 1] = change;
                 }
             }
-        for (i = 1; i < FILTER_CAPTURE - 1; i++)
+        for (i = 5; i < FILTER_CAPTURE - 5; i++)
             sum = sum + uiChannel1Buffer[i];
-        return sum / (FILTER_CAPTURE - 2);
+        return sum / (FILTER_CAPTURE - 10);
     }
     else
     {

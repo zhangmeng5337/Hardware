@@ -19,7 +19,7 @@ static long AD_Res_Last = 0; //上一轮的ADC数值保存
 #define reversebit(x, y) x ^= (1 << y) // x的y位异??#define getbit(x, y) ((x) >> (y)&1)    // 获取x的第y??
 #define One_CLK  CS1237_SCL_H;delay_us(1);CS1237_SCL_L;delay_us(1);
 #define ADC_Bit  24 //ADC有效位数，带符号位 最高24位
-#define Lv_Bo 0.02  //滤波系数 小于1
+#define Lv_Bo 0.05  //滤波系数 小于1
 
 int32_t cs1237_read_data(struct cs1237_device *dev);
 uint8_t cs1237_read_config(struct cs1237_device *dev);
@@ -660,7 +660,7 @@ int32_t cs1237_read_data(struct cs1237_device *dev)
             dev->adc_data = -(((~dat) & 0x007FFFFF) + 1); // 补码变源??    }
         else
             dev->adc_data = dat; // 正数的补码就是源??
-        //dev->adc_data = dev->adc_data&0x7ffff0;
+        dev->adc_data = dev->adc_data;
         return dev->adc_data;
     }
 
@@ -759,8 +759,27 @@ float val;
 uint32_t ti;
 void read_data()
 {
-    ti++;
+    unsigned char pga;
+
+
+	
     g_cs1237_device_st.adc_ori_data = cs1237_read_data(&g_cs1237_device_st);
+	 pga = getPga(GetRegPrivate()->pga);
+	if(pga <= 2)
+		 g_cs1237_device_st.adc_ori_data  = 
+		  g_cs1237_device_st.adc_ori_data >>6;
+	else if(pga <= 64)
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>7;
+
+	else if(pga <= 128)
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>8;
+
+	else
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>6;
+
 
 }
 long Read_12Bit_AD(void)
@@ -778,28 +797,28 @@ long Read_12Bit_AD(void)
 
         if (e != 0)
         {
-            // g_cs1237_device_st.adc_ori_data = e;
+             pga = getPga(GetRegPrivate()->pga);
+			if(pga <= 1)
+				pga = 10;
+			else if(pga <= 64)
+				pga = 100;
+			else if(pga <= 128)
+				pga = 50; //100 80 
+			else
+				pga = 30;           
+			// g_cs1237_device_st.adc_ori_data = e;
             time_cal = 0;
             adc_Newval = GetMedianNum(e);
 
             tmp = adc_Newval - adc_val;
             tmp = fabs(tmp);
-            pga = getPga(GetRegPrivate()->pga);
-			if(pga <= 1)
-				pga = 30;
-			else if(pga <= 64)
-				pga = 100;
-			else if(pga <= 128)
-				pga = 300; 
-			else
-				pga = 30;
+
             if (adc_val != 0 && tmp >= pga)
                 adc_val = adc_Newval;
             else
             {
                 if (adc_val == 0)
                     adc_val = adc_Newval;
-
             }
 
 
@@ -817,17 +836,12 @@ long Read_12Bit_AD(void)
                         AD_Res_Last = tmp2 ;
                     }
 
-
-                    
-
                 }
             }
             else
                 i = 0;
 
 		return AD_Res_Last;
-
-
         }
         else
             return 0;

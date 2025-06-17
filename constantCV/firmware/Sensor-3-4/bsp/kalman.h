@@ -11,8 +11,8 @@
 #include "main.h"
 //#define	ADC_CAPTURE			11		//采集数量
 #define	FILTER_CAPTURE			20		//采集数量
-#define WINDOW_SIZE        5
-#define SLID_SIZE        5
+#define WINDOW_SIZE        15
+#define SLID_SIZE        3
 
 typedef struct
 {
