@@ -11,6 +11,7 @@
 #include "display.h"
 extern struct cs1237_device g_cs1237_device_st;
 kalman g_kfp_st = {0};
+kalman g_kfp_st2 = {0};
 
 adc_stru adc_usr;
 
@@ -32,6 +33,12 @@ void adc_init(void)
 
 
     kalman_init(&g_kfp_st);
+    g_kfp_st2.Last_P = 10;
+    g_kfp_st2.Now_P = 0;
+    g_kfp_st2.out = 0;
+    g_kfp_st2.Kg = 0;
+    g_kfp_st2.Q = 0.001;
+    g_kfp_st2.R = 0.15;
 
 
 }
@@ -296,10 +303,12 @@ void dat_cal_proc(float dat)
 
 extern uint32_t time_cal;
 
-float tmp6;
+
 void adc_proc(void)
 {
 
+float tmp4, tmp5;
+float tmp6;
 
 
     if (g_cs1237_device_st.reconfig)
@@ -350,10 +359,12 @@ void adc_proc(void)
                 // tmp2 = kalman_filter(&g_kfp_st, tmp2);
 
 
-                tmp2 = medium_aver(tmp2);
+               // tmp2 = medium_aver(tmp2);
+				tmp2 = kalman_filter(&g_kfp_st, tmp2);
                 adc_usr.adc_ori_filter = tmp2;
-                tmp3 = adc_usr.adc_ori;
-                // printf("    %.6f   %.6f\r\n",tmp2,tmp3);
+                tmp3 = g_cs1237_device_st.adc_data;
+				tmp4 = adc_usr.adc_ori;
+                
 
                 if (adc_usr.adc_ori_filter != 0)
                 {
@@ -375,24 +386,33 @@ void adc_proc(void)
 
                 tmp2_conv2 = adc_usr.adc_vol - GetRegPrivate()->cal1ADC;
                 tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
-                float tmp4, tmp5;
+
                 tmp2_conv2 = tmp2_conv2 / tmp1_conv1;
                 adc_usr.dat_cal = tmp2_conv2;
-                tmp4 = adc_usr.dat_cal;//1
-                tmp1 = adc_usr.dat_cal * adc_usr.dat_cal;
-                tmp2 = tmp1;//2
-                tmp1 = tmp1 * adc_usr.dat_cal;//3
-                tmp3 = adc_usr.dat_cal;//1
-                tmp3  = GetRegPrivate()->coe1 * tmp1;
-                tmp5 = tmp2 * GetRegPrivate()->coe2;
-                tmp3 = tmp3 + tmp5;
-                tmp5 = tmp4 * GetRegPrivate()->coe3;
-                tmp3 = tmp3 + tmp5 ;
-                tmp4 = tmp3 + GetRegPrivate()->coe4;
-                tmp4 =    tmp4 - GetRegPrivate()->offset;
-                adc_usr.dat_unit_factory = tmp4;
+				
+                tmp1 = adc_usr.dat_cal;//1
+                tmp2 = adc_usr.dat_cal * adc_usr.dat_cal;//2
+                tmp3 = tmp2 * adc_usr.dat_cal;//3
+                tmp4 = tmp3 * adc_usr.dat_cal;//4                
+
+                tmp5  = GetRegPrivate()->coe1 * tmp4;
+                tmp6 = tmp3 * GetRegPrivate()->coe2;
+                tmp6 = tmp6 + tmp5;//X^4+X^3
+                
+                tmp5 = tmp2 * GetRegPrivate()->coe3;
+                tmp6 = tmp6 + tmp5 ;//X^4+X^3+X^2
+				
+                tmp5 = tmp1* GetRegPrivate()->coe4;
+				tmp6 = tmp6 + tmp5 ;	//X^4+X^3+X^2+X			
+				tmp6 = tmp6 + GetRegPrivate()->coe5 ;
+							
+                tmp6 =    tmp6 - GetRegPrivate()->offset;
+              
+				tmp6 = kalman_filter(&g_kfp_st2, tmp6);
+				adc_usr.dat_unit_factory = tmp6;
                 dat_cal_proc(adc_usr.dat_unit_factory);
                 g_cs1237_device_st.update = 0;
+				 printf(" 				%.5f  	 		%.4f\r\n",adc_usr.adc_ori_filter,adc_usr.data_unit_app);
 
             }
 

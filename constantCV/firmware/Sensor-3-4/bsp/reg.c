@@ -474,6 +474,9 @@ void RegWrite(void)
         j = j + 4;
         floatTouint32_m(params_private.coe4, buf + j);
         j = j + 4;
+        floatTouint32_m(params_private.coe5, buf + j);
+        j = j + 4;
+
         floatTouint32_m(params_private.cal1ADC, buf + j);
         j = j + 4;
         floatTouint32_m(params_private.cal2ADC, buf + j);
@@ -622,6 +625,9 @@ unsigned char RegRead(void)
         j = j + 4;
         params_private.coe4 = uint32TofloatR(buf + j);
         j = j + 4;
+        params_private.coe5 = uint32TofloatR(buf + j);
+        j = j + 4;
+
         params_private.cal1ADC = uint32TofloatR(buf + j);
         j = j + 4;
         params_private.cal2ADC = uint32TofloatR(buf + j);

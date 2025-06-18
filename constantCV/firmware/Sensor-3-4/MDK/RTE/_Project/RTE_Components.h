@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'code' 
- * Target:  'app2' 
+ * Project: 'Project' 
+ * Target:  'Project' 
  */
 
 #ifndef RTE_COMPONENTS_H
@@ -14,8 +14,7 @@
 /*
  * Define the Device Header File: 
  */
-#define CMSIS_device_header "stm32f4xx.h"
+#define CMSIS_device_header "cw32l010.h"
 
-#define JANSSON
 
 #endif /* RTE_COMPONENTS_H */

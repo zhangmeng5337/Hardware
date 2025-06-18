@@ -117,6 +117,7 @@ typedef struct
  float coe2;
  float coe3;
  float coe4;
+  float coe5;
  float cal1ADC;
  float cal2ADC;
  float cal3ADC;

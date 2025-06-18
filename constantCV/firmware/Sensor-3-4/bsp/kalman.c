@@ -116,7 +116,7 @@ float medium_aver(float dat)
                     uiChannel1Buffer[j + 1] = change;
                 }
             }
-        for (i = 5; i < FILTER_CAPTURE - 5; i++)
+        for (i = 5; i < FILTER_CAPTURE - 5; i++)// 5
             sum = sum + uiChannel1Buffer[i];
         return sum / (FILTER_CAPTURE - 10);
     }
@@ -181,12 +181,12 @@ float SilderFilter(float _value)
  */
 void kalman_init(kalman *kfp)
 {
-    kfp->Last_P = 10;
+    kfp->Last_P = 30; // 10
     kfp->Now_P = 0;
     kfp->out = 0;
     kfp->Kg = 0;
-    kfp->Q = 0.001;
-    kfp->R = 0.01;
+    kfp->Q = 0.01;
+    kfp->R = 0.5;
 }
 
 /**

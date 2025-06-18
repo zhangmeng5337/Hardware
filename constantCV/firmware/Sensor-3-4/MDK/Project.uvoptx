@@ -415,6 +415,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>AD_Res_Last,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>52</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>g_kfp_st</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>

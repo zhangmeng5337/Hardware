@@ -472,7 +472,15 @@ void private_reg_Readpack(unsigned int regnum)
 		modbus_usr.tx_buf[i++] = tmp >> 16;
 		modbus_usr.tx_buf[i++] = tmp >> 8;
 		modbus_usr.tx_buf[i++] = tmp ;
-		
+	case COE5_REG:
+		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+		modbus_usr.tx_buf[i++] = modbus_usr.Func;
+		modbus_usr.tx_buf[i++] = 4;
+		tmp = *(uint32_t *)(&GetRegPrivate()->coe5);
+		modbus_usr.tx_buf[i++] = tmp >> 24;
+		modbus_usr.tx_buf[i++] = tmp >> 16;
+		modbus_usr.tx_buf[i++] = tmp >> 8;
+		modbus_usr.tx_buf[i++] = tmp ;	
 		break;
    case CAL1_REG:
 	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
@@ -797,6 +805,11 @@ void modbus_PrivaReg_write_pack(void)
             {
                 GetRegPrivate()->coe4 = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
+            else if ((modbus_usr.RegStart + i) == COE5_REG)
+            {
+                GetRegPrivate()->coe5 = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+            }
+
             else if ((modbus_usr.RegStart + i) == SAVE_REG)
             {
                 GetRegPrivate()->save = modbus_usr.payload[k];
