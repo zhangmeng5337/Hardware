@@ -366,7 +366,9 @@ void private_reg_Readpack(unsigned int regnum)
             modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
             modbus_usr.tx_buf[i++] = modbus_usr.Func;
             modbus_usr.tx_buf[i++] = 4;
-            tmp = *(uint32_t *)(& getadc()->adc_ori);
+			long tmp2;
+			tmp2 = getadc()->adc_data_SF;
+            tmp = *(uint32_t *)(& tmp2);
             modbus_usr.tx_buf[i++] = tmp >> 24;
             modbus_usr.tx_buf[i++] = tmp >> 16;
             modbus_usr.tx_buf[i++] = tmp >> 8;

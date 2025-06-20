@@ -639,12 +639,12 @@ int32_t cs1237_read_data(struct cs1237_device *dev)
         for (i = 0; i < 24; i++) // 获取24位有效转??
         {
             CS1237_SCL_H; // CLK=1;
-            delay_us(1);
+            delay_us(3);
             dat <<= 1;
             if (CS1237_SDA_READ == 1)
                 dat++;
             CS1237_SCL_L; // CLK=0;
-            delay_us(1);
+            delay_us(3);
         }
 
         for (i = 0; i < 3; i++) // 接着前面的时??再来3个时??
@@ -794,8 +794,8 @@ long Read_12Bit_AD(void)
 
         time_cal = 0;
         e =  g_cs1237_device_st.adc_ori_data;
-		AD_Res_Last = e/20.0 ;
-
+		AD_Res_Last = e ;
+      
         if (e != 0)
         {
 //             pga = getPga(GetRegPrivate()->pga);
@@ -814,32 +814,38 @@ long Read_12Bit_AD(void)
             tmp = adc_Newval - adc_val;
             tmp = fabs(tmp);
 
-            if (adc_val != 0 && tmp >= pga)
-                adc_val = adc_Newval;
-            else
-            {
-                if (adc_val == 0)
-                    adc_val = adc_Newval;
-            }
+//            if (adc_val != 0 && tmp >= pga)
+//                adc_val = adc_Newval;
+//            else
+//            {
+//                if (adc_val == 0)
+//                    adc_val = adc_Newval;
+//            }
+			adc_Newval = e;
+
+			adc_val = adc_val * Lv_Bo + adc_Newval * (1 - Lv_Bo);
+			tmp2 = adc_val;//把这次的计算结果放到全局变量里面保护
+			AD_Res_Last = tmp2 ;
+			adc_val = adc_Newval;
 
 
-            if (adc_val == adc_Newval)
-            {
-                i++;
-                if (i > SLID_SIZE)
-                {
-                    i = 0;
-                    adc_val = adc_Newval;
-                    if (adc_val != 0) // 读到正确数据
-                    {
-                        adc_val = adc_val * Lv_Bo + adc_Newval * (1 - Lv_Bo);
-                        tmp2 = adc_val;//把这次的计算结果放到全局变量里面保护
-                        AD_Res_Last = tmp2 ;
-                    }
-                }
-            }
-            else
-                i = 0;
+//            if (adc_val == adc_Newval)
+//            {
+//                i++;
+//                if (i > SLID_SIZE)
+//                {
+//                    i = 0;
+//                    adc_val = adc_Newval;
+//                    if (adc_val != 0) // 读到正确数据
+//                    {
+//                        adc_val = adc_val * Lv_Bo + adc_Newval * (1 - Lv_Bo);
+//                        tmp2 = adc_val;//把这次的计算结果放到全局变量里面保护
+//                        AD_Res_Last = tmp2 ;
+//                    }
+//                }
+//            }
+//            else
+//                i = 0;
 
 		return AD_Res_Last;
         }
@@ -870,6 +876,6 @@ int32_t calculate_adc_num(struct cs1237_device *dev)
     // 采集 RAW_DATA_MAX_NUM ??数据去掉最高和最??
     //for ( i = 0; i < RAW_DATA_MAX_NUM; i++)
     {
-        return  Read_12Bit_AD();
+        return  g_cs1237_device_st.adc_ori_data;
     }
 }

@@ -11,7 +11,7 @@
 #ifndef _SENSOR_H
 #define _SENSOR_H
 #include "main.h"
-#define PWM_COUNTER  1000
+#define PWM_COUNTER  60000
 typedef struct
 {
 	long adc_ori;
@@ -21,6 +21,11 @@ typedef struct
 	float dat_cal;
 	float dat_unit_factory;
 	float data_unit_app;
+	float adc_data;
+	float adc_dat_times;
+	float adc_dat_LF;
+	float adc_data_KF;
+	float adc_data_SF;
 }adc_stru;
 void adc_proc(void);
 void adc_init(void);

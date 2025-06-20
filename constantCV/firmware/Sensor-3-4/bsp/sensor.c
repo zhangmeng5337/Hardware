@@ -307,8 +307,8 @@ extern uint32_t time_cal;
 void adc_proc(void)
 {
 
-float tmp4, tmp5;
-float tmp6;
+    float tmp4, tmp5;
+    float tmp6;
 
 
     if (g_cs1237_device_st.reconfig)
@@ -319,35 +319,42 @@ float tmp6;
         {
             g_cs1237_device_st.adc_calculate_deal_data = calculate_adc_num(
                         &g_cs1237_device_st);
+			
             if (g_cs1237_device_st.adc_calculate_deal_data != 0)
             {
-                adc_usr.adc_ori = g_cs1237_device_st.adc_calculate_deal_data;
-
+                adc_usr.adc_ori = g_cs1237_device_st.adc_data;
+                adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;
+			  
                 float tmp1_conv1, tmp2_conv2;
                 float tmp1, tmp2, tmp3;
-                tmp2 = adc_usr.adc_ori;
+                tmp2 = adc_usr.adc_dat_LF;
 
                 if (GetRegPrivate()->pga > 6) // 128
                 {
-                    tmp2 = tmp2 ;//400 300 50 10
+                   
                     adc_usr.adc_ori = tmp2;
+				g_cs1237_device_st.adc_calculate_deal_data=update_median_filter(g_cs1237_device_st.adc_calculate_deal_data);
+                //adc_usr.adc_ori = g_cs1237_device_st.adc_data;
+                adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;		
+				tmp2 = adc_usr.adc_dat_LF;
+				tmp2 = tmp2/40.0 ;//400 300 50 10 25 30
 
                 }
                 else if (GetRegPrivate()->pga > 1) //64
                 {
-                    tmp2 = tmp2 ;//300 200 50 25
+                    tmp2 = tmp2/20.0 ;//300 200 50 25
                     adc_usr.adc_ori = tmp2;
 
                 }
                 else if (GetRegPrivate()->pga >= 1) //1
                 {
-                    tmp2 = tmp2 ;//200 100 20
+                    tmp2 = tmp2/20.0 ;//200 100 20
                     adc_usr.adc_ori = tmp2;
 
                 }
                 else//1
                 {
-                    tmp2 = tmp2 ;//150 100 20
+                    tmp2 = tmp2/10.0 ;//150 100 20
                     adc_usr.adc_ori = tmp2;
 
                 }
@@ -359,60 +366,68 @@ float tmp6;
                 // tmp2 = kalman_filter(&g_kfp_st, tmp2);
 
 
-               // tmp2 = medium_aver(tmp2);
-				tmp2 = kalman_filter(&g_kfp_st, tmp2);
-                adc_usr.adc_ori_filter = tmp2;
-                tmp3 = g_cs1237_device_st.adc_data;
-				tmp4 = adc_usr.adc_ori;
-                
-
-                if (adc_usr.adc_ori_filter != 0)
+                // tmp2 = medium_aver(tmp2);
+                adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
+				tmp2 = adc_usr.adc_data_KF;
+                tmp2 = SilderFilter(tmp2);
+				
+                if (tmp2 != 0)
                 {
-                    if (GetRegPrivate()->zero_cmd == 1)
+                     adc_usr.adc_data_SF = tmp2 ;
+                    adc_usr.adc_ori_filter = tmp2;
+                    tmp3 = g_cs1237_device_st.adc_data;
+                    tmp4 = adc_usr.adc_ori;
+
+
+                    if (adc_usr.adc_ori_filter != 0)
                     {
-                        adc_usr.adc_ori_filter = adc_usr.adc_ori_filter -
-                                                 GetRegPrivate()->zero_value;
+                        if (GetRegPrivate()->zero_cmd == 1)
+                        {
+                            adc_usr.adc_ori_filter = adc_usr.adc_ori_filter -
+                                                     GetRegPrivate()->zero_value;
+                        }
+
+                        else
+                            adc_usr.adc_ori_filter = adc_usr.adc_ori_filter;
+
+                        adc_usr.adc_vol =  adc_usr.adc_ori_filter;
+
                     }
 
-                    else
-                        adc_usr.adc_ori_filter = adc_usr.adc_ori_filter;
+                    tmp1_conv1 = GetRegPrivate()->cal5ADC - GetRegPrivate()->cal1ADC;
+                    tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
 
-                    adc_usr.adc_vol =  adc_usr.adc_ori_filter;
+                    tmp2_conv2 = adc_usr.adc_vol - GetRegPrivate()->cal1ADC;
+                    tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
+
+                    tmp2_conv2 = tmp2_conv2 / tmp1_conv1;
+                    adc_usr.dat_cal = tmp2_conv2;
+
+                    tmp1 = adc_usr.dat_cal;//1
+                    tmp2 = adc_usr.dat_cal * adc_usr.dat_cal;//2
+                    tmp3 = tmp2 * adc_usr.dat_cal;//3
+                    tmp4 = tmp3 * adc_usr.dat_cal;//4
+
+                    tmp5  = GetRegPrivate()->coe1 * tmp4;
+                    tmp6 = tmp3 * GetRegPrivate()->coe2;
+                    tmp6 = tmp6 + tmp5;//X^4+X^3
+
+                    tmp5 = tmp2 * GetRegPrivate()->coe3;
+                    tmp6 = tmp6 + tmp5 ;//X^4+X^3+X^2
+
+                    tmp5 = tmp1 * GetRegPrivate()->coe4;
+                    tmp6 = tmp6 + tmp5 ;    //X^4+X^3+X^2+X
+                    tmp6 = tmp6 + GetRegPrivate()->coe5 ;
+
+                    tmp6 =    tmp6 - GetRegPrivate()->offset;
+
+                    tmp6 = kalman_filter(&g_kfp_st2, tmp6);
+                    adc_usr.dat_unit_factory = tmp6;
+                    dat_cal_proc(adc_usr.dat_unit_factory);
+                    g_cs1237_device_st.update = 0;
+//                    printf("            %.5f            %.4f\r\n",adc_usr.adc_ori,adc_usr.adc_data_KF);
 
                 }
-
-                tmp1_conv1 = GetRegPrivate()->cal5ADC - GetRegPrivate()->cal1ADC;
-                tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
-
-                tmp2_conv2 = adc_usr.adc_vol - GetRegPrivate()->cal1ADC;
-                tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
-
-                tmp2_conv2 = tmp2_conv2 / tmp1_conv1;
-                adc_usr.dat_cal = tmp2_conv2;
-				
-                tmp1 = adc_usr.dat_cal;//1
-                tmp2 = adc_usr.dat_cal * adc_usr.dat_cal;//2
-                tmp3 = tmp2 * adc_usr.dat_cal;//3
-                tmp4 = tmp3 * adc_usr.dat_cal;//4                
-
-                tmp5  = GetRegPrivate()->coe1 * tmp4;
-                tmp6 = tmp3 * GetRegPrivate()->coe2;
-                tmp6 = tmp6 + tmp5;//X^4+X^3
-                
-                tmp5 = tmp2 * GetRegPrivate()->coe3;
-                tmp6 = tmp6 + tmp5 ;//X^4+X^3+X^2
-				
-                tmp5 = tmp1* GetRegPrivate()->coe4;
-				tmp6 = tmp6 + tmp5 ;	//X^4+X^3+X^2+X			
-				tmp6 = tmp6 + GetRegPrivate()->coe5 ;
-							
-                tmp6 =    tmp6 - GetRegPrivate()->offset;
-              
-				tmp6 = kalman_filter(&g_kfp_st2, tmp6);
-				adc_usr.dat_unit_factory = tmp6;
-                dat_cal_proc(adc_usr.dat_unit_factory);
-                g_cs1237_device_st.update = 0;
-				 printf(" 				%.5f  	 		%.4f\r\n",adc_usr.adc_ori_filter,adc_usr.data_unit_app);
 
             }
 
@@ -504,14 +519,15 @@ void cal_press(void)
     dat_cal_proc(adc_usr.dat_unit_factory);
 
 }
+uint32_t pulse;
 void pwm_ctrl(float ratio)
 {
-    unsigned int pulse;
+
     float tmp;
     if (GetRegPrivate()->cur_set >= 0.79 &&
             GetRegPrivate()->cur_set <= 0.85)
     {
-        tmp = 0.5 / 5;  //pcb resistor changed 1K
+        tmp = GetRegPrivate()->cur_set / 5;  //pcb resistor changed 1K
 
     }
     else

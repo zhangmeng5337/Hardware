@@ -1,6 +1,7 @@
 #include "kalman.h"
 #include "stdio.h"
 #include "string.h"
+#include "string.h"
 
 static  float   uiChannel1Buffer[FILTER_CAPTURE];
 
@@ -79,7 +80,6 @@ int32_t update_median_filter(int32_t new_data)
 
 
 
-
 float  GetMedianNum(float bArray)
 {
 
@@ -132,35 +132,40 @@ float medium_aver(float dat)
 
 float SilderFilter(float _value)
 {
-    char i;
+    static char i=0;
     static unsigned char count = 0;
     float ulChannel1AdcValue;
     ulChannel1AdcValue = 0;
     if (count < FILTER_CAPTURE)
         count ++;
-    for (char i = 0; i < (FILTER_CAPTURE - 1); i++)
-    {
 
-        uiChannel1Buffer[i] = uiChannel1Buffer[i + 1];
-    }
 
-    uiChannel1Buffer[FILTER_CAPTURE - 1] = _value;
+    uiChannel1Buffer[i++] = _value;
 
-    for (char i = 0; i < FILTER_CAPTURE; i++)
-    {
-        ulChannel1AdcValue = uiChannel1Buffer[i] + ulChannel1AdcValue;
-    }
+
+
 
     if (count >= FILTER_CAPTURE)
     {
+        for (char i = 0; i < (FILTER_CAPTURE); i++)
+        {
+
+            ulChannel1AdcValue = ulChannel1AdcValue +
+                                 uiChannel1Buffer[i] ;
+        }
+        count = 0;
+        i = 0;
         ulChannel1AdcValue = ulChannel1AdcValue / FILTER_CAPTURE;
+        
 
     }
     else
     {
+        //return 0;
         ulChannel1AdcValue = ulChannel1AdcValue / count;
     }
-    return ulChannel1AdcValue;
+	return ulChannel1AdcValue;
+
 
 }
 
@@ -185,8 +190,8 @@ void kalman_init(kalman *kfp)
     kfp->Now_P = 0;
     kfp->out = 0;
     kfp->Kg = 0;
-    kfp->Q = 0.01;
-    kfp->R = 0.5;
+    kfp->Q = 0.000005;//0.000001   0.000005
+    kfp->R = 0.05;
 }
 
 /**
@@ -206,7 +211,7 @@ float kalman_filter(kalman *kfp, float input)
     kfp->Kg = kfp->Now_P / (kfp->Now_P + kfp->R);
     // 更新最优值方程：k时刻状态变量的最优�?= 状态变量的预测�?+ 卡尔曼增�?* （测量�?- 状态变量的预测值）
     kfp->out = kfp->out + kfp->Kg * (input -
-                                     kfp->out); // 因为这一次的预测值就是上一次的输出�?    // 更新协方差方�? 本次的系统协方差付给 kfp->LastP 威下一次运算准备�?
+                                     kfp->out); //1?    // 更新协方差方�? 本次的系统协方差付给 kfp->LastP 威下一次运算准备�?
     kfp->Last_P = (1 - kfp->Kg) * kfp->Now_P;
     return kfp->out;
 }

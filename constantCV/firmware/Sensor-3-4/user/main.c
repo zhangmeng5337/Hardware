@@ -479,9 +479,9 @@ void PWM_OutputConfig(void)
     GTIM_InitStruct.ARRBuffState = GTIM_ARR_BUFF_EN;
     GTIM_InitStruct.Direction = GTIM_DIRECTION_UP;
     GTIM_InitStruct.EventOption = GTIM_EVENT_NORMAL;
-    GTIM_InitStruct.Prescaler = 48 - 1;
+    GTIM_InitStruct.Prescaler = 4 - 1;
     GTIM_InitStruct.PulseMode = GTIM_PULSE_MODE_DIS;
-    GTIM_InitStruct.ReloadValue = 1000 - 1;
+    GTIM_InitStruct.ReloadValue = 60000 - 1;
     GTIM_InitStruct.UpdateOption = GTIM_UPDATE_DIS;
     GTIM_TimeBaseInit(CW_GTIM1, &GTIM_InitStruct);
 
@@ -491,7 +491,7 @@ void PWM_OutputConfig(void)
     GTIM_OCModeCfgStruct.PreloadState = DISABLE;
     GTIM_OC3ModeCfg(CW_GTIM1, &GTIM_OCModeCfgStruct);
 
-    GTIM_SetCompare3(CW_GTIM1, 250 - 1);
+    GTIM_SetCompare3(CW_GTIM1, 60000 - 1);
     GTIM_OC3Cmd(CW_GTIM1, ENABLE);
     GTIM_Cmd(CW_GTIM1, ENABLE);
 
