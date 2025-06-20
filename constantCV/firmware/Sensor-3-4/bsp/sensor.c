@@ -341,22 +341,17 @@ void adc_proc(void)
 
                 if (GetRegPrivate()->pga > 6) // 128
                 {
-
-
                     tmp2 = tmp2 / 2.0 ; //400 300 50 10 25 30
-
                 }
                 else if (GetRegPrivate()->pga > 1) //64
                 {
                     tmp2 = tmp2 / 20.0 ; //300 200 50 25
                     adc_usr.adc_ori = tmp2;
-
                 }
                 else if (GetRegPrivate()->pga >= 1) //1
                 {
                     tmp2 = tmp2 / 20.0 ; //200 100 20
                     adc_usr.adc_ori = tmp2;
-
                 }
                 else//1
                 {
