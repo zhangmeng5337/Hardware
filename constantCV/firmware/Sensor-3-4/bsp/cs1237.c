@@ -772,9 +772,9 @@ void read_data()
 //		g_cs1237_device_st.adc_ori_data  = 
 //		 g_cs1237_device_st.adc_ori_data >>6;
 //
-//	else if(pga <= 128)
-//		g_cs1237_device_st.adc_ori_data  = 
-//		 g_cs1237_device_st.adc_ori_data >>7;//8
+ if(pga <= 128)
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>7;//8
 //
 //	else
 //		g_cs1237_device_st.adc_ori_data  = 

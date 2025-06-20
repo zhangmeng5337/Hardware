@@ -12,6 +12,7 @@
 extern struct cs1237_device g_cs1237_device_st;
 kalman g_kfp_st = {0};
 kalman g_kfp_st2 = {0};
+kalman g_kfp_st3 = {0};
 
 adc_stru adc_usr;
 
@@ -40,6 +41,12 @@ void adc_init(void)
     g_kfp_st2.Q = 0.001;
     g_kfp_st2.R = 0.15;
 
+    g_kfp_st3.Last_P = 20;
+    g_kfp_st3.Now_P = 0;
+    g_kfp_st3.out = 0;
+    g_kfp_st3.Kg = 0;
+    g_kfp_st3.Q = 0.0001;
+    g_kfp_st3.R = 0.15;
 
 }
 
@@ -211,10 +218,13 @@ unsigned char factory_unit_convert(float dat)
 void dat_cal_proc(float dat)
 {
     uint32_t tmp;
-    float tmp_f;
+    float tmp_f,tmp6;
     float cal_val1, cal_val2;
     if (factory_unit_convert(dat) == 1)//factory unit to pa or T
     {
+		tmp6 = adc_usr.data_unit_app;
+		tmp6 = kalman_filter(&g_kfp_st3, tmp6);
+		adc_usr.data_unit_app = tmp6;
 
         cal_val1 = adc_usr.data_unit_app;
         cal_val2 = *((float *) &
@@ -319,42 +329,38 @@ void adc_proc(void)
         {
             g_cs1237_device_st.adc_calculate_deal_data = calculate_adc_num(
                         &g_cs1237_device_st);
-			
+
             if (g_cs1237_device_st.adc_calculate_deal_data != 0)
             {
                 adc_usr.adc_ori = g_cs1237_device_st.adc_data;
                 adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;
-			  
+
                 float tmp1_conv1, tmp2_conv2;
                 float tmp1, tmp2, tmp3;
                 tmp2 = adc_usr.adc_dat_LF;
 
                 if (GetRegPrivate()->pga > 6) // 128
                 {
-                   
-                    adc_usr.adc_ori = tmp2;
-				g_cs1237_device_st.adc_calculate_deal_data=update_median_filter(g_cs1237_device_st.adc_calculate_deal_data);
-                //adc_usr.adc_ori = g_cs1237_device_st.adc_data;
-                adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;		
-				tmp2 = adc_usr.adc_dat_LF;
-				tmp2 = tmp2/40.0 ;//400 300 50 10 25 30
+
+
+                    tmp2 = tmp2 / 2.0 ; //400 300 50 10 25 30
 
                 }
                 else if (GetRegPrivate()->pga > 1) //64
                 {
-                    tmp2 = tmp2/20.0 ;//300 200 50 25
+                    tmp2 = tmp2 / 20.0 ; //300 200 50 25
                     adc_usr.adc_ori = tmp2;
 
                 }
                 else if (GetRegPrivate()->pga >= 1) //1
                 {
-                    tmp2 = tmp2/20.0 ;//200 100 20
+                    tmp2 = tmp2 / 20.0 ; //200 100 20
                     adc_usr.adc_ori = tmp2;
 
                 }
                 else//1
                 {
-                    tmp2 = tmp2/10.0 ;//150 100 20
+                    tmp2 = tmp2 / 10.0 ; //150 100 20
                     adc_usr.adc_ori = tmp2;
 
                 }
@@ -368,12 +374,12 @@ void adc_proc(void)
 
                 // tmp2 = medium_aver(tmp2);
                 adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
-				tmp2 = adc_usr.adc_data_KF;
+                tmp2 = adc_usr.adc_data_KF;
                 tmp2 = SilderFilter(tmp2);
-				
+
                 if (tmp2 != 0)
                 {
-                     adc_usr.adc_data_SF = tmp2 ;
+                    adc_usr.adc_data_SF = tmp2 ;
                     adc_usr.adc_ori_filter = tmp2;
                     tmp3 = g_cs1237_device_st.adc_data;
                     tmp4 = adc_usr.adc_ori;
