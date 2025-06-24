@@ -336,7 +336,6 @@ void adc_proc(void)
 
 			cal_press();
 
-
             }
 
         }

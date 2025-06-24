@@ -765,20 +765,20 @@ void read_data()
 	
     g_cs1237_device_st.adc_ori_data = cs1237_read_data(&g_cs1237_device_st);
 	 pga = getPga(GetRegPrivate()->pga);
-//	if(pga <= 2)
-//		 g_cs1237_device_st.adc_ori_data  = 
-//		  g_cs1237_device_st.adc_ori_data >>5;
-//	else if(pga <= 64)
-//		g_cs1237_device_st.adc_ori_data  = 
-//		 g_cs1237_device_st.adc_ori_data >>6;
-//
+	if(pga <= 2)
+		 g_cs1237_device_st.adc_ori_data  = 
+		  g_cs1237_device_st.adc_ori_data >>4;
+	else if(pga <= 64)
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>6;
+
  if(pga <= 128)
 		g_cs1237_device_st.adc_ori_data  = 
-		 g_cs1237_device_st.adc_ori_data >>7;//8
-//
-//	else
-//		g_cs1237_device_st.adc_ori_data  = 
-//		 g_cs1237_device_st.adc_ori_data >>5;
+		 g_cs1237_device_st.adc_ori_data >>5;//8
+
+	else
+		g_cs1237_device_st.adc_ori_data  = 
+		 g_cs1237_device_st.adc_ori_data >>4;
 
 
 }
