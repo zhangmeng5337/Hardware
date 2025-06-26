@@ -470,17 +470,17 @@ void pwm_ctrl(float ratio)
 {
 
     float tmp;
-    if (GetRegPrivate()->cur_set >= 0.34 &&
-            GetRegPrivate()->cur_set <= 0.36)
-    {
-        tmp = 0.3 / 5;  //pcb resistor changed 1K
-
-    }
-    else
+//    if (GetRegPrivate()->cur_set >= 0.34 &&
+//            GetRegPrivate()->cur_set <= 0.36)
+//    {
+//        tmp = 0.3 / 5;  //pcb resistor changed 1K
+//
+//    }
+//    else
         tmp = GetRegPrivate()->cur_set/5;
 
     pulse = tmp * PWM_COUNTER*4;
-    if (pulse <= PWM_COUNTER)
+    if (pulse <= PWM_COUNTER&&pulse>1)
         GTIM_SetCompare3(CW_GTIM1, pulse - 1); // 1*4   1khz 1000  250-1
 }
 
