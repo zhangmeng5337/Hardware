@@ -317,8 +317,10 @@ extern uint32_t time_cal;
 void adc_proc(void)
 {
 
+
 	 static uint32_t tick_tmp;
 	 //if (getuart()->recv_update == 0)
+
 
 
 
@@ -337,8 +339,7 @@ void adc_proc(void)
                 adc_usr.adc_ori = g_cs1237_device_st.adc_data;
                 adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;
 		  
-		 
-
+		
            }
 
         } 
@@ -351,6 +352,7 @@ void adc_proc(void)
 		 cal_press();
 	}
 
+
     }
 
 }
@@ -362,28 +364,26 @@ void cal_press(void)
 
     float tmp1_conv1, tmp2_conv2;
     float tmp1, tmp2, tmp3;
-	long adc_tmp;
+
     tmp2 = adc_usr.adc_dat_LF;
 
     if (GetRegPrivate()->pga > 6) // 128
     {
 
 
+
         tmp2 = tmp2 / 128.0 ; //90 100
-//	tmp2 = tmp2 -300;
 
     }
     else if (GetRegPrivate()->pga > 1) //64
     {
         tmp2 = tmp2 / 20.0 ; //300 200 50 25
         adc_usr.adc_ori = tmp2;
-
     }
     else if (GetRegPrivate()->pga >= 1) //1
     {
         tmp2 = tmp2 / 20.0 ; //200 100 20
         adc_usr.adc_ori = tmp2;
-
     }
     else//1
     {
@@ -392,17 +392,12 @@ void cal_press(void)
 
     }
 
-    //tmp2 = tmp2 / 1.0;
-    // adc_usr.adc_ori = tmp2;
 
-
-    // tmp2 = kalman_filter(&g_kfp_st, tmp2);
-
-     adc_tmp = tmp2;
     // tmp2 = medium_aver(tmp2);
     adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
     tmp2 = adc_usr.adc_data_KF;
     tmp2 = SilderFilter(tmp2);
+
 
     if (tmp2 != 0)
     {

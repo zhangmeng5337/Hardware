@@ -913,6 +913,7 @@ void read_data()
 
 
     g_cs1237_device_st.adc_ori_data = cs1237_read_data(&g_cs1237_device_st);
+
     pga = getPga(GetRegPrivate()->pga);
 //  if(pga <= 2)
 //       g_cs1237_device_st.adc_ori_data  =
@@ -928,6 +929,7 @@ void read_data()
 //  else
 //      g_cs1237_device_st.adc_ori_data  =
 //       g_cs1237_device_st.adc_ori_data >>5;
+
 
 
 }
