@@ -184,6 +184,7 @@ float SilderFilter(float _value)
  * @return {*} �? * @author: TOTHTOT
  * @date:
  */
+ extern kalman g_kfp_st ;
 void kalman_init(kalman *kfp)
 {
     kfp->Last_P = 1; // 10
@@ -193,7 +194,18 @@ void kalman_init(kalman *kfp)
     kfp->Q = 0.001;//0.001
     kfp->R = 1;//1
 }
-
+void filter_level_sel(unsigned char level)
+{
+   if(level<=10&&level>0)
+   	{
+   		g_kfp_st.Q = g_kfp_st.Q/2;
+		g_kfp_st.Q = g_kfp_st.Q/level;
+   }
+		else
+		{
+		g_kfp_st.Q = 0.001;//0.001
+		}
+}
 /**
  * @name: kalman_filter
  * @msg: 卡尔曼滤波器

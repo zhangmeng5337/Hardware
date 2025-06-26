@@ -69,6 +69,8 @@
 #define CAL5_VAL		0x0030
 #define MASK_ZERO		0x0032
 #define COE5_REG		0x0034
+#define FILTER_REG		0x0036
+
 
 
 typedef struct

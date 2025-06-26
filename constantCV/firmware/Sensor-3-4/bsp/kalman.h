@@ -39,5 +39,6 @@ float SilderFilter(float _value);
 float  GetMedianNum(float bArray);
 float *swap_buff(float dat);
 float medium_aver(float dat);
+void filter_level_sel(unsigned char level);
 
 #endif /* __KALMAN_H__ */

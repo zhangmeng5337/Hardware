@@ -109,6 +109,7 @@ typedef struct
  unsigned char pga;
  //unsigned char sei;//0:1ma
  unsigned char unit;//0
+ unsigned char filter_level;
  //unsigned char factory;
  unsigned char mode;//0;1:factory cali 2:recovery factory
  unsigned char zero_cmd;//0:minus 1:no minus

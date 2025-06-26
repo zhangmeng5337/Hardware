@@ -34,6 +34,7 @@ void adc_init(void)
 
 
     kalman_init(&g_kfp_st);
+	filter_level_sel(GetRegPrivate()->filter_level);
     g_kfp_st2.Last_P = 30;
     g_kfp_st2.Now_P = 0;
     g_kfp_st2.out = 0;
@@ -322,6 +323,11 @@ void adc_proc(void)
 	 //if (getuart()->recv_update == 0)
 
 
+	if(GetRegPrivate()->save&0x80)
+	{
+		filter_level_sel(GetRegPrivate()->filter_level);
+		GetRegPrivate()->save = GetRegPrivate()->save & 0x7f;
+	}
 
 
 

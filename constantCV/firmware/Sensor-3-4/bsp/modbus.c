@@ -598,6 +598,14 @@ void private_reg_Readpack(unsigned int regnum)
 	   modbus_usr.tx_buf[i++] = tmp >> 8;
 	   modbus_usr.tx_buf[i++] = tmp ;
 	   break;
+   case FILTER_REG:
+	   modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
+	   modbus_usr.tx_buf[i++] = modbus_usr.Func;
+	   modbus_usr.tx_buf[i++] = 2;
+	   modbus_usr.tx_buf[i++] = 0;
+	   modbus_usr.tx_buf[i++] = GetRegPrivate()->filter_level;
+	   //modbus_tx(modbus_usr.tx_buf, i);
+	   break;
 
    default:break;
 
@@ -815,7 +823,7 @@ void modbus_PrivaReg_write_pack(void)
             else if ((modbus_usr.RegStart + i) == SAVE_REG)
             {
                 GetRegPrivate()->save = modbus_usr.payload[k];
-                GetRegPrivate()->save = modbus_usr.payload[k + 1];result = 1;
+                GetRegPrivate()->save = GetRegPrivate()->save|modbus_usr.payload[k + 1];result = 1;
             }
             else if ((modbus_usr.RegStart + i) == ZERO_REG)
             {
@@ -881,6 +889,13 @@ void modbus_PrivaReg_write_pack(void)
             {
                 GetRegPrivate()->maskzero = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
+            else if ((modbus_usr.RegStart + i) == FILTER_REG)
+            {
+                GetRegPrivate()->filter_level = modbus_usr.payload[k];
+                GetRegPrivate()->filter_level = modbus_usr.payload[k + 1];result = 1;
+				GetRegPrivate()->save = GetRegPrivate()->save |0x80;
+
+			}
 
             k = k + 2;
         }

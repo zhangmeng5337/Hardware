@@ -499,6 +499,9 @@ void RegWrite(void)
         j = j + 4;
         floatTouint32_m(params_private.maskzero, buf + j);
         j = j + 4;
+		buf[j++] = 0;
+        buf[j++] = params_private.filter_level;
+
 
         reg_usr.pb = reg_dat_usr;
         for (i = 0; i < REG_SIZE; i++)
@@ -650,6 +653,8 @@ unsigned char RegRead(void)
         j = j + 4;
         params_private.maskzero = uint32TofloatR(buf + j);
         j = j + 4;
+		params_private.filter_level =  buf[j+1];
+		j = j + 2;
 
         i = 0;
         for (; j < REG_SIZE * 6; j = j + 6)
@@ -745,9 +750,10 @@ void reg_proc(void)
     {
         RegWrite();
         reg_usr.update = 0;
-		    getKey()->update  = 0;
+		getKey()->update  = 0;
         GetRegPrivate()->mode = 0;
     }
+
 
 }
 
