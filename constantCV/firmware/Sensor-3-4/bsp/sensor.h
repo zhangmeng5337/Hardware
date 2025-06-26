@@ -26,6 +26,7 @@ typedef struct
 	float adc_dat_LF;
 	float adc_data_KF;
 	float adc_data_SF;
+	float adc_data_TF;
 }adc_stru;
 void adc_proc(void);
 void adc_init(void);

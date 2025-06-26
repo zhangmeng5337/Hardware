@@ -190,8 +190,8 @@ void kalman_init(kalman *kfp)
     kfp->Now_P = 0;
     kfp->out = 0;
     kfp->Kg = 0;
-    kfp->Q = 0.001;//0.000001   0.000005 0.0000001
-    kfp->R = 1;//0.05
+    kfp->Q = 0.001;//0.001
+    kfp->R = 1;//1
 }
 
 /**

@@ -394,6 +394,7 @@ void cal_press(void)
 
 
     // tmp2 = medium_aver(tmp2);
+    adc_usr.adc_data_TF = tmp2;
     adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
     tmp2 = adc_usr.adc_data_KF;
     tmp2 = SilderFilter(tmp2);
