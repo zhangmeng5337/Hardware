@@ -99,10 +99,10 @@ void cs1237_send_bit(uint8_t bit, uint8_t time_us)
     DATAOUT(); // 切换输出模式
     CS1237_SCL_H;
     delay_us(time_us);
-    if (bit == 1)
-        CS1237_SDA_H;
-    else
-        CS1237_SDA_L;
+//    if (bit == 1)
+//        CS1237_SDA_H;
+//    else
+//        CS1237_SDA_L;
     CS1237_SCL_L;
     delay_us(time_us);
 }
@@ -273,8 +273,98 @@ void cs1237_send_byte(uint8_t byte)
 //
 //    return result;
 //}
+uint8_t cs1237_config = 0;
+
+void cs1237_config1(struct cs1237_device *dev, enum dev_frequency frequency,
+                    enum dev_pga pga, enum dev_ch ch)
+{
+    // cs1237 的寄存器配置 0100 1000
+    uint8_t ret;
+
+    clrbit(cs1237_config, 6);
 
 
+    // 初始化频??
+    switch (frequency)
+    {
+        case DEV_FREQUENCY_10:
+            clrbit(cs1237_config, 4);
+            clrbit(cs1237_config, 5);
+            break;
+        case DEV_FREQUENCY_40:
+            setbit(cs1237_config, 4);
+            clrbit(cs1237_config, 5);
+            break;
+        case DEV_FREQUENCY_640:
+            setbit(cs1237_config, 5);
+            clrbit(cs1237_config, 4);
+            break;
+        case DEV_FREQUENCY_1280:
+            setbit(cs1237_config, 4);
+            setbit(cs1237_config, 5);
+            break;
+        default:
+            clrbit(cs1237_config, 4);
+            clrbit(cs1237_config, 5);
+            break;
+    }
+
+    // 初始??pga
+    switch (pga)
+    {
+        case DEV_PGA_1:
+            clrbit(cs1237_config, 2);
+            clrbit(cs1237_config, 3);
+            break;
+        case DEV_PGA_2:
+            clrbit(cs1237_config, 3);
+            setbit(cs1237_config, 2);
+            break;
+        case DEV_PGA_64:
+            clrbit(cs1237_config, 2);
+            setbit(cs1237_config, 3);
+            break;
+        case DEV_PGA_128:
+            setbit(cs1237_config, 2);
+            setbit(cs1237_config, 3);
+            break;
+        default:
+            clrbit(cs1237_config, 2);
+            clrbit(cs1237_config, 3);
+            break;
+    }
+
+    // 初始??通道
+    switch (ch)
+    {
+        case DEV_CH_A:
+            clrbit(cs1237_config, 0);
+            clrbit(cs1237_config, 1);
+            break;
+        case DEV_CH_SAVE:
+            clrbit(cs1237_config, 1);
+            setbit(cs1237_config, 0);
+            break;
+        case DEV_CH_TEMPERERATURE:
+            clrbit(cs1237_config, 0);
+            setbit(cs1237_config, 1);
+            break;
+        case DEV_CH_SHORT:
+            setbit(cs1237_config, 1);
+            setbit(cs1237_config, 1);
+            break;
+        default:
+            clrbit(cs1237_config, 0);
+            clrbit(cs1237_config, 1);
+            break;
+    }
+
+    // cs1237_config = 0X0C;
+    /* 初始化设备结构体 */
+
+    //cs1237_send_byte(cs1237_config);
+
+}
 /**
  * @name: cs1237_init
  * @msg: cs1237 初始?? * @param {cs1237_device} *dev 设备
@@ -287,7 +377,7 @@ void cs1237_send_byte(uint8_t byte)
 uint8_t cs1237_init(struct cs1237_device *dev, enum dev_frequency frequency,
                     enum dev_pga pga, enum dev_ch ch)
 {
-    uint8_t cs1237_config = 0; // cs1237 的寄存器配置 0100 1000
+    //uint8_t cs1237_config = 0; // cs1237 的寄存器配置 0100 1000
     uint8_t ret;
 
     clrbit(cs1237_config, 6);
@@ -636,25 +726,84 @@ int32_t cs1237_read_data(struct cs1237_device *dev)
         // DATAOUT();
         CS1237_SDA_L;
         DATAIN();
-        for (i = 0; i < 24; i++) // 获取24位有效转??
+        unsigned char j;
+        for (j = 0; j < 3; j++) // 获取24位有效转??
         {
-            CS1237_SCL_H; // CLK=1;
-            delay_us(3);
-            dat <<= 1;
-            if (CS1237_SDA_READ == 1)
-                dat++;
-            CS1237_SCL_L; // CLK=0;
-            delay_us(3);
+            for (i = 0; i < 8; i++) // 获取24位有效转??
+            {
+                CS1237_SCL_H; // CLK=1;
+                delay_us(5);
+                dat <<= 1;
+                if (CS1237_SDA_READ == 1)
+                    dat++;
+                CS1237_SCL_L; // CLK=0;
+                delay_us(5);
+            }
+            delay_us(5);
+
         }
 
-        for (i = 0; i < 3; i++) // 接着前面的时??再来3个时??
+
+        for (i = 0; i < 3; i++) // 25-27
         {
-            cs1237_send_bit(1, 1);
+
+            CS1237_SCL_H; // CLK=1;
+            delay_us(2);
+            CS1237_SCL_L; // CLK=0;
+            delay_us(2);
         }
+
+
+			CS1237_SDA_H;
+			DATAOUT();
+			CS1237_SDA_H;
+		delay_us(5);
+
+
+
+
+    
+
+
+        DATAIN();
+
+        CS1237_SCL_H;
+        delay_us(2);
+        CS1237_SCL_L;//29
+        delay_us(5);
+
 
 
         DATAOUT();
-        CS1237_SDA_H; // OUT = 1;
+
+        cs1237_send_byte(0x56);//30-38
+        delay_us(10);
+
+        DATAIN();
+        CS1237_SCL_H; // CLK=1;
+        delay_us(CONFIG_DELAY);
+        CS1237_SCL_L; // CLK=0;
+        delay_us(CONFIG_DELAY);
+
+        for (i = 0; i < 8; i++) // 38-45
+        {
+            CS1237_SCL_H; // CLK=1;
+            delay_us(2);
+            CS1237_SCL_L; // CLK=0;
+            delay_us(2);
+        }
+		CS1237_SCL_H; // CLK=1;
+		delay_us(2);
+		CS1237_SCL_L; // CLK=0;
+		delay_us(2);
+
+		CS1237_SDA_H;
+		DATAOUT();
+		CS1237_SDA_H;
+		delay_us(5);
+
+
+
         DATAIN_IRQ();
         if (dat & 0x00800000) // 判断是负??最高位24位是符号??    {
             dev->adc_data = -(((~dat) & 0x007FFFFF) + 1); // 补码变源??    }
@@ -762,23 +911,23 @@ void read_data()
     unsigned char pga;
 
 
-	
+
     g_cs1237_device_st.adc_ori_data = cs1237_read_data(&g_cs1237_device_st);
-	 pga = getPga(GetRegPrivate()->pga);
-//	if(pga <= 2)
-//		 g_cs1237_device_st.adc_ori_data  = 
-//		  g_cs1237_device_st.adc_ori_data >>5;
-//	else if(pga <= 64)
-//		g_cs1237_device_st.adc_ori_data  = 
-//		 g_cs1237_device_st.adc_ori_data >>6;
+    pga = getPga(GetRegPrivate()->pga);
+//  if(pga <= 2)
+//       g_cs1237_device_st.adc_ori_data  =
+//        g_cs1237_device_st.adc_ori_data >>5;
+//  else if(pga <= 64)
+//      g_cs1237_device_st.adc_ori_data  =
+//       g_cs1237_device_st.adc_ori_data >>6;
 //
- if(pga <= 128)
-		g_cs1237_device_st.adc_ori_data  = 
-		 g_cs1237_device_st.adc_ori_data >>7;//8
+// if(pga <= 128)
+//      g_cs1237_device_st.adc_ori_data  =
+//       g_cs1237_device_st.adc_ori_data >>6;//8
 //
-//	else
-//		g_cs1237_device_st.adc_ori_data  = 
-//		 g_cs1237_device_st.adc_ori_data >>5;
+//  else
+//      g_cs1237_device_st.adc_ori_data  =
+//       g_cs1237_device_st.adc_ori_data >>5;
 
 
 }
@@ -786,7 +935,7 @@ long Read_12Bit_AD(void)
 {
     float out, adc_val, adc_Newval, e;
     float tmp, tmp2;
-	unsigned int pga;
+    unsigned int pga;
     static unsigned char i = 0;
     adc_val = AD_Res_Last;
     //if (g_cs1237_device_st.update == 1)
@@ -794,22 +943,22 @@ long Read_12Bit_AD(void)
 
         time_cal = 0;
         e =  g_cs1237_device_st.adc_ori_data;
-		AD_Res_Last = e ;
-      
+        AD_Res_Last = e ;
+
         if (e != 0)
         {
 //             pga = getPga(GetRegPrivate()->pga);
-//			if(pga <= 1)
-//				pga = 5;//10
-//			else if(pga <= 64)
-//				pga = 5;
-//			else if(pga <= 128)
-//				pga = 5; //100 80  50 10
-//			else
-//				pga = 5;   //30        
-//			// g_cs1237_device_st.adc_ori_data = e;
+//          if(pga <= 1)
+//              pga = 5;//10
+//          else if(pga <= 64)
+//              pga = 5;
+//          else if(pga <= 128)
+//              pga = 5; //100 80  50 10
+//          else
+//              pga = 5;   //30
+//          // g_cs1237_device_st.adc_ori_data = e;
 //            time_cal = 0;
-           // adc_Newval = GetMedianNum(e);
+            // adc_Newval = GetMedianNum(e);
 
             tmp = adc_Newval - adc_val;
             tmp = fabs(tmp);
@@ -821,12 +970,12 @@ long Read_12Bit_AD(void)
 //                if (adc_val == 0)
 //                    adc_val = adc_Newval;
 //            }
-			adc_Newval = e;
+            adc_Newval = e;
 
-			adc_val = adc_val * Lv_Bo + adc_Newval * (1 - Lv_Bo);
-			tmp2 = adc_val;//把这次的计算结果放到全局变量里面保护
-			AD_Res_Last = tmp2 ;
-			adc_val = adc_Newval;
+            adc_val = adc_val * Lv_Bo + adc_Newval * (1 - Lv_Bo);
+            tmp2 = adc_val;//把这次的计算结果放到全局变量里面保护
+            AD_Res_Last = tmp2 ;
+            adc_val = adc_Newval;
 
 
 //            if (adc_val == adc_Newval)
@@ -847,7 +996,7 @@ long Read_12Bit_AD(void)
 //            else
 //                i = 0;
 
-		return AD_Res_Last;
+            return AD_Res_Last;
         }
         else
             return 0;

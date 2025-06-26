@@ -1297,8 +1297,9 @@ void GPIOB_IRQHandlerCallback(void)
     {
         GPIOB_INTFLAG_CLR(bv6);
 	    get_adc_update(1);
+		 __disable_irq();
 	    read_data();
-
+          __enable_irq();
 
     }
 

@@ -11,7 +11,7 @@
 #ifndef _SENSOR_H
 #define _SENSOR_H
 #include "main.h"
-#define PWM_COUNTER  60000
+#define PWM_COUNTER  1000
 typedef struct
 {
 	long adc_ori;

@@ -186,12 +186,12 @@ float SilderFilter(float _value)
  */
 void kalman_init(kalman *kfp)
 {
-    kfp->Last_P = 30; // 10
+    kfp->Last_P = 1; // 10
     kfp->Now_P = 0;
     kfp->out = 0;
     kfp->Kg = 0;
-    kfp->Q = 0.000001;//0.000001   0.000005
-    kfp->R = 0.05;
+    kfp->Q = 0.001;//0.000001   0.000005 0.0000001
+    kfp->R = 1;//0.05
 }
 
 /**

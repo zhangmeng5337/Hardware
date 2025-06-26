@@ -39,8 +39,8 @@ extern "C"
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-#define MAIN_FREQ   12000000
-#define VERSION 0x18//1.0
+#define MAIN_FREQ   24000000
+#define VERSION 0x19//1.0
 #define DISPLAY_DEBUG 0
 
 //UARTx
