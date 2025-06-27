@@ -129,7 +129,18 @@ float medium_aver(float dat)
     }
 
 }
+void SilderFilter_reset()
+{
+    unsigned char i;
+	i = 0;
+	while(i < FILTER_CAPTURE)
+	{
+		uiChannel1Buffer[i] = 0;
+		i++;
 
+	}
+
+}
 float SilderFilter(float _value)
 {
     static char i=0;
@@ -191,7 +202,7 @@ void kalman_init(kalman *kfp)
     kfp->Now_P = 0;
     kfp->out = 0;
     kfp->Kg = 0;
-    kfp->Q = 0.001;//0.001
+    kfp->Q = 0.0001;//0.001
     kfp->R = 1;//1
 }
 void filter_level_sel(unsigned char level)
@@ -203,7 +214,7 @@ void filter_level_sel(unsigned char level)
    }
 		else
 		{
-		g_kfp_st.Q = 0.001;//0.001
+		g_kfp_st.Q = 0.0001;//0.001
 		}
 }
 /**

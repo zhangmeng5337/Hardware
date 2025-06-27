@@ -34,7 +34,7 @@ void adc_init(void)
 
 
     kalman_init(&g_kfp_st);
-	filter_level_sel(GetRegPrivate()->filter_level);
+    filter_level_sel(GetRegPrivate()->filter_level);
     g_kfp_st2.Last_P = 30;
     g_kfp_st2.Now_P = 0;
     g_kfp_st2.out = 0;
@@ -138,15 +138,20 @@ unsigned char factory_unit_convert(float dat)
 {
 
     unsigned char result;
-    float tmp, tmp1, tmp2;
+    float tmp, tmp1, tmp2, tmp3;
+    uint32_t dat_reg;
     result = 1;
 
     if (GetRegPrivate()->typ == 1)
     {
-        tmp1 = *((float *)GetReg()->pb[eREG_RANGZ_HF16].val_u32ToFloat);
+        dat_reg = GetReg()->pb[eREG_RANGZ_HF16].val_u32ToFloat;
+        tmp3 = *(float *)(&dat_reg);
         tmp1 = GetRegPrivate()->maskzero * tmp1;
-        if (dat <= tmp1)
-            tmp2 = 0;
+        tmp2 = dat - tmp3;
+        tmp2 = fabs(tmp2);
+        tmp1 = fabs(tmp1);
+        if (tmp2 <= tmp1)
+            tmp2 = tmp3;
         else
             tmp2 = dat;
 
@@ -230,15 +235,13 @@ void dat_cal_proc(float dat)
         cal_val1 = adc_usr.data_unit_app;
         cal_val2 = *((float *) &
                      (GetReg()->pb[eREG_RANGZ_HF16].val_u32ToFloat)); //-zero
-        cal_val1 = cal_val1 - cal_val2;
+        cal_val1 = cal_val1;// - cal_val2;
         cal_val1 = cal_val1 * GetRegPrivate()->coe;//*coe;
 
 
+        //   tmp = *((uint32_t *)& cal_val1);
+
         tmp = *((uint32_t *)& cal_val1);
-        tmp_f = cal_val1 * 10000.0;
-        tmp = round(tmp_f);
-        tmp_f = tmp / 10000.0;
-        tmp = *((uint32_t *)& tmp_f);
 
         GetReg()->pb[eREG_HF16_4].val_u32ToFloat = tmp;
         GetReg()->pb[eREG_LF16_4].val_u32ToFloat = tmp;
@@ -249,28 +252,33 @@ void dat_cal_proc(float dat)
         switch (decm_bit)
         {
             case 0:
-                tmp_f = round(cal_val1);
+                tmp_f = roundf(cal_val1);
                 break;
             case 1:
                 cal_val1 = cal_val1 * 10;
-                tmp = round(cal_val1);
+                tmp = roundf(cal_val1);
                 tmp_f = tmp / 10.0;
                 break;
 
             case 2:
                 cal_val1 = cal_val1 * 100;
-                tmp_f = round(cal_val1);
+                tmp_f = roundf(cal_val1);
                 tmp = tmp / 100.0;
                 break;
             case 3:
                 cal_val1 = cal_val1 * 1000;
-                tmp = round(cal_val1);
+                tmp = roundf(cal_val1);
                 tmp_f = tmp / 1000.0;
                 break;
             default :
-                tmp_f = round(cal_val1);
+                tmp_f = roundf(cal_val1);
                 break;
         }
+//        if (dat < 0)
+//        {
+//            tmp_f = -tmp_f;
+
+//        }
         tmp = *((uint32_t *)& tmp_f);
         GetReg()->pb[eREG_HF16].val_u32ToFloat = tmp;
         GetReg()->pb[eREG_LF16].val_u32ToFloat = tmp;
@@ -286,12 +294,16 @@ void dat_cal_proc(float dat)
             GetReg()->pb[eREG_X100].val_u32ToFloat =
                 -GetReg()->pb[eREG_X100].val_u32ToFloat;
             GetReg()->pb[eREG_X10].val_u32ToFloat = -GetReg()->pb[eREG_X10].val_u32ToFloat;
+            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp * 100;
+            GetReg()->pb[eREG_X1000].val_u32ToFloat =
+                -GetReg()->pb[eREG_X1000].val_u32ToFloat;
 
         }
         else
         {
             GetReg()->pb[eREG_X10].val_u32ToFloat = tmp;
             GetReg()->pb[eREG_X100].val_u32ToFloat = tmp * 10;
+            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp * 100;
 
         }
 
@@ -319,15 +331,15 @@ void adc_proc(void)
 {
 
 
-	 static uint32_t tick_tmp;
-	 //if (getuart()->recv_update == 0)
+    static uint32_t tick_tmp;
+    //if (getuart()->recv_update == 0)
 
 
-	if(GetRegPrivate()->save&0x80)
-	{
-		filter_level_sel(GetRegPrivate()->filter_level);
-		GetRegPrivate()->save = GetRegPrivate()->save & 0x7f;
-	}
+    if (GetRegPrivate()->save & 0x80)
+    {
+        filter_level_sel(GetRegPrivate()->filter_level);
+        GetRegPrivate()->save = GetRegPrivate()->save & 0x7f;
+    }
 
 
 
@@ -344,19 +356,19 @@ void adc_proc(void)
             {
                 adc_usr.adc_ori = g_cs1237_device_st.adc_data;
                 adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;
-		  
-		
-           }
 
-        } 
-	
-	
-	if (GetTick() - tick_tmp >= 10)
-	{
-	
-		tick_tmp = GetTick();
-		 cal_press();
-	}
+
+            }
+
+        }
+
+
+        if (GetTick() - tick_tmp >= 10)
+        {
+
+            tick_tmp = GetTick();
+            cal_press();
+        }
 
 
     }
@@ -477,10 +489,10 @@ void pwm_ctrl(float ratio)
 //
 //    }
 //    else
-        tmp = GetRegPrivate()->cur_set/5;
+    tmp = GetRegPrivate()->cur_set / 5;
 
-    pulse = tmp * PWM_COUNTER*4;
-    if (pulse <= PWM_COUNTER&&pulse>1)
+    pulse = tmp * PWM_COUNTER * 4;
+    if (pulse <= PWM_COUNTER && pulse > 1)
         GTIM_SetCompare3(CW_GTIM1, pulse - 1); // 1*4   1khz 1000  250-1
 }
 

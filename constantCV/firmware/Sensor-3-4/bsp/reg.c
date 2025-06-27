@@ -41,12 +41,14 @@ reg_dat_pack reg_dat_usr[REG_SIZE] =
 // 
 //}reg_dat_pack;
 
+
     {REG_X100,        0,  1, 0,          0,          2,  0,      0, 1}, //regx100,1 regcount,
     {REG_X10,         0,  1, 0,          0,          2,  0,      0, 1},
-    {REG_HF16,        0,  1, 0x3fcccccd, 0x40266666,  3,  0,     0, 1},
-    {REG_LF16,        0,  1, 0x3fcccccd, 0x40266666,  3,  1,     0, 1},
-    {REG_RANGZ_HF16,  0,  1, 0,          0,          3,  0,      1, 1},
-    {REG_RANGZ_LF16,  0,  1, 0,          0,          3,  1,      1, 1},
+    {REG_HF16,        0,  1, 0xbf000000, 0x40266666,  3,  0,     0, 1},
+    {REG_LF16,        0,  1, 0xbf000000, 0x40266666,  3,  1,     0, 1},
+    {REG_X1000,       0,  1, 0,          0,          2,  0,      0, 1},
+    {REG_RANGZ_HF16,  0,  1, 0xbf000000,          0,          3,  0,      1, 1},
+    {REG_RANGZ_LF16,  0,  1, 0xbf000000,          0,          3,  1,      1, 1},
     {REG_RANGF_HF16,  0,  1, 0x3f800000, 0x3f800000,  3,  0,     1, 1},
     {REG_RANGF_LF16,  0,  1, 0x3f800000, 0x3f800000,  3,  1,     1, 1},
     {REG_OFFSET_HF16, 0,  1, 0x3f800000, 0x40000000,  3,  0,    1, 1},
@@ -58,8 +60,8 @@ reg_dat_pack reg_dat_usr[REG_SIZE] =
     {REG_UNIT,        0,  1, 2,          3,          1,  0,      1, 1},
     {REG_ADC_RATE,    0,  1, 0,          1,          1,  0,      1, 1},
     {REG_CLR_ZEROE,   0,  1,0x01,    0x01,          1,  0,      1, 1},
-    {REG_HF16_4,        0,  1, 0x3fcccccd, 0x40266666,  3,  0,     0, 1},
-    {REG_LF16_4,        0,  1, 0x3fcccccd, 0x40266666,  3,  1,     0, 1}
+    {REG_HF16_4,        REG_HF16_4,  1, 0x3fcccccd, 0x40266666,  3,  0,     0, 1},
+    {REG_LF16_4,        REG_LF16_4,  1, 0x3fcccccd, 0x40266666,  3,  1,     0, 1}
 
 
 
@@ -571,7 +573,7 @@ void RegWrite(void)
         }
 		//__disable_irq();
 		getuart()->recv_update = 1;//stop adc
-        flash_write_byte(0, buf, READ_SIZE);
+        flash_write_byte(0, buf, j);
 		//__enable_irq();
 		uart_init();	
     }

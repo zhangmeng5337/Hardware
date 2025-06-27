@@ -21,6 +21,7 @@ modbus_reg_cmdCheck_stru  modbus_reg_list[REG_COUNT] =
     {REG_X10,           {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},                                               2},
     {REG_HF16,          {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},                                               2},
     {REG_LF16,          {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},                                               2},
+    {REG_X1000,         {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},                                               2},
     {REG_RANGZ_HF16,    {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},                                               2},
     {REG_RANGZ_LF16,    {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},                                               2},
     {REG_RANGF_HF16,    {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD},                                               2},

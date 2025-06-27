@@ -11,6 +11,8 @@
 #define REG_X10 			0x0001
 #define REG_HF16 			0x0002
 #define REG_LF16 			0x0003
+#define REG_X1000 			0x0004
+
 #define REG_RANGZ_HF16 		0x0104
 #define REG_RANGZ_LF16 		0x0105
 #define REG_RANGF_HF16 		0x0106
@@ -24,8 +26,8 @@
 #define REG_UNIT			0x0130
 #define REG_ADC_RATE 		0x0131  
 #define REG_CLR_ZEROE 		0x0023  
-#define REG_HF16_4 			0x0045  
-#define REG_LF16_4 			0x0046 
+#define REG_HF16_4 			0x0005  
+#define REG_LF16_4 			0x0006 
 
 
 
@@ -54,7 +56,8 @@ typedef enum
  eREG_X100=0, 			
  eREG_X10 ,			
  eREG_HF16 ,			
- eREG_LF16 ,			
+ eREG_LF16 ,
+ eREG_X1000,
  eREG_RANGZ_HF16 ,		
  eREG_RANGZ_LF16 ,		
  eREG_RANGF_HF16, 		
