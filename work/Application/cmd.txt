@@ -1,0 +1,80 @@
+Sub Daochu()
+Dim I As Double
+Dim gas_start_row As Double
+Dim gas_end_row As Double
+
+Dim dev_start_row As Double
+Dim dev_end_row As Double
+
+
+
+gas_start_row = 1 '*********************气体参数第一行
+gas_end_row = 20 '*********************气体参数最后一行
+dev_start_row = 27 '*********************设备参数第一行
+dev_end_row = 35 '*********************设备参数最后一行
+
+
+
+folderPath = "D:\GH0050\Application\src\bootloader\export\"
+For I = dev_start_row To dev_end_row
+If Dir(folderPath & Range("A" & CStr(I)).Value, vbDirectory) = "" Then
+'MsgBox "数据导出完毕" & folderPath
+MkDir folderPath & Range("A" & CStr(I)).Value
+FileCopy folderPath & "Find.txt", folderPath & Range("A" & CStr(I)).Value & "\Find.txt"
+FileCopy folderPath & "Find.bat", folderPath & Range("A" & CStr(I)).Value & "\Find.bat"
+End If
+Close 1
+Next I
+
+For K = dev_start_row To dev_end_row
+For I = gas_start_row To gas_end_row  '****************************gas
+
+folderPath = "D:\GH0050\Application\src\bootloader\export\"
+folderPath = folderPath & Range("A" & CStr(K)).Value & "\"
+folderPath = folderPath & "gas" & I & ".txt"
+'MsgBox "数据导出完毕" & folderPath
+Open folderPath For Output As 1
+
+'Open "D:\GH0050\Application\src\bootloader\export\gas" & I & ".txt" For Output As 1
+Print #1, Range("A" & CStr(I)).Value
+Close 1
+Next I
+
+Close 1
+Next K
+
+
+
+
+For I = dev_start_row To dev_end_row '*********************************n0
+folderPath = "D:\GH0050\Application\src\bootloader\export\"
+folderPath = folderPath & Range("A" & CStr(I)).Value & "\"
+folderPath = folderPath & Range("A" & CStr(I)).Value & "_n0" & ".txt"
+Open folderPath For Output As 1
+Print #1, Range("B" & CStr(I)).Value
+Close 1
+Next I
+
+For I = dev_start_row To dev_end_row   '****************************n1
+folderPath = "D:\GH0050\Application\src\bootloader\export\"
+folderPath = folderPath & Range("A" & CStr(I)).Value & "\"
+folderPath = folderPath & Range("A" & CStr(I)).Value & "_n1" & ".txt"
+Open folderPath For Output As 1
+Print #1, Range("C" & CStr(I)).Value
+Close 1
+Next I
+
+For I = dev_start_row To dev_end_row  '************************n2
+folderPath = "D:\GH0050\Application\src\bootloader\export\"
+folderPath = folderPath & Range("A" & CStr(I)).Value & "\"
+folderPath = folderPath & Range("A" & CStr(I)).Value & "_n2" & ".txt"
+Open folderPath For Output As 1
+Print #1, Range("D" & CStr(I)).Value
+Close 1
+Next I
+
+MsgBox "数据导出完毕"
+End Sub
+
+
+
