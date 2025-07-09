@@ -24,15 +24,15 @@
 #include "cw32l010_flash.h"
 #include "flash.h"
 
-void floatTouint32(float dat,unsigned char *pb)
-{
-	uint32_t b;
-	b = *(uint32_t*)&dat;
-	pb[0] = b>>0;
-	pb[1] = b>>8;
-	pb[2] = b>>16;
-	pb[3] = b>>24;
-}
+//void floatTouint32(float dat,unsigned char *pb)
+//{
+//	uint32_t b;
+//	b = *(uint32_t*)&dat;
+//	pb[0] = b>>0;
+//	pb[1] = b>>8;
+//	pb[2] = b>>16;
+//	pb[3] = b>>24;
+//}
 void floatTouint32_m(float dat,unsigned char *pb)
 {
 	uint32_t b;
@@ -69,13 +69,13 @@ void floatTouint32_pos(uint32_t dat,unsigned char *pb,unsigned char pos)
 //	val_u32ToFloat
 //	return *(float *)&tmp;
 //}
-uint32_t uint32Tofloat(unsigned char *buf)
-{
-	uint32_t tmp;
-	tmp = (buf[3]<<0)|(buf[2]<<8)|(buf[1]<<16)|(buf[0]<<24);
-	
-	return tmp;
-}
+//uint32_t uint32Tofloat(unsigned char *buf)
+//{
+//	uint32_t tmp;
+//	tmp = (buf[3]<<0)|(buf[2]<<8)|(buf[1]<<16)|(buf[0]<<24);
+//	
+//	return tmp;
+//}
 
 float uint32TofloatR(unsigned char *buf)
 {
@@ -85,21 +85,21 @@ float uint32TofloatR(unsigned char *buf)
 	return *((float *)&tmp);
 }
 
-uint32_t  uint32Tofloat_pos(unsigned char *pb,unsigned char pos)
-{
-	uint32_t tmp;
-
-	if(pos == 1)
-	{
-		
-	tmp = (pb[1]<<0)|(pb[0]<<8);
-	}
-	if(pos == 0)
-	{	
-	tmp = (pb[1]<<16)|(pb[0]<<24);	
-	}
-	return tmp;
-}
+//uint32_t  uint32Tofloat_pos(unsigned char *pb,unsigned char pos)
+//{
+//	uint32_t tmp;
+//
+//	if(pos == 1)
+//	{
+//		
+//	tmp = (pb[1]<<0)|(pb[0]<<8);
+//	}
+//	if(pos == 0)
+//	{	
+//	tmp = (pb[1]<<16)|(pb[0]<<24);	
+//	}
+//	return tmp;
+//}
 
 
 void flash_write_byte(uint32_t WriteAddr, uint8_t *pWrBuf, uint16_t count)

@@ -35,19 +35,19 @@ void adc_init(void)
 
     kalman_init(&g_kfp_st);
     filter_level_sel(GetRegPrivate()->filter_level);
-    g_kfp_st2.Last_P = 30;
+    g_kfp_st2.Last_P = 300;
     g_kfp_st2.Now_P = 0;
     g_kfp_st2.out = 0;
     g_kfp_st2.Kg = 0;
-    g_kfp_st2.Q = 0.001;
+    g_kfp_st2.Q = 0.01;
     g_kfp_st2.R = 0.15;
 
-    g_kfp_st3.Last_P = 30;
+    g_kfp_st3.Last_P = 300;
     g_kfp_st3.Now_P = 0;
     g_kfp_st3.out = 0;
     g_kfp_st3.Kg = 0;
     g_kfp_st3.Q = 0.01;
-    g_kfp_st3.R = 0.05;
+    g_kfp_st3.R = 0.1;
 
 }
 
@@ -224,12 +224,13 @@ unsigned char factory_unit_convert(float dat)
 void dat_cal_proc(float dat)
 {
     uint32_t tmp;
+	int32_t tmp_val;
     float tmp_f, tmp6;
     float cal_val1, cal_val2;
     if (factory_unit_convert(dat) == 1)//factory unit to pa or T
     {
         tmp6 = adc_usr.data_unit_app;
-        tmp6 = kalman_filter(&g_kfp_st3, tmp6);
+       tmp6 = kalman_filter(&g_kfp_st3, tmp6);
         adc_usr.data_unit_app = tmp6;
 
         cal_val1 = adc_usr.data_unit_app;
@@ -252,26 +253,26 @@ void dat_cal_proc(float dat)
         switch (decm_bit)
         {
             case 0:
-                tmp_f = roundf(cal_val1);
+                tmp_f = round(cal_val1);
                 break;
             case 1:
                 cal_val1 = cal_val1 * 10;
-                tmp = roundf(cal_val1);
-                tmp_f = tmp / 10.0;
+                tmp_val = round(cal_val1);
+                tmp_f = tmp_val / 10.0;
                 break;
 
             case 2:
                 cal_val1 = cal_val1 * 100;
-                tmp_f = roundf(cal_val1);
-                tmp = tmp / 100.0;
+                tmp_val = round(cal_val1);
+                tmp = tmp_val / 100.0;
                 break;
             case 3:
                 cal_val1 = cal_val1 * 1000;
-                tmp = roundf(cal_val1);
-                tmp_f = tmp / 1000.0;
+                tmp_val = round(cal_val1);
+                tmp_f = tmp_val / 1000.0;
                 break;
             default :
-                tmp_f = roundf(cal_val1);
+                tmp_f = round(cal_val1);
                 break;
         }
 //        if (dat < 0)
@@ -279,33 +280,77 @@ void dat_cal_proc(float dat)
 //            tmp_f = -tmp_f;
 
 //        }
-        tmp = *((uint32_t *)& tmp_f);
+
+
+        //if (cal_val1 < 0)
+        {
+            //  tmp_f = -tmp_f;
+            tmp = *((uint32_t *)& tmp_f);
+
+
+        }
+        adc_usr.data_unit_app = tmp_f;
         GetReg()->pb[eREG_HF16].val_u32ToFloat = tmp;
         GetReg()->pb[eREG_LF16].val_u32ToFloat = tmp;
-        adc_usr.data_unit_app = tmp_f;
-        cal_val1 = adc_usr.data_unit_app;
-        cal_val1 = cal_val1 * 10;
-        tmp = cal_val1;
-        if (tmp & 0x8000)
+
+
+        cal_val1 = adc_usr.data_unit_app * 10;
+        if (cal_val1 < 0)
         {
+            //cal_val1 = -cal_val1;
+            tmp = (uint32_t) cal_val1;
             tmp = ~tmp + 1;
             GetReg()->pb[eREG_X10].val_u32ToFloat = tmp;
-            GetReg()->pb[eREG_X100].val_u32ToFloat = tmp * 10;
-            GetReg()->pb[eREG_X100].val_u32ToFloat =
-                -GetReg()->pb[eREG_X100].val_u32ToFloat;
-            GetReg()->pb[eREG_X10].val_u32ToFloat = -GetReg()->pb[eREG_X10].val_u32ToFloat;
-            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp * 100;
-            GetReg()->pb[eREG_X1000].val_u32ToFloat =
-                -GetReg()->pb[eREG_X1000].val_u32ToFloat;
 
+            cal_val1 = adc_usr.data_unit_app * 100;
+            tmp = (uint32_t) cal_val1;
+            tmp = ~tmp + 1;
+            GetReg()->pb[eREG_X100].val_u32ToFloat = tmp;
+
+            cal_val1 = adc_usr.data_unit_app * 1000;
+            tmp = (uint32_t) cal_val1;
+            tmp = ~tmp + 1;
+            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp;
         }
         else
         {
+            tmp = (uint32_t) cal_val1;
             GetReg()->pb[eREG_X10].val_u32ToFloat = tmp;
-            GetReg()->pb[eREG_X100].val_u32ToFloat = tmp * 10;
-            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp * 100;
 
+            cal_val1 = adc_usr.data_unit_app * 100;
+           tmp = (uint32_t) cal_val1;
+            GetReg()->pb[eREG_X100].val_u32ToFloat = tmp;
+
+            cal_val1 = cal_val1 * 100.0;
+            tmp = (uint32_t) cal_val1;;
+            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp;
         }
+
+
+
+
+
+
+//        if (tmp & 0x80000000)
+//        {
+//           // tmp = ~tmp + 1;
+//            GetReg()->pb[eREG_X10].val_u32ToFloat = tmp;
+//            GetReg()->pb[eREG_X100].val_u32ToFloat = tmp * 10;
+//            GetReg()->pb[eREG_X100].val_u32ToFloat =
+//                GetReg()->pb[eREG_X100].val_u32ToFloat;
+//            GetReg()->pb[eREG_X10].val_u32ToFloat = GetReg()->pb[eREG_X10].val_u32ToFloat;
+//            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp * 100;
+//            GetReg()->pb[eREG_X1000].val_u32ToFloat =
+//                -GetReg()->pb[eREG_X1000].val_u32ToFloat;
+//
+//        }
+//        else
+//        {
+//            GetReg()->pb[eREG_X10].val_u32ToFloat = tmp;
+//            GetReg()->pb[eREG_X100].val_u32ToFloat = tmp * 10;
+//            GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp * 100;
+//
+//        }
 
 //        cal_val1 = cal_val1 * 10;
 //        tmp = cal_val1;
@@ -341,8 +386,6 @@ void adc_proc(void)
         GetRegPrivate()->save = GetRegPrivate()->save & 0x7f;
     }
 
-
-
     if (g_cs1237_device_st.reconfig)
         adc_config();
     else
@@ -356,21 +399,15 @@ void adc_proc(void)
             {
                 adc_usr.adc_ori = g_cs1237_device_st.adc_data;
                 adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;
-
-
             }
-
         }
 
 
-        if (GetTick() - tick_tmp >= 10)
+        if (GetTick() - tick_tmp >= 30)
         {
-
             tick_tmp = GetTick();
             cal_press();
         }
-
-
     }
 
 }
@@ -387,15 +424,11 @@ void cal_press(void)
 
     if (GetRegPrivate()->pga > 6) // 128
     {
-
-
-
         tmp2 = tmp2 / 128.0 ; //90 100
-
     }
     else if (GetRegPrivate()->pga > 1) //64
     {
-        tmp2 = tmp2 / 20.0 ; //300 200 50 25
+        tmp2 = tmp2 / 64.0 ; //300 200 50 25
         adc_usr.adc_ori = tmp2;
     }
     else if (GetRegPrivate()->pga >= 1) //1
@@ -405,9 +438,8 @@ void cal_press(void)
     }
     else//1
     {
-        tmp2 = tmp2 / 10.0 ; //150 100 20
+        tmp2 = tmp2 / 20.0 ; //150 100 20
         adc_usr.adc_ori = tmp2;
-
     }
 
 
@@ -425,7 +457,6 @@ void cal_press(void)
         tmp3 = g_cs1237_device_st.adc_data;
         tmp4 = adc_usr.adc_ori;
 
-
         if (adc_usr.adc_ori_filter != 0)
         {
             if (GetRegPrivate()->zero_cmd == 1)
@@ -441,7 +472,16 @@ void cal_press(void)
 
         }
 
-        tmp1_conv1 = GetRegPrivate()->cal5ADC - GetRegPrivate()->cal1ADC;
+        float cal_val;
+		if( GetRegPrivate()->cal5ADC == 0)
+		{
+				cal_val = GetRegPrivate()->cal4ADC;
+				if(cal_val == 0)
+					cal_val = GetRegPrivate()->cal3ADC;
+		}
+		else
+			cal_val = GetRegPrivate()->cal5ADC;
+        tmp1_conv1 = cal_val - GetRegPrivate()->cal1ADC;
         tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
 
         tmp2_conv2 = adc_usr.adc_vol - GetRegPrivate()->cal1ADC;
@@ -468,7 +508,7 @@ void cal_press(void)
 
         tmp6 =    tmp6 - GetRegPrivate()->offset;
 
-        tmp6 = kalman_filter(&g_kfp_st2, tmp6);
+        //tmp6 = kalman_filter(&g_kfp_st2, tmp6);
         adc_usr.dat_unit_factory = tmp6;
         dat_cal_proc(adc_usr.dat_unit_factory);
         g_cs1237_device_st.update = 0;
@@ -482,13 +522,6 @@ void pwm_ctrl(float ratio)
 {
 
     float tmp;
-//    if (GetRegPrivate()->cur_set >= 0.34 &&
-//            GetRegPrivate()->cur_set <= 0.36)
-//    {
-//        tmp = 0.3 / 5;  //pcb resistor changed 1K
-//
-//    }
-//    else
     tmp = GetRegPrivate()->cur_set / 5;
 
     pulse = tmp * PWM_COUNTER * 4;

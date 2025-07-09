@@ -38,7 +38,7 @@ reg_dat_pack reg_dat_usr[REG_SIZE] =
 // unsigned char dat_pos;//0:float hight 16bit 1:float low 16bit
 // unsigned char record_flag;//0:not record 1:record
 // unsigned char enable;
-// 
+//
 //}reg_dat_pack;
 
 
@@ -59,7 +59,7 @@ reg_dat_pack reg_dat_usr[REG_SIZE] =
     {REG_DECM_BIT,    0,  1, 0,          2,          1,  0,      1, 1},
     {REG_UNIT,        0,  1, 2,          3,          1,  0,      1, 1},
     {REG_ADC_RATE,    0,  1, 0,          1,          1,  0,      1, 1},
-    {REG_CLR_ZEROE,   0,  1,0x01,    0x01,          1,  0,      1, 1},
+    {REG_CLR_ZEROE,   0,  1, 0x01,    0x01,          1,  0,      1, 1},
     {REG_HF16_4,        REG_HF16_4,  1, 0x3fcccccd, 0x40266666,  3,  0,     0, 1},
     {REG_LF16_4,        REG_LF16_4,  1, 0x3fcccccd, 0x40266666,  3,  1,     0, 1}
 
@@ -89,25 +89,26 @@ params_private_stru *GetRegPrivate(void)
 //4ac00000---->4a c0 00 00
 void FlshDatToRegDat(reg_dat_pack *pb, uint8_t *dat, unsigned char type)
 {
-	uint16_t convUint16;
+    uint16_t convUint16;
 
     pb->val_u32ToFloat = dat[0];
     pb->val_u32ToFloat = pb->val_u32ToFloat << 8 | dat[1];
-	convUint16 = dat[2];
-	convUint16 = convUint16 << 8 | dat[3];
-	pb->val_u32ToFloat_defaut =  convUint16;
+    convUint16 = dat[2];
+    convUint16 = convUint16 << 8 | dat[3];
+    pb->val_u32ToFloat_defaut =  convUint16;
 
 
 }
-void FlshDatToRegDatNoDefault(reg_dat_pack *pb, uint8_t *dat, unsigned char type)
+void FlshDatToRegDatNoDefault(reg_dat_pack *pb, uint8_t *dat,
+                              unsigned char type)
 {
-	uint16_t convUint16;
+    uint16_t convUint16;
 
     pb->val_u32ToFloat = dat[0];
     pb->val_u32ToFloat = pb->val_u32ToFloat << 8 | dat[1];
-	//convUint16 = dat[2];
-	//convUint16 = convUint16 << 8 | dat[3];
-	//pb->val_u32ToFloat_defaut =  convUint16;
+    //convUint16 = dat[2];
+    //convUint16 = convUint16 << 8 | dat[3];
+    //pb->val_u32ToFloat_defaut =  convUint16;
 
 
 }
@@ -411,15 +412,12 @@ void REGDatConvToPC(uint16_t RegNum, uint8_t *dat)
             if (reg_usr.pb[i].dat_type == 3)
             {
                 floatTouint32_pos(reg_usr.pb[i].val_u32ToFloat, dat + j, reg_usr.pb[i].dat_pos);
-
             }
             else
             {
                 dat[j++] = reg_usr.pb[i].val_u32ToFloat >> 8;
                 dat[j++] = reg_usr.pb[i].val_u32ToFloat;
-
             }
-
         }
     }
 
@@ -501,7 +499,7 @@ void RegWrite(void)
         j = j + 4;
         floatTouint32_m(params_private.maskzero, buf + j);
         j = j + 4;
-		buf[j++] = 0;
+        buf[j++] = 0;
         buf[j++] = params_private.filter_level;
 
 
@@ -527,7 +525,7 @@ void RegWrite(void)
                     {
                         reg_usr.pb[i].val_u32ToFloat_defaut = reg_usr.pb[i].val_u32ToFloat;
                     }
-					RegDatToFlash(reg_usr.pb[i].val_u32ToFloat_defaut, &buf[j + 4]);
+                    RegDatToFlash(reg_usr.pb[i].val_u32ToFloat_defaut, &buf[j + 4]);
                     j = j + 6;
 
                 }
@@ -559,23 +557,23 @@ void RegWrite(void)
                 }
 
             }
-			else
-			{
-			 buf[j + 2] = 0;
-			 buf[j + 3] = 0;
-			buf[j + 4] = 0;
-			buf[j + 5] = 0;
+            else
+            {
+                buf[j + 2] = 0;
+                buf[j + 3] = 0;
+                buf[j + 4] = 0;
+                buf[j + 5] = 0;
 
-            j = j + 6;
+                j = j + 6;
 
-			}
+            }
 
         }
-		//__disable_irq();
-		getuart()->recv_update = 1;//stop adc
+        //__disable_irq();
+        getuart()->recv_update = 1;//stop adc
         flash_write_byte(0, buf, j);
-		//__enable_irq();
-		uart_init();	
+        //__enable_irq();
+        uart_init();
     }
 
 }
@@ -584,7 +582,7 @@ void RegWrite(void)
 unsigned char RegRead(void)
 {
     uint8_t buf[READ_SIZE];
-    uint16_t i, j,k;
+    uint16_t i, j, k;
     uint16_t tmp;
 
     unsigned char result;
@@ -596,15 +594,15 @@ unsigned char RegRead(void)
     {
 
         j = 2;
-        params_private.zero_cmd =  buf[j+1];
+        params_private.zero_cmd =  buf[j + 1];
         j = j + 2;
-        params_private.typ =  buf[j+1];
+        params_private.typ =  buf[j + 1];
         j = j + 2;
-        params_private.pga =  buf[j+1];
+        params_private.pga =  buf[j + 1];
         j = j + 2;
 //        params_private.sei =  buf[j];
 //        j = j + 2;
-        params_private.unit =  buf[j+1];
+        params_private.unit =  buf[j + 1];
         j = j + 2;
         params_private.zero_value = uint32TofloatR(buf + j);
         j = j + 4;
@@ -655,13 +653,13 @@ unsigned char RegRead(void)
         j = j + 4;
         params_private.maskzero = uint32TofloatR(buf + j);
         j = j + 4;
-		params_private.filter_level =  buf[j+1];
-		j = j + 2;
+        params_private.filter_level =  buf[j + 1];
+        j = j + 2;
 
         i = 0;
         for (; j < REG_SIZE * 6; j = j + 6)
         {
-           // while (reg_usr.pb[i].record_flag != 1 && i < eREG_ADC_RATE)
+            // while (reg_usr.pb[i].record_flag != 1 && i < eREG_ADC_RATE)
 
             tmp = buf[j];
             tmp = tmp << 8;
@@ -690,19 +688,19 @@ unsigned char RegRead(void)
 
                 }
             }
-			else
-			{
+            else
+            {
 
-			}
-                   if (i < eREG_CLR_ZEROE)
-                    i++;
-				   else 
-				   	break;
+            }
+            if (i < eREG_CLR_ZEROE)
+                i++;
+            else
+                break;
         }
-      
+
     }
-	else
-		  result = 1;
+    else
+        result = 1;
     return result;
 }
 
@@ -723,40 +721,34 @@ void reg_init(void)
     params_private.coe3 = 1;
     params_private.coe4 = 0;
     params_private.zero_cmd = 0;
-	params_private.maskzero = 0;
+    params_private.maskzero = 0;
 
     if (RegRead() == 0)
     {
 
     }
-	else
-	{
-	for (i = 0; i < REG_SIZE; i++)
-	{
-		reg_usr.pb[i].reg_remap = reg_usr.pb[i].reg;
-	
-	}
-	
-	RegWrite();
+    else
+    {
+        for (i = 0; i < REG_SIZE; i++)
+        {
+            reg_usr.pb[i].reg_remap = reg_usr.pb[i].reg;
 
-	}
-		
+        }
 
-
+        RegWrite();
+    }
 }
 
 
 void reg_proc(void)
 {
-    if (reg_usr.update == 1||getKey()->update == 1)
+    if (reg_usr.update == 1 || getKey()->update == 1)
     {
         RegWrite();
         reg_usr.update = 0;
-		getKey()->update  = 0;
+        getKey()->update  = 0;
         GetRegPrivate()->mode = 0;
     }
-
-
 }
 
 

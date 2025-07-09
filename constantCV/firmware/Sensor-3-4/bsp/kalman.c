@@ -132,18 +132,19 @@ float medium_aver(float dat)
 void SilderFilter_reset()
 {
     unsigned char i;
-	i = 0;
-	while(i < FILTER_CAPTURE)
-	{
-		uiChannel1Buffer[i] = 0;
-		i++;
+    i = 0;
+    while (i < FILTER_CAPTURE)
+    {
+        uiChannel1Buffer[i] = 0;
+        i++;
 
-	}
+    }
 
 }
 float SilderFilter(float _value)
 {
-    static char i=0;
+    static char i = 0;
+	unsigned char j;
     static unsigned char count = 0;
     float ulChannel1AdcValue;
     ulChannel1AdcValue = 0;
@@ -152,22 +153,23 @@ float SilderFilter(float _value)
 
 
     uiChannel1Buffer[i++] = _value;
+	if (i >= FILTER_CAPTURE)
 
-
+  i = 0;
 
 
     if (count >= FILTER_CAPTURE)
     {
-        for (char i = 0; i < (FILTER_CAPTURE); i++)
+        for (char j = 0; j < (FILTER_CAPTURE); j++)
         {
 
             ulChannel1AdcValue = ulChannel1AdcValue +
-                                 uiChannel1Buffer[i] ;
+                                 uiChannel1Buffer[j] ;
         }
-        count = 0;
-        i = 0;
-        ulChannel1AdcValue = ulChannel1AdcValue / FILTER_CAPTURE;
+       // count = 0;
         
+        ulChannel1AdcValue = ulChannel1AdcValue / FILTER_CAPTURE;
+
 
     }
     else
@@ -175,7 +177,7 @@ float SilderFilter(float _value)
         //return 0;
         ulChannel1AdcValue = ulChannel1AdcValue / count;
     }
-	return ulChannel1AdcValue;
+    return ulChannel1AdcValue;
 
 
 }
@@ -195,27 +197,39 @@ float SilderFilter(float _value)
  * @return {*} æ—? * @author: TOTHTOT
  * @date:
  */
- extern kalman g_kfp_st ;
+extern kalman g_kfp_st ;
+extern kalman g_kfp_st2;
+
 void kalman_init(kalman *kfp)
 {
-    kfp->Last_P = 1; // 10
+    kfp->Last_P = 1000; // 10
     kfp->Now_P = 0;
     kfp->out = 0;
     kfp->Kg = 0;
-    kfp->Q = 0.0001;//0.001
+    kfp->Q = 0.001;//0.001
     kfp->R = 1;//1
 }
 void filter_level_sel(unsigned char level)
 {
-   if(level<=10&&level>0)
-   	{
-   		g_kfp_st.Q = g_kfp_st.Q/2;
-		g_kfp_st.Q = g_kfp_st.Q/level;
-   }
-		else
-		{
-		g_kfp_st.Q = 0.0001;//0.001
-		}
+    uint32_t cube;
+	unsigned char i;
+	cube = 5;
+	for(i = 0;i<=level;i++)
+	{
+		cube = cube *2;
+	}
+    if (level <= 10 && level >= 0)
+    {
+        g_kfp_st.Q = 0.1 / cube;
+        g_kfp_st.Q = g_kfp_st.Q;
+		//g_kfp_st2.Q = g_kfp_st2.Q /level;
+		//g_kfp_st.Q = 0.00000001;//0.001
+    }
+//    else
+//    {
+//        //g_kfp_st.Q = 0.017;//0.001
+//       // g_kfp_st2.Q = 0.001;
+//    }
 }
 /**
  * @name: kalman_filter

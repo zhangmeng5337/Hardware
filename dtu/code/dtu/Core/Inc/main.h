@@ -59,6 +59,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define lte_pwr_ctrl_Pin GPIO_PIN_0
 #define lte_pwr_ctrl_GPIO_Port GPIOC
+#define led_Pin GPIO_PIN_2
+#define led_GPIO_Port GPIOC
 #define SPI1_WP_Pin GPIO_PIN_4
 #define SPI1_WP_GPIO_Port GPIOC
 #define Q7_Pin GPIO_PIN_15

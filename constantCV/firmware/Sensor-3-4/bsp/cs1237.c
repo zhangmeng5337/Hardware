@@ -754,15 +754,15 @@ int32_t cs1237_read_data(struct cs1237_device *dev)
         }
 
 
-			CS1237_SDA_H;
-			DATAOUT();
-			CS1237_SDA_H;
-		delay_us(5);
+        CS1237_SDA_H;
+        DATAOUT();
+        CS1237_SDA_H;
+        delay_us(5);
 
 
 
 
-    
+
 
 
         DATAIN();
@@ -792,15 +792,15 @@ int32_t cs1237_read_data(struct cs1237_device *dev)
             CS1237_SCL_L; // CLK=0;
             delay_us(2);
         }
-		CS1237_SCL_H; // CLK=1;
-		delay_us(2);
-		CS1237_SCL_L; // CLK=0;
-		delay_us(2);
+        CS1237_SCL_H; // CLK=1;
+        delay_us(2);
+        CS1237_SCL_L; // CLK=0;
+        delay_us(2);
 
-		CS1237_SDA_H;
-		DATAOUT();
-		CS1237_SDA_H;
-		delay_us(5);
+        CS1237_SDA_H;
+        DATAOUT();
+        CS1237_SDA_H;
+        delay_us(5);
 
 
 
