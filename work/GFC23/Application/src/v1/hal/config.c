@@ -1,0 +1,1651 @@
+#include "config.h"
+#include "uart.h"
+#include "cdg.h"
+#include "verifier.h"
+#include "stdlib.h"
+#include "mystring.h"
+#include "calibration.h"
+#include "gas.h"
+#include "flash.h"
+#include "stdlib.h"
+#include "relay_driver.h"
+#include "adc.h"
+#include "aes.h"
+
+CONFIG_STRU config_dat;
+TEST_STRU  test_dat;//
+extern uint8_t key[16];
+extern uint8_t iv[16];
+
+void config_init()
+{
+    config_dat.cmd = IDLE_STATE;
+    config_dat.flow_mode = HIGH_FLOW;
+    config_dat.pressure_error = 0.0094;  //set steady pressure error
+    config_dat.pressure_val = 100;//target pressure
+    config_dat.flow_setpoint = 100;//target flow
+    config_dat.flow_steady_perror = 0.009;//0.0093  0.015
+    config_dat.tC = 0;
+    config_dat.cmd_mode = 0;
+
+}
+CONFIG_STRU *get_config()
+{
+    return &config_dat;
+}
+TEST_STRU *get_test()
+{
+    return &test_dat;
+}
+
+unsigned char string_analy(char *left_string, char *right_string,
+                           unsigned char result_type)
+{
+    uart_recv_stru   *p;
+    static unsigned char pb[64];
+    unsigned char res;
+    unsigned char buf[32];
+    res = 1;
+    memset(pb, 0, 64);
+    if (COM_TYPE == RS_232)
+        p = get_uart_recv_stru(UART_DEBUG);
+    else
+        p = get_uart_recv_stru(UART_485);
+    if (result_type == RE_CMD)
+    {
+        if (uart_Check_Cmd(p->uartRecBuff, left_string))//start verify
+        {
+            config_dat.cmd = 1;
+            res = 0;
+        }
+
+    }
+    else if (result_type == RE_FLOAT)
+    {
+        if (uart_Check_Cmd(p->uartRecBuff, left_string))//steady error set;range:0-1
+        {
+
+            if (Find_string((char *)p->uartRecBuff, left_string, right_string, pb) == 1)
+            {
+
+                memcpy(buf, pb, 16);
+                config_dat.res_float =  atof(&pb[0]);
+                res = 0;
+            }
+
+        }
+    }
+
+    else if (result_type == RE_CHAR)
+    {
+        if (uart_Check_Cmd(p->uartRecBuff, left_string))//steady error set;range:0-1
+        {
+            if (Find_string((char *)p->uartRecBuff, left_string, right_string, pb) == 1)
+            {
+                //Find_string((char *)p->uartRecBuff, left_string, right_string, (char *)pb);
+                config_dat.res_char =  atoi(&pb[0]);
+                res = 0;
+
+            }
+
+        }
+    }
+    else if (result_type == RE_STRING)
+    {
+        if (uart_Check_Cmd(p->uartRecBuff, left_string))//steady error set;range:0-1
+        {
+            if (Find_string((char *)p->uartRecBuff, left_string, right_string, pb) == 1)
+            {
+                config_dat.string = pb;
+                res = 0;
+            }
+
+        }
+
+    }
+    else
+        res = 1;
+    return res;
+}
+//static char recv_buf[128];
+static char  decBuffer[256];
+char  ecBuffer[320];
+char  *pb;
+char *analy_string(char *pb_left, char *pb_right)
+{
+
+    char *p;
+    if (config_dat.cmd_mode == 0)
+    {
+        if (COM_TYPE == RS_232)
+            p = get_uart_recv_stru(UART_DEBUG)->uartRecBuff;
+        else
+            p = get_uart_recv_stru(UART_485)->uartRecBuff;
+
+        //p = decBuffer;
+
+    }
+    else
+    {
+        p = decBuffer;
+    }
+
+
+
+    memset(ecBuffer, 0, 256);
+    if (Find_string((char *)p, pb_left, pb_right,
+                    ecBuffer) == 1)
+        return ecBuffer;
+    else
+        return NULL;
+}
+//uint8_t buf[256];
+unsigned char config_proc()
+{
+    uart_recv_stru *p;
+    char *pb;
+    float tmp_f;
+    unsigned int tmp_i;
+    unsigned int i;
+
+//    for (i = 0; i < 1; i++)
+//    {
+//        ecBuffer[i] = 1;
+//    }
+//    AES128_CBC_encrypt_buffer(buf,
+//                              ecBuffer, 128, key, iv);
+
+//    AES128_CBC_decrypt_buffer(&decBuffer[0],
+//                              buf, 256, key, iv);
+
+
+    if (COM_TYPE == RS_232)
+        p = get_uart_recv_stru(UART_DEBUG);
+    else
+        p = get_uart_recv_stru(UART_485);
+
+
+
+    if (p->uartRecFlag == 1)
+    {
+        if (config_dat.cmd_mode == 1)
+        {
+            memset(ecBuffer, 0xff, 256);
+            memset(decBuffer, 0xff, 256);
+            memcpy(ecBuffer, get_uart_recv_stru(UART_485)->uartRecBuff, 256);
+//            unsigned char i;
+//            pb = &ecBuffer[0];
+//            for (i = 0; i < 4; i++)
+//            {
+//
+//                AES128_CBC_decrypt_buffer(&decBuffer[i * 64], pb, 64, key, iv);
+//                pb = pb + 64;
+//            }
+
+              AES128_CBC_decrypt_buffer(&decBuffer[0], ecBuffer, 256, key, iv);
+
+        }
+//       AES128_CBC_encrypt_buffer(ecBuffer,
+//                                p->uartRecBuff, 256, key, iv);
+//      AES128_CBC_decrypt_buffer(&decBuffer[0],ecBuffer, 256, key, iv);
+//tool.hi0fd.com/aes-encrypt-online
+        p->uartRecFlag = 0;
+        pb = analy_string("cmd=gh2022", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            config_dat.debug = 1;
+            goto end;
+        }
+        pb = analy_string("mfv_reset", "\r\n");
+        if (pb != NULL) //start operation
+        {
+           
+            HAL_NVIC_SystemReset();
+        }
+        pb = analy_string("cmd=encr", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            config_dat.cmd_mode = 1;
+            config_dat.debug = 1;
+            printf("complete\r\n");
+            goto end;
+        }
+
+
+
+        if (config_dat.debug == 1)//****************start debug
+        {
+            pb = analy_string("cmd=start", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                config_dat.update = 1;
+                config_dat.cmd = LINE_PURGED_START;
+                goto end;
+            }
+            pb = analy_string("cmd=reboot", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                HAL_NVIC_SystemReset();
+            }
+
+            pb = analy_string("cmd=stop", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                config_dat.update = 1;
+                config_dat.cmd = NORMAL_OPERATION;
+                goto end;
+
+            }
+            pb = analy_string("cmd=debug", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                //config_dat.update = 1;
+                config_dat.debug_cmd = DEBUG_STEADY;
+                goto end;
+
+            }
+
+
+        }//***********************end debug
+        pb = analy_string("hvalve=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_i = atoi(pb);
+            if (tmp_i == 0)
+                tmp_i = 1;
+            else
+                tmp_i = 0;
+            relay_ctrl(HIGHT_FLOW_UP_SRELAY, tmp_i);
+            if (tmp_i == 1)//close
+                get_calib()->valve = get_calib()->valve & 0xfffe;//0.75
+            else //open
+                get_calib()->valve = get_calib()->valve | 0x0001;
+            get_verifier()->state = VAVLE_SCTRL;
+            goto end;
+
+
+        }
+        pb = analy_string("lvalve=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_i = atoi(pb);
+            if (tmp_i == 0)
+                tmp_i = 1;
+            else
+                tmp_i = 0;
+
+            relay_ctrl(LOW_FLOW_UP_SRELAY, tmp_i);
+            if (tmp_i == 1)//close
+                get_calib()->valve = get_calib()->valve & 0xfffd;
+            else
+                get_calib()->valve = get_calib()->valve | 0x0002;
+            get_verifier()->state = VAVLE_SCTRL;
+            goto end;
+
+        }
+        pb = analy_string("dvalve=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_i = atoi(pb);
+            if (tmp_i == 0)
+                tmp_i = 1;
+            else
+                tmp_i = 0;
+
+            relay_ctrl(DOWN_RELAY, tmp_i);
+            if (tmp_i == 1)
+                get_calib()->valve = get_calib()->valve & 0xfffb;
+            else
+                get_calib()->valve = get_calib()->valve | 0x0004;
+            get_verifier()->state = VAVLE_SCTRL;
+            goto end;
+
+        }
+        pb = analy_string("cdg_zero", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            get_cdg_status()->zero_flag = 1;
+
+            goto end;
+        }
+        pb = analy_string("zero_adjust=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_f = atof(pb);
+            zero_adjust(tmp_f, 0x21, 0x22);
+
+            goto end;
+        }
+
+//***********************************query**********************************************
+        pb = analy_string("log_out?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("%.3f  %u  %u  %.1f   %.3f    %.3f  %.3f  %.3f  %.3f  %.3f  %.3f %u  %u  %u\r\n",
+                   get_calib()->cali_flow,
+                   get_calib()->gas_type,
+                   get_verifier()->state,
+                   get_calib()->targe_p,
+                   get_temperature()->average_T,
+                   get_cdg_status()->pressure_filter_torr,
+                   get_verifier()->pressure_steady_tTime / 1000.0,
+                   get_calib()->p20,
+                   get_calib()->p21,
+                   get_calib()->p1,
+                   get_calib()->F,
+                   get_calib()->cail_nozzle_num,
+                   get_calib()->valve,
+                   get_calib()->fault);
+            goto end;
+        }
+        pb = analy_string("total_count?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("total_count=%.3f\r\n", get_verifier()->pressure_steady_tTime / 1000.0);
+            goto end;
+        }
+        pb = analy_string("progress?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("progress=%.3f\r\n",get_calib()->progress);
+            goto end;
+        }
+        pb = analy_string("timer_tick?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("timer_tick=%d\r\n",get_verifier()->timer_tick);
+            goto end;
+        }
+        pb = analy_string("purge_tick?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("purge_tick=%.3f\r\n",get_verifier()->purge_tick);
+            goto end;
+        }
+        pb = analy_string("pro_now_time?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("pro_now_time=%.3f\r\n", get_calib()->pro_now_time);
+            goto end;
+        }
+        pb = analy_string("leak_target?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("leak_target=%.3f\r\n", get_calib()->leak_target_p);
+            goto end;
+        }
+
+		
+
+        pb = analy_string("gas_count?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("gas_count=%u\r\n", get_flash_stru()->total_gas_count);
+            goto end;
+        }
+
+        pb = analy_string("bp?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("bp=%u\r\n", get_flash_stru()->bp_status);
+            goto end;
+        }
+        pb = analy_string("pe?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("pe=%u\r\n", get_flash_stru()->perror_status);
+            goto end;
+        }
+        pb = analy_string("v?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("v=%u\r\n", get_flash_stru()->v_status);
+            goto end;
+        }
+        pb = analy_string("v1?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("v1=%.3f\r\n", get_calib()->v1);
+            goto end;
+        }
+        pb = analy_string("v2?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("v2=%.3f\r\n", get_calib()->v2);
+            goto end;
+        }
+        pb = analy_string("p20?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("p20=%.3f\r\n", get_verifier()->pressure_flow_steady);
+            goto end;
+        }
+
+        pb = analy_string("thr?", "\r\n"); //pressure
+        if (pb != NULL) //start operation
+        {
+            printf("thr=%.3f\r\n", get_calib()->perror);
+            goto end;
+        }
+
+        pb = analy_string("pre?", "\r\n"); //pressure
+        if (pb != NULL) //start operation
+        {
+
+
+//          if(get_verifier()->state>=LINE_PURGED_START&&get_verifier()->state<PRESSURE_STEADY_SHOCK)
+//            printf("pre=%.3f\r\n", get_verifier()->pressure_flow_steady);
+//          else if(get_verifier()->state>=PRESSURE_STEADY_SHOCK)
+//            printf("pre=%.3f\r\n", get_verifier()->pressure_steady);
+//          else
+            printf("pre=%.3f\r\n", get_cdg_status()->pressure_filter_torr);
+            goto end;
+
+        }
+        pb = analy_string("temp?", "\r\n"); //T
+        if (pb != NULL) //start operation
+        {
+//            if (get_verifier()->state == PRESSURE_RISE_START)
+//            {
+//                // if(get_verifier()->flag == 0)
+//                {
+//                    //get_verifier()->flag =1;
+//                    printf("temp=%.3f\r\n", get_verifier()->pressure_flow_steady);
+//
+//                }
+//            }
+//            else if (get_verifier()->state > PRESSURE_RISE_START &&
+//                     get_verifier()->state != VAVLE_SCTRL&&
+//                     get_verifier()->state != FLOW_SET_POINT_SHOCK)
+//                printf("temp=%.3f\r\n", get_verifier()->pressure_steady);
+//            else
+            //printf("temp=%.4f\r\n", get_calib_slop()->slope);
+
+            printf("temp=%.1f\r\n", get_temperature()->average_T);
+            goto end;
+        }
+        pb = analy_string("mfc_state?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            if (get_verifier()->mfc_sig == 1)
+                printf("open mfc\r\n");
+            else
+                printf("close mfc\r\n");
+            goto end;
+        }
+        pb = analy_string("state?", "\r\n"); //state
+        if (pb != NULL) //start operation
+        {
+            printf("state=%u\r\n", get_verifier()->state);
+            goto end;
+        }
+        pb = analy_string("cali_flow?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("cali_flow=%.3f\r\n", get_calib()->cali_flow);
+            goto end;
+
+
+        }
+        pb = analy_string("real_flow?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("real_flow=%.3f\r\n", get_calib()->F);
+            goto end;
+        }
+        pb = analy_string("flow_updated?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("update=%u\r\n", get_calib()->update);
+            goto end;
+        }
+
+        pb = analy_string("cali_gas?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("cali_gas=%u\r\n", get_calib()->gas_type);
+            goto end;
+
+        }
+        pb = analy_string("version?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("Version %d.%d.%d\r\n", FW_REVISION_MAJOR, FW_REVISION_MINOR,FW_REVISION_PATCH);
+            goto end;///*****************************************version
+
+        }
+//        pb=analy_string("valve_status?", "\r\n");
+//        if (pb != NULL) //start operation
+//        {
+//            printf("valve_status=%u\r\n", get_calib()->valve);
+//
+//        }
+        pb = analy_string("nozzle?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("G2_H=%f\r\n", get_nozzle()->Gerr2_H);
+            HAL_Delay(10);
+            printf("G1_H=%f\r\n", get_nozzle()->Gerr1_H);
+            HAL_Delay(10);
+            printf("G0_H=%f\r\n", get_nozzle()->Gerr0_H);
+            HAL_Delay(10);
+            printf("S2_H=%f\r\n", get_nozzle()->S2_H);
+            HAL_Delay(10);
+            printf("S1_H=%f\r\n", get_nozzle()->S1_H);
+            HAL_Delay(10);
+            printf("T1_H=%f\r\n", get_nozzle()->T1);
+            HAL_Delay(10);
+            printf("Tr_H=%f\r\n", get_nozzle()->Tr_H);
+            HAL_Delay(10);
+            printf("G2_L=%f\r\n", get_nozzle()->Gerr2_L);
+            HAL_Delay(10);
+            printf("G1_L=%f\r\n", get_nozzle()->Gerr1_L);
+            HAL_Delay(10);
+            printf("G0_L=%f\r\n", get_nozzle()->Gerr0_L);
+            HAL_Delay(10);
+            printf("S2_L=%f\r\n", get_nozzle()->S2_L);
+            HAL_Delay(10);
+            printf("S1_L=%f\r\n", get_nozzle()->S1_L);
+            HAL_Delay(10);
+            printf("Tr_L=%f\r\n", get_nozzle()->Tr_L);
+            goto end;
+        }
+        pb = analy_string("gas_base?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("id=%u\r\n", get_gas()->id);
+            HAL_Delay(10);
+            printf("mw=%f\r\n", get_gas()->mw);
+            HAL_Delay(10);
+            printf("shr=%f\r\n", get_gas()->shr);
+            HAL_Delay(10);
+            printf("c1=%f\r\n", get_gas()->c1);
+            HAL_Delay(10);
+            printf("c2=%f\r\n", get_gas()->c2);
+            HAL_Delay(10);
+            printf("c3=%f\r\n", get_gas()->c3);
+            HAL_Delay(10);
+            printf("a=%f\r\n", get_gas()->a);
+            HAL_Delay(10);
+            printf("b=%f\r\n", get_gas()->b);
+            HAL_Delay(10);
+            printf("c=%f\r\n", get_gas()->c);
+            HAL_Delay(10);
+            printf("d=%f\r\n", get_gas()->d);
+            goto end;
+
+        }
+        pb = analy_string("hval_status?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("hval_status=%u\r\n", get_calib()->valve);
+            goto end;
+
+        }
+        pb = analy_string("lval_status?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("lval_status=%u\r\n", get_calib()->valve);
+            goto end;
+
+        }
+
+
+        pb = analy_string("dval_status?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("dval_status=%u\r\n", get_calib()->valve);
+            goto end;
+
+        }
+        pb = analy_string("valve_status?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("valve_status=%u\r\n", get_calib()->valve);
+            goto end;
+
+        }
+        pb = analy_string("tc?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("tc=%.3f\r\n", get_config()->tC);
+            goto end;
+
+        }
+        pb = analy_string("fault?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("fault=%u\r\n", get_calib()->fault);
+            get_calib()->fault = 0;
+            goto end;
+
+
+        }
+
+        pb = analy_string("ptR?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("ptR=%.3f\r\n", get_temperature()->v2_ratio);
+
+            // get_calib()->fault = 0;
+            goto end;
+
+        }
+        pb = analy_string("cali_count?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("cali_count=%u\r\n", get_verifier()->cali_count);
+            goto end;
+
+        }
+        pb = analy_string("aver_flow?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("aver_flow=%.3f\r\n", get_calib()->F_aver);
+            goto end;
+        }
+        pb = analy_string("cdg_status?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("zero=%d\r\n", get_cdg_status()->zero_flag);
+
+            goto end;
+        }
+
+        pb = analy_string("purge_cycle?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("purge_cycle=%d\r\n", get_verifier()->purge_cycle);
+
+            goto end;
+        }
+        pb = analy_string("purge_time?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("purge_time=%d\r\n", get_verifier()->purge_time);
+
+            goto end;
+        }
+
+        pb = analy_string("purge_status?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("purge_status=%d\r\n", get_verifier()->purge_status);
+
+            goto end;
+        }
+        pb = analy_string("ctime?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("compen_time=%.3f\r\n", get_calib()->compen_time);
+
+            goto end;
+        }
+
+
+
+        //***********************************end query**********************************************
+        //***********************************ctrl**********************************************
+
+        pb = analy_string("cali_stop", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = NORMAL_OPERATION;
+            // get_calib()->state = 6;
+            goto end;
+        }
+        pb = analy_string("purge_cycle=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_i = atoi(pb);
+            get_verifier()->purge_cycle = tmp_i;
+            get_calib()->pro_total_time = get_verifier()->purge_cycle *
+                                          get_verifier()->purge_time;
+            get_calib()->pro_total_time = get_calib()->pro_total_time * 1000;
+
+            goto end;
+        }
+        pb = analy_string("purge_time=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_i = atoi(pb);
+            get_verifier()->purge_time = tmp_i;
+            get_calib()->pro_total_time = get_verifier()->purge_cycle *
+                                          get_verifier()->purge_time;
+            get_calib()->pro_total_time = get_calib()->pro_total_time * 1000;
+            get_nozzle()->state = get_nozzle()->state | 0x8000;
+
+           // goto end;
+        }
+
+        pb = analy_string("purge_start", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = PURGE_START;
+            get_verifier()->purge_tick = get_verifier()->timer_tick;
+            get_verifier()->purge_status = 1;
+            get_calib()->state = 0;
+            get_calib()->progress = 0;
+            get_calib()->pro_total_time = get_verifier()->purge_cycle *
+                                          get_verifier()->purge_time;
+            get_calib()->pro_total_time = get_calib()->pro_total_time * 1000;
+            get_verifier()->purge_cycle_count = get_verifier()->purge_cycle;
+            goto end;
+        }
+        pb = analy_string("purge_stop", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = PURGE_STOP;
+            get_verifier()->purge_status = 0;
+
+            get_calib()->state = 0;
+            get_calib()->progress = 155;
+            goto end;
+
+        }
+        pb = analy_string("drain_start", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = DRAIN_START;
+            get_calib()->state = 0;
+            goto end;
+
+        }
+        pb = analy_string("drain_end", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = DRAIN_END;
+            get_calib()->state = 0;
+            goto end;
+
+        }
+        pb = analy_string("alarm_rst", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_calib()->fault = 0;
+            get_calib()->state = 0;
+            goto end;
+
+        }
+        pb = analy_string("p20_pre_offset=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_f = atof(pb);
+            get_gas()->c3 = tmp_f;
+
+            goto end;
+
+        }
+        pb = analy_string("nozzle_testT=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_f = atof(pb);
+            tmp_f = tmp_f * 1000.0;
+            get_verifier()->nozzle_testT = tmp_f;
+
+            goto end;
+
+        }
+
+        /********************************leak check*********************************/
+        pb = analy_string("dev_leak_start", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = DEV_LEAK_START;
+            get_verifier()->purge_tick = get_verifier()->timer_tick;
+            //get_verifier()->purge_status = 1;
+            get_calib()->state = 0;
+            get_calib()->progress = 0;
+            get_calib()->pro_total_time = get_verifier()->purge_cycle *
+                                          get_verifier()->purge_time;
+            get_calib()->pro_total_time = get_calib()->pro_total_time * 1000;
+
+            goto end;
+        }
+        pb = analy_string("dev_leak_end", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = DEV_LEAK_END;
+            get_verifier()->purge_tick = get_verifier()->timer_tick;
+            //get_verifier()->purge_status = 1;
+            get_calib()->state = 0;
+            get_calib()->progress = 155;
+            goto end;
+        }
+        pb = analy_string("sys_leak_start", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = SYS_LEAK_START;
+            get_verifier()->purge_tick = get_verifier()->timer_tick;
+            //get_verifier()->purge_status = 1;
+            get_calib()->state = 0;
+            get_calib()->progress = 0;
+            get_calib()->pro_total_time = get_verifier()->purge_cycle *
+                                          get_verifier()->purge_time;
+            get_calib()->pro_total_time = get_calib()->pro_total_time * 1000;
+
+            goto end;
+        }
+        pb = analy_string("sys_leak_end", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            get_verifier()->state = SYS_LEAK_END;
+            get_verifier()->purge_tick = get_verifier()->timer_tick;
+            //get_verifier()->purge_status = 1;
+            get_calib()->state = 0;
+            get_calib()->progress = 155;
+            goto end;
+        }
+        pb = analy_string("dev_leak?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("dev_leak=%.5f\r\n", get_calib()->device_leak_rate);
+            goto end;
+        }
+        pb = analy_string("sys_leak?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            printf("sys_leak=%.5f\r\n", get_calib()->sys_leak_rate);
+            goto end;
+        }
+
+        /********************************end leak check*********************************/
+
+//***********************************enf ctrl**********************************************
+        pb = analy_string("cal_ratio=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_f = atof(pb);
+            get_calib()->ratio = tmp_f;
+            goto end;
+        }
+
+        pb = analy_string("test_count=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_i = atoi(pb);
+            test_dat.test_count = tmp_i;
+            goto end;
+
+        }
+        pb = analy_string("cali_count=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_f = atof(pb);
+            get_verifier()->cali_count = tmp_f;
+            goto end;
+
+        }
+
+        pb = analy_string("cmd=debug_log", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            config_dat.debug_log = 1;
+            goto end;
+
+        }
+
+        pb = analy_string("cali_flow=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_f = atof(&pb[0]);
+            get_calib()->cali_flow = tmp_f;
+            if (get_calib()->state == 2)
+                get_calib()->state = 3;
+            else
+                get_calib()->state = 1;
+            config_dat.update = 1;
+            test_dat.cali_flow = tmp_f;
+
+        }
+        pb = analy_string("cali_gas=", "\r\n");
+        if (pb != NULL) //start operation
+        {
+            tmp_i = atoi(pb);
+            get_calib()->gas_type = tmp_i;
+            get_gas()->id = tmp_i;
+            if (get_calib()->state == 1)
+                get_calib()->state = 3; //
+            else
+                get_calib()->state = 2;
+            config_dat.update = 1;
+            flash_proc(READ, GAS_SET);
+            test_dat.gas_type = tmp_i;
+        }
+        if (get_calib()->state == 3)
+        {
+
+            get_calib()->update = 0;
+            //get_calib()->state =0;
+            // flash_proc(WRITE, PERROR_SET);
+        }
+
+//******************************************** set gas******************
+        if (config_dat.debug == 1)
+        {
+
+
+            pb = analy_string("set_gas=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                get_gas()->update_state = 0;
+                tmp_i = atoi(pb);
+                get_gas()->id = tmp_i;
+                get_gas()->update_state = get_gas()->update_state | 0x01;
+
+                pb = analy_string("set_shr=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->shr = tmp_f;
+
+                    get_gas()->update_state = get_gas()->update_state | 0x02;
+                }
+                else
+                    goto end;
+
+
+
+                pb = analy_string("set_mw=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->mw = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x04 ;
+
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_c1=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->c1 = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x08;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_c2=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->c2 = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x10;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_c3=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->c3 = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x20;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_a=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->a = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x40;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_b=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->b = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x80;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_c=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->c = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x100;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_d=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas()->d = tmp_f;
+                    get_gas()->update_state = get_gas()->update_state | 0x200;
+                }
+                else
+                    goto end;
+
+
+            }
+//          else
+//               goto end;
+
+
+
+
+            pb = analy_string("set_tc=", "\r\n"); //cmd=gh2022
+            if (pb != NULL) //start operation
+            {
+                // get_nozzle()->state=0;
+                tmp_f = atof(pb);
+                get_config()->tC = tmp_f;
+                flash_proc(WRITE, NOZZLE_SET);
+
+                //get_gas()->update_state=get_gas()->update_state | 0x02;
+            }
+//                else
+//                    goto end;
+
+            //******************************************** end set gas******************
+
+            //******************************************** set nozzle******************
+            pb = analy_string("set_nozzle=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                get_nozzle()->state = 0;
+                tmp_i = atof(pb);
+                get_nozzle()->nozzle_num = tmp_i;
+                get_nozzle()->state = get_nozzle()->state | 0x01;
+                if (get_nozzle()->state & 0x01)
+                {
+
+
+                    pb = analy_string("set_gerr2=", "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+
+                        tmp_f = atof(pb);
+                        if (get_nozzle()->nozzle_num == NOZZLE_H)
+                            get_nozzle()->Gerr2_H = tmp_f;
+                        else
+                            get_nozzle()->Gerr2_L = tmp_f;
+                        get_nozzle()->state = get_nozzle()->state | 0x08;
+                    }
+                    else
+                        goto end;
+
+                    pb = analy_string("set_gerr1=", "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+
+                        tmp_f = atof(pb);
+                        if (get_nozzle()->nozzle_num == NOZZLE_H)
+                            get_nozzle()->Gerr1_H = tmp_f;
+                        else
+                            get_nozzle()->Gerr1_L = tmp_f;
+                        get_nozzle()->state = get_nozzle()->state | 0x04;
+                    }
+                    else
+                        goto end;
+
+                    pb = analy_string("set_gerr0=", "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+                        //get_nozzle()->state=0;
+                        tmp_f = atof(pb);
+                        if (get_nozzle()->nozzle_num == NOZZLE_H)
+                            get_nozzle()->Gerr0_H = tmp_f;
+                        else
+                            get_nozzle()->Gerr0_L = tmp_f;
+                        get_nozzle()->state = get_nozzle()->state | 0x02;
+                    }
+                    else
+                        goto end;
+
+
+                    pb = analy_string("set_s1=", "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+
+                        tmp_f = atof(pb);
+                        if (get_nozzle()->nozzle_num == NOZZLE_H)
+                            get_nozzle()->S1_H = tmp_f;
+                        else
+                            get_nozzle()->S1_L = tmp_f;
+                        get_nozzle()->state = get_nozzle()->state | 0x10;
+
+                    }
+                    else
+                        goto end;
+
+                    pb = analy_string("set_s2=", "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+
+                        tmp_f = atof(pb);
+                        if (get_nozzle()->nozzle_num == NOZZLE_H)
+                            get_nozzle()->S2_H = tmp_f;
+                        else
+                            get_nozzle()->S2_L = tmp_f;
+                        get_nozzle()->state = get_nozzle()->state | 0x20;
+                    }
+                    else
+                        goto end;
+
+                    pb = analy_string("set_tr=", "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+
+
+                        tmp_f = atof(&pb[0]);
+                        if (get_nozzle()->nozzle_num == NOZZLE_H)
+                        {
+                            get_flash_stru()->nozzle_status = 0;
+                            get_flash_stru()->nozzle_status = get_flash_stru()->nozzle_status | 0x01;
+                            get_nozzle()->Tr_H = tmp_f;
+
+                        }
+
+                        else
+                        {
+                            get_nozzle()->Tr_L = tmp_f;
+                            get_flash_stru()->nozzle_status = get_flash_stru()->nozzle_status | 0x02;
+                            if (config_dat.cmd_mode == 1)
+                                printf("complete\r\n");
+
+                        }
+
+                        get_nozzle()->state = get_nozzle()->state | 0x40;
+
+                    }
+
+
+                }
+
+            }
+//          else
+//               goto end;
+
+
+            pb = analy_string("set_bp0=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                get_flash_stru()->bp_status = 0;
+                tmp_f = atof(&pb[0]);
+                get_calib()->bp0 = tmp_f;
+                get_flash_stru()->bp_status = get_flash_stru()->bp_status | 0x01;
+                get_nozzle()->state = get_nozzle()->state | 0x80;
+                pb = analy_string("set_bp1=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+
+                    tmp_f = atof(&pb[0]);
+                    get_calib()->bp1 = tmp_f;
+                    get_flash_stru()->bp_status = get_flash_stru()->bp_status | 0x02;
+                    get_nozzle()->state = get_nozzle()->state | 0x100;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_bp2=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+
+                    tmp_f = atof(&pb[0]);
+                    get_calib()->bp2 = tmp_f;
+                    get_flash_stru()->bp_status = get_flash_stru()->bp_status | 0x04;
+                    get_nozzle()->state = get_nozzle()->state | 0x200;
+                }
+                else
+                    goto end;
+
+                pb = analy_string("set_bp3=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+
+                    tmp_f = atof(&pb[0]);
+                    get_calib()->bp3 = tmp_f;
+                    get_flash_stru()->bp_status = get_flash_stru()->bp_status | 0x08;
+                    get_nozzle()->state = get_nozzle()->state | 0x300;
+
+                }
+                else
+                    goto end;
+                pb = analy_string("set_bp4=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+
+                    tmp_f = atof(&pb[0]);
+                    get_calib()->bp4 = tmp_f;
+                    get_flash_stru()->bp_status = get_flash_stru()->bp_status | 0x10;
+                    get_nozzle()->state = get_nozzle()->state | 0x400; //7fff  //0x7f  0x7fff
+                    // get_flash_stru()->bp_status=1;
+                    if (config_dat.cmd_mode == 1)
+                        printf("complete\r\n");
+
+                }
+                else
+                    goto end;
+
+            }
+//          else
+//               goto end;
+
+
+
+            pb = analy_string("set_perror=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                tmp_f = atof(&pb[0]);
+                get_calib()->perror = tmp_f;
+                get_nozzle()->state = get_nozzle()->state | 0x800;
+                get_flash_stru()->perror_status = 1;
+            }
+
+
+            pb = analy_string("set_v1=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                get_flash_stru()->v_status = 0;
+                tmp_f = atof(&pb[0]);
+                get_calib()->v1 = tmp_f;
+                get_flash_stru()->v_status = get_flash_stru()->v_status | 1;
+                get_nozzle()->state = get_nozzle()->state | 0x1000;
+                pb = analy_string("set_v2=", "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    tmp_f = atof(&pb[0]);
+                    get_calib()->v2 = tmp_f;
+                    get_flash_stru()->v_status = get_flash_stru()->v_status | 2;
+                    get_nozzle()->state = get_nozzle()->state | 0x2000;
+                    //get_flash_stru()->v_status=1;
+                }
+                else
+                    goto end;
+
+            }
+//          else
+//               goto end;
+
+
+
+            pb = analy_string("set_ctime=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                get_gas()->update_state = 0;
+                tmp_f = atof(pb);
+                //get_gas()->id = tmp_i;
+                get_calib()->compen_time = tmp_f;
+                get_nozzle()->state = get_nozzle()->state | 0x4000;
+            }
+            pb = analy_string("set_ptR=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                tmp_f = atof(&pb[0]);
+                get_temperature()->v2_ratio = tmp_f;
+
+            }
+//            pb=analy_string("set_alpha=", "\r\n");
+//            if (pb != NULL) //start operation
+//            {
+//                tmp_f=atof(&pb[0]);
+//                get_calib()->alpha=tmp_f;
+//                get_nozzle()->state=get_nozzle()->state | 0x4000;
+//
+//            }
+
+            if ((get_nozzle()->state & 0xffff) >= 0x7ff)//400
+            {
+                flash_proc(WRITE, NOZZLE_SET);
+                flash_proc(WRITE, PERROR_SET);
+                // get_nozzle()->state = 0;
+                if (config_dat.cmd_mode == 1)
+                    printf("complete\r\n");
+                if (get_nozzle()->state & 0x2000)
+                {
+                    HAL_Delay(5);
+                    HAL_NVIC_SystemReset();
+                }
+
+                get_nozzle()->state = 0;
+            }
+            if ((get_gas()->update_state & 0x3ff) == 0x3ff)
+            {
+                flash_proc(WRITE, GAS_SET);
+                flash_proc(WRITE, PERROR_SET);
+                get_gas()->update_state = 0;
+                if (config_dat.cmd_mode == 1)
+                    printf("complete\r\n");
+            }
+//            if (get_gas()->update_state & 0x80 == 0x80)
+//            {
+//                flash_proc(WRITE, PERROR_SET);
+//                //get_gas()->update_state=0;
+//            }
+
+        }
+
+        //******************************************** end set nozzle******************
+        pb = analy_string("cdg set=", ",");
+        if (pb != NULL) //set cdg command
+        {
+
+            unsigned char i;
+            unsigned char   *p;
+            p = get_uart_recv_stru(UART_DEBUG)->uartRecBuff;
+
+            i = 0;
+            while (*p != '\r')
+            {
+
+                if (*p == '=')
+                    get_cdg_config()->command = atoi((p + 1));
+                else
+                {
+                    if (*p == ',')
+                    {
+
+                        if (i == 0)
+                        {
+                            i = 1;
+                            get_cdg_config()->addr = atoi((p + 1));
+                        }
+                        else
+                            get_cdg_config()->dat = atoi((p + 1));
+                    }
+                }
+                p++;
+            }
+
+            get_cdg_config()->update = 1;
+            config_dat.update = 0;
+        }
+    end:
+       // memset(p->uartRecBuff, 0, UART_REC_SIZE);
+		memset(decBuffer, 255, 256);
+        p->uartRecFlag = 0;
+    }
+}
+
+
+//void config_proc()
+//{
+//    uart_recv_stru *p, *pb;
+//  if(COM_TYPE == RS_232)
+//    p=get_uart_recv_stru(UART_DEBUG);
+//  else
+//    p=get_uart_recv_stru(UART_485);
+//    if (p->uartRecFlag == 1)
+//    {
+//
+//        p->uartRecFlag=0;
+//        if (string_analy("cmd=start\r\n", "\r\n", RE_CMD) == 0)//start operation
+//        {
+//            config_dat.update=1;
+//            config_dat.cmd=LINE_PURGED_START;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("LINE_PURGED_START\r\n");
+//
+//        }
+//        else if (string_analy("cmd=debug\r\n", "\r\n",
+//                              RE_CMD) == 0) //trigger machine state  manual
+//        {
+//            config_dat.update=2;
+//            config_dat.debug_cmd=DEBUG_STEADY;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("DEBUG_STEADY\r\n");
+//
+//        }
+//
+//        else if (string_analy("cmd=stop\r\n", "\r\n", RE_CMD) == 0) //stop operation
+//        {
+//            config_dat.update=1;
+//            config_dat.cmd=NORMAL_OPERATION;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("stop\r\n");
+//
+//        }
+//        else if (string_analy("cmd=flow steady\r\n", "\r\n",
+//                              RE_CMD) == 0) //
+//        {
+//            config_dat.update=1;
+//            config_dat.cmd=FLOW_SET_POINT_STEADY;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.cmd=%d\r\n", config_dat.cmd);
+//
+//        }
+//        else if (string_analy("cmd=pressure steady", "\r\n",
+//                              RE_CMD) == 0) //
+//        {
+//            config_dat.update=1;
+//            config_dat.cmd=PRESSURE_STEADY_START;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("PRESSURE_STEADY_START\r\n");
+//
+//        }
+//        else if (string_analy("flow_mode=high\r\n", "\r\n",
+//                              RE_CMD) == 0) //sel high speed vavle
+//        {
+//            config_dat.flow_mode=HIGH_FLOW;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.flow_mode=%d\r\n", config_dat.flow_mode);
+//
+//        }
+//        else if (string_analy("flow_mode=low\r\n", "\r\n",
+//                              RE_CMD) == 0) //sel low speed vavle
+//        {
+//            config_dat.flow_mode=LOW_FLOW;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.flow_mode=%d\r\n", config_dat.flow_mode);
+//
+//        }
+//        else if (string_analy("p20_error=", "\r\n",
+//                              RE_FLOAT) == 0) //steady error set;range:0-1
+//        {
+//            config_dat.p20_pressure_error= config_dat.res_float;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.p20_pressure_error=%f\r\n", config_dat.pressure_error);
+//
+//        }
+//        else if (string_analy("error=", "\r\n",
+//                              RE_FLOAT) == 0) //steady error set;range:0-1
+//        {
+//            config_dat.pressure_error= config_dat.res_float;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.pressure_error=%f\r\n", config_dat.pressure_error);
+//
+//        }
+//
+//        else if (string_analy("vac_val=", "\r\n", RE_FLOAT) == 0)//vacuum value set
+//        {
+//            config_dat.vac_val=config_dat.res_float;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.vac_val=%f\r\n", config_dat.vac_val);
+//
+//        }
+//        else if (string_analy("pressure val=", "\r\n",
+//                              RE_FLOAT) == 0) //target pressure set
+//        {
+//            config_dat.pressure_val= config_dat.res_float;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.pressure_val=%f\r\n", config_dat.pressure_val);
+//
+//        }
+//        else if (string_analy("flow setpoint=", "\r\n",
+//                              RE_FLOAT) == 0) //target flow set
+//        {
+//            config_dat.flow_setpoint= config_dat.res_float;
+//                get_calib()->cali_flow;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.flow_setpoint=%f\r\n", config_dat.flow_setpoint);
+//
+//        }
+//        else if (string_analy("gas=", "\r\n",
+//                              RE_CHAR) == 0) //target flow set
+//        {
+//
+//                get_gas()->id= config_dat.res_char;
+//            config_dat.update=2;
+//            if (DEBUG_LOG1_ENABLE)
+//                printf("config_dat.flow_setpoint=%f\r\n", config_dat.flow_setpoint);
+//
+//        }
+//        else if (string_analy("flow_mode?\r\n", "\r\n",
+//                              RE_CMD) == 0) //sel low speed vavle
+//        {
+//                printf("config_dat.flow_mode=%d\r\n", config_dat.flow_mode);
+//
+//        }
+//        else if (string_analy("pressure val?\r\n", "\r\n",
+//                              RE_CMD) == 0) //sel low speed vavle
+//        {
+//                printf("config_dat.pressure_val=%f\r\n", config_dat.pressure_val);
+//        }
+//
+//        else if (string_analy("cdg set=", ",", RE_CHAR) == 0) //set cdg command
+//        {
+//
+//            unsigned char i;
+//            unsigned char   *p;
+//            p=get_uart_recv_stru(UART_DEBUG)->uartRecBuff;
+//
+//            i=0;
+//            while (*p != '\r')
+//            {
+//
+//                if (*p == '=')
+//                    get_cdg_config()->command=atoi((p + 1));
+//                else
+//                {
+//                    if (*p == ',')
+//                    {
+//
+//                        if (i == 0)
+//                        {
+//                            i=1;
+//                            get_cdg_config()->addr=atoi((p + 1));
+//                        }
+//                        else
+//                            get_cdg_config()->dat=atoi((p + 1));
+//
+//                    }
+//
+//                }
+//                p++;
+//            }
+//
+//            get_cdg_config()->update=1;
+//            config_dat.update=0;
+//            if (DEBUG_LOG1_ENABLE)
+//            {
+//                printf("cdg command=%d  ", get_cdg_config()->command);
+//                printf("cdg addr=%d  ", get_cdg_config()->addr);
+//                printf("cdg dat=%d\r\n", get_cdg_config()->dat);
+//
+//            }
+//
+//        }
+//        else if (string_analy("set v1=", "\r\n", RE_FLOAT) == 0) //v1 set
+//
+//        {
+//            get_calib()->v1= config_dat.res_float;
+//            config_dat.update=0;
+//            if (DEBUG_LOG1_ENABLE)
+//            {
+//                printf("v1=%f  ", get_calib()->v1);
+//
+//            }
+//
+//        }
+//        else if (string_analy("set v2=", "\r\n", RE_FLOAT) == 0) //v2 set
+//        {
+//
+//            get_calib()->v2= config_dat.res_float;
+//            config_dat.update=0;
+//            if (DEBUG_LOG1_ENABLE)
+//            {
+//                printf("v2=%f  ", get_calib()->v2);
+//
+//            }
+//
+//        }
+//        else if (string_analy("set R=", "\r\n", RE_FLOAT) == 0)//R set
+//        {
+//
+//            get_calib()->R= config_dat.res_float;
+//            config_dat.update=0;
+//            if (DEBUG_LOG1_ENABLE)
+//            {
+//                printf("R=%f  ", get_calib()->R);
+//
+//            }
+//
+//        }
+//        else if (string_analy("set p1=", "\r\n", RE_FLOAT) == 0)//p1 set
+//        {
+//
+//            get_calib()->p1= config_dat.res_float;
+//            config_dat.update=0;
+//            if (DEBUG_LOG1_ENABLE)
+//            {
+//                printf("p1=%f  ", get_calib()->R);
+//
+//            }
+//
+//        }
+//
+//        else if (string_analy("set p20=", "\r\n", RE_FLOAT) == 0) //p20 set
+//        {
+//
+//            get_calib()->p20= config_dat.res_float;
+//            config_dat.update=0;
+//            if (DEBUG_LOG1_ENABLE)
+//            {
+//                printf("p20= %f  ", get_calib()->p20);
+//
+//            }
+//
+//        }
+//
+//        else
+//        {
+//            // p->uartRecFlag=1;
+//            config_dat.update=0;
+//        }
+//        memset(p->uartRecBuff, 0, UART_REC_SIZE);
+//
+//
+//
+//
+//
+//    }
+//}
+
+
+

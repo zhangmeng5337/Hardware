@@ -1,0 +1,356 @@
+#
+#Component attribute names
+#
+@0 .comp_mount_type
+@1 .comp_height
+
+# CMP 0
+CMP 7 1.304 0.775 270 N R22 Resistor_0603 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-071KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES 1k OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '1k'
+TOP 0 1.304 0.7440157 270 N 5 0 1
+TOP 1 1.304 0.8059843 270 N 24 2 2
+#
+# CMP 1
+CMP 7 1.374 0.7739843 270 N R20 Resistor_0603 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-071KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES 1k OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '1k'
+TOP 0 1.374 0.743 270 N 6 0 1
+TOP 1 1.374 0.8049686 270 N 24 1 2
+#
+# CMP 2
+CMP 10 1.552 0.488 270 N U1 XL9535 ;0=1,1=0.0472
+PRP 5V_Tolerant_I/O ''
+PRP #_of_I/Os '16'
+PRP Channel_Width ''
+PRP Code_JEDEC 'MO-153'
+PRP ComponentLink1Description 'Manufacturer URL'
+PRP ComponentLink1URL 'https://www.xinluda.com/'
+PRP Configuration_Registers ''
+PRP DatasheetVersion 'SCPS121D'
+PRP Eco-Plan 'Green (RoHS & no Sb/Br)'
+PRP Enable_Pin ''
+PRP EXP_Pin ''
+PRP fSCLK(Max)(MHz) '0.4'
+PRP Function ''
+PRP I2C_Address '0100 xxx'
+PRP Interrupt_Output 'Yes'
+PRP Low_Power ''
+PRP Manufacturer 'XINLUDA'
+PRP Master_Side_I2C_Bus_Capacitance_Supported(pF) ''
+PRP Max_Frequency(kHz) '400'
+PRP Mounting_Technology 'Surface Mount'
+PRP No._of_Outputs ''
+PRP On-Chip_Power-on-Reset ''
+PRP Open_Drain_I/O_Type ''
+PRP PackageDescription '24-Pin Thin Small Outline Package 0.65 mm Pitch'
+PRP PackageReference 'PW0024A'
+PRP PackageVersion 'revG, Feb-2011'
+PRP PartNumber 'XL9535'
+PRP Push-Pull_I/O_Type 'Yes'
+PRP Rating ''
+PRP Reset_Input 'No'
+PRP Simultaneously_Active_Channels ''
+PRP Slave_Side_I2C_Bus_Capacitance_Supported(pF) ''
+PRP SubFamily 'I2C IO Expander'
+PRP Technology_Family ''
+PRP tpd_max(ns) ''
+PRP Vcc_range(V) '2.5 to 5.5'
+PRP VCC(Max)(V) '5.5'
+PRP VCC(Min)(V) '2.5'
+PRP Voltage_Nodes(V) '5.5, 3.6, 2.7, 2.5'
+TOP 0 1.692748 0.3718583 0 N 9 0 1
+TOP 1 1.6671574 0.3718583 0 N 11 17 2
+TOP 2 1.6415669 0.3718583 0 N 11 18 3
+TOP 3 1.6159763 0.3718583 0 N 23 1 4
+TOP 4 1.5903858 0.3718583 0 N 22 1 5
+TOP 5 1.5647952 0.3718583 0 N 21 1 6
+TOP 6 1.5392047 0.3718583 0 N 20 1 7
+TOP 7 1.5136141 0.3718583 0 N 19 1 8
+TOP 8 1.4880236 0.3718583 0 N 18 1 9
+TOP 9 1.462433 0.3718583 0 N 17 1 10
+TOP 10 1.4368425 0.3718583 0 N 16 1 11
+TOP 11 1.4112519 0.3718583 0 N 11 19 12
+TOP 12 1.4112519 0.6041418 0 N 15 1 13
+TOP 13 1.4368425 0.6041418 0 N 14 1 14
+TOP 14 1.462433 0.6041418 0 N 13 1 15
+TOP 15 1.4880236 0.6041418 0 N 12 1 16
+TOP 16 1.5136141 0.6041418 0 N 0 3 17
+TOP 17 1.5392047 0.6041418 0 N 0 2 18
+TOP 18 1.5647952 0.6041418 0 N 0 1 19
+TOP 19 1.5903858 0.6041418 0 N 0 0 20
+TOP 20 1.6159763 0.6041418 0 N 11 20 21
+TOP 21 1.6415669 0.6041418 0 N 8 0 22
+TOP 22 1.6671574 0.6041418 0 N 7 0 23
+TOP 23 1.692748 0.6041418 0 N 24 17 24
+#
+# CMP 3
+CMP 7 1.604 0.7739843 270 N R64 Resistor_0603 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-071KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 1K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '1k'
+TOP 0 1.604 0.743 270 N 3 0 1
+TOP 1 1.604 0.8049686 270 N 24 0 2
+#
+# CMP 4
+CMP 7 0.247 0.714 270 N R16 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.247 0.6830157 270 N 13 0 1
+TOP 1 0.247 0.7449843 270 N 24 5 2
+#
+# CMP 5
+CMP 7 0.448 0.3970157 90 N R15 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.448 0.428 90 N 12 0 1
+TOP 1 0.448 0.3660314 90 N 24 6 2
+#
+# CMP 6
+CMP 7 0.444 0.714 270 N R14 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.444 0.6830157 270 N 15 0 1
+TOP 1 0.444 0.7449843 270 N 24 7 2
+#
+# CMP 7
+CMP 7 0.244 0.3970157 90 N R13 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.244 0.428 90 N 14 0 1
+TOP 1 0.244 0.3660314 90 N 24 8 2
+#
+# CMP 8
+CMP 7 1.536 0.774 270 N R11 Resistor_0603 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Yageo'
+PRP Package '0603'
+PRP PartNumber 'RC0603FR-071KL'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 1K OHM 1% 1/10W 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '1k'
+TOP 0 1.536 0.7430157 270 N 4 0 1
+TOP 1 1.536 0.8049843 270 N 24 18 2
+#
+# CMP 9
+CMP 7 0.561 0.714 270 N R10 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.561 0.6830157 270 N 17 0 1
+TOP 1 0.561 0.7449843 270 N 24 10 2
+#
+# CMP 10
+CMP 7 0.762 0.3970157 270 N R9 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.762 0.3660314 270 N 16 0 1
+TOP 1 0.762 0.428 270 N 24 9 2
+#
+# CMP 11
+CMP 7 0.763 0.743 90 N R8 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.763 0.7739843 90 N 19 0 1
+TOP 1 0.763 0.7120157 90 N 24 13 2
+#
+# CMP 12
+CMP 7 0.563 0.3970157 90 N R7 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.563 0.428 90 N 18 0 1
+TOP 1 0.563 0.3660314 90 N 24 16 2
+#
+# CMP 13
+CMP 7 0.881 0.7410157 90 N R4 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.881 0.772 90 N 21 0 1
+TOP 1 0.881 0.7100314 90 N 24 14 2
+#
+# CMP 14
+CMP 7 1.078 0.3970157 270 N R3 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 1.078 0.3660314 270 N 20 0 1
+TOP 1 1.078 0.428 270 N 24 3 2
+#
+# CMP 15
+CMP 7 1.08 0.7360157 90 N R2 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 1.08 0.767 90 N 23 0 1
+TOP 1 1.08 0.7050314 90 N 24 15 2
+#
+# CMP 16
+CMP 7 0.881 0.3970157 270 N R1 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 0.881 0.3660314 270 N 22 0 1
+TOP 1 0.881 0.428 270 N 24 4 2
+#
+# CMP 17
+CMP 2 0.935 0.198 0 N P4 HC-ZH-8PWT ;0=2,1=0.0000
+PRP LatestRevisionDate '17-Jul-2002'
+PRP LatestRevisionNote 'Re-released for DXP Platform.'
+PRP Publisher 'Altium Limited'
+TOP 0 1.141695 0.198 180 N 8 2 1
+TOP 1 1.08263 0.198 180 N 7 1 2
+TOP 2 1.023585 0.198 180 N 9 1 3
+TOP 3 0.96452 0.198 180 N 25 0 4
+TOP 4 0.905475 0.198 180 N 11 21 5
+TOP 5 0.846411 0.198 180 N 2 0 6
+TOP 6 0.787366 0.198 180 N 10 0 7
+TOP 7 0.728301 0.198 180 N 0 4 8
+#
+# CMP 18
+CMP 0 1.761 0.481 90 N C75 Capacitor_0603 ;0=1,1=0.0362
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Current_Rating ''
+PRP Manufacturer 'KEMET'
+PRP Package '0603'
+PRP PartNumber 'C0603C104M5RACTU'
+PRP Power_Rating ''
+PRP SupplierDescription 'CAP CER 0.1UF 50V X7R 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance '[tol]'
+PRP Value '0.1u'
+PRP Voltage_Rating '[voltage]'
+TOP 0 1.761 0.5119843 90 N 24 11 1
+TOP 1 1.761 0.451 90 N 11 15 2
+#
+# CMP 19
+CMP 0 1.839 0.482 90 N C32 Capacitor_0603 ;0=1,1=0.0362
+PRP Package '0603'
+PRP PartNumber 'C0603C104M5RACTU'
+PRP Power_Rating ''
+PRP SupplierDescription 'CAP CER 0.1UF 50V X7R 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance '[tol]'
+PRP Value '0.1uF/50V'
+PRP Voltage_Rating '[voltage]'
+TOP 0 1.839 0.5129843 90 N 24 12 1
+TOP 1 1.839 0.452 90 N 11 16 2
+#

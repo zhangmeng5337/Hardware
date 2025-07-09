@@ -1,0 +1,50 @@
+Altium Designer Pick and Place Locations
+D:\GH0050\prj\pcb\GFC23\RHR077_GFC_ECAT_LED_REV1\Project Outputs for Key\Pick Place\Pick Place for RHR077_GFC_ECAT_LED_REV1.csv
+
+========================================================================================================================
+File Design Information:
+
+Date:       29/07/24
+Time:       11:51
+Revision:   Not in VersionControl
+Variant:    No variations
+Units used: mil
+
+"Designator","Comment","Layer","Footprint","Center-X(mil)","Center-Y(mil)","Rotation","Description"
+"P1","Header 2","TopLayer","HDR1X2","1520.000","174.000","0","Header, 2-Pin"
+"R17","Resistor_1206","TopLayer","RESC3216X070N_1206","1861.000","629.000","180","Resistor, Standard"
+"C2","Capacitor_1206","TopLayer","CAPC3216X156N_1206","1858.000","520.000","0","Capacitor, MLCC"
+"T6","TP","TopLayer","FIX-2.5","1870.079","885.827","0",""
+"T7","TP","TopLayer","FIX-2.5","1870.079","98.425","0",""
+"T9","TP","TopLayer","FIX-2.5","98.425","885.827","0",""
+"T10","TP","TopLayer","FIX-2.5","98.425","98.425","0",""
+"R22","Resistor_0603","BottomLayer","RESC1608X055N_0603","1304.000","775.000","90","Resistor, Standard"
+"R20","Resistor_0603","BottomLayer","RESC1608X055N_0603","1374.000","773.984","90","Resistor, Standard"
+"LED1","TJ-S3210SW5TCGLC2R2G-A5","TopLayer","LED-SMD_4P-L3.2-W1.5_TJ-S3210SW5TCGLC2R2G","1315.000","726.150","0",""
+"U1","XL9535","BottomLayer","XNLD-TSSOP24_N","1552.000","488.000","90","Remote 16-Bit I2C and SMBus Low-Power I/O Expander with Interrupt Output & Config. Registers, 2.3 to 5.5 V, -40 to 85 degC, 24-pin TSSOP, Green (RoHS & no Sb/Br)"
+"SW3","SKAR-16S","TopLayer","SW-SMD_SM_STAR-10S","345.000","575.000","0","Mini Rotary DIP Switch, 16 Postions, Right Angle Thru-Hole, -60 to 125 degC, 6-Pin THT, RoHS"
+"SW2","SKAR-16S","TopLayer","SW-SMD_SM_STAR-10S","662.500","575.000","0","Mini Rotary DIP Switch, 16 Postions, Right Angle Thru-Hole, -60 to 125 degC, 6-Pin THT, RoHS"
+"SW1","SKAR-16S","TopLayer","SW-SMD_SM_STAR-10S","980.000","575.000","0","Mini Rotary DIP Switch, 16 Postions, Right Angle Thru-Hole, -60 to 125 degC, 6-Pin THT, RoHS"
+"R64","Resistor_0603","BottomLayer","RESC1608X055N_0603","1604.000","773.984","90","Resistor, Standard"
+"R16","Resistor_0402","BottomLayer","RESC1608X055N_0603","247.000","714.000","90","Resistor, Standard"
+"R15","Resistor_0402","BottomLayer","RESC1608X055N_0603","448.000","397.016","270","Resistor, Standard"
+"R14","Resistor_0402","BottomLayer","RESC1608X055N_0603","444.000","714.000","90","Resistor, Standard"
+"R13","Resistor_0402","BottomLayer","RESC1608X055N_0603","244.000","397.016","270","Resistor, Standard"
+"R12","Resistor_0402","TopLayer","RESC1608X055N_0603","1693.000","415.000","90","Resistor, Standard"
+"R11","Resistor_0603","BottomLayer","RESC1608X055N_0603","1536.000","774.000","90","Resistor, Standard"
+"R10","Resistor_0402","BottomLayer","RESC1608X055N_0603","561.000","714.000","90","Resistor, Standard"
+"R9","Resistor_0402","BottomLayer","RESC1608X055N_0603","762.000","397.016","90","Resistor, Standard"
+"R8","Resistor_0402","BottomLayer","RESC1608X055N_0603","763.000","743.000","270","Resistor, Standard"
+"R7","Resistor_0402","BottomLayer","RESC1608X055N_0603","563.000","397.016","270","Resistor, Standard"
+"R6","Resistor_0402","TopLayer","RESC1608X055N_0603","1711.000","573.984","270","Resistor, Standard"
+"R5","Resistor_0402","TopLayer","RESC1608X055N_0603","1641.000","574.000","270","Resistor, Standard"
+"R4","Resistor_0402","BottomLayer","RESC1608X055N_0603","881.000","741.016","270","Resistor, Standard"
+"R3","Resistor_0402","BottomLayer","RESC1608X055N_0603","1078.000","397.016","90","Resistor, Standard"
+"R2","Resistor_0402","BottomLayer","RESC1608X055N_0603","1080.000","736.016","270","Resistor, Standard"
+"R1","Resistor_0402","BottomLayer","RESC1608X055N_0603","881.000","397.016","90","Resistor, Standard"
+"P4","HC-ZH-8PWT","BottomLayer","CONN-TH_HC-ZH1.5-8A","934.998","198.000","180","Header, 8-Pin"
+"LED2","TJ-S3210SW5TCGLC2R2G-A5","TopLayer","LED-SMD_4P-L3.2-W1.5_TJ-S3210SW5TCGLC2R2G","1517.500","726.150","0",""
+"C75","Capacitor_0603","BottomLayer","CAPC1608X092N_0603","1761.000","481.492","270","Capacitor, MLCC"
+"C1","Capacitor_0603","TopLayer","CAPC1608X092N_0603","1231.000","448.492","270",""
+"C32","Capacitor_0603","BottomLayer","CAPC1608X092N_0603","1839.000","482.492","270",""
+"FB12","FBC0603","TopLayer","FBC0603","1310.000","443.465","90",""

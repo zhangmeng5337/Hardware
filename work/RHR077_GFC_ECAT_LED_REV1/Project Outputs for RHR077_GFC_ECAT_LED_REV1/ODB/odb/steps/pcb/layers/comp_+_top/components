@@ -1,0 +1,230 @@
+#
+#Component attribute names
+#
+@0 .comp_mount_type
+@1 .comp_height
+
+# CMP 0
+CMP 5 1.47 0.174 0 N P1 Header_2 ;0=2,1=0.0000
+PRP LatestRevisionDate '17-Jul-2002'
+PRP LatestRevisionNote 'Re-released for DXP Platform.'
+PRP Publisher 'Altium Limited'
+TOP 0 1.47 0.174 0 N 0 6 1
+TOP 1 1.57 0.174 0 N 0 5 2
+#
+# CMP 1
+CMP 8 1.861 0.629 180 N R17 Resistor_1206 ;0=1,1=0.0276
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Package '1206'
+PRP PartNumber 'RC1206FR-071ML'
+PRP SupplierDescription 'RES SMD 1M OHM 1% 1/4W 1206'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '1Meg'
+TOP 0 1.9220236 0.629 90 N 1 7 1
+TOP 1 1.7999764 0.629 90 N 11 30 2
+#
+# CMP 2
+CMP 1 1.858 0.52 0 N C2 Capacitor_1206 ;0=1,1=0.0614
+PRP 04_Lifecycle ''
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Package '1206'
+PRP PartNumber 'C1206C103KCRACTU'
+PRP SupplierDescription 'CAP CER 10000PF 500V X7R 1206'
+PRP TempCo '[tempco]'
+PRP Tolerance '[tol]'
+PRP Value '0.01u'
+PRP Voltage_Rating '[voltage]'
+TOP 0 1.8009134 0.52 270 N 11 31 1
+TOP 1 1.9150866 0.52 270 N 1 8 2
+#
+# CMP 3
+CMP 4 1.8700787 0.8858268 0 N T6 TP ;0=2,1=0.0000
+PRP Value ''
+TOP 0 1.8700787 0.8858268 0 N 1 4 1
+#
+# CMP 4
+CMP 4 1.8700787 0.0984252 0 N T7 TP ;0=2,1=0.0000
+PRP Value ''
+TOP 0 1.8700787 0.0984252 0 N 1 3 1
+#
+# CMP 5
+CMP 4 0.0984252 0.8858268 0 N T9 TP ;0=2,1=0.0000
+PRP Value ''
+TOP 0 0.0984252 0.8858268 0 N 1 5 1
+#
+# CMP 6
+CMP 4 0.0984252 0.0984252 0 N T10 TP ;0=2,1=0.0000
+PRP Value ''
+TOP 0 0.0984252 0.0984252 0 N 1 6 1
+#
+# CMP 7
+CMP 6 1.315 0.72615 0 N LED1 TJ-S3210SW5TCGLC2R2G-A5 ;0=1,1=0.0000
+PRP Add_into_BOM 'yes'
+PRP Color_Temperature '-'
+PRP Convert_to_PCB 'yes'
+PRP Datasheet 'https://atta.szlcsc.com/upload/public/pdf/source/20200618/C601680_03E6561E1E751F1BA8F42F573334542B.pdf'
+PRP Device 'TJ-S3210SW5TCGLC2R2G-A5'
+PRP Diode_Configuration '-'
+PRP Dominant_Wavelength ''
+PRP Emitted_Color ''
+PRP Forward_Current '20mA'
+PRP JLCPCB_Part_Class 'Extended Part'
+PRP LCSC_Part_Name ''
+PRP Lens_Color ''
+PRP Manufacturer ''
+PRP Manufacturer_Part 'TJ-S3210SW5TCGLC2R2G-A5'
+PRP Mounting_Sytle ''
+PRP Name ''
+PRP Operating_Temperature ''
+PRP Peak_Wavelength ''
+PRP Power_Dissipation ''
+PRP Supplier 'LCSC'
+PRP Supplier_Footprint 'SMD,1.5x3.2mm'
+PRP Supplier_Part 'C601680'
+PRP Symbol 'TJ-S3210SW5TCGLC2R2G-A5'
+PRP Viewing_Angle ''
+TOP 0 1.37327 0.734645 180 N 6 1 1
+TOP 1 1.33134 0.717655 180 N 5 1 2
+TOP 2 1.29866 0.717655 180 N 11 22 3
+TOP 3 1.25673 0.734645 180 N 0 7 4
+#
+# CMP 8
+CMP 9 0.345 0.575 0 N SW3 SKAR-16S ;0=1,1=0.0000
+PRP Manufacturer 'SUNGMUN ELECTRONICS'
+PRP Manufacturer_URL 'http://www.sungmun.co.kr/'
+PRP Mounting 'ThroughHole'
+PRP Part_No 'MSDR-16H1'
+TOP 0 0.445 0.72854 0 N 15 2 1
+TOP 1 0.245 0.42146 0 N 14 2 2
+TOP 2 0.245 0.72854 0 N 13 2 4
+TOP 3 0.445 0.42146 0 N 12 2 8
+TOP 4 0.345 0.72854 0 N 11 24 C
+TOP 5 0.345 0.42146 0 N 11 25 C
+#
+# CMP 9
+CMP 9 0.6625 0.575 0 N SW2 SKAR-16S ;0=1,1=0.0000
+PRP Manufacturer 'SUNGMUN ELECTRONICS'
+PRP Manufacturer_URL 'http://www.sungmun.co.kr/'
+PRP Mounting 'ThroughHole'
+PRP Part_No 'MSDR-16H1'
+TOP 0 0.7625 0.72854 0 N 19 2 1
+TOP 1 0.5625 0.42146 0 N 18 2 2
+TOP 2 0.5625 0.72854 0 N 17 2 4
+TOP 3 0.7625 0.42146 0 N 16 2 8
+TOP 4 0.6625 0.72854 0 N 11 26 C
+TOP 5 0.6625 0.42146 0 N 11 27 C
+#
+# CMP 10
+CMP 9 0.98 0.575 0 N SW1 SKAR-16S ;0=1,1=0.0000
+PRP Manufacturer 'SUNGMUN ELECTRONICS'
+PRP Manufacturer_URL 'http://www.sungmun.co.kr/'
+PRP Mounting 'ThroughHole'
+PRP Part_No 'MSDR-16H1'
+TOP 0 1.08 0.72854 0 N 23 2 1
+TOP 1 0.88 0.42146 0 N 22 2 2
+TOP 2 0.88 0.72854 0 N 21 2 4
+TOP 3 1.08 0.42146 0 N 20 2 8
+TOP 4 0.98 0.72854 0 N 11 28 C
+TOP 5 0.98 0.42146 0 N 11 29 C
+#
+# CMP 11
+CMP 7 1.693 0.415 270 N R12 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 1.693 0.3840157 270 N 9 2 1
+TOP 1 1.693 0.4459843 270 N 24 20 2
+#
+# CMP 12
+CMP 7 1.711 0.5739843 90 N R6 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 1.711 0.6049686 90 N 7 2 1
+TOP 1 1.711 0.543 90 N 24 19 2
+#
+# CMP 13
+CMP 7 1.641 0.574 90 N R5 Resistor_0402 ;0=1,1=0.0217
+PRP ComponentLink1Description 'Datasheet'
+PRP ComponentLink1URL ''
+PRP Manufacturer 'Panasonic'
+PRP Package '0402'
+PRP PartNumber 'ERJ-2RKF1002X'
+PRP Power_Rating '[power]'
+PRP SupplierDescription 'RES SMD 10K OHM 1% 1/10W 0402'
+PRP TempCo '[tempco]'
+PRP Tolerance 'tol'
+PRP Value '10k'
+TOP 0 1.641 0.6049843 90 N 8 1 1
+TOP 1 1.641 0.5430157 90 N 24 23 2
+#
+# CMP 14
+CMP 6 1.5175 0.72615 0 N LED2 TJ-S3210SW5TCGLC2R2G-A5 ;0=1,1=0.0000
+PRP Add_into_BOM 'yes'
+PRP Color_Temperature '-'
+PRP Convert_to_PCB 'yes'
+PRP Datasheet 'https://atta.szlcsc.com/upload/public/pdf/source/20200618/C601680_03E6561E1E751F1BA8F42F573334542B.pdf'
+PRP Device 'TJ-S3210SW5TCGLC2R2G-A5'
+PRP Diode_Configuration '-'
+PRP Dominant_Wavelength ''
+PRP Emitted_Color ''
+PRP Forward_Current '20mA'
+PRP JLCPCB_Part_Class 'Extended Part'
+PRP LCSC_Part_Name ''
+PRP Lens_Color ''
+PRP Manufacturer ''
+PRP Manufacturer_Part 'TJ-S3210SW5TCGLC2R2G-A5'
+PRP Mounting_Sytle ''
+PRP Name ''
+PRP Operating_Temperature ''
+PRP Peak_Wavelength ''
+PRP Power_Dissipation ''
+PRP Supplier 'LCSC'
+PRP Supplier_Footprint 'SMD,1.5x3.2mm'
+PRP Supplier_Part 'C601680'
+PRP Symbol 'TJ-S3210SW5TCGLC2R2G-A5'
+PRP Viewing_Angle ''
+TOP 0 1.57577 0.734645 180 N 3 1 1
+TOP 1 1.53384 0.717655 180 N 4 1 2
+TOP 2 1.50116 0.717655 180 N 2 1 3
+TOP 3 1.45923 0.734645 180 N 10 1 4
+#
+# CMP 15
+CMP 0 1.231 0.448 90 N C1 Capacitor_0603 ;0=1,1=0.0362
+PRP Package '0603'
+PRP PartNumber 'C0603C104M5RACTU'
+PRP Power_Rating ''
+PRP SupplierDescription 'CAP CER 0.1UF 50V X7R 0603'
+PRP TempCo '[tempco]'
+PRP Tolerance '[tol]'
+PRP Value '10uF/25V'
+PRP Voltage_Rating '[voltage]'
+TOP 0 1.231 0.4789843 90 N 24 21 1
+TOP 1 1.231 0.418 90 N 11 23 2
+#
+# CMP 16
+CMP 3 1.31 0.41 270 N FB12 FBC0603 ;0=1,1=0.0013
+PRP PartNumber 'PE-0603PFB121ST'
+PRP Price ''
+PRP SupplierDescription 'FERRITE BEAD 600 OHM 0603 1LN'
+PRP Value '600 Ohms @ 100MHz'
+TOP 0 1.31 0.41 270 N 25 1 1
+TOP 1 1.31 0.4769292 270 N 24 22 2
+#
