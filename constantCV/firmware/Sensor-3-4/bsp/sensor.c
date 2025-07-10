@@ -253,26 +253,26 @@ void dat_cal_proc(float dat)
         switch (decm_bit)
         {
             case 0:
-                tmp_f = round(cal_val1);
+                tmp_f = cal_val1;
                 break;
             case 1:
                 cal_val1 = cal_val1 * 10;
-                tmp_val = round(cal_val1);
-                tmp_f = tmp_val / 10.0;
+                //tmp_val = round(cal_val1);
+                tmp_f = cal_val1 / 10.0;
                 break;
 
             case 2:
                 cal_val1 = cal_val1 * 100;
-                tmp_val = round(cal_val1);
-                tmp = tmp_val / 100.0;
+              //  tmp_val = round(cal_val1);
+                tmp_f = cal_val1 / 100.0;
                 break;
             case 3:
                 cal_val1 = cal_val1 * 1000;
-                tmp_val = round(cal_val1);
-                tmp_f = tmp_val / 1000.0;
+              //  tmp_val = round(cal_val1);
+                tmp_f = cal_val1 / 1000.0;
                 break;
             default :
-                tmp_f = round(cal_val1);
+                tmp_f = cal_val1;
                 break;
         }
 //        if (dat < 0)
@@ -308,6 +308,7 @@ void dat_cal_proc(float dat)
             GetReg()->pb[eREG_X100].val_u32ToFloat = tmp;
 
             cal_val1 = adc_usr.data_unit_app * 1000;
+					cal_val1 = -cal_val1;
             tmp = (uint32_t) cal_val1;
             tmp = ~tmp + 1;
             GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp;
@@ -448,7 +449,7 @@ void cal_press(void)
     adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
     tmp2 = adc_usr.adc_data_KF;
     tmp2 = SilderFilter(tmp2);
-
+   // tmp2 = 13699;
 
     if (tmp2 != 0)
     {
@@ -478,14 +479,18 @@ void cal_press(void)
 				cal_val = GetRegPrivate()->cal4ADC;
 				if(cal_val == 0)
 					cal_val = GetRegPrivate()->cal3ADC;
+		if(cal_val == 0)
+			cal_val = GetRegPrivate()->cal2ADC;
+
 		}
 		else
 			cal_val = GetRegPrivate()->cal5ADC;
         tmp1_conv1 = cal_val - GetRegPrivate()->cal1ADC;
-        tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
+        //tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
+		
 
         tmp2_conv2 = adc_usr.adc_vol - GetRegPrivate()->cal1ADC;
-        tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
+       // tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
 
         tmp2_conv2 = tmp2_conv2 / tmp1_conv1;
         adc_usr.dat_cal = tmp2_conv2;
