@@ -36,27 +36,42 @@ namespace AdminConsole
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.gcbcsjBut = new Sunny.UI.UIButton();
+            this.msglable = new Sunny.UI.UILabel();
+            this.dqljLabe = new Sunny.UI.UILabel();
+            this.uiLabel16 = new Sunny.UI.UILabel();
+            this.danweilable = new Sunny.UI.UILabel();
+            this.jcqgg = new Sunny.UI.UIGroupBox();
+            this.jicunqizufanhuiBut = new Sunny.UI.UIButton();
+            this.libiao = new Sunny.UI.UIGroupBox();
+            this.uiDataGridView1 = new Sunny.UI.UIDataGridView();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.uiButton2 = new Sunny.UI.UIButton();
             this.uiLine8 = new Sunny.UI.UILine();
-            this.jicunqizutai = new Sunny.UI.UIButton();
-            this.xieruquanbushujuBut = new Sunny.UI.UIButton();
-            this.jiaozhunduququanbuBut = new Sunny.UI.UIButton();
             this.uiGroupBox5 = new Sunny.UI.UIGroupBox();
+            this.uiLabel28 = new Sunny.UI.UILabel();
+            this.lvbodengjiinput = new Sunny.UI.UIComboBox();
             this.anliangjunfenbtn = new Sunny.UI.UIButton();
             this.uiLine1 = new Sunny.UI.UILine();
-            this.huifuchuchangBut = new Sunny.UI.UIButton();
             this.xiaozhundianinput = new Sunny.UI.UIComboBox();
+            this.uiLabel27 = new Sunny.UI.UILabel();
+            this.huifuchuchangBut = new Sunny.UI.UIButton();
             this.hengliuzhiinput = new Sunny.UI.UIComboBox();
+            this.jicunqizutai = new Sunny.UI.UIButton();
             this.offsetHinput = new Sunny.UI.UITextBox();
+            this.gcbcsjBut = new Sunny.UI.UIButton();
             this.coeinput = new Sunny.UI.UITextBox();
             this.uiLabel32 = new Sunny.UI.UILabel();
             this.yibiaoleixinginput = new Sunny.UI.UIComboBox();
+            this.xieruquanbushujuBut = new Sunny.UI.UIButton();
             this.uiLabel31 = new Sunny.UI.UILabel();
+            this.jiaozhunduququanbuBut = new Sunny.UI.UIButton();
             this.uiLabel30 = new Sunny.UI.UILabel();
             this.uiLabel29 = new Sunny.UI.UILabel();
             this.uiLabel14 = new Sunny.UI.UILabel();
             this.adczhinput = new Sunny.UI.UITextBox();
-            this.uiLabel27 = new Sunny.UI.UILabel();
             this.biaozhundanweiinput = new Sunny.UI.UIComboBox();
             this.uiLabel26 = new Sunny.UI.UILabel();
             this.uiLabel25 = new Sunny.UI.UILabel();
@@ -126,7 +141,6 @@ namespace AdminConsole
             this.uiTextBox7 = new Sunny.UI.UITextBox();
             this.uiPanel2 = new Sunny.UI.UIPanel();
             this.jiaozhunduquBut = new Sunny.UI.UIButton();
-            this.uiButton2 = new Sunny.UI.UIButton();
             this.yhsz = new Sunny.UI.UIGroupBox();
             this.pianyizhiinput = new Sunny.UI.UITextBox();
             this.dizhiinput = new Sunny.UI.UITextBox();
@@ -176,21 +190,12 @@ namespace AdminConsole
             this.dkhselectId = new Sunny.UI.UIComboBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
             this.uiLabel4 = new Sunny.UI.UILabel();
-            this.danweilable = new Sunny.UI.UILabel();
-            this.uiGroupBox4 = new Sunny.UI.UIGroupBox();
-            this.LieBIAODuQu = new Sunny.UI.UIButton();
-            this.libiao = new Sunny.UI.UIGroupBox();
-            this.uiDataGridView1 = new Sunny.UI.UIDataGridView();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LieBIAOxieru = new Sunny.UI.UIButton();
-            this.jicunqizufanhuiBut = new Sunny.UI.UIButton();
-            this.jcqgg = new Sunny.UI.UIGroupBox();
-            this.uiLabel16 = new Sunny.UI.UILabel();
-            this.dqljLabe = new Sunny.UI.UILabel();
-            this.msglable = new Sunny.UI.UILabel();
+            this.LieBIAODuQu = new Sunny.UI.UIButton();
+            this.uiGroupBox4 = new Sunny.UI.UIGroupBox();
+            this.jcqgg.SuspendLayout();
+            this.libiao.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).BeginInit();
             this.uiGroupBox5.SuspendLayout();
             this.uiPanel1.SuspendLayout();
             this.biaozhuanzhi5.SuspendLayout();
@@ -225,2063 +230,90 @@ namespace AdminConsole
             this.uiGroupBox2.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
             this.uiGroupBox4.SuspendLayout();
-            this.libiao.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).BeginInit();
-            this.jcqgg.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gcbcsjBut
-            // 
-            this.gcbcsjBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.gcbcsjBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.gcbcsjBut.Location = new System.Drawing.Point(322, 407);
-            this.gcbcsjBut.Name = "gcbcsjBut";
-            this.gcbcsjBut.Size = new System.Drawing.Size(117, 26);
-            this.gcbcsjBut.TabIndex = 77;
-            this.gcbcsjBut.Text = "工厂保存数据";
-            this.gcbcsjBut.Click += new System.EventHandler(this.gcbcsjBut_Click);
-            // 
-            // uiLine8
-            // 
-            this.uiLine8.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLine8.Location = new System.Drawing.Point(-2, 628);
-            this.uiLine8.MinimumSize = new System.Drawing.Size(16, 16);
-            this.uiLine8.Name = "uiLine8";
-            this.uiLine8.Size = new System.Drawing.Size(1057, 21);
-            this.uiLine8.TabIndex = 75;
-            this.uiLine8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // jicunqizutai
-            // 
-            this.jicunqizutai.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jicunqizutai.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jicunqizutai.Location = new System.Drawing.Point(598, 407);
-            this.jicunqizutai.Name = "jicunqizutai";
-            this.jicunqizutai.Size = new System.Drawing.Size(108, 26);
-            this.jicunqizutai.TabIndex = 74;
-            this.jicunqizutai.Text = "寄存器组态》";
-            this.jicunqizutai.Click += new System.EventHandler(this.jicunqizutai_Click);
-            // 
-            // xieruquanbushujuBut
-            // 
-            this.xieruquanbushujuBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.xieruquanbushujuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.xieruquanbushujuBut.Location = new System.Drawing.Point(178, 407);
-            this.xieruquanbushujuBut.Name = "xieruquanbushujuBut";
-            this.xieruquanbushujuBut.Size = new System.Drawing.Size(121, 26);
-            this.xieruquanbushujuBut.TabIndex = 73;
-            this.xieruquanbushujuBut.Text = "写入全部数据";
-            this.xieruquanbushujuBut.Click += new System.EventHandler(this.xieruquanbushujuBut_Click);
-            // 
-            // jiaozhunduququanbuBut
-            // 
-            this.jiaozhunduququanbuBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jiaozhunduququanbuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jiaozhunduququanbuBut.Location = new System.Drawing.Point(32, 407);
-            this.jiaozhunduququanbuBut.Name = "jiaozhunduququanbuBut";
-            this.jiaozhunduququanbuBut.Size = new System.Drawing.Size(121, 26);
-            this.jiaozhunduququanbuBut.TabIndex = 72;
-            this.jiaozhunduququanbuBut.Text = "读取全部数据";
-            this.jiaozhunduququanbuBut.Click += new System.EventHandler(this.jiaozhunduququanbuBut_Click);
-            // 
-            // uiGroupBox5
-            // 
-            this.uiGroupBox5.Controls.Add(this.anliangjunfenbtn);
-            this.uiGroupBox5.Controls.Add(this.uiLine1);
-            this.uiGroupBox5.Controls.Add(this.huifuchuchangBut);
-            this.uiGroupBox5.Controls.Add(this.xiaozhundianinput);
-            this.uiGroupBox5.Controls.Add(this.hengliuzhiinput);
-            this.uiGroupBox5.Controls.Add(this.jicunqizutai);
-            this.uiGroupBox5.Controls.Add(this.offsetHinput);
-            this.uiGroupBox5.Controls.Add(this.gcbcsjBut);
-            this.uiGroupBox5.Controls.Add(this.coeinput);
-            this.uiGroupBox5.Controls.Add(this.uiLabel32);
-            this.uiGroupBox5.Controls.Add(this.yibiaoleixinginput);
-            this.uiGroupBox5.Controls.Add(this.xieruquanbushujuBut);
-            this.uiGroupBox5.Controls.Add(this.uiLabel31);
-            this.uiGroupBox5.Controls.Add(this.jiaozhunduququanbuBut);
-            this.uiGroupBox5.Controls.Add(this.uiLabel30);
-            this.uiGroupBox5.Controls.Add(this.uiLabel29);
-            this.uiGroupBox5.Controls.Add(this.uiLabel14);
-            this.uiGroupBox5.Controls.Add(this.adczhinput);
-            this.uiGroupBox5.Controls.Add(this.uiLabel27);
-            this.uiGroupBox5.Controls.Add(this.biaozhundanweiinput);
-            this.uiGroupBox5.Controls.Add(this.uiLabel26);
-            this.uiGroupBox5.Controls.Add(this.uiLabel25);
-            this.uiGroupBox5.Controls.Add(this.lingdianpingbiinput);
-            this.uiGroupBox5.Controls.Add(this.uiLabel24);
-            this.uiGroupBox5.Controls.Add(this.ADCzengyiinput);
-            this.uiGroupBox5.Controls.Add(this.lianginput1);
-            this.uiGroupBox5.Controls.Add(this.uiLabel23);
-            this.uiGroupBox5.Controls.Add(this.lianginput2);
-            this.uiGroupBox5.Controls.Add(this.uiLabel22);
-            this.uiGroupBox5.Controls.Add(this.jiaozhunxieruBut);
-            this.uiGroupBox5.Controls.Add(this.uiPanel1);
-            this.uiGroupBox5.Controls.Add(this.jiaozhunduquBut);
-            this.uiGroupBox5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiGroupBox5.Location = new System.Drawing.Point(286, 189);
-            this.uiGroupBox5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiGroupBox5.Name = "uiGroupBox5";
-            this.uiGroupBox5.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.uiGroupBox5.Size = new System.Drawing.Size(733, 439);
-            this.uiGroupBox5.TabIndex = 7;
-            this.uiGroupBox5.Text = "校准";
-            // 
-            // anliangjunfenbtn
-            // 
-            this.anliangjunfenbtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.anliangjunfenbtn.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.anliangjunfenbtn.Location = new System.Drawing.Point(459, 164);
-            this.anliangjunfenbtn.Name = "anliangjunfenbtn";
-            this.anliangjunfenbtn.Size = new System.Drawing.Size(95, 29);
-            this.anliangjunfenbtn.TabIndex = 93;
-            this.anliangjunfenbtn.Text = "按量程均分";
-            this.anliangjunfenbtn.Click += new System.EventHandler(this.anliangjunfenbtn_Click);
-            // 
-            // uiLine1
-            // 
-            this.uiLine1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLine1.Location = new System.Drawing.Point(3, 388);
-            this.uiLine1.MinimumSize = new System.Drawing.Size(16, 16);
-            this.uiLine1.Name = "uiLine1";
-            this.uiLine1.Size = new System.Drawing.Size(727, 16);
-            this.uiLine1.TabIndex = 92;
-            this.uiLine1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // huifuchuchangBut
-            // 
-            this.huifuchuchangBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.huifuchuchangBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.huifuchuchangBut.Location = new System.Drawing.Point(462, 407);
-            this.huifuchuchangBut.Name = "huifuchuchangBut";
-            this.huifuchuchangBut.Size = new System.Drawing.Size(117, 26);
-            this.huifuchuchangBut.TabIndex = 80;
-            this.huifuchuchangBut.Text = "恢复出厂设置";
-            this.huifuchuchangBut.Click += new System.EventHandler(this.huifuchuchangBut_Click_1);
-            // 
-            // xiaozhundianinput
-            // 
-            this.xiaozhundianinput.DisplayMember = "Name";
-            this.xiaozhundianinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.xiaozhundianinput.FillColor = System.Drawing.Color.White;
-            this.xiaozhundianinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.xiaozhundianinput.Location = new System.Drawing.Point(345, 164);
-            this.xiaozhundianinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.xiaozhundianinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.xiaozhundianinput.Name = "xiaozhundianinput";
-            this.xiaozhundianinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.xiaozhundianinput.Size = new System.Drawing.Size(109, 29);
-            this.xiaozhundianinput.TabIndex = 91;
-            this.xiaozhundianinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.xiaozhundianinput.ValueMember = "ID";
-            this.xiaozhundianinput.SelectedIndexChanged += new System.EventHandler(this.xiaozhundianinput_SelectedValueChanged);
-            // 
-            // hengliuzhiinput
-            // 
-            this.hengliuzhiinput.DisplayMember = "Name";
-            this.hengliuzhiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.hengliuzhiinput.FillColor = System.Drawing.Color.White;
-            this.hengliuzhiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.hengliuzhiinput.Location = new System.Drawing.Point(576, 123);
-            this.hengliuzhiinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.hengliuzhiinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.hengliuzhiinput.Name = "hengliuzhiinput";
-            this.hengliuzhiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.hengliuzhiinput.Size = new System.Drawing.Size(108, 29);
-            this.hengliuzhiinput.TabIndex = 90;
-            this.hengliuzhiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.hengliuzhiinput.ValueMember = "ID";
-            // 
-            // offsetHinput
-            // 
-            this.offsetHinput.CanEmpty = true;
-            this.offsetHinput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.offsetHinput.FillColor = System.Drawing.Color.White;
-            this.offsetHinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.offsetHinput.Location = new System.Drawing.Point(577, 76);
-            this.offsetHinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.offsetHinput.Maximum = 9D;
-            this.offsetHinput.Minimum = 0D;
-            this.offsetHinput.Name = "offsetHinput";
-            this.offsetHinput.Padding = new System.Windows.Forms.Padding(5);
-            this.offsetHinput.Size = new System.Drawing.Size(108, 29);
-            this.offsetHinput.TabIndex = 88;
-            // 
-            // coeinput
-            // 
-            this.coeinput.CanEmpty = true;
-            this.coeinput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.coeinput.FillColor = System.Drawing.Color.White;
-            this.coeinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.coeinput.Location = new System.Drawing.Point(345, 119);
-            this.coeinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.coeinput.Maximum = 9D;
-            this.coeinput.Minimum = 0D;
-            this.coeinput.Name = "coeinput";
-            this.coeinput.Padding = new System.Windows.Forms.Padding(5);
-            this.coeinput.Size = new System.Drawing.Size(109, 29);
-            this.coeinput.TabIndex = 77;
-            this.coeinput.Type = Sunny.UI.UITextBox.UIEditType.Integer;
-            // 
-            // uiLabel32
-            // 
-            this.uiLabel32.AutoSize = true;
-            this.uiLabel32.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel32.Location = new System.Drawing.Point(28, 170);
-            this.uiLabel32.Name = "uiLabel32";
-            this.uiLabel32.Size = new System.Drawing.Size(65, 21);
-            this.uiLabel32.TabIndex = 87;
-            this.uiLabel32.Text = "ADC 值";
-            this.uiLabel32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // yibiaoleixinginput
-            // 
-            this.yibiaoleixinginput.DisplayMember = "Name";
-            this.yibiaoleixinginput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.yibiaoleixinginput.FillColor = System.Drawing.Color.White;
-            this.yibiaoleixinginput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.yibiaoleixinginput.Location = new System.Drawing.Point(577, 31);
-            this.yibiaoleixinginput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.yibiaoleixinginput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.yibiaoleixinginput.Name = "yibiaoleixinginput";
-            this.yibiaoleixinginput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.yibiaoleixinginput.Size = new System.Drawing.Size(108, 29);
-            this.yibiaoleixinginput.TabIndex = 74;
-            this.yibiaoleixinginput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.yibiaoleixinginput.ValueMember = "ID";
-            // 
-            // uiLabel31
-            // 
-            this.uiLabel31.AutoSize = true;
-            this.uiLabel31.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel31.Location = new System.Drawing.Point(503, 80);
-            this.uiLabel31.Name = "uiLabel31";
-            this.uiLabel31.Size = new System.Drawing.Size(66, 21);
-            this.uiLabel31.TabIndex = 86;
-            this.uiLabel31.Text = "offsetH";
-            this.uiLabel31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel30
-            // 
-            this.uiLabel30.AutoSize = true;
-            this.uiLabel30.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel30.Location = new System.Drawing.Point(508, 126);
-            this.uiLabel30.Name = "uiLabel30";
-            this.uiLabel30.Size = new System.Drawing.Size(58, 21);
-            this.uiLabel30.TabIndex = 85;
-            this.uiLabel30.Text = "恒流值";
-            this.uiLabel30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel29
-            // 
-            this.uiLabel29.AutoSize = true;
-            this.uiLabel29.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel29.Location = new System.Drawing.Point(265, 124);
-            this.uiLabel29.Name = "uiLabel29";
-            this.uiLabel29.Size = new System.Drawing.Size(71, 21);
-            this.uiLabel29.TabIndex = 84;
-            this.uiLabel29.Text = "coe高16";
-            this.uiLabel29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel14
-            // 
-            this.uiLabel14.AutoSize = true;
-            this.uiLabel14.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel14.Location = new System.Drawing.Point(492, 36);
-            this.uiLabel14.Name = "uiLabel14";
-            this.uiLabel14.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel14.TabIndex = 83;
-            this.uiLabel14.Text = "仪表类型";
-            this.uiLabel14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // adczhinput
-            // 
-            this.adczhinput.CanEmpty = true;
-            this.adczhinput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.adczhinput.FillColor = System.Drawing.Color.White;
-            this.adczhinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.adczhinput.Location = new System.Drawing.Point(107, 165);
-            this.adczhinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.adczhinput.Maximum = 9D;
-            this.adczhinput.Minimum = 0D;
-            this.adczhinput.Name = "adczhinput";
-            this.adczhinput.Padding = new System.Windows.Forms.Padding(5);
-            this.adczhinput.Size = new System.Drawing.Size(108, 29);
-            this.adczhinput.TabIndex = 82;
-            this.adczhinput.Type = Sunny.UI.UITextBox.UIEditType.Integer;
-            // 
-            // uiLabel27
-            // 
-            this.uiLabel27.AutoSize = true;
-            this.uiLabel27.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel27.Location = new System.Drawing.Point(278, 168);
-            this.uiLabel27.Name = "uiLabel27";
-            this.uiLabel27.Size = new System.Drawing.Size(58, 21);
-            this.uiLabel27.TabIndex = 80;
-            this.uiLabel27.Text = "校准点";
-            this.uiLabel27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // biaozhundanweiinput
-            // 
-            this.biaozhundanweiinput.DisplayMember = "Name";
-            this.biaozhundanweiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.biaozhundanweiinput.FillColor = System.Drawing.Color.White;
-            this.biaozhundanweiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.biaozhundanweiinput.Location = new System.Drawing.Point(107, 118);
-            this.biaozhundanweiinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.biaozhundanweiinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.biaozhundanweiinput.Name = "biaozhundanweiinput";
-            this.biaozhundanweiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.biaozhundanweiinput.Size = new System.Drawing.Size(108, 29);
-            this.biaozhundanweiinput.TabIndex = 79;
-            this.biaozhundanweiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.biaozhundanweiinput.ValueMember = "ID";
-            // 
-            // uiLabel26
-            // 
-            this.uiLabel26.AutoSize = true;
-            this.uiLabel26.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel26.Location = new System.Drawing.Point(12, 122);
-            this.uiLabel26.Name = "uiLabel26";
-            this.uiLabel26.Size = new System.Drawing.Size(90, 21);
-            this.uiLabel26.TabIndex = 78;
-            this.uiLabel26.Text = "标准值单位";
-            this.uiLabel26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel25
-            // 
-            this.uiLabel25.AutoSize = true;
-            this.uiLabel25.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel25.Location = new System.Drawing.Point(22, 79);
-            this.uiLabel25.Name = "uiLabel25";
-            this.uiLabel25.Size = new System.Drawing.Size(76, 21);
-            this.uiLabel25.TabIndex = 77;
-            this.uiLabel25.Text = "ADC增益";
-            this.uiLabel25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lingdianpingbiinput
-            // 
-            this.lingdianpingbiinput.CanEmpty = true;
-            this.lingdianpingbiinput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.lingdianpingbiinput.DecLength = 5;
-            this.lingdianpingbiinput.FillColor = System.Drawing.Color.White;
-            this.lingdianpingbiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.lingdianpingbiinput.Location = new System.Drawing.Point(345, 76);
-            this.lingdianpingbiinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.lingdianpingbiinput.Maximum = 9D;
-            this.lingdianpingbiinput.Minimum = 0D;
-            this.lingdianpingbiinput.Name = "lingdianpingbiinput";
-            this.lingdianpingbiinput.Padding = new System.Windows.Forms.Padding(5);
-            this.lingdianpingbiinput.Size = new System.Drawing.Size(108, 29);
-            this.lingdianpingbiinput.TabIndex = 76;
-            // 
-            // uiLabel24
-            // 
-            this.uiLabel24.AutoSize = true;
-            this.uiLabel24.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel24.Location = new System.Drawing.Point(264, 79);
-            this.uiLabel24.Name = "uiLabel24";
-            this.uiLabel24.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel24.TabIndex = 75;
-            this.uiLabel24.Text = "屏蔽零点";
-            this.uiLabel24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // ADCzengyiinput
-            // 
-            this.ADCzengyiinput.DisplayMember = "Name";
-            this.ADCzengyiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.ADCzengyiinput.FillColor = System.Drawing.Color.White;
-            this.ADCzengyiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.ADCzengyiinput.Location = new System.Drawing.Point(108, 75);
-            this.ADCzengyiinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.ADCzengyiinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.ADCzengyiinput.Name = "ADCzengyiinput";
-            this.ADCzengyiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.ADCzengyiinput.Size = new System.Drawing.Size(108, 29);
-            this.ADCzengyiinput.TabIndex = 74;
-            this.ADCzengyiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ADCzengyiinput.ValueMember = "ID";
-            // 
-            // lianginput1
-            // 
-            this.lianginput1.CanEmpty = true;
-            this.lianginput1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.lianginput1.FillColor = System.Drawing.Color.White;
-            this.lianginput1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.lianginput1.Location = new System.Drawing.Point(108, 31);
-            this.lianginput1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.lianginput1.Maximum = 9D;
-            this.lianginput1.Minimum = 0D;
-            this.lianginput1.Name = "lianginput1";
-            this.lianginput1.Padding = new System.Windows.Forms.Padding(5);
-            this.lianginput1.Size = new System.Drawing.Size(108, 29);
-            this.lianginput1.TabIndex = 72;
-            this.lianginput1.Text = "0";
-            // 
-            // uiLabel23
-            // 
-            this.uiLabel23.AutoSize = true;
-            this.uiLabel23.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel23.Location = new System.Drawing.Point(262, 35);
-            this.uiLabel23.Name = "uiLabel23";
-            this.uiLabel23.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel23.TabIndex = 72;
-            this.uiLabel23.Text = "量程满度";
-            this.uiLabel23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lianginput2
-            // 
-            this.lianginput2.CanEmpty = true;
-            this.lianginput2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.lianginput2.DoubleValue = 1D;
-            this.lianginput2.FillColor = System.Drawing.Color.White;
-            this.lianginput2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.lianginput2.IntValue = 1;
-            this.lianginput2.Location = new System.Drawing.Point(343, 32);
-            this.lianginput2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.lianginput2.Maximum = 9D;
-            this.lianginput2.Minimum = 0D;
-            this.lianginput2.Name = "lianginput2";
-            this.lianginput2.Padding = new System.Windows.Forms.Padding(5);
-            this.lianginput2.Size = new System.Drawing.Size(108, 29);
-            this.lianginput2.TabIndex = 71;
-            this.lianginput2.Text = "1";
-            // 
-            // uiLabel22
-            // 
-            this.uiLabel22.AutoSize = true;
-            this.uiLabel22.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel22.Location = new System.Drawing.Point(22, 34);
-            this.uiLabel22.Name = "uiLabel22";
-            this.uiLabel22.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel22.TabIndex = 15;
-            this.uiLabel22.Text = "量程零位";
-            this.uiLabel22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // jiaozhunxieruBut
-            // 
-            this.jiaozhunxieruBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jiaozhunxieruBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jiaozhunxieruBut.Location = new System.Drawing.Point(583, 354);
-            this.jiaozhunxieruBut.Name = "jiaozhunxieruBut";
-            this.jiaozhunxieruBut.Size = new System.Drawing.Size(86, 26);
-            this.jiaozhunxieruBut.TabIndex = 69;
-            this.jiaozhunxieruBut.Text = "写入数据";
-            this.jiaozhunxieruBut.Click += new System.EventHandler(this.jiaozhunxieruBut_Click);
-            // 
-            // uiPanel1
-            // 
-            this.uiPanel1.Controls.Add(this.biaozhuanzhi5);
-            this.uiPanel1.Controls.Add(this.biaozhuanzhi4);
-            this.uiPanel1.Controls.Add(this.caijizhiinput5);
-            this.uiPanel1.Controls.Add(this.biaozhuanzhi3);
-            this.uiPanel1.Controls.Add(this.caijizhiBut5);
-            this.uiPanel1.Controls.Add(this.uiPanel3);
-            this.uiPanel1.Controls.Add(this.caijizhiinput4);
-            this.uiPanel1.Controls.Add(this.uiPanel8);
-            this.uiPanel1.Controls.Add(this.caijizhiinput3);
-            this.uiPanel1.Controls.Add(this.caijizhiBut4);
-            this.uiPanel1.Controls.Add(this.uiPanel6);
-            this.uiPanel1.Controls.Add(this.caijizhiBut3);
-            this.uiPanel1.Controls.Add(this.uiPanel7);
-            this.uiPanel1.Controls.Add(this.biaozhuanzhi2);
-            this.uiPanel1.Controls.Add(this.biaozhuanzhi1);
-            this.uiPanel1.Controls.Add(this.caijizhiinput2);
-            this.uiPanel1.Controls.Add(this.caijizhiinput1);
-            this.uiPanel1.Controls.Add(this.caijizhiBut2);
-            this.uiPanel1.Controls.Add(this.uiTextBox14);
-            this.uiPanel1.Controls.Add(this.uiPanel5);
-            this.uiPanel1.Controls.Add(this.uiTextBox16);
-            this.uiPanel1.Controls.Add(this.uiTextBox20);
-            this.uiPanel1.Controls.Add(this.uiTextBox22);
-            this.uiPanel1.Controls.Add(this.uiTextBox24);
-            this.uiPanel1.Controls.Add(this.uiTextBox18);
-            this.uiPanel1.Controls.Add(this.uiButton1);
-            this.uiPanel1.Controls.Add(this.uiPanel4);
-            this.uiPanel1.Controls.Add(this.uiPanel2);
-            this.uiPanel1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel1.Location = new System.Drawing.Point(64, 211);
-            this.uiPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel1.Name = "uiPanel1";
-            this.uiPanel1.Size = new System.Drawing.Size(632, 132);
-            this.uiPanel1.TabIndex = 4;
-            this.uiPanel1.Text = "uiPanel1";
-            // 
-            // biaozhuanzhi5
-            // 
-            this.biaozhuanzhi5.Controls.Add(this.uiTextBox49);
-            this.biaozhuanzhi5.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.biaozhuanzhi5.Enabled = false;
-            this.biaozhuanzhi5.EnterAsTab = true;
-            this.biaozhuanzhi5.FillColor = System.Drawing.Color.White;
-            this.biaozhuanzhi5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.biaozhuanzhi5.Location = new System.Drawing.Point(516, 38);
-            this.biaozhuanzhi5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.biaozhuanzhi5.Maximum = 2147483647D;
-            this.biaozhuanzhi5.Minimum = -2147483648D;
-            this.biaozhuanzhi5.Name = "biaozhuanzhi5";
-            this.biaozhuanzhi5.Padding = new System.Windows.Forms.Padding(5);
-            this.biaozhuanzhi5.Size = new System.Drawing.Size(103, 29);
-            this.biaozhuanzhi5.TabIndex = 98;
-            // 
-            // uiTextBox49
-            // 
-            this.uiTextBox49.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox49.Enabled = false;
-            this.uiTextBox49.EnterAsTab = true;
-            this.uiTextBox49.FillColor = System.Drawing.Color.White;
-            this.uiTextBox49.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox49.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox49.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox49.Maximum = 2147483647D;
-            this.uiTextBox49.Minimum = -2147483648D;
-            this.uiTextBox49.Name = "uiTextBox49";
-            this.uiTextBox49.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox49.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox49.TabIndex = 28;
-            // 
-            // biaozhuanzhi4
-            // 
-            this.biaozhuanzhi4.Controls.Add(this.uiTextBox37);
-            this.biaozhuanzhi4.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.biaozhuanzhi4.Enabled = false;
-            this.biaozhuanzhi4.EnterAsTab = true;
-            this.biaozhuanzhi4.FillColor = System.Drawing.Color.White;
-            this.biaozhuanzhi4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.biaozhuanzhi4.Location = new System.Drawing.Point(413, 38);
-            this.biaozhuanzhi4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.biaozhuanzhi4.Maximum = 2147483647D;
-            this.biaozhuanzhi4.Minimum = -2147483648D;
-            this.biaozhuanzhi4.Name = "biaozhuanzhi4";
-            this.biaozhuanzhi4.Padding = new System.Windows.Forms.Padding(5);
-            this.biaozhuanzhi4.Size = new System.Drawing.Size(103, 29);
-            this.biaozhuanzhi4.TabIndex = 94;
-            // 
-            // uiTextBox37
-            // 
-            this.uiTextBox37.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox37.Enabled = false;
-            this.uiTextBox37.EnterAsTab = true;
-            this.uiTextBox37.FillColor = System.Drawing.Color.White;
-            this.uiTextBox37.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox37.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox37.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox37.Maximum = 2147483647D;
-            this.uiTextBox37.Minimum = -2147483648D;
-            this.uiTextBox37.Name = "uiTextBox37";
-            this.uiTextBox37.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox37.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox37.TabIndex = 28;
-            // 
-            // caijizhiinput5
-            // 
-            this.caijizhiinput5.Controls.Add(this.uiTextBox51);
-            this.caijizhiinput5.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.caijizhiinput5.Enabled = false;
-            this.caijizhiinput5.FillColor = System.Drawing.Color.White;
-            this.caijizhiinput5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiinput5.Location = new System.Drawing.Point(516, 67);
-            this.caijizhiinput5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.caijizhiinput5.Maximum = 2147483647D;
-            this.caijizhiinput5.Minimum = -2147483648D;
-            this.caijizhiinput5.Name = "caijizhiinput5";
-            this.caijizhiinput5.Padding = new System.Windows.Forms.Padding(5);
-            this.caijizhiinput5.Size = new System.Drawing.Size(103, 29);
-            this.caijizhiinput5.TabIndex = 99;
-            // 
-            // uiTextBox51
-            // 
-            this.uiTextBox51.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox51.Enabled = false;
-            this.uiTextBox51.EnterAsTab = true;
-            this.uiTextBox51.FillColor = System.Drawing.Color.White;
-            this.uiTextBox51.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox51.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox51.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox51.Maximum = 2147483647D;
-            this.uiTextBox51.Minimum = -2147483648D;
-            this.uiTextBox51.Name = "uiTextBox51";
-            this.uiTextBox51.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox51.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox51.TabIndex = 28;
-            // 
-            // biaozhuanzhi3
-            // 
-            this.biaozhuanzhi3.Controls.Add(this.uiTextBox39);
-            this.biaozhuanzhi3.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.biaozhuanzhi3.Enabled = false;
-            this.biaozhuanzhi3.EnterAsTab = true;
-            this.biaozhuanzhi3.FillColor = System.Drawing.Color.White;
-            this.biaozhuanzhi3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.biaozhuanzhi3.Location = new System.Drawing.Point(310, 38);
-            this.biaozhuanzhi3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.biaozhuanzhi3.Maximum = 2147483647D;
-            this.biaozhuanzhi3.Minimum = -2147483648D;
-            this.biaozhuanzhi3.Name = "biaozhuanzhi3";
-            this.biaozhuanzhi3.Padding = new System.Windows.Forms.Padding(5);
-            this.biaozhuanzhi3.Size = new System.Drawing.Size(103, 29);
-            this.biaozhuanzhi3.TabIndex = 90;
-            // 
-            // uiTextBox39
-            // 
-            this.uiTextBox39.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox39.Enabled = false;
-            this.uiTextBox39.EnterAsTab = true;
-            this.uiTextBox39.FillColor = System.Drawing.Color.White;
-            this.uiTextBox39.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox39.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox39.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox39.Maximum = 2147483647D;
-            this.uiTextBox39.Minimum = -2147483648D;
-            this.uiTextBox39.Name = "uiTextBox39";
-            this.uiTextBox39.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox39.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox39.TabIndex = 28;
-            // 
-            // caijizhiBut5
-            // 
-            this.caijizhiBut5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.caijizhiBut5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiBut5.Location = new System.Drawing.Point(517, 97);
-            this.caijizhiBut5.Name = "caijizhiBut5";
-            this.caijizhiBut5.Size = new System.Drawing.Size(104, 29);
-            this.caijizhiBut5.TabIndex = 97;
-            this.caijizhiBut5.Text = "采集";
-            this.caijizhiBut5.Click += new System.EventHandler(this.caijizhiBut5_Click);
-            // 
-            // uiPanel3
-            // 
-            this.uiPanel3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel3.Location = new System.Drawing.Point(0, 67);
-            this.uiPanel3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel3.Name = "uiPanel3";
-            this.uiPanel3.Size = new System.Drawing.Size(103, 30);
-            this.uiPanel3.TabIndex = 6;
-            this.uiPanel3.Text = "采集值";
-            // 
-            // caijizhiinput4
-            // 
-            this.caijizhiinput4.Controls.Add(this.uiTextBox41);
-            this.caijizhiinput4.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.caijizhiinput4.Enabled = false;
-            this.caijizhiinput4.FillColor = System.Drawing.Color.White;
-            this.caijizhiinput4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiinput4.Location = new System.Drawing.Point(413, 67);
-            this.caijizhiinput4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.caijizhiinput4.Maximum = 2147483647D;
-            this.caijizhiinput4.Minimum = -2147483648D;
-            this.caijizhiinput4.Name = "caijizhiinput4";
-            this.caijizhiinput4.Padding = new System.Windows.Forms.Padding(5);
-            this.caijizhiinput4.Size = new System.Drawing.Size(103, 29);
-            this.caijizhiinput4.TabIndex = 95;
-            // 
-            // uiTextBox41
-            // 
-            this.uiTextBox41.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox41.Enabled = false;
-            this.uiTextBox41.EnterAsTab = true;
-            this.uiTextBox41.FillColor = System.Drawing.Color.White;
-            this.uiTextBox41.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox41.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox41.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox41.Maximum = 2147483647D;
-            this.uiTextBox41.Minimum = -2147483648D;
-            this.uiTextBox41.Name = "uiTextBox41";
-            this.uiTextBox41.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox41.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox41.TabIndex = 28;
-            // 
-            // uiPanel8
-            // 
-            this.uiPanel8.Controls.Add(this.uiTextBox52);
-            this.uiPanel8.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel8.Location = new System.Drawing.Point(517, 8);
-            this.uiPanel8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel8.Name = "uiPanel8";
-            this.uiPanel8.Size = new System.Drawing.Size(102, 30);
-            this.uiPanel8.TabIndex = 96;
-            this.uiPanel8.Text = "第五点";
-            // 
-            // uiTextBox52
-            // 
-            this.uiTextBox52.Controls.Add(this.uiTextBox53);
-            this.uiTextBox52.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox52.Enabled = false;
-            this.uiTextBox52.EnterAsTab = true;
-            this.uiTextBox52.FillColor = System.Drawing.Color.White;
-            this.uiTextBox52.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox52.Location = new System.Drawing.Point(0, 29);
-            this.uiTextBox52.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox52.Maximum = 2147483647D;
-            this.uiTextBox52.Minimum = -2147483648D;
-            this.uiTextBox52.Name = "uiTextBox52";
-            this.uiTextBox52.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox52.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox52.TabIndex = 73;
-            // 
-            // uiTextBox53
-            // 
-            this.uiTextBox53.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox53.Enabled = false;
-            this.uiTextBox53.EnterAsTab = true;
-            this.uiTextBox53.FillColor = System.Drawing.Color.White;
-            this.uiTextBox53.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox53.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox53.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox53.Maximum = 2147483647D;
-            this.uiTextBox53.Minimum = -2147483648D;
-            this.uiTextBox53.Name = "uiTextBox53";
-            this.uiTextBox53.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox53.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox53.TabIndex = 28;
-            // 
-            // caijizhiinput3
-            // 
-            this.caijizhiinput3.Controls.Add(this.uiTextBox43);
-            this.caijizhiinput3.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.caijizhiinput3.Enabled = false;
-            this.caijizhiinput3.FillColor = System.Drawing.Color.White;
-            this.caijizhiinput3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiinput3.Location = new System.Drawing.Point(310, 67);
-            this.caijizhiinput3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.caijizhiinput3.Maximum = 2147483647D;
-            this.caijizhiinput3.Minimum = -2147483648D;
-            this.caijizhiinput3.Name = "caijizhiinput3";
-            this.caijizhiinput3.Padding = new System.Windows.Forms.Padding(5);
-            this.caijizhiinput3.Size = new System.Drawing.Size(103, 29);
-            this.caijizhiinput3.TabIndex = 91;
-            // 
-            // uiTextBox43
-            // 
-            this.uiTextBox43.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox43.Enabled = false;
-            this.uiTextBox43.EnterAsTab = true;
-            this.uiTextBox43.FillColor = System.Drawing.Color.White;
-            this.uiTextBox43.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox43.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox43.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox43.Maximum = 2147483647D;
-            this.uiTextBox43.Minimum = -2147483648D;
-            this.uiTextBox43.Name = "uiTextBox43";
-            this.uiTextBox43.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox43.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox43.TabIndex = 28;
-            // 
-            // caijizhiBut4
-            // 
-            this.caijizhiBut4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.caijizhiBut4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiBut4.Location = new System.Drawing.Point(413, 97);
-            this.caijizhiBut4.Name = "caijizhiBut4";
-            this.caijizhiBut4.Size = new System.Drawing.Size(104, 29);
-            this.caijizhiBut4.TabIndex = 93;
-            this.caijizhiBut4.Text = "采集";
-            this.caijizhiBut4.Click += new System.EventHandler(this.caijizhiBut4_Click);
-            // 
-            // uiPanel6
-            // 
-            this.uiPanel6.Controls.Add(this.uiTextBox44);
-            this.uiPanel6.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel6.Location = new System.Drawing.Point(413, 8);
-            this.uiPanel6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel6.Name = "uiPanel6";
-            this.uiPanel6.Size = new System.Drawing.Size(104, 30);
-            this.uiPanel6.TabIndex = 92;
-            this.uiPanel6.Text = "第四点";
-            // 
-            // uiTextBox44
-            // 
-            this.uiTextBox44.Controls.Add(this.uiTextBox45);
-            this.uiTextBox44.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox44.Enabled = false;
-            this.uiTextBox44.EnterAsTab = true;
-            this.uiTextBox44.FillColor = System.Drawing.Color.White;
-            this.uiTextBox44.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox44.Location = new System.Drawing.Point(0, 29);
-            this.uiTextBox44.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox44.Maximum = 2147483647D;
-            this.uiTextBox44.Minimum = -2147483648D;
-            this.uiTextBox44.Name = "uiTextBox44";
-            this.uiTextBox44.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox44.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox44.TabIndex = 73;
-            // 
-            // uiTextBox45
-            // 
-            this.uiTextBox45.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox45.Enabled = false;
-            this.uiTextBox45.EnterAsTab = true;
-            this.uiTextBox45.FillColor = System.Drawing.Color.White;
-            this.uiTextBox45.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox45.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox45.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox45.Maximum = 2147483647D;
-            this.uiTextBox45.Minimum = -2147483648D;
-            this.uiTextBox45.Name = "uiTextBox45";
-            this.uiTextBox45.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox45.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox45.TabIndex = 28;
-            // 
-            // caijizhiBut3
-            // 
-            this.caijizhiBut3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.caijizhiBut3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiBut3.Location = new System.Drawing.Point(311, 97);
-            this.caijizhiBut3.Name = "caijizhiBut3";
-            this.caijizhiBut3.Size = new System.Drawing.Size(104, 29);
-            this.caijizhiBut3.TabIndex = 89;
-            this.caijizhiBut3.Text = "采集";
-            this.caijizhiBut3.Click += new System.EventHandler(this.caijizhiBut3_Click);
-            // 
-            // uiPanel7
-            // 
-            this.uiPanel7.Controls.Add(this.uiTextBox46);
-            this.uiPanel7.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel7.Location = new System.Drawing.Point(310, 8);
-            this.uiPanel7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel7.Name = "uiPanel7";
-            this.uiPanel7.Size = new System.Drawing.Size(103, 30);
-            this.uiPanel7.TabIndex = 88;
-            this.uiPanel7.Text = "第三点";
-            // 
-            // uiTextBox46
-            // 
-            this.uiTextBox46.Controls.Add(this.uiTextBox47);
-            this.uiTextBox46.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox46.Enabled = false;
-            this.uiTextBox46.EnterAsTab = true;
-            this.uiTextBox46.FillColor = System.Drawing.Color.White;
-            this.uiTextBox46.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox46.Location = new System.Drawing.Point(0, 29);
-            this.uiTextBox46.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox46.Maximum = 2147483647D;
-            this.uiTextBox46.Minimum = -2147483648D;
-            this.uiTextBox46.Name = "uiTextBox46";
-            this.uiTextBox46.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox46.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox46.TabIndex = 73;
-            // 
-            // uiTextBox47
-            // 
-            this.uiTextBox47.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox47.Enabled = false;
-            this.uiTextBox47.EnterAsTab = true;
-            this.uiTextBox47.FillColor = System.Drawing.Color.White;
-            this.uiTextBox47.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox47.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox47.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox47.Maximum = 2147483647D;
-            this.uiTextBox47.Minimum = -2147483648D;
-            this.uiTextBox47.Name = "uiTextBox47";
-            this.uiTextBox47.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox47.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox47.TabIndex = 28;
-            // 
-            // biaozhuanzhi2
-            // 
-            this.biaozhuanzhi2.Controls.Add(this.uiTextBox31);
-            this.biaozhuanzhi2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.biaozhuanzhi2.EnterAsTab = true;
-            this.biaozhuanzhi2.FillColor = System.Drawing.Color.White;
-            this.biaozhuanzhi2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.biaozhuanzhi2.Location = new System.Drawing.Point(207, 38);
-            this.biaozhuanzhi2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.biaozhuanzhi2.Maximum = 2147483647D;
-            this.biaozhuanzhi2.Minimum = -2147483648D;
-            this.biaozhuanzhi2.Name = "biaozhuanzhi2";
-            this.biaozhuanzhi2.Padding = new System.Windows.Forms.Padding(5);
-            this.biaozhuanzhi2.Size = new System.Drawing.Size(103, 29);
-            this.biaozhuanzhi2.TabIndex = 83;
-            // 
-            // uiTextBox31
-            // 
-            this.uiTextBox31.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox31.Enabled = false;
-            this.uiTextBox31.EnterAsTab = true;
-            this.uiTextBox31.FillColor = System.Drawing.Color.White;
-            this.uiTextBox31.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox31.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox31.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox31.Maximum = 2147483647D;
-            this.uiTextBox31.Minimum = -2147483648D;
-            this.uiTextBox31.Name = "uiTextBox31";
-            this.uiTextBox31.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox31.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox31.TabIndex = 28;
-            // 
-            // biaozhuanzhi1
-            // 
-            this.biaozhuanzhi1.Controls.Add(this.uiTextBox13);
-            this.biaozhuanzhi1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.biaozhuanzhi1.EnterAsTab = true;
-            this.biaozhuanzhi1.FillColor = System.Drawing.Color.White;
-            this.biaozhuanzhi1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.biaozhuanzhi1.Location = new System.Drawing.Point(103, 38);
-            this.biaozhuanzhi1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.biaozhuanzhi1.Maximum = 2147483647D;
-            this.biaozhuanzhi1.Minimum = -2147483648D;
-            this.biaozhuanzhi1.Name = "biaozhuanzhi1";
-            this.biaozhuanzhi1.Padding = new System.Windows.Forms.Padding(5);
-            this.biaozhuanzhi1.Size = new System.Drawing.Size(103, 29);
-            this.biaozhuanzhi1.TabIndex = 76;
-            // 
-            // uiTextBox13
-            // 
-            this.uiTextBox13.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox13.Enabled = false;
-            this.uiTextBox13.EnterAsTab = true;
-            this.uiTextBox13.FillColor = System.Drawing.Color.White;
-            this.uiTextBox13.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox13.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox13.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox13.Maximum = 2147483647D;
-            this.uiTextBox13.Minimum = -2147483648D;
-            this.uiTextBox13.Name = "uiTextBox13";
-            this.uiTextBox13.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox13.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox13.TabIndex = 28;
-            // 
-            // caijizhiinput2
-            // 
-            this.caijizhiinput2.Controls.Add(this.uiTextBox33);
-            this.caijizhiinput2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.caijizhiinput2.Enabled = false;
-            this.caijizhiinput2.FillColor = System.Drawing.Color.White;
-            this.caijizhiinput2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiinput2.Location = new System.Drawing.Point(207, 67);
-            this.caijizhiinput2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.caijizhiinput2.Maximum = 2147483647D;
-            this.caijizhiinput2.Minimum = -2147483648D;
-            this.caijizhiinput2.Name = "caijizhiinput2";
-            this.caijizhiinput2.Padding = new System.Windows.Forms.Padding(5);
-            this.caijizhiinput2.Size = new System.Drawing.Size(103, 29);
-            this.caijizhiinput2.TabIndex = 84;
-            // 
-            // uiTextBox33
-            // 
-            this.uiTextBox33.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox33.Enabled = false;
-            this.uiTextBox33.EnterAsTab = true;
-            this.uiTextBox33.FillColor = System.Drawing.Color.White;
-            this.uiTextBox33.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox33.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox33.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox33.Maximum = 2147483647D;
-            this.uiTextBox33.Minimum = -2147483648D;
-            this.uiTextBox33.Name = "uiTextBox33";
-            this.uiTextBox33.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox33.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox33.TabIndex = 28;
-            // 
-            // caijizhiinput1
-            // 
-            this.caijizhiinput1.Controls.Add(this.uiTextBox11);
-            this.caijizhiinput1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.caijizhiinput1.Enabled = false;
-            this.caijizhiinput1.FillColor = System.Drawing.Color.White;
-            this.caijizhiinput1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiinput1.Location = new System.Drawing.Point(103, 67);
-            this.caijizhiinput1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.caijizhiinput1.Maximum = 2147483647D;
-            this.caijizhiinput1.Minimum = -2147483648D;
-            this.caijizhiinput1.Name = "caijizhiinput1";
-            this.caijizhiinput1.Padding = new System.Windows.Forms.Padding(5);
-            this.caijizhiinput1.Size = new System.Drawing.Size(103, 29);
-            this.caijizhiinput1.TabIndex = 80;
-            // 
-            // uiTextBox11
-            // 
-            this.uiTextBox11.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox11.Enabled = false;
-            this.uiTextBox11.EnterAsTab = true;
-            this.uiTextBox11.FillColor = System.Drawing.Color.White;
-            this.uiTextBox11.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox11.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox11.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox11.Maximum = 2147483647D;
-            this.uiTextBox11.Minimum = -2147483648D;
-            this.uiTextBox11.Name = "uiTextBox11";
-            this.uiTextBox11.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox11.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox11.TabIndex = 28;
-            // 
-            // caijizhiBut2
-            // 
-            this.caijizhiBut2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.caijizhiBut2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.caijizhiBut2.Location = new System.Drawing.Point(206, 97);
-            this.caijizhiBut2.Name = "caijizhiBut2";
-            this.caijizhiBut2.Size = new System.Drawing.Size(108, 30);
-            this.caijizhiBut2.TabIndex = 82;
-            this.caijizhiBut2.Text = "采集";
-            this.caijizhiBut2.Click += new System.EventHandler(this.caijizhiBut2_Click);
-            // 
-            // uiTextBox14
-            // 
-            this.uiTextBox14.Controls.Add(this.uiTextBox8);
-            this.uiTextBox14.Controls.Add(this.uiTextBox15);
-            this.uiTextBox14.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox14.Enabled = false;
-            this.uiTextBox14.EnterAsTab = true;
-            this.uiTextBox14.FillColor = System.Drawing.Color.White;
-            this.uiTextBox14.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox14.Location = new System.Drawing.Point(103, 66);
-            this.uiTextBox14.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox14.Maximum = 2147483647D;
-            this.uiTextBox14.Minimum = -2147483648D;
-            this.uiTextBox14.Name = "uiTextBox14";
-            this.uiTextBox14.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox14.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox14.TabIndex = 81;
-            // 
-            // uiTextBox8
-            // 
-            this.uiTextBox8.Controls.Add(this.uiTextBox9);
-            this.uiTextBox8.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox8.Enabled = false;
-            this.uiTextBox8.EnterAsTab = true;
-            this.uiTextBox8.FillColor = System.Drawing.Color.White;
-            this.uiTextBox8.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox8.Location = new System.Drawing.Point(0, 0);
-            this.uiTextBox8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox8.Maximum = 2147483647D;
-            this.uiTextBox8.Minimum = -2147483648D;
-            this.uiTextBox8.Name = "uiTextBox8";
-            this.uiTextBox8.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox8.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox8.TabIndex = 74;
-            // 
-            // uiTextBox9
-            // 
-            this.uiTextBox9.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox9.Enabled = false;
-            this.uiTextBox9.EnterAsTab = true;
-            this.uiTextBox9.FillColor = System.Drawing.Color.White;
-            this.uiTextBox9.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox9.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox9.Maximum = 2147483647D;
-            this.uiTextBox9.Minimum = -2147483648D;
-            this.uiTextBox9.Name = "uiTextBox9";
-            this.uiTextBox9.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox9.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox9.TabIndex = 28;
-            // 
-            // uiTextBox15
-            // 
-            this.uiTextBox15.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox15.Enabled = false;
-            this.uiTextBox15.EnterAsTab = true;
-            this.uiTextBox15.FillColor = System.Drawing.Color.White;
-            this.uiTextBox15.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox15.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox15.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox15.Maximum = 2147483647D;
-            this.uiTextBox15.Minimum = -2147483648D;
-            this.uiTextBox15.Name = "uiTextBox15";
-            this.uiTextBox15.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox15.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox15.TabIndex = 28;
-            // 
-            // uiPanel5
-            // 
-            this.uiPanel5.Controls.Add(this.uiTextBox34);
-            this.uiPanel5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel5.Location = new System.Drawing.Point(206, 8);
-            this.uiPanel5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel5.Name = "uiPanel5";
-            this.uiPanel5.Size = new System.Drawing.Size(104, 30);
-            this.uiPanel5.TabIndex = 81;
-            this.uiPanel5.Text = "第二点";
-            // 
-            // uiTextBox34
-            // 
-            this.uiTextBox34.Controls.Add(this.uiTextBox35);
-            this.uiTextBox34.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox34.Enabled = false;
-            this.uiTextBox34.EnterAsTab = true;
-            this.uiTextBox34.FillColor = System.Drawing.Color.White;
-            this.uiTextBox34.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox34.Location = new System.Drawing.Point(0, 29);
-            this.uiTextBox34.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox34.Maximum = 2147483647D;
-            this.uiTextBox34.Minimum = -2147483648D;
-            this.uiTextBox34.Name = "uiTextBox34";
-            this.uiTextBox34.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox34.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox34.TabIndex = 73;
-            // 
-            // uiTextBox35
-            // 
-            this.uiTextBox35.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox35.Enabled = false;
-            this.uiTextBox35.EnterAsTab = true;
-            this.uiTextBox35.FillColor = System.Drawing.Color.White;
-            this.uiTextBox35.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox35.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox35.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox35.Maximum = 2147483647D;
-            this.uiTextBox35.Minimum = -2147483648D;
-            this.uiTextBox35.Name = "uiTextBox35";
-            this.uiTextBox35.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox35.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox35.TabIndex = 28;
-            // 
-            // uiTextBox16
-            // 
-            this.uiTextBox16.Controls.Add(this.uiTextBox17);
-            this.uiTextBox16.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox16.Enabled = false;
-            this.uiTextBox16.EnterAsTab = true;
-            this.uiTextBox16.FillColor = System.Drawing.Color.White;
-            this.uiTextBox16.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox16.Location = new System.Drawing.Point(103, 37);
-            this.uiTextBox16.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox16.Maximum = 2147483647D;
-            this.uiTextBox16.Minimum = -2147483648D;
-            this.uiTextBox16.Name = "uiTextBox16";
-            this.uiTextBox16.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox16.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox16.TabIndex = 77;
-            // 
-            // uiTextBox17
-            // 
-            this.uiTextBox17.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox17.Enabled = false;
-            this.uiTextBox17.EnterAsTab = true;
-            this.uiTextBox17.FillColor = System.Drawing.Color.White;
-            this.uiTextBox17.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox17.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox17.Maximum = 2147483647D;
-            this.uiTextBox17.Minimum = -2147483648D;
-            this.uiTextBox17.Name = "uiTextBox17";
-            this.uiTextBox17.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox17.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox17.TabIndex = 28;
-            // 
-            // uiTextBox20
-            // 
-            this.uiTextBox20.Controls.Add(this.uiTextBox21);
-            this.uiTextBox20.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox20.Enabled = false;
-            this.uiTextBox20.EnterAsTab = true;
-            this.uiTextBox20.FillColor = System.Drawing.Color.White;
-            this.uiTextBox20.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox20.Location = new System.Drawing.Point(103, 37);
-            this.uiTextBox20.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox20.Maximum = 2147483647D;
-            this.uiTextBox20.Minimum = -2147483648D;
-            this.uiTextBox20.Name = "uiTextBox20";
-            this.uiTextBox20.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox20.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox20.TabIndex = 78;
-            // 
-            // uiTextBox21
-            // 
-            this.uiTextBox21.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox21.Enabled = false;
-            this.uiTextBox21.EnterAsTab = true;
-            this.uiTextBox21.FillColor = System.Drawing.Color.White;
-            this.uiTextBox21.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox21.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox21.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox21.Maximum = 2147483647D;
-            this.uiTextBox21.Minimum = -2147483648D;
-            this.uiTextBox21.Name = "uiTextBox21";
-            this.uiTextBox21.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox21.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox21.TabIndex = 28;
-            // 
-            // uiTextBox22
-            // 
-            this.uiTextBox22.Controls.Add(this.uiTextBox23);
-            this.uiTextBox22.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox22.Enabled = false;
-            this.uiTextBox22.EnterAsTab = true;
-            this.uiTextBox22.FillColor = System.Drawing.Color.White;
-            this.uiTextBox22.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox22.Location = new System.Drawing.Point(104, 67);
-            this.uiTextBox22.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox22.Maximum = 2147483647D;
-            this.uiTextBox22.Minimum = -2147483648D;
-            this.uiTextBox22.Name = "uiTextBox22";
-            this.uiTextBox22.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox22.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox22.TabIndex = 82;
-            // 
-            // uiTextBox23
-            // 
-            this.uiTextBox23.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox23.Enabled = false;
-            this.uiTextBox23.EnterAsTab = true;
-            this.uiTextBox23.FillColor = System.Drawing.Color.White;
-            this.uiTextBox23.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox23.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox23.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox23.Maximum = 2147483647D;
-            this.uiTextBox23.Minimum = -2147483648D;
-            this.uiTextBox23.Name = "uiTextBox23";
-            this.uiTextBox23.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox23.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox23.TabIndex = 28;
-            // 
-            // uiTextBox24
-            // 
-            this.uiTextBox24.Controls.Add(this.uiTextBox25);
-            this.uiTextBox24.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox24.Enabled = false;
-            this.uiTextBox24.EnterAsTab = true;
-            this.uiTextBox24.FillColor = System.Drawing.Color.White;
-            this.uiTextBox24.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox24.Location = new System.Drawing.Point(104, 38);
-            this.uiTextBox24.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox24.Maximum = 2147483647D;
-            this.uiTextBox24.Minimum = -2147483648D;
-            this.uiTextBox24.Name = "uiTextBox24";
-            this.uiTextBox24.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox24.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox24.TabIndex = 79;
-            // 
-            // uiTextBox25
-            // 
-            this.uiTextBox25.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox25.Enabled = false;
-            this.uiTextBox25.EnterAsTab = true;
-            this.uiTextBox25.FillColor = System.Drawing.Color.White;
-            this.uiTextBox25.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox25.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox25.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox25.Maximum = 2147483647D;
-            this.uiTextBox25.Minimum = -2147483648D;
-            this.uiTextBox25.Name = "uiTextBox25";
-            this.uiTextBox25.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox25.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox25.TabIndex = 28;
-            // 
-            // uiTextBox18
-            // 
-            this.uiTextBox18.Controls.Add(this.uiTextBox19);
-            this.uiTextBox18.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox18.Enabled = false;
-            this.uiTextBox18.EnterAsTab = true;
-            this.uiTextBox18.FillColor = System.Drawing.Color.White;
-            this.uiTextBox18.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox18.Location = new System.Drawing.Point(103, 66);
-            this.uiTextBox18.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox18.Maximum = 2147483647D;
-            this.uiTextBox18.Minimum = -2147483648D;
-            this.uiTextBox18.Name = "uiTextBox18";
-            this.uiTextBox18.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox18.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox18.TabIndex = 83;
-            // 
-            // uiTextBox19
-            // 
-            this.uiTextBox19.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox19.Enabled = false;
-            this.uiTextBox19.EnterAsTab = true;
-            this.uiTextBox19.FillColor = System.Drawing.Color.White;
-            this.uiTextBox19.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox19.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox19.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox19.Maximum = 2147483647D;
-            this.uiTextBox19.Minimum = -2147483648D;
-            this.uiTextBox19.Name = "uiTextBox19";
-            this.uiTextBox19.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox19.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox19.TabIndex = 28;
-            // 
-            // uiButton1
-            // 
-            this.uiButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.uiButton1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton1.Location = new System.Drawing.Point(100, 97);
-            this.uiButton1.Name = "uiButton1";
-            this.uiButton1.Size = new System.Drawing.Size(106, 30);
-            this.uiButton1.TabIndex = 87;
-            this.uiButton1.Text = "采集";
-            this.uiButton1.Click += new System.EventHandler(this.uiButton13_Click);
-            // 
-            // uiPanel4
-            // 
-            this.uiPanel4.Controls.Add(this.uiTextBox6);
-            this.uiPanel4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel4.Location = new System.Drawing.Point(103, 8);
-            this.uiPanel4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel4.Name = "uiPanel4";
-            this.uiPanel4.Size = new System.Drawing.Size(103, 30);
-            this.uiPanel4.TabIndex = 6;
-            this.uiPanel4.Text = "第一点";
-            // 
-            // uiTextBox6
-            // 
-            this.uiTextBox6.Controls.Add(this.uiTextBox7);
-            this.uiTextBox6.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox6.Enabled = false;
-            this.uiTextBox6.EnterAsTab = true;
-            this.uiTextBox6.FillColor = System.Drawing.Color.White;
-            this.uiTextBox6.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox6.Location = new System.Drawing.Point(0, 29);
-            this.uiTextBox6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox6.Maximum = 2147483647D;
-            this.uiTextBox6.Minimum = -2147483648D;
-            this.uiTextBox6.Name = "uiTextBox6";
-            this.uiTextBox6.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox6.Size = new System.Drawing.Size(103, 29);
-            this.uiTextBox6.TabIndex = 73;
-            // 
-            // uiTextBox7
-            // 
-            this.uiTextBox7.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox7.Enabled = false;
-            this.uiTextBox7.EnterAsTab = true;
-            this.uiTextBox7.FillColor = System.Drawing.Color.White;
-            this.uiTextBox7.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiTextBox7.Location = new System.Drawing.Point(5, 31);
-            this.uiTextBox7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox7.Maximum = 2147483647D;
-            this.uiTextBox7.Minimum = -2147483648D;
-            this.uiTextBox7.Name = "uiTextBox7";
-            this.uiTextBox7.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox7.Size = new System.Drawing.Size(106, 29);
-            this.uiTextBox7.TabIndex = 28;
-            // 
-            // uiPanel2
-            // 
-            this.uiPanel2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiPanel2.Location = new System.Drawing.Point(0, 37);
-            this.uiPanel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiPanel2.Name = "uiPanel2";
-            this.uiPanel2.Size = new System.Drawing.Size(103, 30);
-            this.uiPanel2.TabIndex = 5;
-            this.uiPanel2.Text = "标准值";
-            // 
-            // jiaozhunduquBut
-            // 
-            this.jiaozhunduquBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jiaozhunduquBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jiaozhunduquBut.Location = new System.Drawing.Point(448, 355);
-            this.jiaozhunduquBut.Name = "jiaozhunduquBut";
-            this.jiaozhunduquBut.Size = new System.Drawing.Size(86, 26);
-            this.jiaozhunduquBut.TabIndex = 68;
-            this.jiaozhunduquBut.Text = "读取数据";
-            this.jiaozhunduquBut.Click += new System.EventHandler(this.jiaozhunduquBut_Click);
-            // 
-            // uiButton2
-            // 
-            this.uiButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton2.Location = new System.Drawing.Point(159, 437);
-            this.uiButton2.Name = "uiButton2";
-            this.uiButton2.Size = new System.Drawing.Size(104, 29);
-            this.uiButton2.TabIndex = 84;
-            this.uiButton2.Text = "读取";
-            // 
-            // yhsz
-            // 
-            this.yhsz.Controls.Add(this.pianyizhiinput);
-            this.yhsz.Controls.Add(this.dizhiinput);
-            this.yhsz.Controls.Add(this.yonghushezhixieruBut);
-            this.yhsz.Controls.Add(this.yonghushezhiDuQubut);
-            this.yhsz.Controls.Add(this.botelxinput);
-            this.yhsz.Controls.Add(this.adcsulvinput);
-            this.yhsz.Controls.Add(this.xiaoshudianinput);
-            this.yhsz.Controls.Add(this.danweiinput1);
-            this.yhsz.Controls.Add(this.xiaozhunweiinput);
-            this.yhsz.Controls.Add(this.uiLabel12);
-            this.yhsz.Controls.Add(this.uiLabel11);
-            this.yhsz.Controls.Add(this.uiLabel10);
-            this.yhsz.Controls.Add(this.uiLabel9);
-            this.yhsz.Controls.Add(this.uiLabel8);
-            this.yhsz.Controls.Add(this.uiLabel7);
-            this.yhsz.Controls.Add(this.uiLabel6);
-            this.yhsz.Controls.Add(this.uiLabel5);
-            this.yhsz.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.yhsz.Location = new System.Drawing.Point(286, 14);
-            this.yhsz.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.yhsz.Name = "yhsz";
-            this.yhsz.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.yhsz.Size = new System.Drawing.Size(730, 165);
-            this.yhsz.TabIndex = 6;
-            this.yhsz.Text = "用户设置";
-            // 
-            // pianyizhiinput
-            // 
-            this.pianyizhiinput.CanEmpty = true;
-            this.pianyizhiinput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.pianyizhiinput.FillColor = System.Drawing.Color.White;
-            this.pianyizhiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.pianyizhiinput.Location = new System.Drawing.Point(111, 121);
-            this.pianyizhiinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.pianyizhiinput.Maximum = 9D;
-            this.pianyizhiinput.Minimum = 0D;
-            this.pianyizhiinput.Name = "pianyizhiinput";
-            this.pianyizhiinput.Padding = new System.Windows.Forms.Padding(5);
-            this.pianyizhiinput.Size = new System.Drawing.Size(129, 29);
-            this.pianyizhiinput.TabIndex = 73;
-            this.pianyizhiinput.Type = Sunny.UI.UITextBox.UIEditType.Double;
-            // 
-            // dizhiinput
-            // 
-            this.dizhiinput.CanEmpty = true;
-            this.dizhiinput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.dizhiinput.FillColor = System.Drawing.Color.White;
-            this.dizhiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.dizhiinput.Location = new System.Drawing.Point(111, 36);
-            this.dizhiinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.dizhiinput.Maximum = 9D;
-            this.dizhiinput.Minimum = 0D;
-            this.dizhiinput.Name = "dizhiinput";
-            this.dizhiinput.Padding = new System.Windows.Forms.Padding(5);
-            this.dizhiinput.Size = new System.Drawing.Size(129, 29);
-            this.dizhiinput.TabIndex = 67;
-            this.dizhiinput.Type = Sunny.UI.UITextBox.UIEditType.Integer;
-            // 
-            // yonghushezhixieruBut
-            // 
-            this.yonghushezhixieruBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.yonghushezhixieruBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.yonghushezhixieruBut.Location = new System.Drawing.Point(559, 124);
-            this.yonghushezhixieruBut.Name = "yonghushezhixieruBut";
-            this.yonghushezhixieruBut.Size = new System.Drawing.Size(86, 26);
-            this.yonghushezhixieruBut.TabIndex = 66;
-            this.yonghushezhixieruBut.Text = "写入";
-            this.yonghushezhixieruBut.Click += new System.EventHandler(this.yonghushezhixieruBut_Click);
-            // 
-            // yonghushezhiDuQubut
-            // 
-            this.yonghushezhiDuQubut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.yonghushezhiDuQubut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.yonghushezhiDuQubut.Location = new System.Drawing.Point(375, 124);
-            this.yonghushezhiDuQubut.Name = "yonghushezhiDuQubut";
-            this.yonghushezhiDuQubut.Size = new System.Drawing.Size(86, 26);
-            this.yonghushezhiDuQubut.TabIndex = 65;
-            this.yonghushezhiDuQubut.Text = "读取";
-            this.yonghushezhiDuQubut.Click += new System.EventHandler(this.yonghushezhiDuQubut_Click);
-            // 
-            // botelxinput
-            // 
-            this.botelxinput.DisplayMember = "Name";
-            this.botelxinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.botelxinput.FillColor = System.Drawing.Color.White;
-            this.botelxinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.botelxinput.Location = new System.Drawing.Point(359, 36);
-            this.botelxinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.botelxinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.botelxinput.Name = "botelxinput";
-            this.botelxinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.botelxinput.Size = new System.Drawing.Size(122, 29);
-            this.botelxinput.TabIndex = 21;
-            this.botelxinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.botelxinput.ValueMember = "ID";
-            // 
-            // adcsulvinput
-            // 
-            this.adcsulvinput.DisplayMember = "Name";
-            this.adcsulvinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.adcsulvinput.FillColor = System.Drawing.Color.White;
-            this.adcsulvinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.adcsulvinput.Location = new System.Drawing.Point(359, 75);
-            this.adcsulvinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.adcsulvinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.adcsulvinput.Name = "adcsulvinput";
-            this.adcsulvinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.adcsulvinput.Size = new System.Drawing.Size(122, 29);
-            this.adcsulvinput.TabIndex = 15;
-            this.adcsulvinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.adcsulvinput.ValueMember = "ID";
-            // 
-            // xiaoshudianinput
-            // 
-            this.xiaoshudianinput.DisplayMember = "Name";
-            this.xiaoshudianinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.xiaoshudianinput.FillColor = System.Drawing.Color.White;
-            this.xiaoshudianinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.xiaoshudianinput.Location = new System.Drawing.Point(582, 78);
-            this.xiaoshudianinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.xiaoshudianinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.xiaoshudianinput.Name = "xiaoshudianinput";
-            this.xiaoshudianinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.xiaoshudianinput.Size = new System.Drawing.Size(127, 29);
-            this.xiaoshudianinput.TabIndex = 20;
-            this.xiaoshudianinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.xiaoshudianinput.ValueMember = "ID";
-            // 
-            // danweiinput1
-            // 
-            this.danweiinput1.DisplayMember = "Name";
-            this.danweiinput1.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.danweiinput1.FillColor = System.Drawing.Color.White;
-            this.danweiinput1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.danweiinput1.Location = new System.Drawing.Point(111, 78);
-            this.danweiinput1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.danweiinput1.MinimumSize = new System.Drawing.Size(63, 0);
-            this.danweiinput1.Name = "danweiinput1";
-            this.danweiinput1.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.danweiinput1.Size = new System.Drawing.Size(129, 29);
-            this.danweiinput1.TabIndex = 15;
-            this.danweiinput1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.danweiinput1.ValueMember = "ID";
-            // 
-            // xiaozhunweiinput
-            // 
-            this.xiaozhunweiinput.DisplayMember = "Name";
-            this.xiaozhunweiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.xiaozhunweiinput.FillColor = System.Drawing.Color.White;
-            this.xiaozhunweiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.xiaozhunweiinput.Location = new System.Drawing.Point(582, 36);
-            this.xiaozhunweiinput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.xiaozhunweiinput.MinimumSize = new System.Drawing.Size(63, 0);
-            this.xiaozhunweiinput.Name = "xiaozhunweiinput";
-            this.xiaozhunweiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.xiaozhunweiinput.Size = new System.Drawing.Size(127, 29);
-            this.xiaozhunweiinput.TabIndex = 14;
-            this.xiaozhunweiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.xiaozhunweiinput.ValueMember = "ID";
-            // 
-            // uiLabel12
-            // 
-            this.uiLabel12.AutoSize = true;
-            this.uiLabel12.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.uiLabel12.Location = new System.Drawing.Point(269, 86);
-            this.uiLabel12.Name = "uiLabel12";
-            this.uiLabel12.Size = new System.Drawing.Size(33, 17);
-            this.uiLabel12.TabIndex = 19;
-            this.uiLabel12.Text = "ADC";
-            this.uiLabel12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel11
-            // 
-            this.uiLabel11.AutoSize = true;
-            this.uiLabel11.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel11.Location = new System.Drawing.Point(25, 121);
-            this.uiLabel11.Name = "uiLabel11";
-            this.uiLabel11.Size = new System.Drawing.Size(84, 21);
-            this.uiLabel11.TabIndex = 18;
-            this.uiLabel11.Text = "偏 移 值：";
-            this.uiLabel11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel10
-            // 
-            this.uiLabel10.AutoSize = true;
-            this.uiLabel10.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel10.Location = new System.Drawing.Point(25, 82);
-            this.uiLabel10.Name = "uiLabel10";
-            this.uiLabel10.Size = new System.Drawing.Size(88, 21);
-            this.uiLabel10.TabIndex = 17;
-            this.uiLabel10.Text = "单      位：";
-            this.uiLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel9
-            // 
-            this.uiLabel9.AutoSize = true;
-            this.uiLabel9.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel9.Location = new System.Drawing.Point(298, 82);
-            this.uiLabel9.Name = "uiLabel9";
-            this.uiLabel9.Size = new System.Drawing.Size(58, 21);
-            this.uiLabel9.TabIndex = 16;
-            this.uiLabel9.Text = "速率：";
-            this.uiLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel8
-            // 
-            this.uiLabel8.AutoSize = true;
-            this.uiLabel8.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel8.Location = new System.Drawing.Point(507, 41);
-            this.uiLabel8.Name = "uiLabel8";
-            this.uiLabel8.Size = new System.Drawing.Size(84, 21);
-            this.uiLabel8.TabIndex = 15;
-            this.uiLabel8.Text = "校 准 位：";
-            this.uiLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel7
-            // 
-            this.uiLabel7.AutoSize = true;
-            this.uiLabel7.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel7.Location = new System.Drawing.Point(272, 39);
-            this.uiLabel7.Name = "uiLabel7";
-            this.uiLabel7.Size = new System.Drawing.Size(84, 21);
-            this.uiLabel7.TabIndex = 14;
-            this.uiLabel7.Text = "波 特 率：";
-            this.uiLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel6
-            // 
-            this.uiLabel6.AutoSize = true;
-            this.uiLabel6.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel6.Location = new System.Drawing.Point(506, 86);
-            this.uiLabel6.Name = "uiLabel6";
-            this.uiLabel6.Size = new System.Drawing.Size(84, 21);
-            this.uiLabel6.TabIndex = 13;
-            this.uiLabel6.Text = "小 数 点：";
-            this.uiLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel5
-            // 
-            this.uiLabel5.AutoSize = true;
-            this.uiLabel5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel5.Location = new System.Drawing.Point(28, 39);
-            this.uiLabel5.Name = "uiLabel5";
-            this.uiLabel5.Size = new System.Drawing.Size(83, 21);
-            this.uiLabel5.TabIndex = 12;
-            this.uiLabel5.Text = "地     址：";
-            this.uiLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiGroupBox3
-            // 
-            this.uiGroupBox3.Controls.Add(this.x1000input);
-            this.uiGroupBox3.Controls.Add(this.x100input);
-            this.uiGroupBox3.Controls.Add(this.x10input);
-            this.uiGroupBox3.Controls.Add(this.zhengxinginput);
-            this.uiGroupBox3.Controls.Add(this.fudianxinginput);
-            this.uiGroupBox3.Controls.Add(this.uiLabel21);
-            this.uiGroupBox3.Controls.Add(this.uiLabel20);
-            this.uiGroupBox3.Controls.Add(this.uiLabel19);
-            this.uiGroupBox3.Controls.Add(this.uiLabel18);
-            this.uiGroupBox3.Controls.Add(this.uiLabel17);
-            this.uiGroupBox3.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.uiGroupBox3.Location = new System.Drawing.Point(13, 401);
-            this.uiGroupBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiGroupBox3.Name = "uiGroupBox3";
-            this.uiGroupBox3.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.uiGroupBox3.Size = new System.Drawing.Size(265, 227);
-            this.uiGroupBox3.TabIndex = 7;
-            this.uiGroupBox3.Text = "测量输出";
-            // 
-            // x1000input
-            // 
-            this.x1000input.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.x1000input.Enabled = false;
-            this.x1000input.EnterAsTab = true;
-            this.x1000input.FillColor = System.Drawing.Color.White;
-            this.x1000input.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.x1000input.Location = new System.Drawing.Point(91, 190);
-            this.x1000input.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.x1000input.Maximum = 2147483647D;
-            this.x1000input.Minimum = -2147483648D;
-            this.x1000input.Name = "x1000input";
-            this.x1000input.Padding = new System.Windows.Forms.Padding(5);
-            this.x1000input.Size = new System.Drawing.Size(145, 29);
-            this.x1000input.TabIndex = 30;
-            // 
-            // x100input
-            // 
-            this.x100input.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.x100input.Enabled = false;
-            this.x100input.EnterAsTab = true;
-            this.x100input.FillColor = System.Drawing.Color.White;
-            this.x100input.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.x100input.Location = new System.Drawing.Point(91, 152);
-            this.x100input.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.x100input.Maximum = 2147483647D;
-            this.x100input.Minimum = -2147483648D;
-            this.x100input.Name = "x100input";
-            this.x100input.Padding = new System.Windows.Forms.Padding(5);
-            this.x100input.Size = new System.Drawing.Size(145, 29);
-            this.x100input.TabIndex = 29;
-            // 
-            // x10input
-            // 
-            this.x10input.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.x10input.Enabled = false;
-            this.x10input.EnterAsTab = true;
-            this.x10input.FillColor = System.Drawing.Color.White;
-            this.x10input.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.x10input.Location = new System.Drawing.Point(91, 113);
-            this.x10input.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.x10input.Maximum = 2147483647D;
-            this.x10input.Minimum = -2147483648D;
-            this.x10input.Name = "x10input";
-            this.x10input.Padding = new System.Windows.Forms.Padding(5);
-            this.x10input.Size = new System.Drawing.Size(145, 29);
-            this.x10input.TabIndex = 28;
-            // 
-            // zhengxinginput
-            // 
-            this.zhengxinginput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.zhengxinginput.Enabled = false;
-            this.zhengxinginput.EnterAsTab = true;
-            this.zhengxinginput.FillColor = System.Drawing.Color.White;
-            this.zhengxinginput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.zhengxinginput.Location = new System.Drawing.Point(91, 74);
-            this.zhengxinginput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.zhengxinginput.Maximum = 2147483647D;
-            this.zhengxinginput.Minimum = -2147483648D;
-            this.zhengxinginput.Name = "zhengxinginput";
-            this.zhengxinginput.Padding = new System.Windows.Forms.Padding(5);
-            this.zhengxinginput.Size = new System.Drawing.Size(145, 29);
-            this.zhengxinginput.TabIndex = 27;
-            // 
-            // fudianxinginput
-            // 
-            this.fudianxinginput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.fudianxinginput.Enabled = false;
-            this.fudianxinginput.EnterAsTab = true;
-            this.fudianxinginput.FillColor = System.Drawing.Color.White;
-            this.fudianxinginput.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.fudianxinginput.Location = new System.Drawing.Point(92, 34);
-            this.fudianxinginput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.fudianxinginput.Maximum = 2147483647D;
-            this.fudianxinginput.Minimum = -2147483648D;
-            this.fudianxinginput.Name = "fudianxinginput";
-            this.fudianxinginput.Padding = new System.Windows.Forms.Padding(5);
-            this.fudianxinginput.Size = new System.Drawing.Size(144, 29);
-            this.fudianxinginput.TabIndex = 26;
-            // 
-            // uiLabel21
-            // 
-            this.uiLabel21.AutoSize = true;
-            this.uiLabel21.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel21.Location = new System.Drawing.Point(14, 193);
-            this.uiLabel21.Name = "uiLabel21";
-            this.uiLabel21.Size = new System.Drawing.Size(70, 21);
-            this.uiLabel21.TabIndex = 25;
-            this.uiLabel21.Text = "x1000：";
-            this.uiLabel21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel20
-            // 
-            this.uiLabel20.AutoSize = true;
-            this.uiLabel20.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel20.Location = new System.Drawing.Point(23, 161);
-            this.uiLabel20.Name = "uiLabel20";
-            this.uiLabel20.Size = new System.Drawing.Size(61, 21);
-            this.uiLabel20.TabIndex = 24;
-            this.uiLabel20.Text = "x100：";
-            this.uiLabel20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel19
-            // 
-            this.uiLabel19.AutoSize = true;
-            this.uiLabel19.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel19.Location = new System.Drawing.Point(32, 121);
-            this.uiLabel19.Name = "uiLabel19";
-            this.uiLabel19.Size = new System.Drawing.Size(52, 21);
-            this.uiLabel19.TabIndex = 23;
-            this.uiLabel19.Text = "x10：";
-            this.uiLabel19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // uiLabel18
-            // 
-            this.uiLabel18.AutoSize = true;
-            this.uiLabel18.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel18.Location = new System.Drawing.Point(19, 77);
-            this.uiLabel18.Name = "uiLabel18";
-            this.uiLabel18.Size = new System.Drawing.Size(68, 21);
-            this.uiLabel18.TabIndex = 22;
-            this.uiLabel18.Text = "整  形：";
-            this.uiLabel18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel17
-            // 
-            this.uiLabel17.AutoSize = true;
-            this.uiLabel17.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel17.Location = new System.Drawing.Point(15, 37);
-            this.uiLabel17.Name = "uiLabel17";
-            this.uiLabel17.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel17.TabIndex = 21;
-            this.uiLabel17.Text = "浮点型：";
-            this.uiLabel17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiGroupBox2
-            // 
-            this.uiGroupBox2.Controls.Add(this.ruanjianbanbenlable);
-            this.uiGroupBox2.Controls.Add(this.bankaxinghaolable);
-            this.uiGroupBox2.Controls.Add(this.yibiaoduqubut);
-            this.uiGroupBox2.Controls.Add(this.yibiaoliangcheng1);
-            this.uiGroupBox2.Controls.Add(this.uiLabel15);
-            this.uiGroupBox2.Controls.Add(this.yibiaoli);
-            this.uiGroupBox2.Controls.Add(this.uiLabel13);
-            this.uiGroupBox2.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.uiGroupBox2.Location = new System.Drawing.Point(13, 224);
-            this.uiGroupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiGroupBox2.Name = "uiGroupBox2";
-            this.uiGroupBox2.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.uiGroupBox2.Size = new System.Drawing.Size(265, 167);
-            this.uiGroupBox2.TabIndex = 6;
-            this.uiGroupBox2.Text = "仪表信息";
-            // 
-            // ruanjianbanbenlable
-            // 
-            this.ruanjianbanbenlable.AutoSize = true;
-            this.ruanjianbanbenlable.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.ruanjianbanbenlable.Location = new System.Drawing.Point(90, 106);
-            this.ruanjianbanbenlable.Name = "ruanjianbanbenlable";
-            this.ruanjianbanbenlable.Size = new System.Drawing.Size(0, 21);
-            this.ruanjianbanbenlable.TabIndex = 68;
-            this.ruanjianbanbenlable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // bankaxinghaolable
-            // 
-            this.bankaxinghaolable.AutoSize = true;
-            this.bankaxinghaolable.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.bankaxinghaolable.Location = new System.Drawing.Point(90, 37);
-            this.bankaxinghaolable.Name = "bankaxinghaolable";
-            this.bankaxinghaolable.Size = new System.Drawing.Size(0, 21);
-            this.bankaxinghaolable.TabIndex = 67;
-            this.bankaxinghaolable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // yibiaoduqubut
-            // 
-            this.yibiaoduqubut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.yibiaoduqubut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.yibiaoduqubut.Location = new System.Drawing.Point(3, 138);
-            this.yibiaoduqubut.Name = "yibiaoduqubut";
-            this.yibiaoduqubut.Size = new System.Drawing.Size(255, 26);
-            this.yibiaoduqubut.TabIndex = 66;
-            this.yibiaoduqubut.Text = "读取";
-            this.yibiaoduqubut.Click += new System.EventHandler(this.yibiaoduqubut_Click);
-            // 
-            // yibiaoliangcheng1
-            // 
-            this.yibiaoliangcheng1.AutoSize = true;
-            this.yibiaoliangcheng1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.yibiaoliangcheng1.Location = new System.Drawing.Point(82, 71);
-            this.yibiaoliangcheng1.Name = "yibiaoliangcheng1";
-            this.yibiaoliangcheng1.Size = new System.Drawing.Size(80, 21);
-            this.yibiaoliangcheng1.TabIndex = 15;
-            this.yibiaoliangcheng1.Text = "0~1 Mpa";
-            this.yibiaoliangcheng1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel15
-            // 
-            this.uiLabel15.AutoSize = true;
-            this.uiLabel15.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel15.Location = new System.Drawing.Point(5, 105);
-            this.uiLabel15.Name = "uiLabel15";
-            this.uiLabel15.Size = new System.Drawing.Size(90, 21);
-            this.uiLabel15.TabIndex = 14;
-            this.uiLabel15.Text = "软件版本：";
-            this.uiLabel15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // yibiaoli
-            // 
-            this.yibiaoli.AutoSize = true;
-            this.yibiaoli.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.yibiaoli.Location = new System.Drawing.Point(5, 71);
-            this.yibiaoli.Name = "yibiaoli";
-            this.yibiaoli.Size = new System.Drawing.Size(90, 21);
-            this.yibiaoli.TabIndex = 13;
-            this.yibiaoli.Text = "仪表量程：";
-            this.yibiaoli.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel13
-            // 
-            this.uiLabel13.AutoSize = true;
-            this.uiLabel13.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel13.Location = new System.Drawing.Point(5, 36);
-            this.uiLabel13.Name = "uiLabel13";
-            this.uiLabel13.Size = new System.Drawing.Size(90, 21);
-            this.uiLabel13.TabIndex = 12;
-            this.uiLabel13.Text = "版卡型号：";
-            this.uiLabel13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiGroupBox1
-            // 
-            this.uiGroupBox1.Controls.Add(this.sousuoSbBut1);
-            this.uiGroupBox1.Controls.Add(this.lianjieButId);
-            this.uiGroupBox1.Controls.Add(this.cxdkButId);
-            this.uiGroupBox1.Controls.Add(this.uiLabel3);
-            this.uiGroupBox1.Controls.Add(this.uiLabel2);
-            this.uiGroupBox1.Controls.Add(this.dzselectId);
-            this.uiGroupBox1.Controls.Add(this.xywselectId);
-            this.uiGroupBox1.Controls.Add(this.btlSelectId);
-            this.uiGroupBox1.Controls.Add(this.dkhselectId);
-            this.uiGroupBox1.Controls.Add(this.uiLabel1);
-            this.uiGroupBox1.Controls.Add(this.uiLabel4);
-            this.uiGroupBox1.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.uiGroupBox1.Location = new System.Drawing.Point(13, 14);
-            this.uiGroupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiGroupBox1.Name = "uiGroupBox1";
-            this.uiGroupBox1.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.uiGroupBox1.Size = new System.Drawing.Size(265, 200);
-            this.uiGroupBox1.TabIndex = 5;
-            this.uiGroupBox1.Text = "端口设置";
-            // 
-            // sousuoSbBut1
-            // 
-            this.sousuoSbBut1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.sousuoSbBut1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.sousuoSbBut1.Location = new System.Drawing.Point(172, 75);
-            this.sousuoSbBut1.Name = "sousuoSbBut1";
-            this.sousuoSbBut1.Size = new System.Drawing.Size(86, 26);
-            this.sousuoSbBut1.TabIndex = 66;
-            this.sousuoSbBut1.Text = "搜索";
-            this.sousuoSbBut1.Click += new System.EventHandler(this.sousuoSbBut1_Click);
-            // 
-            // lianjieButId
-            // 
-            this.lianjieButId.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lianjieButId.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.lianjieButId.Location = new System.Drawing.Point(172, 152);
-            this.lianjieButId.Name = "lianjieButId";
-            this.lianjieButId.Size = new System.Drawing.Size(86, 26);
-            this.lianjieButId.TabIndex = 64;
-            this.lianjieButId.Text = "连接";
-            this.lianjieButId.Click += new System.EventHandler(this.lianjieButId_Click);
-            // 
-            // cxdkButId
-            // 
-            this.cxdkButId.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cxdkButId.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.cxdkButId.Location = new System.Drawing.Point(172, 38);
-            this.cxdkButId.Name = "cxdkButId";
-            this.cxdkButId.Size = new System.Drawing.Size(86, 26);
-            this.cxdkButId.TabIndex = 63;
-            this.cxdkButId.Text = "查找端口";
-            this.cxdkButId.Click += new System.EventHandler(this.cxdkButId_Click);
-            // 
-            // uiLabel3
-            // 
-            this.uiLabel3.AutoSize = true;
-            this.uiLabel3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel3.Location = new System.Drawing.Point(5, 156);
-            this.uiLabel3.Name = "uiLabel3";
-            this.uiLabel3.Size = new System.Drawing.Size(73, 21);
-            this.uiLabel3.TabIndex = 20;
-            this.uiLabel3.Text = "地   址：";
-            this.uiLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel2
-            // 
-            this.uiLabel2.AutoSize = true;
-            this.uiLabel2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel2.Location = new System.Drawing.Point(5, 116);
-            this.uiLabel2.Name = "uiLabel2";
-            this.uiLabel2.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel2.TabIndex = 19;
-            this.uiLabel2.Text = "校验位：";
-            this.uiLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // dzselectId
-            // 
-            this.dzselectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.dzselectId.FillColor = System.Drawing.Color.White;
-            this.dzselectId.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.dzselectId.Location = new System.Drawing.Point(80, 151);
-            this.dzselectId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.dzselectId.MinimumSize = new System.Drawing.Size(63, 0);
-            this.dzselectId.Name = "dzselectId";
-            this.dzselectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.dzselectId.Size = new System.Drawing.Size(87, 29);
-            this.dzselectId.TabIndex = 18;
-            this.dzselectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // xywselectId
-            // 
-            this.xywselectId.DisplayMember = "Name";
-            this.xywselectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.xywselectId.FillColor = System.Drawing.Color.White;
-            this.xywselectId.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.xywselectId.Location = new System.Drawing.Point(80, 113);
-            this.xywselectId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.xywselectId.MinimumSize = new System.Drawing.Size(63, 0);
-            this.xywselectId.Name = "xywselectId";
-            this.xywselectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.xywselectId.Size = new System.Drawing.Size(87, 29);
-            this.xywselectId.TabIndex = 17;
-            this.xywselectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.xywselectId.ValueMember = "ID";
-            // 
-            // btlSelectId
-            // 
-            this.btlSelectId.DisplayMember = "Name";
-            this.btlSelectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.btlSelectId.FillColor = System.Drawing.Color.White;
-            this.btlSelectId.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.btlSelectId.Location = new System.Drawing.Point(79, 74);
-            this.btlSelectId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btlSelectId.MinimumSize = new System.Drawing.Size(63, 0);
-            this.btlSelectId.Name = "btlSelectId";
-            this.btlSelectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.btlSelectId.Size = new System.Drawing.Size(87, 29);
-            this.btlSelectId.TabIndex = 16;
-            this.btlSelectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btlSelectId.ValueMember = "ID";
-            // 
-            // dkhselectId
-            // 
-            this.dkhselectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
-            this.dkhselectId.FillColor = System.Drawing.Color.White;
-            this.dkhselectId.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.dkhselectId.Location = new System.Drawing.Point(78, 38);
-            this.dkhselectId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.dkhselectId.MinimumSize = new System.Drawing.Size(63, 0);
-            this.dkhselectId.Name = "dkhselectId";
-            this.dkhselectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
-            this.dkhselectId.Size = new System.Drawing.Size(87, 29);
-            this.dkhselectId.TabIndex = 13;
-            this.dkhselectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel1
-            // 
-            this.uiLabel1.AutoSize = true;
-            this.uiLabel1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel1.Location = new System.Drawing.Point(5, 78);
-            this.uiLabel1.Name = "uiLabel1";
-            this.uiLabel1.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel1.TabIndex = 12;
-            this.uiLabel1.Text = "波特率：";
-            this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel4
-            // 
-            this.uiLabel4.AutoSize = true;
-            this.uiLabel4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel4.Location = new System.Drawing.Point(5, 41);
-            this.uiLabel4.Name = "uiLabel4";
-            this.uiLabel4.Size = new System.Drawing.Size(74, 21);
-            this.uiLabel4.TabIndex = 11;
-            this.uiLabel4.Text = "端口号：";
-            this.uiLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // msglable
+            // 
+            this.msglable.AutoSize = true;
+            this.msglable.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.msglable.Location = new System.Drawing.Point(826, 969);
+            this.msglable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.msglable.Name = "msglable";
+            this.msglable.Size = new System.Drawing.Size(0, 31);
+            this.msglable.TabIndex = 82;
+            this.msglable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // dqljLabe
+            // 
+            this.dqljLabe.AutoSize = true;
+            this.dqljLabe.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.dqljLabe.Location = new System.Drawing.Point(144, 969);
+            this.dqljLabe.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.dqljLabe.Name = "dqljLabe";
+            this.dqljLabe.Size = new System.Drawing.Size(0, 31);
+            this.dqljLabe.TabIndex = 81;
+            this.dqljLabe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel16
+            // 
+            this.uiLabel16.AutoSize = true;
+            this.uiLabel16.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel16.Location = new System.Drawing.Point(18, 969);
+            this.uiLabel16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel16.Name = "uiLabel16";
+            this.uiLabel16.Size = new System.Drawing.Size(134, 31);
+            this.uiLabel16.TabIndex = 80;
+            this.uiLabel16.Text = "当前链接：";
+            this.uiLabel16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // danweilable
             // 
             this.danweilable.AutoSize = true;
             this.danweilable.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.danweilable.Location = new System.Drawing.Point(27, 643);
+            this.danweilable.Location = new System.Drawing.Point(40, 964);
+            this.danweilable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.danweilable.Name = "danweilable";
-            this.danweilable.Size = new System.Drawing.Size(0, 21);
+            this.danweilable.Size = new System.Drawing.Size(0, 31);
             this.danweilable.TabIndex = 79;
             this.danweilable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.danweilable.Visible = false;
             // 
-            // uiGroupBox4
+            // jcqgg
             // 
-            this.uiGroupBox4.Controls.Add(this.LieBIAODuQu);
-            this.uiGroupBox4.Controls.Add(this.libiao);
-            this.uiGroupBox4.Controls.Add(this.LieBIAOxieru);
-            this.uiGroupBox4.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.uiGroupBox4.Location = new System.Drawing.Point(10, 24);
-            this.uiGroupBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiGroupBox4.Name = "uiGroupBox4";
-            this.uiGroupBox4.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.uiGroupBox4.Size = new System.Drawing.Size(724, 545);
-            this.uiGroupBox4.TabIndex = 76;
-            this.uiGroupBox4.Text = "寄存器组";
+            this.jcqgg.Controls.Add(this.jicunqizufanhuiBut);
+            this.jcqgg.Controls.Add(this.uiGroupBox4);
+            this.jcqgg.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jcqgg.Location = new System.Drawing.Point(429, 23);
+            this.jcqgg.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.jcqgg.Name = "jcqgg";
+            this.jcqgg.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.jcqgg.Size = new System.Drawing.Size(1059, 450);
+            this.jcqgg.TabIndex = 78;
+            this.jcqgg.Text = null;
+            this.jcqgg.Visible = false;
             // 
-            // LieBIAODuQu
+            // jicunqizufanhuiBut
             // 
-            this.LieBIAODuQu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LieBIAODuQu.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.LieBIAODuQu.Location = new System.Drawing.Point(430, 498);
-            this.LieBIAODuQu.Name = "LieBIAODuQu";
-            this.LieBIAODuQu.Size = new System.Drawing.Size(86, 26);
-            this.LieBIAODuQu.TabIndex = 75;
-            this.LieBIAODuQu.Text = "读取";
-            this.LieBIAODuQu.Click += new System.EventHandler(this.LieBIAODuQu_Click);
+            this.jicunqizufanhuiBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jicunqizufanhuiBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jicunqizufanhuiBut.Location = new System.Drawing.Point(33, 862);
+            this.jicunqizufanhuiBut.Margin = new System.Windows.Forms.Padding(4);
+            this.jicunqizufanhuiBut.Name = "jicunqizufanhuiBut";
+            this.jicunqizufanhuiBut.Size = new System.Drawing.Size(129, 39);
+            this.jicunqizufanhuiBut.TabIndex = 77;
+            this.jicunqizufanhuiBut.Text = "《工厂校准";
+            this.jicunqizufanhuiBut.Click += new System.EventHandler(this.jicunqizufanhuiBut_Click);
             // 
             // libiao
             // 
             this.libiao.Controls.Add(this.uiDataGridView1);
             this.libiao.Controls.Add(this.uiButton2);
             this.libiao.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.libiao.Location = new System.Drawing.Point(4, 22);
-            this.libiao.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.libiao.Location = new System.Drawing.Point(3, 39);
+            this.libiao.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.libiao.Name = "libiao";
-            this.libiao.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.libiao.Size = new System.Drawing.Size(716, 457);
+            this.libiao.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.libiao.Size = new System.Drawing.Size(1099, 648);
             this.libiao.TabIndex = 74;
             this.libiao.Text = null;
             // 
@@ -2323,17 +355,19 @@ namespace AdminConsole
             this.uiDataGridView1.EnableHeadersVisualStyles = false;
             this.uiDataGridView1.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.uiDataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.uiDataGridView1.Location = new System.Drawing.Point(0, 32);
+            this.uiDataGridView1.Location = new System.Drawing.Point(0, 48);
+            this.uiDataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.uiDataGridView1.MultiSelect = false;
             this.uiDataGridView1.Name = "uiDataGridView1";
             this.uiDataGridView1.RowHeadersVisible = false;
+            this.uiDataGridView1.RowHeadersWidth = 62;
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
             this.uiDataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.uiDataGridView1.RowTemplate.Height = 29;
             this.uiDataGridView1.SelectedIndex = -1;
             this.uiDataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.uiDataGridView1.ShowRect = false;
-            this.uiDataGridView1.Size = new System.Drawing.Size(716, 425);
+            this.uiDataGridView1.Size = new System.Drawing.Size(1099, 600);
             this.uiDataGridView1.TabIndex = 2;
             this.uiDataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.uiDataGridView1_CellClick);
             // 
@@ -2341,6 +375,7 @@ namespace AdminConsole
             // 
             this.Column4.DataPropertyName = "Id";
             this.Column4.HeaderText = "ID";
+            this.Column4.MinimumWidth = 8;
             this.Column4.Name = "Column4";
             this.Column4.Visible = false;
             // 
@@ -2348,97 +383,2194 @@ namespace AdminConsole
             // 
             this.Column1.DataPropertyName = "Name";
             this.Column1.HeaderText = "参数名";
+            this.Column1.MinimumWidth = 8;
             this.Column1.Name = "Column1";
             // 
             // Column2
             // 
             this.Column2.DataPropertyName = "Description";
             this.Column2.HeaderText = "地址";
+            this.Column2.MinimumWidth = 8;
             this.Column2.Name = "Column2";
             // 
             // Column3
             // 
             this.Column3.DataPropertyName = "val";
             this.Column3.HeaderText = "数据";
+            this.Column3.MinimumWidth = 8;
             this.Column3.Name = "Column3";
+            // 
+            // uiButton2
+            // 
+            this.uiButton2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiButton2.Location = new System.Drawing.Point(238, 656);
+            this.uiButton2.Margin = new System.Windows.Forms.Padding(4);
+            this.uiButton2.Name = "uiButton2";
+            this.uiButton2.Size = new System.Drawing.Size(156, 44);
+            this.uiButton2.TabIndex = 84;
+            this.uiButton2.Text = "读取";
+            this.uiButton2.Click += new System.EventHandler(this.uiButton2_Click);
+            // 
+            // uiLine8
+            // 
+            this.uiLine8.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLine8.Location = new System.Drawing.Point(-3, 942);
+            this.uiLine8.Margin = new System.Windows.Forms.Padding(4);
+            this.uiLine8.MinimumSize = new System.Drawing.Size(24, 24);
+            this.uiLine8.Name = "uiLine8";
+            this.uiLine8.Size = new System.Drawing.Size(1586, 32);
+            this.uiLine8.TabIndex = 75;
+            this.uiLine8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiGroupBox5
+            // 
+            this.uiGroupBox5.Controls.Add(this.uiLabel28);
+            this.uiGroupBox5.Controls.Add(this.lvbodengjiinput);
+            this.uiGroupBox5.Controls.Add(this.anliangjunfenbtn);
+            this.uiGroupBox5.Controls.Add(this.uiLine1);
+            this.uiGroupBox5.Controls.Add(this.xiaozhundianinput);
+            this.uiGroupBox5.Controls.Add(this.uiLabel27);
+            this.uiGroupBox5.Controls.Add(this.huifuchuchangBut);
+            this.uiGroupBox5.Controls.Add(this.hengliuzhiinput);
+            this.uiGroupBox5.Controls.Add(this.jicunqizutai);
+            this.uiGroupBox5.Controls.Add(this.offsetHinput);
+            this.uiGroupBox5.Controls.Add(this.gcbcsjBut);
+            this.uiGroupBox5.Controls.Add(this.coeinput);
+            this.uiGroupBox5.Controls.Add(this.uiLabel32);
+            this.uiGroupBox5.Controls.Add(this.yibiaoleixinginput);
+            this.uiGroupBox5.Controls.Add(this.xieruquanbushujuBut);
+            this.uiGroupBox5.Controls.Add(this.uiLabel31);
+            this.uiGroupBox5.Controls.Add(this.jiaozhunduququanbuBut);
+            this.uiGroupBox5.Controls.Add(this.uiLabel30);
+            this.uiGroupBox5.Controls.Add(this.uiLabel29);
+            this.uiGroupBox5.Controls.Add(this.uiLabel14);
+            this.uiGroupBox5.Controls.Add(this.adczhinput);
+            this.uiGroupBox5.Controls.Add(this.biaozhundanweiinput);
+            this.uiGroupBox5.Controls.Add(this.uiLabel26);
+            this.uiGroupBox5.Controls.Add(this.uiLabel25);
+            this.uiGroupBox5.Controls.Add(this.lingdianpingbiinput);
+            this.uiGroupBox5.Controls.Add(this.uiLabel24);
+            this.uiGroupBox5.Controls.Add(this.ADCzengyiinput);
+            this.uiGroupBox5.Controls.Add(this.lianginput1);
+            this.uiGroupBox5.Controls.Add(this.uiLabel23);
+            this.uiGroupBox5.Controls.Add(this.lianginput2);
+            this.uiGroupBox5.Controls.Add(this.uiLabel22);
+            this.uiGroupBox5.Controls.Add(this.jiaozhunxieruBut);
+            this.uiGroupBox5.Controls.Add(this.uiPanel1);
+            this.uiGroupBox5.Controls.Add(this.jiaozhunduquBut);
+            this.uiGroupBox5.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiGroupBox5.Location = new System.Drawing.Point(429, 284);
+            this.uiGroupBox5.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiGroupBox5.Name = "uiGroupBox5";
+            this.uiGroupBox5.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.uiGroupBox5.Size = new System.Drawing.Size(1095, 658);
+            this.uiGroupBox5.TabIndex = 7;
+            this.uiGroupBox5.Text = "校准";
+            // 
+            // uiLabel28
+            // 
+            this.uiLabel28.AutoSize = true;
+            this.uiLabel28.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel28.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel28.Location = new System.Drawing.Point(351, 256);
+            this.uiLabel28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel28.Name = "uiLabel28";
+            this.uiLabel28.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel28.TabIndex = 94;
+            this.uiLabel28.Text = "滤波等级";
+            this.uiLabel28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lvbodengjiinput
+            // 
+            this.lvbodengjiinput.DisplayMember = "Name";
+            this.lvbodengjiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.lvbodengjiinput.FillColor = System.Drawing.Color.White;
+            this.lvbodengjiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.lvbodengjiinput.Location = new System.Drawing.Point(480, 250);
+            this.lvbodengjiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.lvbodengjiinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.lvbodengjiinput.Name = "lvbodengjiinput";
+            this.lvbodengjiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.lvbodengjiinput.Size = new System.Drawing.Size(162, 39);
+            this.lvbodengjiinput.TabIndex = 91;
+            this.lvbodengjiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lvbodengjiinput.ValueMember = "ID";
+            // 
+            // anliangjunfenbtn
+            // 
+            this.anliangjunfenbtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.anliangjunfenbtn.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.anliangjunfenbtn.Location = new System.Drawing.Point(936, 249);
+            this.anliangjunfenbtn.Margin = new System.Windows.Forms.Padding(4);
+            this.anliangjunfenbtn.Name = "anliangjunfenbtn";
+            this.anliangjunfenbtn.Size = new System.Drawing.Size(108, 44);
+            this.anliangjunfenbtn.TabIndex = 93;
+            this.anliangjunfenbtn.Text = "按量均分";
+            this.anliangjunfenbtn.Click += new System.EventHandler(this.anliangjunfenbtn_Click);
+            // 
+            // uiLine1
+            // 
+            this.uiLine1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLine1.Location = new System.Drawing.Point(4, 582);
+            this.uiLine1.Margin = new System.Windows.Forms.Padding(4);
+            this.uiLine1.MinimumSize = new System.Drawing.Size(24, 24);
+            this.uiLine1.Name = "uiLine1";
+            this.uiLine1.Size = new System.Drawing.Size(1090, 24);
+            this.uiLine1.TabIndex = 92;
+            this.uiLine1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // xiaozhundianinput
+            // 
+            this.xiaozhundianinput.DisplayMember = "Name";
+            this.xiaozhundianinput.FillColor = System.Drawing.Color.White;
+            this.xiaozhundianinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.xiaozhundianinput.Location = new System.Drawing.Point(760, 249);
+            this.xiaozhundianinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.xiaozhundianinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.xiaozhundianinput.Name = "xiaozhundianinput";
+            this.xiaozhundianinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.xiaozhundianinput.Size = new System.Drawing.Size(164, 39);
+            this.xiaozhundianinput.TabIndex = 91;
+            this.xiaozhundianinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.xiaozhundianinput.ValueMember = "ID";
+            this.xiaozhundianinput.SelectedIndexChanged += new System.EventHandler(this.xiaozhundianinput_SelectedValueChanged);
+            // 
+            // uiLabel27
+            // 
+            this.uiLabel27.AutoSize = true;
+            this.uiLabel27.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel27.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel27.Location = new System.Drawing.Point(662, 255);
+            this.uiLabel27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel27.Name = "uiLabel27";
+            this.uiLabel27.Size = new System.Drawing.Size(86, 31);
+            this.uiLabel27.TabIndex = 80;
+            this.uiLabel27.Text = "校准点";
+            this.uiLabel27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // huifuchuchangBut
+            // 
+            this.huifuchuchangBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.huifuchuchangBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.huifuchuchangBut.Location = new System.Drawing.Point(693, 610);
+            this.huifuchuchangBut.Margin = new System.Windows.Forms.Padding(4);
+            this.huifuchuchangBut.Name = "huifuchuchangBut";
+            this.huifuchuchangBut.Size = new System.Drawing.Size(176, 39);
+            this.huifuchuchangBut.TabIndex = 80;
+            this.huifuchuchangBut.Text = "恢复出厂设置";
+            this.huifuchuchangBut.Click += new System.EventHandler(this.huifuchuchangBut_Click_1);
+            // 
+            // hengliuzhiinput
+            // 
+            this.hengliuzhiinput.DisplayMember = "Name";
+            this.hengliuzhiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.hengliuzhiinput.FillColor = System.Drawing.Color.White;
+            this.hengliuzhiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.hengliuzhiinput.Location = new System.Drawing.Point(864, 184);
+            this.hengliuzhiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.hengliuzhiinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.hengliuzhiinput.Name = "hengliuzhiinput";
+            this.hengliuzhiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.hengliuzhiinput.Size = new System.Drawing.Size(162, 39);
+            this.hengliuzhiinput.TabIndex = 90;
+            this.hengliuzhiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hengliuzhiinput.ValueMember = "ID";
+            // 
+            // jicunqizutai
+            // 
+            this.jicunqizutai.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jicunqizutai.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jicunqizutai.Location = new System.Drawing.Point(897, 610);
+            this.jicunqizutai.Margin = new System.Windows.Forms.Padding(4);
+            this.jicunqizutai.Name = "jicunqizutai";
+            this.jicunqizutai.Size = new System.Drawing.Size(162, 39);
+            this.jicunqizutai.TabIndex = 74;
+            this.jicunqizutai.Text = "寄存器组态》";
+            this.jicunqizutai.Click += new System.EventHandler(this.jicunqizutai_Click);
+            // 
+            // offsetHinput
+            // 
+            this.offsetHinput.CanEmpty = true;
+            this.offsetHinput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.offsetHinput.FillColor = System.Drawing.Color.White;
+            this.offsetHinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.offsetHinput.Location = new System.Drawing.Point(866, 114);
+            this.offsetHinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.offsetHinput.Maximum = 9D;
+            this.offsetHinput.Minimum = 0D;
+            this.offsetHinput.Name = "offsetHinput";
+            this.offsetHinput.Padding = new System.Windows.Forms.Padding(8);
+            this.offsetHinput.Size = new System.Drawing.Size(162, 39);
+            this.offsetHinput.TabIndex = 88;
+            // 
+            // gcbcsjBut
+            // 
+            this.gcbcsjBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.gcbcsjBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.gcbcsjBut.Location = new System.Drawing.Point(483, 610);
+            this.gcbcsjBut.Margin = new System.Windows.Forms.Padding(4);
+            this.gcbcsjBut.Name = "gcbcsjBut";
+            this.gcbcsjBut.Size = new System.Drawing.Size(176, 39);
+            this.gcbcsjBut.TabIndex = 77;
+            this.gcbcsjBut.Text = "工厂保存数据";
+            this.gcbcsjBut.Click += new System.EventHandler(this.gcbcsjBut_Click);
+            // 
+            // coeinput
+            // 
+            this.coeinput.CanEmpty = true;
+            this.coeinput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.coeinput.FillColor = System.Drawing.Color.White;
+            this.coeinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.coeinput.Location = new System.Drawing.Point(478, 182);
+            this.coeinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.coeinput.Maximum = 9D;
+            this.coeinput.Minimum = 0D;
+            this.coeinput.Name = "coeinput";
+            this.coeinput.Padding = new System.Windows.Forms.Padding(8);
+            this.coeinput.Size = new System.Drawing.Size(164, 39);
+            this.coeinput.TabIndex = 77;
+            this.coeinput.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            // 
+            // uiLabel32
+            // 
+            this.uiLabel32.AutoSize = true;
+            this.uiLabel32.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel32.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel32.Location = new System.Drawing.Point(42, 255);
+            this.uiLabel32.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel32.Name = "uiLabel32";
+            this.uiLabel32.Size = new System.Drawing.Size(96, 31);
+            this.uiLabel32.TabIndex = 87;
+            this.uiLabel32.Text = "ADC 值";
+            this.uiLabel32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // yibiaoleixinginput
+            // 
+            this.yibiaoleixinginput.DisplayMember = "Name";
+            this.yibiaoleixinginput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.yibiaoleixinginput.FillColor = System.Drawing.Color.White;
+            this.yibiaoleixinginput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.yibiaoleixinginput.Location = new System.Drawing.Point(866, 46);
+            this.yibiaoleixinginput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.yibiaoleixinginput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.yibiaoleixinginput.Name = "yibiaoleixinginput";
+            this.yibiaoleixinginput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.yibiaoleixinginput.Size = new System.Drawing.Size(162, 39);
+            this.yibiaoleixinginput.TabIndex = 74;
+            this.yibiaoleixinginput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.yibiaoleixinginput.ValueMember = "ID";
+            // 
+            // xieruquanbushujuBut
+            // 
+            this.xieruquanbushujuBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.xieruquanbushujuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.xieruquanbushujuBut.Location = new System.Drawing.Point(267, 610);
+            this.xieruquanbushujuBut.Margin = new System.Windows.Forms.Padding(4);
+            this.xieruquanbushujuBut.Name = "xieruquanbushujuBut";
+            this.xieruquanbushujuBut.Size = new System.Drawing.Size(182, 39);
+            this.xieruquanbushujuBut.TabIndex = 73;
+            this.xieruquanbushujuBut.Text = "写入全部数据";
+            this.xieruquanbushujuBut.Click += new System.EventHandler(this.xieruquanbushujuBut_Click);
+            // 
+            // uiLabel31
+            // 
+            this.uiLabel31.AutoSize = true;
+            this.uiLabel31.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel31.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel31.Location = new System.Drawing.Point(754, 120);
+            this.uiLabel31.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel31.Name = "uiLabel31";
+            this.uiLabel31.Size = new System.Drawing.Size(86, 31);
+            this.uiLabel31.TabIndex = 86;
+            this.uiLabel31.Text = "偏移值";
+            this.uiLabel31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // jiaozhunduququanbuBut
+            // 
+            this.jiaozhunduququanbuBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jiaozhunduququanbuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jiaozhunduququanbuBut.Location = new System.Drawing.Point(48, 610);
+            this.jiaozhunduququanbuBut.Margin = new System.Windows.Forms.Padding(4);
+            this.jiaozhunduququanbuBut.Name = "jiaozhunduququanbuBut";
+            this.jiaozhunduququanbuBut.Size = new System.Drawing.Size(182, 39);
+            this.jiaozhunduququanbuBut.TabIndex = 72;
+            this.jiaozhunduququanbuBut.Text = "读取全部数据";
+            this.jiaozhunduququanbuBut.Click += new System.EventHandler(this.jiaozhunduququanbuBut_Click);
+            // 
+            // uiLabel30
+            // 
+            this.uiLabel30.AutoSize = true;
+            this.uiLabel30.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel30.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel30.Location = new System.Drawing.Point(753, 189);
+            this.uiLabel30.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel30.Name = "uiLabel30";
+            this.uiLabel30.Size = new System.Drawing.Size(86, 31);
+            this.uiLabel30.TabIndex = 85;
+            this.uiLabel30.Text = "恒流值";
+            this.uiLabel30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel29
+            // 
+            this.uiLabel29.AutoSize = true;
+            this.uiLabel29.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel29.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel29.Location = new System.Drawing.Point(372, 186);
+            this.uiLabel29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel29.Name = "uiLabel29";
+            this.uiLabel29.Size = new System.Drawing.Size(86, 31);
+            this.uiLabel29.TabIndex = 84;
+            this.uiLabel29.Text = "灵敏度";
+            this.uiLabel29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel14
+            // 
+            this.uiLabel14.AutoSize = true;
+            this.uiLabel14.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel14.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel14.Location = new System.Drawing.Point(738, 54);
+            this.uiLabel14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel14.Name = "uiLabel14";
+            this.uiLabel14.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel14.TabIndex = 83;
+            this.uiLabel14.Text = "仪表类型";
+            this.uiLabel14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // adczhinput
+            // 
+            this.adczhinput.CanEmpty = true;
+            this.adczhinput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.adczhinput.FillColor = System.Drawing.Color.White;
+            this.adczhinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.adczhinput.Location = new System.Drawing.Point(160, 248);
+            this.adczhinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.adczhinput.Maximum = 9D;
+            this.adczhinput.Minimum = 0D;
+            this.adczhinput.Name = "adczhinput";
+            this.adczhinput.Padding = new System.Windows.Forms.Padding(8);
+            this.adczhinput.Size = new System.Drawing.Size(162, 39);
+            this.adczhinput.TabIndex = 82;
+            this.adczhinput.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            // 
+            // biaozhundanweiinput
+            // 
+            this.biaozhundanweiinput.DisplayMember = "Name";
+            this.biaozhundanweiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.biaozhundanweiinput.FillColor = System.Drawing.Color.White;
+            this.biaozhundanweiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.biaozhundanweiinput.Location = new System.Drawing.Point(160, 178);
+            this.biaozhundanweiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.biaozhundanweiinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.biaozhundanweiinput.Name = "biaozhundanweiinput";
+            this.biaozhundanweiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.biaozhundanweiinput.Size = new System.Drawing.Size(162, 39);
+            this.biaozhundanweiinput.TabIndex = 79;
+            this.biaozhundanweiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.biaozhundanweiinput.ValueMember = "ID";
+            // 
+            // uiLabel26
+            // 
+            this.uiLabel26.AutoSize = true;
+            this.uiLabel26.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel26.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel26.Location = new System.Drawing.Point(18, 183);
+            this.uiLabel26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel26.Name = "uiLabel26";
+            this.uiLabel26.Size = new System.Drawing.Size(134, 31);
+            this.uiLabel26.TabIndex = 78;
+            this.uiLabel26.Text = "标准值单位";
+            this.uiLabel26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel25
+            // 
+            this.uiLabel25.AutoSize = true;
+            this.uiLabel25.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel25.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel25.Location = new System.Drawing.Point(33, 118);
+            this.uiLabel25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel25.Name = "uiLabel25";
+            this.uiLabel25.Size = new System.Drawing.Size(113, 31);
+            this.uiLabel25.TabIndex = 77;
+            this.uiLabel25.Text = "ADC增益";
+            this.uiLabel25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lingdianpingbiinput
+            // 
+            this.lingdianpingbiinput.CanEmpty = true;
+            this.lingdianpingbiinput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.lingdianpingbiinput.DecLength = 5;
+            this.lingdianpingbiinput.FillColor = System.Drawing.Color.White;
+            this.lingdianpingbiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.lingdianpingbiinput.Location = new System.Drawing.Point(480, 114);
+            this.lingdianpingbiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.lingdianpingbiinput.Maximum = 9D;
+            this.lingdianpingbiinput.Minimum = 0D;
+            this.lingdianpingbiinput.Name = "lingdianpingbiinput";
+            this.lingdianpingbiinput.Padding = new System.Windows.Forms.Padding(8);
+            this.lingdianpingbiinput.Size = new System.Drawing.Size(162, 39);
+            this.lingdianpingbiinput.TabIndex = 76;
+            // 
+            // uiLabel24
+            // 
+            this.uiLabel24.AutoSize = true;
+            this.uiLabel24.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel24.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel24.Location = new System.Drawing.Point(352, 118);
+            this.uiLabel24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel24.Name = "uiLabel24";
+            this.uiLabel24.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel24.TabIndex = 75;
+            this.uiLabel24.Text = "屏蔽零点";
+            this.uiLabel24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // ADCzengyiinput
+            // 
+            this.ADCzengyiinput.DisplayMember = "Name";
+            this.ADCzengyiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.ADCzengyiinput.FillColor = System.Drawing.Color.White;
+            this.ADCzengyiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.ADCzengyiinput.Location = new System.Drawing.Point(162, 112);
+            this.ADCzengyiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.ADCzengyiinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.ADCzengyiinput.Name = "ADCzengyiinput";
+            this.ADCzengyiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.ADCzengyiinput.Size = new System.Drawing.Size(162, 39);
+            this.ADCzengyiinput.TabIndex = 74;
+            this.ADCzengyiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ADCzengyiinput.ValueMember = "ID";
+            // 
+            // lianginput1
+            // 
+            this.lianginput1.CanEmpty = true;
+            this.lianginput1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.lianginput1.FillColor = System.Drawing.Color.White;
+            this.lianginput1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.lianginput1.Location = new System.Drawing.Point(162, 46);
+            this.lianginput1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.lianginput1.Maximum = 9D;
+            this.lianginput1.Minimum = 0D;
+            this.lianginput1.Name = "lianginput1";
+            this.lianginput1.Padding = new System.Windows.Forms.Padding(8);
+            this.lianginput1.Size = new System.Drawing.Size(162, 39);
+            this.lianginput1.TabIndex = 72;
+            this.lianginput1.Text = "0";
+            // 
+            // uiLabel23
+            // 
+            this.uiLabel23.AutoSize = true;
+            this.uiLabel23.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel23.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel23.Location = new System.Drawing.Point(358, 52);
+            this.uiLabel23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel23.Name = "uiLabel23";
+            this.uiLabel23.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel23.TabIndex = 72;
+            this.uiLabel23.Text = "量程满度";
+            this.uiLabel23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lianginput2
+            // 
+            this.lianginput2.CanEmpty = true;
+            this.lianginput2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.lianginput2.DoubleValue = 1D;
+            this.lianginput2.FillColor = System.Drawing.Color.White;
+            this.lianginput2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.lianginput2.IntValue = 1;
+            this.lianginput2.Location = new System.Drawing.Point(482, 48);
+            this.lianginput2.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.lianginput2.Maximum = 9D;
+            this.lianginput2.Minimum = 0D;
+            this.lianginput2.Name = "lianginput2";
+            this.lianginput2.Padding = new System.Windows.Forms.Padding(8);
+            this.lianginput2.Size = new System.Drawing.Size(162, 39);
+            this.lianginput2.TabIndex = 71;
+            this.lianginput2.Text = "1";
+            // 
+            // uiLabel22
+            // 
+            this.uiLabel22.AutoSize = true;
+            this.uiLabel22.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel22.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel22.Location = new System.Drawing.Point(33, 51);
+            this.uiLabel22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel22.Name = "uiLabel22";
+            this.uiLabel22.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel22.TabIndex = 15;
+            this.uiLabel22.Text = "量程零位";
+            this.uiLabel22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // jiaozhunxieruBut
+            // 
+            this.jiaozhunxieruBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jiaozhunxieruBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jiaozhunxieruBut.Location = new System.Drawing.Point(874, 531);
+            this.jiaozhunxieruBut.Margin = new System.Windows.Forms.Padding(4);
+            this.jiaozhunxieruBut.Name = "jiaozhunxieruBut";
+            this.jiaozhunxieruBut.Size = new System.Drawing.Size(129, 39);
+            this.jiaozhunxieruBut.TabIndex = 69;
+            this.jiaozhunxieruBut.Text = "写入数据";
+            this.jiaozhunxieruBut.Click += new System.EventHandler(this.jiaozhunxieruBut_Click);
+            // 
+            // uiPanel1
+            // 
+            this.uiPanel1.Controls.Add(this.biaozhuanzhi5);
+            this.uiPanel1.Controls.Add(this.biaozhuanzhi4);
+            this.uiPanel1.Controls.Add(this.caijizhiinput5);
+            this.uiPanel1.Controls.Add(this.biaozhuanzhi3);
+            this.uiPanel1.Controls.Add(this.caijizhiBut5);
+            this.uiPanel1.Controls.Add(this.uiPanel3);
+            this.uiPanel1.Controls.Add(this.caijizhiinput4);
+            this.uiPanel1.Controls.Add(this.uiPanel8);
+            this.uiPanel1.Controls.Add(this.caijizhiinput3);
+            this.uiPanel1.Controls.Add(this.caijizhiBut4);
+            this.uiPanel1.Controls.Add(this.uiPanel6);
+            this.uiPanel1.Controls.Add(this.caijizhiBut3);
+            this.uiPanel1.Controls.Add(this.uiPanel7);
+            this.uiPanel1.Controls.Add(this.biaozhuanzhi2);
+            this.uiPanel1.Controls.Add(this.biaozhuanzhi1);
+            this.uiPanel1.Controls.Add(this.caijizhiinput2);
+            this.uiPanel1.Controls.Add(this.caijizhiinput1);
+            this.uiPanel1.Controls.Add(this.caijizhiBut2);
+            this.uiPanel1.Controls.Add(this.uiTextBox14);
+            this.uiPanel1.Controls.Add(this.uiPanel5);
+            this.uiPanel1.Controls.Add(this.uiTextBox16);
+            this.uiPanel1.Controls.Add(this.uiTextBox20);
+            this.uiPanel1.Controls.Add(this.uiTextBox22);
+            this.uiPanel1.Controls.Add(this.uiTextBox24);
+            this.uiPanel1.Controls.Add(this.uiTextBox18);
+            this.uiPanel1.Controls.Add(this.uiButton1);
+            this.uiPanel1.Controls.Add(this.uiPanel4);
+            this.uiPanel1.Controls.Add(this.uiPanel2);
+            this.uiPanel1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel1.Location = new System.Drawing.Point(96, 316);
+            this.uiPanel1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel1.Name = "uiPanel1";
+            this.uiPanel1.Size = new System.Drawing.Size(948, 198);
+            this.uiPanel1.TabIndex = 4;
+            this.uiPanel1.Text = "uiPanel1";
+            // 
+            // biaozhuanzhi5
+            // 
+            this.biaozhuanzhi5.Controls.Add(this.uiTextBox49);
+            this.biaozhuanzhi5.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.biaozhuanzhi5.Enabled = false;
+            this.biaozhuanzhi5.EnterAsTab = true;
+            this.biaozhuanzhi5.FillColor = System.Drawing.Color.White;
+            this.biaozhuanzhi5.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.biaozhuanzhi5.Location = new System.Drawing.Point(774, 57);
+            this.biaozhuanzhi5.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.biaozhuanzhi5.Maximum = 2147483647D;
+            this.biaozhuanzhi5.Minimum = -2147483648D;
+            this.biaozhuanzhi5.Name = "biaozhuanzhi5";
+            this.biaozhuanzhi5.Padding = new System.Windows.Forms.Padding(8);
+            this.biaozhuanzhi5.Size = new System.Drawing.Size(154, 39);
+            this.biaozhuanzhi5.TabIndex = 98;
+            // 
+            // uiTextBox49
+            // 
+            this.uiTextBox49.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox49.Enabled = false;
+            this.uiTextBox49.EnterAsTab = true;
+            this.uiTextBox49.FillColor = System.Drawing.Color.White;
+            this.uiTextBox49.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox49.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox49.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox49.Maximum = 2147483647D;
+            this.uiTextBox49.Minimum = -2147483648D;
+            this.uiTextBox49.Name = "uiTextBox49";
+            this.uiTextBox49.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox49.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox49.TabIndex = 28;
+            // 
+            // biaozhuanzhi4
+            // 
+            this.biaozhuanzhi4.Controls.Add(this.uiTextBox37);
+            this.biaozhuanzhi4.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.biaozhuanzhi4.Enabled = false;
+            this.biaozhuanzhi4.EnterAsTab = true;
+            this.biaozhuanzhi4.FillColor = System.Drawing.Color.White;
+            this.biaozhuanzhi4.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.biaozhuanzhi4.Location = new System.Drawing.Point(620, 57);
+            this.biaozhuanzhi4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.biaozhuanzhi4.Maximum = 2147483647D;
+            this.biaozhuanzhi4.Minimum = -2147483648D;
+            this.biaozhuanzhi4.Name = "biaozhuanzhi4";
+            this.biaozhuanzhi4.Padding = new System.Windows.Forms.Padding(8);
+            this.biaozhuanzhi4.Size = new System.Drawing.Size(154, 39);
+            this.biaozhuanzhi4.TabIndex = 94;
+            // 
+            // uiTextBox37
+            // 
+            this.uiTextBox37.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox37.Enabled = false;
+            this.uiTextBox37.EnterAsTab = true;
+            this.uiTextBox37.FillColor = System.Drawing.Color.White;
+            this.uiTextBox37.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox37.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox37.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox37.Maximum = 2147483647D;
+            this.uiTextBox37.Minimum = -2147483648D;
+            this.uiTextBox37.Name = "uiTextBox37";
+            this.uiTextBox37.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox37.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox37.TabIndex = 28;
+            // 
+            // caijizhiinput5
+            // 
+            this.caijizhiinput5.Controls.Add(this.uiTextBox51);
+            this.caijizhiinput5.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.caijizhiinput5.FillColor = System.Drawing.Color.White;
+            this.caijizhiinput5.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiinput5.Location = new System.Drawing.Point(774, 100);
+            this.caijizhiinput5.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.caijizhiinput5.Maximum = 2147483647D;
+            this.caijizhiinput5.Minimum = -2147483648D;
+            this.caijizhiinput5.Name = "caijizhiinput5";
+            this.caijizhiinput5.Padding = new System.Windows.Forms.Padding(8);
+            this.caijizhiinput5.Size = new System.Drawing.Size(154, 39);
+            this.caijizhiinput5.TabIndex = 99;
+            // 
+            // uiTextBox51
+            // 
+            this.uiTextBox51.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox51.Enabled = false;
+            this.uiTextBox51.EnterAsTab = true;
+            this.uiTextBox51.FillColor = System.Drawing.Color.White;
+            this.uiTextBox51.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox51.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox51.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox51.Maximum = 2147483647D;
+            this.uiTextBox51.Minimum = -2147483648D;
+            this.uiTextBox51.Name = "uiTextBox51";
+            this.uiTextBox51.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox51.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox51.TabIndex = 28;
+            // 
+            // biaozhuanzhi3
+            // 
+            this.biaozhuanzhi3.Controls.Add(this.uiTextBox39);
+            this.biaozhuanzhi3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.biaozhuanzhi3.Enabled = false;
+            this.biaozhuanzhi3.EnterAsTab = true;
+            this.biaozhuanzhi3.FillColor = System.Drawing.Color.White;
+            this.biaozhuanzhi3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.biaozhuanzhi3.Location = new System.Drawing.Point(465, 57);
+            this.biaozhuanzhi3.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.biaozhuanzhi3.Maximum = 2147483647D;
+            this.biaozhuanzhi3.Minimum = -2147483648D;
+            this.biaozhuanzhi3.Name = "biaozhuanzhi3";
+            this.biaozhuanzhi3.Padding = new System.Windows.Forms.Padding(8);
+            this.biaozhuanzhi3.Size = new System.Drawing.Size(154, 39);
+            this.biaozhuanzhi3.TabIndex = 90;
+            // 
+            // uiTextBox39
+            // 
+            this.uiTextBox39.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox39.Enabled = false;
+            this.uiTextBox39.EnterAsTab = true;
+            this.uiTextBox39.FillColor = System.Drawing.Color.White;
+            this.uiTextBox39.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox39.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox39.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox39.Maximum = 2147483647D;
+            this.uiTextBox39.Minimum = -2147483648D;
+            this.uiTextBox39.Name = "uiTextBox39";
+            this.uiTextBox39.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox39.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox39.TabIndex = 28;
+            // 
+            // caijizhiBut5
+            // 
+            this.caijizhiBut5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.caijizhiBut5.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiBut5.Location = new System.Drawing.Point(776, 146);
+            this.caijizhiBut5.Margin = new System.Windows.Forms.Padding(4);
+            this.caijizhiBut5.Name = "caijizhiBut5";
+            this.caijizhiBut5.Size = new System.Drawing.Size(156, 44);
+            this.caijizhiBut5.TabIndex = 97;
+            this.caijizhiBut5.Text = "采集";
+            this.caijizhiBut5.Click += new System.EventHandler(this.caijizhiBut5_Click);
+            // 
+            // uiPanel3
+            // 
+            this.uiPanel3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel3.Location = new System.Drawing.Point(0, 100);
+            this.uiPanel3.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel3.Name = "uiPanel3";
+            this.uiPanel3.Size = new System.Drawing.Size(154, 45);
+            this.uiPanel3.TabIndex = 6;
+            this.uiPanel3.Text = "采集值";
+            // 
+            // caijizhiinput4
+            // 
+            this.caijizhiinput4.Controls.Add(this.uiTextBox41);
+            this.caijizhiinput4.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.caijizhiinput4.FillColor = System.Drawing.Color.White;
+            this.caijizhiinput4.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiinput4.Location = new System.Drawing.Point(620, 100);
+            this.caijizhiinput4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.caijizhiinput4.Maximum = 2147483647D;
+            this.caijizhiinput4.Minimum = -2147483648D;
+            this.caijizhiinput4.Name = "caijizhiinput4";
+            this.caijizhiinput4.Padding = new System.Windows.Forms.Padding(8);
+            this.caijizhiinput4.Size = new System.Drawing.Size(154, 39);
+            this.caijizhiinput4.TabIndex = 95;
+            // 
+            // uiTextBox41
+            // 
+            this.uiTextBox41.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox41.Enabled = false;
+            this.uiTextBox41.EnterAsTab = true;
+            this.uiTextBox41.FillColor = System.Drawing.Color.White;
+            this.uiTextBox41.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox41.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox41.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox41.Maximum = 2147483647D;
+            this.uiTextBox41.Minimum = -2147483648D;
+            this.uiTextBox41.Name = "uiTextBox41";
+            this.uiTextBox41.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox41.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox41.TabIndex = 28;
+            // 
+            // uiPanel8
+            // 
+            this.uiPanel8.Controls.Add(this.uiTextBox52);
+            this.uiPanel8.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel8.Location = new System.Drawing.Point(776, 12);
+            this.uiPanel8.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel8.Name = "uiPanel8";
+            this.uiPanel8.Size = new System.Drawing.Size(153, 45);
+            this.uiPanel8.TabIndex = 96;
+            this.uiPanel8.Text = "第五点";
+            // 
+            // uiTextBox52
+            // 
+            this.uiTextBox52.Controls.Add(this.uiTextBox53);
+            this.uiTextBox52.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox52.Enabled = false;
+            this.uiTextBox52.EnterAsTab = true;
+            this.uiTextBox52.FillColor = System.Drawing.Color.White;
+            this.uiTextBox52.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox52.Location = new System.Drawing.Point(0, 44);
+            this.uiTextBox52.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox52.Maximum = 2147483647D;
+            this.uiTextBox52.Minimum = -2147483648D;
+            this.uiTextBox52.Name = "uiTextBox52";
+            this.uiTextBox52.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox52.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox52.TabIndex = 73;
+            // 
+            // uiTextBox53
+            // 
+            this.uiTextBox53.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox53.Enabled = false;
+            this.uiTextBox53.EnterAsTab = true;
+            this.uiTextBox53.FillColor = System.Drawing.Color.White;
+            this.uiTextBox53.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox53.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox53.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox53.Maximum = 2147483647D;
+            this.uiTextBox53.Minimum = -2147483648D;
+            this.uiTextBox53.Name = "uiTextBox53";
+            this.uiTextBox53.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox53.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox53.TabIndex = 28;
+            // 
+            // caijizhiinput3
+            // 
+            this.caijizhiinput3.Controls.Add(this.uiTextBox43);
+            this.caijizhiinput3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.caijizhiinput3.FillColor = System.Drawing.Color.White;
+            this.caijizhiinput3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiinput3.Location = new System.Drawing.Point(465, 100);
+            this.caijizhiinput3.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.caijizhiinput3.Maximum = 2147483647D;
+            this.caijizhiinput3.Minimum = -2147483648D;
+            this.caijizhiinput3.Name = "caijizhiinput3";
+            this.caijizhiinput3.Padding = new System.Windows.Forms.Padding(8);
+            this.caijizhiinput3.Size = new System.Drawing.Size(154, 39);
+            this.caijizhiinput3.TabIndex = 91;
+            // 
+            // uiTextBox43
+            // 
+            this.uiTextBox43.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox43.Enabled = false;
+            this.uiTextBox43.EnterAsTab = true;
+            this.uiTextBox43.FillColor = System.Drawing.Color.White;
+            this.uiTextBox43.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox43.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox43.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox43.Maximum = 2147483647D;
+            this.uiTextBox43.Minimum = -2147483648D;
+            this.uiTextBox43.Name = "uiTextBox43";
+            this.uiTextBox43.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox43.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox43.TabIndex = 28;
+            // 
+            // caijizhiBut4
+            // 
+            this.caijizhiBut4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.caijizhiBut4.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiBut4.Location = new System.Drawing.Point(620, 146);
+            this.caijizhiBut4.Margin = new System.Windows.Forms.Padding(4);
+            this.caijizhiBut4.Name = "caijizhiBut4";
+            this.caijizhiBut4.Size = new System.Drawing.Size(156, 44);
+            this.caijizhiBut4.TabIndex = 93;
+            this.caijizhiBut4.Text = "采集";
+            this.caijizhiBut4.Click += new System.EventHandler(this.caijizhiBut4_Click);
+            // 
+            // uiPanel6
+            // 
+            this.uiPanel6.Controls.Add(this.uiTextBox44);
+            this.uiPanel6.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel6.Location = new System.Drawing.Point(620, 12);
+            this.uiPanel6.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel6.Name = "uiPanel6";
+            this.uiPanel6.Size = new System.Drawing.Size(156, 45);
+            this.uiPanel6.TabIndex = 92;
+            this.uiPanel6.Text = "第四点";
+            // 
+            // uiTextBox44
+            // 
+            this.uiTextBox44.Controls.Add(this.uiTextBox45);
+            this.uiTextBox44.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox44.Enabled = false;
+            this.uiTextBox44.EnterAsTab = true;
+            this.uiTextBox44.FillColor = System.Drawing.Color.White;
+            this.uiTextBox44.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox44.Location = new System.Drawing.Point(0, 44);
+            this.uiTextBox44.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox44.Maximum = 2147483647D;
+            this.uiTextBox44.Minimum = -2147483648D;
+            this.uiTextBox44.Name = "uiTextBox44";
+            this.uiTextBox44.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox44.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox44.TabIndex = 73;
+            // 
+            // uiTextBox45
+            // 
+            this.uiTextBox45.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox45.Enabled = false;
+            this.uiTextBox45.EnterAsTab = true;
+            this.uiTextBox45.FillColor = System.Drawing.Color.White;
+            this.uiTextBox45.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox45.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox45.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox45.Maximum = 2147483647D;
+            this.uiTextBox45.Minimum = -2147483648D;
+            this.uiTextBox45.Name = "uiTextBox45";
+            this.uiTextBox45.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox45.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox45.TabIndex = 28;
+            // 
+            // caijizhiBut3
+            // 
+            this.caijizhiBut3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.caijizhiBut3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiBut3.Location = new System.Drawing.Point(466, 146);
+            this.caijizhiBut3.Margin = new System.Windows.Forms.Padding(4);
+            this.caijizhiBut3.Name = "caijizhiBut3";
+            this.caijizhiBut3.Size = new System.Drawing.Size(156, 44);
+            this.caijizhiBut3.TabIndex = 89;
+            this.caijizhiBut3.Text = "采集";
+            this.caijizhiBut3.Click += new System.EventHandler(this.caijizhiBut3_Click);
+            // 
+            // uiPanel7
+            // 
+            this.uiPanel7.Controls.Add(this.uiTextBox46);
+            this.uiPanel7.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel7.Location = new System.Drawing.Point(465, 12);
+            this.uiPanel7.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel7.Name = "uiPanel7";
+            this.uiPanel7.Size = new System.Drawing.Size(154, 45);
+            this.uiPanel7.TabIndex = 88;
+            this.uiPanel7.Text = "第三点";
+            // 
+            // uiTextBox46
+            // 
+            this.uiTextBox46.Controls.Add(this.uiTextBox47);
+            this.uiTextBox46.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox46.Enabled = false;
+            this.uiTextBox46.EnterAsTab = true;
+            this.uiTextBox46.FillColor = System.Drawing.Color.White;
+            this.uiTextBox46.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox46.Location = new System.Drawing.Point(0, 44);
+            this.uiTextBox46.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox46.Maximum = 2147483647D;
+            this.uiTextBox46.Minimum = -2147483648D;
+            this.uiTextBox46.Name = "uiTextBox46";
+            this.uiTextBox46.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox46.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox46.TabIndex = 73;
+            // 
+            // uiTextBox47
+            // 
+            this.uiTextBox47.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox47.Enabled = false;
+            this.uiTextBox47.EnterAsTab = true;
+            this.uiTextBox47.FillColor = System.Drawing.Color.White;
+            this.uiTextBox47.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox47.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox47.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox47.Maximum = 2147483647D;
+            this.uiTextBox47.Minimum = -2147483648D;
+            this.uiTextBox47.Name = "uiTextBox47";
+            this.uiTextBox47.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox47.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox47.TabIndex = 28;
+            // 
+            // biaozhuanzhi2
+            // 
+            this.biaozhuanzhi2.Controls.Add(this.uiTextBox31);
+            this.biaozhuanzhi2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.biaozhuanzhi2.EnterAsTab = true;
+            this.biaozhuanzhi2.FillColor = System.Drawing.Color.White;
+            this.biaozhuanzhi2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.biaozhuanzhi2.Location = new System.Drawing.Point(310, 57);
+            this.biaozhuanzhi2.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.biaozhuanzhi2.Maximum = 2147483647D;
+            this.biaozhuanzhi2.Minimum = -2147483648D;
+            this.biaozhuanzhi2.Name = "biaozhuanzhi2";
+            this.biaozhuanzhi2.Padding = new System.Windows.Forms.Padding(8);
+            this.biaozhuanzhi2.Size = new System.Drawing.Size(154, 39);
+            this.biaozhuanzhi2.TabIndex = 83;
+            // 
+            // uiTextBox31
+            // 
+            this.uiTextBox31.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox31.Enabled = false;
+            this.uiTextBox31.EnterAsTab = true;
+            this.uiTextBox31.FillColor = System.Drawing.Color.White;
+            this.uiTextBox31.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox31.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox31.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox31.Maximum = 2147483647D;
+            this.uiTextBox31.Minimum = -2147483648D;
+            this.uiTextBox31.Name = "uiTextBox31";
+            this.uiTextBox31.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox31.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox31.TabIndex = 28;
+            // 
+            // biaozhuanzhi1
+            // 
+            this.biaozhuanzhi1.Controls.Add(this.uiTextBox13);
+            this.biaozhuanzhi1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.biaozhuanzhi1.EnterAsTab = true;
+            this.biaozhuanzhi1.FillColor = System.Drawing.Color.White;
+            this.biaozhuanzhi1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.biaozhuanzhi1.Location = new System.Drawing.Point(154, 57);
+            this.biaozhuanzhi1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.biaozhuanzhi1.Maximum = 2147483647D;
+            this.biaozhuanzhi1.Minimum = -2147483648D;
+            this.biaozhuanzhi1.Name = "biaozhuanzhi1";
+            this.biaozhuanzhi1.Padding = new System.Windows.Forms.Padding(8);
+            this.biaozhuanzhi1.Size = new System.Drawing.Size(154, 39);
+            this.biaozhuanzhi1.TabIndex = 76;
+            // 
+            // uiTextBox13
+            // 
+            this.uiTextBox13.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox13.Enabled = false;
+            this.uiTextBox13.EnterAsTab = true;
+            this.uiTextBox13.FillColor = System.Drawing.Color.White;
+            this.uiTextBox13.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox13.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox13.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox13.Maximum = 2147483647D;
+            this.uiTextBox13.Minimum = -2147483648D;
+            this.uiTextBox13.Name = "uiTextBox13";
+            this.uiTextBox13.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox13.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox13.TabIndex = 28;
+            // 
+            // caijizhiinput2
+            // 
+            this.caijizhiinput2.Controls.Add(this.uiTextBox33);
+            this.caijizhiinput2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.caijizhiinput2.FillColor = System.Drawing.Color.White;
+            this.caijizhiinput2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiinput2.Location = new System.Drawing.Point(310, 100);
+            this.caijizhiinput2.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.caijizhiinput2.Maximum = 2147483647D;
+            this.caijizhiinput2.Minimum = -2147483648D;
+            this.caijizhiinput2.Name = "caijizhiinput2";
+            this.caijizhiinput2.Padding = new System.Windows.Forms.Padding(8);
+            this.caijizhiinput2.Size = new System.Drawing.Size(154, 39);
+            this.caijizhiinput2.TabIndex = 84;
+            // 
+            // uiTextBox33
+            // 
+            this.uiTextBox33.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox33.Enabled = false;
+            this.uiTextBox33.EnterAsTab = true;
+            this.uiTextBox33.FillColor = System.Drawing.Color.White;
+            this.uiTextBox33.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox33.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox33.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox33.Maximum = 2147483647D;
+            this.uiTextBox33.Minimum = -2147483648D;
+            this.uiTextBox33.Name = "uiTextBox33";
+            this.uiTextBox33.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox33.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox33.TabIndex = 28;
+            // 
+            // caijizhiinput1
+            // 
+            this.caijizhiinput1.Controls.Add(this.uiTextBox11);
+            this.caijizhiinput1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.caijizhiinput1.FillColor = System.Drawing.Color.White;
+            this.caijizhiinput1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiinput1.Location = new System.Drawing.Point(154, 100);
+            this.caijizhiinput1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.caijizhiinput1.Maximum = 2147483647D;
+            this.caijizhiinput1.Minimum = -2147483648D;
+            this.caijizhiinput1.Name = "caijizhiinput1";
+            this.caijizhiinput1.Padding = new System.Windows.Forms.Padding(8);
+            this.caijizhiinput1.Size = new System.Drawing.Size(154, 39);
+            this.caijizhiinput1.TabIndex = 80;
+            // 
+            // uiTextBox11
+            // 
+            this.uiTextBox11.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox11.Enabled = false;
+            this.uiTextBox11.EnterAsTab = true;
+            this.uiTextBox11.FillColor = System.Drawing.Color.White;
+            this.uiTextBox11.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox11.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox11.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox11.Maximum = 2147483647D;
+            this.uiTextBox11.Minimum = -2147483648D;
+            this.uiTextBox11.Name = "uiTextBox11";
+            this.uiTextBox11.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox11.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox11.TabIndex = 28;
+            // 
+            // caijizhiBut2
+            // 
+            this.caijizhiBut2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.caijizhiBut2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.caijizhiBut2.Location = new System.Drawing.Point(309, 146);
+            this.caijizhiBut2.Margin = new System.Windows.Forms.Padding(4);
+            this.caijizhiBut2.Name = "caijizhiBut2";
+            this.caijizhiBut2.Size = new System.Drawing.Size(162, 45);
+            this.caijizhiBut2.TabIndex = 82;
+            this.caijizhiBut2.Text = "采集";
+            this.caijizhiBut2.Click += new System.EventHandler(this.caijizhiBut2_Click);
+            // 
+            // uiTextBox14
+            // 
+            this.uiTextBox14.Controls.Add(this.uiTextBox8);
+            this.uiTextBox14.Controls.Add(this.uiTextBox15);
+            this.uiTextBox14.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox14.Enabled = false;
+            this.uiTextBox14.EnterAsTab = true;
+            this.uiTextBox14.FillColor = System.Drawing.Color.White;
+            this.uiTextBox14.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox14.Location = new System.Drawing.Point(154, 99);
+            this.uiTextBox14.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox14.Maximum = 2147483647D;
+            this.uiTextBox14.Minimum = -2147483648D;
+            this.uiTextBox14.Name = "uiTextBox14";
+            this.uiTextBox14.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox14.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox14.TabIndex = 81;
+            // 
+            // uiTextBox8
+            // 
+            this.uiTextBox8.Controls.Add(this.uiTextBox9);
+            this.uiTextBox8.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox8.Enabled = false;
+            this.uiTextBox8.EnterAsTab = true;
+            this.uiTextBox8.FillColor = System.Drawing.Color.White;
+            this.uiTextBox8.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox8.Location = new System.Drawing.Point(0, 0);
+            this.uiTextBox8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox8.Maximum = 2147483647D;
+            this.uiTextBox8.Minimum = -2147483648D;
+            this.uiTextBox8.Name = "uiTextBox8";
+            this.uiTextBox8.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox8.Size = new System.Drawing.Size(103, 39);
+            this.uiTextBox8.TabIndex = 74;
+            // 
+            // uiTextBox9
+            // 
+            this.uiTextBox9.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox9.Enabled = false;
+            this.uiTextBox9.EnterAsTab = true;
+            this.uiTextBox9.FillColor = System.Drawing.Color.White;
+            this.uiTextBox9.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox9.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox9.Maximum = 2147483647D;
+            this.uiTextBox9.Minimum = -2147483648D;
+            this.uiTextBox9.Name = "uiTextBox9";
+            this.uiTextBox9.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox9.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox9.TabIndex = 28;
+            // 
+            // uiTextBox15
+            // 
+            this.uiTextBox15.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox15.Enabled = false;
+            this.uiTextBox15.EnterAsTab = true;
+            this.uiTextBox15.FillColor = System.Drawing.Color.White;
+            this.uiTextBox15.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox15.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox15.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox15.Maximum = 2147483647D;
+            this.uiTextBox15.Minimum = -2147483648D;
+            this.uiTextBox15.Name = "uiTextBox15";
+            this.uiTextBox15.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox15.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox15.TabIndex = 28;
+            // 
+            // uiPanel5
+            // 
+            this.uiPanel5.BackColor = System.Drawing.Color.Transparent;
+            this.uiPanel5.Controls.Add(this.uiTextBox34);
+            this.uiPanel5.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel5.Location = new System.Drawing.Point(309, 12);
+            this.uiPanel5.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel5.Name = "uiPanel5";
+            this.uiPanel5.Size = new System.Drawing.Size(156, 45);
+            this.uiPanel5.TabIndex = 81;
+            this.uiPanel5.Text = "第二点";
+            // 
+            // uiTextBox34
+            // 
+            this.uiTextBox34.Controls.Add(this.uiTextBox35);
+            this.uiTextBox34.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox34.Enabled = false;
+            this.uiTextBox34.EnterAsTab = true;
+            this.uiTextBox34.FillColor = System.Drawing.Color.White;
+            this.uiTextBox34.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox34.Location = new System.Drawing.Point(0, 44);
+            this.uiTextBox34.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox34.Maximum = 2147483647D;
+            this.uiTextBox34.Minimum = -2147483648D;
+            this.uiTextBox34.Name = "uiTextBox34";
+            this.uiTextBox34.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox34.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox34.TabIndex = 73;
+            // 
+            // uiTextBox35
+            // 
+            this.uiTextBox35.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox35.Enabled = false;
+            this.uiTextBox35.EnterAsTab = true;
+            this.uiTextBox35.FillColor = System.Drawing.Color.White;
+            this.uiTextBox35.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox35.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox35.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox35.Maximum = 2147483647D;
+            this.uiTextBox35.Minimum = -2147483648D;
+            this.uiTextBox35.Name = "uiTextBox35";
+            this.uiTextBox35.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox35.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox35.TabIndex = 28;
+            // 
+            // uiTextBox16
+            // 
+            this.uiTextBox16.Controls.Add(this.uiTextBox17);
+            this.uiTextBox16.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox16.Enabled = false;
+            this.uiTextBox16.EnterAsTab = true;
+            this.uiTextBox16.FillColor = System.Drawing.Color.White;
+            this.uiTextBox16.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox16.Location = new System.Drawing.Point(154, 56);
+            this.uiTextBox16.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox16.Maximum = 2147483647D;
+            this.uiTextBox16.Minimum = -2147483648D;
+            this.uiTextBox16.Name = "uiTextBox16";
+            this.uiTextBox16.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox16.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox16.TabIndex = 77;
+            // 
+            // uiTextBox17
+            // 
+            this.uiTextBox17.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox17.Enabled = false;
+            this.uiTextBox17.EnterAsTab = true;
+            this.uiTextBox17.FillColor = System.Drawing.Color.White;
+            this.uiTextBox17.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox17.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox17.Maximum = 2147483647D;
+            this.uiTextBox17.Minimum = -2147483648D;
+            this.uiTextBox17.Name = "uiTextBox17";
+            this.uiTextBox17.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox17.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox17.TabIndex = 28;
+            // 
+            // uiTextBox20
+            // 
+            this.uiTextBox20.Controls.Add(this.uiTextBox21);
+            this.uiTextBox20.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox20.Enabled = false;
+            this.uiTextBox20.EnterAsTab = true;
+            this.uiTextBox20.FillColor = System.Drawing.Color.White;
+            this.uiTextBox20.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox20.Location = new System.Drawing.Point(154, 56);
+            this.uiTextBox20.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox20.Maximum = 2147483647D;
+            this.uiTextBox20.Minimum = -2147483648D;
+            this.uiTextBox20.Name = "uiTextBox20";
+            this.uiTextBox20.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox20.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox20.TabIndex = 78;
+            // 
+            // uiTextBox21
+            // 
+            this.uiTextBox21.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox21.Enabled = false;
+            this.uiTextBox21.EnterAsTab = true;
+            this.uiTextBox21.FillColor = System.Drawing.Color.White;
+            this.uiTextBox21.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox21.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox21.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox21.Maximum = 2147483647D;
+            this.uiTextBox21.Minimum = -2147483648D;
+            this.uiTextBox21.Name = "uiTextBox21";
+            this.uiTextBox21.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox21.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox21.TabIndex = 28;
+            // 
+            // uiTextBox22
+            // 
+            this.uiTextBox22.Controls.Add(this.uiTextBox23);
+            this.uiTextBox22.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox22.Enabled = false;
+            this.uiTextBox22.EnterAsTab = true;
+            this.uiTextBox22.FillColor = System.Drawing.Color.White;
+            this.uiTextBox22.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox22.Location = new System.Drawing.Point(156, 100);
+            this.uiTextBox22.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox22.Maximum = 2147483647D;
+            this.uiTextBox22.Minimum = -2147483648D;
+            this.uiTextBox22.Name = "uiTextBox22";
+            this.uiTextBox22.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox22.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox22.TabIndex = 82;
+            // 
+            // uiTextBox23
+            // 
+            this.uiTextBox23.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox23.Enabled = false;
+            this.uiTextBox23.EnterAsTab = true;
+            this.uiTextBox23.FillColor = System.Drawing.Color.White;
+            this.uiTextBox23.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox23.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox23.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox23.Maximum = 2147483647D;
+            this.uiTextBox23.Minimum = -2147483648D;
+            this.uiTextBox23.Name = "uiTextBox23";
+            this.uiTextBox23.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox23.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox23.TabIndex = 28;
+            // 
+            // uiTextBox24
+            // 
+            this.uiTextBox24.Controls.Add(this.uiTextBox25);
+            this.uiTextBox24.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox24.Enabled = false;
+            this.uiTextBox24.EnterAsTab = true;
+            this.uiTextBox24.FillColor = System.Drawing.Color.White;
+            this.uiTextBox24.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox24.Location = new System.Drawing.Point(156, 57);
+            this.uiTextBox24.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox24.Maximum = 2147483647D;
+            this.uiTextBox24.Minimum = -2147483648D;
+            this.uiTextBox24.Name = "uiTextBox24";
+            this.uiTextBox24.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox24.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox24.TabIndex = 79;
+            // 
+            // uiTextBox25
+            // 
+            this.uiTextBox25.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox25.Enabled = false;
+            this.uiTextBox25.EnterAsTab = true;
+            this.uiTextBox25.FillColor = System.Drawing.Color.White;
+            this.uiTextBox25.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox25.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox25.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox25.Maximum = 2147483647D;
+            this.uiTextBox25.Minimum = -2147483648D;
+            this.uiTextBox25.Name = "uiTextBox25";
+            this.uiTextBox25.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox25.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox25.TabIndex = 28;
+            // 
+            // uiTextBox18
+            // 
+            this.uiTextBox18.Controls.Add(this.uiTextBox19);
+            this.uiTextBox18.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox18.Enabled = false;
+            this.uiTextBox18.EnterAsTab = true;
+            this.uiTextBox18.FillColor = System.Drawing.Color.White;
+            this.uiTextBox18.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox18.Location = new System.Drawing.Point(154, 99);
+            this.uiTextBox18.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox18.Maximum = 2147483647D;
+            this.uiTextBox18.Minimum = -2147483648D;
+            this.uiTextBox18.Name = "uiTextBox18";
+            this.uiTextBox18.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox18.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox18.TabIndex = 83;
+            // 
+            // uiTextBox19
+            // 
+            this.uiTextBox19.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox19.Enabled = false;
+            this.uiTextBox19.EnterAsTab = true;
+            this.uiTextBox19.FillColor = System.Drawing.Color.White;
+            this.uiTextBox19.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox19.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox19.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox19.Maximum = 2147483647D;
+            this.uiTextBox19.Minimum = -2147483648D;
+            this.uiTextBox19.Name = "uiTextBox19";
+            this.uiTextBox19.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox19.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox19.TabIndex = 28;
+            // 
+            // uiButton1
+            // 
+            this.uiButton1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.uiButton1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiButton1.Location = new System.Drawing.Point(150, 146);
+            this.uiButton1.Margin = new System.Windows.Forms.Padding(4);
+            this.uiButton1.Name = "uiButton1";
+            this.uiButton1.Size = new System.Drawing.Size(159, 45);
+            this.uiButton1.TabIndex = 87;
+            this.uiButton1.Text = "采集";
+            this.uiButton1.Click += new System.EventHandler(this.uiButton13_Click);
+            // 
+            // uiPanel4
+            // 
+            this.uiPanel4.Controls.Add(this.uiTextBox6);
+            this.uiPanel4.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel4.Location = new System.Drawing.Point(154, 12);
+            this.uiPanel4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel4.Name = "uiPanel4";
+            this.uiPanel4.Size = new System.Drawing.Size(154, 45);
+            this.uiPanel4.TabIndex = 6;
+            this.uiPanel4.Text = "第一点";
+            // 
+            // uiTextBox6
+            // 
+            this.uiTextBox6.Controls.Add(this.uiTextBox7);
+            this.uiTextBox6.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox6.Enabled = false;
+            this.uiTextBox6.EnterAsTab = true;
+            this.uiTextBox6.FillColor = System.Drawing.Color.White;
+            this.uiTextBox6.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox6.Location = new System.Drawing.Point(0, 44);
+            this.uiTextBox6.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiTextBox6.Maximum = 2147483647D;
+            this.uiTextBox6.Minimum = -2147483648D;
+            this.uiTextBox6.Name = "uiTextBox6";
+            this.uiTextBox6.Padding = new System.Windows.Forms.Padding(8);
+            this.uiTextBox6.Size = new System.Drawing.Size(154, 39);
+            this.uiTextBox6.TabIndex = 73;
+            // 
+            // uiTextBox7
+            // 
+            this.uiTextBox7.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox7.Enabled = false;
+            this.uiTextBox7.EnterAsTab = true;
+            this.uiTextBox7.FillColor = System.Drawing.Color.White;
+            this.uiTextBox7.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiTextBox7.Location = new System.Drawing.Point(5, 31);
+            this.uiTextBox7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox7.Maximum = 2147483647D;
+            this.uiTextBox7.Minimum = -2147483648D;
+            this.uiTextBox7.Name = "uiTextBox7";
+            this.uiTextBox7.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox7.Size = new System.Drawing.Size(106, 39);
+            this.uiTextBox7.TabIndex = 28;
+            // 
+            // uiPanel2
+            // 
+            this.uiPanel2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiPanel2.Location = new System.Drawing.Point(0, 56);
+            this.uiPanel2.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiPanel2.Name = "uiPanel2";
+            this.uiPanel2.Size = new System.Drawing.Size(154, 45);
+            this.uiPanel2.TabIndex = 5;
+            this.uiPanel2.Text = "标准值";
+            // 
+            // jiaozhunduquBut
+            // 
+            this.jiaozhunduquBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jiaozhunduquBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jiaozhunduquBut.Location = new System.Drawing.Point(672, 532);
+            this.jiaozhunduquBut.Margin = new System.Windows.Forms.Padding(4);
+            this.jiaozhunduquBut.Name = "jiaozhunduquBut";
+            this.jiaozhunduquBut.Size = new System.Drawing.Size(129, 39);
+            this.jiaozhunduquBut.TabIndex = 68;
+            this.jiaozhunduquBut.Text = "读取数据";
+            this.jiaozhunduquBut.Click += new System.EventHandler(this.jiaozhunduquBut_Click);
+            // 
+            // yhsz
+            // 
+            this.yhsz.Controls.Add(this.pianyizhiinput);
+            this.yhsz.Controls.Add(this.dizhiinput);
+            this.yhsz.Controls.Add(this.yonghushezhixieruBut);
+            this.yhsz.Controls.Add(this.yonghushezhiDuQubut);
+            this.yhsz.Controls.Add(this.botelxinput);
+            this.yhsz.Controls.Add(this.adcsulvinput);
+            this.yhsz.Controls.Add(this.xiaoshudianinput);
+            this.yhsz.Controls.Add(this.danweiinput1);
+            this.yhsz.Controls.Add(this.xiaozhunweiinput);
+            this.yhsz.Controls.Add(this.uiLabel12);
+            this.yhsz.Controls.Add(this.uiLabel11);
+            this.yhsz.Controls.Add(this.uiLabel10);
+            this.yhsz.Controls.Add(this.uiLabel9);
+            this.yhsz.Controls.Add(this.uiLabel8);
+            this.yhsz.Controls.Add(this.uiLabel7);
+            this.yhsz.Controls.Add(this.uiLabel6);
+            this.yhsz.Controls.Add(this.uiLabel5);
+            this.yhsz.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.yhsz.Location = new System.Drawing.Point(429, 21);
+            this.yhsz.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.yhsz.Name = "yhsz";
+            this.yhsz.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.yhsz.Size = new System.Drawing.Size(1095, 248);
+            this.yhsz.TabIndex = 6;
+            this.yhsz.Text = "用户设置";
+            // 
+            // pianyizhiinput
+            // 
+            this.pianyizhiinput.CanEmpty = true;
+            this.pianyizhiinput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.pianyizhiinput.FillColor = System.Drawing.Color.White;
+            this.pianyizhiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.pianyizhiinput.Location = new System.Drawing.Point(166, 182);
+            this.pianyizhiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.pianyizhiinput.Maximum = 9D;
+            this.pianyizhiinput.Minimum = 0D;
+            this.pianyizhiinput.Name = "pianyizhiinput";
+            this.pianyizhiinput.Padding = new System.Windows.Forms.Padding(8);
+            this.pianyizhiinput.Size = new System.Drawing.Size(194, 39);
+            this.pianyizhiinput.TabIndex = 73;
+            this.pianyizhiinput.Type = Sunny.UI.UITextBox.UIEditType.Double;
+            // 
+            // dizhiinput
+            // 
+            this.dizhiinput.CanEmpty = true;
+            this.dizhiinput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.dizhiinput.FillColor = System.Drawing.Color.White;
+            this.dizhiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.dizhiinput.Location = new System.Drawing.Point(166, 54);
+            this.dizhiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.dizhiinput.Maximum = 9D;
+            this.dizhiinput.Minimum = 0D;
+            this.dizhiinput.Name = "dizhiinput";
+            this.dizhiinput.Padding = new System.Windows.Forms.Padding(8);
+            this.dizhiinput.Size = new System.Drawing.Size(194, 39);
+            this.dizhiinput.TabIndex = 67;
+            this.dizhiinput.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            // 
+            // yonghushezhixieruBut
+            // 
+            this.yonghushezhixieruBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.yonghushezhixieruBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.yonghushezhixieruBut.Location = new System.Drawing.Point(838, 186);
+            this.yonghushezhixieruBut.Margin = new System.Windows.Forms.Padding(4);
+            this.yonghushezhixieruBut.Name = "yonghushezhixieruBut";
+            this.yonghushezhixieruBut.Size = new System.Drawing.Size(129, 39);
+            this.yonghushezhixieruBut.TabIndex = 66;
+            this.yonghushezhixieruBut.Text = "写入";
+            this.yonghushezhixieruBut.Click += new System.EventHandler(this.yonghushezhixieruBut_Click);
+            // 
+            // yonghushezhiDuQubut
+            // 
+            this.yonghushezhiDuQubut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.yonghushezhiDuQubut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.yonghushezhiDuQubut.Location = new System.Drawing.Point(562, 186);
+            this.yonghushezhiDuQubut.Margin = new System.Windows.Forms.Padding(4);
+            this.yonghushezhiDuQubut.Name = "yonghushezhiDuQubut";
+            this.yonghushezhiDuQubut.Size = new System.Drawing.Size(129, 39);
+            this.yonghushezhiDuQubut.TabIndex = 65;
+            this.yonghushezhiDuQubut.Text = "读取";
+            this.yonghushezhiDuQubut.Click += new System.EventHandler(this.yonghushezhiDuQubut_Click);
+            // 
+            // botelxinput
+            // 
+            this.botelxinput.DisplayMember = "Name";
+            this.botelxinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.botelxinput.FillColor = System.Drawing.Color.White;
+            this.botelxinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.botelxinput.Location = new System.Drawing.Point(538, 54);
+            this.botelxinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.botelxinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.botelxinput.Name = "botelxinput";
+            this.botelxinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.botelxinput.Size = new System.Drawing.Size(183, 39);
+            this.botelxinput.TabIndex = 21;
+            this.botelxinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.botelxinput.ValueMember = "ID";
+            // 
+            // adcsulvinput
+            // 
+            this.adcsulvinput.DisplayMember = "Name";
+            this.adcsulvinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.adcsulvinput.FillColor = System.Drawing.Color.White;
+            this.adcsulvinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.adcsulvinput.Location = new System.Drawing.Point(538, 112);
+            this.adcsulvinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.adcsulvinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.adcsulvinput.Name = "adcsulvinput";
+            this.adcsulvinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.adcsulvinput.Size = new System.Drawing.Size(183, 39);
+            this.adcsulvinput.TabIndex = 15;
+            this.adcsulvinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.adcsulvinput.ValueMember = "ID";
+            // 
+            // xiaoshudianinput
+            // 
+            this.xiaoshudianinput.DisplayMember = "Name";
+            this.xiaoshudianinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.xiaoshudianinput.FillColor = System.Drawing.Color.White;
+            this.xiaoshudianinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.xiaoshudianinput.Location = new System.Drawing.Point(873, 117);
+            this.xiaoshudianinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.xiaoshudianinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.xiaoshudianinput.Name = "xiaoshudianinput";
+            this.xiaoshudianinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.xiaoshudianinput.Size = new System.Drawing.Size(190, 39);
+            this.xiaoshudianinput.TabIndex = 20;
+            this.xiaoshudianinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.xiaoshudianinput.ValueMember = "ID";
+            // 
+            // danweiinput1
+            // 
+            this.danweiinput1.DisplayMember = "Name";
+            this.danweiinput1.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.danweiinput1.FillColor = System.Drawing.Color.White;
+            this.danweiinput1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.danweiinput1.Location = new System.Drawing.Point(166, 117);
+            this.danweiinput1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.danweiinput1.MinimumSize = new System.Drawing.Size(94, 0);
+            this.danweiinput1.Name = "danweiinput1";
+            this.danweiinput1.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.danweiinput1.Size = new System.Drawing.Size(194, 39);
+            this.danweiinput1.TabIndex = 15;
+            this.danweiinput1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.danweiinput1.ValueMember = "ID";
+            // 
+            // xiaozhunweiinput
+            // 
+            this.xiaozhunweiinput.DisplayMember = "Name";
+            this.xiaozhunweiinput.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.xiaozhunweiinput.FillColor = System.Drawing.Color.White;
+            this.xiaozhunweiinput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.xiaozhunweiinput.Location = new System.Drawing.Point(873, 54);
+            this.xiaozhunweiinput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.xiaozhunweiinput.MinimumSize = new System.Drawing.Size(94, 0);
+            this.xiaozhunweiinput.Name = "xiaozhunweiinput";
+            this.xiaozhunweiinput.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.xiaozhunweiinput.Size = new System.Drawing.Size(190, 39);
+            this.xiaozhunweiinput.TabIndex = 14;
+            this.xiaozhunweiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.xiaozhunweiinput.ValueMember = "ID";
+            // 
+            // uiLabel12
+            // 
+            this.uiLabel12.AutoSize = true;
+            this.uiLabel12.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel12.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.uiLabel12.Location = new System.Drawing.Point(404, 129);
+            this.uiLabel12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel12.Name = "uiLabel12";
+            this.uiLabel12.Size = new System.Drawing.Size(49, 24);
+            this.uiLabel12.TabIndex = 19;
+            this.uiLabel12.Text = "ADC";
+            this.uiLabel12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel11
+            // 
+            this.uiLabel11.AutoSize = true;
+            this.uiLabel11.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel11.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel11.Location = new System.Drawing.Point(38, 182);
+            this.uiLabel11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel11.Name = "uiLabel11";
+            this.uiLabel11.Size = new System.Drawing.Size(124, 31);
+            this.uiLabel11.TabIndex = 18;
+            this.uiLabel11.Text = "偏 移 值：";
+            this.uiLabel11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel10
+            // 
+            this.uiLabel10.AutoSize = true;
+            this.uiLabel10.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel10.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel10.Location = new System.Drawing.Point(38, 123);
+            this.uiLabel10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel10.Name = "uiLabel10";
+            this.uiLabel10.Size = new System.Drawing.Size(128, 31);
+            this.uiLabel10.TabIndex = 17;
+            this.uiLabel10.Text = "单      位：";
+            this.uiLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel9
+            // 
+            this.uiLabel9.AutoSize = true;
+            this.uiLabel9.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel9.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel9.Location = new System.Drawing.Point(447, 123);
+            this.uiLabel9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel9.Name = "uiLabel9";
+            this.uiLabel9.Size = new System.Drawing.Size(86, 31);
+            this.uiLabel9.TabIndex = 16;
+            this.uiLabel9.Text = "速率：";
+            this.uiLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel8
+            // 
+            this.uiLabel8.AutoSize = true;
+            this.uiLabel8.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel8.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel8.Location = new System.Drawing.Point(760, 62);
+            this.uiLabel8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel8.Name = "uiLabel8";
+            this.uiLabel8.Size = new System.Drawing.Size(124, 31);
+            this.uiLabel8.TabIndex = 15;
+            this.uiLabel8.Text = "校 准 位：";
+            this.uiLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel7
+            // 
+            this.uiLabel7.AutoSize = true;
+            this.uiLabel7.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel7.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel7.Location = new System.Drawing.Point(408, 58);
+            this.uiLabel7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel7.Name = "uiLabel7";
+            this.uiLabel7.Size = new System.Drawing.Size(124, 31);
+            this.uiLabel7.TabIndex = 14;
+            this.uiLabel7.Text = "波 特 率：";
+            this.uiLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel6
+            // 
+            this.uiLabel6.AutoSize = true;
+            this.uiLabel6.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel6.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel6.Location = new System.Drawing.Point(759, 129);
+            this.uiLabel6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel6.Name = "uiLabel6";
+            this.uiLabel6.Size = new System.Drawing.Size(124, 31);
+            this.uiLabel6.TabIndex = 13;
+            this.uiLabel6.Text = "小 数 点：";
+            this.uiLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel5
+            // 
+            this.uiLabel5.AutoSize = true;
+            this.uiLabel5.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel5.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel5.Location = new System.Drawing.Point(42, 58);
+            this.uiLabel5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel5.Name = "uiLabel5";
+            this.uiLabel5.Size = new System.Drawing.Size(121, 31);
+            this.uiLabel5.TabIndex = 12;
+            this.uiLabel5.Text = "地     址：";
+            this.uiLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiGroupBox3
+            // 
+            this.uiGroupBox3.Controls.Add(this.x1000input);
+            this.uiGroupBox3.Controls.Add(this.x100input);
+            this.uiGroupBox3.Controls.Add(this.x10input);
+            this.uiGroupBox3.Controls.Add(this.zhengxinginput);
+            this.uiGroupBox3.Controls.Add(this.fudianxinginput);
+            this.uiGroupBox3.Controls.Add(this.uiLabel21);
+            this.uiGroupBox3.Controls.Add(this.uiLabel20);
+            this.uiGroupBox3.Controls.Add(this.uiLabel19);
+            this.uiGroupBox3.Controls.Add(this.uiLabel18);
+            this.uiGroupBox3.Controls.Add(this.uiLabel17);
+            this.uiGroupBox3.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.uiGroupBox3.Location = new System.Drawing.Point(20, 602);
+            this.uiGroupBox3.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiGroupBox3.Name = "uiGroupBox3";
+            this.uiGroupBox3.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.uiGroupBox3.Size = new System.Drawing.Size(398, 340);
+            this.uiGroupBox3.TabIndex = 7;
+            this.uiGroupBox3.Text = "测量输出";
+            // 
+            // x1000input
+            // 
+            this.x1000input.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.x1000input.Enabled = false;
+            this.x1000input.EnterAsTab = true;
+            this.x1000input.FillColor = System.Drawing.Color.White;
+            this.x1000input.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.x1000input.Location = new System.Drawing.Point(136, 285);
+            this.x1000input.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.x1000input.Maximum = 2147483647D;
+            this.x1000input.Minimum = -2147483648D;
+            this.x1000input.Name = "x1000input";
+            this.x1000input.Padding = new System.Windows.Forms.Padding(8);
+            this.x1000input.Size = new System.Drawing.Size(218, 39);
+            this.x1000input.TabIndex = 30;
+            // 
+            // x100input
+            // 
+            this.x100input.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.x100input.Enabled = false;
+            this.x100input.EnterAsTab = true;
+            this.x100input.FillColor = System.Drawing.Color.White;
+            this.x100input.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.x100input.Location = new System.Drawing.Point(136, 228);
+            this.x100input.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.x100input.Maximum = 2147483647D;
+            this.x100input.Minimum = -2147483648D;
+            this.x100input.Name = "x100input";
+            this.x100input.Padding = new System.Windows.Forms.Padding(8);
+            this.x100input.Size = new System.Drawing.Size(218, 39);
+            this.x100input.TabIndex = 29;
+            // 
+            // x10input
+            // 
+            this.x10input.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.x10input.Enabled = false;
+            this.x10input.EnterAsTab = true;
+            this.x10input.FillColor = System.Drawing.Color.White;
+            this.x10input.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.x10input.Location = new System.Drawing.Point(136, 170);
+            this.x10input.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.x10input.Maximum = 2147483647D;
+            this.x10input.Minimum = -2147483648D;
+            this.x10input.Name = "x10input";
+            this.x10input.Padding = new System.Windows.Forms.Padding(8);
+            this.x10input.Size = new System.Drawing.Size(218, 39);
+            this.x10input.TabIndex = 28;
+            // 
+            // zhengxinginput
+            // 
+            this.zhengxinginput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.zhengxinginput.Enabled = false;
+            this.zhengxinginput.EnterAsTab = true;
+            this.zhengxinginput.FillColor = System.Drawing.Color.White;
+            this.zhengxinginput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.zhengxinginput.Location = new System.Drawing.Point(136, 111);
+            this.zhengxinginput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.zhengxinginput.Maximum = 2147483647D;
+            this.zhengxinginput.Minimum = -2147483648D;
+            this.zhengxinginput.Name = "zhengxinginput";
+            this.zhengxinginput.Padding = new System.Windows.Forms.Padding(8);
+            this.zhengxinginput.Size = new System.Drawing.Size(218, 39);
+            this.zhengxinginput.TabIndex = 27;
+            // 
+            // fudianxinginput
+            // 
+            this.fudianxinginput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.fudianxinginput.Enabled = false;
+            this.fudianxinginput.EnterAsTab = true;
+            this.fudianxinginput.FillColor = System.Drawing.Color.White;
+            this.fudianxinginput.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.fudianxinginput.Location = new System.Drawing.Point(138, 51);
+            this.fudianxinginput.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.fudianxinginput.Maximum = 2147483647D;
+            this.fudianxinginput.Minimum = -2147483648D;
+            this.fudianxinginput.Name = "fudianxinginput";
+            this.fudianxinginput.Padding = new System.Windows.Forms.Padding(8);
+            this.fudianxinginput.Size = new System.Drawing.Size(216, 39);
+            this.fudianxinginput.TabIndex = 26;
+            // 
+            // uiLabel21
+            // 
+            this.uiLabel21.AutoSize = true;
+            this.uiLabel21.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel21.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel21.Location = new System.Drawing.Point(21, 290);
+            this.uiLabel21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel21.Name = "uiLabel21";
+            this.uiLabel21.Size = new System.Drawing.Size(106, 31);
+            this.uiLabel21.TabIndex = 25;
+            this.uiLabel21.Text = "x1000：";
+            this.uiLabel21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel20
+            // 
+            this.uiLabel20.AutoSize = true;
+            this.uiLabel20.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel20.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel20.Location = new System.Drawing.Point(34, 242);
+            this.uiLabel20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel20.Name = "uiLabel20";
+            this.uiLabel20.Size = new System.Drawing.Size(92, 31);
+            this.uiLabel20.TabIndex = 24;
+            this.uiLabel20.Text = "x100：";
+            this.uiLabel20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel19
+            // 
+            this.uiLabel19.AutoSize = true;
+            this.uiLabel19.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel19.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel19.Location = new System.Drawing.Point(48, 182);
+            this.uiLabel19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel19.Name = "uiLabel19";
+            this.uiLabel19.Size = new System.Drawing.Size(78, 31);
+            this.uiLabel19.TabIndex = 23;
+            this.uiLabel19.Text = "x10：";
+            this.uiLabel19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // uiLabel18
+            // 
+            this.uiLabel18.AutoSize = true;
+            this.uiLabel18.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel18.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel18.Location = new System.Drawing.Point(28, 116);
+            this.uiLabel18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel18.Name = "uiLabel18";
+            this.uiLabel18.Size = new System.Drawing.Size(100, 31);
+            this.uiLabel18.TabIndex = 22;
+            this.uiLabel18.Text = "整  形：";
+            this.uiLabel18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel17
+            // 
+            this.uiLabel17.AutoSize = true;
+            this.uiLabel17.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel17.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel17.Location = new System.Drawing.Point(22, 56);
+            this.uiLabel17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel17.Name = "uiLabel17";
+            this.uiLabel17.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel17.TabIndex = 21;
+            this.uiLabel17.Text = "浮点型：";
+            this.uiLabel17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiGroupBox2
+            // 
+            this.uiGroupBox2.Controls.Add(this.ruanjianbanbenlable);
+            this.uiGroupBox2.Controls.Add(this.bankaxinghaolable);
+            this.uiGroupBox2.Controls.Add(this.yibiaoduqubut);
+            this.uiGroupBox2.Controls.Add(this.yibiaoliangcheng1);
+            this.uiGroupBox2.Controls.Add(this.uiLabel15);
+            this.uiGroupBox2.Controls.Add(this.yibiaoli);
+            this.uiGroupBox2.Controls.Add(this.uiLabel13);
+            this.uiGroupBox2.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.uiGroupBox2.Location = new System.Drawing.Point(20, 336);
+            this.uiGroupBox2.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiGroupBox2.Name = "uiGroupBox2";
+            this.uiGroupBox2.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.uiGroupBox2.Size = new System.Drawing.Size(398, 250);
+            this.uiGroupBox2.TabIndex = 6;
+            this.uiGroupBox2.Text = "仪表信息";
+            // 
+            // ruanjianbanbenlable
+            // 
+            this.ruanjianbanbenlable.AutoSize = true;
+            this.ruanjianbanbenlable.BackColor = System.Drawing.Color.Transparent;
+            this.ruanjianbanbenlable.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.ruanjianbanbenlable.Location = new System.Drawing.Point(135, 159);
+            this.ruanjianbanbenlable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.ruanjianbanbenlable.Name = "ruanjianbanbenlable";
+            this.ruanjianbanbenlable.Size = new System.Drawing.Size(0, 31);
+            this.ruanjianbanbenlable.TabIndex = 68;
+            this.ruanjianbanbenlable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // bankaxinghaolable
+            // 
+            this.bankaxinghaolable.AutoSize = true;
+            this.bankaxinghaolable.BackColor = System.Drawing.Color.Transparent;
+            this.bankaxinghaolable.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.bankaxinghaolable.Location = new System.Drawing.Point(135, 56);
+            this.bankaxinghaolable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.bankaxinghaolable.Name = "bankaxinghaolable";
+            this.bankaxinghaolable.Size = new System.Drawing.Size(0, 31);
+            this.bankaxinghaolable.TabIndex = 67;
+            this.bankaxinghaolable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // yibiaoduqubut
+            // 
+            this.yibiaoduqubut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.yibiaoduqubut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.yibiaoduqubut.Location = new System.Drawing.Point(4, 207);
+            this.yibiaoduqubut.Margin = new System.Windows.Forms.Padding(4);
+            this.yibiaoduqubut.Name = "yibiaoduqubut";
+            this.yibiaoduqubut.Size = new System.Drawing.Size(382, 39);
+            this.yibiaoduqubut.TabIndex = 66;
+            this.yibiaoduqubut.Text = "读取";
+            this.yibiaoduqubut.Click += new System.EventHandler(this.yibiaoduqubut_Click);
+            // 
+            // yibiaoliangcheng1
+            // 
+            this.yibiaoliangcheng1.AutoSize = true;
+            this.yibiaoliangcheng1.BackColor = System.Drawing.Color.Transparent;
+            this.yibiaoliangcheng1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.yibiaoliangcheng1.Location = new System.Drawing.Point(123, 106);
+            this.yibiaoliangcheng1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.yibiaoliangcheng1.Name = "yibiaoliangcheng1";
+            this.yibiaoliangcheng1.Size = new System.Drawing.Size(118, 31);
+            this.yibiaoliangcheng1.TabIndex = 15;
+            this.yibiaoliangcheng1.Text = "0~1 Mpa";
+            this.yibiaoliangcheng1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel15
+            // 
+            this.uiLabel15.AutoSize = true;
+            this.uiLabel15.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel15.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel15.Location = new System.Drawing.Point(8, 158);
+            this.uiLabel15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel15.Name = "uiLabel15";
+            this.uiLabel15.Size = new System.Drawing.Size(134, 31);
+            this.uiLabel15.TabIndex = 14;
+            this.uiLabel15.Text = "软件版本：";
+            this.uiLabel15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // yibiaoli
+            // 
+            this.yibiaoli.AutoSize = true;
+            this.yibiaoli.BackColor = System.Drawing.Color.Transparent;
+            this.yibiaoli.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.yibiaoli.Location = new System.Drawing.Point(8, 106);
+            this.yibiaoli.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.yibiaoli.Name = "yibiaoli";
+            this.yibiaoli.Size = new System.Drawing.Size(134, 31);
+            this.yibiaoli.TabIndex = 13;
+            this.yibiaoli.Text = "仪表量程：";
+            this.yibiaoli.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel13
+            // 
+            this.uiLabel13.AutoSize = true;
+            this.uiLabel13.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel13.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel13.Location = new System.Drawing.Point(8, 54);
+            this.uiLabel13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel13.Name = "uiLabel13";
+            this.uiLabel13.Size = new System.Drawing.Size(134, 31);
+            this.uiLabel13.TabIndex = 12;
+            this.uiLabel13.Text = "版卡型号：";
+            this.uiLabel13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiGroupBox1
+            // 
+            this.uiGroupBox1.Controls.Add(this.sousuoSbBut1);
+            this.uiGroupBox1.Controls.Add(this.lianjieButId);
+            this.uiGroupBox1.Controls.Add(this.cxdkButId);
+            this.uiGroupBox1.Controls.Add(this.uiLabel3);
+            this.uiGroupBox1.Controls.Add(this.uiLabel2);
+            this.uiGroupBox1.Controls.Add(this.dzselectId);
+            this.uiGroupBox1.Controls.Add(this.xywselectId);
+            this.uiGroupBox1.Controls.Add(this.btlSelectId);
+            this.uiGroupBox1.Controls.Add(this.dkhselectId);
+            this.uiGroupBox1.Controls.Add(this.uiLabel1);
+            this.uiGroupBox1.Controls.Add(this.uiLabel4);
+            this.uiGroupBox1.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.uiGroupBox1.Location = new System.Drawing.Point(20, 21);
+            this.uiGroupBox1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiGroupBox1.Name = "uiGroupBox1";
+            this.uiGroupBox1.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.uiGroupBox1.Size = new System.Drawing.Size(398, 300);
+            this.uiGroupBox1.TabIndex = 5;
+            this.uiGroupBox1.Text = "端口设置";
+            // 
+            // sousuoSbBut1
+            // 
+            this.sousuoSbBut1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.sousuoSbBut1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.sousuoSbBut1.Location = new System.Drawing.Point(258, 112);
+            this.sousuoSbBut1.Margin = new System.Windows.Forms.Padding(4);
+            this.sousuoSbBut1.Name = "sousuoSbBut1";
+            this.sousuoSbBut1.Size = new System.Drawing.Size(129, 39);
+            this.sousuoSbBut1.TabIndex = 66;
+            this.sousuoSbBut1.Text = "搜索";
+            this.sousuoSbBut1.Click += new System.EventHandler(this.sousuoSbBut1_Click);
+            // 
+            // lianjieButId
+            // 
+            this.lianjieButId.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lianjieButId.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.lianjieButId.Location = new System.Drawing.Point(258, 228);
+            this.lianjieButId.Margin = new System.Windows.Forms.Padding(4);
+            this.lianjieButId.Name = "lianjieButId";
+            this.lianjieButId.Size = new System.Drawing.Size(129, 39);
+            this.lianjieButId.TabIndex = 64;
+            this.lianjieButId.Text = "连接";
+            this.lianjieButId.Click += new System.EventHandler(this.lianjieButId_Click);
+            // 
+            // cxdkButId
+            // 
+            this.cxdkButId.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cxdkButId.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.cxdkButId.Location = new System.Drawing.Point(258, 57);
+            this.cxdkButId.Margin = new System.Windows.Forms.Padding(4);
+            this.cxdkButId.Name = "cxdkButId";
+            this.cxdkButId.Size = new System.Drawing.Size(129, 39);
+            this.cxdkButId.TabIndex = 63;
+            this.cxdkButId.Text = "查找端口";
+            this.cxdkButId.Click += new System.EventHandler(this.cxdkButId_Click);
+            // 
+            // uiLabel3
+            // 
+            this.uiLabel3.AutoSize = true;
+            this.uiLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel3.Location = new System.Drawing.Point(8, 234);
+            this.uiLabel3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel3.Name = "uiLabel3";
+            this.uiLabel3.Size = new System.Drawing.Size(107, 31);
+            this.uiLabel3.TabIndex = 20;
+            this.uiLabel3.Text = "地   址：";
+            this.uiLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel2
+            // 
+            this.uiLabel2.AutoSize = true;
+            this.uiLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel2.Location = new System.Drawing.Point(8, 174);
+            this.uiLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel2.Name = "uiLabel2";
+            this.uiLabel2.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel2.TabIndex = 19;
+            this.uiLabel2.Text = "校验位：";
+            this.uiLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // dzselectId
+            // 
+            this.dzselectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.dzselectId.FillColor = System.Drawing.Color.White;
+            this.dzselectId.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.dzselectId.Location = new System.Drawing.Point(120, 226);
+            this.dzselectId.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.dzselectId.MinimumSize = new System.Drawing.Size(94, 0);
+            this.dzselectId.Name = "dzselectId";
+            this.dzselectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.dzselectId.Size = new System.Drawing.Size(130, 39);
+            this.dzselectId.TabIndex = 18;
+            this.dzselectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // xywselectId
+            // 
+            this.xywselectId.DisplayMember = "Name";
+            this.xywselectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.xywselectId.FillColor = System.Drawing.Color.White;
+            this.xywselectId.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.xywselectId.Location = new System.Drawing.Point(120, 170);
+            this.xywselectId.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.xywselectId.MinimumSize = new System.Drawing.Size(94, 0);
+            this.xywselectId.Name = "xywselectId";
+            this.xywselectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.xywselectId.Size = new System.Drawing.Size(130, 39);
+            this.xywselectId.TabIndex = 17;
+            this.xywselectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.xywselectId.ValueMember = "ID";
+            // 
+            // btlSelectId
+            // 
+            this.btlSelectId.DisplayMember = "Name";
+            this.btlSelectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.btlSelectId.FillColor = System.Drawing.Color.White;
+            this.btlSelectId.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.btlSelectId.Location = new System.Drawing.Point(118, 111);
+            this.btlSelectId.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.btlSelectId.MinimumSize = new System.Drawing.Size(94, 0);
+            this.btlSelectId.Name = "btlSelectId";
+            this.btlSelectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.btlSelectId.Size = new System.Drawing.Size(130, 39);
+            this.btlSelectId.TabIndex = 16;
+            this.btlSelectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btlSelectId.ValueMember = "ID";
+            // 
+            // dkhselectId
+            // 
+            this.dkhselectId.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.dkhselectId.FillColor = System.Drawing.Color.White;
+            this.dkhselectId.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.dkhselectId.Location = new System.Drawing.Point(117, 57);
+            this.dkhselectId.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.dkhselectId.MinimumSize = new System.Drawing.Size(94, 0);
+            this.dkhselectId.Name = "dkhselectId";
+            this.dkhselectId.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
+            this.dkhselectId.Size = new System.Drawing.Size(130, 39);
+            this.dkhselectId.TabIndex = 13;
+            this.dkhselectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel1
+            // 
+            this.uiLabel1.AutoSize = true;
+            this.uiLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel1.Location = new System.Drawing.Point(8, 117);
+            this.uiLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel1.Name = "uiLabel1";
+            this.uiLabel1.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel1.TabIndex = 12;
+            this.uiLabel1.Text = "波特率：";
+            this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLabel4
+            // 
+            this.uiLabel4.AutoSize = true;
+            this.uiLabel4.BackColor = System.Drawing.Color.Transparent;
+            this.uiLabel4.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel4.Location = new System.Drawing.Point(8, 62);
+            this.uiLabel4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel4.Name = "uiLabel4";
+            this.uiLabel4.Size = new System.Drawing.Size(110, 31);
+            this.uiLabel4.TabIndex = 11;
+            this.uiLabel4.Text = "端口号：";
+            this.uiLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // LieBIAOxieru
             // 
             this.LieBIAOxieru.Cursor = System.Windows.Forms.Cursors.Hand;
             this.LieBIAOxieru.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.LieBIAOxieru.Location = new System.Drawing.Point(541, 499);
+            this.LieBIAOxieru.Location = new System.Drawing.Point(812, 748);
+            this.LieBIAOxieru.Margin = new System.Windows.Forms.Padding(4);
             this.LieBIAOxieru.Name = "LieBIAOxieru";
-            this.LieBIAOxieru.Size = new System.Drawing.Size(86, 26);
+            this.LieBIAOxieru.Size = new System.Drawing.Size(129, 39);
             this.LieBIAOxieru.TabIndex = 66;
             this.LieBIAOxieru.Text = "写入";
             this.LieBIAOxieru.Click += new System.EventHandler(this.LieBIAOxieru_Click);
             // 
-            // jicunqizufanhuiBut
+            // LieBIAODuQu
             // 
-            this.jicunqizufanhuiBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jicunqizufanhuiBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jicunqizufanhuiBut.Location = new System.Drawing.Point(22, 575);
-            this.jicunqizufanhuiBut.Name = "jicunqizufanhuiBut";
-            this.jicunqizufanhuiBut.Size = new System.Drawing.Size(86, 26);
-            this.jicunqizufanhuiBut.TabIndex = 77;
-            this.jicunqizufanhuiBut.Text = "《工厂校准";
-            this.jicunqizufanhuiBut.Click += new System.EventHandler(this.jicunqizufanhuiBut_Click);
+            this.LieBIAODuQu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LieBIAODuQu.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.LieBIAODuQu.Location = new System.Drawing.Point(645, 747);
+            this.LieBIAODuQu.Margin = new System.Windows.Forms.Padding(4);
+            this.LieBIAODuQu.Name = "LieBIAODuQu";
+            this.LieBIAODuQu.Size = new System.Drawing.Size(129, 39);
+            this.LieBIAODuQu.TabIndex = 75;
+            this.LieBIAODuQu.Text = "读取";
+            this.LieBIAODuQu.Click += new System.EventHandler(this.LieBIAODuQu_Click);
             // 
-            // jcqgg
+            // uiGroupBox4
             // 
-            this.jcqgg.Controls.Add(this.jicunqizufanhuiBut);
-            this.jcqgg.Controls.Add(this.uiGroupBox4);
-            this.jcqgg.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jcqgg.Location = new System.Drawing.Point(278, 14);
-            this.jcqgg.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.jcqgg.Name = "jcqgg";
-            this.jcqgg.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.jcqgg.Size = new System.Drawing.Size(751, 614);
-            this.jcqgg.TabIndex = 78;
-            this.jcqgg.Text = null;
-            this.jcqgg.Visible = false;
-            // 
-            // uiLabel16
-            // 
-            this.uiLabel16.AutoSize = true;
-            this.uiLabel16.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel16.Location = new System.Drawing.Point(12, 646);
-            this.uiLabel16.Name = "uiLabel16";
-            this.uiLabel16.Size = new System.Drawing.Size(90, 21);
-            this.uiLabel16.TabIndex = 80;
-            this.uiLabel16.Text = "当前链接：";
-            this.uiLabel16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // dqljLabe
-            // 
-            this.dqljLabe.AutoSize = true;
-            this.dqljLabe.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.dqljLabe.Location = new System.Drawing.Point(96, 646);
-            this.dqljLabe.Name = "dqljLabe";
-            this.dqljLabe.Size = new System.Drawing.Size(0, 21);
-            this.dqljLabe.TabIndex = 81;
-            this.dqljLabe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // msglable
-            // 
-            this.msglable.AutoSize = true;
-            this.msglable.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.msglable.Location = new System.Drawing.Point(551, 646);
-            this.msglable.Name = "msglable";
-            this.msglable.Size = new System.Drawing.Size(0, 21);
-            this.msglable.TabIndex = 82;
-            this.msglable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiGroupBox4.Controls.Add(this.LieBIAODuQu);
+            this.uiGroupBox4.Controls.Add(this.LieBIAOxieru);
+            this.uiGroupBox4.Controls.Add(this.libiao);
+            this.uiGroupBox4.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.uiGroupBox4.Location = new System.Drawing.Point(6, 27);
+            this.uiGroupBox4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiGroupBox4.Name = "uiGroupBox4";
+            this.uiGroupBox4.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.uiGroupBox4.Size = new System.Drawing.Size(1102, 805);
+            this.uiGroupBox4.TabIndex = 76;
+            this.uiGroupBox4.Text = "寄存器组";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1032, 673);
+            this.ClientSize = new System.Drawing.Size(1552, 1010);
             this.Controls.Add(this.msglable);
             this.Controls.Add(this.dqljLabe);
             this.Controls.Add(this.uiLabel16);
-            this.Controls.Add(this.danweilable);
             this.Controls.Add(this.jcqgg);
+            this.Controls.Add(this.danweilable);
             this.Controls.Add(this.uiLine8);
             this.Controls.Add(this.uiGroupBox5);
             this.Controls.Add(this.yhsz);
@@ -2446,8 +2578,12 @@ namespace AdminConsole
             this.Controls.Add(this.uiGroupBox2);
             this.Controls.Add(this.uiGroupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "CNG-35工厂调试软件V1.0";
+            this.jcqgg.ResumeLayout(false);
+            this.libiao.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).EndInit();
             this.uiGroupBox5.ResumeLayout(false);
             this.uiGroupBox5.PerformLayout();
             this.uiPanel1.ResumeLayout(false);
@@ -2509,9 +2645,6 @@ namespace AdminConsole
             this.uiGroupBox1.ResumeLayout(false);
             this.uiGroupBox1.PerformLayout();
             this.uiGroupBox4.ResumeLayout(false);
-            this.libiao.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).EndInit();
-            this.jcqgg.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2656,15 +2789,12 @@ namespace AdminConsole
         private UIComboBox xiaozhundianinput;
         private UIButton sousuoSbBut1;
         private UILabel danweilable;
-        private UIGroupBox uiGroupBox4;
-        private UIButton LieBIAODuQu;
         private UIGroupBox libiao;
         private UIDataGridView uiDataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private UIButton LieBIAOxieru;
         private UIButton jicunqizufanhuiBut;
         private UIGroupBox jcqgg;
         private UIButton huifuchuchangBut;
@@ -2674,6 +2804,11 @@ namespace AdminConsole
         private UILabel dqljLabe;
         private UILabel msglable;
         private UIButton anliangjunfenbtn;
+        private UILabel uiLabel28;
+        private UIComboBox lvbodengjiinput;
+        private UIGroupBox uiGroupBox4;
+        private UIButton LieBIAODuQu;
+        private UIButton LieBIAOxieru;
     }
 }
 

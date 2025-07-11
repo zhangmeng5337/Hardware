@@ -56,6 +56,7 @@ namespace AdminConsole.Model
 
     public enum EnumDataId
     {
+        实时值扩大1000倍,
         实时值扩大100倍,
         实时值扩大10倍, 
         浮点输出值,
@@ -107,7 +108,9 @@ namespace AdminConsole.Model
         保存参数指令,   
         恢复出厂设置,
         屏蔽零点,
-        工厂模式
+        工厂模式,
+
+        滤波等级
 
     }
     

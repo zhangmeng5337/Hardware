@@ -497,6 +497,15 @@ void RegWrite(void)
         j = j + 4;
         floatTouint32_m(params_private.cal5val, buf + j);
         j = j + 4;
+        floatTouint32_m(params_private.usr_cal1val, buf + j);
+        j = j + 4;
+        floatTouint32_m(params_private.usr_cal2val, buf + j);
+        j = j + 4;
+        floatTouint32_m(params_private.usr_cal1ADC, buf + j);
+        j = j + 4;
+        floatTouint32_m(params_private.usr_cal2ADC, buf + j);
+        j = j + 4;
+
         floatTouint32_m(params_private.maskzero, buf + j);
         j = j + 4;
         buf[j++] = 0;
@@ -651,6 +660,17 @@ unsigned char RegRead(void)
         j = j + 4;
         params_private.cal5val = uint32TofloatR(buf + j);
         j = j + 4;
+        params_private.usr_cal1val = uint32TofloatR(buf + j);
+        j = j + 4;
+        params_private.usr_cal2val = uint32TofloatR(buf + j);
+        j = j + 4;
+        params_private.usr_cal1ADC = uint32TofloatR(buf + j);
+        j = j + 4;
+        params_private.usr_cal2ADC = uint32TofloatR(buf + j);
+        j = j + 4;
+
+
+		
         params_private.maskzero = uint32TofloatR(buf + j);
         j = j + 4;
         params_private.filter_level =  buf[j + 1];

@@ -56,20 +56,24 @@
 #define SAVE_REG			0x001b
 #define ZERO_REG			0x001c
 #define FACTOR_MODE_REG		0x001d
-#define CAL1_REG		   0x001e
-#define CAL2_REG		   0x0020
-#define CAL3_REG		0x0022
-#define CAL4_REG		0x0024
-#define CAL5_REG		0x0026
+#define CAL1_REG		   	0x001e
+#define CAL2_REG		   	0x0020
+#define CAL3_REG			0x0022
+#define CAL4_REG			0x0024
+#define CAL5_REG			0x0026
 
-#define CAL1_VAL		0x0028
-#define CAL2_VAL		0x002a
-#define CAL3_VAL		0x002c
-#define CAL4_VAL		0x002e
-#define CAL5_VAL		0x0030
-#define MASK_ZERO		0x0032
-#define COE5_REG		0x0034
-#define FILTER_REG		0x0036
+#define CAL1_VAL			0x0028
+#define CAL2_VAL			0x002a
+#define CAL3_VAL			0x002c
+#define CAL4_VAL			0x002e
+#define CAL5_VAL			0x0030
+#define MASK_ZERO			0x0032
+#define COE5_REG			0x0034
+#define FILTER_REG			0x0036
+#define USR_CAL1_ADC		0x0037
+#define USR_CAL2_ADC		0x0039
+#define USR_CAL1_REG		0x003b
+#define USR_CAL2_REG		0x003d
 
 
 

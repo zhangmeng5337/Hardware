@@ -43,11 +43,11 @@ namespace AdminConsole.Model
                 sampleValues = sampleValues.Select(x => (x - min) / (max - min)).ToArray();
             }
 
-            double[] result = new double[4];
+            double[] result = new double[5];
 
-            double[] result1 = new double[4];
+            double[] result1 = new double[5];
             var s2 = ManualLinearFit(sampleValues, voltages);
-            Array.Copy(s2, result1, Math.Min(s2.Length, 4));
+            Array.Copy(s2, result1, Math.Min(s2.Length, 5));
             Array.Reverse(result1);
 
          
@@ -63,7 +63,7 @@ namespace AdminConsole.Model
             {      
                 var s3 = ManualQuadraticFit(sampleValues, voltages);
 
-                Array.Copy(s3, result, Math.Min(s3.Length, 4));
+                Array.Copy(s3, result, Math.Min(s3.Length, 5));
 
                 Array.Reverse(result);
 
@@ -82,7 +82,7 @@ namespace AdminConsole.Model
                var s4=  ManualCubicFit(sampleValues, voltages);
 
  
-                Array.Copy(s4, result, Math.Min(s4.Length, 4));
+                Array.Copy(s4, result, Math.Min(s4.Length, 5));
                
                 Array.Reverse(result);
 

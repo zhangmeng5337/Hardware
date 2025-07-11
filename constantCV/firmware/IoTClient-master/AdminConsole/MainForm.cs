@@ -28,7 +28,7 @@ namespace AdminConsole
 {
     public partial class MainForm : Form
     {
-
+        public const double global_delay_time = 0.2;
         private static SerialPort _serialPort;
         private static IModbusSerialMaster _modbusMaster;
 
@@ -39,22 +39,12 @@ namespace AdminConsole
  
 
 
-        private void MyForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            
-            if (MessageBox.Show("如有数据修改,请确认已保存？", "消息", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-            {
-                e.Cancel = true;
-            }
-
-          
-        }
+     
         #region 初始化       
         public MainForm()
         {
             InitializeComponent();
-            this.FormClosing += new FormClosingEventHandler(MyForm_FormClosing);
-           
+            
             uiDataGridView1.AutoGenerateColumns = false;
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -68,11 +58,15 @@ namespace AdminConsole
             this.ADCzengyiinput.DataSource = InitData.adcZhengYiData;
             this.biaozhundanweiinput.DataSource = InitData.danweiInputData;
             biaozhundanweiinput.SelectedValue = 2;
-            this.xiaozhundianinput.DataSource = InitData.xiaozhundianData;           
+            this.xiaozhundianinput.DataSource = InitData.xiaozhundianData;
+            xiaozhundianinput.SelectedValue = "5";
             this.yibiaoleixinginput.DataSource = InitData.yiBiaoLeiXingData;
             this.hengliuzhiinput.DataSource = InitData.hengliuezhiData;
-            this.xiaozhundianinput.SelectedValue = "2";
- 
+            this.lvbodengjiinput.DataSource = InitData.lvbodengjiData;
+
+            
+
+
             btlSelectId.SelectedIndex = 3;
             xywselectId.SelectedIndex = 0;
             dkhselectId.DataSource = SerialPort.GetPortNames();
@@ -84,7 +78,7 @@ namespace AdminConsole
             }
 
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 200; // 设置间隔时间为1000毫秒（1秒）
+            timer.Interval = 100; // 设置间隔时间为1000毫秒（1秒）
             timer.Tick += new EventHandler(TimerEventProcessor);
          
 
@@ -93,7 +87,7 @@ namespace AdminConsole
         {           
             try
             {
-                if (ModbusReader.DuXieShiJian.AddSeconds(2) > DateTime.Now)
+                if (ModbusReader.DuXieShiJian.AddSeconds(global_delay_time) > DateTime.Now)
                 {
                     return;
                 }
@@ -127,7 +121,7 @@ namespace AdminConsole
 
                 var shujuZhi = BitConverter.ToSingle(shuju1, 0);
 
-                if (ModbusReader.DuXieShiJian.AddSeconds(2) > DateTime.Now)
+                if (ModbusReader.DuXieShiJian.AddSeconds(global_delay_time) > DateTime.Now)
                 {
                   
                     return;
@@ -179,7 +173,7 @@ namespace AdminConsole
  
                 fw(v5);
                 string s = ModbusReader.DuXieShiJian.ToString();
-                if (ModbusReader.DuXieShiJian.AddSeconds(2) > DateTime.Now)
+                if (ModbusReader.DuXieShiJian.AddSeconds(global_delay_time) > DateTime.Now)
                 {
                    
                     return;
@@ -198,7 +192,7 @@ namespace AdminConsole
 
 
 
-                ModbusReader.DuXieShiJian =DateTime.Now.AddSeconds(-2);
+                ModbusReader.DuXieShiJian =DateTime.Now.AddSeconds(global_delay_time);
                
                 //if (!bl)
                 //{
@@ -220,21 +214,28 @@ namespace AdminConsole
 
 
                 var lt = Convert.ToInt16(xiaozhundianinput.SelectedValue);
-                int[] caijizhis = new int[lt];
 
-                for (int i = 1; i <= lt; i++)
+                var zl = ADCzengyiinput.SelectedText;
+                if (zl == "128" && (v > 65535 || v < -65535))
                 {
-                    var caijizhi = this.Controls.Find("caijizhiinput" + i, true)[0].Text;
-                    caijizhis[i - 1] = int.Parse(caijizhi);
+                    adczhinput.ForeColor = Color.Red;
                 }
-                if (v > caijizhis.Max() || v < caijizhis.Min())
+                else if (zl == "64" && (v >= 131071 || v <= -131071))
                 {
-                    adczhinput.FillColor = Color.Red;
+                    adczhinput.ForeColor = Color.Red;
                 }
-                else
+                else if (zl == "2" && (v > 209715 || v < -209715))
                 {
-                    adczhinput.FillColor = Color.White;
+                    adczhinput.ForeColor = Color.Red;
                 }
+                else if (zl == "1" && (v > 838860 || v < -838860))
+                {
+                    adczhinput.ForeColor = Color.Red;
+                }
+                else {
+                    adczhinput.ForeColor = Color.Black;
+                }
+ 
             }
             catch { 
             
@@ -525,33 +526,34 @@ namespace AdminConsole
             {
                 return false;
             }
-            var lt = Convert.ToInt16(xiaozhundianinput.SelectedValue);
+            //var lt = Convert.ToInt16(xiaozhundianinput.SelectedValue);
+            //lt = 5;
             foreach (var m in registerList)
             {
  
-                if (m.Id == EnumDataId.校准采集值3 && lt < 3) {
-                    continue;
-                }
-                else if (m.Id == EnumDataId.校准采集值4 && lt < 4)
-                {
-                    continue;
-                }
-                else if (m.Id == EnumDataId.校准采集值5 && lt < 5)
-                {
-                    continue;
-                }
-                else if (m.Id == EnumDataId.校准标准值3 && lt < 3)
-                {
-                    continue;
-                }
-                else if (m.Id == EnumDataId.校准标准值4 && lt < 4)
-                {
-                    continue;
-                }
-                else if (m.Id == EnumDataId.校准标准值5 && lt < 5)
-                {
-                    continue;
-                }
+                //if (m.Id == EnumDataId.校准采集值3 && lt < 3) {
+                //    continue;
+                //}
+                //else if (m.Id == EnumDataId.校准采集值4 && lt < 4)
+                //{
+                //    continue;
+                //}
+                //else if (m.Id == EnumDataId.校准采集值5 && lt < 5)
+                //{
+                //    continue;
+                //}
+                //else if (m.Id == EnumDataId.校准标准值3 && lt < 3)
+                //{
+                //    continue;
+                //}
+                //else if (m.Id == EnumDataId.校准标准值4 && lt < 4)
+                //{
+                //    continue;
+                //}
+                //else if (m.Id == EnumDataId.校准标准值5 && lt < 5)
+                //{
+                //    continue;
+                //}
 
                 bool b = false;
                 if (m.Id.ToString().StartsWith("采集值")) {
@@ -669,6 +671,9 @@ namespace AdminConsole
                     case EnumDataId.pga放大倍数:
                         ADCzengyiinput.SelectedValue = m.val.ToString();
                         break;
+                    case EnumDataId.滤波等级:
+                        lvbodengjiinput.SelectedValue = m.val.ToString();
+                        break;
                     case EnumDataId.量程零:
                         lianginput1.Text = m.val.ToString();
                         break;
@@ -678,17 +683,17 @@ namespace AdminConsole
                     case EnumDataId.恒流值:
 
                         double val = double.Parse(m.val.ToString());
-                        if (val > 0.79 && val < 0.81)
+                        if (val > 0.49 && val < 0.51)
                         {
-                            hengliuzhiinput.SelectedValue = "0.8";
+                            hengliuzhiinput.SelectedValue = "0.5";
                         }
                         else if (val > 0.39 && val < 0.41)
                         {
                             hengliuzhiinput.SelectedValue = "0.4";
                         }
-                        else if (val > 0.34 && val < 0.36)
+                        else if (val > 0.29 && val < 0.31)
                         {
-                            hengliuzhiinput.SelectedValue = "0.35";
+                            hengliuzhiinput.SelectedValue = "0.3";
                         }
                         else if (val > 0.19 && val < 0.21)
                         {
@@ -871,28 +876,20 @@ namespace AdminConsole
                 samples[i - 1] = double.Parse(caijizhi.Trim());
             }
 
-
-
-            //for (int i = 0; i < samples.Length; i++)
-            //{
-            //    samples[i] = i+1342;
-            //}
-            //samples[0] = 1647;
-            //samples[1] = 1522;
-            //measuredValues[0] = 1;
-            //measuredValues[1] = 2;
-
+ 
             var coefficients = Sklean.CalculateCalibrationCoefficients(pga, samples, measuredValues);
             var cc = string.Join(",", coefficients);
             registerList.FirstOrDefault(w => w.Id == EnumDataId.校准系数1).val = coefficients[0];
             registerList.FirstOrDefault(w => w.Id == EnumDataId.校准系数2).val = coefficients[1];
             registerList.FirstOrDefault(w => w.Id == EnumDataId.校准系数3).val = coefficients[2];
             registerList.FirstOrDefault(w => w.Id == EnumDataId.校准系数4).val = coefficients[3];
-            if (coefficients.Length == 5) {
+
+            if (coefficients.Length == 5)
+            {
                 var register = InitData.registers.FirstOrDefault(w => w.Id == EnumDataId.校准系数5);
                 register.val = coefficients[4];
                 registerList.Add(register);
-            }            
+            }
             foreach (var m in registerList)
             {
                 
@@ -1018,6 +1015,18 @@ namespace AdminConsole
                     float.TryParse(biaozhuanzhi5.Text, out zhi55);
                     m.val = zhi55;
                 }
+                else if (m.Id == EnumDataId.滤波等级)
+                {                  
+                    if (lvbodengjiinput.SelectedValue == null)
+                    {
+                        MessageBox.Show("滤波等级值不能为空！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                    int zhilbv = 0;
+                    int.TryParse(lvbodengjiinput.SelectedValue.ToString(), out zhilbv);
+                    m.val = zhilbv;
+                }
+                
 
                 log4netHelper.Info("私有指令，PC端写寄存器0x56写发送:" + Model.ModbusUtility.ConvertToJosn(m));
                 var b = modbusWriter.WritePrivate0x56Register(m);
@@ -1156,36 +1165,7 @@ namespace AdminConsole
 
         private void sousuoSbBut1_Click(object sender, EventArgs e)
         {
-          //var s =  float.Parse("1200.00").ToBigEndianBytes();
-          //  var s1 = double.Parse("1200.00").ToBigEndianBytes();
-          //   var  data1 = new byte[] { 0xC0 , 0xB0, 0x00, 0x00 };
-            //  if (BitConverter.IsLittleEndian)
-            //      Array.Reverse(data1);
-            // var val = BitConverter.ToInt32(data1, 0);
-
-            //  var s= val.ToBigEndianBytes();
-
-            //    var val1 = BitConverter.ToSingle(data1, 0);
-
-            //   var s1 = float.Parse("-3165").ToBigEndianBytes();
-
-            //  string hexString1 = string.Concat(s1.Select(b => " " + b.ToString("X2")));
-
-            //double[] xData = { 0.00040859,1 }; // 示例 x 值
-            //double[] yData = { 0.000408888, 2 }; // 示例 y 值
-
-            // double[] xData = { 1, 2,  }; // 示例 x 值
-            //    //                              //  double[] yData = {    1345  * 2.5 /1/ 8388607, 1353 * 2.5 / 1 / 8388607, 1362 * 2.5 / 1 / 8388607, 1379 * 2.5 / 1 / 8388607 }; // 示例 y 值
-
-            //    //double[] yData = { 0.000490067, 0.000490961 }; // 示例 y 值
-
-            //double[] yData = { 0.000490067, 0.000490961 }; // 示例 y 值
-
-            // var coefficients = Fit.Polynomial(yData, xData, 1 );
-            //string s = string.Join(",", coefficients);
-
-
-
+   
             if (sousuoSbBut1.Text != "搜索")
             {
 
@@ -1196,7 +1176,7 @@ namespace AdminConsole
                 cxdkButId.Enabled = true;
 
                 StopScan();
-
+               
                 if (_serialPort != null && _serialPort.IsOpen)
                 {
                     _serialPort.Close();
@@ -1205,6 +1185,7 @@ namespace AdminConsole
             }
             else
             {
+                msglable.Text = "";
                 lianjieButId.Enabled = false;
                 btlSelectId.Enabled = false;
                 dkhselectId.Enabled = false;
@@ -1290,9 +1271,19 @@ namespace AdminConsole
                 catch (Exception)
                 {
                     // 无响应或异常视为无效地址
-                }
-                this.ShowSuccessTip(address + "搜索完成！");
+                }                
+              
 
+                if (msglable.InvokeRequired)
+                {
+                    msglable.Invoke(new Action(() => {
+                        msglable.Text = "当前地址搜索进度：" + address;
+                    }));
+                }
+                else
+                {
+                    msglable.Text = "当前地址搜索进度：" + address;
+                }
 
             }
         }
@@ -1498,7 +1489,7 @@ namespace AdminConsole
                     MessageBox.Show("端口打开失败！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
+              
                 lianjieButId.Text = "断开";
                 dkhselectId.Enabled = false;
                 btlSelectId.Enabled = false;
@@ -1512,7 +1503,15 @@ namespace AdminConsole
                 var baudRate = int.Parse(btlSelectId.SelectedText.ToString());
                 var parity = (Parity)Enum.Parse(typeof(Parity), xywselectId.SelectedValue.ToString());
                 var slaveId = byte.Parse(dzselectId.SelectedItem.ToString());
+
+               
               
+                msglable.Text = "连接成功";
+
+                dqljLabe.Text = portName + " , " + baudRate + " , " + parity + " ,8 " + " ,1 " + "   地址：" + slaveId;
+
+                msglable.Text = "数据读取中...";
+             
                 var bl =  diZzhiList();
                 if (!bl) { 
                   return;
@@ -1521,18 +1520,33 @@ namespace AdminConsole
 
                 bl = jiaozhunduqu();
 
+                if (caijizhiinput5.Text.Trim() != "0" && biaozhuanzhi5.Text.Trim()!="0" ) 
+                {
+                    xiaozhundianinput.SelectedValue = "5";
+                }
+                else if (caijizhiinput4.Text.Trim() != "0" && biaozhuanzhi4.Text.Trim() != "0")
+                {
+                    xiaozhundianinput.SelectedValue = "4";
+                }
+                else if (caijizhiinput3.Text.Trim() != "0" && biaozhuanzhi3.Text.Trim() != "0")
+                {
+                    xiaozhundianinput.SelectedValue = "3";
+                }
+                else
+                {
+                    xiaozhundianinput.SelectedValue = "2";
+                }
+
+
                 TimerEventProcessor(null, null);
                 if (!bl)
                 {
                     return;
                 }
 
-                msglable.Text = "连接成功";
-
-                dqljLabe.Text = portName + " , " + baudRate + " , " + parity + " ,8 " + " ,1 " + "   地址：" + slaveId;
-
-                msglable.Text = "读取校准数据成功";
-                 timer.Start();
+            
+                msglable.Text = "读取数据成功";
+                timer.Start();
             }
             else
             {
@@ -1635,13 +1649,16 @@ namespace AdminConsole
         #region 用户设置读取写入
         private void yonghushezhiDuQubut_Click(object sender, EventArgs e)
         {
-
+            yonghushezhiDuQubut.Enabled = false;
             var bl = yonghushezhiDuQu();
             if (!bl)
             {
+                yonghushezhiDuQubut.Enabled = true;
                 return;
             }
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            yonghushezhiDuQubut.Enabled = true;
         }
 
         private bool yonghushezhiDuQu()
@@ -1672,19 +1689,23 @@ namespace AdminConsole
 
         private void yonghushezhixieruBut_Click(object sender, EventArgs e)
         {
-
+            yonghushezhixieruBut.Enabled = false;
             var bl = yonghushezhixieru();
             if (!bl)
             {
+                yonghushezhixieruBut.Enabled = true;
                 return ;
             }
             bl = CmdDataWriteSave();
             if (!bl)
             {
+                yonghushezhixieruBut.Enabled = true;
                 return ;
             }
             msglable.Text = "写入用户设置数据成功";
             // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            yonghushezhixieruBut.Enabled = true;
         }
 
         private bool yonghushezhixieru()
@@ -1716,10 +1737,11 @@ namespace AdminConsole
         #region 校准参数读取写入
         private void jiaozhunxieruBut_Click(object sender, EventArgs e)
         {
-          
-           var bl = jiaozhunxieru();
+            jiaozhunduquBut.Enabled = false;
+            var bl = jiaozhunxieru();
             if (!bl)
             {
+                jiaozhunduquBut.Enabled = true;
                 return;
             }
             bl = CmdDataWriteSave();
@@ -1729,6 +1751,8 @@ namespace AdminConsole
             }
             msglable.Text = "写入校准数据成功";
             //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            jiaozhunduquBut.Enabled = true;
         }
 
         private bool jiaozhunxieru()
@@ -1750,15 +1774,36 @@ namespace AdminConsole
 
         private void jiaozhunduquBut_Click(object sender, EventArgs e)
         {
- 
+            jiaozhunduquBut.Enabled = false;
             var bl = jiaozhunduqu();
 
             if (!bl)
             {
+                jiaozhunduquBut.Enabled = true;
                 return;
             }
+
+            if (caijizhiinput5.Text.Trim() != "0" && biaozhuanzhi5.Text.Trim() != "0")
+            {
+                xiaozhundianinput.SelectedValue = "5";
+            }
+            else if (caijizhiinput4.Text.Trim() != "0" && biaozhuanzhi4.Text.Trim() != "0")
+            {
+                xiaozhundianinput.SelectedValue = "4";
+            }
+            else if (caijizhiinput3.Text.Trim() != "0" && biaozhuanzhi3.Text.Trim() != "0")
+            {
+                xiaozhundianinput.SelectedValue = "3";
+            }
+            else
+            {
+                xiaozhundianinput.SelectedValue = "2";
+            }
+
             msglable.Text = "读取校准数据成功";
             // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            jiaozhunduquBut.Enabled = true;
         }
 
         private bool jiaozhunduqu()
@@ -1770,6 +1815,7 @@ namespace AdminConsole
             {
                 return false;
             }
+
             return true;
            
         }
@@ -1779,36 +1825,44 @@ namespace AdminConsole
         #region  写入全部数据
         private void xieruquanbushujuBut_Click(object sender, EventArgs e)
         {
-
+            xieruquanbushujuBut.Enabled = false;
             var bl = yonghushezhixieru();
             if (!bl)
             {
+                xieruquanbushujuBut.Enabled = true;
                 return;
             }
             bl = jiaozhunxieru();
             if (!bl)
             {
+                xieruquanbushujuBut.Enabled = true;
                 return;
             }
             bl = CmdDataWriteSave();
             if (!bl)
             {
+                xieruquanbushujuBut.Enabled = true;
                 return;
             }
             msglable.Text = "写入全部数据成功";
             //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            xieruquanbushujuBut.Enabled = true;
         }
  
         private void jiaozhunduququanbuBut_Click(object sender, EventArgs e)
         {
+            jiaozhunduququanbuBut.Enabled = false;
             var bl = yibiaoduqu();
             if (!bl)
             {
+                jiaozhunduququanbuBut.Enabled = true;
                 return;
             }
               bl = yonghushezhiDuQu();
             if (!bl)
             {
+                jiaozhunduququanbuBut.Enabled = true;
                 return;
             }
 
@@ -1816,46 +1870,58 @@ namespace AdminConsole
 
             if (!bl)
             {
+                jiaozhunduququanbuBut.Enabled = true;
                 return;
             }
             msglable.Text = "读取全部数据成功";
             // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            jiaozhunduququanbuBut.Enabled = true;
         }
 
         private void gcbcsjBut_Click(object sender, EventArgs e)
         {
+            gcbcsjBut.Enabled = false;
             var gcbc = InitData.registers.FirstOrDefault(w => w.Id == EnumDataId.工厂模式);
 
             var modbusWriter = GetModbusWriter();
             if (modbusWriter == null)
             {
+                gcbcsjBut.Enabled = true;
                 return ;
             }
             var bl = modbusWriter.WritePrivate0x56Register(gcbc);
 
             if (!bl)
             {
+               
                 MessageBox.Show(gcbc.Name + "写入失败", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                gcbcsjBut.Enabled = true;
                 return;
             }
          
             bl = yonghushezhixieru();
             if (!bl)
             {
+                gcbcsjBut.Enabled = true;
                 return;
             }
             bl = jiaozhunxieru();
             if (!bl)
             {
+                gcbcsjBut.Enabled = true;
                 return;
             }
             bl = CmdDataWriteSave();
             if (!bl)
             {
+                gcbcsjBut.Enabled = true;
                 return;
             }
             msglable.Text = "工厂保存数据成功";
             //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            gcbcsjBut.Enabled = true;
         }
         #endregion
 
@@ -1871,6 +1937,15 @@ namespace AdminConsole
                 this.biaozhuanzhi4.Enabled = false;
                 this.caijizhiBut5.Enabled = false;
                 this.biaozhuanzhi5.Enabled = false;
+                caijizhiinput3.Text = "";
+                caijizhiinput4.Text = "";
+                caijizhiinput5.Text = "";
+                biaozhuanzhi3.Text = "";
+                biaozhuanzhi4.Text = "";
+                biaozhuanzhi5.Text = "";
+                caijizhiinput3.Enabled = false;
+                caijizhiinput4.Enabled = false;
+                caijizhiinput5.Enabled = false;
             }
             else if (xiaozhundianinput.SelectedValue.ToString() == "3")
             {
@@ -1880,6 +1955,13 @@ namespace AdminConsole
                 this.biaozhuanzhi4.Enabled = false;
                 this.caijizhiBut5.Enabled = false;
                 this.biaozhuanzhi5.Enabled = false;
+                caijizhiinput4.Text = "";
+                caijizhiinput5.Text = "";                
+                biaozhuanzhi4.Text = "";
+                biaozhuanzhi5.Text = "";
+                caijizhiinput3.Enabled = true;
+                caijizhiinput4.Enabled = false;
+                caijizhiinput5.Enabled = false;
             }
             else if (xiaozhundianinput.SelectedValue.ToString() == "4")
             {
@@ -1888,7 +1970,12 @@ namespace AdminConsole
                 this.caijizhiBut4.Enabled = true;
                 this.biaozhuanzhi4.Enabled = true;
                 this.caijizhiBut5.Enabled = false;
-                this.biaozhuanzhi5.Enabled = false;
+                this.biaozhuanzhi5.Enabled = false;                
+                caijizhiinput5.Text = "";           
+                biaozhuanzhi5.Text = "";
+                caijizhiinput3.Enabled = true;
+                caijizhiinput4.Enabled = true;
+                caijizhiinput5.Enabled = false;
             }
             else if (xiaozhundianinput.SelectedValue.ToString() == "5")
             {
@@ -1898,6 +1985,9 @@ namespace AdminConsole
                 this.biaozhuanzhi4.Enabled = true;
                 this.caijizhiBut5.Enabled = true;
                 this.biaozhuanzhi5.Enabled = true;
+                caijizhiinput3.Enabled = true;
+                caijizhiinput4.Enabled = true;
+                caijizhiinput5.Enabled = true;
             }
         }
 
@@ -1909,71 +1999,100 @@ namespace AdminConsole
                 return;
             }
             MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
         private void uiButton13_Click(object sender, EventArgs e)
         {
+            uiButton1.Enabled = false;
+
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值1).ToList());
             if (!bl)
             {
+                uiButton1.Enabled = true;
                 return;
             }
             msglable.Text = "读取采集值1数据成功";
             // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            uiButton1.Enabled = true;
         }
         private void caijizhiBut2_Click(object sender, EventArgs e)
         {
+             caijizhiBut2.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值2).ToList());
+           
             if (!bl)
             {
+                caijizhiBut2.Enabled = true;
                 return;
             }
             msglable.Text = "读取采集值2数据成功";
             // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            caijizhiBut2.Enabled = true;
         }
         private void caijizhiBut3_Click(object sender, EventArgs e)
         {
+            caijizhiBut3.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值3).ToList());
+            
             if (!bl)
             {
+                caijizhiBut3.Enabled = true;
                 return;
             }
             msglable.Text = "读取采集值3数据成功";
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            caijizhiBut3.Enabled = true;
         }
         private void caijizhiBut4_Click(object sender, EventArgs e)
         {
+            caijizhiBut4.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值4).ToList());
+           
             if (!bl)
             {
+                caijizhiBut4.Enabled = true;
                 return;
             }
             msglable.Text = "读取采集值4数据成功";
             // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            caijizhiBut4.Enabled = true;
         }
         private void caijizhiBut5_Click(object sender, EventArgs e)
         {
+            caijizhiBut5.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值5).ToList());
+            
             if (!bl)
             {
+                caijizhiBut5.Enabled = true;
                 return;
             }
             msglable.Text = "读取采集值5数据成功";
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            caijizhiBut5.Enabled = true;
         }
         #endregion
 
         #region 寄存器组列表读取 写入
         private void LieBIAOxieru_Click(object sender, EventArgs e)
         {
+            LieBIAOxieru.Enabled = false;
             var modbusWriter = GetModbusWriter();
-
+            
+           
             if (modbusWriter == null)
             {
+                LieBIAOxieru.Enabled = true;
                 return;
             }
 
             float fv;
-            UInt16 iv;
+            Int16 iv;
             int idxdz1;
             int idxdz2 = 0;
             #region
@@ -2007,6 +2126,7 @@ namespace AdminConsole
                         catch (Exception)
                         {
                             MessageBox.Show(Name + ":地址值必须为16进制数！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            LieBIAOxieru.Enabled = true;
                             return;
                         }
 
@@ -2014,6 +2134,7 @@ namespace AdminConsole
                         if (!float.TryParse(val, out fv))
                         {
                             MessageBox.Show(Name + ":数据值必须为数值型！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            LieBIAOxieru.Enabled = true;
                             return;
                         }
                         valueUshortarr = fv.ToBigEndianBytes();
@@ -2027,18 +2148,21 @@ namespace AdminConsole
                         catch (Exception)
                         {
                             MessageBox.Show(Name + ":地址值必须为16进制数！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            LieBIAOxieru.Enabled = true;
                             return;
                         }
 
-                        if (!UInt16.TryParse(val, out iv))
+                        if (!Int16.TryParse(val, out iv))
                         {
                             MessageBox.Show(Name + ":必须为16位整数！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            LieBIAOxieru.Enabled = true;
                             return;
                         }
                         valueUshortarr = iv.ToBigEndianBytes();
                     }
 
                     log4netHelper.Info("PC端修改设备寄存器地址以及数据0x46写发送:" + Model.ModbusUtility.ConvertToJosn(reg));
+         
 
                     modbusWriter.WritePrivate0x46Register(reg.Address, idxdz1, valueUshortarr.Take(2).ToArray());
                     reg.CustomizeAddress = "0x" + idxdz1.ToString("X2");
@@ -2058,6 +2182,7 @@ namespace AdminConsole
                 {
                     log4netHelper.Error("PC端修改设备寄存器地址以及数据0x46写:" + ex.Message);
                     MessageBox.Show(Name + ":写入失败", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    LieBIAOxieru.Enabled = true;
                     return;
                 }
             }
@@ -2066,20 +2191,27 @@ namespace AdminConsole
 
             if (!bl)
             {
+                LieBIAOxieru.Enabled = true;
                 return;
             }
             msglable.Text = "写入寄存器组态数据成功";
             // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.DoEvents();
+            LieBIAOxieru.Enabled = true;
         }
 
         private void LieBIAODuQu_Click(object sender, EventArgs e)
         {
-
+            LieBIAODuQu.Enabled = false;
             var b=  diZzhiList();
-            if (!b) {
+            if (!b)
+            {
+                LieBIAOxieru.Enabled = true;
                 return;
             }
             msglable.Text = "读取寄存器组态数据成功";
+            Application.DoEvents();
+            LieBIAODuQu.Enabled = true;
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -2160,7 +2292,7 @@ namespace AdminConsole
                     }
                     else
                     {
-                        int shujuZhi = BitConverter.ToUInt16(shuju, 0);
+                        int shujuZhi = BitConverter.ToInt16(shuju, 0);
                         reg.val = shujuZhi;
                         reg.Description = reg.CustomizeAddress.ToString();
                     }
@@ -2184,10 +2316,9 @@ namespace AdminConsole
  
         private void jicunqizufanhuiBut_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("如有数据修改,请确认已保存？", "消息", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
+           
                 jcqgg.Visible = false;
-            }            
+                       
         }
 
         private void jicunqizutai_Click(object sender, EventArgs e)
@@ -2263,11 +2394,12 @@ namespace AdminConsole
 
         private void huifuchuchangBut_Click_1(object sender, EventArgs e)
         {
-
+            huifuchuchangBut.Enabled = false;
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
             {
+                huifuchuchangBut.Enabled = true;
                 return;
             }
             var huifu = InitData.registers.FirstOrDefault(w => w.Id == EnumDataId.恢复出厂设置);
@@ -2278,12 +2410,15 @@ namespace AdminConsole
             }
             msglable.Text = "恢复出厂设置成功";
             //MessageBox.Show(huifu.Name + "成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Application.DoEvents();
+            huifuchuchangBut.Enabled = true;
         }
 
         private void anliangjunfenbtn_Click(object sender, EventArgs e)
         {
             float liang1;
             float liang2;
+            anliangjunfenbtn.Enabled = false;
             float.TryParse(lianginput1.Text, out liang1);
             float.TryParse(lianginput2.Text, out liang2);
             int dfs = int.Parse(xiaozhundianinput.SelectedValue.ToString());
@@ -2292,9 +2427,13 @@ namespace AdminConsole
             for (var i = 2; i <= dfs; i++) {
                 this.Controls.Find("biaozhuanzhi" + i, true)[0].Text = (liang1 + (dfz * (i - 1))).ToString("f2");
             }
-
+            Application.DoEvents();
+            anliangjunfenbtn.Enabled = true;
         }
 
-        
+        private void uiButton2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

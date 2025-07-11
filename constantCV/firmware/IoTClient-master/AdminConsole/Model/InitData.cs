@@ -38,9 +38,9 @@ namespace AdminConsole.Model
         };
         public static List<KeyValue> hengliuezhiData = new List<KeyValue> {
                 new KeyValue{ID= "0.2",Name="0.2"},
-                new KeyValue{ID= "0.35",Name="0.35"},
+                new KeyValue{ID= "0.3",Name="0.3"},
                 new KeyValue{ID= "0.4",Name="0.4"},
-                new KeyValue{ID= "0.8",Name="0.8"}
+                new KeyValue{ID= "0.5",Name="0.5"}
         };
         public static List<KeyValue> xiaozhundianData = new List<KeyValue> {
                 new KeyValue{ID= "2",Name="2"},
@@ -78,18 +78,32 @@ namespace AdminConsole.Model
                 new KeyValue{ ID = "5", Name = "32" },
                 new KeyValue{ ID = "6", Name = "64" },
                 new KeyValue{ ID = "7", Name = "128" },
-                 new KeyValue{ ID = "8", Name = "256" }
+                new KeyValue{ ID = "8", Name = "256" }
         };
- 
-          
+
+        public static List<KeyValue> lvbodengjiData = new List<KeyValue> {
+                new KeyValue{ID= "0",Name="1"},
+                new KeyValue{ID= "1",Name="2"},
+                new KeyValue{ID= "2",Name="3"},
+                new KeyValue{ID= "3",Name="4"},
+                new KeyValue{ID= "4",Name="5"},
+                new KeyValue{ID= "5",Name="6"},
+                new KeyValue{ID= "6",Name="7"},
+                new KeyValue{ID= "7",Name="8"},
+                new KeyValue{ID= "8",Name="9"},
+                new KeyValue{ID= "9",Name="10"}
+
+        };
+
         public static List<RegisterDefinition> registers = new List<RegisterDefinition>
         {
+            new RegisterDefinition(EnumDataId.实时值扩大1000倍, "实时值扩大1000倍", 0x0004, 1, DataType.Int16, "原始值"),
             new RegisterDefinition(EnumDataId.实时值扩大100倍, "实时值扩大100倍", 0x0000, 1, DataType.Int16, "原始值"),
             new RegisterDefinition(EnumDataId.实时值扩大10倍,"实时值扩大10倍", 0x0001, 1, DataType.Int16, "原始值"),         
             new RegisterDefinition(EnumDataId.浮点输出值,"浮点输出值", 0x0002, 2, DataType.Float, "工程值"),
             new RegisterDefinition(EnumDataId.浮点输出值低位,"浮点输出值低位", 0x0003, 2, DataType.Float, "工程值"),
-            new RegisterDefinition(EnumDataId.原始浮点值,"原始浮点值", 0x0045, 2, DataType.Float, "原始浮点值"),
-            new RegisterDefinition(EnumDataId.原始浮点值低位,"原始浮点值低位", 0x0046, 2, DataType.Float, "原始浮点值低位"),
+            new RegisterDefinition(EnumDataId.原始浮点值,"原始浮点值", 0x0005, 2, DataType.Float, "原始浮点值"),
+            new RegisterDefinition(EnumDataId.原始浮点值低位,"原始浮点值低位", 0x0006, 2, DataType.Float, "原始浮点值低位"),
             new RegisterDefinition(EnumDataId.量程零位,"量程零位", 0x0104, 2, DataType.Float, "浮点数"),
             new RegisterDefinition(EnumDataId.量程零位低位,"量程零位低位", 0x0105, 2, DataType.Float, "浮点数"),
             new RegisterDefinition(EnumDataId.量程满度,"量程满度", 0x0106, 2, DataType.Float, "浮点数"),
@@ -135,7 +149,8 @@ namespace AdminConsole.Model
             new RegisterDefinition(EnumDataId.校准标准值5,"校准标准值5", 0x0030, 2, DataType.Float, "校准标准值5"),
             new RegisterDefinition(EnumDataId.恢复出厂设置,"恢复出厂设置", 0x001d, 1, DataType.Int16, "工厂模式",2),
             new RegisterDefinition(EnumDataId.屏蔽零点,"屏蔽零点", 0x0032, 1, DataType.Float, "屏蔽零点"),
-            new RegisterDefinition(EnumDataId.保存参数指令,"保存参数指令", 0x001b, 1, DataType.Int16, "保存参数指令",1)
+            new RegisterDefinition(EnumDataId.保存参数指令,"保存参数指令", 0x001b, 1, DataType.Int16, "保存参数指令",1),
+            new RegisterDefinition(EnumDataId.滤波等级,"滤波等级", 0x0036, 1, DataType.Int16, "滤波等级"),
         };
 
         //public static List<RegisterDefinition> JiCunQiQuanBu = new List<RegisterDefinition>
@@ -155,6 +170,7 @@ namespace AdminConsole.Model
 
         public static List<EnumDataId> SbDzRegisters = new List<EnumDataId>
         {
+            EnumDataId.实时值扩大1000倍,
             EnumDataId.实时值扩大100倍,
             EnumDataId.实时值扩大10倍,
             EnumDataId.浮点输出值,
@@ -267,12 +283,53 @@ namespace AdminConsole.Model
             EnumDataId.校准标准值2,
             EnumDataId.校准标准值3,
             EnumDataId.校准标准值4,
-            EnumDataId.校准标准值5
+            EnumDataId.校准标准值5,
+            EnumDataId.滤波等级
+            
 
         };
 
- 
-        
+        public static List<EnumDataId> CmdUserJiaoZhunDuQuIds = new List<EnumDataId>
+        {
+             
+           
+            EnumDataId.校准采集值1,
+            EnumDataId.校准采集值2,
+            EnumDataId.校准采集值3,
+            EnumDataId.校准采集值4,
+            EnumDataId.校准采集值5,
+            EnumDataId.校准标准值1,
+            EnumDataId.校准标准值2,
+            EnumDataId.校准标准值3,
+            EnumDataId.校准标准值4,
+            EnumDataId.校准标准值5,
+            EnumDataId.工厂校准单位
+
+
+        };
+
+        public static List<EnumDataId> CmdUserCanShuDuQuIds = new List<EnumDataId>
+        {
+
+
+            EnumDataId.校准采集值1,
+            EnumDataId.校准采集值2,
+            EnumDataId.校准采集值3,
+            EnumDataId.校准采集值4,
+            EnumDataId.校准采集值5,
+            EnumDataId.校准标准值1,
+            EnumDataId.校准标准值2,
+            EnumDataId.校准标准值3,
+            EnumDataId.校准标准值4,
+            EnumDataId.校准标准值5,
+           
+
+
+        };
+
+
+
+
         //public static List<RegisterDefinition> JiaoZhunCmdXieRu = new List<RegisterDefinition>
         //{
         //    new RegisterDefinition(EnumDataId.量程零,"量程零位", 0x0104, 2, DataType.Float, "浮点数"),
@@ -313,7 +370,26 @@ namespace AdminConsole.Model
             EnumDataId.校准标准值2,
             EnumDataId.校准标准值3,
             EnumDataId.校准标准值4,
-            EnumDataId.校准标准值5
+            EnumDataId.校准标准值5,
+            EnumDataId.滤波等级
+            
+        };
+
+        public static List<EnumDataId> UserJiaoZhunCmdXieRuIds = new List<EnumDataId>
+        {
+           
+           EnumDataId.校准系数1,
+           EnumDataId.校准系数2,
+           EnumDataId.校准系数3,
+           EnumDataId.校准系数4,
+           EnumDataId.校准系数5,
+            EnumDataId.校准采集值1,
+            EnumDataId.校准采集值2,
+          
+            EnumDataId.校准标准值1,
+            EnumDataId.校准标准值2,
+      
+
         };
 
 

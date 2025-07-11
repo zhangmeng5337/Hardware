@@ -3,6 +3,9 @@
 #include "reg.h"
 #include "main.h"
 #include "sensor.h"
+#include "stdlib.h"
+#include "math.h"
+
 static dis_stru dis_usr;
 //共阳极数码管的编码：
 
@@ -11,7 +14,7 @@ static dis_stru dis_usr;
 //共阴极数码管的编码：
 unsigned char ledcode[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x00, 0x39, 0x5e, 0x79, 0x71, 0x00, 0x73, 0x00}; //0-F,空白，P
 unsigned char dot_dat = 0x80;//.
-unsigned char neg_dat = 0xfb;//- 11111011
+unsigned char neg_dat = 0x40;//- 1011111011
 
 void display_sel(unsigned char led_num, unsigned char status)
 {
@@ -494,8 +497,8 @@ void display_val_proc(unsigned char dis_mode)
         if (tmp < 0)
         {
             dis_usr.signedFlag = 1;
-			if(dis_usr.dis_val<-9999)
-		   	dis_usr.dis_val = -9999;
+			//if(dis_usr.dis_val<-9999)
+		  // 	dis_usr.dis_val = -9999;
             dis_usr.dis_val = fabs(dis_usr.dis_val);
         }
         else
@@ -626,7 +629,7 @@ void display()
 
 
 
-    //dis_usr.update_cycle = 5;
+    dis_usr.update_cycle = 5;
     if ((GetTick() - tick_tmp) >= dis_usr.update_cycle)
     {
         tick_tmp = GetTick();

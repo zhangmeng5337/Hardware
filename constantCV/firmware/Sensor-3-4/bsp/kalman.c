@@ -144,7 +144,7 @@ void SilderFilter_reset()
 float SilderFilter(float _value)
 {
     static char i = 0;
-	unsigned char j;
+    unsigned char j;
     static unsigned char count = 0;
     float ulChannel1AdcValue;
     ulChannel1AdcValue = 0;
@@ -153,9 +153,9 @@ float SilderFilter(float _value)
 
 
     uiChannel1Buffer[i++] = _value;
-	if (i >= FILTER_CAPTURE)
+    if (i >= FILTER_CAPTURE)
 
-  i = 0;
+        i = 0;
 
 
     if (count >= FILTER_CAPTURE)
@@ -166,8 +166,8 @@ float SilderFilter(float _value)
             ulChannel1AdcValue = ulChannel1AdcValue +
                                  uiChannel1Buffer[j] ;
         }
-       // count = 0;
-        
+        // count = 0;
+
         ulChannel1AdcValue = ulChannel1AdcValue / FILTER_CAPTURE;
 
 
@@ -212,18 +212,18 @@ void kalman_init(kalman *kfp)
 void filter_level_sel(unsigned char level)
 {
     uint32_t cube;
-	unsigned char i;
-	cube = 5;
-	for(i = 0;i<=level;i++)
-	{
-		cube = cube *2;
-	}
+    unsigned char i;
+    cube = 5;
+    for (i = 0; i <= level; i++)
+    {
+        cube = cube * 2;
+    }
     if (level <= 10 && level >= 0)
     {
         g_kfp_st.Q = 0.1 / cube;
         g_kfp_st.Q = g_kfp_st.Q;
-		//g_kfp_st2.Q = g_kfp_st2.Q /level;
-		//g_kfp_st.Q = 0.00000001;//0.001
+        //g_kfp_st2.Q = g_kfp_st2.Q /level;
+        //g_kfp_st.Q = 0.00000001;//0.001
     }
 //    else
 //    {

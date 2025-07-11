@@ -132,6 +132,12 @@ typedef struct
  float cal3val;
  float cal4val;
  float cal5val;
+ float usr_cal2ADC;
+  float usr_cal2val;
+ float usr_cal1ADC;
+  float usr_cal1val;
+
+ 
  float maskzero;//%
 
 }params_private_stru;

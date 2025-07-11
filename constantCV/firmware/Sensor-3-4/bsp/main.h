@@ -41,7 +41,7 @@ extern "C"
 /* USER CODE BEGIN ET */
 #define MAIN_FREQ   24000000
 #define VERSION 0x1b//1.0
-#define DISPLAY_DEBUG 0
+#define DISPLAY_DEBUG 1
 
 //UARTx
 #define  DEBUG_UARTx                   CW_UART1

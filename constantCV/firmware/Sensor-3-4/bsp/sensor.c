@@ -46,7 +46,7 @@ void adc_init(void)
     g_kfp_st3.Now_P = 0;
     g_kfp_st3.out = 0;
     g_kfp_st3.Kg = 0;
-    g_kfp_st3.Q = 0.01;
+    g_kfp_st3.Q = 0.001;
     g_kfp_st3.R = 0.1;
 
 }
