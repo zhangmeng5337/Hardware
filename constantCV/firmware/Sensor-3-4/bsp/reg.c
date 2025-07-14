@@ -5,6 +5,8 @@
 #include "uart_hal.h"
 
 
+void cal_number(void);
+
 
 //typedef struct
 //{
@@ -53,9 +55,9 @@ reg_dat_pack reg_dat_usr[REG_SIZE] =
     {REG_RANGF_LF16,  0,  1, 0x3f800000, 0x3f800000,  3,  1,     1, 1},
     {REG_OFFSET_HF16, 0,  1, 0x3f800000, 0x40000000,  3,  0,    1, 1},
     {REG_OFFSET_LF16, 0,  1, 0x3f800000, 0x40000000,  3,  1,    1, 1},
-    {REG_DEV_ADDR,    0,  1, 1,          2,          1,  0,      1, 1},
-    {REG_RATE,        0,  1, 3,          4,          1,  0,      1, 1},
-    {REG_CHECK,       0,  1, 0,          1,          1,  0,      1, 1},
+    {REG_DEV_ADDR,    0,  1, 1,          1,          1,  0,      1, 1},
+    {REG_RATE,        0,  1, 3,          3,          1,  0,      1, 1},
+    {REG_CHECK,       0,  1, 0,          0,          1,  0,      1, 1},
     {REG_DECM_BIT,    0,  1, 0,          2,          1,  0,      1, 1},
     {REG_UNIT,        0,  1, 2,          3,          1,  0,      1, 1},
     {REG_ADC_RATE,    0,  1, 0,          1,          1,  0,      1, 1},
@@ -497,6 +499,14 @@ void RegWrite(void)
         j = j + 4;
         floatTouint32_m(params_private.cal5val, buf + j);
         j = j + 4;
+		if (GetRegPrivate()->mode == 2)
+		{
+        params_private.usr_cal1val=0;
+        params_private.usr_cal2val=0;
+        params_private.usr_cal1ADC=0;
+        params_private.usr_cal2ADC=0;
+
+		}
         floatTouint32_m(params_private.usr_cal1val, buf + j);
         j = j + 4;
         floatTouint32_m(params_private.usr_cal2val, buf + j);
@@ -742,7 +752,12 @@ void reg_init(void)
     params_private.coe4 = 0;
     params_private.zero_cmd = 0;
     params_private.maskzero = 0;
-
+	GetRegPrivate()->select_value = 5;
+	GetRegPrivate()->usr_cal1ADC = 0;
+	GetRegPrivate()->usr_cal2ADC = 0;	
+	GetRegPrivate()->usr_cal1val = 0;
+	GetRegPrivate()->usr_cal2val = 0;
+   
     if (RegRead() == 0)
     {
 
@@ -757,14 +772,40 @@ void reg_init(void)
 
         RegWrite();
     }
+	 cal_number();
+
 }
 
+void cal_number()
+{
+	
 
+	if (GetRegPrivate()->cal5ADC != 0 || GetRegPrivate()->cal5val != 0 ) 
+	 {
+		 
+		 GetRegPrivate()->select_value = 5;
+	 }
+	 else if (GetRegPrivate()->cal4ADC != 0 || GetRegPrivate()->cal4val != 0)
+	 {
+		  GetRegPrivate()->select_value = 4;
+	 }
+	 else if (GetRegPrivate()->cal3ADC != 0 || GetRegPrivate()->cal3val != 0)
+	 {
+		 GetRegPrivate()->select_value = 3;
+	 }
+	 else
+	 {
+		  GetRegPrivate()->select_value = 2;
+	 }
+
+}
 void reg_proc(void)
 {
     if (reg_usr.update == 1 || getKey()->update == 1)
     {
         RegWrite();
+		cal_number();
+		
         reg_usr.update = 0;
         getKey()->update  = 0;
         GetRegPrivate()->mode = 0;

@@ -35,6 +35,7 @@ adc_stru *getadc(void);
 unsigned char *getAdcReconfig(void);
 void cal_press(void);
 void data_filter(void);
+void sort(void);
 
 #endif /*__CW32L010_SPI_H */
 

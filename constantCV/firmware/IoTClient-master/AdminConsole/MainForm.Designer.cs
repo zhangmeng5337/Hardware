@@ -42,6 +42,9 @@ namespace AdminConsole
             this.danweilable = new Sunny.UI.UILabel();
             this.jcqgg = new Sunny.UI.UIGroupBox();
             this.jicunqizufanhuiBut = new Sunny.UI.UIButton();
+            this.uiGroupBox4 = new Sunny.UI.UIGroupBox();
+            this.LieBIAODuQu = new Sunny.UI.UIButton();
+            this.LieBIAOxieru = new Sunny.UI.UIButton();
             this.libiao = new Sunny.UI.UIGroupBox();
             this.uiDataGridView1 = new Sunny.UI.UIDataGridView();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -190,10 +193,8 @@ namespace AdminConsole
             this.dkhselectId = new Sunny.UI.UIComboBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
             this.uiLabel4 = new Sunny.UI.UILabel();
-            this.LieBIAOxieru = new Sunny.UI.UIButton();
-            this.LieBIAODuQu = new Sunny.UI.UIButton();
-            this.uiGroupBox4 = new Sunny.UI.UIGroupBox();
             this.jcqgg.SuspendLayout();
+            this.uiGroupBox4.SuspendLayout();
             this.libiao.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).BeginInit();
             this.uiGroupBox5.SuspendLayout();
@@ -229,7 +230,6 @@ namespace AdminConsole
             this.uiGroupBox3.SuspendLayout();
             this.uiGroupBox2.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
-            this.uiGroupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // msglable
@@ -287,7 +287,7 @@ namespace AdminConsole
             this.jcqgg.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.jcqgg.Name = "jcqgg";
             this.jcqgg.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.jcqgg.Size = new System.Drawing.Size(1059, 450);
+            this.jcqgg.Size = new System.Drawing.Size(1094, 484);
             this.jcqgg.TabIndex = 78;
             this.jcqgg.Text = null;
             this.jcqgg.Visible = false;
@@ -303,6 +303,44 @@ namespace AdminConsole
             this.jicunqizufanhuiBut.TabIndex = 77;
             this.jicunqizufanhuiBut.Text = "《工厂校准";
             this.jicunqizufanhuiBut.Click += new System.EventHandler(this.jicunqizufanhuiBut_Click);
+            // 
+            // uiGroupBox4
+            // 
+            this.uiGroupBox4.Controls.Add(this.LieBIAODuQu);
+            this.uiGroupBox4.Controls.Add(this.LieBIAOxieru);
+            this.uiGroupBox4.Controls.Add(this.libiao);
+            this.uiGroupBox4.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.uiGroupBox4.Location = new System.Drawing.Point(6, 27);
+            this.uiGroupBox4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiGroupBox4.Name = "uiGroupBox4";
+            this.uiGroupBox4.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.uiGroupBox4.Size = new System.Drawing.Size(1102, 805);
+            this.uiGroupBox4.TabIndex = 76;
+            this.uiGroupBox4.Text = "寄存器组";
+            // 
+            // LieBIAODuQu
+            // 
+            this.LieBIAODuQu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LieBIAODuQu.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.LieBIAODuQu.Location = new System.Drawing.Point(645, 747);
+            this.LieBIAODuQu.Margin = new System.Windows.Forms.Padding(4);
+            this.LieBIAODuQu.Name = "LieBIAODuQu";
+            this.LieBIAODuQu.Size = new System.Drawing.Size(129, 39);
+            this.LieBIAODuQu.TabIndex = 75;
+            this.LieBIAODuQu.Text = "读取";
+            this.LieBIAODuQu.Click += new System.EventHandler(this.LieBIAODuQu_Click);
+            // 
+            // LieBIAOxieru
+            // 
+            this.LieBIAOxieru.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LieBIAOxieru.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.LieBIAOxieru.Location = new System.Drawing.Point(812, 748);
+            this.LieBIAOxieru.Margin = new System.Windows.Forms.Padding(4);
+            this.LieBIAOxieru.Name = "LieBIAOxieru";
+            this.LieBIAOxieru.Size = new System.Drawing.Size(129, 39);
+            this.LieBIAOxieru.TabIndex = 66;
+            this.LieBIAOxieru.Text = "写入";
+            this.LieBIAOxieru.Click += new System.EventHandler(this.LieBIAOxieru_Click);
             // 
             // libiao
             // 
@@ -496,6 +534,7 @@ namespace AdminConsole
             this.lvbodengjiinput.TabIndex = 91;
             this.lvbodengjiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.lvbodengjiinput.ValueMember = "ID";
+            this.lvbodengjiinput.SelectedIndexChanged += new System.EventHandler(this.lvbodengjiinput_SelectedIndexChanged);
             // 
             // anliangjunfenbtn
             // 
@@ -1191,6 +1230,7 @@ namespace AdminConsole
             this.caijizhiinput3.Padding = new System.Windows.Forms.Padding(8);
             this.caijizhiinput3.Size = new System.Drawing.Size(154, 39);
             this.caijizhiinput3.TabIndex = 91;
+            this.caijizhiinput3.TextChanged += new System.EventHandler(this.caijizhiinput3_TextChanged);
             // 
             // uiTextBox43
             // 
@@ -1429,6 +1469,7 @@ namespace AdminConsole
             this.caijizhiinput1.Padding = new System.Windows.Forms.Padding(8);
             this.caijizhiinput1.Size = new System.Drawing.Size(154, 39);
             this.caijizhiinput1.TabIndex = 80;
+            this.caijizhiinput1.TextChanged += new System.EventHandler(this.caijizhiinput1_TextChanged);
             // 
             // uiTextBox11
             // 
@@ -2523,44 +2564,6 @@ namespace AdminConsole
             this.uiLabel4.Text = "端口号：";
             this.uiLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // LieBIAOxieru
-            // 
-            this.LieBIAOxieru.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LieBIAOxieru.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.LieBIAOxieru.Location = new System.Drawing.Point(812, 748);
-            this.LieBIAOxieru.Margin = new System.Windows.Forms.Padding(4);
-            this.LieBIAOxieru.Name = "LieBIAOxieru";
-            this.LieBIAOxieru.Size = new System.Drawing.Size(129, 39);
-            this.LieBIAOxieru.TabIndex = 66;
-            this.LieBIAOxieru.Text = "写入";
-            this.LieBIAOxieru.Click += new System.EventHandler(this.LieBIAOxieru_Click);
-            // 
-            // LieBIAODuQu
-            // 
-            this.LieBIAODuQu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LieBIAODuQu.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.LieBIAODuQu.Location = new System.Drawing.Point(645, 747);
-            this.LieBIAODuQu.Margin = new System.Windows.Forms.Padding(4);
-            this.LieBIAODuQu.Name = "LieBIAODuQu";
-            this.LieBIAODuQu.Size = new System.Drawing.Size(129, 39);
-            this.LieBIAODuQu.TabIndex = 75;
-            this.LieBIAODuQu.Text = "读取";
-            this.LieBIAODuQu.Click += new System.EventHandler(this.LieBIAODuQu_Click);
-            // 
-            // uiGroupBox4
-            // 
-            this.uiGroupBox4.Controls.Add(this.LieBIAODuQu);
-            this.uiGroupBox4.Controls.Add(this.LieBIAOxieru);
-            this.uiGroupBox4.Controls.Add(this.libiao);
-            this.uiGroupBox4.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.uiGroupBox4.Location = new System.Drawing.Point(6, 27);
-            this.uiGroupBox4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
-            this.uiGroupBox4.Name = "uiGroupBox4";
-            this.uiGroupBox4.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.uiGroupBox4.Size = new System.Drawing.Size(1102, 805);
-            this.uiGroupBox4.TabIndex = 76;
-            this.uiGroupBox4.Text = "寄存器组";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -2569,7 +2572,6 @@ namespace AdminConsole
             this.Controls.Add(this.msglable);
             this.Controls.Add(this.dqljLabe);
             this.Controls.Add(this.uiLabel16);
-            this.Controls.Add(this.jcqgg);
             this.Controls.Add(this.danweilable);
             this.Controls.Add(this.uiLine8);
             this.Controls.Add(this.uiGroupBox5);
@@ -2577,11 +2579,13 @@ namespace AdminConsole
             this.Controls.Add(this.uiGroupBox3);
             this.Controls.Add(this.uiGroupBox2);
             this.Controls.Add(this.uiGroupBox1);
+            this.Controls.Add(this.jcqgg);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "CNG-35工厂调试软件V1.0";
             this.jcqgg.ResumeLayout(false);
+            this.uiGroupBox4.ResumeLayout(false);
             this.libiao.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).EndInit();
             this.uiGroupBox5.ResumeLayout(false);
@@ -2644,7 +2648,6 @@ namespace AdminConsole
             this.uiGroupBox2.PerformLayout();
             this.uiGroupBox1.ResumeLayout(false);
             this.uiGroupBox1.PerformLayout();
-            this.uiGroupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

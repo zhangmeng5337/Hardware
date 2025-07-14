@@ -940,7 +940,7 @@ void modbus_PrivaReg_write_pack(void)
             }
             else if ((modbus_usr.RegStart + i) == USR_CAL2_ADC)
             {
-                GetRegPrivate()->usr_cal1ADC = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+                GetRegPrivate()->usr_cal2ADC = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
 
             else if ((modbus_usr.RegStart + i) == MASK_ZERO)

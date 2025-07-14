@@ -35,6 +35,7 @@ void adc_init(void)
 
     kalman_init(&g_kfp_st);
     filter_level_sel(GetRegPrivate()->filter_level);
+	
     g_kfp_st2.Last_P = 300;
     g_kfp_st2.Now_P = 0;
     g_kfp_st2.out = 0;
@@ -224,13 +225,13 @@ unsigned char factory_unit_convert(float dat)
 void dat_cal_proc(float dat)
 {
     uint32_t tmp;
-	int32_t tmp_val;
+    int32_t tmp_val;
     float tmp_f, tmp6;
     float cal_val1, cal_val2;
     if (factory_unit_convert(dat) == 1)//factory unit to pa or T
     {
         tmp6 = adc_usr.data_unit_app;
-       tmp6 = kalman_filter(&g_kfp_st3, tmp6);
+        tmp6 = kalman_filter(&g_kfp_st3, tmp6);
         adc_usr.data_unit_app = tmp6;
 
         cal_val1 = adc_usr.data_unit_app;
@@ -263,12 +264,12 @@ void dat_cal_proc(float dat)
 
             case 2:
                 cal_val1 = cal_val1 * 100;
-              //  tmp_val = round(cal_val1);
+                //  tmp_val = round(cal_val1);
                 tmp_f = cal_val1 / 100.0;
                 break;
             case 3:
                 cal_val1 = cal_val1 * 1000;
-              //  tmp_val = round(cal_val1);
+                //  tmp_val = round(cal_val1);
                 tmp_f = cal_val1 / 1000.0;
                 break;
             default :
@@ -308,7 +309,7 @@ void dat_cal_proc(float dat)
             GetReg()->pb[eREG_X100].val_u32ToFloat = tmp;
 
             cal_val1 = adc_usr.data_unit_app * 1000;
-					cal_val1 = -cal_val1;
+            cal_val1 = -cal_val1;
             tmp = (uint32_t) cal_val1;
             tmp = ~tmp + 1;
             GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp;
@@ -319,7 +320,7 @@ void dat_cal_proc(float dat)
             GetReg()->pb[eREG_X10].val_u32ToFloat = tmp;
 
             cal_val1 = adc_usr.data_unit_app * 100;
-           tmp = (uint32_t) cal_val1;
+            tmp = (uint32_t) cal_val1;
             GetReg()->pb[eREG_X100].val_u32ToFloat = tmp;
 
             cal_val1 = cal_val1 * 100.0;
@@ -413,6 +414,57 @@ void adc_proc(void)
 
 }
 
+float cal_buf[2];
+void sort()
+{
+    unsigned char i, j, lt;
+    lt = GetRegPrivate()->select_value;
+	if(GetRegPrivate()->cal1val>=GetRegPrivate()->usr_cal1val&&GetRegPrivate()->usr_cal1ADC!=0)
+    cal_buf[0] = GetRegPrivate()->usr_cal1ADC;
+	else
+	    cal_buf[0] = GetRegPrivate()->cal1ADC;	
+	if(GetRegPrivate()->usr_cal2ADC!=0)
+	{
+	switch(lt)
+		{
+			case 5:
+				if(GetRegPrivate()->cal5val<=GetRegPrivate()->usr_cal2val)
+				cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
+				else
+				cal_buf[1] = GetRegPrivate()->cal5val;				
+				break;
+		case 4:
+			if(GetRegPrivate()->cal4val<=GetRegPrivate()->usr_cal2val)
+			cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
+			else
+			cal_buf[1] = GetRegPrivate()->cal4val;				
+			break;
+		case 3:
+			if(GetRegPrivate()->cal3val<=GetRegPrivate()->usr_cal2val)
+			cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
+			else
+			cal_buf[1] = GetRegPrivate()->cal3val;				
+			break;
+	
+		case 2:
+			if(GetRegPrivate()->cal2val<=GetRegPrivate()->usr_cal2val)
+			cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
+			else
+			cal_buf[1] = GetRegPrivate()->cal2val;				
+			break;
+	   default:
+			cal_buf[1] = GetRegPrivate()->cal5ADC;			
+		}
+
+	}
+	
+
+
+
+
+
+
+}
 void cal_press(void)
 {
     float tmp4, tmp5;
@@ -449,7 +501,7 @@ void cal_press(void)
     adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
     tmp2 = adc_usr.adc_data_KF;
     tmp2 = SilderFilter(tmp2);
-   // tmp2 = 13699;
+    // tmp2 = 13699;
 
     if (tmp2 != 0)
     {
@@ -474,23 +526,25 @@ void cal_press(void)
         }
 
         float cal_val;
-		if( GetRegPrivate()->cal5ADC == 0)
-		{
-				cal_val = GetRegPrivate()->cal4ADC;
-				if(cal_val == 0)
-					cal_val = GetRegPrivate()->cal3ADC;
-		if(cal_val == 0)
-			cal_val = GetRegPrivate()->cal2ADC;
+        if (GetRegPrivate()->cal5ADC == 0)
+        {
+            cal_val = GetRegPrivate()->cal4ADC;
+            if (cal_val == 0)
+                cal_val = GetRegPrivate()->cal3ADC;
+            if (cal_val == 0)
+                cal_val = GetRegPrivate()->cal2ADC;
 
-		}
-		else
-			cal_val = GetRegPrivate()->cal5ADC;
-        tmp1_conv1 = cal_val - GetRegPrivate()->cal1ADC;
+        }
+        else
+            cal_val = GetRegPrivate()->cal5ADC;
+		sort();
+
+        tmp1_conv1 = cal_buf[1] - cal_buf[0];
         //tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
-		
 
-        tmp2_conv2 = adc_usr.adc_vol - GetRegPrivate()->cal1ADC;
-       // tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
+
+        tmp2_conv2 = adc_usr.adc_vol - cal_buf[0];
+        // tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
 
         tmp2_conv2 = tmp2_conv2 / tmp1_conv1;
         adc_usr.dat_cal = tmp2_conv2;

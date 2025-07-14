@@ -26,6 +26,7 @@ using System.Windows.Forms;
 
 namespace AdminConsole
 {
+
     public partial class MainForm : Form
     {
         public const double global_delay_time = 0.2;
@@ -35,11 +36,11 @@ namespace AdminConsole
         private System.Windows.Forms.Timer timer;
 
         private System.Windows.Forms.Timer SheBeiTimer;
+        public static uint user_ver = 1;
 
- 
 
 
-     
+
         #region 初始化       
         public MainForm()
         {
@@ -2432,6 +2433,21 @@ namespace AdminConsole
         }
 
         private void uiButton2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lvbodengjiinput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void caijizhiinput1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void caijizhiinput3_TextChanged(object sender, EventArgs e)
         {
 
         }

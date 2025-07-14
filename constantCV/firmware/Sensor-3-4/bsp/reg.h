@@ -136,9 +136,9 @@ typedef struct
   float usr_cal2val;
  float usr_cal1ADC;
   float usr_cal1val;
-
- 
+  unsigned char select_value;
  float maskzero;//%
+ 
 
 }params_private_stru;
 
