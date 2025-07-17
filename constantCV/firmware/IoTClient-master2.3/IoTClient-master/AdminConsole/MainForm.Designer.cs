@@ -36,23 +36,11 @@ namespace AdminConsole
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.msglable = new Sunny.UI.UILabel();
-            this.dqljLabe = new Sunny.UI.UILabel();
-            this.uiLabel16 = new Sunny.UI.UILabel();
-            this.danweilable = new Sunny.UI.UILabel();
-            this.jcqgg = new Sunny.UI.UIGroupBox();
-            this.jicunqizufanhuiBut = new Sunny.UI.UIButton();
-            this.uiGroupBox4 = new Sunny.UI.UIGroupBox();
-            this.LieBIAODuQu = new Sunny.UI.UIButton();
-            this.LieBIAOxieru = new Sunny.UI.UIButton();
-            this.libiao = new Sunny.UI.UIGroupBox();
-            this.uiDataGridView1 = new Sunny.UI.UIDataGridView();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.uiButton2 = new Sunny.UI.UIButton();
+            this.gcbcsjBut = new Sunny.UI.UIButton();
             this.uiLine8 = new Sunny.UI.UILine();
+            this.jicunqizutai = new Sunny.UI.UIButton();
+            this.xieruquanbushujuBut = new Sunny.UI.UIButton();
+            this.jiaozhunduququanbuBut = new Sunny.UI.UIButton();
             this.uiGroupBox5 = new Sunny.UI.UIGroupBox();
             this.uiLabel28 = new Sunny.UI.UILabel();
             this.lvbodengjiinput = new Sunny.UI.UIComboBox();
@@ -62,15 +50,11 @@ namespace AdminConsole
             this.uiLabel27 = new Sunny.UI.UILabel();
             this.huifuchuchangBut = new Sunny.UI.UIButton();
             this.hengliuzhiinput = new Sunny.UI.UIComboBox();
-            this.jicunqizutai = new Sunny.UI.UIButton();
             this.offsetHinput = new Sunny.UI.UITextBox();
-            this.gcbcsjBut = new Sunny.UI.UIButton();
             this.coeinput = new Sunny.UI.UITextBox();
             this.uiLabel32 = new Sunny.UI.UILabel();
             this.yibiaoleixinginput = new Sunny.UI.UIComboBox();
-            this.xieruquanbushujuBut = new Sunny.UI.UIButton();
             this.uiLabel31 = new Sunny.UI.UILabel();
-            this.jiaozhunduququanbuBut = new Sunny.UI.UIButton();
             this.uiLabel30 = new Sunny.UI.UILabel();
             this.uiLabel29 = new Sunny.UI.UILabel();
             this.uiLabel14 = new Sunny.UI.UILabel();
@@ -144,6 +128,7 @@ namespace AdminConsole
             this.uiTextBox7 = new Sunny.UI.UITextBox();
             this.uiPanel2 = new Sunny.UI.UIPanel();
             this.jiaozhunduquBut = new Sunny.UI.UIButton();
+            this.uiButton2 = new Sunny.UI.UIButton();
             this.yhsz = new Sunny.UI.UIGroupBox();
             this.pianyizhiinput = new Sunny.UI.UITextBox();
             this.dizhiinput = new Sunny.UI.UITextBox();
@@ -193,10 +178,21 @@ namespace AdminConsole
             this.dkhselectId = new Sunny.UI.UIComboBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
             this.uiLabel4 = new Sunny.UI.UILabel();
-            this.jcqgg.SuspendLayout();
-            this.uiGroupBox4.SuspendLayout();
-            this.libiao.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).BeginInit();
+            this.danweilable = new Sunny.UI.UILabel();
+            this.uiGroupBox4 = new Sunny.UI.UIGroupBox();
+            this.LieBIAODuQu = new Sunny.UI.UIButton();
+            this.libiao = new Sunny.UI.UIGroupBox();
+            this.uiDataGridView1 = new Sunny.UI.UIDataGridView();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LieBIAOxieru = new Sunny.UI.UIButton();
+            this.jicunqizufanhuiBut = new Sunny.UI.UIButton();
+            this.jcqgg = new Sunny.UI.UIGroupBox();
+            this.uiLabel16 = new Sunny.UI.UILabel();
+            this.dqljLabe = new Sunny.UI.UILabel();
+            this.msglable = new Sunny.UI.UILabel();
             this.uiGroupBox5.SuspendLayout();
             this.uiPanel1.SuspendLayout();
             this.biaozhuanzhi5.SuspendLayout();
@@ -230,239 +226,74 @@ namespace AdminConsole
             this.uiGroupBox3.SuspendLayout();
             this.uiGroupBox2.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
+            this.uiGroupBox4.SuspendLayout();
+            this.libiao.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).BeginInit();
+            this.jcqgg.SuspendLayout();
             this.SuspendLayout();
             // 
-            // msglable
+            // gcbcsjBut
             // 
-            this.msglable.AutoSize = true;
-            this.msglable.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.msglable.Location = new System.Drawing.Point(826, 969);
-            this.msglable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.msglable.Name = "msglable";
-            this.msglable.Size = new System.Drawing.Size(0, 31);
-            this.msglable.TabIndex = 82;
-            this.msglable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // dqljLabe
-            // 
-            this.dqljLabe.AutoSize = true;
-            this.dqljLabe.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.dqljLabe.Location = new System.Drawing.Point(144, 969);
-            this.dqljLabe.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.dqljLabe.Name = "dqljLabe";
-            this.dqljLabe.Size = new System.Drawing.Size(0, 31);
-            this.dqljLabe.TabIndex = 81;
-            this.dqljLabe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel16
-            // 
-            this.uiLabel16.AutoSize = true;
-            this.uiLabel16.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLabel16.Location = new System.Drawing.Point(18, 969);
-            this.uiLabel16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.uiLabel16.Name = "uiLabel16";
-            this.uiLabel16.Size = new System.Drawing.Size(134, 31);
-            this.uiLabel16.TabIndex = 80;
-            this.uiLabel16.Text = "当前链接：";
-            this.uiLabel16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // danweilable
-            // 
-            this.danweilable.AutoSize = true;
-            this.danweilable.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.danweilable.Location = new System.Drawing.Point(40, 964);
-            this.danweilable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.danweilable.Name = "danweilable";
-            this.danweilable.Size = new System.Drawing.Size(0, 31);
-            this.danweilable.TabIndex = 79;
-            this.danweilable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.danweilable.Visible = false;
-            // 
-            // jcqgg
-            // 
-            this.jcqgg.Controls.Add(this.jicunqizufanhuiBut);
-            this.jcqgg.Controls.Add(this.uiGroupBox4);
-            this.jcqgg.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jcqgg.Location = new System.Drawing.Point(429, 23);
-            this.jcqgg.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
-            this.jcqgg.Name = "jcqgg";
-            this.jcqgg.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.jcqgg.Size = new System.Drawing.Size(1094, 484);
-            this.jcqgg.TabIndex = 78;
-            this.jcqgg.Text = null;
-            this.jcqgg.Visible = false;
-            // 
-            // jicunqizufanhuiBut
-            // 
-            this.jicunqizufanhuiBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jicunqizufanhuiBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jicunqizufanhuiBut.Location = new System.Drawing.Point(33, 862);
-            this.jicunqizufanhuiBut.Margin = new System.Windows.Forms.Padding(4);
-            this.jicunqizufanhuiBut.Name = "jicunqizufanhuiBut";
-            this.jicunqizufanhuiBut.Size = new System.Drawing.Size(129, 39);
-            this.jicunqizufanhuiBut.TabIndex = 77;
-            this.jicunqizufanhuiBut.Text = "《工厂校准";
-            this.jicunqizufanhuiBut.Click += new System.EventHandler(this.jicunqizufanhuiBut_Click);
-            // 
-            // uiGroupBox4
-            // 
-            this.uiGroupBox4.Controls.Add(this.LieBIAODuQu);
-            this.uiGroupBox4.Controls.Add(this.LieBIAOxieru);
-            this.uiGroupBox4.Controls.Add(this.libiao);
-            this.uiGroupBox4.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.uiGroupBox4.Location = new System.Drawing.Point(6, 27);
-            this.uiGroupBox4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
-            this.uiGroupBox4.Name = "uiGroupBox4";
-            this.uiGroupBox4.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.uiGroupBox4.Size = new System.Drawing.Size(1102, 805);
-            this.uiGroupBox4.TabIndex = 76;
-            this.uiGroupBox4.Text = "寄存器组";
-            // 
-            // LieBIAODuQu
-            // 
-            this.LieBIAODuQu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LieBIAODuQu.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.LieBIAODuQu.Location = new System.Drawing.Point(645, 747);
-            this.LieBIAODuQu.Margin = new System.Windows.Forms.Padding(4);
-            this.LieBIAODuQu.Name = "LieBIAODuQu";
-            this.LieBIAODuQu.Size = new System.Drawing.Size(129, 39);
-            this.LieBIAODuQu.TabIndex = 75;
-            this.LieBIAODuQu.Text = "读取";
-            this.LieBIAODuQu.Click += new System.EventHandler(this.LieBIAODuQu_Click);
-            // 
-            // LieBIAOxieru
-            // 
-            this.LieBIAOxieru.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LieBIAOxieru.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.LieBIAOxieru.Location = new System.Drawing.Point(812, 748);
-            this.LieBIAOxieru.Margin = new System.Windows.Forms.Padding(4);
-            this.LieBIAOxieru.Name = "LieBIAOxieru";
-            this.LieBIAOxieru.Size = new System.Drawing.Size(129, 39);
-            this.LieBIAOxieru.TabIndex = 66;
-            this.LieBIAOxieru.Text = "写入";
-            this.LieBIAOxieru.Click += new System.EventHandler(this.LieBIAOxieru_Click);
-            // 
-            // libiao
-            // 
-            this.libiao.Controls.Add(this.uiDataGridView1);
-            this.libiao.Controls.Add(this.uiButton2);
-            this.libiao.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.libiao.Location = new System.Drawing.Point(3, 39);
-            this.libiao.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
-            this.libiao.Name = "libiao";
-            this.libiao.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.libiao.Size = new System.Drawing.Size(1099, 648);
-            this.libiao.TabIndex = 74;
-            this.libiao.Text = null;
-            // 
-            // uiDataGridView1
-            // 
-            this.uiDataGridView1.AllowUserToAddRows = false;
-            this.uiDataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
-            this.uiDataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.uiDataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.uiDataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.uiDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.uiDataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.uiDataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.uiDataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.uiDataGridView1.ColumnHeadersHeight = 32;
-            this.uiDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.uiDataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column4,
-            this.Column1,
-            this.Column2,
-            this.Column3});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.uiDataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.uiDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uiDataGridView1.EnableHeadersVisualStyles = false;
-            this.uiDataGridView1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiDataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.uiDataGridView1.Location = new System.Drawing.Point(0, 48);
-            this.uiDataGridView1.Margin = new System.Windows.Forms.Padding(4);
-            this.uiDataGridView1.MultiSelect = false;
-            this.uiDataGridView1.Name = "uiDataGridView1";
-            this.uiDataGridView1.RowHeadersVisible = false;
-            this.uiDataGridView1.RowHeadersWidth = 62;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            this.uiDataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.uiDataGridView1.RowTemplate.Height = 29;
-            this.uiDataGridView1.SelectedIndex = -1;
-            this.uiDataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.uiDataGridView1.ShowRect = false;
-            this.uiDataGridView1.Size = new System.Drawing.Size(1099, 600);
-            this.uiDataGridView1.TabIndex = 2;
-            this.uiDataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.uiDataGridView1_CellClick);
-            // 
-            // Column4
-            // 
-            this.Column4.DataPropertyName = "Id";
-            this.Column4.HeaderText = "ID";
-            this.Column4.MinimumWidth = 8;
-            this.Column4.Name = "Column4";
-            this.Column4.Visible = false;
-            // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "Name";
-            this.Column1.HeaderText = "参数名";
-            this.Column1.MinimumWidth = 8;
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "Description";
-            this.Column2.HeaderText = "地址";
-            this.Column2.MinimumWidth = 8;
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.DataPropertyName = "val";
-            this.Column3.HeaderText = "数据";
-            this.Column3.MinimumWidth = 8;
-            this.Column3.Name = "Column3";
-            // 
-            // uiButton2
-            // 
-            this.uiButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiButton2.Location = new System.Drawing.Point(238, 656);
-            this.uiButton2.Margin = new System.Windows.Forms.Padding(4);
-            this.uiButton2.Name = "uiButton2";
-            this.uiButton2.Size = new System.Drawing.Size(156, 44);
-            this.uiButton2.TabIndex = 84;
-            this.uiButton2.Text = "读取";
-            this.uiButton2.Click += new System.EventHandler(this.uiButton2_Click);
+            this.gcbcsjBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.gcbcsjBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.gcbcsjBut.Location = new System.Drawing.Point(483, 610);
+            this.gcbcsjBut.Margin = new System.Windows.Forms.Padding(4);
+            this.gcbcsjBut.Name = "gcbcsjBut";
+            this.gcbcsjBut.Size = new System.Drawing.Size(176, 39);
+            this.gcbcsjBut.TabIndex = 77;
+            this.gcbcsjBut.Text = "工厂保存数据";
+            this.gcbcsjBut.Click += new System.EventHandler(this.gcbcsjBut_Click);
             // 
             // uiLine8
             // 
             this.uiLine8.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiLine8.Location = new System.Drawing.Point(-3, 942);
+            this.uiLine8.Location = new System.Drawing.Point(-3, 934);
             this.uiLine8.Margin = new System.Windows.Forms.Padding(4);
             this.uiLine8.MinimumSize = new System.Drawing.Size(24, 24);
             this.uiLine8.Name = "uiLine8";
-            this.uiLine8.Size = new System.Drawing.Size(1586, 32);
+            this.uiLine8.Size = new System.Drawing.Size(1562, 32);
             this.uiLine8.TabIndex = 75;
             this.uiLine8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // jicunqizutai
+            // 
+            this.jicunqizutai.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jicunqizutai.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jicunqizutai.Location = new System.Drawing.Point(897, 610);
+            this.jicunqizutai.Margin = new System.Windows.Forms.Padding(4);
+            this.jicunqizutai.Name = "jicunqizutai";
+            this.jicunqizutai.Size = new System.Drawing.Size(162, 39);
+            this.jicunqizutai.TabIndex = 74;
+            this.jicunqizutai.Text = "寄存器组态》";
+            this.jicunqizutai.Click += new System.EventHandler(this.jicunqizutai_Click);
+            // 
+            // xieruquanbushujuBut
+            // 
+            this.xieruquanbushujuBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.xieruquanbushujuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.xieruquanbushujuBut.Location = new System.Drawing.Point(267, 610);
+            this.xieruquanbushujuBut.Margin = new System.Windows.Forms.Padding(4);
+            this.xieruquanbushujuBut.Name = "xieruquanbushujuBut";
+            this.xieruquanbushujuBut.Size = new System.Drawing.Size(182, 39);
+            this.xieruquanbushujuBut.TabIndex = 73;
+            this.xieruquanbushujuBut.Text = "写入全部数据";
+            this.xieruquanbushujuBut.Click += new System.EventHandler(this.xieruquanbushujuBut_Click);
+            // 
+            // jiaozhunduququanbuBut
+            // 
+            this.jiaozhunduququanbuBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jiaozhunduququanbuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jiaozhunduququanbuBut.Location = new System.Drawing.Point(48, 610);
+            this.jiaozhunduququanbuBut.Margin = new System.Windows.Forms.Padding(4);
+            this.jiaozhunduququanbuBut.Name = "jiaozhunduququanbuBut";
+            this.jiaozhunduququanbuBut.Size = new System.Drawing.Size(182, 39);
+            this.jiaozhunduququanbuBut.TabIndex = 72;
+            this.jiaozhunduququanbuBut.Text = "读取全部数据";
+            this.jiaozhunduququanbuBut.Click += new System.EventHandler(this.jiaozhunduququanbuBut_Click);
+            // 
             // uiGroupBox5
             // 
+            this.uiGroupBox5.AutoSize = true;
             this.uiGroupBox5.Controls.Add(this.uiLabel28);
             this.uiGroupBox5.Controls.Add(this.lvbodengjiinput);
             this.uiGroupBox5.Controls.Add(this.anliangjunfenbtn);
@@ -498,11 +329,11 @@ namespace AdminConsole
             this.uiGroupBox5.Controls.Add(this.uiPanel1);
             this.uiGroupBox5.Controls.Add(this.jiaozhunduquBut);
             this.uiGroupBox5.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.uiGroupBox5.Location = new System.Drawing.Point(429, 284);
+            this.uiGroupBox5.Location = new System.Drawing.Point(429, 272);
             this.uiGroupBox5.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.uiGroupBox5.Name = "uiGroupBox5";
             this.uiGroupBox5.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.uiGroupBox5.Size = new System.Drawing.Size(1095, 658);
+            this.uiGroupBox5.Size = new System.Drawing.Size(1098, 658);
             this.uiGroupBox5.TabIndex = 7;
             this.uiGroupBox5.Text = "校准";
             // 
@@ -534,7 +365,6 @@ namespace AdminConsole
             this.lvbodengjiinput.TabIndex = 91;
             this.lvbodengjiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.lvbodengjiinput.ValueMember = "ID";
-            this.lvbodengjiinput.SelectedIndexChanged += new System.EventHandler(this.lvbodengjiinput_SelectedIndexChanged);
             // 
             // anliangjunfenbtn
             // 
@@ -616,18 +446,6 @@ namespace AdminConsole
             this.hengliuzhiinput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.hengliuzhiinput.ValueMember = "ID";
             // 
-            // jicunqizutai
-            // 
-            this.jicunqizutai.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jicunqizutai.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jicunqizutai.Location = new System.Drawing.Point(897, 610);
-            this.jicunqizutai.Margin = new System.Windows.Forms.Padding(4);
-            this.jicunqizutai.Name = "jicunqizutai";
-            this.jicunqizutai.Size = new System.Drawing.Size(162, 39);
-            this.jicunqizutai.TabIndex = 74;
-            this.jicunqizutai.Text = "寄存器组态》";
-            this.jicunqizutai.Click += new System.EventHandler(this.jicunqizutai_Click);
-            // 
             // offsetHinput
             // 
             this.offsetHinput.CanEmpty = true;
@@ -642,18 +460,6 @@ namespace AdminConsole
             this.offsetHinput.Padding = new System.Windows.Forms.Padding(8);
             this.offsetHinput.Size = new System.Drawing.Size(162, 39);
             this.offsetHinput.TabIndex = 88;
-            // 
-            // gcbcsjBut
-            // 
-            this.gcbcsjBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.gcbcsjBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.gcbcsjBut.Location = new System.Drawing.Point(483, 610);
-            this.gcbcsjBut.Margin = new System.Windows.Forms.Padding(4);
-            this.gcbcsjBut.Name = "gcbcsjBut";
-            this.gcbcsjBut.Size = new System.Drawing.Size(176, 39);
-            this.gcbcsjBut.TabIndex = 77;
-            this.gcbcsjBut.Text = "工厂保存数据";
-            this.gcbcsjBut.Click += new System.EventHandler(this.gcbcsjBut_Click);
             // 
             // coeinput
             // 
@@ -700,18 +506,6 @@ namespace AdminConsole
             this.yibiaoleixinginput.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.yibiaoleixinginput.ValueMember = "ID";
             // 
-            // xieruquanbushujuBut
-            // 
-            this.xieruquanbushujuBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.xieruquanbushujuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.xieruquanbushujuBut.Location = new System.Drawing.Point(267, 610);
-            this.xieruquanbushujuBut.Margin = new System.Windows.Forms.Padding(4);
-            this.xieruquanbushujuBut.Name = "xieruquanbushujuBut";
-            this.xieruquanbushujuBut.Size = new System.Drawing.Size(182, 39);
-            this.xieruquanbushujuBut.TabIndex = 73;
-            this.xieruquanbushujuBut.Text = "写入全部数据";
-            this.xieruquanbushujuBut.Click += new System.EventHandler(this.xieruquanbushujuBut_Click);
-            // 
             // uiLabel31
             // 
             this.uiLabel31.AutoSize = true;
@@ -724,18 +518,6 @@ namespace AdminConsole
             this.uiLabel31.TabIndex = 86;
             this.uiLabel31.Text = "偏移值";
             this.uiLabel31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // jiaozhunduququanbuBut
-            // 
-            this.jiaozhunduququanbuBut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.jiaozhunduququanbuBut.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.jiaozhunduququanbuBut.Location = new System.Drawing.Point(48, 610);
-            this.jiaozhunduququanbuBut.Margin = new System.Windows.Forms.Padding(4);
-            this.jiaozhunduququanbuBut.Name = "jiaozhunduququanbuBut";
-            this.jiaozhunduququanbuBut.Size = new System.Drawing.Size(182, 39);
-            this.jiaozhunduququanbuBut.TabIndex = 72;
-            this.jiaozhunduququanbuBut.Text = "读取全部数据";
-            this.jiaozhunduququanbuBut.Click += new System.EventHandler(this.jiaozhunduququanbuBut_Click);
             // 
             // uiLabel30
             // 
@@ -1230,7 +1012,6 @@ namespace AdminConsole
             this.caijizhiinput3.Padding = new System.Windows.Forms.Padding(8);
             this.caijizhiinput3.Size = new System.Drawing.Size(154, 39);
             this.caijizhiinput3.TabIndex = 91;
-            this.caijizhiinput3.TextChanged += new System.EventHandler(this.caijizhiinput3_TextChanged);
             // 
             // uiTextBox43
             // 
@@ -1469,7 +1250,6 @@ namespace AdminConsole
             this.caijizhiinput1.Padding = new System.Windows.Forms.Padding(8);
             this.caijizhiinput1.Size = new System.Drawing.Size(154, 39);
             this.caijizhiinput1.TabIndex = 80;
-            this.caijizhiinput1.TextChanged += new System.EventHandler(this.caijizhiinput1_TextChanged);
             // 
             // uiTextBox11
             // 
@@ -1854,6 +1634,17 @@ namespace AdminConsole
             this.jiaozhunduquBut.Text = "读取数据";
             this.jiaozhunduquBut.Click += new System.EventHandler(this.jiaozhunduquBut_Click);
             // 
+            // uiButton2
+            // 
+            this.uiButton2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.uiButton2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiButton2.Location = new System.Drawing.Point(238, 656);
+            this.uiButton2.Margin = new System.Windows.Forms.Padding(4);
+            this.uiButton2.Name = "uiButton2";
+            this.uiButton2.Size = new System.Drawing.Size(156, 44);
+            this.uiButton2.TabIndex = 84;
+            this.uiButton2.Text = "读取";
+            // 
             // yhsz
             // 
             this.yhsz.Controls.Add(this.pianyizhiinput);
@@ -1878,7 +1669,7 @@ namespace AdminConsole
             this.yhsz.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.yhsz.Name = "yhsz";
             this.yhsz.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.yhsz.Size = new System.Drawing.Size(1095, 248);
+            this.yhsz.Size = new System.Drawing.Size(1096, 249);
             this.yhsz.TabIndex = 6;
             this.yhsz.Text = "用户设置";
             // 
@@ -2135,7 +1926,7 @@ namespace AdminConsole
             this.uiGroupBox3.Controls.Add(this.uiLabel18);
             this.uiGroupBox3.Controls.Add(this.uiLabel17);
             this.uiGroupBox3.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.uiGroupBox3.Location = new System.Drawing.Point(20, 602);
+            this.uiGroupBox3.Location = new System.Drawing.Point(20, 591);
             this.uiGroupBox3.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.uiGroupBox3.Name = "uiGroupBox3";
             this.uiGroupBox3.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
@@ -2564,11 +2355,222 @@ namespace AdminConsole
             this.uiLabel4.Text = "端口号：";
             this.uiLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // danweilable
+            // 
+            this.danweilable.AutoSize = true;
+            this.danweilable.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.danweilable.Location = new System.Drawing.Point(40, 964);
+            this.danweilable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.danweilable.Name = "danweilable";
+            this.danweilable.Size = new System.Drawing.Size(0, 31);
+            this.danweilable.TabIndex = 79;
+            this.danweilable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.danweilable.Visible = false;
+            // 
+            // uiGroupBox4
+            // 
+            this.uiGroupBox4.Controls.Add(this.LieBIAODuQu);
+            this.uiGroupBox4.Controls.Add(this.libiao);
+            this.uiGroupBox4.Controls.Add(this.LieBIAOxieru);
+            this.uiGroupBox4.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.uiGroupBox4.Location = new System.Drawing.Point(15, 36);
+            this.uiGroupBox4.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.uiGroupBox4.Name = "uiGroupBox4";
+            this.uiGroupBox4.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.uiGroupBox4.Size = new System.Drawing.Size(1086, 818);
+            this.uiGroupBox4.TabIndex = 76;
+            this.uiGroupBox4.Text = "寄存器组";
+            // 
+            // LieBIAODuQu
+            // 
+            this.LieBIAODuQu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LieBIAODuQu.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.LieBIAODuQu.Location = new System.Drawing.Point(645, 747);
+            this.LieBIAODuQu.Margin = new System.Windows.Forms.Padding(4);
+            this.LieBIAODuQu.Name = "LieBIAODuQu";
+            this.LieBIAODuQu.Size = new System.Drawing.Size(129, 39);
+            this.LieBIAODuQu.TabIndex = 75;
+            this.LieBIAODuQu.Text = "读取";
+            this.LieBIAODuQu.Click += new System.EventHandler(this.LieBIAODuQu_Click);
+            // 
+            // libiao
+            // 
+            this.libiao.Controls.Add(this.uiDataGridView1);
+            this.libiao.Controls.Add(this.uiButton2);
+            this.libiao.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.libiao.Location = new System.Drawing.Point(6, 33);
+            this.libiao.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.libiao.Name = "libiao";
+            this.libiao.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.libiao.Size = new System.Drawing.Size(1074, 686);
+            this.libiao.TabIndex = 74;
+            this.libiao.Text = null;
+            this.libiao.Click += new System.EventHandler(this.libiao_Click);
+            // 
+            // uiDataGridView1
+            // 
+            this.uiDataGridView1.AllowUserToAddRows = false;
+            this.uiDataGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
+            this.uiDataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.uiDataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.uiDataGridView1.BackgroundColor = System.Drawing.Color.White;
+            this.uiDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.uiDataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.uiDataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.uiDataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.uiDataGridView1.ColumnHeadersHeight = 32;
+            this.uiDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.uiDataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column4,
+            this.Column1,
+            this.Column2,
+            this.Column3});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 12F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.uiDataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            this.uiDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uiDataGridView1.EnableHeadersVisualStyles = false;
+            this.uiDataGridView1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiDataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
+            this.uiDataGridView1.Location = new System.Drawing.Point(0, 48);
+            this.uiDataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.uiDataGridView1.MultiSelect = false;
+            this.uiDataGridView1.Name = "uiDataGridView1";
+            this.uiDataGridView1.RowHeadersVisible = false;
+            this.uiDataGridView1.RowHeadersWidth = 62;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            this.uiDataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.uiDataGridView1.RowTemplate.Height = 29;
+            this.uiDataGridView1.SelectedIndex = -1;
+            this.uiDataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.uiDataGridView1.ShowRect = false;
+            this.uiDataGridView1.Size = new System.Drawing.Size(1074, 638);
+            this.uiDataGridView1.TabIndex = 2;
+            this.uiDataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.uiDataGridView1_CellClick);
+            this.uiDataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.uiDataGridView1_CellContentClick);
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "Id";
+            this.Column4.HeaderText = "ID";
+            this.Column4.MinimumWidth = 8;
+            this.Column4.Name = "Column4";
+            this.Column4.Visible = false;
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Name";
+            this.Column1.HeaderText = "参数名";
+            this.Column1.MinimumWidth = 8;
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Description";
+            this.Column2.HeaderText = "地址";
+            this.Column2.MinimumWidth = 8;
+            this.Column2.Name = "Column2";
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "val";
+            this.Column3.HeaderText = "数据";
+            this.Column3.MinimumWidth = 8;
+            this.Column3.Name = "Column3";
+            // 
+            // LieBIAOxieru
+            // 
+            this.LieBIAOxieru.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LieBIAOxieru.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.LieBIAOxieru.Location = new System.Drawing.Point(812, 748);
+            this.LieBIAOxieru.Margin = new System.Windows.Forms.Padding(4);
+            this.LieBIAOxieru.Name = "LieBIAOxieru";
+            this.LieBIAOxieru.Size = new System.Drawing.Size(129, 39);
+            this.LieBIAOxieru.TabIndex = 66;
+            this.LieBIAOxieru.Text = "写入";
+            this.LieBIAOxieru.Click += new System.EventHandler(this.LieBIAOxieru_Click);
+            // 
+            // jicunqizufanhuiBut
+            // 
+            this.jicunqizufanhuiBut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.jicunqizufanhuiBut.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jicunqizufanhuiBut.Location = new System.Drawing.Point(33, 862);
+            this.jicunqizufanhuiBut.Margin = new System.Windows.Forms.Padding(4);
+            this.jicunqizufanhuiBut.Name = "jicunqizufanhuiBut";
+            this.jicunqizufanhuiBut.Size = new System.Drawing.Size(129, 39);
+            this.jicunqizufanhuiBut.TabIndex = 77;
+            this.jicunqizufanhuiBut.Text = "《工厂校准";
+            this.jicunqizufanhuiBut.Click += new System.EventHandler(this.jicunqizufanhuiBut_Click);
+            // 
+            // jcqgg
+            // 
+            this.jcqgg.AutoSize = true;
+            this.jcqgg.Controls.Add(this.jicunqizufanhuiBut);
+            this.jcqgg.Controls.Add(this.uiGroupBox4);
+            this.jcqgg.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.jcqgg.Location = new System.Drawing.Point(417, 21);
+            this.jcqgg.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+            this.jcqgg.Name = "jcqgg";
+            this.jcqgg.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
+            this.jcqgg.Size = new System.Drawing.Size(1114, 905);
+            this.jcqgg.TabIndex = 78;
+            this.jcqgg.Text = null;
+            this.jcqgg.Visible = false;
+            // 
+            // uiLabel16
+            // 
+            this.uiLabel16.AutoSize = true;
+            this.uiLabel16.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.uiLabel16.Location = new System.Drawing.Point(18, 969);
+            this.uiLabel16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uiLabel16.Name = "uiLabel16";
+            this.uiLabel16.Size = new System.Drawing.Size(134, 31);
+            this.uiLabel16.TabIndex = 80;
+            this.uiLabel16.Text = "当前链接：";
+            this.uiLabel16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // dqljLabe
+            // 
+            this.dqljLabe.AutoSize = true;
+            this.dqljLabe.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.dqljLabe.Location = new System.Drawing.Point(144, 969);
+            this.dqljLabe.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.dqljLabe.Name = "dqljLabe";
+            this.dqljLabe.Size = new System.Drawing.Size(0, 31);
+            this.dqljLabe.TabIndex = 81;
+            this.dqljLabe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // msglable
+            // 
+            this.msglable.AutoSize = true;
+            this.msglable.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.msglable.Location = new System.Drawing.Point(826, 969);
+            this.msglable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.msglable.Name = "msglable";
+            this.msglable.Size = new System.Drawing.Size(0, 31);
+            this.msglable.TabIndex = 82;
+            this.msglable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1552, 1010);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1545, 1007);
+            this.Controls.Add(this.jcqgg);
             this.Controls.Add(this.msglable);
             this.Controls.Add(this.dqljLabe);
             this.Controls.Add(this.uiLabel16);
@@ -2579,15 +2581,10 @@ namespace AdminConsole
             this.Controls.Add(this.uiGroupBox3);
             this.Controls.Add(this.uiGroupBox2);
             this.Controls.Add(this.uiGroupBox1);
-            this.Controls.Add(this.jcqgg);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "CNG-35工厂调试软件V1.0";
-            this.jcqgg.ResumeLayout(false);
-            this.uiGroupBox4.ResumeLayout(false);
-            this.libiao.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).EndInit();
             this.uiGroupBox5.ResumeLayout(false);
             this.uiGroupBox5.PerformLayout();
             this.uiPanel1.ResumeLayout(false);
@@ -2648,6 +2645,10 @@ namespace AdminConsole
             this.uiGroupBox2.PerformLayout();
             this.uiGroupBox1.ResumeLayout(false);
             this.uiGroupBox1.PerformLayout();
+            this.uiGroupBox4.ResumeLayout(false);
+            this.libiao.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.uiDataGridView1)).EndInit();
+            this.jcqgg.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2792,12 +2793,15 @@ namespace AdminConsole
         private UIComboBox xiaozhundianinput;
         private UIButton sousuoSbBut1;
         private UILabel danweilable;
+        private UIGroupBox uiGroupBox4;
+        private UIButton LieBIAODuQu;
         private UIGroupBox libiao;
         private UIDataGridView uiDataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private UIButton LieBIAOxieru;
         private UIButton jicunqizufanhuiBut;
         private UIGroupBox jcqgg;
         private UIButton huifuchuchangBut;
@@ -2809,9 +2813,6 @@ namespace AdminConsole
         private UIButton anliangjunfenbtn;
         private UILabel uiLabel28;
         private UIComboBox lvbodengjiinput;
-        private UIGroupBox uiGroupBox4;
-        private UIButton LieBIAODuQu;
-        private UIButton LieBIAOxieru;
     }
 }
 

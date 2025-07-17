@@ -551,6 +551,16 @@ void display_val_proc(unsigned char dis_mode)
 				tmp_dat = 0;	
         }
 
+	if ((dis_usr.dot_pos) == bit_count)
+	{
+		tmp_dat = tmp_dat| dot_dat;
+	
+	}
+	else
+	{
+		tmp_dat =tmp_dat;
+	
+	}
 
     }
     display_sel(bit_count++, 0);//bit_count++

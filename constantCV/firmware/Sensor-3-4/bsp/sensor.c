@@ -47,7 +47,7 @@ void adc_init(void)
     g_kfp_st3.Now_P = 0;
     g_kfp_st3.out = 0;
     g_kfp_st3.Kg = 0;
-    g_kfp_st3.Q = 0.001;
+    g_kfp_st3.Q = 0.0001;
     g_kfp_st3.R = 0.1;
 
 }
@@ -423,46 +423,41 @@ void sort()
     cal_buf[0] = GetRegPrivate()->usr_cal1ADC;
 	else
 	    cal_buf[0] = GetRegPrivate()->cal1ADC;	
-	if(GetRegPrivate()->usr_cal2ADC!=0)
-	{
+
 	switch(lt)
 		{
 			case 5:
-				if(GetRegPrivate()->cal5val<=GetRegPrivate()->usr_cal2val)
+				if(GetRegPrivate()->cal5val<=GetRegPrivate()->usr_cal2val&&
+					GetRegPrivate()->usr_cal2ADC!=0)
 				cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
 				else
-				cal_buf[1] = GetRegPrivate()->cal5val;				
+				cal_buf[1] = GetRegPrivate()->cal5ADC;				
 				break;
 		case 4:
-			if(GetRegPrivate()->cal4val<=GetRegPrivate()->usr_cal2val)
+			if(GetRegPrivate()->cal4val<=GetRegPrivate()->usr_cal2val&&
+					GetRegPrivate()->usr_cal2ADC!=0)
 			cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
 			else
-			cal_buf[1] = GetRegPrivate()->cal4val;				
+			cal_buf[1] = GetRegPrivate()->cal4ADC;				
 			break;
 		case 3:
-			if(GetRegPrivate()->cal3val<=GetRegPrivate()->usr_cal2val)
+			if(GetRegPrivate()->cal3val<=GetRegPrivate()->usr_cal2val&&
+					GetRegPrivate()->usr_cal2ADC!=0)
 			cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
 			else
-			cal_buf[1] = GetRegPrivate()->cal3val;				
+			cal_buf[1] = GetRegPrivate()->cal3ADC;				
 			break;
 	
 		case 2:
-			if(GetRegPrivate()->cal2val<=GetRegPrivate()->usr_cal2val)
+			if(GetRegPrivate()->cal2val<=GetRegPrivate()->usr_cal2val&&
+					GetRegPrivate()->usr_cal2ADC!=0)
 			cal_buf[1] = GetRegPrivate()->usr_cal2ADC;
 			else
-			cal_buf[1] = GetRegPrivate()->cal2val;				
+			cal_buf[1] = GetRegPrivate()->cal2ADC;				
 			break;
 	   default:
 			cal_buf[1] = GetRegPrivate()->cal5ADC;			
 		}
-
-	}
-	
-
-
-
-
-
 
 }
 void cal_press(void)

@@ -26,17 +26,16 @@ using System.Windows.Forms;
 
 namespace AdminConsole
 {
-
     public partial class MainForm : Form
     {
-        public const double global_delay_time = 0.2;
+
         private static SerialPort _serialPort;
         private static IModbusSerialMaster _modbusMaster;
 
         private System.Windows.Forms.Timer timer;
 
         private System.Windows.Forms.Timer SheBeiTimer;
-        public static uint user_ver = 1;
+        public const double global_delay_time = 0.2;
 
 
 
@@ -79,7 +78,7 @@ namespace AdminConsole
             }
 
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 100; // 设置间隔时间为1000毫秒（1秒）
+            timer.Interval = 10; // 设置间隔时间为1000毫秒（1秒）
             timer.Tick += new EventHandler(TimerEventProcessor);
          
 
@@ -1575,13 +1574,17 @@ namespace AdminConsole
 
         #region 仪表信息读取
         private void yibiaoduqubut_Click(object sender, EventArgs e)
-        { 
+        {
+            yibiaoduqubut.Enabled = false;
             var bl = yibiaoduqu();           
             if (!bl)
             {
+                yibiaoduqubut.Enabled = true;
                 return;
             }
             msglable.Text = "读取仪表数据成功";
+            Application.DoEvents();
+            yibiaoduqubut.Enabled = true;
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1657,9 +1660,9 @@ namespace AdminConsole
                 yonghushezhiDuQubut.Enabled = true;
                 return;
             }
-            //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             yonghushezhiDuQubut.Enabled = true;
+            //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool yonghushezhiDuQu()
@@ -1704,9 +1707,9 @@ namespace AdminConsole
                 return ;
             }
             msglable.Text = "写入用户设置数据成功";
-            // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             yonghushezhixieruBut.Enabled = true;
+            // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool yonghushezhixieru()
@@ -1738,22 +1741,23 @@ namespace AdminConsole
         #region 校准参数读取写入
         private void jiaozhunxieruBut_Click(object sender, EventArgs e)
         {
-            jiaozhunduquBut.Enabled = false;
+            jiaozhunxieruBut.Enabled = false;
             var bl = jiaozhunxieru();
             if (!bl)
             {
-                jiaozhunduquBut.Enabled = true;
+                jiaozhunxieruBut.Enabled = true;
                 return;
             }
             bl = CmdDataWriteSave();
             if (!bl)
             {
+                jiaozhunxieruBut.Enabled = true;
                 return;
             }
             msglable.Text = "写入校准数据成功";
-            //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
-            jiaozhunduquBut.Enabled = true;
+            jiaozhunxieruBut.Enabled = true;
+            //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool jiaozhunxieru()
@@ -1802,9 +1806,9 @@ namespace AdminConsole
             }
 
             msglable.Text = "读取校准数据成功";
-            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             jiaozhunduquBut.Enabled = true;
+            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool jiaozhunduqu()
@@ -1816,7 +1820,6 @@ namespace AdminConsole
             {
                 return false;
             }
-
             return true;
            
         }
@@ -1846,9 +1849,9 @@ namespace AdminConsole
                 return;
             }
             msglable.Text = "写入全部数据成功";
-            //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             xieruquanbushujuBut.Enabled = true;
+            //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
  
         private void jiaozhunduququanbuBut_Click(object sender, EventArgs e)
@@ -1875,9 +1878,9 @@ namespace AdminConsole
                 return;
             }
             msglable.Text = "读取全部数据成功";
-            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             jiaozhunduququanbuBut.Enabled = true;
+            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void gcbcsjBut_Click(object sender, EventArgs e)
@@ -1895,9 +1898,8 @@ namespace AdminConsole
 
             if (!bl)
             {
-               
-                MessageBox.Show(gcbc.Name + "写入失败", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 gcbcsjBut.Enabled = true;
+                MessageBox.Show(gcbc.Name + "写入失败", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
          
@@ -1920,9 +1922,9 @@ namespace AdminConsole
                 return;
             }
             msglable.Text = "工厂保存数据成功";
-            //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             gcbcsjBut.Enabled = true;
+            //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
 
@@ -2000,12 +2002,10 @@ namespace AdminConsole
                 return;
             }
             MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
         }
         private void uiButton13_Click(object sender, EventArgs e)
         {
             uiButton1.Enabled = false;
-
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值1).ToList());
             if (!bl)
             {
@@ -2013,69 +2013,65 @@ namespace AdminConsole
                 return;
             }
             msglable.Text = "读取采集值1数据成功";
-            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             uiButton1.Enabled = true;
+            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void caijizhiBut2_Click(object sender, EventArgs e)
         {
-             caijizhiBut2.Enabled = false;
+            caijizhiBut2.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值2).ToList());
-           
             if (!bl)
             {
                 caijizhiBut2.Enabled = true;
                 return;
             }
             msglable.Text = "读取采集值2数据成功";
-            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             caijizhiBut2.Enabled = true;
+            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void caijizhiBut3_Click(object sender, EventArgs e)
         {
             caijizhiBut3.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值3).ToList());
-            
             if (!bl)
             {
                 caijizhiBut3.Enabled = true;
                 return;
             }
-            msglable.Text = "读取采集值3数据成功";
-            //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            msglable.Text = "读取采集值3数据成功"; 
             Application.DoEvents();
             caijizhiBut3.Enabled = true;
+            //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void caijizhiBut4_Click(object sender, EventArgs e)
         {
             caijizhiBut4.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值4).ToList());
-           
             if (!bl)
             {
                 caijizhiBut4.Enabled = true;
                 return;
             }
             msglable.Text = "读取采集值4数据成功";
-            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             caijizhiBut4.Enabled = true;
+            // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void caijizhiBut5_Click(object sender, EventArgs e)
         {
             caijizhiBut5.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id == EnumDataId.采集值5).ToList());
-            
             if (!bl)
             {
                 caijizhiBut5.Enabled = true;
                 return;
             }
-            msglable.Text = "读取采集值5数据成功";
-            //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            msglable.Text = "读取采集值5数据成功"; 
             Application.DoEvents();
             caijizhiBut5.Enabled = true;
+            //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
 
@@ -2084,8 +2080,7 @@ namespace AdminConsole
         {
             LieBIAOxieru.Enabled = false;
             var modbusWriter = GetModbusWriter();
-            
-           
+
             if (modbusWriter == null)
             {
                 LieBIAOxieru.Enabled = true;
@@ -2127,7 +2122,6 @@ namespace AdminConsole
                         catch (Exception)
                         {
                             MessageBox.Show(Name + ":地址值必须为16进制数！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            LieBIAOxieru.Enabled = true;
                             return;
                         }
 
@@ -2135,7 +2129,6 @@ namespace AdminConsole
                         if (!float.TryParse(val, out fv))
                         {
                             MessageBox.Show(Name + ":数据值必须为数值型！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            LieBIAOxieru.Enabled = true;
                             return;
                         }
                         valueUshortarr = fv.ToBigEndianBytes();
@@ -2149,21 +2142,18 @@ namespace AdminConsole
                         catch (Exception)
                         {
                             MessageBox.Show(Name + ":地址值必须为16进制数！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            LieBIAOxieru.Enabled = true;
                             return;
                         }
 
                         if (!Int16.TryParse(val, out iv))
                         {
                             MessageBox.Show(Name + ":必须为16位整数！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            LieBIAOxieru.Enabled = true;
                             return;
                         }
                         valueUshortarr = iv.ToBigEndianBytes();
                     }
 
                     log4netHelper.Info("PC端修改设备寄存器地址以及数据0x46写发送:" + Model.ModbusUtility.ConvertToJosn(reg));
-         
 
                     modbusWriter.WritePrivate0x46Register(reg.Address, idxdz1, valueUshortarr.Take(2).ToArray());
                     reg.CustomizeAddress = "0x" + idxdz1.ToString("X2");
@@ -2196,9 +2186,9 @@ namespace AdminConsole
                 return;
             }
             msglable.Text = "写入寄存器组态数据成功";
-            // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.DoEvents();
             LieBIAOxieru.Enabled = true;
+            // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void LieBIAODuQu_Click(object sender, EventArgs e)
@@ -2207,7 +2197,7 @@ namespace AdminConsole
             var b=  diZzhiList();
             if (!b)
             {
-                LieBIAOxieru.Enabled = true;
+                LieBIAODuQu.Enabled = true;
                 return;
             }
             msglable.Text = "读取寄存器组态数据成功";
@@ -2407,19 +2397,19 @@ namespace AdminConsole
             var bl = modbusWriter.WritePrivate0x56Register(huifu);
             if (!bl)
             {
+                huifuchuchangBut.Enabled = true;
                 return;
             }
             msglable.Text = "恢复出厂设置成功";
-            //MessageBox.Show(huifu.Name + "成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Application.DoEvents();
             huifuchuchangBut.Enabled = true;
+            //MessageBox.Show(huifu.Name + "成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void anliangjunfenbtn_Click(object sender, EventArgs e)
         {
             float liang1;
             float liang2;
-            anliangjunfenbtn.Enabled = false;
             float.TryParse(lianginput1.Text, out liang1);
             float.TryParse(lianginput2.Text, out liang2);
             int dfs = int.Parse(xiaozhundianinput.SelectedValue.ToString());
@@ -2428,26 +2418,15 @@ namespace AdminConsole
             for (var i = 2; i <= dfs; i++) {
                 this.Controls.Find("biaozhuanzhi" + i, true)[0].Text = (liang1 + (dfz * (i - 1))).ToString("f2");
             }
-            Application.DoEvents();
-            anliangjunfenbtn.Enabled = true;
+
         }
 
-        private void uiButton2_Click(object sender, EventArgs e)
+        private void uiDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void lvbodengjiinput_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void caijizhiinput1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void caijizhiinput3_TextChanged(object sender, EventArgs e)
+        private void libiao_Click(object sender, EventArgs e)
         {
 
         }

@@ -10,10 +10,8 @@ using Microsoft.Win32;
 
 namespace AdminConsole.Model
 {
-   
     public class ModbusReader
-    { 
-        public const double global_delay_time = 0.2;
+    {
         private  byte _slaveId;
         private  SerialPort _serialPort;
 
@@ -24,7 +22,7 @@ namespace AdminConsole.Model
         }
 
         public static object DuXieZhuangTai = new object();
-        public static DateTime DuXieShiJian = DateTime.Now.AddSeconds(global_delay_time);
+        public static DateTime DuXieShiJian = DateTime.Now.AddSeconds(-2);
 
         // 通用读寄存器方法
         public bool ReadStandard0x33Register(RegisterDefinition register)
