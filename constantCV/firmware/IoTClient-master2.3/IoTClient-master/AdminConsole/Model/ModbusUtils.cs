@@ -50,7 +50,7 @@ namespace AdminConsole.Model
             
             while (i > 0)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(50);
                 if (port.BytesToRead >= expectedResponseLength) {                    
                     break;
                 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AdminConsole.Model
@@ -85,7 +87,7 @@ namespace AdminConsole.Model
 
                 string hexString2 = string.Concat(response.Select(b => " " + b.ToString("X2")));
                 log4netHelper.Info("私有指令，PC端写寄存器0x56写返回:" + hexString2);
-
+                //  Thread.Sleep(100);
                 // 验证设备响应（设备端返回0x53）
                 //if (response[0] != 0x53)
                 //    throw new InvalidOperationException("设备响应异常");
@@ -152,18 +154,19 @@ namespace AdminConsole.Model
                 {
                     if (register.DataType == DataType.Float)
                     {                      
-                        WriteRegister(register, float.Parse(register.val.ToString()).ToBigEndianBytes());
+                        WriteRegister(register, float.Parse(register.val.ToString()).ToBigEndianBytes()); 
                     }
                     else if (register.DataType == DataType.IntFloat32)
                     {
-                        WriteRegister(register, float.Parse(register.val.ToString()).ToBigEndianBytes());
+                        WriteRegister(register, float.Parse(register.val.ToString()).ToBigEndianBytes()); 
                     }
                     else
                     {
                        // WriteRegister(register, Int32.Parse("-122253666").ToBigEndianBytes());
 
-                        WriteRegister(register, Convert.ToUInt16(register.val).ToBigEndianBytes());
+                        WriteRegister(register, Convert.ToUInt16(register.val).ToBigEndianBytes()); 
                     }
+          
 
 
                 }

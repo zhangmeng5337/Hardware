@@ -98,7 +98,14 @@ uint32_t datx_proc(float dat)
 {
     uint32_t result;
     unsigned int decm_bit ;
+	float val;
     decm_bit = GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat;
+	  val = *(float *)(&(GetReg()->pb[eREG_RANGZ_HF16].val_u32ToFloat));
+	  if(val<=-100)
+	  	{
+			if(decm_bit>=1)
+				decm_bit = 1;
+	  }
     if (decm_bit > 3)
         decm_bit = 1;
     if (dis_usr.signedFlag == 0)
@@ -298,20 +305,20 @@ uint32_t datx_proc(float dat)
             }
 
         }
-        else  if (dat < 100) //99.12 10.12
+        else  if (dat <= 100) //99.12 10.12
         {
 
             if (decm_bit == 0)//no dot
             {
                 result = dat;
                 dis_usr.dot_pos = 4;
-                dis_usr.dat_bits = 2;
+                dis_usr.dat_bits = 3;
             }
             else if (decm_bit == 1)
             {
                 dis_usr.dot_pos = 3;
                 result = dat * 10;
-                dis_usr.dat_bits = 3;
+                dis_usr.dat_bits = 4;
 
             }
 
@@ -424,10 +431,14 @@ void disp_dat_proc()
 
         if (dis_usr.dat_bits == 4)
         {
-            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
-            dis_usr.dis_buf[1] = 0x0b;
-            dis_usr.dis_buf[2] = 0x0b;
-            dis_usr.dis_buf[3] = 0x0b;
+//            dis_usr.dis_buf[0] = 0x0b; //0.1*1000 = 100 0.01
+//            dis_usr.dis_buf[1] = 0x0b;
+//            dis_usr.dis_buf[2] = 0x0b;
+//            dis_usr.dis_buf[3] = 0x0b;
+		dis_usr.dis_buf[0] = dis_usr.dis_val_u / 1000; //0.1*1000 = 100 0.01
+		dis_usr.dis_buf[1] = dis_usr.dis_val_u % 1000 / 100;
+		dis_usr.dis_buf[2] = dis_usr.dis_val_u % 100 / 10;
+		dis_usr.dis_buf[3] = dis_usr.dis_val_u % 10;
 
         }
         else if (dis_usr.dat_bits == 3)
@@ -485,6 +496,7 @@ void display_val_proc(unsigned char dis_mode)
 	//	if ((GetTick() - tick_tmp) >= 10)
 		  {
 			  dis_usr.dis_val =	getadc()->data_unit_app;
+			  //dis_usr.dis_val = -100;
 			  tick_tmp = GetTick();
 		
 		  }
@@ -537,12 +549,13 @@ void display_val_proc(unsigned char dis_mode)
     if (dis_usr.signedFlag == 1)
     {
 
-        if ((dis_usr.dat_bits + bit_count) == 4)
-        {
-            if(dis_usr.dis_buf[bit_count - 1]<=0x0f)
-            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | neg_dat;
+        if ((dis_usr.dat_bits + bit_count) >= 4)
+        { 
+          
+            if(dis_usr.dis_buf[bit_count - 1]<=0x0f&&bit_count==1)
+             tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | neg_dat;
 			else
-			tmp_dat = 0;	
+			tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]];	
         }
         else
         {	if(dis_usr.dis_buf[bit_count - 1]<=0x0f)

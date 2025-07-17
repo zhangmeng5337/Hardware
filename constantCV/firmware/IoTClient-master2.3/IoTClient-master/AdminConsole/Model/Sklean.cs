@@ -131,11 +131,12 @@ namespace AdminConsole.Model
             for (int i = 0; i < sampleValues.Length; i++)
             {
                 // 使用拟合多项式计算压力值
-                double fittedPressure = s4[0] * Math.Pow(sampleValues[i], 3) +
-                                        s4[1] * Math.Pow(sampleValues[i], 2) +
-                                        s4[2] * sampleValues[i] +
-                                        s4[3];
-
+                double fittedPressure = s4[0] * Math.Pow(sampleValues[i], 4) +
+                                        s4[1] * Math.Pow(sampleValues[i], 3) +
+                                        s4[2] * Math.Pow(sampleValues[i], 2) +
+                                        s4[3] * Math.Pow(sampleValues[i], 1) +
+                                        s4[4];
+                                        ;
                 fittedPressures.Add(fittedPressure);
 
                 // 计算偏差 = 拟合压力值 - 标定压力值

@@ -147,12 +147,12 @@ unsigned char factory_unit_convert(float dat)
     {
         dat_reg = GetReg()->pb[eREG_RANGZ_HF16].val_u32ToFloat;
         tmp3 = *(float *)(&dat_reg);
-        tmp1 = GetRegPrivate()->maskzero * tmp1;
-        tmp2 = dat - tmp3;
+        tmp1 = GetRegPrivate()->maskzero;
+        tmp2 = dat;
         tmp2 = fabs(tmp2);
         tmp1 = fabs(tmp1);
         if (tmp2 <= tmp1)
-            tmp2 = tmp3;
+            tmp2 = 0;
         else
             tmp2 = dat;
 
@@ -496,7 +496,7 @@ void cal_press(void)
     adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
     tmp2 = adc_usr.adc_data_KF;
     tmp2 = SilderFilter(tmp2);
-    // tmp2 = 13699;
+     tmp2 = 2500;
 
     if (tmp2 != 0)
     {
@@ -535,11 +535,11 @@ void cal_press(void)
 		sort();
 
         tmp1_conv1 = cal_buf[1] - cal_buf[0];
-        //tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
+        tmp1_conv1 = tmp1_conv1 / getPga(GetRegPrivate()->pga);
 
 
         tmp2_conv2 = adc_usr.adc_vol - cal_buf[0];
-        // tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
+         tmp2_conv2 = tmp2_conv2 / getPga(GetRegPrivate()->pga);
 
         tmp2_conv2 = tmp2_conv2 / tmp1_conv1;
         adc_usr.dat_cal = tmp2_conv2;

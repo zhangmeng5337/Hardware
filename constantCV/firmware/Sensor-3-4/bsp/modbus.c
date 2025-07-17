@@ -834,10 +834,11 @@ void modbus_PrivaReg_write_pack(void)
             else if ((modbus_usr.RegStart + i) == FAC_COE_H)
             {
                 GetRegPrivate()->coe = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
+							result = 1;
 
             }
             else if ((modbus_usr.RegStart + i) == FAC_OFFSET_HREG)
-            {
+            {result = 1;
                 GetRegPrivate()->offset = uint32TofloatR(&modbus_usr.payload[k]);result = 1;
             }
             else if ((modbus_usr.RegStart + i) == COE1_REG)

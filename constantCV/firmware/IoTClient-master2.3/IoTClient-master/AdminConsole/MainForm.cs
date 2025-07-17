@@ -36,7 +36,7 @@ namespace AdminConsole
 
         private System.Windows.Forms.Timer SheBeiTimer;
         public const double global_delay_time = 0.2;
-
+        public int xsw;
 
 
 
@@ -143,7 +143,7 @@ namespace AdminConsole
                     v = v + "00";
                 }
 
-                var xsw = int.Parse(xiaoshudianinput.SelectedValue.ToString());
+                 xsw = int.Parse(xiaoshudianinput.SelectedValue.ToString());
 
                 if (xsw == 0)
                 {
@@ -892,9 +892,9 @@ namespace AdminConsole
             }
             foreach (var m in registerList)
             {
-                
-                if (m.Id == EnumDataId.恒流值)
-                {                   
+
+              if (m.Id == EnumDataId.恒流值)
+                {
                     if (hengliuzhiinput.SelectedValue == null)
                     {
                         MessageBox.Show("恒流值值不能为空！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -920,11 +920,11 @@ namespace AdminConsole
                     }
                     m.val = coeinput.Text;
                 }
-                else if (m.Id == EnumDataId.offsetH)
+                 if (m.Id == EnumDataId.offsetH)
                 {
                     float fv;
                     if (!float.TryParse(offsetHinput.Text.Trim(), out fv))
-                    {                     
+                    {
                         MessageBox.Show("offsetH值不正确！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
@@ -935,7 +935,7 @@ namespace AdminConsole
                     m.val = int.Parse(ADCzengyiinput.SelectedValue.ToString());
                 }
                 else if (m.Id == EnumDataId.仪表类型)
-                {                    
+                {
                     if (yibiaoleixinginput.SelectedValue == null)
                     {
                         MessageBox.Show("仪表类型值不能为空！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -948,12 +948,12 @@ namespace AdminConsole
                 {
                     float fv;
                     if (!float.TryParse(lingdianpingbiinput.Text.Trim(), out fv))
-                    {                     
+                    {
                         MessageBox.Show("屏蔽零点值不不正确！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
                     m.val = lingdianpingbiinput.Text;
-                }                  
+                }
                 else if (m.Id == EnumDataId.校准采集值1)
                 {
                     int zhi1 = 0;
@@ -978,10 +978,10 @@ namespace AdminConsole
                     int.TryParse(caijizhiinput4.Text, out zhi4);
                     m.val = zhi4;
                 }
-               
+
                 else if (m.Id == EnumDataId.校准采集值5)
                 {
-                    int  zhi5 = 0;
+                    int zhi5 = 0;
                     int.TryParse(caijizhiinput5.Text, out zhi5);
                     m.val = zhi5;
                 }
@@ -1016,7 +1016,7 @@ namespace AdminConsole
                     m.val = zhi55;
                 }
                 else if (m.Id == EnumDataId.滤波等级)
-                {                  
+                {
                     if (lvbodengjiinput.SelectedValue == null)
                     {
                         MessageBox.Show("滤波等级值不能为空！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1026,18 +1026,24 @@ namespace AdminConsole
                     int.TryParse(lvbodengjiinput.SelectedValue.ToString(), out zhilbv);
                     m.val = zhilbv;
                 }
-                
+
 
                 log4netHelper.Info("私有指令，PC端写寄存器0x56写发送:" + Model.ModbusUtility.ConvertToJosn(m));
                 var b = modbusWriter.WritePrivate0x56Register(m);
- 
+
                 if (!b)
-                {                    
+                {
                     MessageBox.Show(m.Name + "写入失败", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 
             }
+
+
+
+
+
+
             return true;
         }
 
@@ -1742,6 +1748,7 @@ namespace AdminConsole
         private void jiaozhunxieruBut_Click(object sender, EventArgs e)
         {
             jiaozhunxieruBut.Enabled = false;
+            msglable.Text = "写入校准数据中...";
             var bl = jiaozhunxieru();
             if (!bl)
             {
@@ -1779,6 +1786,7 @@ namespace AdminConsole
 
         private void jiaozhunduquBut_Click(object sender, EventArgs e)
         {
+            msglable.Text = "读取校准数据中...";
             jiaozhunduquBut.Enabled = false;
             var bl = jiaozhunduqu();
 
@@ -2276,7 +2284,22 @@ namespace AdminConsole
                             reg.val = Math.Round(shujuZhi, 4);
                         }
                         else {
-                            reg.val = shujuZhi;
+
+                            //var xsw = int.Parse(xiaoshudianinput.SelectedValue.ToString());
+                            if (reg.Id.ToString() == "浮点输出值")
+                            { 
+                                if (xsw >= 0)
+                                {
+                                    reg.val = Math.Round(shujuZhi, xsw);
+                                }
+                                else
+                                {
+                                    reg.val = Math.Round(shujuZhi, 4);
+                                }                           
+                            }
+                            else
+
+                                reg.val = shujuZhi;
                         }
                         var reg2 = InitData.registers.FirstOrDefault(w => w.Id.ToString() + "" == reg.Id.ToString() + "低位");
                         reg.Description = "高位"+reg.CustomizeAddress.ToString() +" 低位"+ reg2.CustomizeAddress.ToString();
@@ -2427,6 +2450,11 @@ namespace AdminConsole
         }
 
         private void libiao_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void fudianxinginput_TextChanged(object sender, EventArgs e)
         {
 
         }

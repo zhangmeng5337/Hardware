@@ -475,7 +475,6 @@ namespace AdminConsole
             this.coeinput.Padding = new System.Windows.Forms.Padding(8);
             this.coeinput.Size = new System.Drawing.Size(164, 39);
             this.coeinput.TabIndex = 77;
-            this.coeinput.Type = Sunny.UI.UITextBox.UIEditType.Integer;
             // 
             // uiLabel32
             // 
@@ -2013,6 +2012,7 @@ namespace AdminConsole
             this.fudianxinginput.Padding = new System.Windows.Forms.Padding(8);
             this.fudianxinginput.Size = new System.Drawing.Size(216, 39);
             this.fudianxinginput.TabIndex = 26;
+            this.fudianxinginput.TextChanged += new System.EventHandler(this.fudianxinginput_TextChanged);
             // 
             // uiLabel21
             // 
@@ -2525,7 +2525,7 @@ namespace AdminConsole
             this.jcqgg.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.jcqgg.Name = "jcqgg";
             this.jcqgg.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.jcqgg.Size = new System.Drawing.Size(1114, 905);
+            this.jcqgg.Size = new System.Drawing.Size(1110, 910);
             this.jcqgg.TabIndex = 78;
             this.jcqgg.Text = null;
             this.jcqgg.Visible = false;
