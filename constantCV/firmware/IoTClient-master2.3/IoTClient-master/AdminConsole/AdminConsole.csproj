@@ -8,8 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5C1C11FF-CFD4-4754-A9FD-A5494D71801F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AdminConsole</RootNamespace>
-    <AssemblyName>AdminConsole</AssemblyName>
+    <RootNamespace>工厂版配置工具</RootNamespace>
+    <AssemblyName>工厂版配置工具</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -65,7 +65,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo1.ico</ApplicationIcon>
+    <ApplicationIcon>bhair.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -142,6 +142,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="shuJuForm.resx">
       <DependentUpon>shuJuForm.cs</DependentUpon>

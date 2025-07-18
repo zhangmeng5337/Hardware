@@ -139,7 +139,7 @@ unsigned char factory_unit_convert(float dat)
 {
 
     unsigned char result;
-    float tmp, tmp1, tmp2, tmp3;
+    float tmp, tmp1, tmp2, tmp3,val_mask;
     uint32_t dat_reg;
     result = 1;
 
@@ -147,7 +147,13 @@ unsigned char factory_unit_convert(float dat)
     {
         dat_reg = GetReg()->pb[eREG_RANGZ_HF16].val_u32ToFloat;
         tmp3 = *(float *)(&dat_reg);
-        tmp1 = GetRegPrivate()->maskzero;
+		val_mask = tmp3;
+		
+        dat_reg = GetReg()->pb[eREG_RANGF_HF16].val_u32ToFloat;
+        tmp3 = *(float *)(&dat_reg);
+
+		val_mask = tmp3-val_mask;
+        tmp1 = GetRegPrivate()->maskzero*val_mask;
         tmp2 = dat;
         tmp2 = fabs(tmp2);
         tmp1 = fabs(tmp1);
@@ -496,7 +502,7 @@ void cal_press(void)
     adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
     tmp2 = adc_usr.adc_data_KF;
     tmp2 = SilderFilter(tmp2);
-     tmp2 = 2500;
+    // tmp2 = 2500;
 
     if (tmp2 != 0)
     {

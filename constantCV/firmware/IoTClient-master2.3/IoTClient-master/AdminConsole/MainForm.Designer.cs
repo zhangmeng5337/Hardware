@@ -2282,6 +2282,7 @@ namespace AdminConsole
             this.dzselectId.Size = new System.Drawing.Size(130, 39);
             this.dzselectId.TabIndex = 18;
             this.dzselectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.dzselectId.SelectedIndexChanged += new System.EventHandler(this.dzselectId_SelectedIndexChanged);
             // 
             // xywselectId
             // 

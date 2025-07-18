@@ -36,8 +36,8 @@ namespace AdminConsole
 
         private System.Windows.Forms.Timer SheBeiTimer;
         public static value_string cal_adc;
-
-
+        public const double global_delay_time = 0.2;
+        public int xsw;
 
 
         #region 初始化       
@@ -82,7 +82,7 @@ namespace AdminConsole
             }
 
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 200; // 设置间隔时间为1000毫秒（1秒）
+            timer.Interval = 100; // 设置间隔时间为1000毫秒（1秒）
             timer.Tick += new EventHandler(TimerEventProcessor);
          
 
@@ -91,7 +91,7 @@ namespace AdminConsole
         {           
             try
             {
-                if (ModbusReader.DuXieShiJian.AddSeconds(2) > DateTime.Now)
+                if (ModbusReader.DuXieShiJian.AddSeconds(global_delay_time) > DateTime.Now)
                 {
                     return;
                 }
@@ -125,7 +125,7 @@ namespace AdminConsole
 
                 var shujuZhi = BitConverter.ToSingle(shuju1, 0);
 
-                if (ModbusReader.DuXieShiJian.AddSeconds(2) > DateTime.Now)
+                if (ModbusReader.DuXieShiJian.AddSeconds(global_delay_time) > DateTime.Now)
                 {
                   
                     return;
@@ -147,7 +147,7 @@ namespace AdminConsole
                     v = v + "00";
                 }
 
-                var xsw = int.Parse(xiaoshudianinput.SelectedValue.ToString());
+                 xsw = int.Parse(xiaoshudianinput.SelectedValue.ToString());
 
                 if (xsw == 0)
                 {
@@ -177,7 +177,7 @@ namespace AdminConsole
  
                 fw(v5);
                 string s = ModbusReader.DuXieShiJian.ToString();
-                if (ModbusReader.DuXieShiJian.AddSeconds(2) > DateTime.Now)
+                if (ModbusReader.DuXieShiJian.AddSeconds(global_delay_time) > DateTime.Now)
                 {
                    
                     return;
@@ -196,7 +196,7 @@ namespace AdminConsole
 
 
 
-                ModbusReader.DuXieShiJian =DateTime.Now.AddSeconds(-2);
+                ModbusReader.DuXieShiJian =DateTime.Now.AddSeconds(global_delay_time);
                
                 //if (!bl)
                 //{
@@ -597,9 +597,16 @@ namespace AdminConsole
                     {                        
                         Array.Reverse(shuju1);
                     }
-                                   
-                    var shujuZhi = BitConverter.ToSingle(shuju1, 0);
-                   
+
+                    float shujuZhi = 0;
+                    if (shuju1.Length == 4)
+                    {
+                        shujuZhi = BitConverter.ToSingle(shuju1, 0);
+
+                    }
+                    else
+                        shujuZhi = BitConverter.ToInt16(shuju1, 0);
+
                     m.val = shujuZhi;
 
                     b =true;
@@ -1887,6 +1894,7 @@ namespace AdminConsole
 
         private void yonghushezhixieruBut_Click(object sender, EventArgs e)
         {
+            msglable.Text = "写入用户设置数据...";
             yonghushezhixieruBut.Enabled = false;
             var bl = yonghushezhixieru();
             if (!bl)
@@ -2045,6 +2053,7 @@ namespace AdminConsole
  
         private void jiaozhunduququanbuBut_Click(object sender, EventArgs e)
         {
+            msglable.Text = "读取全部数据中...";
             var bl = yibiaoduqu();
             if (!bl)
             {
@@ -2587,6 +2596,11 @@ namespace AdminConsole
         }
 
         private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btlSelectId_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

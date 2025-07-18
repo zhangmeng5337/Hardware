@@ -78,7 +78,7 @@ namespace AdminConsole
             }
 
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 10; // 设置间隔时间为1000毫秒（1秒）
+            timer.Interval = 100; // 设置间隔时间为1000毫秒（1秒）
             timer.Tick += new EventHandler(TimerEventProcessor);
          
 
@@ -580,7 +580,7 @@ namespace AdminConsole
                    // data1 = new byte[] { 0x01, 0x53, 0x04, 0x00, 0x02, 0x3e, 0xff };
  
                     var shuju1 = data1.Skip(5).Take(2).ToArray();
-
+ 
                     byte[] data2 = modbusReader.Read0x53Register(reg2.Address);
 
                    // data2 = new byte[] { 0x01, 0x53, 0x04, 0x00, 0x03, 0xe2, 0x6a };
@@ -593,12 +593,19 @@ namespace AdminConsole
                     {                        
                         Array.Reverse(shuju1);
                     }
-                                   
-                    var shujuZhi = BitConverter.ToSingle(shuju1, 0);
-                   
+                    float shujuZhi=0;
+                    if (shuju1.Length == 4)
+                    {
+                        shujuZhi = BitConverter.ToSingle(shuju1, 0);
+
+                    }
+                    else
+                         shujuZhi = BitConverter.ToInt16(shuju1, 0);
+                    //b = false;
+                    b =true;
                     m.val = shujuZhi;
 
-                    b =true;
+                    
                 }
                 else {
                     log4netHelper.Info("私有协议0x33读发送:" + Model.ModbusUtility.ConvertToJosn(m));
@@ -1699,6 +1706,7 @@ namespace AdminConsole
 
         private void yonghushezhixieruBut_Click(object sender, EventArgs e)
         {
+            msglable.Text = "写入用户设置数据...";
             yonghushezhixieruBut.Enabled = false;
             var bl = yonghushezhixieru();
             if (!bl)
@@ -1864,6 +1872,7 @@ namespace AdminConsole
  
         private void jiaozhunduququanbuBut_Click(object sender, EventArgs e)
         {
+            msglable.Text = "读取全部数据中...";
             jiaozhunduququanbuBut.Enabled = false;
             var bl = yibiaoduqu();
             if (!bl)
@@ -2455,6 +2464,11 @@ namespace AdminConsole
         }
 
         private void fudianxinginput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dzselectId_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

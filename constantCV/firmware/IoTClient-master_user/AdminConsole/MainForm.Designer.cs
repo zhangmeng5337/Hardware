@@ -1518,6 +1518,7 @@ namespace AdminConsole
             this.btlSelectId.TabIndex = 16;
             this.btlSelectId.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.btlSelectId.ValueMember = "ID";
+            this.btlSelectId.SelectedIndexChanged += new System.EventHandler(this.btlSelectId_SelectedIndexChanged);
             // 
             // dkhselectId
             // 

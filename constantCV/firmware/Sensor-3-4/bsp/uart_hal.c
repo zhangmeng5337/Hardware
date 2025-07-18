@@ -38,7 +38,7 @@ void uart_tx(uint8_t *dat, unsigned char len)
         while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET);
 
     }
-    SysTickDelay(1);
+    SysTickDelay(25);
     GPIO_WritePin(EN_GPIO_PORT, EN_GPIO_PIN, GPIO_Pin_RESET);
 }
 size_t __write(int handle, const unsigned char *buffer, size_t size)
@@ -69,10 +69,13 @@ size_t __write(int handle, const unsigned char *buffer, size_t size)
 void uart_config()
 {
 
-
+    static uint32_t delay_time;
     UART_InitTypeDef UART_InitStructure = {0};
+	static unsigned char flag = 0;
     if (uart_usr.reconfig)
     {
+        //flag = 1;
+		delay_time =GetTick();
         if (getKey()->indat[0].baud <= 7)
         {
             if (uart_usr.reconfig == 1)
@@ -82,7 +85,7 @@ void uart_config()
                 uart_usr.baudrate = getKey()->indat[0].baud;
 
             }
-            else  if (uart_usr.reconfig == 2)
+            else  if (uart_usr.reconfig == 2 || uart_usr.reconfig == 3)
             {
                 //GetReg()->pb[eREG_RATE].val_u32ToFloat = GetReg()->pb[eREG_CHECK];
 
@@ -110,71 +113,85 @@ void uart_config()
 
         }
 
-        if (uart_usr.reconfig == 2 || uart_usr.reconfig == 1)
+        if (uart_usr.reconfig == 2 || uart_usr.reconfig == 1 ||
+                uart_usr.reconfig == 3)
         {
-            UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, DISABLE);
-            switch (uart_usr.parity)
+            if (uart_usr.reconfig == 3)
             {
-                case parityNone:
-                    UART_InitStructure.UART_Parity = UART_Parity_No ;
-                    break;
-                case parityEven:
-                    UART_InitStructure.UART_Parity =UART_Parity_Odd  ;
-                    break;
-                case parityOdd:
-                    UART_InitStructure.UART_Parity = UART_Parity_Even ;
-                    break;
-                default:
-                    UART_InitStructure.UART_Parity = UART_Parity_No ;
-                    break;
+                uart_usr.reconfig =  0;
+                delay_time = GetTick();
+			    flag = 1;
+
             }
 
-            switch (uart_usr.baudrate)
-            {
-                case 0:
-                    UART_InitStructure.UART_BaudRate = baudrate_1200;
-                    break;
-                case 1:
-                    UART_InitStructure.UART_BaudRate = baudrate_2400;
-                    break;
-                case 2:
-                    UART_InitStructure.UART_BaudRate = baudrate_4800;
-                    break;
-                case 3:
-                    UART_InitStructure.UART_BaudRate = baudrate_9600;
-                    break;
-                case 4:
-                    UART_InitStructure.UART_BaudRate = baudrate_19200;
-                    break;
-                case 5:
-                    UART_InitStructure.UART_BaudRate = baudrate_38400;
-                    break;
-                case 6:
-                    UART_InitStructure.UART_BaudRate = baudrate_57600;
-                    break;
-                case 7:
-                    UART_InitStructure.UART_BaudRate = baudrate_115200;
-                    break;
-                default:
-                    UART_InitStructure.UART_BaudRate = baudrate_9600;
-                    break;
+            else
+            {    flag = 0;
+                UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, DISABLE);
+                switch (uart_usr.parity)
+                {
+                    case parityNone:
+                        UART_InitStructure.UART_Parity = UART_Parity_No ;
+                        break;
+                    case parityEven:
+                        UART_InitStructure.UART_Parity = UART_Parity_Odd  ;
+                        break;
+                    case parityOdd:
+                        UART_InitStructure.UART_Parity = UART_Parity_Even ;
+                        break;
+                    default:
+                        UART_InitStructure.UART_Parity = UART_Parity_No ;
+                        break;
+                }
+
+                switch (uart_usr.baudrate)
+                {
+                    case 0:
+                        UART_InitStructure.UART_BaudRate = baudrate_1200;
+                        break;
+                    case 1:
+                        UART_InitStructure.UART_BaudRate = baudrate_2400;
+                        break;
+                    case 2:
+                        UART_InitStructure.UART_BaudRate = baudrate_4800;
+                        break;
+                    case 3:
+                        UART_InitStructure.UART_BaudRate = baudrate_9600;
+                        break;
+                    case 4:
+                        UART_InitStructure.UART_BaudRate = baudrate_19200;
+                        break;
+                    case 5:
+                        UART_InitStructure.UART_BaudRate = baudrate_38400;
+                        break;
+                    case 6:
+                        UART_InitStructure.UART_BaudRate = baudrate_57600;
+                        break;
+                    case 7:
+                        UART_InitStructure.UART_BaudRate = baudrate_115200;
+                        break;
+                    default:
+                        UART_InitStructure.UART_BaudRate = baudrate_9600;
+                        break;
+                }
+
+                // UART_InitStructure.UART_BaudRate = DEBUG_UART_BaudRate;
+                UART_InitStructure.UART_Over = UART_Over_16;
+                UART_InitStructure.UART_Source = UART_Source_PCLK;
+                UART_InitStructure.UART_UclkFreq = DEBUG_UART_UclkFreq;
+                UART_InitStructure.UART_StartBit = UART_StartBit_FE;
+                UART_InitStructure.UART_StopBits = UART_StopBits_1;
+                //UART_InitStructure.UART_Parity = UART_Parity_No ;
+                UART_InitStructure.UART_HardwareFlowControl = UART_HardwareFlowControl_None;
+                UART_InitStructure.UART_Mode = UART_Mode_Rx | UART_Mode_Tx;
+                UART_Init(DEBUG_UARTx, &UART_InitStructure);
+                uart_usr.reconfig = 0;
+                UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, ENABLE);
+                UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RC);
+                UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RXIDLE);
+                uart_usr.reconfig =  0;
+
             }
 
-            // UART_InitStructure.UART_BaudRate = DEBUG_UART_BaudRate;
-            UART_InitStructure.UART_Over = UART_Over_16;
-            UART_InitStructure.UART_Source = UART_Source_PCLK;
-            UART_InitStructure.UART_UclkFreq = DEBUG_UART_UclkFreq;
-            UART_InitStructure.UART_StartBit = UART_StartBit_FE;
-            UART_InitStructure.UART_StopBits = UART_StopBits_1;
-            //UART_InitStructure.UART_Parity = UART_Parity_No ;
-            UART_InitStructure.UART_HardwareFlowControl = UART_HardwareFlowControl_None;
-            UART_InitStructure.UART_Mode = UART_Mode_Rx | UART_Mode_Tx;
-            UART_Init(DEBUG_UARTx, &UART_InitStructure);
-            uart_usr.reconfig = 0;
-            UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, ENABLE);
-            UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RC);
-            UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RXIDLE);
-            uart_usr.reconfig =  0;
 
         }
 
@@ -183,9 +200,78 @@ void uart_config()
 
 
     }
+    if ((GetTick() - delay_time) >= 8000&& flag == 1)
+    {
+        flag = 0;
+        UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, DISABLE);
+        switch (uart_usr.parity)
+        {
+            case parityNone:
+                UART_InitStructure.UART_Parity = UART_Parity_No ;
+                break;
+            case parityEven:
+                UART_InitStructure.UART_Parity = UART_Parity_Odd  ;
+                break;
+            case parityOdd:
+                UART_InitStructure.UART_Parity = UART_Parity_Even ;
+                break;
+            default:
+                UART_InitStructure.UART_Parity = UART_Parity_No ;
+                break;
+        }
 
+        switch (uart_usr.baudrate)
+        {
+            case 0:
+                UART_InitStructure.UART_BaudRate = baudrate_1200;
+                break;
+            case 1:
+                UART_InitStructure.UART_BaudRate = baudrate_2400;
+                break;
+            case 2:
+                UART_InitStructure.UART_BaudRate = baudrate_4800;
+                break;
+            case 3:
+                UART_InitStructure.UART_BaudRate = baudrate_9600;
+                break;
+            case 4:
+                UART_InitStructure.UART_BaudRate = baudrate_19200;
+                break;
+            case 5:
+                UART_InitStructure.UART_BaudRate = baudrate_38400;
+                break;
+            case 6:
+                UART_InitStructure.UART_BaudRate = baudrate_57600;
+                break;
+            case 7:
+                UART_InitStructure.UART_BaudRate = baudrate_115200;
+                break;
+            default:
+                UART_InitStructure.UART_BaudRate = baudrate_9600;
+                break;
+        }
 
+        // UART_InitStructure.UART_BaudRate = DEBUG_UART_BaudRate;
+        UART_InitStructure.UART_Over = UART_Over_16;
+        UART_InitStructure.UART_Source = UART_Source_PCLK;
+        UART_InitStructure.UART_UclkFreq = DEBUG_UART_UclkFreq;
+        UART_InitStructure.UART_StartBit = UART_StartBit_FE;
+        UART_InitStructure.UART_StopBits = UART_StopBits_1;
+        //UART_InitStructure.UART_Parity = UART_Parity_No ;
+        UART_InitStructure.UART_HardwareFlowControl = UART_HardwareFlowControl_None;
+        UART_InitStructure.UART_Mode = UART_Mode_Rx | UART_Mode_Tx;
+        UART_Init(DEBUG_UARTx, &UART_InitStructure);
+        uart_usr.reconfig = 0;
+        UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, ENABLE);
+        UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RC);
+        UART_ClearITPendingBit(DEBUG_UARTx, UART_IT_RXIDLE);
+        uart_usr.reconfig =  0;
+
+    }
 }
+
+
+
 
 void uart_init(void)
 {
@@ -195,8 +281,8 @@ void uart_init(void)
     uart_usr.baudrate = GetReg()->pb[eREG_RATE].val_u32ToFloat;
     uart_usr.reconfig = 2;
     uart_config();
-	uart_usr.recv_update = 0;
-	uart_usr.index = 0;
+    uart_usr.recv_update = 0;
+    uart_usr.index = 0;
 
 
 }
