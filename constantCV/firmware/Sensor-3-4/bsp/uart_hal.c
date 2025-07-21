@@ -32,6 +32,7 @@ void uart_tx(uint8_t *dat, unsigned char len)
 {
     unsigned int i;
     GPIO_WritePin(EN_GPIO_PORT, EN_GPIO_PIN, GPIO_Pin_SET);
+	SysTickDelay(5);
     for (i = 0; i < len; i ++)
     {
         UART_SendData_8bit(DEBUG_UARTx, dat[i]);
@@ -40,6 +41,7 @@ void uart_tx(uint8_t *dat, unsigned char len)
     }
     SysTickDelay(25);
     GPIO_WritePin(EN_GPIO_PORT, EN_GPIO_PIN, GPIO_Pin_RESET);
+		// SysTickDelay(25);
 }
 size_t __write(int handle, const unsigned char *buffer, size_t size)
 {
@@ -200,7 +202,7 @@ void uart_config()
 
 
     }
-    if ((GetTick() - delay_time) >= 8000&& flag == 1)
+    if ((GetTick() - delay_time) >= 10000&& flag == 1)
     {
         flag = 0;
         UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, DISABLE);

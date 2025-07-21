@@ -599,8 +599,8 @@ namespace AdminConsole
                         shujuZhi = BitConverter.ToSingle(shuju1, 0);
 
                     }
-                    else
-                         shujuZhi = BitConverter.ToInt16(shuju1, 0);
+                    //else
+                      //   shujuZhi = BitConverter.ToInt16(shuju1, 0);
                     //b = false;
                     b =true;
                     m.val = shujuZhi;
@@ -1408,7 +1408,7 @@ namespace AdminConsole
             _modbusMaster = ModbusSerialMaster.CreateRtu(_serialPort);
 
             // 配置超时与重试机制‌:ml-citation{ref="5,8" data="citationList"}
-            _modbusMaster.Transport.ReadTimeout = 1000;
+            _modbusMaster.Transport.ReadTimeout = 500;
             _modbusMaster.Transport.WriteTimeout = 1000;
             _modbusMaster.Transport.Retries = 3;
 
@@ -1714,6 +1714,7 @@ namespace AdminConsole
                 yonghushezhixieruBut.Enabled = true;
                 return ;
             }
+            timer.Stop();
             bl = CmdDataWriteSave();
             if (!bl)
             {
@@ -1723,6 +1724,7 @@ namespace AdminConsole
             msglable.Text = "写入用户设置数据成功";
             Application.DoEvents();
             yonghushezhixieruBut.Enabled = true;
+            timer.Start();
             // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1846,6 +1848,7 @@ namespace AdminConsole
         private void xieruquanbushujuBut_Click(object sender, EventArgs e)
         {
             xieruquanbushujuBut.Enabled = false;
+            msglable.Text = "写入全部数据中...";
             var bl = yonghushezhixieru();
             if (!bl)
             {
@@ -1858,6 +1861,7 @@ namespace AdminConsole
                 xieruquanbushujuBut.Enabled = true;
                 return;
             }
+            timer.Stop();
             bl = CmdDataWriteSave();
             if (!bl)
             {
@@ -1867,6 +1871,7 @@ namespace AdminConsole
             msglable.Text = "写入全部数据成功";
             Application.DoEvents();
             xieruquanbushujuBut.Enabled = true;
+            timer.Start();
             //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
  

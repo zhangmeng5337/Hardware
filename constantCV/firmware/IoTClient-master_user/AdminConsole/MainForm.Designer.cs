@@ -229,6 +229,7 @@ namespace AdminConsole
             // 
             // uiGroupBox5
             // 
+            this.uiGroupBox5.AutoSize = true;
             this.uiGroupBox5.Controls.Add(this.uiLine1);
             this.uiGroupBox5.Controls.Add(this.huifuchuchangBut);
             this.uiGroupBox5.Controls.Add(this.gcbcsjBut);
@@ -242,7 +243,7 @@ namespace AdminConsole
             this.uiGroupBox5.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.uiGroupBox5.Name = "uiGroupBox5";
             this.uiGroupBox5.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.uiGroupBox5.Size = new System.Drawing.Size(1095, 658);
+            this.uiGroupBox5.Size = new System.Drawing.Size(1098, 658);
             this.uiGroupBox5.TabIndex = 7;
             this.uiGroupBox5.Text = "校准";
             // 
@@ -1735,6 +1736,7 @@ namespace AdminConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1552, 1010);
             this.Controls.Add(this.msglable);
             this.Controls.Add(this.dqljLabe);

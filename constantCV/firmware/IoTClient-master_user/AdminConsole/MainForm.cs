@@ -82,7 +82,7 @@ namespace AdminConsole
             }
 
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 100; // 设置间隔时间为1000毫秒（1秒）
+            timer.Interval = 10; // 设置间隔时间为1000毫秒（1秒）
             timer.Tick += new EventHandler(TimerEventProcessor);
          
 
@@ -299,26 +299,23 @@ namespace AdminConsole
                     log4netHelper.Info("modbus读返回:" + hexString1);
                     object value = Model.ModbusUtility.UshortArrParseValue(rawData, reg.DataType);
                     reg.val = value;
-                    //if (reg.Id == EnumDataId.量程零位)
-                    //{
-                    //    yibiaoliangcheng1.Text = value.ToString() + "~";
-                    //}
-                    //else if (reg.Id == EnumDataId.量程满度)
-                    //{
-                    //    yibiaoliangcheng1.Text = yibiaoliangcheng1.Text + value.ToString();
-                    //}
-                    //else
-                    if (reg.Id == EnumDataId.单位)
+                    if (reg.Id == EnumDataId.量程零位)
+                    {
+                        ;//yibiaoliangcheng1.Text = value.ToString() + "~";
+                    }
+                    else if (reg.Id == EnumDataId.量程满度)
+                    {
+                        ;//yibiaoliangcheng1.Text = yibiaoliangcheng1.Text + value.ToString();
+                    }
+                    else if (reg.Id == EnumDataId.单位)
                     {
                        danweilable.Text = InitData.danweiInputData.FirstOrDefault(w => w.ID == value.ToString())?.Name;                         
                         
                     }
-                    //else if (reg.Id == EnumDataId.浮点输出值)
-                    //{
-                    //    fudianxinginput.Text = value.ToString();
-                    //    int intValueFloor = (int)Math.Floor(float.Parse(fudianxinginput.Text)); // 向下取整
-                    //    zhengxinginput.Text = intValueFloor.ToString();
-                    //}
+                    else if (reg.Id == EnumDataId.浮点输出值)
+                    {
+                        ;//
+                    }
                     else if (reg.Id == EnumDataId.实时值扩大10倍)
                     {
                         x10input.Text = value.ToString();
@@ -351,18 +348,18 @@ namespace AdminConsole
                     {
                         xiaoshudianinput.SelectedValue = value.ToString();
                     }
-                    //else if (reg.Id == EnumDataId.量程零)
-                    //{
-                    //    lianginput1.Text = value.ToString();
-                    //}
-                    //else if (reg.Id == EnumDataId.量程满)
-                    //{
-                    //    lianginput2.Text = value.ToString();
-                    //}
-                    //else if (reg.Id == EnumDataId.偏移值)
-                    //{
-                    //    pianyizhiinput.Text = value.ToString();
-                    //}
+                    else if (reg.Id == EnumDataId.量程零)
+                    {
+                        ;//lianginput1.Text = value.ToString();
+                    }
+                    else if (reg.Id == EnumDataId.量程满)
+                    {
+                        ;//lianginput2.Text = value.ToString();
+                    }
+                    else if (reg.Id == EnumDataId.偏移值)
+                    {
+                        ;// pianyizhiinput.Text = value.ToString();
+                    }
 
                 }
                 catch (Exception ex)
@@ -1600,8 +1597,8 @@ namespace AdminConsole
             _modbusMaster = ModbusSerialMaster.CreateRtu(_serialPort);
 
             // 配置超时与重试机制‌:ml-citation{ref="5,8" data="citationList"}
-            _modbusMaster.Transport.ReadTimeout = 1000;
-            _modbusMaster.Transport.WriteTimeout = 1000;
+            _modbusMaster.Transport.ReadTimeout = 300;
+            _modbusMaster.Transport.WriteTimeout = 600;
             _modbusMaster.Transport.Retries = 3;
 
 
@@ -1722,10 +1719,16 @@ namespace AdminConsole
                   return;
                 }
                 bl = yonghushezhiDuQu();
-
+                if (!bl)
+                {
+                    return;
+                }
                 bl = jiaozhunduqu();
-
-               if (cal_adc.cal_adc5 != "0" && cal_adc.cal_val5 != "0" ) 
+                if (!bl)
+                {
+                    return;
+                }
+                if (cal_adc.cal_adc5 != "0" && cal_adc.cal_val5 != "0" ) 
                 {
                     cal_adc.selectValue = "5";
                 }
@@ -1868,6 +1871,8 @@ namespace AdminConsole
 
         private bool yonghushezhiDuQu()
         {
+
+
             var YongHuSheZhi = InitData.registers.Where(w => InitData.YongHuSheZhiIds.Contains(w.Id)).ToList();
             var bl = DataRead(YongHuSheZhi);
             if (!bl)
@@ -1900,17 +1905,22 @@ namespace AdminConsole
             if (!bl)
             {
                 yonghushezhixieruBut.Enabled = true;
+
                 return ;
             }
+            Thread.Sleep(50); timer.Stop();
             bl = CmdDataWriteSave();
+            
             if (!bl)
             {
-                yonghushezhixieruBut.Enabled = true;
+               // yonghushezhixieruBut.Enabled = true;
                 return ;
             }
             msglable.Text = "写入用户设置数据成功";
             Application.DoEvents();
             yonghushezhixieruBut.Enabled = true;
+            timer.Start();
+
             // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -2031,7 +2041,7 @@ namespace AdminConsole
         #region  写入全部数据
         private void xieruquanbushujuBut_Click(object sender, EventArgs e)
         {
-
+            msglable.Text = "写入全部数据中...";
             var bl = yonghushezhixieru();
             if (!bl)
             {
@@ -2042,12 +2052,14 @@ namespace AdminConsole
             {
                 return;
             }
+            timer.Stop();
             bl = CmdDataWriteSave();
             if (!bl)
             {
                 return;
             }
             msglable.Text = "写入全部数据成功";
+            timer.Start();
             //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
  

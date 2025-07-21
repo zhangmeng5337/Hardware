@@ -10,7 +10,7 @@ static int32_t data_window[WINDOW_SIZE] = {0};
 static uint8_t data_index = 0;  // 当前数据插入位置
 
 // 快速排序分区函数（仅划分到中值位置）
-// 返回值：分区后的中值位置
+// 返回值：分区后的中值位�?
 int partition(int32_t *arr, int low, int high)
 {
     int32_t pivot = arr[high];  // 选择最后一个元素为基准
@@ -27,26 +27,25 @@ int partition(int32_t *arr, int low, int high)
             arr[j] = temp;
         }
     }
-    // 将基准值放到正确位置
+    // 将基准值放到正确位�?
     int32_t temp = arr[i + 1];
     arr[i + 1] = arr[high];
     arr[high] = temp;
     return i + 1;
 }
 
-// 快速选择中值（仅排序到中间位置）
+// 快速选择中值（仅排序到中间位置�?
 int32_t quick_select_median(int32_t *arr, int size)
 {
     int low = 0, high = size - 1;
-    int target = size / 2;  // 中值位置
-
+    int target = size / 2;  // 中值位�?
     while (low <= high)
     {
         int pivot_idx = partition(arr, low, high);
         if (pivot_idx == target)
         {
-            return arr[pivot_idx];  // 找到中值
-        }
+            return arr[pivot_idx];  // 找到中�?  
+            }
         else if (pivot_idx < target)
         {
             low = pivot_idx + 1;    // 向右继续查找
@@ -56,24 +55,24 @@ int32_t quick_select_median(int32_t *arr, int size)
             high = pivot_idx - 1;   // 向左继续查找
         }
     }
-    return arr[target];  // 返回中值
-}
+    return arr[target];  // 返回中�?
+    }
 
-// 插入新数据并计算中值
+// 插入新数据并计算中�?
 int32_t update_median_filter(int32_t new_data)
 {
-    // 1. 更新数据窗口（循环覆盖旧数据）
+    // 1. 更新数据窗口（循环覆盖旧数据�?
     data_window[data_index] = new_data;
     data_index = (data_index + 1) % WINDOW_SIZE;
 
-    // 2. 拷贝窗口数据到临时数组（避免修改原始数据）
+    // 2. 拷贝窗口数据到临时数组（避免修改原始数据�?    
     int32_t temp_window[WINDOW_SIZE];
     for (int i = 0; i < WINDOW_SIZE; i++)
     {
         temp_window[i] = data_window[i];
     }
 
-    // 3. 快速选择中值（仅排序到中间位置）
+    // 3. 快速选择中值（仅排序到中间位置�?
     return quick_select_median(temp_window, WINDOW_SIZE);
 }
 

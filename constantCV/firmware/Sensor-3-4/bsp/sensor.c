@@ -408,13 +408,14 @@ void adc_proc(void)
                 adc_usr.adc_ori = g_cs1237_device_st.adc_data;
                 adc_usr.adc_dat_LF = g_cs1237_device_st.adc_calculate_deal_data;
             }
+			cal_press();
         }
 
 
         if (GetTick() - tick_tmp >= 30)
         {
             tick_tmp = GetTick();
-            cal_press();
+            //cal_press();
         }
     }
 
@@ -502,7 +503,7 @@ void cal_press(void)
     adc_usr.adc_data_KF = kalman_filter(&g_kfp_st, tmp2);
     tmp2 = adc_usr.adc_data_KF;
     tmp2 = SilderFilter(tmp2);
-    // tmp2 = 2500;
+     //tmp2 = -531;
 
     if (tmp2 != 0)
     {

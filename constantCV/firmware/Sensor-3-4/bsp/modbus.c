@@ -715,6 +715,7 @@ void modbus_oneReg_write_pack(void)
 
 
 
+
 		modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
         modbus_usr.tx_buf[i++] = modbus_usr.Func;
         //tx_buf[i++] = modbus_usr.len;

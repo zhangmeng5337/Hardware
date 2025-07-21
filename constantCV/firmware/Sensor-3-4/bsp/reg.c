@@ -370,33 +370,38 @@ void RegDatToModbus(uint16_t RegNum, uint8_t *dat)
     for (i = 0; i < REG_SIZE; i++)
     {
 
-        if (reg_usr.pb[i].reg_remap == RegNum && reg_usr.pb[i].enable == 1)
+      //  if (reg_usr.pb[i].reg_remap == RegNum || reg_usr.pb[i].reg_remap == RegNum)
         {
-            if (reg_usr.pb[i].dat_type == 3)
+            if (reg_usr.pb[i].reg_remap == RegNum && reg_usr.pb[i].enable == 1)
             {
-                if (reg_usr.pb[i].dat_pos == 1) //01020304
+                if (reg_usr.pb[i].dat_type == 3)
                 {
+                    if (reg_usr.pb[i].dat_pos == 1) //01020304
+                    {
 
-                    dat[0] = reg_usr.pb[i].val_u32ToFloat >> 8;
-                    dat[1] = reg_usr.pb[i].val_u32ToFloat;
+                        dat[0] = reg_usr.pb[i].val_u32ToFloat >> 8;
+                        dat[1] = reg_usr.pb[i].val_u32ToFloat;
+                    }
+                    else
+                    {
+                        dat[0] = reg_usr.pb[i].val_u32ToFloat >> 24;
+                        dat[1] = reg_usr.pb[i].val_u32ToFloat >> 16;
+
+                    }
+
                 }
                 else
                 {
-                    dat[0] = reg_usr.pb[i].val_u32ToFloat >> 24;
-                    dat[1] = reg_usr.pb[i].val_u32ToFloat >> 16;
+                    dat[0] = reg_usr.pb[i].val_u32ToFloat >> 8;
+                    dat[1] = reg_usr.pb[i].val_u32ToFloat;
 
                 }
+               // break;
 
             }
-            else
-            {
-                dat[0] = reg_usr.pb[i].val_u32ToFloat >> 8;
-                dat[1] = reg_usr.pb[i].val_u32ToFloat;
-
-            }
-
 
         }
+
     }
 }
 void REGDatConvToPC(uint16_t RegNum, uint8_t *dat)
@@ -499,14 +504,14 @@ void RegWrite(void)
         j = j + 4;
         floatTouint32_m(params_private.cal5val, buf + j);
         j = j + 4;
-		if (GetRegPrivate()->mode == 2)
-		{
-        params_private.usr_cal1val=0;
-        params_private.usr_cal2val=0;
-        params_private.usr_cal1ADC=0;
-        params_private.usr_cal2ADC=0;
+        if (GetRegPrivate()->mode == 2)
+        {
+            params_private.usr_cal1val = 0;
+            params_private.usr_cal2val = 0;
+            params_private.usr_cal1ADC = 0;
+            params_private.usr_cal2ADC = 0;
 
-		}
+        }
         floatTouint32_m(params_private.usr_cal1val, buf + j);
         j = j + 4;
         floatTouint32_m(params_private.usr_cal2val, buf + j);
@@ -680,7 +685,7 @@ unsigned char RegRead(void)
         j = j + 4;
 
 
-		
+
         params_private.maskzero = uint32TofloatR(buf + j);
         j = j + 4;
         params_private.filter_level =  buf[j + 1];
@@ -752,12 +757,12 @@ void reg_init(void)
     params_private.coe4 = 0;
     params_private.zero_cmd = 0;
     params_private.maskzero = 0;
-	GetRegPrivate()->select_value = 5;
-	GetRegPrivate()->usr_cal1ADC = 0;
-	GetRegPrivate()->usr_cal2ADC = 0;	
-	GetRegPrivate()->usr_cal1val = 0;
-	GetRegPrivate()->usr_cal2val = 0;
-   
+    GetRegPrivate()->select_value = 5;
+    GetRegPrivate()->usr_cal1ADC = 0;
+    GetRegPrivate()->usr_cal2ADC = 0;
+    GetRegPrivate()->usr_cal1val = 0;
+    GetRegPrivate()->usr_cal2val = 0;
+
     if (RegRead() == 0)
     {
 
@@ -772,31 +777,31 @@ void reg_init(void)
 
         RegWrite();
     }
-	 cal_number();
+    cal_number();
 
 }
 
 void cal_number()
 {
-	
 
-	if (GetRegPrivate()->cal5ADC != 0 || GetRegPrivate()->cal5val != 0 ) 
-	 {
-		 
-		 GetRegPrivate()->select_value = 5;
-	 }
-	 else if (GetRegPrivate()->cal4ADC != 0 || GetRegPrivate()->cal4val != 0)
-	 {
-		  GetRegPrivate()->select_value = 4;
-	 }
-	 else if (GetRegPrivate()->cal3ADC != 0 || GetRegPrivate()->cal3val != 0)
-	 {
-		 GetRegPrivate()->select_value = 3;
-	 }
-	 else
-	 {
-		  GetRegPrivate()->select_value = 2;
-	 }
+
+    if (GetRegPrivate()->cal5ADC != 0 || GetRegPrivate()->cal5val != 0)
+    {
+
+        GetRegPrivate()->select_value = 5;
+    }
+    else if (GetRegPrivate()->cal4ADC != 0 || GetRegPrivate()->cal4val != 0)
+    {
+        GetRegPrivate()->select_value = 4;
+    }
+    else if (GetRegPrivate()->cal3ADC != 0 || GetRegPrivate()->cal3val != 0)
+    {
+        GetRegPrivate()->select_value = 3;
+    }
+    else
+    {
+        GetRegPrivate()->select_value = 2;
+    }
 
 }
 void reg_proc(void)
@@ -804,8 +809,8 @@ void reg_proc(void)
     if (reg_usr.update == 1 || getKey()->update == 1)
     {
         RegWrite();
-		cal_number();
-		
+        cal_number();
+
         reg_usr.update = 0;
         getKey()->update  = 0;
         GetRegPrivate()->mode = 0;
