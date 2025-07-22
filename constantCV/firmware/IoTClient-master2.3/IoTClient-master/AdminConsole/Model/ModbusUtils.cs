@@ -46,18 +46,18 @@ namespace AdminConsole.Model
            //Thread.Sleep(500);
 
             var bytesToRead = 0;
-            var i = 39;
+            var i = 1;
             
             while (i > 0)
             {
-                Thread.Sleep(50);
+                Thread.Sleep(120);
                 if (port.BytesToRead >= expectedResponseLength) {                    
                     break;
                 }
                 if (port.BytesToRead > bytesToRead)
                 {
                     bytesToRead = port.BytesToRead;
-                    i = 30;
+                    i = 1;
                 }
                 else
                 {

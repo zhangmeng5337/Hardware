@@ -78,7 +78,7 @@ namespace AdminConsole
             }
 
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 100; // 设置间隔时间为1000毫秒（1秒）
+            timer.Interval = 30; // 设置间隔时间为1000毫秒（1秒）
             timer.Tick += new EventHandler(TimerEventProcessor);
          
 
@@ -1680,6 +1680,7 @@ namespace AdminConsole
 
         private bool yonghushezhiDuQu()
         {
+            timer.Stop();
             var YongHuSheZhi = InitData.registers.Where(w => InitData.YongHuSheZhiIds.Contains(w.Id)).ToList();
             var bl = DataRead(YongHuSheZhi);
             if (!bl)
@@ -1695,11 +1696,13 @@ namespace AdminConsole
 
             var CmdYongHuSheZhi = InitData.registers.Where(w => w.Id == EnumDataId.偏移值).ToList();
             bl = CmdDataRead(CmdYongHuSheZhi);
+              timer.Stop();
             if (!bl)
             {
                 return false;
             }
             msglable.Text = "读取用户设置数据成功";
+            timer.Start();
             return true;
 
         }
@@ -2284,9 +2287,16 @@ namespace AdminConsole
                         Array.Reverse(weizhi1);
                         Array.Reverse(shuju);
                     }
-                    var wz1 = BitConverter.ToInt16(weizhi1, 0);
+                    var wz1 = 0;
+                    if (weizhi1.Length == 2)
+                    {
+                         wz1 = BitConverter.ToInt16(weizhi1, 0);
+                    }
+                    else
+                        continue;
 
-                    reg.CustomizeAddress = "0X" + wz1.ToString("X2");
+
+                        reg.CustomizeAddress = "0X" + wz1.ToString("X2");
 
                   
                     if (reg.DataType == DataType.Float)
