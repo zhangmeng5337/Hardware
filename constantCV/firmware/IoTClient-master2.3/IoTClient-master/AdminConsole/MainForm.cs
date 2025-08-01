@@ -2125,6 +2125,7 @@ namespace AdminConsole
                 xieruquanbushujuBut.Enabled = true;
                 return;
             }
+			
             msglable.Text = "写入全部数据成功";
             Application.DoEvents();
             xieruquanbushujuBut.Enabled = true;

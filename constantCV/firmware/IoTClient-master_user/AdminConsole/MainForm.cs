@@ -15,6 +15,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Net;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -110,11 +111,37 @@ namespace AdminConsole
                 var reg2 = InitData.registers.FirstOrDefault(w => w.Id.ToString().Contains(m.Id.ToString()) && w.Id.ToString().Contains("低位"));
 
                 byte[] data1 = modbusReader.Read0x53Register1(m.Address);
- 
+                    try
+                    {
+                        Console.WriteLine(data1[6]); // 尝试访问超出范围的索引
+                    }
+                    catch(IndexOutOfRangeException)
+                    {
+                        Console.WriteLine($"捕获到异常1:");
+                        return;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine($"捕获到异常11:");
+                        return;
+                    }
                 var shuju1 = data1.Skip(5).Take(2).ToArray();
 
                 byte[] data2 = modbusReader.Read0x53Register1(reg2.Address);
- 
+                    try
+                    {
+                        Console.WriteLine(data2[6]); // 尝试访问超出范围的索引
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        Console.WriteLine($"捕获到异常2:");
+                        return;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine($"捕获到异常21:");
+                        return;
+                    }
                 var shuju2 = data2.Skip(5).Take(2).ToArray();
 
                 shuju1 = shuju1.Concat(shuju2).ToArray();
@@ -270,11 +297,12 @@ namespace AdminConsole
                 MessageBox.Show("设备未连接！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
+        start:
             var modbusReader = GetModbusReader();
 
             if (modbusReader == null)
             {
+                goto start;
                 return false;
             }
 
@@ -394,10 +422,11 @@ namespace AdminConsole
                 MessageBox.Show("设备未连接！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+        write:
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
-            {
+            {  goto write;
                 return false;
             }
 
@@ -569,7 +598,7 @@ namespace AdminConsole
                 //{
                 //    continue;
                 //}
-
+            start3:
                 bool b = false;
                 if (m.Id.ToString().StartsWith("采集值")) {
                    
@@ -590,14 +619,45 @@ namespace AdminConsole
 
                     var reg2 = InitData.registers.FirstOrDefault(w => w.Id.ToString().Contains(m.Id.ToString())&& w.Id.ToString().Contains("低位"));
                     
+                start:
                     byte[] data1 = modbusReader.Read0x53Register(m.Address);
-
+                    try
+                    {
+                        Console.WriteLine(data1[6]); // 尝试访问超出范围的索引
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        Console.WriteLine($"捕获到异常45: {ex.Message}");
+                        goto start;
+                        // 在这里处理异常，例如记录日志或显示错误信息
+                    }
+                    catch (IndexOutOfRangeException ex)
+                    {
+                        Console.WriteLine($"捕获到异常46: {ex.Message}");
+                        goto start;
+                        // 在这里处理异常，例如记录日志或显示错误信息
+                    }
                    // data1 = new byte[] { 0x01, 0x53, 0x04, 0x00, 0x02, 0x3e, 0xff };
  
                     var shuju1 = data1.Skip(5).Take(2).ToArray();
-
+                start2:
                     byte[] data2 = modbusReader.Read0x53Register(reg2.Address);
-
+                    try
+                    {
+                        Console.WriteLine(data2[6]); // 尝试访问超出范围的索引
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        Console.WriteLine($"47: {ex.Message}");
+                        goto start2;
+                        // 在这里处理异常，例如记录日志或显示错误信息
+                    }
+                    catch (IndexOutOfRangeException ex)
+                    {
+                        Console.WriteLine($"捕获到异常48: {ex.Message}");
+                        goto start2;
+                        // 在这里处理异常，例如记录日志或显示错误信息
+                    }
                    // data2 = new byte[] { 0x01, 0x53, 0x04, 0x00, 0x03, 0xe2, 0x6a };
 
                     var shuju2 = data2.Skip(5).Take(2).ToArray();
@@ -629,9 +689,30 @@ namespace AdminConsole
        
                 if (!b)
                 {
-                   // MessageBox.Show(m.Name + "读取失败！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    msglable.Text = m.Name + "读取失败!";
-                    return false;
+                    if (m.Id.ToString().StartsWith("采集值"))
+                    {
+                        msglable.Text = m.Name + "读取失败1!";
+                        // Console.WriteLine($"捕获到异常49: {ex.Message}");
+                        goto start3;
+                    }
+                    else if (m.Id == EnumDataId.量程零
+                         || m.Id == EnumDataId.量程满
+                         || m.Id == EnumDataId.偏移值
+                         || m.Id == EnumDataId.量程零位
+                         || m.Id == EnumDataId.量程满度
+                         || m.Id == EnumDataId.浮点输出值
+                        )
+                    { 
+                        msglable.Text = m.Name + "读取失败2!";
+                        goto start3;
+                       
+                    }
+                    else
+                    {
+                        msglable.Text = m.Name + "读取失败3!";
+                        goto start3;
+                        
+                    }
                 }
                 switch (m.Id)
                 {
@@ -1261,10 +1342,11 @@ namespace AdminConsole
 
         private bool CmdDataWrite46(List<RegisterDefinition> registerList)
         {
-            var modbusWriter = GetModbusWriter();
+        write: var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
             {
+                goto write;
                 return false;
             }
   /*  
@@ -1381,6 +1463,7 @@ namespace AdminConsole
 
         private void sousuoSbBut1_Click(object sender, EventArgs e)
         {
+            wr_flag = 1;
    
             if (sousuoSbBut1.Text != "搜索")
             {
@@ -1419,6 +1502,7 @@ namespace AdminConsole
 
 
             }
+            wr_flag = 0;
         }
         
 
@@ -1690,6 +1774,7 @@ namespace AdminConsole
         private void lianjieButId_Click(object sender, EventArgs e)
         {
 
+            wr_flag = 1;
             if (lianjieButId.Text == "连接")
             {
                 if (dzselectId.SelectedIndex == -1)
@@ -1785,6 +1870,7 @@ namespace AdminConsole
                 msglable.Text = "连接已断开";
             }
 
+            wr_flag = 0;
 
 
         }
@@ -1797,12 +1883,18 @@ namespace AdminConsole
         #region 仪表信息读取
         private void yibiaoduqubut_Click(object sender, EventArgs e)
         { 
+            wr_flag = 1;
+            yibiaoduqubut.Enabled = false;
             var bl = yibiaoduqu();           
+            wr_flag = 0;
             if (!bl)
             {
+                yibiaoduqubut.Enabled = true;
                 return;
             }
             msglable.Text = "读取仪表数据成功";
+            Application.DoEvents();
+            yibiaoduqubut.Enabled = true;
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1871,35 +1963,40 @@ namespace AdminConsole
         #region 用户设置读取写入
         private void yonghushezhiDuQubut_Click(object sender, EventArgs e)
         {
+        start:
             wr_flag = 1;
             yonghushezhiDuQubut.Enabled = false;
             var bl = yonghushezhiDuQu();
+            wr_flag = 0;
             if (!bl)
             {
-                wr_flag = 0;
+                goto start;
                 yonghushezhiDuQubut.Enabled = true;
                 return;
             }
             wr_flag = 0;
-            Application.DoEvents();
             yonghushezhiDuQubut.Enabled = true;
+            Application.DoEvents();
+            
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool yonghushezhiDuQu()
         {
-
+            wr_flag = 1;
 
             var YongHuSheZhi = InitData.registers.Where(w => InitData.YongHuSheZhiIds.Contains(w.Id)).ToList();
             var bl = DataRead(YongHuSheZhi);
             if (!bl)
             {
+                wr_flag = 0;
                 return false;
             }
             var modbusReader = GetModbusReader();
 
             if (modbusReader == null)
             {
+                wr_flag = 0;
                 return false;
             }
 
@@ -1907,12 +2004,11 @@ namespace AdminConsole
             bl = CmdDataRead(CmdYongHuSheZhi);
             if (!bl)
             {
+                wr_flag = 0;
                 return false;
             }
-
-
-            yonghushezhixieruBut.Enabled = true;
-
+            msglable.Text = "读取用户设置数据成功";
+            wr_flag = 0;
             return true;
 
         }
@@ -1930,38 +2026,42 @@ namespace AdminConsole
 
                 return ;
             }
-            Thread.Sleep(50); 
+            //  timer.Stop();
             bl = CmdDataWriteSave();
             
             if (!bl)
             {
                 wr_flag = 0;
-                // yonghushezhixieruBut.Enabled = true;
+                yonghushezhixieruBut.Enabled = true;
                 return ;
             }
-            wr_flag = 0;
-            msglable.Text = "写入用户设置数据成功";
-            Application.DoEvents();
-            yonghushezhixieruBut.Enabled = true;
+			wr_flag = 0;
             _serialPort.Close();
             MessageBox.Show("修改串口参数后，请重新配置上位机软件串口参数！", "提示", MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
 
+            msglable.Text = "写入用户设置数据成功";
+            yonghushezhixieruBut.Enabled = true;
+            Application.DoEvents();
 
             // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool yonghushezhixieru()
         {
+        write:
+            wr_flag = 1;
             var YongHuSheZhi = InitData.registers.Where(w => InitData.YongHuSheZhiIds.Contains(w.Id)).ToList();
             var bl = DataWrite(YongHuSheZhi);
             if (!bl)
             {
+                goto write;
                 return false;
             }
-            var modbusReader = GetModbusReader();
+        write2: var modbusReader = GetModbusReader();
             if (modbusReader == null)
             {
+                goto write2;
                 return false;
             }
 
@@ -1970,8 +2070,10 @@ namespace AdminConsole
 
             if (!bl)
             {
+                wr_flag = 0;
                 return false;
             }
+            wr_flag = 0;
             return true;
         }
 
@@ -2010,10 +2112,11 @@ namespace AdminConsole
             var bl = CmdDataWrite46(CmdYongHuSheZhi);
 
             var CmdJiaoZhunXieRu = InitData.registers.Where(w => InitData.JiaoZhunCmdXieRuIds.Contains(w.Id)).ToList();
-
+        write:
             bl = CmdDataWrite(CmdJiaoZhunXieRu);
             if (!bl)
             {
+                goto write;
                 return false;
             }
 
@@ -2049,10 +2152,11 @@ namespace AdminConsole
             {
                 cal_adc.selectValue = "2";
             }
-            wr_flag = 0;
+
             msglable.Text = "读取校准数据成功";
             Application.DoEvents();
             jiaozhunduquBut.Enabled = true;
+            wr_flag = 0;
             // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -2075,30 +2179,35 @@ namespace AdminConsole
         private void xieruquanbushujuBut_Click(object sender, EventArgs e)
         {
             wr_flag = 1;
-
+            xieruquanbushujuBut.Enabled = false;
             msglable.Text = "写入全部数据中...";
             var bl = yonghushezhixieru();
             if (!bl)
             {
                 wr_flag = 0;
+                xieruquanbushujuBut.Enabled = true;
                 return;
             }
             bl = jiaozhunxieru();
             if (!bl)
             {
                 wr_flag = 0;
+                xieruquanbushujuBut.Enabled = true;
                 return;
             }
-            timer.Stop();
+
             bl = CmdDataWriteSave();
             if (!bl)
             {
                 wr_flag = 0;
+                xieruquanbushujuBut.Enabled = true;
                 return;
             }
-            wr_flag = 0;
+			
             msglable.Text = "写入全部数据成功";
-            timer.Start();
+            Application.DoEvents();
+            xieruquanbushujuBut.Enabled = true;
+            wr_flag = 0;
             //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
  
@@ -2106,16 +2215,19 @@ namespace AdminConsole
         {
             wr_flag = 1;
             msglable.Text = "读取全部数据中...";
+            jiaozhunduququanbuBut.Enabled = false;
             var bl = yibiaoduqu();
             if (!bl)
             {
                 wr_flag = 0;
+                jiaozhunduququanbuBut.Enabled = true;
                 return;
             }
               bl = yonghushezhiDuQu();
             if (!bl)
             {
                 wr_flag = 0;
+                jiaozhunduququanbuBut.Enabled = true;
                 return;
             }
 
@@ -2124,10 +2236,13 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                jiaozhunduququanbuBut.Enabled = true;
                 return;
             }
-            wr_flag = 0;
             msglable.Text = "读取全部数据成功";
+            Application.DoEvents();
+            jiaozhunduququanbuBut.Enabled = true;
+            wr_flag = 0;
             // MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -2331,13 +2446,16 @@ namespace AdminConsole
         #region 寄存器组列表读取 写入
         private void LieBIAOxieru_Click(object sender, EventArgs e)
         {
-            wr_flag =1;
+        write:
+            wr_flag = 1;
+            LieBIAOxieru.Enabled = false;
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
             {
-                wr_flag = 0;
-                return;
+                goto write;
+               // LieBIAOxieru.Enabled = true;
+               // return;
             }
 
             float fv;
@@ -2429,8 +2547,11 @@ namespace AdminConsole
                 catch (Exception ex)
                 {
                     wr_flag = 0;
-                    log4netHelper.Error("PC端修改设备寄存器地址以及数据0x46写:" + ex.Message);
-                    MessageBox.Show(Name + ":写入失败", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    log4netHelper.Error("PC端修改设备寄存器地址以及数据0x46写:" +
+                                        ex.Message);
+                    MessageBox.Show(Name + ":写入失败", "提示", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                    LieBIAOxieru.Enabled = true;
                     return;
                 }
             }
@@ -2440,22 +2561,31 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                LieBIAOxieru.Enabled = true;
                 return;
             }
-            wr_flag = 0;
             msglable.Text = "写入寄存器组态数据成功";
+            Application.DoEvents();
+            LieBIAOxieru.Enabled = true;
+            wr_flag = 0;
             // MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void LieBIAODuQu_Click(object sender, EventArgs e)
         {
             wr_flag = 1;
-            var b=  diZzhiList();
-            if (!b) {
+            LieBIAODuQu.Enabled = false;
+            var b =  diZzhiList();
+            if (!b)
+            {
                 wr_flag = 0;
+                LieBIAODuQu.Enabled = true;
                 return;
             }
             msglable.Text = "读取寄存器组态数据成功";
+            Application.DoEvents();
+            LieBIAODuQu.Enabled = true;
+            wr_flag = 0;
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -2464,10 +2594,11 @@ namespace AdminConsole
         {
 
             var registerList = InitData.registers.Where(w => InitData.SbDzRegisters.Contains(w.Id)).ToList();
-
+        read:
             var modbusReader = GetModbusReader();
             if (modbusReader == null)
             {
+                goto read;
                 return false;
             }
 
@@ -2477,25 +2608,56 @@ namespace AdminConsole
             {
                 try
                 {
+                start:
                     log4netHelper.Info("PC端读取寄存器地址以及数据0x53读发送:" + Model.ModbusUtility.ConvertToJosn(reg));
 
                     var shuju = new byte[0];
 
                     byte[] data1 = modbusReader.Read0x53Register(reg.Address);
 
-                    var weizhi1 = data1.Skip(3).Take(2).ToArray();
+                    try
+                    {
+                        Console.WriteLine(data1[6]); // 尝试访问超出范围的索引
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        Console.WriteLine($"捕获到异常31: {ex.Message}");
+                        goto start;
+                        // 在这里处理异常，例如记录日志或显示错误信息
+                    }
+                    catch (IndexOutOfRangeException ex)
+                    {
+                        Console.WriteLine($"捕获到异常32: {ex.Message}");
+                        goto start;
+                        // 在这里处理异常，例如记录日志或显示错误信息
+                    }
 
                     var shuju1 = data1.Skip(5).Take(2).ToArray();
- 
+                    var weizhi1 = data1.Skip(3).Take(2).ToArray();
                     shuju = shuju1;
                     
  
                     if (reg.DataType == DataType.Float)
                     {
                         var reg2 = InitData.registers.FirstOrDefault(w => w.Id.ToString() + "" == reg.Id.ToString() + "低位");
- 
+                    start2:
                         byte[] data2 = modbusReader.Read0x53Register(reg2.Address);
-
+                        try
+                        {
+                            Console.WriteLine(data2[6]); // 尝试访问超出范围的索引
+                        }
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            Console.WriteLine($"捕获到异常33: {ex.Message}");
+                            goto start2;
+                            // 在这里处理异常，例如记录日志或显示错误信息
+                        }
+                        catch (IndexOutOfRangeException ex)
+                        {
+                            Console.WriteLine($"捕获到异常34: {ex.Message}");
+                            goto start2;
+                            // 在这里处理异常，例如记录日志或显示错误信息
+                        }
                         var weizhi2 = data2.Skip(3).Take(2).ToArray();
 
                         var shuju2 = data2.Skip(5).Take(2).ToArray();
@@ -2515,7 +2677,13 @@ namespace AdminConsole
                         Array.Reverse(weizhi1);
                         Array.Reverse(shuju);
                     }
-                    var wz1 = BitConverter.ToInt16(weizhi1, 0);
+                    var wz1 = 0;
+                    if (weizhi1.Length == 2)
+                    {
+                        wz1 = BitConverter.ToInt16(weizhi1, 0);
+                    }
+                    else
+                        continue;
 
                     reg.CustomizeAddress = "0X" + wz1.ToString("X2");
 
@@ -2528,8 +2696,24 @@ namespace AdminConsole
                         {
                             reg.val = Math.Round(shujuZhi, 4);
                         }
-                        else {
-                            reg.val = shujuZhi;
+                        else
+                        {
+
+                            //var xsw = int.Parse(xiaoshudianinput.SelectedValue.ToString());
+                            if (reg.Id.ToString() == "浮点输出值")
+                            {
+                                if (xsw >= 0)
+                                {
+                                    reg.val = Math.Round(shujuZhi, xsw);
+                                }
+                                else
+                                {
+                                    reg.val = Math.Round(shujuZhi, 4);
+                                }
+                            }
+                            else
+
+                                reg.val = shujuZhi;
                         }
                         var reg2 = InitData.registers.FirstOrDefault(w => w.Id.ToString() + "" == reg.Id.ToString() + "低位");
                         reg.Description = "高位"+reg.CustomizeAddress.ToString() +" 低位"+ reg2.CustomizeAddress.ToString();
@@ -2641,23 +2825,26 @@ namespace AdminConsole
 
         private void huifuchuchangBut_Click_1(object sender, EventArgs e)
         {
-            wr_flag = 1;
+            huifuchuchangBut.Enabled = false;
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
             {
-                wr_flag = 0;
+                huifuchuchangBut.Enabled = true;
                 return;
             }
-            var huifu = InitData.registers.FirstOrDefault(w => w.Id == EnumDataId.恢复出厂设置);
+            var huifu = InitData.registers.FirstOrDefault(w => w.Id ==
+                        EnumDataId.恢复出厂设置);
             var bl = modbusWriter.WritePrivate0x56Register(huifu);
             if (!bl)
             {
-                wr_flag = 0;
+                huifuchuchangBut.Enabled = true;
                 return;
             }
             wr_flag = 0;
             msglable.Text = "恢复出厂设置成功";
+            Application.DoEvents();
+            huifuchuchangBut.Enabled = true;
             //MessageBox.Show(huifu.Name + "成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
