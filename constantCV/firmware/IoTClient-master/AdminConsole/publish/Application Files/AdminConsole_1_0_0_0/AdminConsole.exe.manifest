@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="AdminConsole.exe" version="1.0.0.0" publicKeyToken="8c3bf7c06f03c381" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="AdminConsole" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="AdminConsole.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC 清单选项
+          如果要更改 Windows 用户帐户控制级别，请用以下节点之一替换
+          requestedExecutionLevel 节点。
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+          如果要利用文件和注册表虚拟化提供
+          向后兼容性，请删除 requestedExecutionLevel 节点。
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AdminConsole.exe" size="138768">
+      <assemblyIdentity name="AdminConsole" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>AoTrx0PRKwJHlnEpOtUNInjqlBaZ9aqCZ/gXX9eaWsg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MathNet.Numerics.dll" size="1590272">
+      <assemblyIdentity name="MathNet.Numerics" version="5.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>TJgDpLBnO5OpmiI341VDvi9nQfvVSw/wRc+S6He+CdQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NModbus4.dll" size="75776">
+      <assemblyIdentity name="NModbus4" version="2.1.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>uCafn2NyP3TCGmcUwwaCGmZu/LbOVxEOKnsoRcLxQDE=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SunnyUI.dll" size="1245696">
+      <assemblyIdentity name="SunnyUI" version="2.2.7.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>51hxVlOk//TMH7+qc3MZM4GD2/U2ALDSWjMm0LFK/hs=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="AdminConsole.exe.config" size="187">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+CM46OnHRrXZXNLMx7+U3V3iubiYL//d8hGOR13lDhU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="bhair.ico" size="4286">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Qk2aHSaJp1IUcu5LA1RCHGz4mD6jxMbYLQ7wcCiN9yg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="bin\Debug\bhair.ico" size="4286">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Qk2aHSaJp1IUcu5LA1RCHGz4mD6jxMbYLQ7wcCiN9yg=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=WIN-2O3PQ921ERI\Administrator" issuerKeyHash="66f40928fa20059cfa807496e606f359d665dd69" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>PdGEJFDu0X1H87jpLac6lhGTEFqfpeBvxli9PbBEkHs=</DigestValue></Reference></SignedInfo><SignatureValue>BlvahK1A0/tcamLe+I2RpjGd/HnUcVi0QG8qGQSYr4cWODGMfAJGtNMgiWNVtkoo3yIG/IP+Bl7n3Kh08aieBqoNv+W5fBRWVO+4MOecsje2iKxIqaslMmNQyNGAx0PBcPfcSBJt8VcLfb0A1a9PeTWMFy+axHRGDuBKo53fQhc=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>uCdg7O7i5AJ7C2wn5mPohM4/vyuEEQh3szl4VGDmGaQK8d+mKNJYk/IdzgcibX/VshIOvOT4hV8V6b4qlQJyUX4YTBEyudqTwLjD/nsxWrl4T4xiFkWYCvYxUPLLy5V1dBuJxviB8ZayEVWeD2z9Ercnl1Jhs5lTIWGS9WGFpsE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="7b9044b03dbd58c66fe0a59f5a109311963aa72de9b8f3477dd1ee502484d13d" Description="" Url=""><as:assemblyIdentity name="AdminConsole.exe" version="1.0.0.0" publicKeyToken="8c3bf7c06f03c381" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=WIN-2O3PQ921ERI\Administrator</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>HA/z0KywkIyVE8dxPH9S+9WCcUPh6jOdmUcuYey8u/8=</DigestValue></Reference></SignedInfo><SignatureValue>U/60h9Ndg9Rds55pV0RBtogXVWDjDJwSkBdO6sRr5ULaWgTEieaQlh56HXVsWtJZHIZCDFYipsYInpTs8fPISZ/AadIDQ88vCDoQx9tIPhK4FZXVN4fSpytWq/9vm1PKjrkkFSaF8sKsYV4iJLfhzOHxjuPSUfvX69g2TgCq9Sg=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>uCdg7O7i5AJ7C2wn5mPohM4/vyuEEQh3szl4VGDmGaQK8d+mKNJYk/IdzgcibX/VshIOvOT4hV8V6b4qlQJyUX4YTBEyudqTwLjD/nsxWrl4T4xiFkWYCvYxUPLLy5V1dBuJxviB8ZayEVWeD2z9Ercnl1Jhs5lTIWGS9WGFpsE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIICDTCCAXagAwIBAgIQYeBIfLu8d7FAGFawl6OuXTANBgkqhkiG9w0BAQsFADBFMUMwQQYDVQQDHjoAVwBJAE4ALQAyAE8AMwBQAFEAOQAyADEARQBSAEkAXABBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByMB4XDTI1MDQxMTA5MDY0MloXDTI2MDQxMTE1MDY0MlowRTFDMEEGA1UEAx46AFcASQBOAC0AMgBPADMAUABRADkAMgAxAEUAUgBJAFwAQQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAuCdg7O7i5AJ7C2wn5mPohM4/vyuEEQh3szl4VGDmGaQK8d+mKNJYk/IdzgcibX/VshIOvOT4hV8V6b4qlQJyUX4YTBEyudqTwLjD/nsxWrl4T4xiFkWYCvYxUPLLy5V1dBuJxviB8ZayEVWeD2z9Ercnl1Jhs5lTIWGS9WGFpsECAwEAATANBgkqhkiG9w0BAQsFAAOBgQA0rQxe4sl7cDstpzdtzrf+kJkyAo/zDiTMNkz3pM0IOcUMp+dktztxaeSovqaKrjJyq7HiGncpIdMnTz6BJRbGYYUqkFBmprwi/m3Gj1rn3qATV0ieKEpW8feUre0EK4njYzA2H38tzw7FhUx8FV+P5lgZzX69Wz7cbuN/l1FE5Q==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

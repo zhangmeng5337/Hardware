@@ -308,11 +308,12 @@ namespace AdminConsole
                                 MessageBoxIcon.Error);
                 return false;
             }
-
+        start:
             var modbusReader = GetModbusReader();
 
             if (modbusReader == null)
             {
+                goto start;
                 return false;
             }
 
@@ -439,10 +440,11 @@ namespace AdminConsole
                                 MessageBoxIcon.Error);
                 return false;
             }
+        write:
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
-            {
+            {  goto write;
                 return false;
             }
 
@@ -1222,10 +1224,11 @@ namespace AdminConsole
 
         private bool CmdDataWrite46(List<RegisterDefinition> registerList)
         {
-            var modbusWriter = GetModbusWriter();
+        write: var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
             {
+                goto write;
                 return false;
             }
 
@@ -1874,17 +1877,22 @@ namespace AdminConsole
         #region 用户设置读取写入
         private void yonghushezhiDuQubut_Click(object sender, EventArgs e)
         {
+        start:
             wr_flag = 1;
             yonghushezhiDuQubut.Enabled = false;
             var bl = yonghushezhiDuQu();
             wr_flag = 0;
             if (!bl)
             {
+                //wr_flag = 0;
+                goto start;
                 yonghushezhiDuQubut.Enabled = true;
                 return;
             }
-            Application.DoEvents();
+            wr_flag = 0;
             yonghushezhiDuQubut.Enabled = true;
+            Application.DoEvents();
+            
             //MessageBox.Show("读取完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1910,7 +1918,7 @@ namespace AdminConsole
             var CmdYongHuSheZhi = InitData.registers.Where(w => w.Id ==
                                   EnumDataId.偏移值).ToList();
             bl = CmdDataRead(CmdYongHuSheZhi);
-            timer.Stop();
+            //timer.Stop();
             if (!bl)
             {
                 wr_flag = 0;
@@ -1964,16 +1972,16 @@ namespace AdminConsole
             wr_flag = 1;
             var YongHuSheZhi = InitData.registers.Where(w =>
                                InitData.YongHuSheZhiIds.Contains(w.Id)).ToList();
-            var bl = DataWrite(YongHuSheZhi);
+        write: var bl = DataWrite(YongHuSheZhi);
             if (!bl)
             {
-                wr_flag = 0;
+                goto write;
                 return false;
             }
-            var modbusReader = GetModbusReader();
+        write2: var modbusReader = GetModbusReader();
             if (modbusReader == null)
             {
-                wr_flag = 0;
+                goto write2;
                 return false;
             }
 
@@ -2024,10 +2032,11 @@ namespace AdminConsole
 
             var CmdJiaoZhunXieRu = InitData.registers.Where(w =>
                                    InitData.JiaoZhunCmdXieRuIds.Contains(w.Id)).ToList();
-
+        write:
             bl = CmdDataWrite(CmdJiaoZhunXieRu);
             if (!bl)
             {
+                goto write;
                 return false;
             }
 
@@ -2380,15 +2389,16 @@ namespace AdminConsole
         #region 寄存器组列表读取 写入
         private void LieBIAOxieru_Click(object sender, EventArgs e)
         {
+        write:
             wr_flag = 1;
             LieBIAOxieru.Enabled = false;
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
             {
-                wr_flag = 0;
-                LieBIAOxieru.Enabled = true;
-                return;
+                goto write;
+               // LieBIAOxieru.Enabled = true;
+               // return;
             }
 
             float fv;
@@ -2533,10 +2543,11 @@ namespace AdminConsole
 
             var registerList = InitData.registers.Where(w =>
                                InitData.SbDzRegisters.Contains(w.Id)).ToList();
-
+        read:
             var modbusReader = GetModbusReader();
             if (modbusReader == null)
             {
+                goto read;
                 return false;
             }
 
