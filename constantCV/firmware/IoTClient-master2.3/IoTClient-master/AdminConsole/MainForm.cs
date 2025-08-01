@@ -842,6 +842,10 @@ namespace AdminConsole
                         {
                             hengliuzhiinput.SelectedValue = "0.4";
                         }
+                        else if (val > 0.79 && val < 0.81)
+                        {
+                            hengliuzhiinput.SelectedValue = "0.8";
+                        }
                         else if (val > 0.29 && val < 0.31)
                         {
                             hengliuzhiinput.SelectedValue = "0.3";
@@ -850,7 +854,7 @@ namespace AdminConsole
                         {
                             hengliuzhiinput.SelectedValue = "0.2";
                         }
-
+                     
                         break;
                     case EnumDataId.工厂校准单位:
                         biaozhundanweiinput.SelectedValue = m.val.ToString();
@@ -1748,9 +1752,13 @@ namespace AdminConsole
                 {
                     xiaozhundianinput.SelectedValue = "3";
                 }
-                else
+                else if (caijizhiinput2.Text.Trim() != "0" && biaozhuanzhi2.Text.Trim() != "0")
                 {
                     xiaozhundianinput.SelectedValue = "2";
+                }
+                else
+                {
+                    xiaozhundianinput.SelectedValue = "5";
                 }
 
 
@@ -2838,6 +2846,16 @@ namespace AdminConsole
         }
 
         private void dzselectId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void hengliuzhiinput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void yibiaoleixinginput_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

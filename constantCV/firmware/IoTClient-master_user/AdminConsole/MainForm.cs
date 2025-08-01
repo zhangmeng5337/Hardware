@@ -196,8 +196,21 @@ namespace AdminConsole
                 x1000input.Text = (vd * 1000).ToString().Split(".")[0];
  
                 byte[] response = modbusReader.ReadStandard0x33Register1(0x0001);
-            
-                var data = response.Skip(3).Take(4).ToArray();
+                    try
+                    {
+                        Console.WriteLine(response[6]); // 尝试访问超出范围的索引
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        Console.WriteLine($"捕获到异常50:");
+                        return;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine($"捕获到异常51:");
+                        return;
+                    }
+                    var data = response.Skip(3).Take(4).ToArray();
 
                 if (BitConverter.IsLittleEndian)
                     Array.Reverse(data);
@@ -236,18 +249,8 @@ namespace AdminConsole
 
             }
             catch ( Exception ex) {
-                if (count <= 5)
-                {
-                    count++;
-                    timer.Start();
-                }
-                else
-                {
-                    _serialPort.Close();
-                    timer.Stop();
-                    MessageBox.Show("请重新启动软件！", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                }
+                 timer.Start();
+
             }
                 
         }

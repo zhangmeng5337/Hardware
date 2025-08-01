@@ -506,12 +506,14 @@ void RegWrite(void)
         j = j + 4;
         if (GetRegPrivate()->mode == 2)
         {
+
             params_private.usr_cal1val = 0;
             params_private.usr_cal2val = 0;
             params_private.usr_cal1ADC = 0;
             params_private.usr_cal2ADC = 0;
 
         }
+
         floatTouint32_m(params_private.usr_cal1val, buf + j);
         j = j + 4;
         floatTouint32_m(params_private.usr_cal2val, buf + j);
@@ -789,18 +791,46 @@ void cal_number()
     {
 
         GetRegPrivate()->select_value = 5;
+//		GetRegPrivate()->usr_cal1val = GetRegPrivate()->cal1val;
+//		GetRegPrivate()->usr_cal2val = GetRegPrivate()->cal5val;
+//		GetRegPrivate()->usr_cal1ADC = GetRegPrivate()->cal1ADC;
+//		GetRegPrivate()->usr_cal2ADC = GetRegPrivate()->cal5ADC;	
+
     }
     else if (GetRegPrivate()->cal4ADC != 0 || GetRegPrivate()->cal4val != 0)
     {
         GetRegPrivate()->select_value = 4;
+//	GetRegPrivate()->usr_cal1val = GetRegPrivate()->cal1val;
+//	GetRegPrivate()->usr_cal2val = GetRegPrivate()->cal4val;
+//	GetRegPrivate()->usr_cal1ADC = GetRegPrivate()->cal1ADC;
+//	GetRegPrivate()->usr_cal2ADC = GetRegPrivate()->cal4ADC;	
+
     }
     else if (GetRegPrivate()->cal3ADC != 0 || GetRegPrivate()->cal3val != 0)
     {
         GetRegPrivate()->select_value = 3;
+//	GetRegPrivate()->usr_cal1val = GetRegPrivate()->cal1val;
+//	GetRegPrivate()->usr_cal2val = GetRegPrivate()->cal3val;
+//	GetRegPrivate()->usr_cal1ADC = GetRegPrivate()->cal1ADC;
+//	GetRegPrivate()->usr_cal2ADC = GetRegPrivate()->cal3ADC;	
+
     }
-    else
+    else if (GetRegPrivate()->cal2ADC != 0 || GetRegPrivate()->cal2val != 0)
     {
         GetRegPrivate()->select_value = 2;
+//	GetRegPrivate()->usr_cal1val = GetRegPrivate()->cal1val;
+//	GetRegPrivate()->usr_cal2val = GetRegPrivate()->cal3val;
+//	GetRegPrivate()->usr_cal1ADC = GetRegPrivate()->cal1ADC;
+//	GetRegPrivate()->usr_cal2ADC = GetRegPrivate()->cal3ADC;	
+
+    }
+    else
+    {	
+      //GetRegPrivate()->usr_cal1val = GetRegPrivate()->cal1val;
+//		GetRegPrivate()->usr_cal2val = GetRegPrivate()->cal2val;
+//		GetRegPrivate()->usr_cal1ADC = GetRegPrivate()->cal1ADC;
+//		GetRegPrivate()->usr_cal2ADC = GetRegPrivate()->cal2ADC;	
+        GetRegPrivate()->select_value = 5;
     }
 
 }
