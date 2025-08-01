@@ -10,8 +10,23 @@ using System.Web.UI.WebControls.WebParts;
 
 namespace AdminConsole.Model
 {
+
     public static class ModbusUtils
     {
+        /* 阻塞式精确延时函数，单位ms */
+        public static bool  Delay_user(int ms)
+        {
+            DateTime now = DateTime.Now;
+            int s;
+            do
+            {
+                TimeSpan spand = DateTime.Now - now;
+                s = spand.Minutes * 60 * 1000 + spand.Seconds * 1000 + spand.Milliseconds;
+                // Application.DoEvents();
+            }
+            while (s < ms);
+            return true;
+        }
         // CRC16校验（Modbus RTU标准）
         public static byte[] CalculateCRC(byte[] data)
         {
@@ -46,14 +61,16 @@ namespace AdminConsole.Model
            //Thread.Sleep(500);
 
             var bytesToRead = 0;
-            var i = 1;
-            
+            var i = 3;
+            // 
             while (i > 0)
             {
-                Thread.Sleep(120);
-                if (port.BytesToRead >= expectedResponseLength) {                    
+                Delay_user(90);
+                if (port.BytesToRead >= expectedResponseLength)
+                {
                     break;
                 }
+
                 if (port.BytesToRead > bytesToRead)
                 {
                     bytesToRead = port.BytesToRead;
@@ -66,6 +83,7 @@ namespace AdminConsole.Model
                 }
                 
             }
+
 
 
             byte[] buffer = new byte[port.BytesToRead];

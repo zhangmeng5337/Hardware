@@ -277,7 +277,7 @@ void UpdateUI(unsigned char page)
             memset(str, 0, 65);
             float2char(tmp2, str, 4);
 
-            str[3] = '%';
+            str[3] = '%';//100%
             SetLableValue(page_Id, BATTERY_ID, str);
         }
         //if (get_rf_status()->average_T != last_t)
