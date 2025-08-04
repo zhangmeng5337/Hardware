@@ -172,6 +172,7 @@ namespace AdminConsole.Model
                 }
                 catch (Exception e)
                 {
+                    
                     log4netHelper.Error("WritePrivate0x56写:" + e.Message);
                     return false;
                 }

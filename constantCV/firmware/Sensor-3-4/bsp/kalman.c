@@ -206,7 +206,7 @@ void kalman_init(kalman *kfp)
     kfp->out = 0;
     kfp->Kg = 0;
     kfp->Q = 0.001;//0.001
-    kfp->R = 1;//1
+    kfp->R = 0.01;//1
 }
 void filter_level_sel(unsigned char level)
 {

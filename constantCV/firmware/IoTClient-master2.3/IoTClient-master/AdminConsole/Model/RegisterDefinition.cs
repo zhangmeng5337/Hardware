@@ -56,7 +56,7 @@ namespace AdminConsole.Model
 
     public enum EnumDataId
     {
-        实时值扩大1000倍,
+        有符号整数,
         实时值扩大100倍,
         实时值扩大10倍, 
         浮点输出值,

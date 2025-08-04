@@ -98,7 +98,7 @@ namespace AdminConsole.Model
 
         public static List<RegisterDefinition> registers = new List<RegisterDefinition>
         {
-            new RegisterDefinition(EnumDataId.实时值扩大1000倍, "实时值扩大1000倍", 0x0004, 1, DataType.Int16, "原始值"),
+            new RegisterDefinition(EnumDataId.有符号整数, "有符号整数", 0x0004, 1, DataType.Int16, "原始值"),
             new RegisterDefinition(EnumDataId.实时值扩大100倍, "实时值扩大100倍", 0x0000, 1, DataType.Int16, "原始值"),
             new RegisterDefinition(EnumDataId.实时值扩大10倍,"实时值扩大10倍", 0x0001, 1, DataType.Int16, "原始值"),         
             new RegisterDefinition(EnumDataId.浮点输出值,"浮点输出值", 0x0002, 2, DataType.Float, "工程值"),
@@ -171,7 +171,7 @@ namespace AdminConsole.Model
 
         public static List<EnumDataId> SbDzRegisters = new List<EnumDataId>
         {
-            EnumDataId.实时值扩大1000倍,
+            EnumDataId.有符号整数,
             EnumDataId.实时值扩大100倍,
             EnumDataId.实时值扩大10倍,
             EnumDataId.浮点输出值,

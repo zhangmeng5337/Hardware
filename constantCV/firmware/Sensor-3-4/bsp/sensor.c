@@ -237,7 +237,7 @@ void dat_cal_proc(float dat)
     if (factory_unit_convert(dat) == 1)//factory unit to pa or T
     {
         tmp6 = adc_usr.data_unit_app;
-        tmp6 = kalman_filter(&g_kfp_st3, tmp6);
+        //tmp6 = kalman_filter(&g_kfp_st3, tmp6);
         adc_usr.data_unit_app = tmp6;
 
         cal_val1 = adc_usr.data_unit_app;
@@ -313,8 +313,10 @@ void dat_cal_proc(float dat)
             tmp = (uint32_t) cal_val1;
             tmp = ~tmp + 1;
             GetReg()->pb[eREG_X100].val_u32ToFloat = tmp;
-
-            cal_val1 = adc_usr.data_unit_app * 1000;
+			
+			tmp = GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat ;
+            tmp = pow(10,tmp);
+            cal_val1 = adc_usr.data_unit_app * tmp;
             cal_val1 = -cal_val1;
             tmp = (uint32_t) cal_val1;
             tmp = ~tmp + 1;
@@ -329,8 +331,11 @@ void dat_cal_proc(float dat)
             tmp = (uint32_t) cal_val1;
             GetReg()->pb[eREG_X100].val_u32ToFloat = tmp;
 
-            cal_val1 = cal_val1 * 100.0;
-            tmp = (uint32_t) cal_val1;;
+
+			tmp = GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat ;
+            tmp = pow(10,tmp);
+            cal_val1 = adc_usr.data_unit_app * tmp;
+            tmp = (uint32_t) cal_val1;
             GetReg()->pb[eREG_X1000].val_u32ToFloat = tmp;
         }
 

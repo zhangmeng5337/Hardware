@@ -2590,7 +2590,12 @@ namespace AdminConsole
                         goto start;
                         // 在这里处理异常，例如记录日志或显示错误信息
                     }
-
+                    catch (Exception ex)
+                    {
+                        log4netHelper.Error("Read0x53Register读:" + ex.Message);
+                        goto start;
+ 
+                    }
                     var shuju1 = data1.Skip(5).Take(2).ToArray();
                     var weizhi1 = data1.Skip(3).Take(2).ToArray();
                     shuju = shuju1;
@@ -2617,6 +2622,12 @@ namespace AdminConsole
                             Console.WriteLine($"捕获到异常34: {ex.Message}");
                             goto start2;
                             // 在这里处理异常，例如记录日志或显示错误信息
+                        }
+                        catch (Exception ex)
+                        {
+                            log4netHelper.Error("Read0x53Register读:" + ex.Message);
+                            goto start2;
+
                         }
                         var weizhi2 = data2.Skip(3).Take(2).ToArray();
 
@@ -2694,7 +2705,6 @@ namespace AdminConsole
                 catch (Exception ex)
                 {
                     log4netHelper.Error("Read0x53Register读:" + ex.Message);
-
                     MessageBox.Show(reg.Name + "读取失败！", "提示", MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);
                     return false;
