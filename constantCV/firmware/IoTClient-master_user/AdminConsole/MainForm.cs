@@ -2086,25 +2086,25 @@ namespace AdminConsole
         private void jiaozhunxieruBut_Click(object sender, EventArgs e)
         {
             wr_flag = 1;
-            jiaozhunduquBut.Enabled = false;
+            jiaozhunxieruBut.Enabled = false;
             var bl = jiaozhunxieru();
             if (!bl)
             {
                 wr_flag = 0;
-                jiaozhunduquBut.Enabled = true;
+                jiaozhunxieruBut.Enabled = true;
                 return;
             }
             bl = CmdDataWriteSave();
             if (!bl)
             {
                 wr_flag = 0;
-                jiaozhunduquBut.Enabled = true;
+                jiaozhunxieruBut.Enabled = true;
                 return;
             }
             wr_flag = 0;
             msglable.Text = "写入校准数据成功";
             Application.DoEvents();
-            jiaozhunduquBut.Enabled = true;
+            jiaozhunxieruBut.Enabled = true;
             //MessageBox.Show("写入完成！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

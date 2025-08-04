@@ -2520,6 +2520,7 @@ namespace AdminConsole
             // 
             // jcqgg
             // 
+            this.jcqgg.AutoSize = true;
             this.jcqgg.Controls.Add(this.jicunqizufanhuiBut);
             this.jcqgg.Controls.Add(this.uiGroupBox4);
             this.jcqgg.Font = new System.Drawing.Font("微软雅黑", 12F);
@@ -2527,7 +2528,7 @@ namespace AdminConsole
             this.jcqgg.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.jcqgg.Name = "jcqgg";
             this.jcqgg.Padding = new System.Windows.Forms.Padding(0, 48, 0, 0);
-            this.jcqgg.Size = new System.Drawing.Size(1142, 265);
+            this.jcqgg.Size = new System.Drawing.Size(1142, 910);
             this.jcqgg.TabIndex = 78;
             this.jcqgg.Text = null;
             this.jcqgg.Visible = false;
