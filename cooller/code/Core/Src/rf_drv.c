@@ -74,9 +74,12 @@ void rf_averge()
         if (rf_recv_usr.id_status[i] == 15)
         {
             averge_count++;
+			if(rf_recv_usr.max_T <= rf_recv_usr.card_T[i])
+				rf_recv_usr.max_T = rf_recv_usr.card_T[i];
             tmp = tmp + rf_recv_usr.card_T[i];
             //rf_recv_usr.id_status[i]=0;
         }
+		
     }
     if (averge_count > 0)
     {

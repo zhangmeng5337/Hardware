@@ -47,6 +47,7 @@ void adc_proc()
         {
             // getConfig()->record_time = 0;
             getConfig()->update_T = 1;
+	            getConfig()->update_fig = 1;		
             getConfig()->interval_tick = 0;
             //data_flash_proc();
         }
@@ -67,7 +68,7 @@ void adc_proc()
                 sensor_adc_value.T_value[1] = sensor_adc_value.adc_value[2] *
                                               sensor_adc_value.ref / 4095;
                 sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] * 11;
-                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] / BATTERY_V;
+                sensor_adc_value.T_value[1] = sensor_adc_value.T_value[1] / BATTERY_V+1;
                 x2 = 2 * adc_pt1_v;
                 x1 = sensor_adc_value.ref - adc_pt1_v;
                 //x1=x1-adc_pt1_v;

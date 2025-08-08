@@ -49,8 +49,8 @@ void uart_init()
 
     //rs232 uart init for debug
 
-    __HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);
-    HAL_UART_Receive_DMA(&huart4, uart_rf_recv.uartDMARecBuff,
+    __HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
+    HAL_UART_Receive_DMA(&huart5, uart_rf_recv.uartDMARecBuff,
                          UART_DMA_REC_SIZE);
 
     //__HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);
@@ -106,7 +106,7 @@ void uart_transmit(unsigned char uart_num, uint8_t *pData, uint16_t Size)
         }
         break;
         case UART_RF:
-            HAL_UART_Transmit(&huart4, pData, Size, 100);
+            HAL_UART_Transmit(&huart5, pData, Size, 100);
             break;
         default :
             ;
@@ -193,11 +193,11 @@ void uart_air_recv_proc()
 void uart_rf_recv_proc()
 {
 
-    if (__HAL_UART_GET_FLAG(&huart4, UART_FLAG_IDLE) != 0)
+    if (__HAL_UART_GET_FLAG(&huart5, UART_FLAG_IDLE) != 0)
     {
-    __HAL_UART_CLEAR_FLAG(&huart4, UART_FLAG_IDLE);
+    __HAL_UART_CLEAR_FLAG(&huart5, UART_FLAG_IDLE);
         uart_rf_recv.uartRecLen  = UART_DMA_REC_SIZE - __HAL_DMA_GET_COUNTER(
-                                       &hdma_uart4_rx);
+                                       &hdma_uart5_rx);
         memcpy(uart_rf_recv.uartRecBuff,
                uart_rf_recv.uartDMARecBuff, uart_rf_recv.uartRecLen);
         uart_rf_recv.uartRecFlag = 1;
@@ -205,11 +205,11 @@ void uart_rf_recv_proc()
                                          uart_rf_recv.uartRecBuff_index;
         if (uart_rf_recv.uartRecBuff_index >= (UART_REC_SIZE - 8))
             uart_rf_recv.uartRecBuff_index = 0;
-        __HAL_UART_CLEAR_FLAG(&huart4, UART_FLAG_IDLE);
+        __HAL_UART_CLEAR_FLAG(&huart5, UART_FLAG_IDLE);
     }
-    HAL_UART_DMAStop(&huart4);
-    HAL_UART_DMAResume(&huart4);
-    HAL_UART_Receive_DMA(&huart4, (uint8_t *)uart_rf_recv.uartDMARecBuff,
+    HAL_UART_DMAStop(&huart5);
+    HAL_UART_DMAResume(&huart5);
+    HAL_UART_Receive_DMA(&huart5, (uint8_t *)uart_rf_recv.uartDMARecBuff,
                          UART_DMA_REC_SIZE);
 }
 

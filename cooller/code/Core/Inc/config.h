@@ -20,6 +20,7 @@ typedef struct
     unsigned char mode;//0:cooller  1:heater
 
 	unsigned char update_T;//temperature poll
+	unsigned char update_fig;
 	unsigned char status;
 	float record_interval;
 	float power_save;

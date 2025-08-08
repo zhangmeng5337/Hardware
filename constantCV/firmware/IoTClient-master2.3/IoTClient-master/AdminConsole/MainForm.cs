@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls.WebParts;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
 
@@ -42,8 +43,8 @@ namespace AdminConsole
         public int wr_flag = 0;
         public int recv_flag = 0;
         public int count = 0;
-
-
+        //static int port_restatus = 0;
+        static int port_wrstatus = 0;
         #region 初始化
         public MainForm()
         {
@@ -86,6 +87,17 @@ namespace AdminConsole
             timer.Tick += new EventHandler(TimerEventProcessor);
 
 
+        }
+
+        public static double TruncateWithoutRounding(double value, int decimalPlaces)
+        {
+            double factor = Math.Pow(10, decimalPlaces);
+          //  Int32 tmp = (Int32)factor;
+            double tmp = factor * value;
+             Int32 tmp2 = (Int32)tmp;
+            factor = tmp2 / factor;
+
+            return factor;
         }
         private void TimerEventProcessor(object sender, EventArgs e)
         {
@@ -301,13 +313,15 @@ namespace AdminConsole
         #region ModBus读写
         private bool DataRead(List<RegisterDefinition> registerList)
         {
-            if (_modbusMaster == null || !_serialPort.IsOpen)
+            
+            if ((_modbusMaster == null || !_serialPort.IsOpen)&& port_wrstatus == 0)
             {
-
+                port_wrstatus = 1;
                 MessageBox.Show("设备未连接！", "提示", MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                 return false;
             }
+            //port_wrstatus = 0;
         start:
             var modbusReader = GetModbusReader();
 
@@ -433,13 +447,17 @@ namespace AdminConsole
             return true;
         }
         private bool DataWrite(List<RegisterDefinition> registerList)
-        {
-            if (_modbusMaster == null || !_serialPort.IsOpen)
+        {   
+            if ((_modbusMaster == null || !_serialPort.IsOpen) && port_wrstatus == 0)
             {
+                port_wrstatus = 1;
                 MessageBox.Show("设备未连接！", "提示", MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                 return false;
             }
+            if (port_wrstatus == 1)
+                return false;
+           // port_wrstatus = 0;
         write:
             var modbusWriter = GetModbusWriter();
 
@@ -590,8 +608,8 @@ namespace AdminConsole
                 catch (Exception ex)
                 {
                     log4netHelper.Error("modbus写:" + ex.Message);
-                    MessageBox.Show(reg.Name + "写入失败！", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                   // MessageBox.Show(reg.Name + "写入失败！", "提示", MessageBoxButtons.OK,
+                       //             MessageBoxIcon.Error);
                     return false;
                 }
             }
@@ -937,8 +955,9 @@ namespace AdminConsole
 
             foreach (var reg in registerList)
             {
+            start:
                 try
-                {
+                { 
                     log4netHelper.Info("PC端读取寄存器地址以及数据0x53读发送:" +
                                        Model.ModbusUtility.ConvertToJosn(reg));
 
@@ -978,9 +997,9 @@ namespace AdminConsole
                 catch (Exception ex)
                 {
                     log4netHelper.Error("Read0x53Register读:" + ex.Message);
-
-                    MessageBox.Show(reg.Name + "读取失败！", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                    goto start;
+                    //MessageBox.Show(reg.Name + "读取失败！", "提示", MessageBoxButtons.OK,
+                    //           MessageBoxIcon.Error);
                 }
 
 
@@ -1060,7 +1079,7 @@ namespace AdminConsole
             }
             foreach (var m in registerList)
             {
-
+            start:
                 if (m.Id == EnumDataId.恒流值)
                 {
                     if (hengliuzhiinput.SelectedValue == null)
@@ -1209,8 +1228,9 @@ namespace AdminConsole
 
                 if (!b)
                 {
-                    MessageBox.Show(m.Name + "写入失败", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                    goto start;
+                    //MessageBox.Show(m.Name + "写入失败", "提示", MessageBoxButtons.OK,
+                       //             MessageBoxIcon.Error);
                     return false;
                 }
 
@@ -1240,7 +1260,7 @@ namespace AdminConsole
             {
 
                 string val = "";
-
+            start:
                 try
                 {
 
@@ -1299,8 +1319,9 @@ namespace AdminConsole
                 catch (Exception ex)
                 {
                     log4netHelper.Error("PC端修改设备寄存器数据0x46写:" + ex.Message);
-                    MessageBox.Show(Name + ":写入失败", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                    goto start;
+                    // MessageBox.Show(Name + ":写入失败", "提示", MessageBoxButtons.OK,
+                    //   MessageBoxIcon.Error);
                     return false;
                 }
             }
@@ -1309,6 +1330,7 @@ namespace AdminConsole
 
         private bool CmdDataWriteSave()
         {
+        start:
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
@@ -1320,6 +1342,7 @@ namespace AdminConsole
                         w => w.Id == EnumDataId.保存参数指令));
             if (!b)
             {
+                goto start;
                 MessageBox.Show("保存参数指令执行失败", "提示",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1637,13 +1660,16 @@ namespace AdminConsole
         public ModbusWriter GetModbusWriter()
         {
 
-            if (_serialPort == null || _serialPort.IsOpen == false)
+            if ((_serialPort == null || _serialPort.IsOpen == false )&&port_wrstatus == 0)
             {
+                port_wrstatus = 1;
                 MessageBox.Show("未连接设备！", "提示", MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                 return null;
             }
-
+            if (port_wrstatus == 1)
+                return null;
+            //port_wrstatus = 0;
             var slaveId = byte.Parse(dzselectId.SelectedItem.ToString());
 
             return new ModbusWriter(slaveId, _serialPort);
@@ -1651,12 +1677,16 @@ namespace AdminConsole
         }
         public ModbusReader GetModbusReader()
         {
-            if (_serialPort == null || _serialPort.IsOpen == false)
+            if ((_serialPort == null || _serialPort.IsOpen == false) && port_wrstatus == 0)
             {
+                port_wrstatus = 1;
                 MessageBox.Show("未连接设备！", "提示", MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                 return null;
             }
+            if (port_wrstatus == 1)
+                return null;
+           // port_wrstatus = 0;
             var slaveId = byte.Parse(dzselectId.SelectedItem.ToString());
             return new ModbusReader(slaveId, _serialPort);
 
@@ -1730,7 +1760,7 @@ namespace AdminConsole
                                 "   地址：" + slaveId;
 
                 msglable.Text = "数据读取中...";
-
+                port_wrstatus = 0;
                 var bl =  diZzhiList();
                 if (!bl)
                 {
@@ -1806,6 +1836,12 @@ namespace AdminConsole
             wr_flag = 0;
             if (!bl)
             {
+                if (port_wrstatus == 1)
+                {
+                    yibiaoduqubut.Enabled = true;
+                    return;
+                }
+
                 yibiaoduqubut.Enabled = true;
                 return;
             }
@@ -1885,6 +1921,8 @@ namespace AdminConsole
         #region 用户设置读取写入
         private void yonghushezhiDuQubut_Click(object sender, EventArgs e)
         {
+            if (port_wrstatus == 1)
+                return ;
         start:
             wr_flag = 1;
             yonghushezhiDuQubut.Enabled = false;
@@ -1892,7 +1930,12 @@ namespace AdminConsole
             wr_flag = 0;
             if (!bl)
             {
-                //wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    yonghushezhiDuQubut.Enabled = true;
+                    return;
+                }
+                yonghushezhiDuQubut.Enabled = true;
                 goto start;
                 yonghushezhiDuQubut.Enabled = true;
                 return;
@@ -1940,6 +1983,7 @@ namespace AdminConsole
 
         private void yonghushezhixieruBut_Click(object sender, EventArgs e)
         {
+          
             wr_flag = 1;
             msglable.Text = "写入用户设置数据...";
             yonghushezhixieruBut.Enabled = false;
@@ -1947,6 +1991,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    yonghushezhixieruBut.Enabled = true;
+                    return;
+                }
                 yonghushezhixieruBut.Enabled = true;
                 return ;
             }
@@ -1983,6 +2032,10 @@ namespace AdminConsole
         write: var bl = DataWrite(YongHuSheZhi);
             if (!bl)
             {
+                if (port_wrstatus == 1)
+                {
+                    return false;
+                }
                 goto write;
                 return false;
             }
@@ -2011,11 +2064,29 @@ namespace AdminConsole
         #region 校准参数读取写入
         private void jiaozhunxieruBut_Click(object sender, EventArgs e)
         {
+            if ((_serialPort == null || _serialPort.IsOpen == false) && port_wrstatus == 0)
+            {
+                port_wrstatus = 1;
+                MessageBox.Show("未连接设备！", "提示", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return ;
+            }
+            if (port_wrstatus == 1)
+                return ;
+
             jiaozhunxieruBut.Enabled = false;
             msglable.Text = "写入校准数据中...";
+
             var bl = jiaozhunxieru();
             if (!bl)
             {
+                if (port_wrstatus == 1)
+                {
+                    jiaozhunxieruBut.Enabled = true;
+                    return;
+                }
+
+                //jiaozhunxieruBut.Enabled = true;
                 jiaozhunxieruBut.Enabled = true;
                 return;
             }
@@ -2061,6 +2132,12 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    jiaozhunduquBut.Enabled = true;
+                    return;
+                }
+
                 jiaozhunduquBut.Enabled = true;
                 return;
             }
@@ -2108,6 +2185,15 @@ namespace AdminConsole
         #region  写入全部数据
         private void xieruquanbushujuBut_Click(object sender, EventArgs e)
         {
+            if ((_serialPort == null || _serialPort.IsOpen == false) && port_wrstatus == 0)
+            {
+                port_wrstatus = 1;
+                MessageBox.Show("未连接设备！", "提示", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return ;
+            }
+            if (port_wrstatus == 1)
+                return ;
             wr_flag = 1;
             xieruquanbushujuBut.Enabled = false;
             msglable.Text = "写入全部数据中...";
@@ -2115,6 +2201,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    xieruquanbushujuBut.Enabled = true;
+                    return;
+                }
                 xieruquanbushujuBut.Enabled = true;
                 return;
             }
@@ -2143,6 +2234,15 @@ namespace AdminConsole
 
         private void jiaozhunduququanbuBut_Click(object sender, EventArgs e)
         {
+            if ((_serialPort == null || _serialPort.IsOpen == false) && port_wrstatus == 0)
+            {
+                port_wrstatus = 1;
+                MessageBox.Show("未连接设备！", "提示", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return ;
+            }
+            if (port_wrstatus == 1)
+                return ;
             wr_flag = 1;
             msglable.Text = "读取全部数据中...";
             jiaozhunduququanbuBut.Enabled = false;
@@ -2150,6 +2250,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    jiaozhunduququanbuBut.Enabled = true;
+                    return;
+                }
                 jiaozhunduququanbuBut.Enabled = true;
                 return;
             }
@@ -2178,6 +2283,7 @@ namespace AdminConsole
 
         private void gcbcsjBut_Click(object sender, EventArgs e)
         {
+        start:
             gcbcsjBut.Enabled = false;
             var gcbc = InitData.registers.FirstOrDefault(w => w.Id ==
                        EnumDataId.工厂模式);
@@ -2193,8 +2299,9 @@ namespace AdminConsole
             if (!bl)
             {
                 gcbcsjBut.Enabled = true;
-                MessageBox.Show(gcbc.Name + "写入失败", "提示", MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                goto start;
+                //MessageBox.Show(gcbc.Name + "写入失败", "提示", MessageBoxButtons.OK,
+                             //   MessageBoxIcon.Error);
                 return;
             }
 
@@ -2297,6 +2404,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                   // jiaozhunduququanbuBut.Enabled = true;
+                    return;
+                }
                 return;
             }
             wr_flag = 0;
@@ -2312,6 +2424,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    uiButton1.Enabled = true;
+                    return;
+                }
                 uiButton1.Enabled = true;
                 return;
             }
@@ -2330,6 +2447,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    caijizhiBut2.Enabled = true;
+                    return;
+                }
                 caijizhiBut2.Enabled = true;
                 return;
             }
@@ -2341,6 +2463,8 @@ namespace AdminConsole
         }
         private void caijizhiBut3_Click(object sender, EventArgs e)
         {
+            if (port_wrstatus == 1)
+                return ;
             wr_flag = 1;
             caijizhiBut3.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id ==
@@ -2348,6 +2472,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    caijizhiBut3.Enabled = true;
+                    return;
+                }
                 caijizhiBut3.Enabled = true;
                 return;
             }
@@ -2359,6 +2488,8 @@ namespace AdminConsole
         }
         private void caijizhiBut4_Click(object sender, EventArgs e)
         {
+            if (port_wrstatus == 1)
+                return;
             wr_flag = 1;
             caijizhiBut4.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id ==
@@ -2366,6 +2497,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    caijizhiBut4.Enabled = true;
+                    return;
+                }
                 caijizhiBut4.Enabled = true;
                 return;
             }
@@ -2377,6 +2513,8 @@ namespace AdminConsole
         }
         private void caijizhiBut5_Click(object sender, EventArgs e)
         {
+            if (port_wrstatus == 1)
+                return;
             wr_flag = 1;
             caijizhiBut5.Enabled = false;
             var bl = CmdDataRead(InitData.registers.Where(w => w.Id ==
@@ -2384,6 +2522,11 @@ namespace AdminConsole
             if (!bl)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    caijizhiBut5.Enabled = true;
+                    return;
+                }
                 caijizhiBut5.Enabled = true;
                 return;
             }
@@ -2398,13 +2541,27 @@ namespace AdminConsole
         #region 寄存器组列表读取 写入
         private void LieBIAOxieru_Click(object sender, EventArgs e)
         {
-        write:
+            if ((_serialPort == null || _serialPort.IsOpen == false) && port_wrstatus == 0)
+            {
+                port_wrstatus = 1;
+                MessageBox.Show("未连接设备！", "提示", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return;
+            }
+            if (port_wrstatus == 1)
+                return;
+            write:
             wr_flag = 1;
             LieBIAOxieru.Enabled = false;
             var modbusWriter = GetModbusWriter();
 
             if (modbusWriter == null)
             {
+                if (port_wrstatus == 1)
+                {
+                    LieBIAOxieru.Enabled = true;
+                    return;
+                }
                 goto write;
                // LieBIAOxieru.Enabled = true;
                // return;
@@ -2422,6 +2579,7 @@ namespace AdminConsole
             foreach (DataGridViewRow row in uiDataGridView1.Rows)
             {
                 if (row.IsNewRow) continue;
+                start:
                 string Name = row.Cells[1].Value?.ToString();
                 try
                 {
@@ -2506,9 +2664,10 @@ namespace AdminConsole
                     wr_flag = 0;
                     log4netHelper.Error("PC端修改设备寄存器地址以及数据0x46写:" +
                                         ex.Message);
-                    MessageBox.Show(Name + ":写入失败", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                    //MessageBox.Show(Name + ":写入失败", "提示", MessageBoxButtons.OK,
+                            //        MessageBoxIcon.Error);
                     LieBIAOxieru.Enabled = true;
+                    goto start;
                     return;
                 }
             }
@@ -2530,12 +2689,26 @@ namespace AdminConsole
 
         private void LieBIAODuQu_Click(object sender, EventArgs e)
         {
+            if ((_serialPort == null || _serialPort.IsOpen == false) && port_wrstatus == 0)
+            {
+                port_wrstatus = 1;
+                MessageBox.Show("未连接设备！", "提示", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return;
+            }
+            if (port_wrstatus == 1)
+                return;
             wr_flag = 1;
             LieBIAODuQu.Enabled = false;
             var b =  diZzhiList();
             if (!b)
             {
                 wr_flag = 0;
+                if (port_wrstatus == 1)
+                {
+                    LieBIAODuQu.Enabled = true;
+                    return;
+                }
                 LieBIAODuQu.Enabled = true;
                 return;
             }
@@ -2666,7 +2839,7 @@ namespace AdminConsole
 
                         if (reg.Id.ToString() == "原始浮点值")
                         {
-                            reg.val = Math.Round(shujuZhi, 4);
+                            reg.val =  Math.Round(shujuZhi, 4);
                         }
                         else
                         {
@@ -2674,9 +2847,9 @@ namespace AdminConsole
                             //var xsw = int.Parse(xiaoshudianinput.SelectedValue.ToString());
                             if (reg.Id.ToString() == "浮点输出值")
                             {
-                                if (xsw >= 0)
+                              if (xsw >= 0)//75.1112
                                 {
-                                    reg.val = Math.Round(shujuZhi, xsw);
+                                    reg.val = TruncateWithoutRounding(shujuZhi, xsw);
                                 }
                                 else
                                 {
@@ -2705,8 +2878,9 @@ namespace AdminConsole
                 catch (Exception ex)
                 {
                     log4netHelper.Error("Read0x53Register读:" + ex.Message);
-                    MessageBox.Show(reg.Name + "读取失败！", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                    //goto start;
+                  //  MessageBox.Show(reg.Name + "读取失败！", "提示", MessageBoxButtons.OK,
+                  //              MessageBoxIcon.Error);
                     return false;
                 }
 
@@ -2805,6 +2979,11 @@ namespace AdminConsole
 
             if (modbusWriter == null)
             {
+                if (port_wrstatus == 1)
+                {
+                    huifuchuchangBut.Enabled = true;
+                    return;
+                }
                 huifuchuchangBut.Enabled = true;
                 return;
             }

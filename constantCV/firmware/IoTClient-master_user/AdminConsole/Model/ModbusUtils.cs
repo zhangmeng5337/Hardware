@@ -60,7 +60,7 @@ namespace AdminConsole.Model
            //Thread.Sleep(500);
 
             var bytesToRead = 0;
-            var i = 3;
+            var i =4;
             // 
             while (i > 0)
             {

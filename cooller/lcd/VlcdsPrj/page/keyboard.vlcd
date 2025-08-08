@@ -4,7 +4,7 @@
 <desc>Vlcd picture</desc>
 <box style = "fill:none; stroke:Black; stroke-width:1" x = "0" y = "0" width = "4680" height = "272" ShapeName = "Box" ShapeNum = "1" >box</box>
 <edit style = "fill:White; stroke:Black; stroke-width:1" x = "18" y = "5" width = "333" height = "30" ShapeName = "14" ShapeNum = "2" TextAlignType = "Center" StoreType = "Local" Direction = "No" Gwidth = "Normal" RadianNum = "" >Edit</edit>
-<button style = "fill:none; stroke:Black; stroke-width:1" x = "385" y = "4" width = "58" height = "31" ShapeName = "14" ShapeNum = "17" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >Exit</button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "385" y = "4" width = "58" height = "31" ShapeName = "14" ShapeNum = "17" Direction = "ChangePage" StoreType = "p3" RadianNum = "Char" TextAlignType = "" Gwidth = "" Gheight = "" >Exit</button>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "18" y = "43" width = "85" height = "44" ShapeName = "14" ShapeNum = "3" Direction = "VirtualKey" StoreType = "e2" RadianNum = "Char" TextAlignType = "1" Gwidth = "" Gheight = "" >1</button>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "130" y = "43" width = "85" height = "44" ShapeName = "14" ShapeNum = "4" Direction = "VirtualKey" StoreType = "e2" RadianNum = "Char" TextAlignType = "2" Gwidth = "" Gheight = "" >2</button>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "250" y = "42" width = "85" height = "44" ShapeName = "14" ShapeNum = "5" Direction = "VirtualKey" StoreType = "e2" RadianNum = "Char" TextAlignType = "3" Gwidth = "" Gheight = "" >3</button>

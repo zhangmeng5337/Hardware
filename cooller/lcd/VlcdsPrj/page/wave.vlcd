@@ -2,18 +2,17 @@
 <!DOCTYPE vlcd PUBLIC "-//W3C//DTD VLCD 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/VLCD10.dtd">
 <vlcd width="480" height="272">
 <desc>Vlcd picture</desc>
-<image x = "0" y = "0" width = "480" height = "272" ShapeName = ""
+<image x = "7" y = "3" width = "480" height = "272" ShapeName = ""
  ShapeNum = "54" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image007.bmp">
 </image>
-<button style = "fill:none; stroke:Black; stroke-width:1" x = "21" y = "203" width = "40" height = "44" ShapeName = "TP" ShapeNum = "9" Direction = "UploadID" StoreType = "" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image007.bmp" ></button>
+<button style = "fill:none; stroke:Black; stroke-width:1" x = "25" y = "194" width = "45" height = "43" ShapeName = "TP" ShapeNum = "9" Direction = "UploadID" StoreType = "" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image007.bmp" ></button>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "416" y = "204" width = "40" height = "44" ShapeName = "TP" ShapeNum = "37" Direction = "ChangePage" StoreType = "p2" RadianNum = "Char" TextAlignType = "" Gwidth = "image007.bmp" Gheight = "image007.bmp" ></button>
-<waveform style = "fill:Black; stroke:Green; stroke-width:1" x = "114" y = "50" width = "300" height = "180" ShapeName = "Red" ShapeNum = "19" Gwidth = "40" Gheight = "40" RadianNum = "Left2Right" Direction = "Yellow" StoreType = "1" />
+<waveform style = "fill:Black; stroke:Green; stroke-width:1" x = "114" y = "53" width = "300" height = "180" ShapeName = "Red" ShapeNum = "19" Gwidth = "40" Gheight = "40" RadianNum = "Left2Right" Direction = "Yellow" StoreType = "1" />
 <text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "81" y = "217" width = "31.7513" height = "16.75781" ShapeName = "Transparent" ShapeNum = "45" >-5℃</text>
 <text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "85" y = "183" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "44" >0℃</text>
 <text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "88" y = "144" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "43" >4℃</text>
 <text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "85" y = "103" width = "27.18099" height = "16.75781" ShapeName = "Transparent" ShapeNum = "42" >8℃</text>
 <text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "78" y = "66" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "41" >12℃</text>
 <text style = "fill:Red; stroke:Transparent; font-family:; font-size:10pt" x = "79" y = "43" width = "34.8177" height = "16.75781" ShapeName = "Transparent" ShapeNum = "40" >14℃</text>
-<text style = "fill:Red; stroke:Transparent; font-family:; font-size:14pt" x = "225" y = "119" width = "0" height = "0" ShapeName = "Transparent" ShapeNum = "18" ></text>
-<text style = "fill:Red; stroke:Transparent; font-family:image007.bmp; font-size:14pt" x = "216" y = "123" width = "0" height = "0" ShapeName = "Image" ShapeNum = "29" ></text>
+<text style = "fill:Red; stroke:Transparent; font-family:image007.bmp; font-size:20pt" x = "195" y = "229" width = "0" height = "0" ShapeName = "Image" ShapeNum = "29" ></text>
 </vlcd>

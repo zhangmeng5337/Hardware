@@ -34,6 +34,8 @@ extern "C" {
 #define ADC_POLL_T		100
 #define PID_POLL_T		100
 #define RF_POLL_T		100
+#define DEBUG_EN	1
+#define TEMPER_SEL 0//0:PT 1:RF
 
 /* USER CODE END Includes */
 

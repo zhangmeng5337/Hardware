@@ -39,6 +39,7 @@
 void lcd_proc(void);
 void set_label_proc(unsigned char num);
 void lcd_init(void);
+void UpdateUI(void);
 
 
 #endif

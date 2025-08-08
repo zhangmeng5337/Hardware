@@ -26,6 +26,7 @@ typedef struct
 	unsigned char id_status[18];
 	unsigned char vaild_flag;
 	float average_T;
+	float max_T;
     float card_T[18];
 } rf_recv_stru;
 void rf_ctrl_proc(void);

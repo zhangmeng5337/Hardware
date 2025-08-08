@@ -8,9 +8,9 @@
 <text style = "fill:White; stroke:Transparent; font-family:image008.bmp; font-size:40pt" x = "69" y = "154" width = "109.4184" height = "67.03123" ShapeName = "Image" ShapeNum = "27" >100</text>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "297" y = "183" width = "50" height = "54" ShapeName = "TP" ShapeNum = "25" Direction = "ChangePage" StoreType = "p3" RadianNum = "Char" TextAlignType = "" Gwidth = "image008.bmp" Gheight = "image008.bmp" ></button>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "394" y = "179" width = "40" height = "54" ShapeName = "TP" ShapeNum = "26" Direction = "ChangePage" StoreType = "p4" RadianNum = "Char" TextAlignType = "" Gwidth = "image008.bmp" Gheight = "image008.bmp" ></button>
-<text style = "fill:Lime; stroke:Transparent; font-family:image008.bmp; font-size:14pt" x = "408" y = "126" width = "0" height = "0" ShapeName = "Image" ShapeNum = "23" ></text>
 <image x = "373" y = "24" width = "41" height = "40" ShapeName = ""
  ShapeNum = "24" xlink:href = "E:\git\Hardware\cooller\lcd\VlcdsPrj\image\image004.bmp">
 </image>
 <button style = "fill:none; stroke:Black; stroke-width:1" x = "363" y = "18" width = "60" height = "54" ShapeName = "TP" ShapeNum = "36" Direction = "UploadID" StoreType = "" RadianNum = "Char" TextAlignType = "" Gwidth = "image008.bmp" Gheight = "image008.bmp" >Button</button>
+<text style = "fill:LawnGreen; stroke:Transparent; font-family:image008.bmp; font-size:14pt" x = "407" y = "126" width = "55.39539" height = "23.46093" ShapeName = "Image" ShapeNum = "23" >100%</text>
 </vlcd>

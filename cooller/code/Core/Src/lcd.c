@@ -100,30 +100,35 @@ void set_label_proc(unsigned char num)
     {
         case 0:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "");
+			//Display_String(172, 121,1,32,0,0,255, "          " );
             break;
         case 1:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "请插入U盘");
+			//Display_String(172, 121,1,32,0,0,255, "请插入U盘" );
             break;
         case 2:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "未识别到U盘");
             break;
         case 3:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "数据导出中...");
+			//Display_String(172, 121,1,32,0,0,255, "数据导出中..." );
             break;
         case 4:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "数据导出完成");
+			//Display_String(172, 121,1,32,0,0,255, "数据导出完成" );
             break;
+	
 
     }
 }
 
-void UpdateUI(unsigned char page)
+void UpdateUI()
 {
     int i;
     int value;
     char str[65];
     static unsigned char flag;
-    if (page_Id == Setting_PAGE && page != WAVE_PAGE)
+    if (page_Id == Setting_PAGE )
     {
         if (flag == 0)
         {
@@ -173,7 +178,7 @@ void UpdateUI(unsigned char page)
 //        }
 
     }
-    else if (page_Id == WAVE_PAGE && page == WAVE_PAGE)
+    else if (page_Id == WAVE_PAGE )
     {
         if (getConfig()->export_flag == 1)
         {
@@ -203,7 +208,7 @@ void UpdateUI(unsigned char page)
 
 
 
-        if (getConfig()->update_T == 1) //figure ctrl
+        if (getConfig()->update_fig == 1) //figure ctrl
         {
             static uint16_t fig_count = 0;
             //getConfig()->update_T = 0;
@@ -211,8 +216,12 @@ void UpdateUI(unsigned char page)
             //SetLableValue(page_Id, TEMPERATURE_ID, str);
             if (get_temperature()->T_value[0] < 0)
             {
+                if(TEMPER_SEL == 1)
                 SetWaveformValue(page_Id, WAVE_ID, 1,
                                  get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
+                 else
+                SetWaveformValue(page_Id, WAVE_ID, 1,
+                               get_temperature()->T_value[0] * 8 + 40); //       -5---0 0---40				 	
                 fig_count++;
             }
 #if DEBUG_EN == 0
@@ -226,8 +235,14 @@ void UpdateUI(unsigned char page)
                                  get_rf_status()->average_T * 40 / 4 + 40);//0---40  15---240
 
 #else if
+				if(TEMPER_SEL == 1)
+
                 SetWaveformValue(page_Id, WAVE_ID, 1,
                                  get_rf_status()->average_T * 40 / 8.6 + 40);//0---40  15---240
+                 else
+                SetWaveformValue(page_Id, WAVE_ID, 1,
+                               get_temperature()->T_value[0] *40/ 8.6 + 40); //       -5---0 0---40	
+
 
 #endif
 
@@ -240,12 +255,13 @@ void UpdateUI(unsigned char page)
                 //   WaveformDataClear(page_Id, WAVE_ID);
 
             }
+		getConfig()->update_fig = 0;
 
 
         }
     }
 
-    else if (page_Id == Main_PAGE && page != WAVE_PAGE)
+    else if (page_Id == Main_PAGE )
     {
 
         static uint32_t last_mode = 2;
@@ -432,7 +448,7 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
     {
         page_Id = value;
         update_en = 1;
-        //UpdateUI();
+       // UpdateUI();
     }
     else if (type == ENTER && state == KEY_RELEASE)
     {
@@ -861,11 +877,11 @@ void lcd_proc()
             //update_en &&
             update_en = 0;
             timer_tick_count = HAL_GetTick();
-            UpdateUI(Main_PAGE);
+            UpdateUI();
 
         }
-        else
-            UpdateUI(WAVE_PAGE);
+       // else
+         //   UpdateUI(WAVE_PAGE);
     }
 
 }
