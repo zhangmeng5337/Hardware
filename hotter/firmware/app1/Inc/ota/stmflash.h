@@ -37,6 +37,10 @@
 #ifdef APP2
 #define OTA_UPDATE_TO   UAPP1
 #endif
+#ifdef APP3
+#define OTA_UPDATE_TO   UAPP3
+#endif
+
 #ifdef BOOTLOADER
 #define OTA_UPDATE_TO  UAPP3
 #endif

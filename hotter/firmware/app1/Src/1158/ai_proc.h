@@ -70,6 +70,8 @@
 
 #define PRESS_B            -236.32
 #define PT100_PR          1000
+#define AI_SIZE_T        6
+#define AI_SIZE_P        5
 
 #define MAX_FAILUE 100 
 typedef struct 

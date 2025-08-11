@@ -1,7 +1,7 @@
 #include "mqtt_analy.h"
 #include "my_string.h"
 #include "lte_hal.h"
-#include "json_para.h"
+//#include "json_para.h"
 
 #include "ai_proc.h"
 #include "di.h"
@@ -15,6 +15,8 @@
 #include "rtc.h"
 #include "hotter.h"
 #include "FuzzyPID.h"
+#include <jansson.h>
+#include "do.h"
 
 tsATCmds     mqtt_at_cmds;
 teATCmdNum    mqtt_at_cmd_num;
@@ -26,6 +28,129 @@ tsLpuart1type *mqtt_recv;
 
 
 mqtt_payload_stru mqtt_payload_u;
+
+json_t *root, *sensorSta, *emeterData, *airpumpData, *devParams;
+json_t *diSta,*aiSta,*doSta;
+char *out;
+void json_clear()
+{
+    free(root);
+    free(sensorSta);
+    free(emeterData);
+    free(airpumpData);
+    free(devParams);
+    free(out);
+    free(diSta);
+    free(aiSta);
+    free(doSta);
+}
+void jsson_pack(unsigned char mqtt_packNum)
+{
+
+    /* Build an empty JSON object */
+    root = json_object();
+    json_object_set_new(root, "devid", json_string(get_config()->user_id));
+
+    switch(mqtt_packNum)
+    {
+		case 0:
+			//sensorSta
+				sensorSta = json_object();
+			   
+			  
+				//ai
+				aiSta = json_array();
+				json_t *arrary_value;
+				unsigned char i;
+				for(i = 0;i<AI_SIZE_T;i++)
+				{
+			
+				 json_array_insert_new(aiSta,i,json_real(get_ai_data()->temp[i]));
+			
+				}
+				for(i=AI_SIZE_T;i<(AI_SIZE_T+AI_SIZE_P);i++)
+				{
+					json_object_set_new(arrary_value, "arrary_value", json_real(get_ai_data()->press[i-AI_SIZE_T]));
+					json_array_insert_new(aiSta,i,arrary_value);
+			
+				}
+				
+				json_object_set_new(sensorSta, "aiSta", aiSta);
+				//di
+				json_object_set_new(sensorSta, "diSta", json_integer(get_di_data()->di_status));
+				//do
+				json_object_set_new(sensorSta, "doSta", json_integer(get_do_status()));
+			
+			   //devdevParams
+				json_object_set_new(devParams, "ver", json_string(get_config()->version));
+				json_object_set_new(devParams, "setOT", json_integer(get_config()->set_tout));
+				json_object_set_new(devParams, "setIT", json_integer(get_config()->set_tindoor));
+				json_object_set_new(devParams, "mode", json_integer(get_config()->mode));
+				json_object_set_new(devParams, "upt", json_integer(get_config()->set_up_period));	
+				unsigned char buf2[128];
+				  buf2[i++] = getRtcDate()->Year;
+				buf2[i++] = getRtcDate()->Month;
+				buf2[i++] = getRtcDate()->Date;
+				buf2[i++] = getRtcDate()->WeekDay;
+				buf2[i++] = getRtcTime()->Hours;
+				buf2[i++] = getRtcTime()->Minutes;
+				buf2[i++] = getRtcTime()->Seconds;
+				json_object_set_new(devParams, "time", json_string(buf2));
+				json_object_set_new(root, "sensorSta", sensorSta);
+				json_object_set_new(root, "devParams", devParams);
+				
+
+			break;
+		case 1:
+			json_object_set_new(root, "emeterData", emeterData);
+			json_object_set_new(root, "airpumpData", airpumpData);
+			break;
+		default: break;
+	}
+	out = json_dumps(root, JSON_REAL_PRECISION(6));
+
+
+
+}
+void json_para()
+{
+//*********************************************************************
+
+	json_t *jsonbox; 
+	json_error_t error;
+	jsonbox = json_loads(mqtt_recv->Lpuart1RecBuff, 0, &error);
+	json_t *reboot_obj = json_object_get(jsonbox, "Updat Frimware");
+	if(reboot_obj!= NULL)
+	{
+	unsigned char reboot_val = json_integer_value(reboot_obj);
+	get_config()->reboot = reboot_val;
+	get_config()->update_setting = 1;
+
+	}
+
+	reboot_obj = json_object_get(jsonbox, "Reboot Dev");  
+	if(reboot_obj!= NULL)
+	{
+	unsigned char reboot_val = json_integer_value(reboot_obj);
+	get_config()->reboot = reboot_val;
+	get_config()->update_setting = 1;
+
+	}	
+
+
+}
+void json_upload()
+{
+	if(mqtt_payload_u.mqtt_state == MQTT_READY)
+	{
+	    jsson_pack(mqtt_payload_u.process_step);
+		mqtt_payload_u.mqtt_state = MQTT_BUSY;
+		if(mqtt_payload_u.process_step <= MAX_STEP)
+		mqtt_payload_u.process_step ++ ;
+		else
+		mqtt_payload_u.process_step = 0;	
+	}
+}
 mqtt_payload_stru *get_mqtt_payload()
 {
     return &mqtt_payload_u;
@@ -62,7 +187,7 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
             return NULL;
 
     }
-//    else
+    //    else
     //   return NULL;
 
 }
@@ -148,17 +273,17 @@ void anlysis_mqtt_recv()
         get_config()->reboot = tmp_f;
     }
 
-//    dev_id = find_json_string("\"heatPump1\":", "}", 0);
-//    if (dev_id != NULL)
-//    {
-//        //memset(dev_id, 0, 128);
-//        get_config()->update_setting = 1;
-//        //sprintf(&get_config()->machine, "%s", dev_id); //????
-//        tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
-//          get_config()->machine = get_config()->machine|0x0001;
-//
-//    }
+    //    dev_id = find_json_string("\"heatPump1\":", "}", 0);
+    //    if (dev_id != NULL)
+    //    {
+    //        //memset(dev_id, 0, 128);
+    //        get_config()->update_setting = 1;
+    //        //sprintf(&get_config()->machine, "%s", dev_id); //????
+    //        tmp_f = atoi(&dev_id[0]);
+    //      if(tmp_f == 1)
+    //          get_config()->machine = get_config()->machine|0x0001;
+    //
+    //    }
     dev_id = find_json_string("\"heatPumpAll\":", "}", 0);
     if (dev_id != NULL)
     {
@@ -166,7 +291,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 0;
             get_config()->machine = get_config()->machine | 0x0001;
@@ -179,7 +304,7 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-         get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->out_max = tmp_f;
     }
@@ -187,7 +312,7 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-         get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->out_min = tmp_f;
     }
@@ -196,7 +321,7 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-         get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->kp_u = tmp_f;
     }
@@ -204,7 +329,7 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-         get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->ki_u = tmp_f;
     }
@@ -213,7 +338,7 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
-         get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->kd_u = tmp_f;
     }
@@ -221,11 +346,11 @@ void anlysis_mqtt_recv()
     if (dev_id != NULL)
     {
         tmp_f = atof(&dev_id[0]);
-		if(tmp_f == 0x00)
-        get_config()->instru_num = DELI;
-		else if(tmp_f == 0x01)
-			get_config()->instru_num = ZT;
-		 get_config()->update_setting = 1;
+        if (tmp_f == 0x00)
+            get_config()->instru_num = DELI;
+        else if (tmp_f == 0x01)
+            get_config()->instru_num = ZT;
+        get_config()->update_setting = 1;
     }
 
 
@@ -300,7 +425,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0001;
@@ -317,7 +442,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0002;
@@ -335,7 +460,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0004;
@@ -353,7 +478,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0008;
@@ -371,7 +496,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0010;
@@ -389,7 +514,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0020;
@@ -464,15 +589,15 @@ void anlysis_mqtt_recv()
         get_config()->tlen = 0;
         while (dev_id[i] != ']')
         {
-			if(dev_id[i]>=0x2e)
-				{
-			get_config()->count = 0;
-			
-			}
+            if (dev_id[i] >= 0x2e)
+            {
+                get_config()->count = 0;
+
+            }
 
             if (dev_id[i] != ',' && dev_id[i] != ']')
             {
-               
+
                 buf[j++] = dev_id[i];
 
             }
@@ -495,12 +620,12 @@ void anlysis_mqtt_recv()
         tmp_f = atof(buf);
         get_config()->indoor_temperature[k++] = tmp_f;
 #if CTRL_EN
-		
-				bufa = low_temperature_cal(get_config()->indoor_temperature,
-										   get_config()->tlen + 1);
-				get_temp_cal(bufa);
-				//fuzzy_proc(get_config()->mode);  //smart ctrl
-				memset(get_config()->indoor_temperature, 0, 64);
+
+        bufa = low_temperature_cal(get_config()->indoor_temperature,
+                                   get_config()->tlen + 1);
+        get_temp_cal(bufa);
+        //fuzzy_proc(get_config()->mode);  //smart ctrl
+        memset(get_config()->indoor_temperature, 0, 64);
 #endif
 
     }
@@ -515,7 +640,7 @@ void anlysis_mqtt_recv()
 
             }
 
-          
+
             j = 0;
             k = 0;
             i = 0;
@@ -524,12 +649,12 @@ void anlysis_mqtt_recv()
             tmp_f = atof(&dev_id[0]);
             get_config()->indoor_temperature[k++] = tmp_f;
 #if CTRL_EN
-			
-					bufa = low_temperature_cal(get_config()->indoor_temperature,
-											   get_config()->tlen + 1);
-					get_temp_cal(bufa);
-					//fuzzy_proc(get_config()->mode);  //smart ctrl
-					memset(get_config()->indoor_temperature, 0, 64);
+
+            bufa = low_temperature_cal(get_config()->indoor_temperature,
+                                       get_config()->tlen + 1);
+            get_temp_cal(bufa);
+            //fuzzy_proc(get_config()->mode);  //smart ctrl
+            memset(get_config()->indoor_temperature, 0, 64);
 #endif
 
         }
@@ -716,12 +841,12 @@ void upload()
     if (get_config()->mode == SMART_MODE)
         mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
     else
-       // mqtt_payload_u.data[TIN_INDEX] =
-         //   get_ai_data()->temp[get_config()->tin_index]; //water IN
-	mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
+        // mqtt_payload_u.data[TIN_INDEX] =
+        //   get_ai_data()->temp[get_config()->tin_index]; //water IN
+        mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
 
-	mqtt_payload_u.data[PUMP_F_INDEX] = *get_power();
-        //get_ai_data()->press[get_config()->pin_index]; //pump front
+    mqtt_payload_u.data[PUMP_F_INDEX] = *get_power();
+    //get_ai_data()->press[get_config()->pin_index]; //pump front
     mqtt_payload_u.data[PUMP_E_INDEX] =
         get_ai_data()->press[get_config()->po_index]; //pump end
 
@@ -750,11 +875,11 @@ void upload()
         mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tout;
     else
         mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor;
-	 mqtt_payload_u.data[WATER_IN_INDEX] = get_ai_data()->temp[get_config()->tin_index];
+    mqtt_payload_u.data[WATER_IN_INDEX] = get_ai_data()->temp[get_config()->tin_index];
     //get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
-    if(mqtt_payload_u.data[WATER_O_INDEX] >=1000)
-		mqtt_payload_u.data[WATER_O_INDEX] = 1000;
+    if (mqtt_payload_u.data[WATER_O_INDEX] >= 1000)
+        mqtt_payload_u.data[WATER_O_INDEX] = 1000;
 
 
 
@@ -784,30 +909,30 @@ void upload()
     static unsigned char addr = 1, status_out = 1;
 
 
-//  sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
-//          get_hotter(addr)->status[0],
-//          get_hotter(addr)->status[1],
-//          get_hotter(addr)->status[2],
-//          get_hotter(addr)->status[3],
-//          get_hotter(addr)->status[4],
-//          get_hotter(addr)->status[5],
-//          get_hotter(addr)->status[6],
-//          get_hotter(addr)->status[7],
-//          get_hotter(addr)->status[8],
-//          get_hotter(addr)->status[9],
-//          get_hotter(addr)->status[10],
-//          get_hotter(addr)->status[11],
-//          get_hotter(addr)->status[12],
-//          get_hotter(addr)->status[13],
-//          get_hotter(addr)->status[14],
-//          get_hotter(addr)->status[15],
-//          get_hotter(addr)->status[16],
-//          get_hotter(addr)->status[17],
-//          get_hotter(addr)->status[18],
-//          get_hotter(addr)->status[19],
-//          get_hotter(addr)->status[20],
-//          get_hotter(addr)->status[21],
-//          get_hotter(addr)->status[22]);
+    //  sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
+    //          get_hotter(addr)->status[0],
+    //          get_hotter(addr)->status[1],
+    //          get_hotter(addr)->status[2],
+    //          get_hotter(addr)->status[3],
+    //          get_hotter(addr)->status[4],
+    //          get_hotter(addr)->status[5],
+    //          get_hotter(addr)->status[6],
+    //          get_hotter(addr)->status[7],
+    //          get_hotter(addr)->status[8],
+    //          get_hotter(addr)->status[9],
+    //          get_hotter(addr)->status[10],
+    //          get_hotter(addr)->status[11],
+    //          get_hotter(addr)->status[12],
+    //          get_hotter(addr)->status[13],
+    //          get_hotter(addr)->status[14],
+    //          get_hotter(addr)->status[15],
+    //          get_hotter(addr)->status[16],
+    //          get_hotter(addr)->status[17],
+    //          get_hotter(addr)->status[18],
+    //          get_hotter(addr)->status[19],
+    //          get_hotter(addr)->status[20],
+    //          get_hotter(addr)->status[21],
+    //          get_hotter(addr)->status[22]);
 
 
 
@@ -823,17 +948,17 @@ void upload()
         }
         sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status[i]);
         buf2[strlen(buf2)] = ']';
-//   sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
-//         get_hotter(addr)->status[0],
-//         get_hotter(addr)->status[1],
-//         get_hotter(addr)->status[2],
-//         get_hotter(addr)->status[3],
-//         get_hotter(addr)->status[4],
-//         get_hotter(addr)->status[5],
-//         get_hotter(addr)->status[6],
-//         get_hotter(addr)->status[7],
-//         get_hotter(addr)->status[8],
-//         get_hotter(addr)->status[9]);
+        //   sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
+        //         get_hotter(addr)->status[0],
+        //         get_hotter(addr)->status[1],
+        //         get_hotter(addr)->status[2],
+        //         get_hotter(addr)->status[3],
+        //         get_hotter(addr)->status[4],
+        //         get_hotter(addr)->status[5],
+        //         get_hotter(addr)->status[6],
+        //         get_hotter(addr)->status[7],
+        //         get_hotter(addr)->status[8],
+        //         get_hotter(addr)->status[9]);
 
     }
     else if (status_out == 2) //0-20
@@ -1119,14 +1244,16 @@ void mqtt_init()
     mqtt_recv = get_lte_recv();
     mqtt_at_cmds.net_status = NO_REC;
 
+   mqtt_payload_u.mqtt_state = MQTT_READY;
+   mqtt_payload_u.process_step = 0;
 }
 unsigned char get_mqtt_status(void)
 {
-		return mqtt_at_cmd_num;
+    return mqtt_at_cmd_num;
 }
 uint8_t mqtt_Info_Show(void)
 {
-//    static unsigned char msub_count = 0;
+    //    static unsigned char msub_count = 0;
 
     unsigned char buf[2048];
     memset(buf, 0, 2048);
@@ -1205,7 +1332,7 @@ uint8_t mqtt_Info_Show(void)
         case AT_MSUB:////subscribe msg
         {
             //dev_sub_temp_
-//            unsigned char str[128];
+            //            unsigned char str[128];
             // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
             sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_ctrl_", get_config()->user_id,
                     0);
@@ -1221,44 +1348,44 @@ uint8_t mqtt_Info_Show(void)
             }
 
         }
-//case AT_MSUB_1:////subscribe msg
-//{
-//  //dev_sub_temp_
-//  //            unsigned char str[128];
-//  // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
-//  sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "sensor_pub_083a8d40fa8e",0);
-//  if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
-//  {
-//      mqtt_at_cmd_num = AT_MIPCLOSE;
-//  }
-//  else
-//  {
-//
-//      mqtt_at_cmds.RtyNum = 0;
-//      mqtt_at_cmd_num = AT_MSUB_2;
-//  }
-//
-//}
+        //case AT_MSUB_1:////subscribe msg
+        //{
+        //  //dev_sub_temp_
+        //  //            unsigned char str[128];
+        //  // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+        //  sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "sensor_pub_083a8d40fa8e",0);
+        //  if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+        //  {
+        //      mqtt_at_cmd_num = AT_MIPCLOSE;
+        //  }
+        //  else
+        //  {
+        //
+        //      mqtt_at_cmds.RtyNum = 0;
+        //      mqtt_at_cmd_num = AT_MSUB_2;
+        //  }
+        //
+        //}
 
-//    case AT_MSUB_1:////subscribe msg
-//    {
-//        //dev_sub_temp_
-//        //            unsigned char str[128];
-//        // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
-//        sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_temp_", get_config()->user_id,
-//                0);
-//        if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
-//        {
-//            mqtt_at_cmd_num = AT_MIPCLOSE;
-//        }
-//        else
-//        {
-//
-//            mqtt_at_cmds.RtyNum = 0;
-//            mqtt_at_cmd_num = AT_MSUB_2;
-//        }
-//
-//    }
+        //    case AT_MSUB_1:////subscribe msg
+        //    {
+        //        //dev_sub_temp_
+        //        //            unsigned char str[128];
+        //        // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+        //        sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_temp_", get_config()->user_id,
+        //                0);
+        //        if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+        //        {
+        //            mqtt_at_cmd_num = AT_MIPCLOSE;
+        //        }
+        //        else
+        //        {
+        //
+        //            mqtt_at_cmds.RtyNum = 0;
+        //            mqtt_at_cmd_num = AT_MSUB_2;
+        //        }
+        //
+        //    }
         case AT_MSUB_2:////subscribe msg
         {
             //dev_sub_temp_
@@ -1311,12 +1438,16 @@ uint8_t mqtt_Info_Show(void)
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
                 mqtt_at_cmd_num = AT_MIPCLOSE;
+			mqtt_payload_u.mqtt_state= MQTT_READY;
+				json_clear();
             }
             else
             {
                 //mqtt_init();
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
+				mqtt_payload_u.mqtt_state = MQTT_READY;
+				json_clear();
 
                 //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
@@ -1362,7 +1493,7 @@ void mqtt_proc()
 {
     //mqtt_send_buf = json_pack(&mqtt_payload_u);
     // printf("%s",mqtt_send_buf);
-//free_cjson();
+    //free_cjson();
     if (lte_Info_Show() == NET_CONNECT) //????
     {
         if (mqtt_Info_Show() == SUCCESS_REC) //mqtt??????
@@ -1391,7 +1522,7 @@ void mqtt_proc()
     else //???????,????????
     {
         registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1&&get_config()->connectTimeOut>=10) //180s
+        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1 && get_config()->connectTimeOut >= 10) //180s
         {
             //   reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
 #if CTRL_EN
@@ -1405,7 +1536,7 @@ void mqtt_proc()
 
     mqtt_recv_proc();
 
-    
+
 
 
 }

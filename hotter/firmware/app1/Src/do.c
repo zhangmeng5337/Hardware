@@ -6,31 +6,8 @@ void do_init()
 {
     unsigned int i;
 	i=0;	
-	do_usr.do_No_buf[i++] =  DO_ctrl_7;
-	do_usr.do_No_buf[i++] =  DO_ctrl_6;
-	do_usr.do_No_buf[i++] =  DO_ctrl_5;
-	do_usr.do_No_buf[i++] =  DO_ctrl_4;
-	do_usr.do_No_buf[i++] =  DO_ctrl_3;
-	do_usr.do_No_buf[i++] =  DO_ctrl_2;
-	do_usr.do_No_buf[i++] =  DO_ctrl_1;
-	do_usr.do_No_buf[i++] =  DO_ctrl_0 ;
-	do_usr.do_No_buf[i++] =  DO_ctrl_15 ;
-	do_usr.do_No_buf[i++] =  DO_ctrl_14;
-	do_usr.do_No_buf[i++] =  DO_ctrl_13;
-	do_usr.do_No_buf[i++] =  DO_ctrl_12;
-	do_usr.do_No_buf[i++] =  DO_ctrl_11;
-	do_usr.do_No_buf[i++] = DO_ctrl_10;
-	do_usr.do_No_buf[i++] =  DO_ctrl_9;
-	do_usr.do_No_buf[i++] =  DO_ctrl_8;
-		
-	do_usr.do_No_buf[i++] =  DO_ctrl_19;
-	do_usr.do_No_buf[i++] =  DO_ctrl_18;
-	do_usr.do_No_buf[i++] =  DO_ctrl_17;
-	do_usr.do_No_buf[i++] =  DO_ctrl_16;
-	do_usr.do_No_buf[i++] =  DO_ctrl_20;
-	do_usr.do_No_buf[i++] =  DO_ctrl_21;
-	do_usr.do_No_buf[i++] =  DO_ctrl_22;
-	do_usr.do_No_buf[i++] =  DO_ctrl_23;
+	do_usr.do_status = 0;
+	do_off();
 
 }
 
@@ -76,7 +53,39 @@ void XL74HC595_MultiWrite(uint8_t *data, uint8_t Length)//混合写数据
 	
 	HC595_CS(); //先把所有字节发送完，再使能输出
 }
+void do_status_cal(unsigned int do_NO_sel,unsigned char bit_set)
+{
+  unsigned int val;
+  switch(do_NO_sel)
+  {
+	case dq1: val = 0x0001;break;
+	case dq2: val = 0x0002;break;	
+    case dq3: val = 0x0004;break;
+  case dq4: val = 0x0008;break;
+  case dq5: val = 0x0010;break;
+  case dq6: val = 0x0020;break;
+  case dq7: val = 0x0040;break;
+  case dq8: val = 0x0080;break;
+  case dq9: val = 0x100;break;
+  case dq10: val = 0x200;break;
+  case dq11: val = 0x400;break;
+  case dq12: val = 0x800;break;
+  case dq13: val = 0x1000;break;
+  case dq14: val = 0x2000;break;
+  case dq15: val = 0x4000;break;
+ default: val = 0x00;break;
+	
+  }
+  if(bit_set == ON)
+  {
+	do_usr.do_status = do_usr.do_status | val;
+  }
+  else
+  {
+  do_usr.do_status = do_usr.do_status & (~val);
 
+  }
+}
 /*****************************************************
 do_NO_sel：do端口号，对应寄存器
 bit_set：0/1, 0开，1关
@@ -108,15 +117,23 @@ void do_NO_set(unsigned int do_NO_sel,unsigned char bit_set)
 			case 1:shift_bit = 0x40;break;
 			case 0:shift_bit = 0x80;break;	
 		}
+		
+		do_status_cal(do_NO_sel,bit_set);
+		
 		if(bit_set == OFF)
 		{
 			//shift_bit = ~shift_bit;
 			if(do_NO_sel<8)
 			{			
 				do_usr.do_No_out[0] = do_usr.do_No_out[0]|shift_bit;
+				
 			}
 			else if(do_NO_sel>=8&&do_NO_sel<16)
-				do_usr.do_No_out[1] = do_usr.do_No_out[1]|shift_bit;
+			{
+			do_usr.do_No_out[1] = do_usr.do_No_out[1]|shift_bit;
+			
+			}
+
 			else if(do_NO_sel>16)
 				do_usr.do_No_out[2] = do_usr.do_No_out[2]|shift_bit;
 			else 
@@ -159,7 +176,10 @@ void do_off()
 	XL74HC595_MultiWrite(do_usr.do_No_out, 2);	
 	HAL_GPIO_WritePin(PWR_CTRL_GPIO_Port,PWR_CTRL_Pin,GPIO_PIN_SET);
 }
-
+long unsigned int get_do_status(void)
+{
+	return do_usr.do_status;
+}
 
 
 

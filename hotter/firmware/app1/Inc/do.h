@@ -2,31 +2,6 @@
 #define DO_H_
 #include "main.h"
 
-#define  DO_ctrl_7 		0
-#define  DO_ctrl_6 		1
-#define  DO_ctrl_5 		2
-#define  DO_ctrl_4 		3
-#define  DO_ctrl_3 		4
-#define  DO_ctrl_2 		5
-#define  DO_ctrl_1 		6
-#define  DO_ctrl_0 		7
-#define  DO_ctrl_15 	8
-#define  DO_ctrl_14 	9
-#define  DO_ctrl_13 	10
-#define  DO_ctrl_12 	11
-#define  DO_ctrl_11 	12
-#define  DO_ctrl_10 	13
-#define  DO_ctrl_9 		14
-#define  DO_ctrl_8 		15
-
-#define  DO_ctrl_19 	16
-#define  DO_ctrl_18 	17
-#define  DO_ctrl_17 	18
-#define  DO_ctrl_16 	19
-#define  DO_ctrl_20 	20
-#define  DO_ctrl_21 	21
-#define  DO_ctrl_22 	22
-#define  DO_ctrl_23 	23
 
 //*****do ctrl*********************
 #define MACHINE_PWR   		0
@@ -49,17 +24,36 @@
 
 void HC595_SendByte(uint8_t byte);
 void XL74HC595_MultiWrite(uint8_t *data, uint8_t Length);//»ìºÏÐ´Êý¾Ý;
- 
+
+typedef enum
+{
+	dq1 = 14,
+	dq2 = 13,
+	dq3 = 12,
+	dq4 = 11,
+	dq5 = 10,
+	dq6 = 9,
+	dq7 = 8,
+	dq8 = 7,
+	dq9 = 6,
+	dq10 = 4,
+	dq11 = 5,
+	dq12 = 3,
+	dq13 = 2,
+	dq14 = 1,
+	dq15 = 0
+}do_table;
 
 typedef struct
 {
-	//unsigned do_status;
+	long unsigned int do_status;
 	unsigned char do_No_out[3];
 	unsigned char do_No_buf[DO_SIZE];
 } stru_do_stru;
 
 void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set);
 void do_off(void);
+long unsigned int get_do_status(void);
 
 #endif
 

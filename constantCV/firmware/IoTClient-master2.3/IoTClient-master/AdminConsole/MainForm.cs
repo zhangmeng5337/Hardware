@@ -1224,6 +1224,7 @@ namespace AdminConsole
 
                 log4netHelper.Info("私有指令，PC端写寄存器0x56写发送:" +
                                    Model.ModbusUtility.ConvertToJosn(m));
+                Thread.Sleep(350);
                 var b = modbusWriter.WritePrivate0x56Register(m);
 
                 if (!b)

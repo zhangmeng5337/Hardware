@@ -2,6 +2,10 @@
 #define MQTT_ANALY_H_
 #include "main.h"
 
+#define MQTT_READY 0
+#define MQTT_BUSY  1
+#define MAX_STEP 5
+
 //data
 #define UPDATE_INDEX		0
 #define REBOOT_INDEX		1
@@ -36,6 +40,8 @@ typedef struct
 	//uint32_t fault;
 	char devid[64];
 	char version[64];
+	unsigned char mqtt_state;
+	unsigned char process_step;
 	
 }mqtt_payload_stru;
 

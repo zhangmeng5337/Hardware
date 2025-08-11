@@ -394,7 +394,7 @@ void ai_health_dec()
     }
 }
 void data_ai_init(void)
-{//pt 2 3 1 4 5 0	 ----6 5 4 3 2 1
+{//pt 1 2 3 4 5 6	 ----6 5 4 3 2 1
 	//pt 0-5	 ----6 5 4 3 2 1
 	unsigned char buf[6]={6,5,4,3,2,1}; 
 	memcpy(data_ai.pt_index_conv,buf,6);
