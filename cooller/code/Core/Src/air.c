@@ -128,7 +128,10 @@ unsigned char heater_cooller_ctrl()
         {
             if (tmep_T <= getConfig()->min_T ||
                     (tmep_T > getConfig()->min_T
-                     && getConfig()->min_T < getConfig()->max_T)) //heater ctrl
+                     && tmep_T < getConfig()->max_T)) //heater ctrl 
+//            if (tmep_T <= getConfig()->min_T ||
+//                    (tmep_T > getConfig()->min_T
+//                     && getConfig()->min_T < getConfig()->max_T)) //heater ctrl
             {
                 //getConfig()->mode = 1;//加热
                 air_usr.heat_pid_out =  pid_proc_fan_heat(1, tmep_T);//风扇与加热温度控制

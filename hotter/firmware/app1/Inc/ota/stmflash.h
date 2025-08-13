@@ -83,6 +83,7 @@ void WriteFlashBytes(uint32_t addr, uint8_t *buff, int buf_len);
 void floatTouint32(float dat,unsigned char *buf);
 float uint32Tofloat(unsigned char *buf);
 uint32_t uint8Touint322(unsigned char *buf);
+uint32_t uint8Touint16(unsigned char *buf);
 
 #endif
 

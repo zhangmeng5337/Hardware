@@ -214,6 +214,16 @@ uint32_t uint8Touint322(unsigned char *buf)
 	  b = b|buf[3];
        return b;
 }
+uint32_t uint8Touint16(unsigned char *buf)
+{
+	   //float a=3.14159;
+	   uint32_t b;
+	  
+	  b=buf[0];
+	  b=b<<8;
+	  b = b|buf[1];
+       return b;
+}
 
 
 void floatTouint32(float dat,unsigned char *buf)

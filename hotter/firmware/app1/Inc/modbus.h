@@ -4,15 +4,32 @@
 #include "config.h"
 //#define MODBUS_RTU_COUNT            4
 //#define MODBUS_RETRY_COUNT          4
-#define CMD_SIZE		10
+#define CMD_SIZE		10-1
 #define DEV_SIZE   5
+
+//**********************dev type def*************
+#define PUMP			0
+#define POWER_ENERGY 	1
+#define PUMP_RCMD_SIZE  3
+#define PUMP_WCMD_SIZE  2
+#define ENERGY_CMD_SIZE  5
+#define PUMP_CMD_START   2  //read index
+#define PUMP_WCMD_START   0 // write index
+#define PUMP_WCMD_ANYSTART   10 
+
+#define ENERGY_CMD_START   5
+#define ENERGY_SADDR     1
+#define PUMP_SADDR     1
+
 
 #define PWR_INDEX				0
 #define PID_INDEX				1
-#define STATUS1_INDEX			2
-#define STATUS2_INDEX			3
-#define INSTR_DELI_INDEX		4
-#define INSTR_ZT_INDEX		    6
+#define STATUS1_INDEX			2//0x0000
+#define STATUS2_INDEX			3//0x0028
+#define STATUS3_INDEX			4//0x0040
+
+
+
 #define INSTR_ZT_CURR_INDEX		    5
 
 #define DELI_ADDR   0x05
@@ -58,6 +75,10 @@ typedef struct
  unsigned char addr;
  unsigned char state;
   unsigned char devState;
+ unsigned char devtype;
+ unsigned char start_cmd;
+ unsigned char dev_max_addr;
+ unsigned char wr;
 }modbus_cmd_pack_stru;
 
 
@@ -92,5 +113,8 @@ modbus_stru *get_recv_machine(void);
 void modbus_init(void);
 modbus_stru *get_tx_machine(void);
 void modbus_test(void);
+
+void get_cmd_list(unsigned char *buf);
+
 #endif
 

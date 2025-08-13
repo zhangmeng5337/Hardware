@@ -567,6 +567,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\schedule.c</FilePath>
             </File>
+            <File>
+              <FileName>power_energy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\power_energy.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2332,6 +2337,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\schedule.c</FilePath>
             </File>
+            <File>
+              <FileName>power_energy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\power_energy.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4096,6 +4106,11 @@
               <FileName>schedule.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\schedule.c</FilePath>
+            </File>
+            <File>
+              <FileName>power_energy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\power_energy.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -5999,6 +6014,11 @@
               <FileName>schedule.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\schedule.c</FilePath>
+            </File>
+            <File>
+              <FileName>power_energy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\power_energy.c</FilePath>
             </File>
           </Files>
         </Group>

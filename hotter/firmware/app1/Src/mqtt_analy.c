@@ -17,12 +17,16 @@
 #include "FuzzyPID.h"
 #include <jansson.h>
 #include "do.h"
+#include "power_energy.h"
 
 tsATCmds     mqtt_at_cmds;
 teATCmdNum    mqtt_at_cmd_num;
 teATStatus    mqtt_at_status;
 tsLpuart1type *mqtt_recv;
+char mqtt_send_buf[2048];
+char *json_mqtt_send_buf;
 
+void json_plan_analy(unsigned char *p, unsigned char index);
 
 //unsigned char mqtt_send_buf[128];
 
@@ -30,7 +34,7 @@ tsLpuart1type *mqtt_recv;
 mqtt_payload_stru mqtt_payload_u;
 
 json_t *root, *sensorSta, *emeterData, *airpumpData, *devParams;
-json_t *diSta,*aiSta,*doSta;
+json_t *diSta, *aiSta, *doSta;
 char *out;
 void json_clear()
 {
@@ -46,110 +50,578 @@ void json_clear()
 }
 void jsson_pack(unsigned char mqtt_packNum)
 {
-
+    json_t  *addr, *tmp, *array_tmp;
+    json_t *arrary_value;
+	unsigned char k;
     /* Build an empty JSON object */
     root = json_object();
     json_object_set_new(root, "devid", json_string(get_config()->user_id));
 
-    switch(mqtt_packNum)
+    switch (mqtt_packNum)
     {
-		case 0:
-			//sensorSta
-				sensorSta = json_object();
-			   
-			  
-				//ai
-				aiSta = json_array();
-				json_t *arrary_value;
-				unsigned char i;
-				for(i = 0;i<AI_SIZE_T;i++)
-				{
-			
-				 json_array_insert_new(aiSta,i,json_real(get_ai_data()->temp[i]));
-			
-				}
-				for(i=AI_SIZE_T;i<(AI_SIZE_T+AI_SIZE_P);i++)
-				{
-					json_object_set_new(arrary_value, "arrary_value", json_real(get_ai_data()->press[i-AI_SIZE_T]));
-					json_array_insert_new(aiSta,i,arrary_value);
-			
-				}
-				
-				json_object_set_new(sensorSta, "aiSta", aiSta);
-				//di
-				json_object_set_new(sensorSta, "diSta", json_integer(get_di_data()->di_status));
-				//do
-				json_object_set_new(sensorSta, "doSta", json_integer(get_do_status()));
-			
-			   //devdevParams
-				json_object_set_new(devParams, "ver", json_string(get_config()->version));
-				json_object_set_new(devParams, "setOT", json_integer(get_config()->set_tout));
-				json_object_set_new(devParams, "setIT", json_integer(get_config()->set_tindoor));
-				json_object_set_new(devParams, "mode", json_integer(get_config()->mode));
-				json_object_set_new(devParams, "upt", json_integer(get_config()->set_up_period));	
-				unsigned char buf2[128];
-				  buf2[i++] = getRtcDate()->Year;
-				buf2[i++] = getRtcDate()->Month;
-				buf2[i++] = getRtcDate()->Date;
-				buf2[i++] = getRtcDate()->WeekDay;
-				buf2[i++] = getRtcTime()->Hours;
-				buf2[i++] = getRtcTime()->Minutes;
-				buf2[i++] = getRtcTime()->Seconds;
-				json_object_set_new(devParams, "time", json_string(buf2));
-				json_object_set_new(root, "sensorSta", sensorSta);
-				json_object_set_new(root, "devParams", devParams);
-				
+        case 0:
+            //sensorSta
+            sensorSta = json_object();
 
-			break;
-		case 1:
-			json_object_set_new(root, "emeterData", emeterData);
-			json_object_set_new(root, "airpumpData", airpumpData);
-			break;
-		default: break;
-	}
-	out = json_dumps(root, JSON_REAL_PRECISION(6));
 
+            //ai
+            aiSta = json_array();
+
+            unsigned char i, j;
+            for (i = 0; i < AI_SIZE_T; i++)
+            {
+
+                json_array_insert_new(aiSta, i, json_real(get_ai_data()->temp[i]));
+
+            }
+            for (i = AI_SIZE_T; i < (AI_SIZE_T + AI_SIZE_P); i++)
+            {
+                json_object_set_new(arrary_value, "arrary_value", json_real(get_ai_data()->press[i - AI_SIZE_T]));
+                json_array_insert_new(aiSta, i, arrary_value);
+
+            }
+
+            json_object_set_new(sensorSta, "aiSta", aiSta);
+            //di
+            json_object_set_new(sensorSta, "diSta", json_integer(get_di_data()->di_status));
+            //do
+            json_object_set_new(sensorSta, "doSta", json_integer(get_do_status()));
+
+            //devdevParams
+            json_object_set_new(devParams, "ver", json_string(get_config()->version));
+            json_object_set_new(devParams, "setOT", json_integer(get_config()->set_tout));
+            json_object_set_new(devParams, "setIT", json_integer(get_config()->set_tindoor));
+            json_object_set_new(devParams, "mode", json_integer(get_config()->mode));
+            json_object_set_new(devParams, "upt", json_integer(get_config()->set_up_period));
+            unsigned char buf2[128];
+            buf2[i++] = getRtcDate()->Year;
+            buf2[i++] = getRtcDate()->Month;
+            buf2[i++] = getRtcDate()->Date;
+            buf2[i++] = getRtcDate()->WeekDay;
+            buf2[i++] = getRtcTime()->Hours;
+            buf2[i++] = getRtcTime()->Minutes;
+            buf2[i++] = getRtcTime()->Seconds;
+            json_object_set_new(devParams, "time", json_string(buf2));
+            json_object_set_new(root, "sensorSta", sensorSta);
+            json_object_set_new(root, "devParams", devParams);
+
+
+            break;
+        case 1:
+
+            addr = json_object();
+
+            arrary_value = json_array();
+            emeterData = json_array();
+            array_tmp = json_array();
+            
+            k = 0;
+            for (i = 0; i < ENERGY_COUNT; i++)
+            {
+                if (get_energy_data()->pb[i].addr != 0)
+                {
+                    json_object_set_new(addr, "addr", json_integer(get_energy_data()->pb[i].addr));
+                    for (j = 0; j < (ENERGY_BUF_SIZE - 2); j++)
+                    {
+                        tmp = json_real(get_energy_data()->pb[i].payload[j]);
+                        json_array_insert_new(arrary_value, j, tmp);
+
+                    }
+                    json_object_set_new(addr, "data", arrary_value);
+                    json_array_insert_new(array_tmp, k, addr);
+                    k++;
+                    json_array_append_new(emeterData, array_tmp);
+                    json_object_set_new(root, "emeterData", emeterData);
+                }
+            }
+
+            break;
+        case 2:
+
+            addr = json_object();
+            arrary_value = json_array();
+            emeterData = json_array();
+            array_tmp = json_array();
+            k = 0;
+            for (i = 0; i < AIR_PUMP_SIZE; i++)
+            {
+                if (get_hotter(i + 1)->status[0] != 0)
+                {
+                    json_object_set_new(addr, "addr", json_integer(get_hotter(i + 1)->status[0]));
+                    for (j = 1; j < STATUS1_SIZE; j++)
+                    {
+                        tmp = json_real(get_hotter(i + 1)->status[j]);
+                        json_array_insert_new(arrary_value, j, tmp);
+
+                    }
+                    for (j = 1; j < STATUS2_SIZE; j++)
+                    {
+                        tmp = json_real(get_hotter(i + 1)->status2[j]);
+                        json_array_insert_new(arrary_value, j, tmp);
+
+                    }
+                    for (j = 1; j < STATUS3_SIZE; j++)
+                    {
+                        tmp = json_real(get_hotter(i + 1)->status3[j]);
+                        json_array_insert_new(arrary_value, j, tmp);
+
+                    }
+
+
+                    json_object_set_new(addr, "data", arrary_value);
+                    json_array_insert_new(array_tmp, k, addr);
+                    k++;
+                    json_array_append_new(airpumpData, array_tmp);
+                    json_object_set_new(root, "airpumpData", airpumpData);
+                }
+            }
+
+            break;
+
+        default:
+            break;
+    }
+    out = json_dumps(root, JSON_REAL_PRECISION(6));
+    json_mqtt_send_buf = out;
+    free(arrary_value);
+    free(addr);
+    free(tmp);
 
 
 }
 void json_para()
 {
-//*********************************************************************
 
-	json_t *jsonbox; 
-	json_error_t error;
-	jsonbox = json_loads(mqtt_recv->Lpuart1RecBuff, 0, &error);
-	json_t *reboot_obj = json_object_get(jsonbox, "Updat Frimware");
-	if(reboot_obj!= NULL)
-	{
-	unsigned char reboot_val = json_integer_value(reboot_obj);
-	get_config()->reboot = reboot_val;
-	get_config()->update_setting = 1;
+    //*********************************************************************
 
-	}
+    json_t *jsonbox;
+    json_error_t error;
+    jsonbox = json_loads(mqtt_recv->Lpuart1RecBuff, 0, &error);
+    json_t *reboot_obj = json_object_get(jsonbox, "Updat Frimware");
+    if (reboot_obj != NULL)
+    {
+        unsigned char reboot_val = json_integer_value(reboot_obj);
+        get_config()->reboot = reboot_val;
+        get_config()->update_setting = 1;
 
-	reboot_obj = json_object_get(jsonbox, "Reboot Dev");  
-	if(reboot_obj!= NULL)
-	{
-	unsigned char reboot_val = json_integer_value(reboot_obj);
-	get_config()->reboot = reboot_val;
-	get_config()->update_setting = 1;
+    }
 
-	}	
+    reboot_obj = json_object_get(jsonbox, "Reboot Dev");
+    if (reboot_obj != NULL)
+    {
+        unsigned char reboot_val = json_integer_value(reboot_obj);
+        get_config()->reboot = reboot_val;
+        get_config()->update_setting = 1;
+
+    }
+
+
+    reboot_obj = json_object_get(jsonbox, "heatPumpAll");
+    if (reboot_obj != NULL)
+    {
+        get_config()->update_setting = 1;
+        get_tx_machine()->ctrl_mode = 0;
+        get_config()->machine = get_config()->machine | 0x0001;
+
+    }
+    reboot_obj = json_object_get(jsonbox, "outmax");
+    if (reboot_obj != NULL)
+    {
+        float reboot_val = json_real_value(reboot_obj);
+        get_config()->update_setting = 1;
+        get_pid_params()->out_max = reboot_val;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "outmin");
+    if (reboot_obj != NULL)
+    {
+        float reboot_val = json_real_value(reboot_obj);
+        get_config()->update_setting = 1;
+        get_pid_params()->out_min = reboot_val;
+
+    }
+    reboot_obj = json_object_get(jsonbox, "kp");
+    if (reboot_obj != NULL)
+    {
+        float reboot_val = json_real_value(reboot_obj);
+        get_config()->update_setting = 1;
+        get_pid_params()->kp_u = reboot_val;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "ki");
+    if (reboot_obj != NULL)
+    {
+        float reboot_val = json_real_value(reboot_obj);
+        get_config()->update_setting = 1;
+        get_pid_params()->ki_u = reboot_val;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "kd");
+    if (reboot_obj != NULL)
+    {
+        float reboot_val = json_real_value(reboot_obj);
+        get_config()->update_setting = 1;
+        get_pid_params()->kd_u = reboot_val;
+
+    }
+    reboot_obj = json_object_get(jsonbox, "scheMode");
+    if (reboot_obj != NULL)
+    {
+
+        get_config()->mode = SCHE_MODE;
+        get_config()->update_setting = 1;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "offlineMode");
+    if (reboot_obj != NULL)
+    {
+
+        get_config()->mode = OFF_MODE;
+        get_config()->update_setting = 1;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "nativeMode");
+    if (reboot_obj != NULL)
+    {
+
+        get_config()->mode = NATIVE_MODE;
+        get_config()->update_setting = 1;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "smartMode");
+    if (reboot_obj != NULL)
+    {
+
+        get_config()->mode = SMART_MODE;
+        get_config()->update_setting = 1;
+
+    }
+    reboot_obj = json_object_get(jsonbox, "smartMode");
+    if (reboot_obj != NULL)
+    {
+
+        get_config()->mode = SMART_MODE;
+        get_config()->update_setting = 1;
+
+    }
+    reboot_obj = json_object_get(jsonbox, "dev_size");
+    if (reboot_obj != NULL)
+    {
+
+        unsigned char reboot_val = json_integer_value(reboot_obj);
+
+        get_config()->update_setting = 1;
+        get_config()->dev_size = reboot_val;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "heatPump1");
+    if (reboot_obj != NULL)
+    {
+        get_tx_machine()->ctrl_mode = 1;
+        get_config()->machine = get_config()->machine | 0x0001;
+    }
+
+    reboot_obj = json_object_get(jsonbox, "heatPump2");
+    if (reboot_obj != NULL)
+    {
+        get_tx_machine()->ctrl_mode = 1;
+        get_config()->machine = get_config()->machine | 0x0002;
+    }
+    reboot_obj = json_object_get(jsonbox, "heatPump3");
+    if (reboot_obj != NULL)
+    {
+        get_tx_machine()->ctrl_mode = 1;
+        get_config()->machine = get_config()->machine | 0x0004;
+    }
+
+    reboot_obj = json_object_get(jsonbox, "heatPump4");
+    if (reboot_obj != NULL)
+    {
+        get_tx_machine()->ctrl_mode = 1;
+        get_config()->machine = get_config()->machine | 0x0008;
+    }
+    reboot_obj = json_object_get(jsonbox, "heatPump5");
+    if (reboot_obj != NULL)
+    {
+        get_tx_machine()->ctrl_mode = 1;
+        get_config()->machine = get_config()->machine | 0x0010;
+    }
+
+    reboot_obj = json_object_get(jsonbox, "heatPump6");
+    if (reboot_obj != NULL)
+    {
+        get_tx_machine()->ctrl_mode = 1;
+        get_config()->machine = get_config()->machine | 0x0020;
+    }
+    reboot_obj = json_object_get(jsonbox, "Set Out Temp");
+    if (reboot_obj != NULL)
+    {
+        unsigned char reboot_val = json_integer_value(reboot_obj);
+        get_config()->update_setting = 1;
+        get_config()->set_tout = reboot_val;
+        get_config()->set_tout_tmp = reboot_val;
+    }
+
+    reboot_obj = json_object_get(jsonbox, "Set Room Temp");
+    if (reboot_obj != NULL)
+    {
+        unsigned char reboot_val = json_integer_value(reboot_obj);
+        get_config()->set_tindoor = reboot_val;
+    }
+    reboot_obj = json_object_get(jsonbox, "timestamp");
+    if (reboot_obj != NULL)
+    {
+        unsigned char tmp_utc, j;
+        char *reboot_val = (char *)json_string_value(reboot_obj);
+        unsigned char i = 0;
+        tmp_utc = 0;
+        while (reboot_val[i] >= 0x30 && reboot_val[i] <= 0x39)
+        {
+            j = reboot_val[i];
+            j = j - 0x30;
+            // tmp_utc = 0;
+            tmp_utc = tmp_utc * 10 + j;
+            i++;
+
+        }
+        utcTortc(tmp_utc);
+    }
+
+    reboot_obj = json_object_get(jsonbox, "Set Upload Period(second)");
+    if (reboot_obj != NULL)
+    {
+        long reboot_val = json_integer_value(reboot_obj);
+        get_config()->set_up_period = reboot_val;
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "Room Temp");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;;
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+
+            get_config()->indoor_temperature[i] = json_integer_value(reboot_val);
+            get_config()->update_setting = 2;
+
+        }
+#if CTRL_EN
+        get_temp_cal(low_temperature_cal(get_config()->indoor_temperature, i));
+        memset(get_config()->indoor_temperature, 0, 64);
+#endif
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "Plan1");
+    if (reboot_obj != NULL)
+    {
+
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+        json_plan_analy(buf, 0);
+
+    }
+    reboot_obj = json_object_get(jsonbox, "Plan2");
+    if (reboot_obj != NULL)
+    {
+
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+        json_plan_analy(buf, 1);
+
+    }
+    reboot_obj = json_object_get(jsonbox, "Plan3");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+
+
+        json_plan_analy(buf, 2);
+
+    }
+    reboot_obj = json_object_get(jsonbox, "Plan4");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+
+        json_plan_analy(buf, 3);
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "Plan5");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+        json_plan_analy(buf, 4);
+
+    }
+    reboot_obj = json_object_get(jsonbox, "Plan6");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+
+        json_plan_analy(buf, 5);
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "Plan7");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+
+        json_plan_analy(buf, 6);
+
+    }
+    reboot_obj = json_object_get(jsonbox, "Plan8");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+
+        json_plan_analy(buf, 7);
+
+    }
+    reboot_obj = json_object_get(jsonbox, "Plan9");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+
+        json_plan_analy(buf, 8);
+
+    }
+
+    reboot_obj = json_object_get(jsonbox, "Plan10");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+
+
+        json_plan_analy(buf, 9);
+
+    }
+    unsigned char addr;
+    unsigned char func;
+    unsigned int reg;
+    unsigned int regCount;
+    unsigned char payload[32];
+
+    reboot_obj = json_object_get(jsonbox, "pump write");
+    if (reboot_obj != NULL)
+    {
+        unsigned char i;
+        json_t *reboot_val;
+        unsigned char buf[9];
+        for (i = 0; i < json_array_size(reboot_obj); i++)
+        {
+            reboot_val = json_array_get(reboot_obj, i);
+            buf[i] = json_integer_value(reboot_val);;
+        }
+        get_cmd_list(buf);
+    }
+
+    memset(mqtt_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
+
+    //	json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
 
 
 }
 void json_upload()
 {
-	if(mqtt_payload_u.mqtt_state == MQTT_READY)
-	{
-	    jsson_pack(mqtt_payload_u.process_step);
-		mqtt_payload_u.mqtt_state = MQTT_BUSY;
-		if(mqtt_payload_u.process_step <= MAX_STEP)
-		mqtt_payload_u.process_step ++ ;
-		else
-		mqtt_payload_u.process_step = 0;	
-	}
+    if (mqtt_payload_u.mqtt_state == MQTT_READY)
+    {
+        jsson_pack(mqtt_payload_u.process_step);
+        mqtt_payload_u.mqtt_state = MQTT_BUSY;
+        if (mqtt_payload_u.process_step <= MAX_STEP)
+            mqtt_payload_u.process_step ++ ;
+        else
+            mqtt_payload_u.process_step = 0;
+        mqtt_at_cmd_num = AT_MPUB;
+    }
 }
 mqtt_payload_stru *get_mqtt_payload()
 {
@@ -237,6 +709,27 @@ void plan_analy(unsigned char *p, unsigned char index)
 
 
     }
+
+}
+void json_plan_analy(unsigned char *p, unsigned char index)
+{
+
+    unsigned int i;
+
+    i = 0;
+
+    get_schedule()->buf[index].pwr_state = p[i++];
+    get_schedule()->buf[index].temperature = p[i++];
+    get_schedule()->buf[index].shour = p[i++];
+    get_schedule()->buf[index].sminute = p[i++];
+    get_schedule()->buf[index].sweekday = p[i++];
+    get_schedule()->buf[index].ehour = p[i++];
+    get_schedule()->buf[index].eminute = p[i++];
+    get_schedule()->buf[index].eweekday = p[i++];
+    get_schedule()->buf[index].enable = p[i++];
+    get_schedule()->buf[index].index = index;
+    get_schedule()->save_flag = 1;
+
 
 }
 
@@ -798,7 +1291,7 @@ dev---->ser
     memset(send_buffer, 0x00, strlen(send_buffer));
     }*/
 //char *mqtt_send_buf;
-char mqtt_send_buf[2048];
+
 
 //????
 /********************************************************************
@@ -1244,8 +1737,8 @@ void mqtt_init()
     mqtt_recv = get_lte_recv();
     mqtt_at_cmds.net_status = NO_REC;
 
-   mqtt_payload_u.mqtt_state = MQTT_READY;
-   mqtt_payload_u.process_step = 0;
+    mqtt_payload_u.mqtt_state = MQTT_READY;
+    mqtt_payload_u.process_step = 0;
 }
 unsigned char get_mqtt_status(void)
 {
@@ -1432,22 +1925,22 @@ uint8_t mqtt_Info_Show(void)
 
             sprintf(buf, "AT+MPUB=\"%s%s\",%d,%d,\"%s\"\r\n", get_config()->mqtt_mpubtopic,
                     get_config()->user_id,
-                    1, 0, mqtt_send_buf);
+                    1, 0, json_mqtt_send_buf);
             //lte_Send_Cmd_mqtt(1,buf, "PUBACK", LTE_LONG_DELAY)
             if (lte_Send_Cmd(buf, "PUBACK", LTE_LONG_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
                 mqtt_at_cmd_num = AT_MIPCLOSE;
-			mqtt_payload_u.mqtt_state= MQTT_READY;
-				json_clear();
+                mqtt_payload_u.mqtt_state = MQTT_READY;
+                json_clear();
             }
             else
             {
                 //mqtt_init();
                 mqtt_at_cmds.RtyNum = 0;
                 mqtt_at_cmd_num = AT_MPUB_RECV;
-				mqtt_payload_u.mqtt_state = MQTT_READY;
-				json_clear();
+                mqtt_payload_u.mqtt_state = MQTT_READY;
+                json_clear();
 
                 //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
