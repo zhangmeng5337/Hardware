@@ -99,8 +99,9 @@ void app_proc()
    di_proc(0);//di detection
     pwr_schedul_set();
 	schedule_proc();
-   mqtt_proc();//lte ,mqtt and ota
-   modbus_proc();//machine control
+ //  mqtt_proc();//lte ,mqtt and ota
+    modbus_proc_sec();
+  // modbus_proc();//machine control
    dev_ctrl();
   //modbus_test();
   // control_proc();

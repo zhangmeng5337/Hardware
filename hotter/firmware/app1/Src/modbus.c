@@ -22,21 +22,21 @@ modbus_pump_cmd_stru  modbus_cmd_list[] =
     //    {0x00, MODBUS_READ_CMD, 0x0006, 1, {0, 1, 2}, TRUE, FALSE, 0, 0},//
     //    {0x00, MODBUS_READ_CMD, 0x401e, 2, {0, 1, 2}, TRUE, FALSE, 0, 0}//zhengtai
 
-    {0x00, MODBUS_WRITE_ONE_CMD, CONTROLLER_REG, 2, {0, 1, 2}, TRUE, FALSE, 0, 0},//0
-    {0x00, MODBUS_WRITE_ONE_CMD, TEMPERATURE_REG, 2, {0, 1, 2}, TRUE, FALSE, 0, 0},//1
+    {0x00, MODBUS_WRITE_ONE_CMD, CONTROLLER_REG, 2, {0, 1, 2}, 50, 0, 0},//0
+    {0x00, MODBUS_WRITE_ONE_CMD, TEMPERATURE_REG, 2, {0, 1, 2}, 50, 0, 0},//1
     //******************air pump*********************************
-    {0x00, MODBUS_READ_CMD, 0x0000, 0x000b, {0, 1, 2}, TRUE, TRUE, 0, 0},//2
-    {0x00, MODBUS_READ_CMD, 0x0028, 9, {0, 1, 2}, TRUE, FALSE, 0, 0},//3
-    {0x00, MODBUS_READ_CMD, 0x0040, 72, {0, 1, 2}, TRUE, FALSE, 0, 0},//4
+    {0x00, MODBUS_READ_CMD, 0x0000, 0x000b, {0, 1, 2}, 50, 0, 0},//2
+    {0x00, MODBUS_READ_CMD, 0x0028, 9, {0, 1, 2}, 50, 0, 0},//3
+    {0x00, MODBUS_READ_CMD, 0x0040, 72, {0, 1, 2}, 200, 0, 0},//4
     //*******************power energy************************************
-    {0x00, MODBUS_READ_CMD, 0x700, 26, {0, 1, 2}, TRUE, FALSE, 0, 0},//delixi 5
-    {0x00, MODBUS_READ_CMD, 0x73c, 2, {0, 1, 2}, TRUE, FALSE, 0, 0},//delixi 6
+    {0x00, MODBUS_READ_CMD, 0x700, 26, {0, 1, 2}, 100, 0, 0},//delixi 5
+    {0x00, MODBUS_READ_CMD, 0x73c, 2, {0, 1, 2}, 50, 0, 0},//delixi 6
 
-    {0x00, MODBUS_READ_CMD, 0x0006, 2, {0, 1, 2}, TRUE, FALSE, 0, 0},//zhengtai 7
-    {0x00, MODBUS_READ_CMD, 0x2000, 26, {0, 1, 2}, TRUE, FALSE, 0, 0},//zhengtai 8
-    {0x00, MODBUS_READ_CMD, 0x401e, 2, {0, 1, 2}, TRUE, FALSE, 0, 0},//zhengtai 9
+    {0x00, MODBUS_READ_CMD, 0x0006, 2, {0, 1, 2}, 50, 0, 0},//zhengtai 7
+    {0x00, MODBUS_READ_CMD, 0x2000, 26, {0, 1, 2}, 100, 0, 0},//zhengtai 8
+    {0x00, MODBUS_READ_CMD, 0x401e, 2, {0, 1, 2}, 50, 0, 0},//zhengtai 9
 
-    {0x00, MODBUS_WRITE_ONE_CMD, 0x401e, 2, {0, 1, 2}, TRUE, FALSE, 0, 0}//zhengtai 10
+    {0x00, MODBUS_WRITE_ONE_CMD, 0x401e, 2, {0, 1, 2}, 50, 0, 0}//zhengtai 10
 
 
 };
@@ -56,40 +56,40 @@ unsigned int modbus_read_reg_len[2] = {8, 72};
 //modbus_pump_pack_tx modbus_pump_pack;
 
 void analy_modbus_recv(void);
-void cmd_enable(unsigned char index, unsigned char status)
-{
-    unsigned char i;
-    for (i = 0; i < CMD_SIZE; i++)
-    {
-        if (i != index)
-        {
-            cmd_list.pb[i].enable = 0;
-        }
+//void cmd_enable(unsigned char index, unsigned char status)
+//{
+//    unsigned char i;
+//    for (i = 0; i < CMD_SIZE; i++)
+//    {
+//        if (i != index)
+//        {
+//            cmd_list.pb[i].enable = 0;
+//        }
 
-        else
-        {
+//        else
+//        {
 
-            cmd_list.pb[i].enable = 1;
+//            cmd_list.pb[i].enable = 1;
 
-        }
-        if (status == 0)
-            cmd_list.pb[i].status = 0;
+//        }
+//        if (status == 0)
+//            cmd_list.pb[i].status = 0;
 
-    }
-}
-void cmd_disable(unsigned char index)
-{
-    unsigned char i;
-    for (i = 0; i < CMD_SIZE; i++)
-    {
-        if (i == index)
-        {
+//    }
+//}
+//void cmd_disable(unsigned char index)
+//{
+//    unsigned char i;
+//    for (i = 0; i < CMD_SIZE; i++)
+//    {
+//        if (i == index)
+//        {
 
-            cmd_list.pb[i].enable = 0;
+//            cmd_list.pb[i].enable = 0;
 
-        }
-    }
-}
+//        }
+//    }
+//}
 
 void modbus_init()
 {
@@ -101,6 +101,7 @@ void modbus_init()
     cmd_list.pb = modbus_cmd_list;
     cmd_enable(PWR_INDEX, 0);
     *get_power() = 10;
+	cmd_list.dev_max_addr =   get_config()->dev_size;
 
 }
 modbus_stru *get_recv_machine()
@@ -854,7 +855,7 @@ void modbus_proc_poll()
     {
         if (modbus_tx.ctrl_mode == 0) //global ctrl
         {
-            if (cmd_list.cmd_seq < CMD_SIZE && cmd_list.pb[cmd_list.cmd_seq].enable == 1)
+            if (cmd_list.cmd_seq <= CMD_SIZE )
             {
                 if (cmd_list.retry_count > 0)
                 {
@@ -895,47 +896,47 @@ void modbus_proc_poll()
                     }
 
                 }
-                else
-                {
-                    cmd_list.retry_count = RETRY_COUNT;
-                    if (cmd_list.addr <  get_config()->dev_size_tmp)
-                    {
-                        cmd_list.addr++;
-                    }
-                    else
-                    {
-                        cmd_list.addr = 0;
-
-                        cmd_list.pb[cmd_list.cmd_seq].status = 2;
-                        cmd_list.cmd_seq ++ ;
-                        //if(cmd_list.cmd_seq>=CMD_SIZE)
-                        //  cmd_list.pb[cmd_list.cmd_seq].status = 1;
-
-                    }
-
-
-                }
+//                else
+//                {
+//                    cmd_list.retry_count = RETRY_COUNT;
+//                    if (cmd_list.addr <  get_config()->dev_size_tmp)
+//                    {
+//                        cmd_list.addr++;
+//                    }
+//                    else
+//                    {
+//                        cmd_list.addr = 0;
+//
+//                        cmd_list.pb[cmd_list.cmd_seq].status = 2;
+//                        cmd_list.cmd_seq ++ ;
+//                        //if(cmd_list.cmd_seq>=CMD_SIZE)
+//                        //  cmd_list.pb[cmd_list.cmd_seq].status = 1;
+//
+//                    }
+//
+//
+//                }
 
 
             }
             else
             {
-                if (cmd_list.cmd_seq >= CMD_SIZE)
-                {
-                    cmd_list.retry_count = RETRY_COUNT;
-                    cmd_list.cmd_seq = 0;
-                    cmd_list.pb[cmd_list.cmd_seq].status = 1;
-
-
-                }
-                if (cmd_list.pb[cmd_list.cmd_seq].enable == 0 && cmd_list.cmd_seq < CMD_SIZE)
-                {
-                    cmd_list.retry_count = RETRY_COUNT;
-                    cmd_list.pb[cmd_list.cmd_seq].status = 2;
-                    cmd_list.cmd_seq ++;
-                    //cmd_list.pb[cmd_list.cmd_seq].status = 1;
-
-                }
+//                if (cmd_list.cmd_seq >= CMD_SIZE)
+//                {
+//                    cmd_list.retry_count = RETRY_COUNT;
+//                    cmd_list.cmd_seq = 0;
+//                    cmd_list.pb[cmd_list.cmd_seq].status = 1;
+//
+//
+//                }
+//                if (cmd_list.pb[cmd_list.cmd_seq].enable == 0 && cmd_list.cmd_seq < CMD_SIZE)
+//                {
+//                    cmd_list.retry_count = RETRY_COUNT;
+//                    cmd_list.pb[cmd_list.cmd_seq].status = 2;
+//                    cmd_list.cmd_seq ++;
+//                    //cmd_list.pb[cmd_list.cmd_seq].status = 1;
+//
+//                }
 
 
             }
@@ -1048,47 +1049,47 @@ void modbus_data_pack(unsigned char pack_num)
 
 
 }
-unsigned char cmd_proc(unsigned char num, unsigned char addr)
-{
-    unsigned char i;
-    unsigned char result;
-    result = 0;
-    for (i = 0; i < CMD_SIZE; i++)
-    {
-        if (num == i)
-            break;
-    }
-    if (i == CMD_SIZE)
-        result = 0;
-    else
-    {
-        modbus_data_pack(num);
-        cmd_enable(num, 1);
-        if (cmd_list.pb[num].status == 0)
-        {
-            cmd_list.pb[num].status = 1;
-            cmd_list.retry_count = RETRY_COUNT;
-            cmd_list.cmd_seq = num;
-            cmd_list.addr = addr;
-
-        }
-
-        else  if (cmd_list.pb[num].status == 2)
-        {
-            cmd_disable(num);
-
-            for (i = num; i < CMD_SIZE; i++)
-                cmd_list.pb[num].status = 0;
-            // cmd_list.cmd_seq = num;
-            result = 1;
-        }
-
-        modbus_proc_poll();//
-
-    }
-
-    return result;
-}
+//unsigned char cmd_proc(unsigned char num, unsigned char addr)
+//{
+//    unsigned char i;
+//    unsigned char result;
+//    result = 0;
+//    for (i = 0; i < CMD_SIZE; i++)
+//    {
+//        if (num == i)
+//            break;
+//    }
+//    if (i == CMD_SIZE)
+//        result = 0;
+//    else
+//    {
+//        modbus_data_pack(num);
+//        cmd_enable(num, 1);
+//        if (cmd_list.pb[num].status == 0)
+//        {
+//            cmd_list.pb[num].status = 1;
+//            cmd_list.retry_count = RETRY_COUNT;
+//            cmd_list.cmd_seq = num;
+//            cmd_list.addr = addr;
+//
+//        }
+//
+//        else  if (cmd_list.pb[num].status == 2)
+//        {
+//            cmd_disable(num);
+//
+//            for (i = num; i < CMD_SIZE; i++)
+//                cmd_list.pb[num].status = 0;
+//            // cmd_list.cmd_seq = num;
+//            result = 1;
+//        }
+//
+//        modbus_proc_poll();//
+//
+//    }
+//
+//    return result;
+//}
 void dev_tick_task()
 {
     switch (cmd_list.devState)
@@ -1199,23 +1200,25 @@ void dev_poll_proc(void)
             if (cmd_list.retry_count == 0)
             {
                 cmd_list.retry_count = RETRY_COUNT;
-                if ((cmd_list.cmd_seq - cmd_list.start_cmd + 1) <= PUMP_RCMD_SIZE)
+                if ((cmd_list.cmd_seq - cmd_list.start_cmd + 1) < PUMP_RCMD_SIZE)
                 {
                     cmd_list.cmd_seq++;
                 }
                 else
                 {
-                    cmd_list.cmd_seq = cmd_list.start_cmd;
+                    
                     //cmd_list.addr ++;
                     if (cmd_list.addr < cmd_list.dev_max_addr)
                     {
                         cmd_list.addr++;
+											  cmd_list.cmd_seq = cmd_list.start_cmd;
                     }
                     else
                     {
                         cmd_list.devtype = POWER_ENERGY;
                         cmd_list.start_cmd = ENERGY_CMD_START;
                         cmd_list.addr = ENERGY_SADDR;
+											  cmd_list.cmd_seq = cmd_list.start_cmd;
                     }
                 }
 
@@ -1228,16 +1231,17 @@ void dev_poll_proc(void)
             if (cmd_list.retry_count == 0)
             {
                 cmd_list.retry_count = RETRY_COUNT;
-                if ((cmd_list.cmd_seq - cmd_list.start_cmd + 1) <= ENERGY_CMD_SIZE)
+                if ((cmd_list.cmd_seq - cmd_list.start_cmd + 1) < ENERGY_CMD_SIZE)
                 {
                     cmd_list.cmd_seq++;
                 }
                 else
                 {
-                    cmd_list.cmd_seq = cmd_list.start_cmd;
+                   
                     //cmd_list.addr ++;
-                    if (cmd_list.addr < cmd_list.dev_max_addr)
-                    {
+                    if (cmd_list.addr < (get_config()->energy_size+ENERGY_SADDR))
+                    { 
+						cmd_list.cmd_seq = cmd_list.start_cmd;
                         cmd_list.addr++;
                     }
                     else
@@ -1245,6 +1249,7 @@ void dev_poll_proc(void)
                         cmd_list.devtype = PUMP;
                         cmd_list.start_cmd = PUMP_CMD_START;
                         cmd_list.addr = PUMP_SADDR;
+					   cmd_list.cmd_seq = cmd_list.start_cmd;
                     }
                 }
 
@@ -1262,16 +1267,17 @@ void dev_poll_proc(void)
             if (cmd_list.retry_count == 0)
             {
                 cmd_list.retry_count = RETRY_COUNT;
-                if ((cmd_list.cmd_seq - cmd_list.start_cmd + 1) <= PUMP_WCMD_SIZE)
+                if ((cmd_list.cmd_seq - cmd_list.start_cmd + 1) <PUMP_WCMD_SIZE)
                 {
                     cmd_list.cmd_seq++;
                 }
                 else
                 {
-                    cmd_list.cmd_seq = cmd_list.start_cmd;
+                   
                     //cmd_list.addr ++;
                     if (cmd_list.addr < cmd_list.dev_max_addr)
-                    {
+                    { 
+                        cmd_list.cmd_seq = cmd_list.start_cmd;
                         cmd_list.addr++;
                     }
                     else
@@ -1280,6 +1286,7 @@ void dev_poll_proc(void)
                         cmd_list.start_cmd = PUMP_CMD_START;
                         cmd_list.addr = PUMP_SADDR;
                         cmd_list.wr = 0;
+						cmd_list.cmd_seq = cmd_list.start_cmd;
                     }
                 }
 
@@ -1319,6 +1326,9 @@ void dev_poll_proc(void)
 
 void modbus_proc_sec(void)
 {
+
+	get_config()->connectTimeOut = 10;
+
     if ((get_uart_recv(RS485_No)->recv_update == 0
             &&  get_mqtt_status() == AT_MPUB_RECV) || get_config()->connectTimeOut >= 10)
     {
@@ -1430,7 +1440,7 @@ void modbus_proc()
             }
             else
             {
-                cmd_list.pb[PWR_INDEX].status = 0;
+                //cmd_list.pb[PWR_INDEX].status = 0;
                 modbus_tx.update = 0;
                 get_config()->update_setting = 0;
 
@@ -1451,7 +1461,7 @@ void modbus_proc()
             else  //read dev
             {
                 flag = 0;
-                cmd_list.pb[PID_INDEX].status = 0;
+                //cmd_list.pb[PID_INDEX].status = 0;
                 if (get_config()->mode != OFF_MODE)
                 {
                     cmd_list.state = PID_INDEX;

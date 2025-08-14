@@ -97,6 +97,14 @@ void config_init()
 		else
         get_config()->dev_size = head;			
 		index = index + 1;
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)&head, 1);
+		if(head>=10)
+        get_config()->energy_size = ENERGY_SIZE;
+		else
+        get_config()->energy_size = head;			
+		index = index + 1;
+
+		
         ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
 		index = index + 4;
 		get_config()->set_up_period = uint32Tofloat(buf);
@@ -160,6 +168,7 @@ void config_init()
         get_config()->mode = OFF_MODE;
 		get_config()->instru_num = DELI;
         get_config()->dev_size = DEV_SIZE;
+        get_config()->energy_size = ENERGY_SIZE;
 
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;

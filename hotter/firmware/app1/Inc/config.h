@@ -50,6 +50,7 @@ typedef struct
     unsigned char instru_num;
     unsigned char mode;// 1---smart  2----native no need net 4---customer 3ctrl schedule temp
     unsigned char dev_size;
+	unsigned char energy_size;
 	unsigned char dev_size_tmp;
     unsigned char ai_config[32];
     unsigned char ao_config[1];

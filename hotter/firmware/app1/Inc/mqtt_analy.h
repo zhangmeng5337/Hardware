@@ -54,6 +54,7 @@ void mqtt_recv_proc(void);
 void mqtt_proc(void);
 void mqtt_init(void);
 unsigned char get_mqtt_status(void);
+void json_upload(void);
 
 #endif
 

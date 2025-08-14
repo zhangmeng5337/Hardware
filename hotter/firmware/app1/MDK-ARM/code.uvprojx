@@ -7238,8 +7238,8 @@
           <targetInfo name="bootloader"/>
         </targetInfos>
       </component>
-      <component Cclass="Data Exchange" Cgroup="JSON" Csub="Jansson" Cvendor="digip" Cversion="2.7.1">
-        <package name="Jansson" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="digip" version="2.7.1-Beta1"/>
+      <component Cclass="Data Exchange" Cgroup="JSON" Csub="Jansson" Cvendor="Keil" Cversion="2.7.0" condition="ARMCC">
+        <package license="doc\license.txt" name="Jansson" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.0"/>
         <targetInfos>
           <targetInfo name="app1"/>
           <targetInfo name="app2"/>
@@ -7251,8 +7251,8 @@
     <files>
       <file attr="config" category="source" name="src\jansson_config.c" version="2.7.0">
         <instance index="0">RTE\Data_Exchange\jansson_config.c</instance>
-        <component Cclass="Data Exchange" Cgroup="JSON" Csub="Jansson" Cvendor="digip" Cversion="2.7.1"/>
-        <package name="Jansson" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="digip" version="2.7.1-Beta1"/>
+        <component Cclass="Data Exchange" Cgroup="JSON" Csub="Jansson" Cvendor="Keil" Cversion="2.7.0" condition="ARMCC"/>
+        <package license="doc\license.txt" name="Jansson" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.0"/>
         <targetInfos>
           <targetInfo name="app1"/>
           <targetInfo name="app2"/>

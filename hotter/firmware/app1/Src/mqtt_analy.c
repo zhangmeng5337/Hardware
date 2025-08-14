@@ -1955,7 +1955,8 @@ uint8_t mqtt_Info_Show(void)
             mqtt_at_cmds.net_status = SUCCESS_REC;
             if (status == SUCCESS_REC) //??AT
             {
-                anlysis_mqtt_recv();
+            json_para();
+                //anlysis_mqtt_recv();
             }
             else if (status == ERROR_STATUS)//????
             {
@@ -2003,7 +2004,8 @@ void mqtt_proc()
             if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
             {
                 reset_registerTick(MQTT_TX_TICK_NO);
-                upload();//????
+                //upload();//????
+                json_upload();
                 mqtt_Info_Show();
                 //free_cjson();
 

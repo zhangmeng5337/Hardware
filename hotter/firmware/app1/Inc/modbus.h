@@ -6,6 +6,7 @@
 //#define MODBUS_RETRY_COUNT          4
 #define CMD_SIZE		10-1
 #define DEV_SIZE   5
+#define ENERGY_SIZE   5
 
 //**********************dev type def*************
 #define PUMP			0
@@ -61,11 +62,13 @@ typedef struct
  unsigned int reg;
  unsigned int regCount;
  unsigned char payload[32]; 
+unsigned int timout;
 
- unsigned char enable;// tx  poll by cpu
- unsigned char status;//to be tx 
+// unsigned char enable;// tx  poll by cpu
+// unsigned char status;//to be tx 
  unsigned int crc; 
- unsigned char last_reg; 
+ unsigned char last_reg;
+ 
 }modbus_pump_cmd_stru;
 typedef struct 
 {
@@ -115,6 +118,7 @@ modbus_stru *get_tx_machine(void);
 void modbus_test(void);
 
 void get_cmd_list(unsigned char *buf);
+void modbus_proc_sec(void);
 
 #endif
 
