@@ -849,7 +849,7 @@ void modbus_proc_poll()
     if (get_config()->mode == OFF_MODE)
         registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME_LONG);
     else
-        registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME);
+        registerTick(MODBUS_TX_TICK_NO,  modbus_cmd_list[cmd_list.cmd_seq].timout);
 
     if (GetTickResult(MODBUS_TX_TICK_NO) == 1)
     {
@@ -975,7 +975,7 @@ void modbus_proc_poll()
         if (get_config()->mode == OFF_MODE)
             registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME_LONG);
         else
-            registerTick(MODBUS_TX_TICK_NO, MODBUS_TX_TIME);
+            registerTick(MODBUS_TX_TICK_NO,   modbus_cmd_list[cmd_list.cmd_seq].timout);
 
 
     }
@@ -1327,7 +1327,7 @@ void dev_poll_proc(void)
 void modbus_proc_sec(void)
 {
 
-    get_config()->connectTimeOut = 10;
+   // get_config()->connectTimeOut = 10;
 
     if ((get_uart_recv(RS485_No)->recv_update == 0
             &&  get_mqtt_status() == AT_MPUB_RECV) || get_config()->connectTimeOut >= 10)

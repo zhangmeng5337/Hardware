@@ -284,7 +284,7 @@ ai0 4 3 2 1---->ai5 1 2 3 4
 		 tmp1 = -65;
 	 if (tmp1 > MAX_TEMP)
 		 tmp1 = 110;
-	data_ai.temp[data_ai.pt_index_conv[index]] = tmp1;
+	data_ai.temp[data_ai.pt_index_conv[index]-1] = tmp1;
 
 
     }
