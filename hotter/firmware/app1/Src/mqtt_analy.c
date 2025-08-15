@@ -115,7 +115,7 @@ void jsson_pack(unsigned char mqtt_packNum)
             addr = json_object();
 
             arrary_value = json_array();
-            emeterData = json_object();
+            emeterData = json_array();
             array_tmp = json_array();
 
             k = 0;
@@ -136,14 +136,14 @@ void jsson_pack(unsigned char mqtt_packNum)
                     json_object_set_new(addr, "data", array_tmp);
 					out2 = json_dumps(addr, JSON_REAL_PRECISION(6));
 
-                    json_array_insert_new(arrary_value, k, addr);
-					out2 = json_dumps(arrary_value, JSON_REAL_PRECISION(6));
+                    json_array_insert_new(emeterData, k, addr);
+					out2 = json_dumps(emeterData, JSON_REAL_PRECISION(6));
                     k++;
                     //json_array_append_new(emeterData, array_tmp);
                     
                 }
             }
-			json_object_set_new(root, "emeterData", arrary_value);
+			json_object_set_new(root, "emeterData", emeterData);
 			out2 = json_dumps(root, JSON_REAL_PRECISION(6));
 
             break;
