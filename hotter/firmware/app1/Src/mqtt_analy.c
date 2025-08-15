@@ -226,19 +226,20 @@ void jsson_pack(unsigned char mqtt_packNum)
 
                     
                     json_object_set_new(addr, "data", arrary_value);
-                    json_array_insert_new(array_tmp, k, addr);
+                    json_array_insert_new(airpumpData, k, addr);
                     k++;
-                    json_array_append_new(airpumpData, array_tmp);
-                    json_object_set_new(root, "airpumpData", airpumpData);
+                   // json_array_append_new(airpumpData, array_tmp);
+                    
                 }
             }
+			   json_object_set_new(root, "airpumpData",airpumpData);
 
             break;
 
         default:
             break;
     }
-    out = json_dumps(root, JSON_REAL_PRECISION(6));
+    out = json_dumps(root, JSON_REAL_PRECISION(3));
     json_mqtt_send_buf = out;
 
     json_decref(arrary_value);
