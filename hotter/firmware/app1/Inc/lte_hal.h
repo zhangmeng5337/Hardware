@@ -3,7 +3,7 @@
 #include "main.h"
 #define LTE_SHORT_DELAY_MQTT  800
 #define LTE_SHORT_DELAY  50
-#define LTE_LONG_DELAY  200
+#define LTE_LONG_DELAY  800
 #define LTE_LONG_DELAY2  1000
 
 typedef enum
@@ -67,7 +67,9 @@ typedef enum
 
     //mqtt订阅消息接收
     AT_MPUB_RECV,
-    AT_MPUB
+    AT_MPUB,
+    AT_MPUBEX,
+    AT_MPUBEX2
 } teATCmdNum;
 
 

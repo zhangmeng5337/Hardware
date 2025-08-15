@@ -27,7 +27,7 @@
 
 #define UAPP3   3
 
-#define VERSION        "V1.0.245"
+#define VERSION        "V1.0.244"
 
 
 #define OTA_NUM_ADDR   0x801fff0

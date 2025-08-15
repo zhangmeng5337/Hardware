@@ -890,7 +890,7 @@ uint8_t lte_Info_Show(void)
         else
         {
             at_cmd_num = AT_IDLE;
-			get_config()->connectTimeOut = 0;
+			      get_config()->connectTimeOut = 0;
             at_cmd_ota_num = AT_HTTPPARA_2;
             at_cmds_ota.net_status = NET_CONNECT;
 

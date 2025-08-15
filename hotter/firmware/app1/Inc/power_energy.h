@@ -32,6 +32,8 @@ typedef struct
 void power_cal(unsigned char index,unsigned char *p);
 
 energylist_stru *get_energy_data(void);
+void energy_init(void);
+
 
 #endif
 

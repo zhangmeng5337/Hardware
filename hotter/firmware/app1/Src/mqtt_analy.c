@@ -35,7 +35,7 @@ mqtt_payload_stru mqtt_payload_u;
 
 json_t *root, *sensorSta, *emeterData, *airpumpData, *devParams;
 json_t *diSta, *aiSta, *doSta;
-char *out;
+char *out,*out2;
 void json_clear()
 {
     free(root);
@@ -52,7 +52,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 {
     json_t  *addr, *tmp, *array_tmp;
     json_t *arrary_value;
-	unsigned char k;
+    unsigned char k;
     /* Build an empty JSON object */
     root = json_object();
     json_object_set_new(root, "devid", json_string(get_config()->user_id));
@@ -76,7 +76,8 @@ void jsson_pack(unsigned char mqtt_packNum)
             }
             for (i = AI_SIZE_T; i < (AI_SIZE_T + AI_SIZE_P); i++)
             {
-                json_object_set_new(arrary_value, "arrary_value", json_real(get_ai_data()->press[i - AI_SIZE_T]));
+                json_object_set_new(arrary_value, "arrary_value",
+                                    json_real(get_ai_data()->press[i - AI_SIZE_T]));
                 json_array_insert_new(aiSta, i, arrary_value);
 
             }
@@ -90,9 +91,11 @@ void jsson_pack(unsigned char mqtt_packNum)
             //devdevParams
             json_object_set_new(devParams, "ver", json_string(get_config()->version));
             json_object_set_new(devParams, "setOT", json_integer(get_config()->set_tout));
-            json_object_set_new(devParams, "setIT", json_integer(get_config()->set_tindoor));
+            json_object_set_new(devParams, "setIT",
+                                json_integer(get_config()->set_tindoor));
             json_object_set_new(devParams, "mode", json_integer(get_config()->mode));
-            json_object_set_new(devParams, "upt", json_integer(get_config()->set_up_period));
+            json_object_set_new(devParams, "upt",
+                                json_integer(get_config()->set_up_period));
             unsigned char buf2[128];
             buf2[i++] = getRtcDate()->Year;
             buf2[i++] = getRtcDate()->Month;
@@ -103,7 +106,7 @@ void jsson_pack(unsigned char mqtt_packNum)
             buf2[i++] = getRtcTime()->Seconds;
             json_object_set_new(devParams, "time", json_string(buf2));
             json_object_set_new(root, "sensorSta", sensorSta);
-            json_object_set_new(root, "devParams", devParams);
+            //json_object_set_new(root, "devParams", devParams);
 
 
             break;
@@ -112,28 +115,36 @@ void jsson_pack(unsigned char mqtt_packNum)
             addr = json_object();
 
             arrary_value = json_array();
-            emeterData = json_array();
+            emeterData = json_object();
             array_tmp = json_array();
-            
+
             k = 0;
             for (i = 0; i < ENERGY_COUNT; i++)
             {
-                if (get_energy_data()->pb[i].addr != 0)
+               // if (get_energy_data()->pb[i].addr != 0)
                 {
-                    json_object_set_new(addr, "addr", json_integer(get_energy_data()->pb[i].addr));
+                 arrary_value = json_array();
+				 unsigned int tmp_addr;
+				 tmp_addr = get_energy_data()->pb[i].addr;
+                    json_object_set_new(addr, "addr", json_integer(tmp_addr));
                     for (j = 0; j < (ENERGY_BUF_SIZE - 2); j++)
                     {
                         tmp = json_real(get_energy_data()->pb[i].payload[j]);
                         json_array_insert_new(arrary_value, j, tmp);
 
                     }
+					out2 = json_dumps(addr, JSON_REAL_PRECISION(6));
                     json_object_set_new(addr, "data", arrary_value);
+					free(arrary_value);
                     json_array_insert_new(array_tmp, k, addr);
+					out2 = json_dumps(array_tmp, JSON_REAL_PRECISION(6));
                     k++;
-                    json_array_append_new(emeterData, array_tmp);
-                    json_object_set_new(root, "emeterData", emeterData);
+                    //json_array_append_new(emeterData, array_tmp);
+                    
                 }
             }
+			json_object_set_new(root, "emeterData", array_tmp);
+			out2 = json_dumps(root, JSON_REAL_PRECISION(6));
 
             break;
         case 2:
@@ -606,7 +617,7 @@ void json_para()
 
     memset(mqtt_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
 
-    //	json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
+    //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
 
 
 }
@@ -1368,7 +1379,8 @@ void upload()
         mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tout;
     else
         mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor;
-    mqtt_payload_u.data[WATER_IN_INDEX] = get_ai_data()->temp[get_config()->tin_index];
+    mqtt_payload_u.data[WATER_IN_INDEX] =
+        get_ai_data()->temp[get_config()->tin_index];
     //get_config()->set_tindoor; //set indoor tmp
     mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
     if (mqtt_payload_u.data[WATER_O_INDEX] >= 1000)
@@ -1744,6 +1756,273 @@ unsigned char get_mqtt_status(void)
 {
     return mqtt_at_cmd_num;
 }
+uint8_t mqtt_Json_Info_Show(void)
+{
+    //    static unsigned char msub_count = 0;
+
+    unsigned char buf[2048];
+    memset(buf, 0, 2048);
+    switch (mqtt_at_cmd_num)
+    {
+        case AT_MCONFIG:
+        {
+            sprintf(buf, "AT+MCONFIG=%s,%s,%s\0D\0A",
+                    get_config()->user_id, get_config()->user, get_config()->password);
+            if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MIPSTART;
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
+        }
+        break;
+        case AT_MIPCLOSE:
+        {
+            sprintf(buf, "AT+MIPCLOSE\r\n");
+            if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MIPSTART;
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
+        }
+        case AT_MIPSTART:
+        {
+            sprintf(buf, "AT+MIPSTART=\"%s\",\"%s\"\r\n", get_config()->mqtt_ip,
+                    get_config()->mqtt_port);
+            if (lte_Send_Cmd(buf, "CONNECT", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MCONNECT;
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
+        }
+        break;
+        case AT_MCONNECT:
+        {
+            if (lte_Send_Cmd("AT+MCONNECT=1,3000\r\n", "CONNACK OK",
+                             LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MSUB;
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
+        }
+        break;
+
+        case AT_MSUB:////subscribe msg
+        {
+            //dev_sub_temp_
+            //            unsigned char str[128];
+            // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+            sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_ctrl_", get_config()->user_id,
+                    0);
+            if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MSUB_2;
+            }
+
+        }
+        //case AT_MSUB_1:////subscribe msg
+        //{
+        //  //dev_sub_temp_
+        //  //            unsigned char str[128];
+        //  // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+        //  sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "sensor_pub_083a8d40fa8e",0);
+        //  if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+        //  {
+        //      mqtt_at_cmd_num = AT_MIPCLOSE;
+        //  }
+        //  else
+        //  {
+        //
+        //      mqtt_at_cmds.RtyNum = 0;
+        //      mqtt_at_cmd_num = AT_MSUB_2;
+        //  }
+        //
+        //}
+
+        //    case AT_MSUB_1:////subscribe msg
+        //    {
+        //        //dev_sub_temp_
+        //        //            unsigned char str[128];
+        //        // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+        //        sprintf(buf, "AT+MSUB=\"%s%s\",%d\r\n", "dev_sub_temp_", get_config()->user_id,
+        //                0);
+        //        if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+        //        {
+        //            mqtt_at_cmd_num = AT_MIPCLOSE;
+        //        }
+        //        else
+        //        {
+        //
+        //            mqtt_at_cmds.RtyNum = 0;
+        //            mqtt_at_cmd_num = AT_MSUB_2;
+        //        }
+        //
+        //    }
+        case AT_MSUB_2:////subscribe msg
+        {
+            //dev_sub_temp_
+            //            unsigned char str[128];
+            // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+            sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "dev_sub_ctrl_all", 0);
+            if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MSUB_3;
+            }
+
+        }
+
+        break;
+        case AT_MSUB_3:////subscribe msg
+        {
+            //dev_sub_temp_
+            //            unsigned char str[128];
+            // memcpy(str,&get_config()->sub_sring[1][0],strlen(&get_config()->sub_sring[1][0]));
+            sprintf(buf, "AT+MSUB=\"%s\",%d\r\n", "timestamp", 0);
+            if (lte_Send_Cmd(buf, "SUBACK", LTE_SHORT_DELAY_MQTT)) //??AT
+            {
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+            }
+            else
+            {
+
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MPUB_RECV;
+            }
+
+        }
+
+        break;
+
+        case AT_MPUB://public msg
+        {
+            unsigned int len;
+            len = strlen(json_mqtt_send_buf);
+            sprintf(buf, "AT+MPUBEX=\"%s%s\",%d,%d,%d\r\n", get_config()->mqtt_mpubtopic,
+                    get_config()->user_id,
+                    1, 0, len);
+            //lte_Send_Cmd_mqtt(1,buf, "PUBACK", LTE_LONG_DELAY)
+            if (lte_Send_Cmd(buf, ">", LTE_LONG_DELAY)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+                mqtt_at_cmd_num = AT_MIPCLOSE;
+                mqtt_payload_u.mqtt_state = MQTT_READY;
+                json_clear();
+            }
+            else
+            {
+                //mqtt_init();
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MPUBEX;
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
+        }
+        break;
+        case AT_MPUBEX://public msg
+        {
+            //lte_Send_Cmd_mqtt(1,buf, "PUBACK", LTE_LONG_DELAY)
+            if (lte_Send_Cmd(json_mqtt_send_buf, "OK", LTE_LONG_DELAY)) //??AT
+            {
+                mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
+                mqtt_at_cmd_num = AT_MPUBEX2;
+                //json_clear();
+            }
+            else
+            {
+                //mqtt_init();
+                mqtt_at_cmds.RtyNum = 0;
+                mqtt_at_cmd_num = AT_MPUB_RECV;
+                mqtt_payload_u.mqtt_state = MQTT_READY;
+                json_clear();
+
+                //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
+            }
+
+        }
+        break;
+        case AT_MPUBEX2://public msg
+        {
+            mqtt_at_cmd_num = AT_MIPCLOSE;
+            mqtt_payload_u.mqtt_state = MQTT_READY;
+            json_clear();
+        }
+        break;
+
+        case AT_MPUB_RECV://????
+        {
+
+            unsigned char status;
+            status  = ATRec("+MSUB:");
+            mqtt_at_cmds.net_status = SUCCESS_REC;
+            if (status == SUCCESS_REC) //??AT
+            {
+                json_para();
+                //anlysis_mqtt_recv();
+            }
+            else if (status == ERROR_STATUS)//????
+            {
+                mqtt_init();
+            }
+        }
+        break;
+
+        default:
+        {
+            CAT1_Init();
+        }
+        break;
+
+
+    }
+    if (mqtt_at_cmds.RtyNum >= 10)
+    {
+        CAT1_Init();
+        mqtt_at_cmds.net_status = TIME_OUT;
+
+    }
+
+    return mqtt_at_cmds.net_status;
+}
+
 uint8_t mqtt_Info_Show(void)
 {
     //    static unsigned char msub_count = 0;
@@ -1955,7 +2234,7 @@ uint8_t mqtt_Info_Show(void)
             mqtt_at_cmds.net_status = SUCCESS_REC;
             if (status == SUCCESS_REC) //??AT
             {
-            json_para();
+                json_para();
                 //anlysis_mqtt_recv();
             }
             else if (status == ERROR_STATUS)//????
@@ -1990,7 +2269,7 @@ void mqtt_proc()
     //free_cjson();
     if (lte_Info_Show() == NET_CONNECT) //????
     {
-        if (mqtt_Info_Show() == SUCCESS_REC) //mqtt??????
+        if ( mqtt_Json_Info_Show() == SUCCESS_REC) //mqtt??????
         {
             if (get_config()->set_up_period > 0 && get_config()->set_up_period < 3600)
             {
@@ -2006,7 +2285,7 @@ void mqtt_proc()
                 reset_registerTick(MQTT_TX_TICK_NO);
                 //upload();//????
                 json_upload();
-                mqtt_Info_Show();
+                mqtt_Json_Info_Show();
                 //free_cjson();
 
             }
@@ -2017,7 +2296,8 @@ void mqtt_proc()
     else //???????,????????
     {
         registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1 && get_config()->connectTimeOut >= 10) //180s
+        if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1
+                && get_config()->connectTimeOut >= 10) //180s
         {
             //   reset_registerTick(MODBUS_TEMP_TX_TICK_NO);
 #if CTRL_EN

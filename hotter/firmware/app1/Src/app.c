@@ -16,6 +16,7 @@
 #include "schedule.h"
 #include "update.h"
 #include "FuzzyPID.h"
+#include "power_energy.h"
 
 
 
@@ -39,6 +40,7 @@ void hardware_init()
 	 fuzzy_init();
 	 modbus_init();
  mqtt_init();
+	energy_init();
 
 	//ads_init();
 }

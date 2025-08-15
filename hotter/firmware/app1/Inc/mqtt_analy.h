@@ -4,7 +4,7 @@
 
 #define MQTT_READY 0
 #define MQTT_BUSY  1
-#define MAX_STEP 5
+#define MAX_STEP 3
 
 //data
 #define UPDATE_INDEX		0
