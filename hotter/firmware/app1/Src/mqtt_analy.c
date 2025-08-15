@@ -35,7 +35,7 @@ mqtt_payload_stru mqtt_payload_u;
 
 json_t *root, *sensorSta, *emeterData, *airpumpData, *devParams;
 json_t *diSta, *aiSta, *doSta;
-char *out,*out2;
+char *out, *out2;
 void json_clear()
 {
     free(root);
@@ -111,40 +111,39 @@ void jsson_pack(unsigned char mqtt_packNum)
 
             break;
         case 1:
-
-            addr = json_object();
-
-            arrary_value = json_array();
             emeterData = json_array();
-            array_tmp = json_array();
-
             k = 0;
             for (i = 0; i < ENERGY_COUNT; i++)
             {
-               // if (get_energy_data()->pb[i].addr != 0)
+                // if (get_energy_data()->pb[i].addr != 0)
                 {
-                 arrary_value = json_array();
-				 unsigned int tmp_addr;
-				 tmp_addr = get_energy_data()->pb[i].addr;
+                    addr = json_object();
+                    arrary_value = json_array();
+                    array_tmp = json_array();
+                    addr = json_object();
+                    arrary_value = json_array();
+                    unsigned int tmp_addr;
+                    tmp_addr = get_energy_data()->pb[i].addr;
                     json_object_set_new(addr, "addr", json_integer(tmp_addr));
                     for (j = 0; j < (ENERGY_BUF_SIZE - 2); j++)
                     {
-                       json_array_insert_new(array_tmp, j, json_real(get_energy_data()->pb[i].payload[j]));
+                        json_array_insert_new(array_tmp, j,
+                                              json_real(get_energy_data()->pb[i].payload[j]));
 
                     }
-				
+
                     json_object_set_new(addr, "data", array_tmp);
-					out2 = json_dumps(addr, JSON_REAL_PRECISION(6));
+                    //out2 = json_dumps(addr, JSON_REAL_PRECISION(6));
 
                     json_array_insert_new(emeterData, k, addr);
-					out2 = json_dumps(emeterData, JSON_REAL_PRECISION(6));
+                   // out2 = json_dumps(emeterData, JSON_REAL_PRECISION(6));
                     k++;
                     //json_array_append_new(emeterData, array_tmp);
-                    
+
                 }
             }
-			json_object_set_new(root, "emeterData", emeterData);
-			out2 = json_dumps(root, JSON_REAL_PRECISION(6));
+            json_object_set_new(root, "emeterData", emeterData);
+           // out2 = json_dumps(root, JSON_REAL_PRECISION(6));
 
             break;
         case 2:
@@ -2262,7 +2261,7 @@ void mqtt_proc()
     //free_cjson();
     if (lte_Info_Show() == NET_CONNECT) //????
     {
-        if ( mqtt_Json_Info_Show() == SUCCESS_REC) //mqtt??????
+        if (mqtt_Json_Info_Show() == SUCCESS_REC)  //mqtt??????
         {
             if (get_config()->set_up_period > 0 && get_config()->set_up_period < 3600)
             {
