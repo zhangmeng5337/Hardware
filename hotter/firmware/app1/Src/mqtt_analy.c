@@ -207,38 +207,39 @@ void jsson_pack(unsigned char mqtt_packNum)
                     for (j = 1; j < STATUS1_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status[j]);
-                        json_array_insert_new(arrary_value, j+kl, tmp);
+                        json_array_insert_new(arrary_value, kl, tmp);
 						kl++;
 
                     }
                     for (j = 1; j < STATUS2_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status2[j]);
-                        json_array_insert_new(arrary_value, j+kl, tmp);kl++;
+                        json_array_insert_new(arrary_value, kl, tmp);kl++;
 
                     }
                     for (j = 1; j < STATUS3_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status3[j]);
-                        json_array_insert_new(arrary_value, j+kl, tmp);kl++;
+                        json_array_insert_new(arrary_value, kl, tmp);kl++;
 
                     }
 
                     
                     json_object_set_new(addr, "data", arrary_value);
-                    json_array_insert_new(array_tmp, k, addr);
+                    json_array_insert_new(airpumpData, k, addr);
                     k++;
-                    json_array_append_new(airpumpData, array_tmp);
-                    json_object_set_new(root, "airpumpData", airpumpData);
+                   // json_array_append_new(airpumpData, array_tmp);
+                    
                 }
             }
+			   json_object_set_new(root, "airpumpData",airpumpData);
 
             break;
 
         default:
             break;
     }
-    out = json_dumps(root, JSON_REAL_PRECISION(6));
+    out = json_dumps(root, JSON_REAL_PRECISION(3));
     json_mqtt_send_buf = out;
 
     json_decref(arrary_value);
