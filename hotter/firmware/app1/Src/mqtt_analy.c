@@ -129,21 +129,21 @@ void jsson_pack(unsigned char mqtt_packNum)
                     json_object_set_new(addr, "addr", json_integer(tmp_addr));
                     for (j = 0; j < (ENERGY_BUF_SIZE - 2); j++)
                     {
-                        tmp = json_real(get_energy_data()->pb[i].payload[j]);
-                        json_array_insert_new(arrary_value, j, tmp);
+                       json_array_insert_new(array_tmp, j, json_real(get_energy_data()->pb[i].payload[j]));
 
                     }
+				
+                    json_object_set_new(addr, "data", array_tmp);
 					out2 = json_dumps(addr, JSON_REAL_PRECISION(6));
-                    json_object_set_new(addr, "data", arrary_value);
-					free(arrary_value);
-                    json_array_insert_new(array_tmp, k, addr);
-					out2 = json_dumps(array_tmp, JSON_REAL_PRECISION(6));
+
+                    json_array_insert_new(arrary_value, k, addr);
+					out2 = json_dumps(arrary_value, JSON_REAL_PRECISION(6));
                     k++;
                     //json_array_append_new(emeterData, array_tmp);
                     
                 }
             }
-			json_object_set_new(root, "emeterData", array_tmp);
+			json_object_set_new(root, "emeterData", arrary_value);
 			out2 = json_dumps(root, JSON_REAL_PRECISION(6));
 
             break;
