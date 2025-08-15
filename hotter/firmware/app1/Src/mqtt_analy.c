@@ -207,20 +207,20 @@ void jsson_pack(unsigned char mqtt_packNum)
                     for (j = 1; j < STATUS1_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status[j]);
-                        json_array_insert_new(arrary_value, j+kl, tmp);
+                        json_array_insert_new(arrary_value, kl, tmp);
 						kl++;
 
                     }
                     for (j = 1; j < STATUS2_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status2[j]);
-                        json_array_insert_new(arrary_value, j+kl, tmp);kl++;
+                        json_array_insert_new(arrary_value, kl, tmp);kl++;
 
                     }
                     for (j = 1; j < STATUS3_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status3[j]);
-                        json_array_insert_new(arrary_value, j+kl, tmp);kl++;
+                        json_array_insert_new(arrary_value, kl, tmp);kl++;
 
                     }
 
