@@ -54,7 +54,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 {
     json_t  *addr, *tmp, *array_tmp;
     json_t *arrary_value;
-    unsigned int  k,kl;
+    unsigned int  k, kl;
     /* Build an empty JSON object */
     root = json_object();
     if (!root)
@@ -193,46 +193,72 @@ void jsson_pack(unsigned char mqtt_packNum)
 
 
             airpumpData = json_array();
-            k = 0;kl = 0;
-            for (i = 0; i < AIR_PUMP_SIZE; i++)
+            if (!airpumpData)
             {
-				addr = json_object();
-				arrary_value = json_array();
-				array_tmp = json_array();
 
-			
-               // if (get_hotter(i + 1)->status[0] != 0)
+                return ;
+            }
+
+            k = 0;
+           
+            for (i = 0; i < AIR_PUMP_SIZE; i++)
+            { kl = 0;
+                addr = json_object();
+                if (!addr)
                 {
-                    json_object_set_new(addr, "addr", json_integer(get_hotter(i + 1)->status[0]));
+
+                    return ;
+                }
+                arrary_value = json_array();
+                if (!arrary_value)
+                {
+
+                    return ;
+                }
+
+                array_tmp = json_array();
+                if (!array_tmp)
+                {
+
+                    return ;
+                }
+
+                // if (get_hotter(i + 1)->status[0] != 0)
+                {
+                    unsigned int tmp_addr;
+                    tmp_addr = (get_hotter(i)->status[0]);
+                    json_object_set_new(addr, "addr", json_integer(tmp_addr));
                     for (j = 1; j < STATUS1_SIZE; j++)
                     {
-                        tmp = json_real(get_hotter(i + 1)->status[j]);
+                        tmp = json_integer(get_hotter(i)->status[j]);
                         json_array_insert_new(arrary_value, kl, tmp);
-						kl++;
+                        kl++;
 
                     }
                     for (j = 1; j < STATUS2_SIZE; j++)
                     {
-                        tmp = json_real(get_hotter(i + 1)->status2[j]);
+                        tmp = json_integer(get_hotter(i)->status2[j]);
                         json_array_insert_new(arrary_value, kl, tmp);kl++;
 
                     }
                     for (j = 1; j < STATUS3_SIZE; j++)
                     {
-                        tmp = json_real(get_hotter(i + 1)->status3[j]);
+                        tmp = json_integer(get_hotter(i)->status3[j]);
                         json_array_insert_new(arrary_value, kl, tmp);kl++;
 
                     }
 
-                    
+
                     json_object_set_new(addr, "data", arrary_value);
                     json_array_insert_new(airpumpData, k, addr);
                     k++;
-                   // json_array_append_new(airpumpData, array_tmp);
-                    
+                    // json_array_append_new(airpumpData, array_tmp);
+
                 }
+                
             }
-			   json_object_set_new(root, "airpumpData",airpumpData);
+				json_object_set_new(root, "airpumpData", airpumpData);
+
 
             break;
 

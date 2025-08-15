@@ -4,7 +4,7 @@
 #define STATUS1_SIZE 23
 #define STATUS2_SIZE  17
 #define STATUS3_SIZE  143
-#define AIR_PUMP_SIZE  7
+#define AIR_PUMP_SIZE  3
 //控制板--->服务端(周期性上传)
 //{
 //    "Dev ID": "866289037465624",
