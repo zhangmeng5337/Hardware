@@ -313,14 +313,7 @@ void json_para()
         get_config()->update_setting = 1;
 
     }
-    reboot_obj = json_object_get(jsonbox, "smartMode");
-    if (reboot_obj != NULL)
-    {
 
-        get_config()->mode = SMART_MODE;
-        get_config()->update_setting = 1;
-
-    }
     reboot_obj = json_object_get(jsonbox, "dev_size");
     if (reboot_obj != NULL)
     {
