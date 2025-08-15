@@ -52,7 +52,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 {
     json_t  *addr, *tmp, *array_tmp;
     json_t *arrary_value;
-    unsigned char k;
+    unsigned int  k,kl;
     /* Build an empty JSON object */
     root = json_object();
     json_object_set_new(root, "devid", json_string(get_config()->user_id));
@@ -148,36 +148,40 @@ void jsson_pack(unsigned char mqtt_packNum)
             break;
         case 2:
 
-            addr = json_object();
-            arrary_value = json_array();
-            emeterData = json_array();
-            array_tmp = json_array();
-            k = 0;
+
+            airpumpData = json_array();
+            k = 0;kl = 0;
             for (i = 0; i < AIR_PUMP_SIZE; i++)
             {
-                if (get_hotter(i + 1)->status[0] != 0)
+				addr = json_object();
+				arrary_value = json_array();
+				array_tmp = json_array();
+
+			
+               // if (get_hotter(i + 1)->status[0] != 0)
                 {
                     json_object_set_new(addr, "addr", json_integer(get_hotter(i + 1)->status[0]));
                     for (j = 1; j < STATUS1_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status[j]);
-                        json_array_insert_new(arrary_value, j, tmp);
+                        json_array_insert_new(arrary_value, j+kl, tmp);
+						kl++;
 
                     }
                     for (j = 1; j < STATUS2_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status2[j]);
-                        json_array_insert_new(arrary_value, j, tmp);
+                        json_array_insert_new(arrary_value, j+kl, tmp);kl++;
 
                     }
                     for (j = 1; j < STATUS3_SIZE; j++)
                     {
                         tmp = json_real(get_hotter(i + 1)->status3[j]);
-                        json_array_insert_new(arrary_value, j, tmp);
+                        json_array_insert_new(arrary_value, j+kl, tmp);kl++;
 
                     }
 
-
+                    
                     json_object_set_new(addr, "data", arrary_value);
                     json_array_insert_new(array_tmp, k, addr);
                     k++;
@@ -619,7 +623,7 @@ void json_upload()
     {
         jsson_pack(mqtt_payload_u.process_step);
         mqtt_payload_u.mqtt_state = MQTT_BUSY;
-        if (mqtt_payload_u.process_step <= MAX_STEP)
+        if (mqtt_payload_u.process_step < MAX_STEP)
             mqtt_payload_u.process_step ++ ;
         else
             mqtt_payload_u.process_step = 0;
