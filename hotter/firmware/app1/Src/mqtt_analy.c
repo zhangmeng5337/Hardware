@@ -38,15 +38,17 @@ json_t *diSta, *aiSta, *doSta;
 char *out, *out2;
 void json_clear()
 {
-    free(root);
-    free(sensorSta);
-    free(emeterData);
-    free(airpumpData);
-    free(devParams);
-    free(out);
-    free(diSta);
-    free(aiSta);
-    free(doSta);
+
+    json_decref(root);
+    json_decref(sensorSta);
+    json_decref(emeterData);
+    json_decref(airpumpData);
+    json_decref(devParams);
+    json_decref(diSta);
+    json_decref(doSta);
+
+
+
 }
 void jsson_pack(unsigned char mqtt_packNum)
 {
@@ -55,6 +57,11 @@ void jsson_pack(unsigned char mqtt_packNum)
     unsigned char k;
     /* Build an empty JSON object */
     root = json_object();
+    if (!root)
+    {
+
+        return ;
+    }
     json_object_set_new(root, "devid", json_string(get_config()->user_id));
 
     switch (mqtt_packNum)
@@ -63,9 +70,20 @@ void jsson_pack(unsigned char mqtt_packNum)
             //sensorSta
             sensorSta = json_object();
 
+            if (!sensorSta)
+            {
+
+                return ;
+            }
 
             //ai
             aiSta = json_array();
+
+            if (!aiSta)
+            {
+
+                return ;
+            }
 
             unsigned char i, j;
             for (i = 0; i < AI_SIZE_T; i++)
@@ -118,10 +136,35 @@ void jsson_pack(unsigned char mqtt_packNum)
                 // if (get_energy_data()->pb[i].addr != 0)
                 {
                     addr = json_object();
+                    if (!addr)
+                    {
+
+                        return ;
+                    }
                     arrary_value = json_array();
+                    if (!arrary_value)
+                    {
+
+                        return ;
+                    }
                     array_tmp = json_array();
+                    if (!array_tmp)
+                    {
+
+                        return ;
+                    }
                     addr = json_object();
+                    if (!addr)
+                    {
+
+                        return ;
+                    }
                     arrary_value = json_array();
+                    if (!arrary_value)
+                    {
+
+                        return ;
+                    }
                     unsigned int tmp_addr;
                     tmp_addr = get_energy_data()->pb[i].addr;
                     json_object_set_new(addr, "addr", json_integer(tmp_addr));
@@ -136,14 +179,14 @@ void jsson_pack(unsigned char mqtt_packNum)
                     //out2 = json_dumps(addr, JSON_REAL_PRECISION(6));
 
                     json_array_insert_new(emeterData, k, addr);
-                   // out2 = json_dumps(emeterData, JSON_REAL_PRECISION(6));
+                    // out2 = json_dumps(emeterData, JSON_REAL_PRECISION(6));
                     k++;
                     //json_array_append_new(emeterData, array_tmp);
 
                 }
             }
             json_object_set_new(root, "emeterData", emeterData);
-           // out2 = json_dumps(root, JSON_REAL_PRECISION(6));
+            // out2 = json_dumps(root, JSON_REAL_PRECISION(6));
 
             break;
         case 2:
@@ -193,9 +236,13 @@ void jsson_pack(unsigned char mqtt_packNum)
     }
     out = json_dumps(root, JSON_REAL_PRECISION(6));
     json_mqtt_send_buf = out;
-    free(arrary_value);
-    free(addr);
-    free(tmp);
+
+    json_decref(arrary_value);
+    json_decref(addr);
+    json_decref(tmp);
+    json_decref(array_tmp);
+
+
 
 
 }
@@ -619,10 +666,13 @@ void json_upload()
     {
         jsson_pack(mqtt_payload_u.process_step);
         mqtt_payload_u.mqtt_state = MQTT_BUSY;
-        if (mqtt_payload_u.process_step <= MAX_STEP)
-            mqtt_payload_u.process_step ++ ;
-        else
+        mqtt_payload_u.process_step ++ ;
+
+        if (mqtt_payload_u.process_step >= MAX_STEP)
+        {
             mqtt_payload_u.process_step = 0;
+        }
+
         mqtt_at_cmd_num = AT_MPUB;
     }
 }
