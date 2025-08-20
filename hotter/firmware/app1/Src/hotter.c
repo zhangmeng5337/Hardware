@@ -21,7 +21,15 @@ uint32_t *get_power2()
 
 void init_hotter()
 {
-	
+	hotter_u0.status[0] = 1;
+	hotter_u1.status[0] = 2;
+
+	hotter_u2.status[0] = 3;
+	hotter_u3.status[0] = 4;
+	hotter_u4.status[0] = 5;
+
+	hotter_u5.status[0] = 6;	
+	hotter_u6.status[0] = 7;
 
 }
 hotter_stru *get_hotter(unsigned dev_addr)

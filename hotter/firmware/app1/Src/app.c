@@ -17,6 +17,7 @@
 #include "update.h"
 #include "FuzzyPID.h"
 #include "power_energy.h"
+#include "hotter.h"
 
 
 
@@ -41,6 +42,7 @@ void hardware_init()
 	 modbus_init();
  mqtt_init();
 	energy_init();
+	 init_hotter();
 
 	//ads_init();
 }

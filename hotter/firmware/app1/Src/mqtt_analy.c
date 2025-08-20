@@ -46,6 +46,7 @@ void json_clear()
     json_decref(devParams);
     json_decref(diSta);
     json_decref(doSta);
+    free(out);
 
 
 
@@ -55,10 +56,18 @@ void jsson_pack(unsigned char mqtt_packNum)
     json_t  *addr, *tmp, *array_tmp;
     json_t *arrary_value;
     unsigned int  k, kl;
+	static unsigned char count = 0;
     /* Build an empty JSON object */
     root = json_object();
     if (!root)
     {
+		json_decref(root);
+		json_decref(sensorSta);
+		json_decref(emeterData);
+		json_decref(airpumpData);
+		json_decref(devParams);
+		json_decref(diSta);
+		json_decref(doSta);
 
         return ;
     }
@@ -72,6 +81,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 
             if (!sensorSta)
             {
+				json_decref(sensorSta);
 
                 return ;
             }
@@ -81,6 +91,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 
             if (!aiSta)
             {
+				json_decref(aiSta);
 
                 return ;
             }
@@ -138,30 +149,35 @@ void jsson_pack(unsigned char mqtt_packNum)
                     addr = json_object();
                     if (!addr)
                     {
+						json_decref(addr);
 
                         return ;
                     }
                     arrary_value = json_array();
                     if (!arrary_value)
                     {
+						json_decref(arrary_value);
 
                         return ;
                     }
                     array_tmp = json_array();
                     if (!array_tmp)
                     {
+						json_decref(array_tmp);
 
                         return ;
                     }
                     addr = json_object();
                     if (!addr)
                     {
+						json_decref(addr);
 
                         return ;
                     }
                     arrary_value = json_array();
                     if (!arrary_value)
                     {
+						json_decref(arrary_value);
 
                         return ;
                     }
@@ -189,80 +205,80 @@ void jsson_pack(unsigned char mqtt_packNum)
             // out2 = json_dumps(root, JSON_REAL_PRECISION(6));
 
             break;
-        case 2:
-
-
-            airpumpData = json_array();
-            if (!airpumpData)
-            {
-
-                return ;
-            }
-
-            k = 0;
-           
-            for (i = 0; i < AIR_PUMP_SIZE; i++)
-            { kl = 0;
-                addr = json_object();
-                if (!addr)
-                {
-
-                    return ;
-                }
-                arrary_value = json_array();
-                if (!arrary_value)
-                {
-
-                    return ;
-                }
-
-                array_tmp = json_array();
-                if (!array_tmp)
-                {
-
-                    return ;
-                }
-
-                // if (get_hotter(i + 1)->status[0] != 0)
-                {
-                    unsigned int tmp_addr;
-                    tmp_addr = (get_hotter(i)->status[0]);
-                    json_object_set_new(addr, "addr", json_integer(tmp_addr));
-                    for (j = 1; j < STATUS1_SIZE; j++)
-                    {
-                        tmp = json_integer(get_hotter(i)->status[j]);
-                        json_array_insert_new(arrary_value, kl, tmp);
-                        kl++;
-
-                    }
-                    for (j = 1; j < STATUS2_SIZE; j++)
-                    {
-                        tmp = json_integer(get_hotter(i)->status2[j]);
-                        json_array_insert_new(arrary_value, kl, tmp);kl++;
-
-                    }
-                    for (j = 1; j < STATUS3_SIZE; j++)
-                    {
-                        tmp = json_integer(get_hotter(i)->status3[j]);
-                        json_array_insert_new(arrary_value, kl, tmp);kl++;
-
-                    }
-
-
-                    json_object_set_new(addr, "data", arrary_value);
-                    json_array_insert_new(airpumpData, k, addr);
-                    k++;
-                    // json_array_append_new(airpumpData, array_tmp);
-
-                }
-                
-            }
-				json_object_set_new(root, "airpumpData", airpumpData);
-
-
-            break;
-
-        default:
+        default :
+				airpumpData = json_array();
+				 if (!airpumpData)
+				 {
+				json_decref(airpumpData);
+					 return ;
+				 }
+				
+				 k = 0;
+				
+				 for (i = count; i < (1 + count); i++)
+				 {
+					 kl = 0;
+					 addr = json_object();
+					 if (!addr)
+					 {
+				json_decref(addr);
+						 return ;
+					 }
+					 arrary_value = json_array();
+					 if (!arrary_value)
+					 {
+				json_decref(arrary_value);
+						 return ;
+					 }
+				
+					 array_tmp = json_array();
+					 if (!array_tmp)
+					 {
+				json_decref(array_tmp);
+						 return ;
+					 }
+				
+					 // if (get_hotter(i + 1)->status[0] != 0)
+					 {
+						 unsigned int tmp_addr;
+						 tmp_addr = (get_hotter(i)->status[0]);
+						 json_object_set_new(addr, "addr", json_integer(tmp_addr));
+						 for (j = 1; j < STATUS1_SIZE; j++)
+						 {
+							 tmp = json_integer(get_hotter(i)->status[j]);
+							 json_array_insert_new(arrary_value, kl, tmp);
+							 kl++;
+				
+						 }
+						 for (j = 1; j < STATUS2_SIZE; j++)
+						 {
+							 tmp = json_integer(get_hotter(i)->status2[j]);
+							 json_array_insert_new(arrary_value, kl, tmp);
+							 kl++;
+				
+						 }
+//						 for (j = 1; j < STATUS3_SIZE; j++)
+//						 {
+//							 tmp = json_integer(get_hotter(i)->status3[j]);
+//							 json_array_insert_new(arrary_value, kl, tmp);
+//							 kl++;
+//				
+//						 }
+				
+				
+						 json_object_set_new(addr, "data", arrary_value);
+						 json_array_insert_new(airpumpData, k, addr);
+						 k++;
+						 // json_array_append_new(airpumpData, array_tmp);
+				
+					 }
+				
+				 }
+				 json_object_set_new(root, "airpumpData", airpumpData);
+            
+                count++;
+				if(count>=AIR_PUMP_SIZE)
+					count = 0;
             break;
     }
     out = json_dumps(root, JSON_REAL_PRECISION(3));
@@ -284,7 +300,7 @@ void json_para()
 
     json_t *jsonbox;
     json_error_t error;
-    jsonbox = json_loads(mqtt_recv->Lpuart1RecBuff, 0, &error);
+    jsonbox = json_loads(mqtt_recv->Lpuart1RecBuff, LPUART1_REC_SIZE, &error);
     json_t *reboot_obj = json_object_get(jsonbox, "Updat Frimware");
     if (reboot_obj != NULL)
     {
@@ -818,488 +834,488 @@ void json_plan_analy(unsigned char *p, unsigned char index)
 }
 
 uint64_t tmp_utc;
-void anlysis_mqtt_recv()
-{
-
-    char *dev_id;
-    unsigned char valid_flag, i, j, k;
-    float tmp_f;
-    unsigned int tt;
-
-    //valid_flag = 0;
-    get_config()->update_setting = 0;
-
-    dev_id = find_json_string("\"Updat Frimware\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        // memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        sprintf(&get_config()->reboot, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        get_config()->reboot = tmp_f;
-
-    }
-
-    dev_id = find_json_string("\"Reboot Dev\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        sprintf(&get_config()->reboot, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        get_config()->reboot = tmp_f;
-    }
-
-    //    dev_id = find_json_string("\"heatPump1\":", "}", 0);
-    //    if (dev_id != NULL)
-    //    {
-    //        //memset(dev_id, 0, 128);
-    //        get_config()->update_setting = 1;
-    //        //sprintf(&get_config()->machine, "%s", dev_id); //????
-    //        tmp_f = atoi(&dev_id[0]);
-    //      if(tmp_f == 1)
-    //          get_config()->machine = get_config()->machine|0x0001;
-    //
-    //    }
-    dev_id = find_json_string("\"heatPumpAll\":", "}", 0);
-    if (dev_id != NULL)
-    {
-        // memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        //      if(tmp_f == 1)
-        {
-            get_tx_machine()->ctrl_mode = 0;
-            get_config()->machine = get_config()->machine | 0x0001;
-
-        }
-
-
-    }
-    dev_id = find_json_string("\"outmax\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        tmp_f = atof(&dev_id[0]);
-        get_pid_params()->out_max = tmp_f;
-    }
-    dev_id = find_json_string("\"outmin\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        tmp_f = atof(&dev_id[0]);
-        get_pid_params()->out_min = tmp_f;
-    }
-
-    dev_id = find_json_string("\"kp\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        tmp_f = atof(&dev_id[0]);
-        get_pid_params()->kp_u = tmp_f;
-    }
-    dev_id = find_json_string("\"ki\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        tmp_f = atof(&dev_id[0]);
-        get_pid_params()->ki_u = tmp_f;
-    }
-
-    dev_id = find_json_string("\"kd\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        tmp_f = atof(&dev_id[0]);
-        get_pid_params()->kd_u = tmp_f;
-    }
-    dev_id = find_json_string("\"instru\":", "}", 0);//native mode
-    if (dev_id != NULL)
-    {
-        tmp_f = atof(&dev_id[0]);
-        if (tmp_f == 0x00)
-            get_config()->instru_num = DELI;
-        else if (tmp_f == 0x01)
-            get_config()->instru_num = ZT;
-        get_config()->update_setting = 1;
-    }
-
-
-    dev_id = find_json_string("\"scheMode\":", "}", 0);//native mode
-    if (dev_id != NULL)
-    {
-        get_config()->mode = SCHE_MODE;
-        get_config()->update_setting = 1;
-
-    }
-
-    dev_id = find_json_string("\"offlineMode\":", "}", 0);//native mode
-    if (dev_id != NULL)
-    {
-        get_config()->mode = OFF_MODE;
-        get_config()->update_setting = 1;
-
-    }
-    dev_id = find_json_string("\"nativeMode\":", "}", 0);//native mode
-    if (dev_id != NULL)
-    {
-        get_config()->mode = NATIVE_MODE;
-        get_config()->update_setting = 1;
-
-    }
-    dev_id = find_json_string("\"smartMode\":", "}", 0);//native mode
-    if (dev_id != NULL)
-    {
-        get_config()->mode = SMART_MODE;
-        get_config()->update_setting = 1;
-
-    }
-    dev_id = find_json_string("\"tin_index\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        tt = atoi(&dev_id[0]);
-        get_config()->tin_index = tt;
-    }
-    dev_id = find_json_string("\"to_index\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        tt = atoi(&dev_id[0]);
-        get_config()->to_index = tt;
-    }
-    dev_id = find_json_string("\"pin_index\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        tt = atoi(&dev_id[0]);
-        get_config()->pin_index = tt;
-    }
-    dev_id = find_json_string("\"po_index\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        tt = atoi(&dev_id[0]);
-        get_config()->po_index = tt;
-    }
-    dev_id = find_json_string("\"dev_size\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        // memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        sprintf(&get_config()->reboot, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        get_config()->dev_size = tmp_f;
-
-    }
-
-    dev_id = find_json_string("\"heatPump1\":", "}", 0);
-    if (dev_id != NULL)
-    {
-        // memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        //      if(tmp_f == 1)
-        {
-            get_tx_machine()->ctrl_mode = 1;
-            get_config()->machine = get_config()->machine | 0x0001;
-
-        }
-
-
-    }
-
-    dev_id = find_json_string("\"heatPump2\":", "}", 0);
-    if (dev_id != NULL)
-    {
-        //  memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        //      if(tmp_f == 1)
-        {
-            get_tx_machine()->ctrl_mode = 1;
-            get_config()->machine = get_config()->machine | 0x0002;
-
-        }
-
-
-
-    }
-
-    dev_id = find_json_string("\"heatPump3\":", "}", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        //      if(tmp_f == 1)
-        {
-            get_tx_machine()->ctrl_mode = 1;
-            get_config()->machine = get_config()->machine | 0x0004;
-
-        }
-
-
-
-    }
-
-    dev_id = find_json_string("\"heatPump4\":", "}", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        //      if(tmp_f == 1)
-        {
-            get_tx_machine()->ctrl_mode = 1;
-            get_config()->machine = get_config()->machine | 0x0008;
-
-        }
-
-
-
-    }
-
-    dev_id = find_json_string("\"heatPump5\":", "}", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        //      if(tmp_f == 1)
-        {
-            get_tx_machine()->ctrl_mode = 1;
-            get_config()->machine = get_config()->machine | 0x0010;
-
-        }
-
-
-
-    }
-
-    dev_id = find_json_string("\"heatPump6\":", "}", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        //sprintf(&get_config()->machine, "%s", dev_id); //????
-        tmp_f = atoi(&dev_id[0]);
-        //      if(tmp_f == 1)
-        {
-            get_tx_machine()->ctrl_mode = 1;
-            get_config()->machine = get_config()->machine | 0x0020;
-
-        }
-    }
-
-
-
-    dev_id = find_json_string("\"Set Out Temp\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        get_config()->update_setting = 1;
-        tmp_f = atof(&dev_id[0]);
-        get_config()->set_tout = tmp_f;
-        get_config()->set_tout_tmp = tmp_f;
-
-
-    }
-
-    dev_id = find_json_string("\"Set Room Temp\": ", ",", 0);
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        //  get_config()->update_setting = 2;
-        tmp_f = atof(&dev_id[0]);
-        get_config()->set_tindoor = tmp_f;
-
-    }
-
-    dev_id = find_json_string("timestamp", ",", 0);
-    if (dev_id != NULL)
-    {
-        //  memset(dev_id, 0, 128);
-        dev_id = find_json_string("byte,", "\r\n", 0);
-        if (dev_id != NULL)
-        {
-            i = 0;
-            tmp_utc = 0;
-            while (dev_id[i] >= 0x30 && dev_id[i] <= 0x39)
-            {
-                j = dev_id[i];
-                j = j - 0x30;
-                // tmp_utc = 0;
-                tmp_utc = tmp_utc * 10 + j;
-                i++;
-
-            }
-            utcTortc(tmp_utc);
-
-        }
-    }
-    dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 0);
-    if (dev_id != NULL)
-    {
-        //  memset(dev_id, 0, 128);
-        // get_config()- w  >update_setting = 2;
-        tmp_f = atof(&dev_id[0]);
-        get_config()->set_up_period = tmp_f;
-    }
-
-    float *bufa;
-    dev_id = find_json_string("\"Room Temp\":[", "Room", 1);//schedule paln
-    if (dev_id != NULL)
-    {
-        //memset(dev_id, 0, 128);
-        unsigned char buf[32];
-        j = 0;
-        k = 0;
-        i = 0;
-        get_config()->tlen = 0;
-        while (dev_id[i] != ']')
-        {
-            if (dev_id[i] >= 0x2e)
-            {
-                get_config()->count = 0;
-
-            }
-
-            if (dev_id[i] != ',' && dev_id[i] != ']')
-            {
-
-                buf[j++] = dev_id[i];
-
-            }
-
-            else
-            {
-
-                tmp_f = atof(buf);
-                get_config()->indoor_temperature[k++] = tmp_f;
-                get_config()->tlen++;
-                memset(buf, 0, 16);
-                j = 0;
-            }
-            i++;
-
-            get_config()->update_setting = 2;
-
-        }
-
-        tmp_f = atof(buf);
-        get_config()->indoor_temperature[k++] = tmp_f;
-#if CTRL_EN
-
-        bufa = low_temperature_cal(get_config()->indoor_temperature,
-                                   get_config()->tlen + 1);
-        get_temp_cal(bufa);
-        //fuzzy_proc(get_config()->mode);  //smart ctrl
-        memset(get_config()->indoor_temperature, 0, 64);
-#endif
-
-    }
-    else
-    {
-        dev_id = find_json_string("\"Temp\": ", ",\r\n", 1);//schedule paln
-        if (dev_id != NULL)
-        {
-            if (dev_id[i] >= 0x2e)
-            {
-                get_config()->count = 0;
-
-            }
-
-
-            j = 0;
-            k = 0;
-            i = 0;
-            get_config()->tlen = 0;
-
-            tmp_f = atof(&dev_id[0]);
-            get_config()->indoor_temperature[k++] = tmp_f;
-#if CTRL_EN
-
-            bufa = low_temperature_cal(get_config()->indoor_temperature,
-                                       get_config()->tlen + 1);
-            get_temp_cal(bufa);
-            //fuzzy_proc(get_config()->mode);  //smart ctrl
-            memset(get_config()->indoor_temperature, 0, 64);
-#endif
-
-        }
-
-    }
-
-
-    dev_id = find_json_string("\"Plan1\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 0);
-    }
-    dev_id = find_json_string("\"Plan2\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 1);
-    }
-    dev_id = find_json_string("\"Plan3\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 2);
-    }
-    dev_id = find_json_string("\"Plan4\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 3);
-    }
-    dev_id = find_json_string("\"Plan5\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 4);
-    }
-    dev_id = find_json_string("\"Plan6\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 5);
-    }
-    dev_id = find_json_string("\"Plan7\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 6);
-    }
-    dev_id = find_json_string("\"Plan8\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 7);
-    }
-    dev_id = find_json_string("\"Plan9\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 8);
-    }
-    dev_id = find_json_string("\"Plan10\": [", "\r\n", 1);
-    if (dev_id != NULL)
-    {
-        plan_analy(dev_id, 9);
-    }
-
-    memset(mqtt_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
-
-    //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
-
-
-
-
-
-
-}
+//void anlysis_mqtt_recv()
+//{
+//
+//    char *dev_id;
+//    unsigned char valid_flag, i, j, k;
+//    float tmp_f;
+//    unsigned int tt;
+//
+//    //valid_flag = 0;
+//    get_config()->update_setting = 0;
+//
+//    dev_id = find_json_string("\"Updat Frimware\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        // memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        sprintf(&get_config()->reboot, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        get_config()->reboot = tmp_f;
+//
+//    }
+//
+//    dev_id = find_json_string("\"Reboot Dev\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        sprintf(&get_config()->reboot, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        get_config()->reboot = tmp_f;
+//    }
+//
+//    //    dev_id = find_json_string("\"heatPump1\":", "}", 0);
+//    //    if (dev_id != NULL)
+//    //    {
+//    //        //memset(dev_id, 0, 128);
+//    //        get_config()->update_setting = 1;
+//    //        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//    //        tmp_f = atoi(&dev_id[0]);
+//    //      if(tmp_f == 1)
+//    //          get_config()->machine = get_config()->machine|0x0001;
+//    //
+//    //    }
+//    dev_id = find_json_string("\"heatPumpAll\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        // memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        //      if(tmp_f == 1)
+//        {
+//            get_tx_machine()->ctrl_mode = 0;
+//            get_config()->machine = get_config()->machine | 0x0001;
+//
+//        }
+//
+//
+//    }
+//    dev_id = find_json_string("\"outmax\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        tmp_f = atof(&dev_id[0]);
+//        get_pid_params()->out_max = tmp_f;
+//    }
+//    dev_id = find_json_string("\"outmin\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        tmp_f = atof(&dev_id[0]);
+//        get_pid_params()->out_min = tmp_f;
+//    }
+//
+//    dev_id = find_json_string("\"kp\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        tmp_f = atof(&dev_id[0]);
+//        get_pid_params()->kp_u = tmp_f;
+//    }
+//    dev_id = find_json_string("\"ki\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        tmp_f = atof(&dev_id[0]);
+//        get_pid_params()->ki_u = tmp_f;
+//    }
+//
+//    dev_id = find_json_string("\"kd\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        tmp_f = atof(&dev_id[0]);
+//        get_pid_params()->kd_u = tmp_f;
+//    }
+//    dev_id = find_json_string("\"instru\":", "}", 0);//native mode
+//    if (dev_id != NULL)
+//    {
+//        tmp_f = atof(&dev_id[0]);
+//        if (tmp_f == 0x00)
+//            get_config()->instru_num = DELI;
+//        else if (tmp_f == 0x01)
+//            get_config()->instru_num = ZT;
+//        get_config()->update_setting = 1;
+//    }
+//
+//
+//    dev_id = find_json_string("\"scheMode\":", "}", 0);//native mode
+//    if (dev_id != NULL)
+//    {
+//        get_config()->mode = SCHE_MODE;
+//        get_config()->update_setting = 1;
+//
+//    }
+//
+//    dev_id = find_json_string("\"offlineMode\":", "}", 0);//native mode
+//    if (dev_id != NULL)
+//    {
+//        get_config()->mode = OFF_MODE;
+//        get_config()->update_setting = 1;
+//
+//    }
+//    dev_id = find_json_string("\"nativeMode\":", "}", 0);//native mode
+//    if (dev_id != NULL)
+//    {
+//        get_config()->mode = NATIVE_MODE;
+//        get_config()->update_setting = 1;
+//
+//    }
+//    dev_id = find_json_string("\"smartMode\":", "}", 0);//native mode
+//    if (dev_id != NULL)
+//    {
+//        get_config()->mode = SMART_MODE;
+//        get_config()->update_setting = 1;
+//
+//    }
+//    dev_id = find_json_string("\"tin_index\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        tt = atoi(&dev_id[0]);
+//        get_config()->tin_index = tt;
+//    }
+//    dev_id = find_json_string("\"to_index\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        tt = atoi(&dev_id[0]);
+//        get_config()->to_index = tt;
+//    }
+//    dev_id = find_json_string("\"pin_index\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        tt = atoi(&dev_id[0]);
+//        get_config()->pin_index = tt;
+//    }
+//    dev_id = find_json_string("\"po_index\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        tt = atoi(&dev_id[0]);
+//        get_config()->po_index = tt;
+//    }
+//    dev_id = find_json_string("\"dev_size\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        // memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        sprintf(&get_config()->reboot, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        get_config()->dev_size = tmp_f;
+//
+//    }
+//
+//    dev_id = find_json_string("\"heatPump1\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        // memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        //      if(tmp_f == 1)
+//        {
+//            get_tx_machine()->ctrl_mode = 1;
+//            get_config()->machine = get_config()->machine | 0x0001;
+//
+//        }
+//
+//
+//    }
+//
+//    dev_id = find_json_string("\"heatPump2\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        //  memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        //      if(tmp_f == 1)
+//        {
+//            get_tx_machine()->ctrl_mode = 1;
+//            get_config()->machine = get_config()->machine | 0x0002;
+//
+//        }
+//
+//
+//
+//    }
+//
+//    dev_id = find_json_string("\"heatPump3\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        //      if(tmp_f == 1)
+//        {
+//            get_tx_machine()->ctrl_mode = 1;
+//            get_config()->machine = get_config()->machine | 0x0004;
+//
+//        }
+//
+//
+//
+//    }
+//
+//    dev_id = find_json_string("\"heatPump4\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        //      if(tmp_f == 1)
+//        {
+//            get_tx_machine()->ctrl_mode = 1;
+//            get_config()->machine = get_config()->machine | 0x0008;
+//
+//        }
+//
+//
+//
+//    }
+//
+//    dev_id = find_json_string("\"heatPump5\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        //      if(tmp_f == 1)
+//        {
+//            get_tx_machine()->ctrl_mode = 1;
+//            get_config()->machine = get_config()->machine | 0x0010;
+//
+//        }
+//
+//
+//
+//    }
+//
+//    dev_id = find_json_string("\"heatPump6\":", "}", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        //sprintf(&get_config()->machine, "%s", dev_id); //????
+//        tmp_f = atoi(&dev_id[0]);
+//        //      if(tmp_f == 1)
+//        {
+//            get_tx_machine()->ctrl_mode = 1;
+//            get_config()->machine = get_config()->machine | 0x0020;
+//
+//        }
+//    }
+//
+//
+//
+//    dev_id = find_json_string("\"Set Out Temp\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        get_config()->update_setting = 1;
+//        tmp_f = atof(&dev_id[0]);
+//        get_config()->set_tout = tmp_f;
+//        get_config()->set_tout_tmp = tmp_f;
+//
+//
+//    }
+//
+//    dev_id = find_json_string("\"Set Room Temp\": ", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        //  get_config()->update_setting = 2;
+//        tmp_f = atof(&dev_id[0]);
+//        get_config()->set_tindoor = tmp_f;
+//
+//    }
+//
+//    dev_id = find_json_string("timestamp", ",", 0);
+//    if (dev_id != NULL)
+//    {
+//        //  memset(dev_id, 0, 128);
+//        dev_id = find_json_string("byte,", "\r\n", 0);
+//        if (dev_id != NULL)
+//        {
+//            i = 0;
+//            tmp_utc = 0;
+//            while (dev_id[i] >= 0x30 && dev_id[i] <= 0x39)
+//            {
+//                j = dev_id[i];
+//                j = j - 0x30;
+//                // tmp_utc = 0;
+//                tmp_utc = tmp_utc * 10 + j;
+//                i++;
+//
+//            }
+//            utcTortc(tmp_utc);
+//
+//        }
+//    }
+//    dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 0);
+//    if (dev_id != NULL)
+//    {
+//        //  memset(dev_id, 0, 128);
+//        // get_config()- w  >update_setting = 2;
+//        tmp_f = atof(&dev_id[0]);
+//        get_config()->set_up_period = tmp_f;
+//    }
+//
+//    float *bufa;
+//    dev_id = find_json_string("\"Room Temp\":[", "Room", 1);//schedule paln
+//    if (dev_id != NULL)
+//    {
+//        //memset(dev_id, 0, 128);
+//        unsigned char buf[32];
+//        j = 0;
+//        k = 0;
+//        i = 0;
+//        get_config()->tlen = 0;
+//        while (dev_id[i] != ']')
+//        {
+//            if (dev_id[i] >= 0x2e)
+//            {
+//                get_config()->count = 0;
+//
+//            }
+//
+//            if (dev_id[i] != ',' && dev_id[i] != ']')
+//            {
+//
+//                buf[j++] = dev_id[i];
+//
+//            }
+//
+//            else
+//            {
+//
+//                tmp_f = atof(buf);
+//                get_config()->indoor_temperature[k++] = tmp_f;
+//                get_config()->tlen++;
+//                memset(buf, 0, 16);
+//                j = 0;
+//            }
+//            i++;
+//
+//            get_config()->update_setting = 2;
+//
+//        }
+//
+//        tmp_f = atof(buf);
+//        get_config()->indoor_temperature[k++] = tmp_f;
+//#if CTRL_EN
+//
+//        bufa = low_temperature_cal(get_config()->indoor_temperature,
+//                                   get_config()->tlen + 1);
+//        get_temp_cal(bufa);
+//        //fuzzy_proc(get_config()->mode);  //smart ctrl
+//        memset(get_config()->indoor_temperature, 0, 64);
+//#endif
+//
+//    }
+//    else
+//    {
+//        dev_id = find_json_string("\"Temp\": ", ",\r\n", 1);//schedule paln
+//        if (dev_id != NULL)
+//        {
+//            if (dev_id[i] >= 0x2e)
+//            {
+//                get_config()->count = 0;
+//
+//            }
+//
+//
+//            j = 0;
+//            k = 0;
+//            i = 0;
+//            get_config()->tlen = 0;
+//
+//            tmp_f = atof(&dev_id[0]);
+//            get_config()->indoor_temperature[k++] = tmp_f;
+//#if CTRL_EN
+//
+//            bufa = low_temperature_cal(get_config()->indoor_temperature,
+//                                       get_config()->tlen + 1);
+//            get_temp_cal(bufa);
+//            //fuzzy_proc(get_config()->mode);  //smart ctrl
+//            memset(get_config()->indoor_temperature, 0, 64);
+//#endif
+//
+//        }
+//
+//    }
+//
+//
+//    dev_id = find_json_string("\"Plan1\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 0);
+//    }
+//    dev_id = find_json_string("\"Plan2\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 1);
+//    }
+//    dev_id = find_json_string("\"Plan3\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 2);
+//    }
+//    dev_id = find_json_string("\"Plan4\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 3);
+//    }
+//    dev_id = find_json_string("\"Plan5\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 4);
+//    }
+//    dev_id = find_json_string("\"Plan6\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 5);
+//    }
+//    dev_id = find_json_string("\"Plan7\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 6);
+//    }
+//    dev_id = find_json_string("\"Plan8\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 7);
+//    }
+//    dev_id = find_json_string("\"Plan9\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 8);
+//    }
+//    dev_id = find_json_string("\"Plan10\": [", "\r\n", 1);
+//    if (dev_id != NULL)
+//    {
+//        plan_analy(dev_id, 9);
+//    }
+//
+//    memset(mqtt_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
+//
+//    //  json_analysis((char *)mqtt_recv->Lpuart1RecBuff);
+//
+//
+//
+//
+//
+//
+//}
 
 /*
 dev---->ser
@@ -2013,7 +2029,7 @@ uint8_t mqtt_Json_Info_Show(void)
                     get_config()->user_id,
                     1, 0, len);
             //lte_Send_Cmd_mqtt(1,buf, "PUBACK", LTE_LONG_DELAY)
-            if (lte_Send_Cmd(buf, ">", LTE_LONG_DELAY)) //??AT
+            if (lte_Send_Cmd(buf, ">", MQTT_LTE_LONG_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
                 mqtt_at_cmd_num = AT_MIPCLOSE;
@@ -2033,7 +2049,7 @@ uint8_t mqtt_Json_Info_Show(void)
         case AT_MPUBEX://public msg
         {
             //lte_Send_Cmd_mqtt(1,buf, "PUBACK", LTE_LONG_DELAY)
-            if (lte_Send_Cmd(json_mqtt_send_buf, "OK", LTE_LONG_DELAY)) //??AT
+            if (lte_Send_Cmd(json_mqtt_send_buf, "OK", MQTT_LTE_LONG_DELAY)) //??AT
             {
                 mqtt_at_cmds.RtyNum = mqtt_at_cmds.RtyNum++;
                 mqtt_at_cmd_num = AT_MPUBEX2;
@@ -2348,17 +2364,18 @@ void mqtt_proc()
             {
                 uint32_t tmp;
                 tmp = get_config()->set_up_period * 1000;
+				tmp = 1000;
                 registerTick(MQTT_TX_TICK_NO, tmp);
             }
 
             else
                 registerTick(MQTT_TX_TICK_NO, 10000);
-            if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
+          if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
             {
                 reset_registerTick(MQTT_TX_TICK_NO);
                 //upload();//????
                 json_upload();
-                mqtt_Json_Info_Show();
+                //mqtt_Json_Info_Show();
                 //free_cjson();
 
             }
