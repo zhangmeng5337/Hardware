@@ -300,7 +300,13 @@ void json_para()
 
     json_t *jsonbox;
     json_error_t error;
-    jsonbox = json_loads(mqtt_recv->Lpuart1RecBuff, LPUART1_REC_SIZE, &error);
+	uin32_t index;
+	for(index = 0;index <LPUART1_REC_SIZE;index++)
+	{
+		if(mqtt_recv->Lpuart1RecBuff[index] == '{')
+			break;
+	}
+    jsonbox = json_loads(&(mqtt_recv->Lpuart1RecBuff[index]), LPUART1_REC_SIZE-index, &error);
     json_t *reboot_obj = json_object_get(jsonbox, "Updat Frimware");
     if (reboot_obj != NULL)
     {
