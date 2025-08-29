@@ -53,6 +53,26 @@ void json_clear()
 
 
 }
+void sprintf_pack(unsigned char mqtt_packNum)
+{
+    unsigned char buf_tmp[256];
+	switch (mqtt_packNum)
+		{
+			case 0:
+				sprintf(buf_tmp, "%s", get_config()->user_id);
+			  sprintf(json_mqtt_send_buf, "{\
+			""devid"":%s,\
+		   }", buf_tmp);
+				break;
+			case 1:
+				
+				break;
+			default :
+					
+				break;
+		}
+
+}
 void jsson_pack(unsigned char mqtt_packNum)
 {
     json_t  *addr, *tmp, *array_tmp;
