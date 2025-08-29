@@ -205,7 +205,7 @@ void config_init()
 
 
 
-    sprintf(get_config()->mqtt_mpubtopic, "%s", "/dev/pub/");
+    sprintf(get_config()->mqtt_mpubtopic, "%s", "dev/pub/");
     //sprintf(get_config()->mqtt_subtopic,"%s%s", SUB1,get_config()->user_id);
     get_config()->seq_count = 1;
 

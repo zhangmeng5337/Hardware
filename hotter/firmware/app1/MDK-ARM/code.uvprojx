@@ -572,6 +572,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\power_energy.c</FilePath>
             </File>
+            <File>
+              <FileName>malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\malloc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2342,6 +2347,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\power_energy.c</FilePath>
             </File>
+            <File>
+              <FileName>malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\malloc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4111,6 +4121,11 @@
               <FileName>power_energy.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\power_energy.c</FilePath>
+            </File>
+            <File>
+              <FileName>malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\malloc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -6019,6 +6034,11 @@
               <FileName>power_energy.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\power_energy.c</FilePath>
+            </File>
+            <File>
+              <FileName>malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\malloc.c</FilePath>
             </File>
           </Files>
         </Group>

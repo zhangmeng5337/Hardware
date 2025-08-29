@@ -18,13 +18,15 @@
 #include <jansson.h>
 #include "do.h"
 #include "power_energy.h"
+#include "malloc.h"
 
 tsATCmds     mqtt_at_cmds;
 teATCmdNum    mqtt_at_cmd_num;
 teATStatus    mqtt_at_status;
 tsLpuart1type *mqtt_recv;
-char mqtt_send_buf[2048];
-char *json_mqtt_send_buf;
+char json_mqtt_send_buf[4096];
+
+
 
 void json_plan_analy(unsigned char *p, unsigned char index);
 
@@ -39,14 +41,14 @@ char *out, *out2;
 void json_clear()
 {
 
-    json_decref(root);
-    json_decref(sensorSta);
-    json_decref(emeterData);
-    json_decref(airpumpData);
-    json_decref(devParams);
-    json_decref(diSta);
-    json_decref(doSta);
-    free(out);
+//    json_decref(root);
+//    json_decref(sensorSta);
+//    json_decref(emeterData);
+//    json_decref(airpumpData);
+//    json_decref(devParams);
+//    json_decref(diSta);
+//    json_decref(doSta);
+//    free(out);
 
 
 
@@ -62,12 +64,12 @@ void jsson_pack(unsigned char mqtt_packNum)
     if (!root)
     {
 		json_decref(root);
-		json_decref(sensorSta);
-		json_decref(emeterData);
-		json_decref(airpumpData);
-		json_decref(devParams);
-		json_decref(diSta);
-		json_decref(doSta);
+//		json_decref(sensorSta);
+//		json_decref(emeterData);
+//		json_decref(airpumpData);
+//		json_decref(devParams);
+//		json_decref(diSta);
+//		json_decref(doSta);
 
         return ;
     }
@@ -282,13 +284,23 @@ void jsson_pack(unsigned char mqtt_packNum)
             break;
     }
     out = json_dumps(root, JSON_REAL_PRECISION(3));
-    json_mqtt_send_buf = out;
+	strcpy(json_mqtt_send_buf,out);
+	free(out);
 
+     
     json_decref(arrary_value);
     json_decref(addr);
     json_decref(tmp);
     json_decref(array_tmp);
 
+
+	json_decref(root);
+	json_decref(sensorSta);
+	json_decref(emeterData);
+	json_decref(airpumpData);
+	json_decref(devParams);
+	json_decref(diSta);
+	json_decref(doSta);
 
 
 
@@ -300,7 +312,7 @@ void json_para()
 
     json_t *jsonbox;
     json_error_t error;
-	uin32_t index;
+	uint32_t index;
 	for(index = 0;index <LPUART1_REC_SIZE;index++)
 	{
 		if(mqtt_recv->Lpuart1RecBuff[index] == '{')
@@ -1426,404 +1438,404 @@ bit 15-bit8:dev addr
 bit 7-bit0: dev error code
 
 *********************************************************************/
-void upload()
-{
-
-    unsigned char buf2[256];
-
-    memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
-    memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
-    sprintf(mqtt_payload_u.devid, "%s", get_config()->user_id);//devid
-
-    mqtt_payload_u.data[TOUT_INDEX] = get_ai_data()->temp[get_config()->to_index];
-
-    if (get_config()->mode == SMART_MODE)
-        mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
-    else
-        // mqtt_payload_u.data[TIN_INDEX] =
-        //   get_ai_data()->temp[get_config()->tin_index]; //water IN
-        mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
-
-    mqtt_payload_u.data[PUMP_F_INDEX] = *get_power();
-    //get_ai_data()->press[get_config()->pin_index]; //pump front
-    mqtt_payload_u.data[PUMP_E_INDEX] =
-        get_ai_data()->press[get_config()->po_index]; //pump end
-
-    uint32_t tmp;
-    tmp = get_ai_data()->channel_status;
-    mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //16 bit di
-    mqtt_payload_u.status[DEV_STATUS_INDEX] =
-        mqtt_payload_u.status[DEV_STATUS_INDEX] << 11; //dev status
-    mqtt_payload_u.status[DEV_STATUS_INDEX] =
-        mqtt_payload_u.status[DEV_STATUS_INDEX] | tmp; //11bit
-    mqtt_payload_u.status[DEV_STATUS_INDEX] =
-        mqtt_payload_u.status[DEV_STATUS_INDEX] & 0x07ffffff ;
-
-
-    mqtt_payload_u.status[DEV_MASK_INDEX] = get_config()->fault_mask;
-    mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX] = get_recv_machine()->fault;
-
-    get_config()->fault_status = mqtt_payload_u.status[DEV_STATUS_INDEX]
-                                 ;//fault status
-    sprintf(mqtt_payload_u.version, "%s", get_config()->version);//devid
-    if (get_config()->mode == SMART_MODE)
-        mqtt_payload_u.data[WATER_O_INDEX] = get_pid_output(); //set tmp
-    else
-        mqtt_payload_u.data[WATER_O_INDEX] = get_config()->set_tout; //set tmp
-    if (get_config()->mode == SMART_MODE)
-        mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tout;
-    else
-        mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor;
-    mqtt_payload_u.data[WATER_IN_INDEX] =
-        get_ai_data()->temp[get_config()->tin_index];
-    //get_config()->set_tindoor; //set indoor tmp
-    mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
-    if (mqtt_payload_u.data[WATER_O_INDEX] >= 1000)
-        mqtt_payload_u.data[WATER_O_INDEX] = 1000;
-
-
-
-#if 1
-    memset(buf2, 0, sizeof(buf2));
-    unsigned char buf3[128], numberBuffer[4], i;
-    i = 0;
-
-    buf2[i++] = getRtcDate()->Year;
-    buf2[i++] = getRtcDate()->Month;
-    buf2[i++] = getRtcDate()->Date;
-    buf2[i++] = getRtcDate()->WeekDay;
-    buf2[i++] = getRtcTime()->Hours;
-    buf2[i++] = getRtcTime()->Minutes;
-    buf2[i++] = getRtcTime()->Seconds;
-
-    sprintf(buf3, "%u-%u-%u-%u %u:%u:%u%", buf2[0]
-            , buf2[1]
-            , buf2[2]
-            , buf2[3]
-            , buf2[4]
-            , buf2[5]
-            , buf2[6]
-           );
-
-    i = 0;
-    static unsigned char addr = 1, status_out = 1;
-
-
-    //  sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
-    //          get_hotter(addr)->status[0],
-    //          get_hotter(addr)->status[1],
-    //          get_hotter(addr)->status[2],
-    //          get_hotter(addr)->status[3],
-    //          get_hotter(addr)->status[4],
-    //          get_hotter(addr)->status[5],
-    //          get_hotter(addr)->status[6],
-    //          get_hotter(addr)->status[7],
-    //          get_hotter(addr)->status[8],
-    //          get_hotter(addr)->status[9],
-    //          get_hotter(addr)->status[10],
-    //          get_hotter(addr)->status[11],
-    //          get_hotter(addr)->status[12],
-    //          get_hotter(addr)->status[13],
-    //          get_hotter(addr)->status[14],
-    //          get_hotter(addr)->status[15],
-    //          get_hotter(addr)->status[16],
-    //          get_hotter(addr)->status[17],
-    //          get_hotter(addr)->status[18],
-    //          get_hotter(addr)->status[19],
-    //          get_hotter(addr)->status[20],
-    //          get_hotter(addr)->status[21],
-    //          get_hotter(addr)->status[22]);
-
-
-
-
-    memset(buf2, 0, sizeof(buf2));
-    if (status_out == 1) //0x0000-0x0007
-    {
-        buf2[0] = '[';
-        for (i = 0; i < 8; i++)
-        {
-            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status[i]);
-
-        }
-        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status[i]);
-        buf2[strlen(buf2)] = ']';
-        //   sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
-        //         get_hotter(addr)->status[0],
-        //         get_hotter(addr)->status[1],
-        //         get_hotter(addr)->status[2],
-        //         get_hotter(addr)->status[3],
-        //         get_hotter(addr)->status[4],
-        //         get_hotter(addr)->status[5],
-        //         get_hotter(addr)->status[6],
-        //         get_hotter(addr)->status[7],
-        //         get_hotter(addr)->status[8],
-        //         get_hotter(addr)->status[9]);
-
-    }
-    else if (status_out == 2) //0-20
-    {
-
-        buf2[0] = '[';
-        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
-        //get_hotter(addr)->status2[0] = 15;
-        for (i = 1; i < 18; i++) //1-18
-        {
-            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
-
-        }
-        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
-        buf2[strlen(buf2)] = ']';
-
-
-    }
-    else if (status_out == 3) //19-36
-    {
-        buf2[0] = '[';
-        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
-        for (i = 19; i < 36; i++)
-        {
-            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
-
-        }
-        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
-        buf2[strlen(buf2)] = ']';
-
-
-    }
-    else if (status_out == 4) //37-54
-    {
-        buf2[0] = '[';
-        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
-        for (i = 37; i < 54; i++)
-        {
-            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
-
-        }
-        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
-        buf2[strlen(buf2)] = ']';
-
-
-    }
-
-    else if (status_out == 5) //55-72
-    {
-        buf2[0] = '[';
-        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
-        for (i = 55; i < 72; i++)
-        {
-            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
-
-        }
-        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
-        buf2[strlen(buf2)] = ']';
-
-        memset(get_hotter(addr)->status2, 0, STATUS2_SIZE);
-        memset(get_hotter(addr)->status, 0, STATUS1_SIZE);
-    }
-
-
-
-
-
-    if (status_out == 1)
-    {
-        sprintf(mqtt_send_buf, "{\\0D\\0A\\
-                \\22Dev ID\\22: %s,\\0D\\0A\\
-                \\22Status Data\\22: {\\0D\\0A\\
-                                      \\22Out Tem\\22: %.1f,\\0D\\0A\\
-                                      \\22In Tem\\22: %.1f,\\0D\\0A\\
-                                      \\22FP\\22: %.2f,\\0D\\0A\\
-                                      \\22AP\\22: %.2f,\\0D\\0A\\
-                                      \\22Dsta\\22: %u,\\0D\\0A\\
-                                      \\22Sta1\\22: %s\\0D\\0A\\
-                                     },\\0D\\0A\\
-                \\22Dev Params\\22: {\\0D\\0A\\
-                                     \\22St\\22: %u,\\0D\\0A\\
-                                     \\22SOt\\22: %.1f,\\0D\\0A\\
-                                     \\22SIt\\22: %.1f,\\0D\\0A\\
-                                     \\22p\\22: %.0f,\\0D\\0A\\
-                                     \\22i\\22: %.3f,\\0D\\0A\\
-                                     \\22d\\22: %.3f\\0D\\0A\\
-                                    }\\0D\\0A\\
-    }", mqtt_payload_u.devid,
-    mqtt_payload_u.data[TOUT_INDEX],
-                        mqtt_payload_u.data[TIN_INDEX],
-                        mqtt_payload_u.data[PUMP_F_INDEX],
-                        mqtt_payload_u.data[PUMP_E_INDEX],
-                        mqtt_payload_u.status[DEV_STATUS_INDEX],
-                        buf2,
-                        get_config()->set_tout,
-                        mqtt_payload_u.data[WATER_O_INDEX],
-                        mqtt_payload_u.data[WATER_IN_INDEX],
-                        get_pid_params()->kp_u,
-                        get_pid_params()->ki_u,
-                        get_pid_params()->kd_u);
-
-
-
-}
-else if (status_out == 2)
-{
-
-    sprintf(mqtt_send_buf, "{\\0D\\0A\\
-            \\22Dev ID\\22: %s,\\0D\\0A\\
-            \\22Status Data\\22: {\\0D\\0A\\
-                                  \\22Out Tem\\22: %.1f,\\0D\\0A\\
-                                  \\22In Tem\\22: %.1f,\\0D\\0A\\
-                                  \\22FroP\\22: %.2f,\\0D\\0A\\
-                                  \\22AftP\\22: %.2f,\\0D\\0A\\
-                                  \\22Status\\22: %u,\\0D\\0A\\
-                                  \\22air pump_status2\\22: %s\\0D\\0A\\
-                                 },\\0D\\0A\\
-            \\22Dev Params\\22: {\\0D\\0A\\
-                                 \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                                 \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
-                                 \\22Set In Tem\\22: %.1f,\\0D\\0A\\
-                                 \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
-                                }\\0D\\0A\\
-}", mqtt_payload_u.devid,
-mqtt_payload_u.data[TOUT_INDEX],
-                    mqtt_payload_u.data[TIN_INDEX],
-                    mqtt_payload_u.data[PUMP_F_INDEX],
-                    mqtt_payload_u.data[PUMP_E_INDEX],
-                    mqtt_payload_u.status[DEV_STATUS_INDEX],
-                    buf2,
-                    mqtt_payload_u.version,
-                    mqtt_payload_u.data[WATER_O_INDEX],
-                    mqtt_payload_u.data[WATER_IN_INDEX],
-                    mqtt_payload_u.data[UP_PERIOD_INDEX]);
-}
-else if (status_out == 3)
-{
-
-sprintf(mqtt_send_buf, "{\\0D\\0A\\
-        \\22Dev ID\\22: %s,\\0D\\0A\\
-        \\22Status Data\\22: {\\0D\\0A\\
-                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
-                              \\22In Tem\\22: %.1f,\\0D\\0A\\
-                              \\22Front Pressure\\22: %.2f,\\0D\\0A\\
-                              \\22After Pressure\\22: %.2f,\\0D\\0A\\
-                              \\22Status\\22: %u,\\0D\\0A\\
-                              \\22air pump_status3\\22: %s\\0D\\0A\\
-                             },\\0D\\0A\\
-        \\22Dev Params\\22: {\\0D\\0A\\
-                             \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
-                             \\22Set In Tem\\22: %.1f,\\0D\\0A\\
-                             \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
-                            }\\0D\\0A\\
-}", mqtt_payload_u.devid,
-mqtt_payload_u.data[TOUT_INDEX],
-mqtt_payload_u.data[TIN_INDEX],
-mqtt_payload_u.data[PUMP_F_INDEX],
-mqtt_payload_u.data[PUMP_E_INDEX],
-mqtt_payload_u.status[DEV_STATUS_INDEX],
-buf2,
-mqtt_payload_u.version,
-mqtt_payload_u.data[WATER_O_INDEX],
-mqtt_payload_u.data[WATER_IN_INDEX],
-mqtt_payload_u.data[UP_PERIOD_INDEX]);
-}
-else if (status_out == 4)
-{
-
-sprintf(mqtt_send_buf, "{\\0D\\0A\\
-        \\22Dev ID\\22: %s,\\0D\\0A\\
-        \\22Status Data\\22: {\\0D\\0A\\
-                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
-                              \\22In Tem\\22: %.1f,\\0D\\0A\\
-                              \\22Front Pressure\\22: %.2f,\\0D\\0A\\
-                              \\22After Pressure\\22: %.2f,\\0D\\0A\\
-                              \\22Status\\22: %u,\\0D\\0A\\
-                              \\22air pump_status4\\22: %s\\0D\\0A\\
-                             },\\0D\\0A\\
-        \\22Dev Params\\22: {\\0D\\0A\\
-                             \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
-                             \\22Set In Tem\\22: %.1f,\\0D\\0A\\
-                             \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
-                            }\\0D\\0A\\
-}", mqtt_payload_u.devid,
-mqtt_payload_u.data[TOUT_INDEX],
-mqtt_payload_u.data[TIN_INDEX],
-mqtt_payload_u.data[PUMP_F_INDEX],
-mqtt_payload_u.data[PUMP_E_INDEX],
-mqtt_payload_u.status[DEV_STATUS_INDEX],
-buf2,
-mqtt_payload_u.version,
-mqtt_payload_u.data[WATER_O_INDEX],
-mqtt_payload_u.data[WATER_IN_INDEX],
-mqtt_payload_u.data[UP_PERIOD_INDEX]);
-}
-
-
-
-else
-{
-
-sprintf(mqtt_send_buf, "{\\0D\\0A\\
-        \\22Dev ID\\22: %s,\\0D\\0A\\
-        \\22Status Data\\22: {\\0D\\0A\\
-                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
-                              \\22In Tem\\22: %.1f,\\0D\\0A\\
-                              \\22Front Pressure\\22: %.2f,\\0D\\0A\\
-                              \\22After Pressure\\22: %.2f,\\0D\\0A\\
-                              \\22Status\\22: %u,\\0D\\0A\\
-                              \\22air pump_status5\\22: %s\\0D\\0A\\
-                             },\\0D\\0A\\
-        \\22Dev Params\\22: {\\0D\\0A\\
-                             \\22Version\\22: \\22%s\\22,\\0D\\0A\\
-                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
-                             \\22Set In Tem\\22: %.1f,\\0D\\0A\\
-                             \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
-                            }\\0D\\0A\\
-}", mqtt_payload_u.devid,
-mqtt_payload_u.data[TOUT_INDEX],
-mqtt_payload_u.data[TIN_INDEX],
-mqtt_payload_u.data[PUMP_F_INDEX],
-mqtt_payload_u.data[PUMP_E_INDEX],
-mqtt_payload_u.status[DEV_STATUS_INDEX],
-buf2,
-mqtt_payload_u.version,
-mqtt_payload_u.data[WATER_O_INDEX],
-mqtt_payload_u.data[WATER_IN_INDEX],
-mqtt_payload_u.data[UP_PERIOD_INDEX]);
-
-
-}
-
-
-if (status_out < 5)
-{
-
-status_out++;
-
-}
-else
-{
-status_out = 1;
-if (addr < get_config()->dev_size)
-    {
-
-        addr++;
-
-    }
-    else
-        addr = 1;
-
-}
-
-
-
-#else
-    mqtt_send_buf = json_pack(&mqtt_payload_u);
-
-#endif
-mqtt_at_cmd_num = AT_MPUB;
-
-
-}
+//void upload()
+//{
+//
+//    unsigned char buf2[256];
+//
+//    memset(mqtt_payload_u.devid, 0, sizeof(mqtt_payload_u.devid));
+//    memset(mqtt_payload_u.version, 0, sizeof(mqtt_payload_u.version));
+//    sprintf(mqtt_payload_u.devid, "%s", get_config()->user_id);//devid
+//
+//    mqtt_payload_u.data[TOUT_INDEX] = get_ai_data()->temp[get_config()->to_index];
+//
+//    if (get_config()->mode == SMART_MODE)
+//        mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
+//    else
+//        // mqtt_payload_u.data[TIN_INDEX] =
+//        //   get_ai_data()->temp[get_config()->tin_index]; //water IN
+//        mqtt_payload_u.data[TIN_INDEX] = get_indoor_temp();
+//
+//    mqtt_payload_u.data[PUMP_F_INDEX] = *get_power();
+//    //get_ai_data()->press[get_config()->pin_index]; //pump front
+//    mqtt_payload_u.data[PUMP_E_INDEX] =
+//        get_ai_data()->press[get_config()->po_index]; //pump end
+//
+//    uint32_t tmp;
+//    tmp = get_ai_data()->channel_status;
+//    mqtt_payload_u.status[DEV_STATUS_INDEX] = get_di_data()->di_status; //16 bit di
+//    mqtt_payload_u.status[DEV_STATUS_INDEX] =
+//        mqtt_payload_u.status[DEV_STATUS_INDEX] << 11; //dev status
+//    mqtt_payload_u.status[DEV_STATUS_INDEX] =
+//        mqtt_payload_u.status[DEV_STATUS_INDEX] | tmp; //11bit
+//    mqtt_payload_u.status[DEV_STATUS_INDEX] =
+//        mqtt_payload_u.status[DEV_STATUS_INDEX] & 0x07ffffff ;
+//
+//
+//    mqtt_payload_u.status[DEV_MASK_INDEX] = get_config()->fault_mask;
+//    mqtt_payload_u.status[DEV_PUMP_STATUS_INDEX] = get_recv_machine()->fault;
+//
+//    get_config()->fault_status = mqtt_payload_u.status[DEV_STATUS_INDEX]
+//                                 ;//fault status
+//    sprintf(mqtt_payload_u.version, "%s", get_config()->version);//devid
+//    if (get_config()->mode == SMART_MODE)
+//        mqtt_payload_u.data[WATER_O_INDEX] = get_pid_output(); //set tmp
+//    else
+//        mqtt_payload_u.data[WATER_O_INDEX] = get_config()->set_tout; //set tmp
+//    if (get_config()->mode == SMART_MODE)
+//        mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tout;
+//    else
+//        mqtt_payload_u.data[WATER_IN_INDEX] = get_config()->set_tindoor;
+//    mqtt_payload_u.data[WATER_IN_INDEX] =
+//        get_ai_data()->temp[get_config()->tin_index];
+//    //get_config()->set_tindoor; //set indoor tmp
+//    mqtt_payload_u.data[UP_PERIOD_INDEX] = get_config()->set_up_period; //up period
+//    if (mqtt_payload_u.data[WATER_O_INDEX] >= 1000)
+//        mqtt_payload_u.data[WATER_O_INDEX] = 1000;
+//
+//
+//
+//#if 1
+//    memset(buf2, 0, sizeof(buf2));
+//    unsigned char buf3[128], numberBuffer[4], i;
+//    i = 0;
+//
+//    buf2[i++] = getRtcDate()->Year;
+//    buf2[i++] = getRtcDate()->Month;
+//    buf2[i++] = getRtcDate()->Date;
+//    buf2[i++] = getRtcDate()->WeekDay;
+//    buf2[i++] = getRtcTime()->Hours;
+//    buf2[i++] = getRtcTime()->Minutes;
+//    buf2[i++] = getRtcTime()->Seconds;
+//
+//    sprintf(buf3, "%u-%u-%u-%u %u:%u:%u%", buf2[0]
+//            , buf2[1]
+//            , buf2[2]
+//            , buf2[3]
+//            , buf2[4]
+//            , buf2[5]
+//            , buf2[6]
+//           );
+//
+//    i = 0;
+//    static unsigned char addr = 1, status_out = 1;
+//
+//
+//    //  sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
+//    //          get_hotter(addr)->status[0],
+//    //          get_hotter(addr)->status[1],
+//    //          get_hotter(addr)->status[2],
+//    //          get_hotter(addr)->status[3],
+//    //          get_hotter(addr)->status[4],
+//    //          get_hotter(addr)->status[5],
+//    //          get_hotter(addr)->status[6],
+//    //          get_hotter(addr)->status[7],
+//    //          get_hotter(addr)->status[8],
+//    //          get_hotter(addr)->status[9],
+//    //          get_hotter(addr)->status[10],
+//    //          get_hotter(addr)->status[11],
+//    //          get_hotter(addr)->status[12],
+//    //          get_hotter(addr)->status[13],
+//    //          get_hotter(addr)->status[14],
+//    //          get_hotter(addr)->status[15],
+//    //          get_hotter(addr)->status[16],
+//    //          get_hotter(addr)->status[17],
+//    //          get_hotter(addr)->status[18],
+//    //          get_hotter(addr)->status[19],
+//    //          get_hotter(addr)->status[20],
+//    //          get_hotter(addr)->status[21],
+//    //          get_hotter(addr)->status[22]);
+//
+//
+//
+//
+//    memset(buf2, 0, sizeof(buf2));
+//    if (status_out == 1) //0x0000-0x0007
+//    {
+//        buf2[0] = '[';
+//        for (i = 0; i < 8; i++)
+//        {
+//            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status[i]);
+//
+//        }
+//        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status[i]);
+//        buf2[strlen(buf2)] = ']';
+//        //   sprintf(buf2, "[%u,%u,%u,%u,%u,%u,%u,%u,%u,%u]",
+//        //         get_hotter(addr)->status[0],
+//        //         get_hotter(addr)->status[1],
+//        //         get_hotter(addr)->status[2],
+//        //         get_hotter(addr)->status[3],
+//        //         get_hotter(addr)->status[4],
+//        //         get_hotter(addr)->status[5],
+//        //         get_hotter(addr)->status[6],
+//        //         get_hotter(addr)->status[7],
+//        //         get_hotter(addr)->status[8],
+//        //         get_hotter(addr)->status[9]);
+//
+//    }
+//    else if (status_out == 2) //0-20
+//    {
+//
+//        buf2[0] = '[';
+//        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
+//        //get_hotter(addr)->status2[0] = 15;
+//        for (i = 1; i < 18; i++) //1-18
+//        {
+//            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
+//
+//        }
+//        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
+//        buf2[strlen(buf2)] = ']';
+//
+//
+//    }
+//    else if (status_out == 3) //19-36
+//    {
+//        buf2[0] = '[';
+//        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
+//        for (i = 19; i < 36; i++)
+//        {
+//            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
+//
+//        }
+//        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
+//        buf2[strlen(buf2)] = ']';
+//
+//
+//    }
+//    else if (status_out == 4) //37-54
+//    {
+//        buf2[0] = '[';
+//        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
+//        for (i = 37; i < 54; i++)
+//        {
+//            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
+//
+//        }
+//        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
+//        buf2[strlen(buf2)] = ']';
+//
+//
+//    }
+//
+//    else if (status_out == 5) //55-72
+//    {
+//        buf2[0] = '[';
+//        sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[0]);
+//        for (i = 55; i < 72; i++)
+//        {
+//            sprintf(buf2 + strlen(buf2), "%hd,", get_hotter(addr)->status2[i]);
+//
+//        }
+//        sprintf(buf2 + strlen(buf2), "%hd", get_hotter(addr)->status2[i]);
+//        buf2[strlen(buf2)] = ']';
+//
+//        memset(get_hotter(addr)->status2, 0, STATUS2_SIZE);
+//        memset(get_hotter(addr)->status, 0, STATUS1_SIZE);
+//    }
+//
+//
+//
+//
+//
+//    if (status_out == 1)
+//    {
+//        sprintf(mqtt_send_buf, "{\\0D\\0A\\
+//                \\22Dev ID\\22: %s,\\0D\\0A\\
+//                \\22Status Data\\22: {\\0D\\0A\\
+//                                      \\22Out Tem\\22: %.1f,\\0D\\0A\\
+//                                      \\22In Tem\\22: %.1f,\\0D\\0A\\
+//                                      \\22FP\\22: %.2f,\\0D\\0A\\
+//                                      \\22AP\\22: %.2f,\\0D\\0A\\
+//                                      \\22Dsta\\22: %u,\\0D\\0A\\
+//                                      \\22Sta1\\22: %s\\0D\\0A\\
+//                                     },\\0D\\0A\\
+//                \\22Dev Params\\22: {\\0D\\0A\\
+//                                     \\22St\\22: %u,\\0D\\0A\\
+//                                     \\22SOt\\22: %.1f,\\0D\\0A\\
+//                                     \\22SIt\\22: %.1f,\\0D\\0A\\
+//                                     \\22p\\22: %.0f,\\0D\\0A\\
+//                                     \\22i\\22: %.3f,\\0D\\0A\\
+//                                     \\22d\\22: %.3f\\0D\\0A\\
+//                                    }\\0D\\0A\\
+//    }", mqtt_payload_u.devid,
+//    mqtt_payload_u.data[TOUT_INDEX],
+//                        mqtt_payload_u.data[TIN_INDEX],
+//                        mqtt_payload_u.data[PUMP_F_INDEX],
+//                        mqtt_payload_u.data[PUMP_E_INDEX],
+//                        mqtt_payload_u.status[DEV_STATUS_INDEX],
+//                        buf2,
+//                        get_config()->set_tout,
+//                        mqtt_payload_u.data[WATER_O_INDEX],
+//                        mqtt_payload_u.data[WATER_IN_INDEX],
+//                        get_pid_params()->kp_u,
+//                        get_pid_params()->ki_u,
+//                        get_pid_params()->kd_u);
+//
+//
+//
+//}
+//else if (status_out == 2)
+//{
+//
+//    sprintf(mqtt_send_buf, "{\\0D\\0A\\
+//            \\22Dev ID\\22: %s,\\0D\\0A\\
+//            \\22Status Data\\22: {\\0D\\0A\\
+//                                  \\22Out Tem\\22: %.1f,\\0D\\0A\\
+//                                  \\22In Tem\\22: %.1f,\\0D\\0A\\
+//                                  \\22FroP\\22: %.2f,\\0D\\0A\\
+//                                  \\22AftP\\22: %.2f,\\0D\\0A\\
+//                                  \\22Status\\22: %u,\\0D\\0A\\
+//                                  \\22air pump_status2\\22: %s\\0D\\0A\\
+//                                 },\\0D\\0A\\
+//            \\22Dev Params\\22: {\\0D\\0A\\
+//                                 \\22Version\\22: \\22%s\\22,\\0D\\0A\\
+//                                 \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
+//                                 \\22Set In Tem\\22: %.1f,\\0D\\0A\\
+//                                 \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
+//                                }\\0D\\0A\\
+//}", mqtt_payload_u.devid,
+//mqtt_payload_u.data[TOUT_INDEX],
+//                    mqtt_payload_u.data[TIN_INDEX],
+//                    mqtt_payload_u.data[PUMP_F_INDEX],
+//                    mqtt_payload_u.data[PUMP_E_INDEX],
+//                    mqtt_payload_u.status[DEV_STATUS_INDEX],
+//                    buf2,
+//                    mqtt_payload_u.version,
+//                    mqtt_payload_u.data[WATER_O_INDEX],
+//                    mqtt_payload_u.data[WATER_IN_INDEX],
+//                    mqtt_payload_u.data[UP_PERIOD_INDEX]);
+//}
+//else if (status_out == 3)
+//{
+//
+//sprintf(mqtt_send_buf, "{\\0D\\0A\\
+//        \\22Dev ID\\22: %s,\\0D\\0A\\
+//        \\22Status Data\\22: {\\0D\\0A\\
+//                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
+//                              \\22In Tem\\22: %.1f,\\0D\\0A\\
+//                              \\22Front Pressure\\22: %.2f,\\0D\\0A\\
+//                              \\22After Pressure\\22: %.2f,\\0D\\0A\\
+//                              \\22Status\\22: %u,\\0D\\0A\\
+//                              \\22air pump_status3\\22: %s\\0D\\0A\\
+//                             },\\0D\\0A\\
+//        \\22Dev Params\\22: {\\0D\\0A\\
+//                             \\22Version\\22: \\22%s\\22,\\0D\\0A\\
+//                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
+//                             \\22Set In Tem\\22: %.1f,\\0D\\0A\\
+//                             \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
+//                            }\\0D\\0A\\
+//}", mqtt_payload_u.devid,
+//mqtt_payload_u.data[TOUT_INDEX],
+//mqtt_payload_u.data[TIN_INDEX],
+//mqtt_payload_u.data[PUMP_F_INDEX],
+//mqtt_payload_u.data[PUMP_E_INDEX],
+//mqtt_payload_u.status[DEV_STATUS_INDEX],
+//buf2,
+//mqtt_payload_u.version,
+//mqtt_payload_u.data[WATER_O_INDEX],
+//mqtt_payload_u.data[WATER_IN_INDEX],
+//mqtt_payload_u.data[UP_PERIOD_INDEX]);
+//}
+//else if (status_out == 4)
+//{
+//
+//sprintf(mqtt_send_buf, "{\\0D\\0A\\
+//        \\22Dev ID\\22: %s,\\0D\\0A\\
+//        \\22Status Data\\22: {\\0D\\0A\\
+//                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
+//                              \\22In Tem\\22: %.1f,\\0D\\0A\\
+//                              \\22Front Pressure\\22: %.2f,\\0D\\0A\\
+//                              \\22After Pressure\\22: %.2f,\\0D\\0A\\
+//                              \\22Status\\22: %u,\\0D\\0A\\
+//                              \\22air pump_status4\\22: %s\\0D\\0A\\
+//                             },\\0D\\0A\\
+//        \\22Dev Params\\22: {\\0D\\0A\\
+//                             \\22Version\\22: \\22%s\\22,\\0D\\0A\\
+//                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
+//                             \\22Set In Tem\\22: %.1f,\\0D\\0A\\
+//                             \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
+//                            }\\0D\\0A\\
+//}", mqtt_payload_u.devid,
+//mqtt_payload_u.data[TOUT_INDEX],
+//mqtt_payload_u.data[TIN_INDEX],
+//mqtt_payload_u.data[PUMP_F_INDEX],
+//mqtt_payload_u.data[PUMP_E_INDEX],
+//mqtt_payload_u.status[DEV_STATUS_INDEX],
+//buf2,
+//mqtt_payload_u.version,
+//mqtt_payload_u.data[WATER_O_INDEX],
+//mqtt_payload_u.data[WATER_IN_INDEX],
+//mqtt_payload_u.data[UP_PERIOD_INDEX]);
+//}
+//
+//
+//
+//else
+//{
+//
+//sprintf(mqtt_send_buf, "{\\0D\\0A\\
+//        \\22Dev ID\\22: %s,\\0D\\0A\\
+//        \\22Status Data\\22: {\\0D\\0A\\
+//                              \\22Out Tem\\22: %.1f,\\0D\\0A\\
+//                              \\22In Tem\\22: %.1f,\\0D\\0A\\
+//                              \\22Front Pressure\\22: %.2f,\\0D\\0A\\
+//                              \\22After Pressure\\22: %.2f,\\0D\\0A\\
+//                              \\22Status\\22: %u,\\0D\\0A\\
+//                              \\22air pump_status5\\22: %s\\0D\\0A\\
+//                             },\\0D\\0A\\
+//        \\22Dev Params\\22: {\\0D\\0A\\
+//                             \\22Version\\22: \\22%s\\22,\\0D\\0A\\
+//                             \\22Set Out Tem\\22: %.1f,\\0D\\0A\\
+//                             \\22Set In Tem\\22: %.1f,\\0D\\0A\\
+//                             \\22Upload Period(second)\\22: %.0f\\0D\\0A\\
+//                            }\\0D\\0A\\
+//}", mqtt_payload_u.devid,
+//mqtt_payload_u.data[TOUT_INDEX],
+//mqtt_payload_u.data[TIN_INDEX],
+//mqtt_payload_u.data[PUMP_F_INDEX],
+//mqtt_payload_u.data[PUMP_E_INDEX],
+//mqtt_payload_u.status[DEV_STATUS_INDEX],
+//buf2,
+//mqtt_payload_u.version,
+//mqtt_payload_u.data[WATER_O_INDEX],
+//mqtt_payload_u.data[WATER_IN_INDEX],
+//mqtt_payload_u.data[UP_PERIOD_INDEX]);
+//
+//
+//}
+//
+//
+//if (status_out < 5)
+//{
+//
+//status_out++;
+//
+//}
+//else
+//{
+//status_out = 1;
+//if (addr < get_config()->dev_size)
+//    {
+//
+//        addr++;
+//
+//    }
+//    else
+//        addr = 1;
+//
+//}
+//
+//
+//
+//#else
+//    mqtt_send_buf = json_pack(&mqtt_payload_u);
+//
+//#endif
+//mqtt_at_cmd_num = AT_MPUB;
+//
+//
+//}
 //void mqtt_msub()//????
 //{
 //  MQTTSendData(1,mqtt_buf);
