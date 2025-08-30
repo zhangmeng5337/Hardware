@@ -34,7 +34,7 @@ void json_plan_analy(unsigned char *p, unsigned char index);
 
 
 mqtt_payload_stru mqtt_payload_u;
-
+unsigned char count = 0;
 json_t *root, *sensorSta, *emeterData, *airpumpData, *devParams;
 json_t *diSta, *aiSta, *doSta;
 char *out, *out2;
@@ -53,43 +53,261 @@ void json_clear()
 
 
 }
-void sprintf_pack(unsigned char mqtt_packNum)
+unsigned char *sprintf_array_f(float *p, unsigned int len)
 {
-    unsigned char buf_tmp[256];
-	switch (mqtt_packNum)
-		{
-			case 0:
-				sprintf(buf_tmp, "%s", get_config()->user_id);
-			  sprintf(json_mqtt_send_buf, "{\
-			""devid"":%s,\
-		   }", buf_tmp);
-				break;
-			case 1:
-				
-				break;
-			default :
-					
-				break;
-		}
+    unsigned char buf_tmp[512];
+    unsigned int i, j;
+    memset(buf_tmp, 512, 0);
+    if (len > 1)
+    {
+        sprintf(buf_tmp, "[%.3f,", p[0]);
+        i = strlen(buf_tmp);
+        for (j = 1; j < (len - 1); j++)
+        {
+            sprintf(&buf_tmp[i], "%.3f,", p[j]);
+            i = strlen(buf_tmp);
+        }
+        sprintf(&buf_tmp[i], "%.3f]", p[j]);
+
+    }
+    else
+    {
+        if (len == 1)
+        {
+            sprintf(buf_tmp, "[%.4f]", p[0]);
+
+        }
+    }
+    return buf_tmp;
+
+}
+unsigned char *sprintf_array_u(unsigned int *p, unsigned int len)
+{
+    unsigned char buf_tmp[512];
+    unsigned int i, j;
+    memset(buf_tmp, 512, 0);
+    if (len > 1)
+    {
+        sprintf(buf_tmp, "[%u,", p[0]);
+        i = strlen(buf_tmp);
+        for (j = 1; j < (len - 1); j++)
+        {
+            sprintf(&buf_tmp[i], "%u,", p[j]);
+            i = strlen(buf_tmp);
+        }
+        sprintf(&buf_tmp[i], "%u]", p[j]);
+
+    }
+    else
+    {
+        if (len == 1)
+        {
+            sprintf(buf_tmp, "[%u", p[0]);
+
+        }
+    }
+    return buf_tmp;
 
 }
 void jsson_pack(unsigned char mqtt_packNum)
 {
+    unsigned char buf_tmp[128];
+    unsigned char buf_tmp_large[4096];
+
+    unsigned int i, j, k;
+    unsigned char *p;
+    memset(buf_tmp, sizeof(buf_tmp), 0);
+    sprintf(buf_tmp, "%s", get_config()->user_id);
+    switch (mqtt_packNum)
+    {
+        case 0://ai di do
+            float buf_f[AI_SIZE_T + AI_SIZE_P];
+            // memset(buf_tmp2, sizeof(buf_tmp2), 0);
+            memset(json_mqtt_send_buf, sizeof(json_mqtt_send_buf), 0);
+
+            for (i = 0; i < AI_SIZE_T; i++)
+            {
+                buf_f[i] = get_ai_data()->temp[i];
+
+            }
+            for (i = AI_SIZE_T; i < (AI_SIZE_T + AI_SIZE_P); i++)
+            {
+                buf_f[i] = get_ai_data()->press[i - AI_SIZE_T];
+
+
+            }
+            p = sprintf_array_f(buf_f, AI_SIZE_T + AI_SIZE_P);
+
+
+//            unsigned char buf2[128];
+//            buf2[i++] = getRtcDate()->Year;
+//            buf2[i++] = getRtcDate()->Month;
+//            buf2[i++] = getRtcDate()->Date;
+//            buf2[i++] = getRtcDate()->WeekDay;
+//            buf2[i++] = getRtcTime()->Hours;
+//            buf2[i++] = getRtcTime()->Minutes;
+//            buf2[i++] = getRtcTime()->Seconds;
+//            json_object_set_new(devParams, "time", json_string(buf2));
+//            json_object_set_new(root, "sensorSta", sensorSta);
+
+            sprintf(json_mqtt_send_buf,
+                    "{\r\n\
+\"devid\":\"%s\",\r\n\
+\"sensorSta\":{\r\n\
+\"aiSta\":%s,\r\n\
+\"diSta\":0,\r\n\
+\"doSta\":1\r\n\
+}\r\n\
+}", buf_tmp, p);
+            break;
+        case 1:
+            k = 0;
+            memset(buf_tmp_large, sizeof(buf_tmp_large), 0);
+            for (i = 0; i < ENERGY_COUNT; i++)
+            {
+                unsigned int tmp_addr;
+                tmp_addr = get_energy_data()->pb[i].addr;
+                p = sprintf_array_f(&get_energy_data()->pb[i].payload[0], ENERGY_BUF_SIZE - 2);
+
+
+                if (i == (ENERGY_COUNT - 1))
+                {
+                    sprintf(&buf_tmp_large[k], "{\r\n\
+\"addr\":%u,\r\n\
+\"data\":%s}", tmp_addr, p);
+
+                }
+                else
+                {
+                    sprintf(&buf_tmp_large[k], "{\r\n\
+\"addr\":%u,\r\n\
+\"data\":%s},", tmp_addr, p);
+                    k = strlen(buf_tmp_large);
+
+                }
+            }
+            sprintf(json_mqtt_send_buf,
+                    "{\r\n\
+\"devid\":\"%s\",\r\n\
+\"emeterData\":[%s\r\n\
+]\r\n\
+}", buf_tmp, buf_tmp_large);
+
+            break;
+        default :
+            k = 0;
+            unsigned char tmpi;
+
+            if (count < AIR_PUMP_SIZE)
+                tmpi = count;
+            else
+                tmpi = count - AIR_PUMP_SIZE;
+            for (i = tmpi; i < (1 + tmpi); i++)
+            {
+
+
+                // if (get_hotter(i + 1)->status[0] != 0)
+                {
+                    unsigned int tmp_addr;
+
+                    if (count < (AIR_PUMP_SIZE))
+                    {
+unsigned int *pb;
+                        memset(buf_tmp_large, sizeof(buf_tmp_large), 0);
+
+                        {
+                            unsigned int tmp_addr;
+                            
+                            pb = malloc(STATUS1_SIZE + STATUS2_SIZE);
+                            tmp_addr = get_hotter(i)->status[0];
+                            memcpy(pb, &get_hotter(i)->status[1], STATUS1_SIZE - 1);
+                            memcpy(pb + STATUS1_SIZE - 1, &get_hotter(i)->status2[1], STATUS2_SIZE - 1);
+                            p = sprintf_array_u(pb, STATUS1_SIZE + STATUS2_SIZE - 2);
+                            if (i < AIR_PUMP_SIZE)
+                            {
+                                sprintf(&buf_tmp_large[k], "{\r\n\
+						\"addr\":%u,\r\n\
+						\"data1\":%s}", tmp_addr, p);
+
+                            }
+                            else
+                            {
+                                sprintf(&buf_tmp_large[k], "{\r\n\
+						\"addr\":%u,\r\n\
+						\"data1\":%s},", tmp_addr, p);
+                                k = strlen(buf_tmp_large);
+
+                            }
+                        }
+                        sprintf(json_mqtt_send_buf,
+                                "{\r\n\
+						\"devid\":\"%s\",\r\n\
+						\"airpumpData\":[%s\r\n\
+						]\r\n\
+						}", buf_tmp, buf_tmp_large);
+                        free(pb);
+                    }
+                    else
+                    {
+                        memset(buf_tmp_large, sizeof(buf_tmp_large), 0);
+
+                        {
+                            unsigned int tmp_addr;
+                            tmp_addr = get_hotter(i)->status[0];
+                            p = sprintf_array_u(&(get_hotter(i)->status3[1]), STATUS2_SIZE - 1);
+                            if (i < AIR_PUMP_SIZE)
+                            {
+                                sprintf(&buf_tmp_large[k], "{\r\n\
+										 \"addr\":%u,\r\n\
+										 \"data2\":%s}", tmp_addr, p);
+
+                            }
+                            else
+                            {
+                                sprintf(&buf_tmp_large[k], "{\r\n\
+										 \"addr\":%u,\r\n\
+										 \"data2\":%s},", tmp_addr, p);
+                                k = strlen(buf_tmp_large);
+
+                            }
+                        }
+                        sprintf(json_mqtt_send_buf,
+                                "{\r\n\
+										 \"devid\":\"%s\",\r\n\
+										 \"airpumpData\":[%s\r\n\
+										 ]\r\n\
+										 }", buf_tmp, buf_tmp_large);
+
+
+                    }
+
+                }
+            }
+            count++;
+
+            if (count >= 2 * AIR_PUMP_SIZE)
+                count = 0;
+            break;
+
+    }
+}
+void sprintf_pack(unsigned char mqtt_packNum)
+{
     json_t  *addr, *tmp, *array_tmp;
     json_t *arrary_value;
     unsigned int  k, kl;
-	static unsigned char count = 0;
+    static unsigned char count = 0;
     /* Build an empty JSON object */
     root = json_object();
     if (!root)
     {
-		json_decref(root);
-//		json_decref(sensorSta);
-//		json_decref(emeterData);
-//		json_decref(airpumpData);
-//		json_decref(devParams);
-//		json_decref(diSta);
-//		json_decref(doSta);
+        json_decref(root);
+//      json_decref(sensorSta);
+//      json_decref(emeterData);
+//      json_decref(airpumpData);
+//      json_decref(devParams);
+//      json_decref(diSta);
+//      json_decref(doSta);
 
         return ;
     }
@@ -103,7 +321,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 
             if (!sensorSta)
             {
-				json_decref(sensorSta);
+                json_decref(sensorSta);
 
                 return ;
             }
@@ -113,7 +331,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 
             if (!aiSta)
             {
-				json_decref(aiSta);
+                json_decref(aiSta);
 
                 return ;
             }
@@ -171,35 +389,35 @@ void jsson_pack(unsigned char mqtt_packNum)
                     addr = json_object();
                     if (!addr)
                     {
-						json_decref(addr);
+                        json_decref(addr);
 
                         return ;
                     }
                     arrary_value = json_array();
                     if (!arrary_value)
                     {
-						json_decref(arrary_value);
+                        json_decref(arrary_value);
 
                         return ;
                     }
                     array_tmp = json_array();
                     if (!array_tmp)
                     {
-						json_decref(array_tmp);
+                        json_decref(array_tmp);
 
                         return ;
                     }
                     addr = json_object();
                     if (!addr)
                     {
-						json_decref(addr);
+                        json_decref(addr);
 
                         return ;
                     }
                     arrary_value = json_array();
                     if (!arrary_value)
                     {
-						json_decref(arrary_value);
+                        json_decref(arrary_value);
 
                         return ;
                     }
@@ -228,99 +446,99 @@ void jsson_pack(unsigned char mqtt_packNum)
 
             break;
         default :
-				airpumpData = json_array();
-				 if (!airpumpData)
-				 {
-				json_decref(airpumpData);
-					 return ;
-				 }
-				
-				 k = 0;
-				
-				 for (i = count; i < (1 + count); i++)
-				 {
-					 kl = 0;
-					 addr = json_object();
-					 if (!addr)
-					 {
-				json_decref(addr);
-						 return ;
-					 }
-					 arrary_value = json_array();
-					 if (!arrary_value)
-					 {
-				json_decref(arrary_value);
-						 return ;
-					 }
-				
-					 array_tmp = json_array();
-					 if (!array_tmp)
-					 {
-				json_decref(array_tmp);
-						 return ;
-					 }
-				
-					 // if (get_hotter(i + 1)->status[0] != 0)
-					 {
-						 unsigned int tmp_addr;
-						 tmp_addr = (get_hotter(i)->status[0]);
-						 json_object_set_new(addr, "addr", json_integer(tmp_addr));
-						 for (j = 1; j < STATUS1_SIZE; j++)
-						 {
-							 tmp = json_integer(get_hotter(i)->status[j]);
-							 json_array_insert_new(arrary_value, kl, tmp);
-							 kl++;
-				
-						 }
-						 for (j = 1; j < STATUS2_SIZE; j++)
-						 {
-							 tmp = json_integer(get_hotter(i)->status2[j]);
-							 json_array_insert_new(arrary_value, kl, tmp);
-							 kl++;
-				
-						 }
-//						 for (j = 1; j < STATUS3_SIZE; j++)
-//						 {
-//							 tmp = json_integer(get_hotter(i)->status3[j]);
-//							 json_array_insert_new(arrary_value, kl, tmp);
-//							 kl++;
-//				
-//						 }
-				
-				
-						 json_object_set_new(addr, "data", arrary_value);
-						 json_array_insert_new(airpumpData, k, addr);
-						 k++;
-						 // json_array_append_new(airpumpData, array_tmp);
-				
-					 }
-				
-				 }
-				 json_object_set_new(root, "airpumpData", airpumpData);
-            
-                count++;
-				if(count>=AIR_PUMP_SIZE)
-					count = 0;
+            airpumpData = json_array();
+            if (!airpumpData)
+            {
+                json_decref(airpumpData);
+                return ;
+            }
+
+            k = 0;
+
+            for (i = count; i < (1 + count); i++)
+            {
+                kl = 0;
+                addr = json_object();
+                if (!addr)
+                {
+                    json_decref(addr);
+                    return ;
+                }
+                arrary_value = json_array();
+                if (!arrary_value)
+                {
+                    json_decref(arrary_value);
+                    return ;
+                }
+
+                array_tmp = json_array();
+                if (!array_tmp)
+                {
+                    json_decref(array_tmp);
+                    return ;
+                }
+
+                // if (get_hotter(i + 1)->status[0] != 0)
+                {
+                    unsigned int tmp_addr;
+                    tmp_addr = (get_hotter(i)->status[0]);
+                    json_object_set_new(addr, "addr", json_integer(tmp_addr));
+                    for (j = 1; j < STATUS1_SIZE; j++)
+                    {
+                        tmp = json_integer(get_hotter(i)->status[j]);
+                        json_array_insert_new(arrary_value, kl, tmp);
+                        kl++;
+
+                    }
+                    for (j = 1; j < STATUS2_SIZE; j++)
+                    {
+                        tmp = json_integer(get_hotter(i)->status2[j]);
+                        json_array_insert_new(arrary_value, kl, tmp);
+                        kl++;
+
+                    }
+//                       for (j = 1; j < STATUS3_SIZE; j++)
+//                       {
+//                           tmp = json_integer(get_hotter(i)->status3[j]);
+//                           json_array_insert_new(arrary_value, kl, tmp);
+//                           kl++;
+//
+//                       }
+
+
+                    json_object_set_new(addr, "data", arrary_value);
+                    json_array_insert_new(airpumpData, k, addr);
+                    k++;
+                    // json_array_append_new(airpumpData, array_tmp);
+
+                }
+
+            }
+            json_object_set_new(root, "airpumpData", airpumpData);
+
+            count++;
+            if (count >= AIR_PUMP_SIZE)
+                count = 0;
             break;
     }
     out = json_dumps(root, JSON_REAL_PRECISION(3));
-	strcpy(json_mqtt_send_buf,out);
-	free(out);
+    strcpy(json_mqtt_send_buf, out);
+    free(out);
 
-     
+
     json_decref(arrary_value);
     json_decref(addr);
     json_decref(tmp);
     json_decref(array_tmp);
 
 
-	json_decref(root);
-	json_decref(sensorSta);
-	json_decref(emeterData);
-	json_decref(airpumpData);
-	json_decref(devParams);
-	json_decref(diSta);
-	json_decref(doSta);
+    json_decref(root);
+    json_decref(sensorSta);
+    json_decref(emeterData);
+    json_decref(airpumpData);
+    json_decref(devParams);
+    json_decref(diSta);
+    json_decref(doSta);
 
 
 
@@ -332,13 +550,14 @@ void json_para()
 
     json_t *jsonbox;
     json_error_t error;
-	uint32_t index;
-	for(index = 0;index <LPUART1_REC_SIZE;index++)
-	{
-		if(mqtt_recv->Lpuart1RecBuff[index] == '{')
-			break;
-	}
-    jsonbox = json_loads(&(mqtt_recv->Lpuart1RecBuff[index]), LPUART1_REC_SIZE-index, &error);
+    uint32_t index;
+    for (index = 0; index < LPUART1_REC_SIZE; index++)
+    {
+        if (mqtt_recv->Lpuart1RecBuff[index] == '{')
+            break;
+    }
+    jsonbox = json_loads(&(mqtt_recv->Lpuart1RecBuff[index]),
+                         LPUART1_REC_SIZE - index, &error);
     json_t *reboot_obj = json_object_get(jsonbox, "Updat Frimware");
     if (reboot_obj != NULL)
     {
@@ -2402,13 +2621,13 @@ void mqtt_proc()
             {
                 uint32_t tmp;
                 tmp = get_config()->set_up_period * 1000;
-				tmp = 1000;
+                tmp = 1000;
                 registerTick(MQTT_TX_TICK_NO, tmp);
             }
 
             else
                 registerTick(MQTT_TX_TICK_NO, 10000);
-          if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
+            if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
             {
                 reset_registerTick(MQTT_TX_TICK_NO);
                 //upload();//????
