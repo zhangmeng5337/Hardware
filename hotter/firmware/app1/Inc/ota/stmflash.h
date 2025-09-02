@@ -27,8 +27,17 @@
 
 #define UAPP3   3
 
-#define VERSION        "V1.0.244"
+#define VERSION        "V1.0.248"
 
+#define BootLoader_Size             0x10000U                        // BootLoader size 64K
+#define Application_Size            0x40000U                    // Application size 256K
+#define Boot_1_Addr     0x08000000U             // app1 base addr
+
+#define Application_1_Addr      0x08020000U             // app1 base addr
+#define Application_2_Addr      Application_1_Addr + Application_Size             // app2 base addr
+#define SYS_PARAMS_Addr        Application_2_Addr + Application_Size
+
+#define CONFIG_Addr            SYS_PARAMS_Addr
 
 #define OTA_NUM_ADDR   0x801fff0
 #ifdef APP1
@@ -52,7 +61,7 @@
 
 #if OTA_UPDATE_TO == UAPP1
 #define APP_NUM     0x2a
-#define VECT_OFFSET_USR 0x60000
+#define VECT_OFFSET_USR   Application_Size+0x20000
 #endif
 #if OTA_UPDATE_TO == UAPP3
 #define APP_NUM     0x2a
@@ -64,15 +73,7 @@
 
 
 
-#define BootLoader_Size             0x10000U                        // BootLoader size 64K
-#define Application_Size            0x40000U                    // Application size 256K
-#define Boot_1_Addr     0x08000000U             // app1 base addr
 
-#define Application_1_Addr      0x08020000U             // app1 base addr
-#define Application_2_Addr      0x08060000U             // app2 base addr
-#define SYS_PARAMS_Addr        Application_2_Addr + Application_Size
-
-#define CONFIG_Addr            SYS_PARAMS_Addr
 
 
 uint32_t GetPage(uint32_t Address);

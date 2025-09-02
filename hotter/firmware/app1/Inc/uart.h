@@ -11,7 +11,7 @@
 
 
 #define LPUART1_DMA_REC_SIZE 1200
-#define LPUART1_REC_SIZE 2000
+#define LPUART1_REC_SIZE 1500
 typedef struct
 {
   uint32_t timeout;

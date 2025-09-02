@@ -20,12 +20,14 @@ energylist_stru *get_energy_data(void)
 
 void energy_init()
 {
-    unsigned char i;
+    unsigned char i,k,l;
+	k = 1;
     for (i = 0; i < ENERGY_COUNT; i++)
     {
-        energy_usr[i].addr = 0;
+        energy_usr[i].addr = k++;
         energy_usr[i].energy_typ = 0;
-        memset(energy_usr[i].payload, 0, ENERGY_BUF_SIZE);
+		for(l = 0;l<ENERGY_BUF_SIZE;l++)
+        energy_usr[i].payload[l] = 88888888.333;
 
     }
 	energylist.pb = energy_usr;

@@ -1,21 +1,21 @@
-/*************ç¬”è®°****************
-1ã€æœ¬lteæ¨¡å—é‡‡ç”¨huart3(ä¸²å£3)ï¼Œç„¶åŽhuart1(ä¸²å£1)ä½œä¸ºè°ƒè¯•è¾“å‡ºã€?
-2ã€CudeMXé…ç½®huart3ï¼?
+/*************±Ê¼Ç****************
+1¡¢±¾lteÄ£¿é²ÉÓÃhuart3(´®¿Ú3)£¬È»ºóhuart1(´®¿Ú1)×÷Îªµ÷ÊÔÊä³ö??
+2¡¢CudeMXÅäÖÃhuart3??
    ------------------------------------------
-   Mode        --> Asynchronous(å¼‚æ­¥)
+   Mode        --> Asynchronous(Òì²½)
    Baud Rate   --> 9600 Bit/s
    Word Length --> 8 Bit
    Parity      --> None
    Stop Bits   --> 1
    ------------------------------------------
-   NVIC        --> ä¸²å£ä¸­æ–­ä½¿èƒ½
+   NVIC        --> ´®¿ÚÖÐ¶ÏÊ¹ÄÜ
    ------------------------------------------
-   DMA         --> Add å¢žåŠ RX TX
+   DMA         --> Add Ôö¼ÓRX TX
                --> Data Width --> Byte
    ------------------------------------------
-3ã€éœ€è¦FreeRTOSç³»ç»Ÿæ”¯æŒï¼Œéœ€è¦?uartext.c"ã€?uartext.h"
-4ã€æœ¬ä»£ç æœ«å°¾æœ‰FreeRTOSä»»åŠ¡æ¨¡æ¿ã€‚StartGSMTask()
-5ã€?
+3¡¢ÐèÒªFreeRTOSÏµÍ³Ö§³Ö£¬Ðè??uartext.c"??uartext.h"
+4¡¢±¾´úÂëÄ©Î²ÓÐFreeRTOSÈÎÎñÄ£°å¡£StartGSMTask()
+5??
 ***********************************/
 #include "lte_hal.h"
 #include <stdlib.h>
@@ -68,7 +68,7 @@ void clear_uart_buf(unsigned char flag)
 
 
 }
-/* ATæŒ‡ä»¤æŽ¥æ”¶å¤„ç†é€»è¾‘ */
+/* ATÖ¸Áî½ÓÊÕ´¦ÀíÂß¼­ */
 unsigned char ATRec(char *s)
 {
     //CLOSED  +CME ERROR: 767  +CGEV: NW PDN DEACT 1
@@ -96,7 +96,7 @@ unsigned char ATRec(char *s)
             ;
 
 
-        //printf("æ”¶åˆ°æ•°æ®ï¼?s", Lpuart1type.Lpuart1RecBuff);
+        //printf("ÊÕµ½Êý¾Ý??s", Lpuart1type.Lpuart1RecBuff);
         lte_recv->Lpuart1RecFlag = 0;
         // lte_recv->Lpuart1RecLen = 0;
     }
@@ -106,18 +106,18 @@ unsigned char ATRec(char *s)
 }
 
 /*********************************************************
-å‡½æ•°åï¼šlte_Check_Cmd
-åŠ? èƒ½ï¼šå‘é€å‘½ä»¤åŽ,æ£€æµ‹æŽ¥æ”¶åˆ°çš„åº”ç­?
-å½? å‚ï¼šstr--æœŸå¾…çš„åº”ç­”ç»“æž?
-è¿”å›žå€¼ï¼š0--æ²¡æœ‰å¾—åˆ°æœŸå¾…çš„åº”ç­”ç»“æž?*?*--æœŸå¾…åº”ç­”ç»“æžœçš„ä½ç½?strçš„ä½ç½?
-å¤? æ³¨ï¼š
+º¯ÊýÃû£ºlte_Check_Cmd
+?? ÄÜ£º·¢ËÍÃüÁîºó,¼ì²â½ÓÊÕµ½µÄÓ¦??
+?? ²Î£ºstr--ÆÚ´ýµÄÓ¦´ð½á??
+·µ»ØÖµ£º0--Ã»ÓÐµÃµ½ÆÚ´ýµÄÓ¦´ð½á??*?*--ÆÚ´ýÓ¦´ð½á¹ûµÄÎ»??strµÄÎ»??
+?? ×¢£º
 **********************************************************/
 uint8_t *lte_Check_Cmd(uint8_t *str)
 {
     uint8_t *strx ;
     //strx = Find_string_left(lte_recv->Lpuart1RecBuff,str);
     strx = strstr((const char *)(lte_recv->Lpuart1RecBuff),
-                  (const char *)str); //å¯»æ‰¾æ–‡æœ¬(è¢«å¯»æ‰¾ï¼Œæ¬²å¯»æ‰?
+                  (const char *)str); //Ñ°ÕÒÎÄ±¾(±»Ñ°ÕÒ£¬ÓûÑ°??
     return strx;
     //Find_string(char *pcBuf,char *left,char *right, char *pcRes)
 
@@ -125,14 +125,14 @@ uint8_t *lte_Check_Cmd(uint8_t *str)
 
 
 /********************************************
-å‡½æ•°åï¼šlte_Send_Cmd
-åŠ? èƒ½ï¼šå‘GSMå‘é€å‘½ä»?
-å½? å‚ï¼šcmd:å‘é€çš„å‘½ä»¤å­—ç¬¦ä¸?ä¸éœ€è¦æ·»åŠ å›žè½¦äº†)
-        ack:æœŸå¾…çš„åº”ç­”ç»“æž?å¦‚æžœä¸ºç©º,åˆ™è¡¨ç¤ºä¸éœ€è¦ç­‰å¾…åº”ç­?
-        waittime:ç­‰å¾…æ—¶é—´(å•ä½:100ms)
-è¿”å›žå€¼ï¼š0--å‘é€æˆåŠ?å¾—åˆ°äº†æœŸå¾…çš„åº”ç­”ç»“æžœ)
-        1--å‘é€å¤±è´?
-å¤? æ³¨ï¼š
+º¯ÊýÃû£ºlte_Send_Cmd
+?? ÄÜ£ºÏòGSM·¢ËÍÃü??
+?? ²Î£ºcmd:·¢ËÍµÄÃüÁî×Ö·û??²»ÐèÒªÌí¼Ó»Ø³µÁË)
+        ack:ÆÚ´ýµÄÓ¦´ð½á??Èç¹ûÎª¿Õ,Ôò±íÊ¾²»ÐèÒªµÈ´ýÓ¦??
+        waittime:µÈ´ýÊ±¼ä(µ¥Î»:100ms)
+·µ»ØÖµ£º0--·¢ËÍ³É??µÃµ½ÁËÆÚ´ýµÄÓ¦´ð½á¹û)
+        1--·¢ËÍÊ§??
+?? ×¢£º
 *********************************************/
 uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
 {
@@ -147,13 +147,13 @@ uint8_t lte_Send_Cmd(uint8_t *cmd, uint8_t *ack, unsigned int WaitTime)
     lte_recv->timeout = WaitTime;
     memset(TxBuffer, 0, 2048);
     sprintf((char *)TxBuffer, "%s", cmd);
-    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//å‘ç»™ä¸²å£3
+    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//·¢¸ø´®¿Ú3
     clear_uart_buf(0);
 
     //memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
     //  printf("%s",TxBuffer);
-    if (ack)     //éœ€è¦ç­‰å¾…åº”ç­?
+    if (ack)     //ÐèÒªµÈ´ýÓ¦??
     {
 
         HAL_Delay(lte_recv->timeout);
@@ -246,13 +246,13 @@ uint8_t lte_Send_Cmd_mqtt(uint8_t mode, uint8_t *cmd, uint8_t *ack,
         }
     }
     //sprintf((char *)TxBuffer, "%s", cmd);
-    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//å‘ç»™ä¸²å£3
+    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//·¢¸ø´®¿Ú3
     clear_uart_buf(0);
 
     //memset(lte_recv->Lpuart1RecBuff, 0, LPUART1_REC_SIZE);
     uart_transmit(LTE_No, TxBuffer, i);
     //  printf("%s",TxBuffer);
-    if (ack)     //éœ€è¦ç­‰å¾…åº”ç­?
+    if (ack)     //ÐèÒªµÈ´ýÓ¦??
     {
 
         HAL_Delay(lte_recv->timeout);
@@ -280,7 +280,7 @@ uint8_t lte_Send_Cmd_mqtt(uint8_t mode, uint8_t *cmd, uint8_t *ack,
     return res;
 }
 
-/* åˆå§‹åŒ–CAT1 */
+/* ³õÊ¼»¯CAT1 */
 void CAT1_Init(void)
 {
     Start_4G();
@@ -300,13 +300,13 @@ unsigned char *pb;
 unsigned int crc_re, crc_cal;
 uint8_t lte_info_ota_show()
 {
-    unsigned char buf[256];
+    unsigned char buf[64];
     switch (at_cmd_ota_num)
     {
     //***************************************************http
     case AT_HTTPTERM_21:
         //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
-        if (lte_Send_Cmd("AT+HTTPTERM\r\n", "OK", LTE_LONG_DELAY)) //æŸ¥è¯¢AT
+        if (lte_Send_Cmd("AT+HTTPTERM\r\n", "OK", LTE_LONG_DELAY)) //²éÑ¯AT
         {
             at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
         }
@@ -320,7 +320,7 @@ uint8_t lte_info_ota_show()
 
     case AT_HTTPTERM_22:
         //sprintf(buf, "AT+HTTPTERM\\r\n", get_config()->http_download, get_config()->seq_count);//url set
-        if (lte_Send_Cmd("AT+SAPBR=0,1\r\n", "OK", LTE_LONG_DELAY)) //æŸ¥è¯¢AT
+        if (lte_Send_Cmd("AT+SAPBR=0,1\r\n", "OK", LTE_LONG_DELAY)) //²éÑ¯AT
         {
             at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
 
@@ -364,7 +364,7 @@ uint8_t lte_info_ota_show()
     case AT_HTTPPARA_2:
         sprintf(buf, "AT+HTTPPARA=\"URL\",%s%d\r\n", get_config()->http_download,
                 get_config()->seq_count); //url set
-        if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //æŸ¥è¯¢AT
+        if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //²éÑ¯AT
         {
             at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
 
@@ -394,7 +394,7 @@ uint8_t lte_info_ota_show()
         break;
 
     case AT_HTTPREAD_1:
-        if (lte_Send_Cmd("AT+HTTPREAD\r\n", "+HTTPREAD: ", LTE_LONG_DELAY)) //æŸ¥è¯¢AT
+        if (lte_Send_Cmd("AT+HTTPREAD\r\n", "+HTTPREAD: ", LTE_LONG_DELAY)) //²éÑ¯AT
         {
             at_cmds_ota.RtyNum = at_cmds_ota.RtyNum++;
 
@@ -434,7 +434,7 @@ uint8_t lte_info_ota_show()
                 get_config()->seq_count = get_config()->seq_count + 1;
                 // printf("Find_Buf:%lu\r\n", compare_len);
                 if (get_config()->Erase_flag ==
-                        1)    //begin eraseä»…ä»…å¼€å§‹æ˜¯æ“¦é™¤flashä¸€æ¬?
+                        1)    //begin erase½ö½ö¿ªÊ¼ÊÇ²Á³ýflashÒ»??
                 {
                     if (OTA_UPDATE_TO == UAPP1)
                         addr_wr = Application_1_Addr;
@@ -446,7 +446,7 @@ uint8_t lte_info_ota_show()
                     get_config()->Erase_flag = 0;
                     HAL_StatusTypeDef status = HAL_ERROR;
                     while (status == HAL_ERROR)
-                        status = Erase_page(addr_wr, 2); //erase 2 sectoræ“¦é™¤2æ‰‡åŒº
+                        status = Erase_page(addr_wr, 2); //erase 2 sector²Á³ý2ÉÈÇø
                 }
 
                 unsigned int i;
@@ -511,11 +511,11 @@ uint8_t lte_info_ota_show()
 }
 
 /*********************************************************
-å‡½æ•°åï¼šlte_Info_Show
-åŠ? èƒ½ï¼šGSMæ£€æµ?SIMå¡å‡†å¤‡å’Œæ˜¯å¦æ³¨å†ŒæˆåŠŸ)
-å½? å‚ï¼šæ—?
-è¿”å›žå€¼ï¼š2--æ­£å¸¸  å…¶ä»–--é”™è¯¯ä»£ç 
-å¤? æ³¨ï¼š
+º¯ÊýÃû£ºlte_Info_Show
+?? ÄÜ£ºGSM¼ì??SIM¿¨×¼±¸ºÍÊÇ·ñ×¢²á³É¹¦)
+?? ²Î£º??
+·µ»ØÖµ£º2--Õý³£  ÆäËû--´íÎó´úÂë
+?? ×¢£º
 **********************************************************/
 uint8_t lte_Info_Show(void)
 {
@@ -523,7 +523,7 @@ uint8_t lte_Info_Show(void)
     switch (at_cmd_num)
     {
     case AT:
-        if (lte_Send_Cmd("AT\r\n", "OK", LTE_SHORT_DELAY)) //æŸ¥è¯¢AT
+        if (lte_Send_Cmd("AT\r\n", "OK", LTE_SHORT_DELAY)) //²éÑ¯AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //clear_uart_buf();
@@ -539,7 +539,7 @@ uint8_t lte_Info_Show(void)
         }
         break;
     case ATE0:
-        if (lte_Send_Cmd("ATE0\r\n", "OK", LTE_SHORT_DELAY)) //å…³é—­å›žæ˜¾
+        if (lte_Send_Cmd("ATE0\r\n", "OK", LTE_SHORT_DELAY)) //¹Ø±Õ»ØÏÔ
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
         }
@@ -553,7 +553,7 @@ uint8_t lte_Info_Show(void)
         }
         break;
     case AT_CPIN:
-        if (lte_Send_Cmd("AT+CPIN?\r\n", "READY", LTE_SHORT_DELAY)) //æŸ¥è¯¢simå?
+        if (lte_Send_Cmd("AT+CPIN?\r\n", "READY", LTE_SHORT_DELAY)) //²éÑ¯sim??
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -567,7 +567,7 @@ uint8_t lte_Info_Show(void)
         }
         break;
     case AT_CGSN:
-        if (lte_Send_Cmd("AT+CGSN\r\n", "OK", LTE_SHORT_DELAY)) //æŸ¥è¯¢imei
+        if (lte_Send_Cmd("AT+CGSN\r\n", "OK", LTE_SHORT_DELAY)) //²éÑ¯imei
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -591,7 +591,7 @@ uint8_t lte_Info_Show(void)
         }
         break;
     case AT_VER:
-        if (lte_Send_Cmd("AT+VER\r\n", "OK", LTE_SHORT_DELAY)) //æŸ¥è¯¢imei
+        if (lte_Send_Cmd("AT+VER\r\n", "OK", LTE_SHORT_DELAY)) //²éÑ¯imei
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -622,7 +622,7 @@ uint8_t lte_Info_Show(void)
 
     case AT_CGATT:
         if (lte_Send_Cmd("AT+CGATT?\r\n", "+CGATT: 1",
-                         LTE_LONG_DELAY)) //æŸ¥è¯¢ç½‘ç»œé™„ç€
+                         LTE_LONG_DELAY)) //²éÑ¯ÍøÂç¸½×Å
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
             //memset(lte_recv->Lpuart1RecBuff, 0, sizeof(lte_recv->Lpuart1RecBuff));
@@ -640,7 +640,7 @@ uint8_t lte_Info_Show(void)
     //***************************************************http
     case AT_SAPBR_1:
         if (lte_Send_Cmd("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n", "OK",
-                         LTE_SHORT_DELAY)) //æŸ¥è¯¢AT
+                         LTE_SHORT_DELAY)) //²éÑ¯AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
         }
@@ -655,7 +655,7 @@ uint8_t lte_Info_Show(void)
         break;
     case AT_SAPBR_2:
         if (lte_Send_Cmd("AT+SAPBR=3,1,\"APN\",\"\"\r\n", "OK",
-                         LTE_SHORT_DELAY)) //æŸ¥è¯¢AT
+                         LTE_SHORT_DELAY)) //²éÑ¯AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
         }
@@ -730,7 +730,7 @@ uint8_t lte_Info_Show(void)
 
     case AT_CIPGSMLOC:
         if (lte_Send_Cmd("AT+CIPGSMLOC=2,1\r\n", "OK",
-                         1000)) //set http params
+                         2000)) //set http params
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
         }
@@ -798,7 +798,7 @@ uint8_t lte_Info_Show(void)
                 get_config()->user_id,get_config()->version);//url set
         // sprintf(buf, "AT+HTTPPARA=\"URL\",%s%s\r\n", get_config()->http_ip,
         //      get_config()->user_id);//url set
-        if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //æŸ¥è¯¢AT
+        if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //²éÑ¯AT
         {
             at_cmds.RtyNum = at_cmds.RtyNum++;
         }
@@ -834,7 +834,7 @@ uint8_t lte_Info_Show(void)
                 //Find_string((char *)lte_recv->Lpuart1RecBuff, "{", ",", Version_buffer);
                 if (strcmp(Version_buffer, get_config()->version) == 0)
                 {
-                    // printf("ç¡¬ä»¶ç‰ˆæœ¬å’Œäº‘ç«¯ç‰ˆæœ¬ä¸€è‡´ï¼Œæ— éœ€å‡çº§ï¼\r\n");
+                    // printf("Ó²¼þ°æ±¾ºÍÔÆ¶Ë°æ±¾Ò»ÖÂ£¬ÎÞÐèÉý¼¶£¡\r\n");
                     at_cmds.RtyNum = 0;
                     at_cmd_num = AT_IDLE;
                 }
@@ -926,68 +926,68 @@ defautl:
 
 
 /********************************************
-å‡½æ•°åï¼šlte_CallNum
-åŠ? èƒ½ï¼šæ‹¨æ‰“æŒ‡å®šå·ç 
-å½? å‚ï¼š*num--æ‰‹æœºå·ç ("18977011111")
-è¿”å›žå€¼ï¼šæ—?
-å¤? æ³¨ï¼šæ—?
+º¯ÊýÃû£ºlte_CallNum
+?? ÄÜ£º²¦´òÖ¸¶¨ºÅÂë
+?? ²Î£º*num--ÊÖ»úºÅÂë("18977011111")
+·µ»ØÖµ£º??
+?? ×¢£º??
 *********************************************/
 void lte_CallNum(uint8_t *Num)
 {
     uint8_t TxBuffer[20];
     sprintf((char *)TxBuffer, "ATD%s;\r\n", Num);
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
-    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//å‘ç»™ä¸²å£3
+    // UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//·¢¸ø´®¿Ú3
 }
 
 /********************************************
-å‡½æ•°åï¼šlte_CmdShowOff
-åŠ? èƒ½ï¼šæŒ‡ä»¤ä¸å›žæ˜?
-å½? å‚ï¼šæ—?
-è¿”å›žå€¼ï¼šæ—?
-å¤? æ³¨ï¼šæ—?
+º¯ÊýÃû£ºlte_CmdShowOff
+?? ÄÜ£ºÖ¸Áî²»»Ø??
+?? ²Î£º??
+·µ»ØÖµ£º??
+?? ×¢£º??
 *********************************************/
 void lte_CmdShowOff(void)
 {
     uint8_t TxBuffer[10];
     sprintf((char *)TxBuffer, "ATE0\r\n");
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
-    //UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//å‘ç»™ä¸²å£3
+    //UartPutStr(&huart3, TxBuffer, strlen((char *)TxBuffer));//·¢¸ø´®¿Ú3
 }
 
 
 /********************************************
-å‡½æ•°åï¼šlte_SendEN_SMS
-åŠ? èƒ½ï¼šè®¾ç½®TEXTæ–‡æœ¬æ¨¡å¼å‘é€è‹±æ–‡çŸ­ä¿?
-å½? å‚ï¼š*phone--æŽ¥æ”¶çŸ­ä¿¡çš„å·ç ? *text--çŸ­ä¿¡å†…å®¹
-è¿”å›žå€¼ï¼šæ—?
-å¤? æ³¨ï¼šlte_SendEN_SMS(â€?0086â€?â€?23â€?
+º¯ÊýÃû£ºlte_SendEN_SMS
+?? ÄÜ£ºÉèÖÃTEXTÎÄ±¾Ä£Ê½·¢ËÍÓ¢ÎÄ¶Ì??
+?? ²Î£º*phone--½ÓÊÕ¶ÌÐÅµÄºÅ?? *text--¶ÌÐÅÄÚÈÝ
+·µ»ØÖµ£º??
+?? ×¢£ºlte_SendEN_SMS(??0086????23??
 *********************************************/
 void lte_SendEN_SMS(uint8_t *phone, uint8_t *text)
 {
     uint8_t TxBuffer[32];
 
-    lte_Send_Cmd("AT+CMGF=1", "OK", 10);       //è®¾ç½®æ–‡æœ¬æ¨¡å¼
-    lte_Send_Cmd("AT+CSCS=\"GSM\"", "OK", 10); //è®¾ç½®TEå­—ç¬¦é›†ä¸ºGSM
+    lte_Send_Cmd("AT+CMGF=1", "OK", 10);       //ÉèÖÃÎÄ±¾Ä£Ê½
+    lte_Send_Cmd("AT+CSCS=\"GSM\"", "OK", 10); //ÉèÖÃTE×Ö·û¼¯ÎªGSM
 
     sprintf((char *)TxBuffer, "AT+CMGS=\"%s\"\r\n", phone);
     lte_Send_Cmd(TxBuffer, ">",
-                 10);                     //å‘é€çŸ­ä¿¡å‘½ä»?ç”µè¯å·ç 
+                 10);                     //·¢ËÍ¶ÌÐÅÃü??µç»°ºÅÂë
     uart_transmit(LTE_No, TxBuffer, strlen((char *)TxBuffer));
 
-    //UartPutStr(&huart3, text, strlen((char *)text)); //å‘ç»™ä¸²å£3,å‘é€çŸ­ä¿¡å†…å®¹åˆ°GSMæ¨¡å—
+    //UartPutStr(&huart3, text, strlen((char *)text)); //·¢¸ø´®¿Ú3,·¢ËÍ¶ÌÐÅÄÚÈÝµ½GSMÄ£¿é
 
-    delay_us(1000);                                   //å¿…é¡»å¢žåŠ å»¶æ—¶,å¦åˆ™æŽ¥æ”¶æ–¹æŽ¥æ”¶ä¿¡æ¯ä¸å…?
+    delay_us(1000);                                   //±ØÐëÔö¼ÓÑÓÊ±,·ñÔò½ÓÊÕ·½½ÓÊÕÐÅÏ¢²»??
     if (lte_Send_Cmd("\x1a\r\n", "+CMGS:",
-                     100) == 0) //å‘é€ç»“æŸç¬¦,ç­‰å¾…å‘é€å®Œæˆ?æœ€é•¿ç­‰å¾?0ç§’é’Ÿ,å› ä¸ºçŸ­ä¿¡é•¿äº†çš„è¯,ç­‰å¾…æ—¶é—´ä¼šé•¿ä¸€äº?
+                     100) == 0) //·¢ËÍ½áÊø·û,µÈ´ý·¢ËÍÍê??×î³¤µÈ??0ÃëÖÓ,ÒòÎª¶ÌÐÅ³¤ÁËµÄ»°,µÈ´ýÊ±¼ä»á³¤Ò»??
     {
         //  sprintf((char *)TxBuffer, "%d,02,05,SMS Send Success!\r\n", Address);
-        // UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//å‘ç»™ä¸²å£1æ–¹ä¾¿è°ƒè¯•
+        // UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//·¢¸ø´®¿Ú1·½±ãµ÷ÊÔ
     }
     else
     {
         //sprintf((char *)TxBuffer, "%d,02,05,SMS Send fail!\r\n", Address);
-        //UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//å‘ç»™ä¸²å£1æ–¹ä¾¿è°ƒè¯•
+        //UartPutStr(&huart1, TxBuffer, strlen((char *)TxBuffer));//·¢¸ø´®¿Ú1·½±ãµ÷ÊÔ
     }
 }
 

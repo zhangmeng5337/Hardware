@@ -48,6 +48,7 @@ float get_indoor_temp()
 float get_pid_output()
 {
     float  u;
+	#if defined(APP1)||defined(APP2)||defined(APP3)
     if (get_schedule()->mode == 1&&get_config()->mode == NATIVE_MODE)//ctrl water 
     {
 
@@ -68,6 +69,7 @@ float get_pid_output()
     else
         u =  get_fuzzy_pid_params()->kp ;
 
+#endif
 
 
     return u;
@@ -75,6 +77,7 @@ float get_pid_output()
 float Tsel_proc()
 {
     float result;
+	#if defined(APP1)||defined(APP2)||defined(APP3)
     if (get_schedule()->current_plan < SCHEDULE_SIZE)
     {
         result = get_schedule()->buf[get_schedule()->current_plan].temperature;
@@ -84,6 +87,7 @@ float Tsel_proc()
         result = get_config()->set_tindoor;
 
     }
+	#endif
     return result;
 }
 void pid_cal(unsigned char mode)
@@ -95,12 +99,13 @@ void pid_cal(unsigned char mode)
 
     erro_ppre = erro_pre;
     erro_pre = erro;
+	 #if defined(APP1)||defined(APP2)||defined(APP3)
     if (mode <= SCHE_MODE ) //智能控制 smart ctrl
     {
         if (indoor_temp_usr.temp_average >= (0.95 *
                                              get_config()->set_tindoor)) //平均温度达标
         {
-            if (indoor_temp_usr.low_temp_percent >= 0.2) //末端温度不达�?
+            if (indoor_temp_usr.low_temp_percent >= 0.2) //末端温度不达�?
             {
                 float tmp;
                 tmp = 1 - indoor_temp_usr.low_temp_percent;
@@ -116,16 +121,19 @@ void pid_cal(unsigned char mode)
             erro = indoor_temp_usr.temp_average - 
             get_schedule()->buf[get_schedule()->current_plan].temperature;;
 		if (mode == NATIVE_MODE) //smart mode plan start
-		{
+		{ 			
+			 #if defined(APP1)||defined(APP2)||defined(APP3)
 			measure_val =	get_ai_data()->temp[get_config()->tin_index];
 			setval = get_schedule()->buf[get_schedule()->current_plan].temperature;
-
+	#endif
 		}
 			
 		else// mode = 2
 		{
+		       #if defined(APP1)||defined(APP2)||defined(APP3)
 				setval = get_schedule()->buf[get_schedule()->current_plan].temperature;;//get_config()->set_tindoor;
 				measure_val =  indoor_temp_usr.temp_average;
+#endif
 
 		}
 
@@ -154,6 +162,7 @@ void pid_cal(unsigned char mode)
   //  last_val = measure_val;
 
     erro_c = erro - erro_pre;
+#endif
 
 }
 //PID *get_pid_params()

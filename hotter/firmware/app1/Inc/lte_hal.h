@@ -93,6 +93,7 @@ typedef struct
 	unsigned char net_status;
     teATStatus ATStatus;
     uint8_t RtyNum;
+	unsigned char recv_status;
 	//uint8_t mqtt_state;
 } tsATCmds;
 

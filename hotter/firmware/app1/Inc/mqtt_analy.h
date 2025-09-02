@@ -42,6 +42,7 @@ typedef struct
 	char version[64];
 	unsigned char mqtt_state;
 	unsigned char process_step;
+	unsigned char txEnable;
 	
 }mqtt_payload_stru;
 

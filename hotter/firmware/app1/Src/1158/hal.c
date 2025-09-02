@@ -324,8 +324,10 @@ void setPWDN(bool state)
 
     // Reset register array when powering down
     if(!state)
-    {
+    {  
+			#if defined(APP1)||defined(APP2)||defined(APP3)
         restoreRegisterDefaults();
+	#endif
     }
 
 
