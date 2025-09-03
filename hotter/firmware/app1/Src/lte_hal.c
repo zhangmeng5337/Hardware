@@ -82,19 +82,21 @@ unsigned char ATRec(char *s)
         else if (strstr((const char *)lte_recv->Lpuart1RecBuff, "CLOSED") != NULL)
         {
             at_cmds.ATStatus = ERROR_STATUS;
+			clear_uart_buf(0);
         }
         else if (strstr((const char *)lte_recv->Lpuart1RecBuff, "+CME ERROR:") != NULL)
         {
-            at_cmds.ATStatus = ERROR_STATUS;
+            at_cmds.ATStatus = ERROR_STATUS;clear_uart_buf(0);
         }
         else if (strstr((const char *)lte_recv->Lpuart1RecBuff,
                         "+CGEV: NW PDN DEACT 1") != NULL)
         {
-            at_cmds.ATStatus = ERROR_STATUS;
+            at_cmds.ATStatus = ERROR_STATUS;clear_uart_buf(0);
         }
         else
-            ;
+            ;//clear_uart_buf(0);
 
+		
 
         //printf("收到数据??s", Lpuart1type.Lpuart1RecBuff);
         lte_recv->Lpuart1RecFlag = 0;

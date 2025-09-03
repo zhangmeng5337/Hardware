@@ -1028,7 +1028,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("timestamp:", "\r\n", 0);
+    dev_id = find_json_string("timestamp", ",", 0);
     if (dev_id != NULL)
     {
         //  memset(dev_id, 0, 128);
@@ -2960,6 +2960,7 @@ uint8_t mqtt_Json_Info_Show(void)
             if (mqtt_at_cmds.recv_status == SUCCESS_REC) //??AT
             {
                 anlysis_mqtt_recv();
+				clear_uart_buf(0);
                 //  json_para();
                 //anlysis_mqtt_recv();
             }
@@ -2971,7 +2972,7 @@ uint8_t mqtt_Json_Info_Show(void)
             {
                 ;//
             }
-			clear_uart_buf(0);
+			
         }
         break;
 

@@ -296,16 +296,7 @@ void USART1_IRQHandler(void)
 	if((uart_idle_flag != RESET))
 	{ 
 		uart_idle_flag=0;
-		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
-		
-	        uint32_t temp;
-        __HAL_UART_CLEAR_IDLEFLAG(&huart1);
-        HAL_UART_DMAStop(&huart1);
-        temp = huart1.Instance->SR;
-        temp = huart1.Instance->DR;
-        temp = hdma_usart1_rx.Instance->NDTR;
-        Lpuart1type.Lpuart1DMARecLen = LPUART1_DMA_REC_SIZE - temp;
-       // HAL_UART_RxCpltCallback(&huart1);	
+
        
 		   uart_lte();
 		
