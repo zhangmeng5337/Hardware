@@ -49,7 +49,7 @@ void init_hotter()
 
 	for(i = 1;i<(STATUS2_SIZE-1);i++)
 			{
-	hotter_u0.status2[i] = 202;
+	hotter_u0.status2[i] = -202;
 //	hotter_u1.status2[i] = 205;
 //	hotter_u2.status2[i] = 206;
 //	hotter_u3.status2[i] = 207;

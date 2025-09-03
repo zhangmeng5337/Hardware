@@ -463,14 +463,14 @@
               <FilePath>..\Src\ota\update.c</FilePath>
             </File>
             <File>
-              <FileName>rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\rtc.c</FilePath>
-            </File>
-            <File>
               <FileName>malloc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\malloc.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\rtc.c</FilePath>
             </File>
             <File>
               <FileName>config.c</FileName>
@@ -2307,14 +2307,14 @@
               <FilePath>..\Src\ota\update.c</FilePath>
             </File>
             <File>
-              <FileName>rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\rtc.c</FilePath>
-            </File>
-            <File>
               <FileName>malloc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\malloc.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\rtc.c</FilePath>
             </File>
             <File>
               <FileName>config.c</FileName>
@@ -4000,7 +4000,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -4151,14 +4151,14 @@
               <FilePath>..\Src\ota\update.c</FilePath>
             </File>
             <File>
-              <FileName>rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\rtc.c</FilePath>
-            </File>
-            <File>
               <FileName>malloc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\malloc.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\rtc.c</FilePath>
             </File>
             <File>
               <FileName>config.c</FileName>
@@ -6133,14 +6133,14 @@
               <FilePath>..\Src\ota\update.c</FilePath>
             </File>
             <File>
-              <FileName>rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\rtc.c</FilePath>
-            </File>
-            <File>
               <FileName>malloc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\malloc.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\rtc.c</FilePath>
             </File>
             <File>
               <FileName>config.c</FileName>

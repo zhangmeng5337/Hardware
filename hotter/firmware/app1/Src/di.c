@@ -26,14 +26,14 @@ stru_di_stru di_input_read(unsigned int diNO)
 {   
 		  if(HAL_GPIO_ReadPin(DI_IN0_GPIO_Port, DI_IN0_Pin)==0)
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[0]] = 1;
+			
 			di_usr.di_status  = di_usr.di_status |di_index4 ;
    
 		  }
    
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[0]] = 0;
+		
 			di_usr.di_status  = di_usr.di_status &(~di_index4);
    
 		  }
@@ -42,12 +42,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 		{
 		  if(HAL_GPIO_ReadPin(DI_IN1_GPIO_Port, DI_IN1_Pin)==0) 
 		  {
-			  di_usr.di_No_buf[di_usr.di_index_conv[1]] = 1;				
+			 				
 			  di_usr.di_status	= di_usr.di_status |di_index3;
 		   }
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[1]] = 0; 			
+					
 			  di_usr.di_status	= di_usr.di_status &(~di_index3);			
 		  }
 		}
@@ -55,12 +55,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 		{
 		  if(HAL_GPIO_ReadPin(DI_IN2_GPIO_Port, DI_IN2_Pin)==0) 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[2]] = 1; 			
+						
 			  di_usr.di_status	= di_usr.di_status |di_index2;
 			}
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[2]] = 0; 			
+			
 			  di_usr.di_status	= di_usr.di_status &(~di_index2);				
 		  }
 		}
@@ -68,12 +68,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 		{
 		  if(HAL_GPIO_ReadPin(DI_IN3_GPIO_Port, DI_IN3_Pin)==0) 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[3]] = 1; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[3]] = 1; 			
 			  di_usr.di_status	= di_usr.di_status |di_index1;
 			}
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[3]] = 0; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[3]] = 0; 			
 			  di_usr.di_status	= di_usr.di_status &(~di_index1);			
 		  }
 		}
@@ -81,12 +81,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 		{
 		  if(HAL_GPIO_ReadPin(DI_IN4_GPIO_Port, DI_IN4_Pin)==0) 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[04]] = 1; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[04]] = 1; 			
 			  di_usr.di_status	= di_usr.di_status |di_index8;
 			}
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[4]] = 0; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[4]] = 0; 			
 			  di_usr.di_status	= di_usr.di_status &(~di_index8);				
 		   }
 		}
@@ -94,12 +94,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 		{
 		  if(HAL_GPIO_ReadPin(DI_IN5_GPIO_Port, DI_IN5_Pin)==0) 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[5]] = 1; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[5]] = 1; 			
 			  di_usr.di_status	= di_usr.di_status |di_index7;
 			}
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[5]] = 0; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[5]] = 0; 			
 			  di_usr.di_status	= di_usr.di_status &(~di_index7);			
 		  }
 		}
@@ -107,12 +107,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 		{
 		  if(HAL_GPIO_ReadPin(DI_IN6_GPIO_Port, DI_IN6_Pin)==0) 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[6]] = 1; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[6]] = 1; 			
 			  di_usr.di_status	= di_usr.di_status |di_index6;
 			}
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[6]] = 0; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[6]] = 0; 			
 			  di_usr.di_status	= di_usr.di_status &(~di_index6);				
 		  }
 		}
@@ -120,12 +120,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 		{
 		  if(HAL_GPIO_ReadPin(DI_IN7_GPIO_Port, DI_IN7_Pin)==0) 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[7]] = 1; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[7]] = 1; 			
 			  di_usr.di_status	= di_usr.di_status |di_index5;
 			}
 		  else 
 		  {
-			di_usr.di_No_buf[di_usr.di_index_conv[7]] = 0; 			
+//			di_usr.di_No_buf[di_usr.di_index_conv[7]] = 0; 			
 			  di_usr.di_status	= di_usr.di_status &(~di_index5);			
 		   }
 		}
@@ -134,12 +134,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN8_GPIO_Port, DI_IN8_Pin)==0) 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[8]] = 1;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[8]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index9;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[8]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[8]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index9);		   
 		  }
 	   }
@@ -147,12 +147,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN9_GPIO_Port, DI_IN9_Pin)==0) 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[9]] = 1;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[9]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index10;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[9]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[9]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index10);		   
 		  }
 	   }
@@ -160,12 +160,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN10_GPIO_Port, DI_IN10_Pin)==0) 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[10]] = 1;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[10]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index11;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[10]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[10]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index11);		   
 		  }
 	   }
@@ -174,12 +174,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN11_GPIO_Port, DI_IN11_Pin)==0) 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[11]] = 1;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[11]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index12;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[11]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[11]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index12);		   
 		  }
 	   }
@@ -188,12 +188,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN12_GPIO_Port, DI_IN12_Pin)==0) 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[12]] = 1;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[12]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index13;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[12]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[12]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index13);		   
 		  }
 	   }
@@ -202,12 +202,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN13_GPIO_Port, DI_IN13_Pin)==0) 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[13]] = 1;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[13]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index14;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[13]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[13]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index14);		   
 		  }
 	   }
@@ -216,12 +216,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN14_GPIO_Port, DI_IN14_Pin)==0) 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[14]] = 1;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[14]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index15;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[14]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[14]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index15);		   
 		  }
 	   }
@@ -230,12 +230,12 @@ stru_di_stru di_input_read(unsigned int diNO)
 	   {
 		 if(HAL_GPIO_ReadPin(DI_IN15_GPIO_Port, DI_IN15_Pin)==0) 
 		 {
-			 di_usr.di_No_buf[di_usr.di_index_conv[15]] = 1;			   
+//			 di_usr.di_No_buf[di_usr.di_index_conv[15]] = 1;			   
 			 di_usr.di_status  = di_usr.di_status |di_index16;
 		   }
 		 else 
 		 {
-		   di_usr.di_No_buf[di_usr.di_index_conv[15]] = 0;			   
+//		   di_usr.di_No_buf[di_usr.di_index_conv[15]] = 0;			   
 			 di_usr.di_status  = di_usr.di_status &(~di_index16);		   
 		  }
 	   }
@@ -474,10 +474,10 @@ stru_di_stru di_input_read(unsigned int diNO)
 //	}
  	return di_usr;
 }
-unsigned char di_proc(unsigned char diNO)
+unsigned int di_proc(unsigned char diNO)
 {
 	di_input_read( diNO);
-	return di_usr.di_No_buf[diNO] ;	
+	return di_usr.di_status ;	
 }
 void di_init(void)
 {

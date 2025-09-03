@@ -176,8 +176,13 @@ void uart_lte()
 	
 	     // if(Lpuart1type.Lpuart1RecLen > 0)
        {
-					
-            memcpy(&Lpuart1type.Lpuart1RecBuff[Lpuart1type.Lpuart1RecLen],Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
+			
+
+			while(HAL_DMA_GetState(&hdma_usart1_rx)!=HAL_DMA_STATE_READY)
+				;
+			uint8_t *p;
+			p = &Lpuart1type.Lpuart1RecBuff[Lpuart1type.Lpuart1RecLen];
+            memmove(p,Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
             Lpuart1type.Lpuart1RecLen += Lpuart1type.Lpuart1DMARecLen;
         }
 //        else
@@ -196,7 +201,7 @@ void uart_lte()
 	
 	
 	
-	
+	HAL_UART_DMAStop(&huart1);
 	HAL_UART_DMAResume(&huart1);
     HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
     Lpuart1type.Lpuart1RecFlag = 1;

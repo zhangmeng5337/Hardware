@@ -41,12 +41,12 @@ typedef enum
 typedef struct
 {
 	unsigned int di_status;
-	unsigned int di_No_buf[DI_SIZE];
+	//unsigned int di_No_buf[DI_SIZE];
 	unsigned char di_index_conv[DI_SIZE];
 } stru_di_stru;
 
 stru_di_stru di_input_read(unsigned int diNO);
-unsigned char di_proc(unsigned char diNO);
+unsigned int di_proc(unsigned char diNO);
 stru_di_stru *get_di_data(void);
 
 #endif

@@ -26,6 +26,8 @@ stru_di_stru di_status;
 
 void hardware_init()
 {
+  do_init();
+
   do_off();
    Update_To_Sel();
    data_ai_init();
@@ -101,12 +103,13 @@ void app_proc()
    TickPro(); //sys timer proc
    ai_proc();//pressure temperature sample interval 2s 
    di_proc(0);//di detection
+   do_proc();
     pwr_schedul_set();
 	schedule_proc();
      mqtt_proc();//lte ,mqtt and ota
     modbus_proc_sec();
   // modbus_proc();//machine control
-   dev_ctrl();
+   //dev_ctrl();
   //modbus_test();
   // control_proc();
    //config_save();
