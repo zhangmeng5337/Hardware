@@ -100,7 +100,7 @@ void pid_cal(unsigned char mode)
     erro_ppre = erro_pre;
     erro_pre = erro;
 	 #if defined(APP1)||defined(APP2)||defined(APP3)
-    if (mode <= SCHE_MODE ) //智能控制 smart ctrl
+    if (mode <= SCHE_MODE ) //智能控制 smart ctrl  with sesnors
     {
         if (indoor_temp_usr.temp_average >= (0.95 *
                                              get_config()->set_tindoor)) //平均温度达标
@@ -120,7 +120,7 @@ void pid_cal(unsigned char mode)
         else
             erro = indoor_temp_usr.temp_average - 
             get_schedule()->buf[get_schedule()->current_plan].temperature;;
-		if (mode == NATIVE_MODE) //smart mode plan start
+		if (mode == NATIVE_MODE) //ctrl water temperature no sensors
 		{ 			
 			 #if defined(APP1)||defined(APP2)||defined(APP3)
 			measure_val =	get_ai_data()->temp[get_config()->tin_index];
@@ -128,7 +128,7 @@ void pid_cal(unsigned char mode)
 	#endif
 		}
 			
-		else// mode = 2
+		else// mode = 2 //ctrl schedule temperature with sesnors
 		{
 		       #if defined(APP1)||defined(APP2)||defined(APP3)
 				setval = get_schedule()->buf[get_schedule()->current_plan].temperature;;//get_config()->set_tindoor;

@@ -30,11 +30,11 @@
 
 typedef struct 
 {
-	short unsigned int status[STATUS1_SIZE];//设备地址;故障标志位，staus1控制标志;模式选择;L4采暖回差;L5采暖设定温度;故障代码:;modbus失联
+	short  int status[STATUS1_SIZE];//设备地址;故障标志位，staus1控制标志;模式选择;L4采暖回差;L5采暖设定温度;故障代码:;modbus失联
 	unsigned char control_reg[10];
 	unsigned char update[DEV_SIZE];
-	short unsigned int status2[STATUS2_SIZE];//设备地址;故障标志位，staus2
-	short unsigned int status3[STATUS3_SIZE];//设备地址;故障标志位，staus2
+	short  int status2[STATUS2_SIZE];//设备地址;故障标志位，staus2
+	short  int status3[STATUS3_SIZE];//设备地址;故障标志位，staus2
 }hotter_stru;
 float *get_power(void);
 hotter_stru *get_hotter(unsigned dev_addr);

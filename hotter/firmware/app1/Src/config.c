@@ -164,7 +164,7 @@ void config_init()
         get_config()->set_tout = 45;
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
-        get_config()->set_up_period = 20;
+        get_config()->set_up_period = 5;
         get_config()->mode = OFF_MODE;
 		get_config()->instru_num = DELI;
         get_config()->dev_size = DEV_SIZE;

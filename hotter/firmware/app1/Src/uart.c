@@ -168,35 +168,33 @@ rs485_stru *get_uart_recv(unsigned char uart_num)
 }
 */
 /*lpuart1»Øµ÷º¯Êý*/
+ uint32_t last_index = 0;
+
 void uart_lte()
 
 {
 	
+		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
+		
+	        uint32_t temp;
+			
+        __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+        HAL_UART_DMAStop(&huart1);
+        temp = huart1.Instance->SR;
+        temp = huart1.Instance->DR;
+        temp = hdma_usart1_rx.Instance->NDTR;
+        Lpuart1type.Lpuart1DMARecLen = LPUART1_DMA_REC_SIZE - temp;
+       // HAL_UART_RxCpltCallback(&huart1);		
 	
-	
-	     // if(Lpuart1type.Lpuart1RecLen > 0)
-       {
-					
-            memcpy(&Lpuart1type.Lpuart1RecBuff[Lpuart1type.Lpuart1RecLen],Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
-            Lpuart1type.Lpuart1RecLen += Lpuart1type.Lpuart1DMARecLen;
-        }
-//        else
-//        {
-//            memcpy(Lpuart1type.Lpuart1RecBuff,Lpuart1type.Lpuart1DMARecBuff,Lpuart1type.Lpuart1DMARecLen);
-//            Lpuart1type.Lpuart1RecLen = Lpuart1type.Lpuart1DMARecLen;
+		
 
-//        }
-        
-       // Lpuart1type.Lpuart1RecFlag = 1;
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+     memmove(&Lpuart1type.Lpuart1RecBuff[Lpuart1type.Lpuart1RecLen],
+              Lpuart1type.Lpuart1DMARecBuff,
+              Lpuart1type.Lpuart1DMARecLen);
+            Lpuart1type.Lpuart1RecLen += Lpuart1type.Lpuart1DMARecLen;
+			last_index = last_index + Lpuart1type.Lpuart1DMARecLen;
+
 	HAL_UART_DMAResume(&huart1);
     HAL_UART_Receive_DMA(&huart1,Lpuart1type.Lpuart1DMARecBuff, LPUART1_DMA_REC_SIZE);
     Lpuart1type.Lpuart1RecFlag = 1;

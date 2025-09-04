@@ -122,7 +122,8 @@ __HAL_RCC_CLEAR_RESET_FLAGS();
 	#if BOOTLOADER
 HAL_Delay(3000);
 
-   /* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
 	  while (1)
   {
     /* USER CODE END WHILE */
@@ -142,15 +143,7 @@ HAL_Delay(3000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		//HAL_Delay(1000);
-		//HAL_GPIO_TogglePin(status_GPIO_Port,status_Pin );
-		       // HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_SET);
-//	uint8_t addr;
-//	addr = 0x5a;
-//        HAL_UART_Transmit(&huart4, &addr, 1, 100);
-//        HAL_Delay(1);
-//        HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);
-//		HAL_Delay(1000);
+
 #if defined(APP1)||defined(APP2)||defined(APP3)
 		app_proc();
 #endif
