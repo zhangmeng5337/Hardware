@@ -146,6 +146,8 @@ unsigned char ModbusResponseAnalyMaster(unsigned char *pb)
     }
     return modbus_usr.Func;
 }
+uint32_t real_rx_f = 0;
+
 unsigned char ModbusResponseAnalySlave()
 {
 //    unsigned char func;
@@ -155,6 +157,7 @@ unsigned char ModbusResponseAnalySlave()
     unsigned char *pb;
     // i = 0;
     for (j = 0; j <= getuart()->index; j++)
+
     {
         if (getuart()->rx_buf[j] == modbus_usr.DevAddr || getuart()->rx_buf[j] == 0xff)
         {
@@ -195,8 +198,9 @@ unsigned char ModbusResponseAnalySlave()
             crcRecv = crcRecv << 8;
             crcRecv = crcRecv | pb[7];
             crcCal = CRC_Compute(pb, 6);
+			 //real_rx_f = real_rx_f + 8;
             if (crcCal != crcRecv)
-            {
+            {  real_rx_f = real_rx_f + 8;
                 return 0;
             }
             else  //data to be response
@@ -314,6 +318,7 @@ void modbus_tx(unsigned char *buf, unsigned int len)
     uart_tx(modbus_usr.tx_buf, len + 2);
 
 }
+uint32_t real_rx = 0;
 void modbus_read_pack(void)
 {
     //unsigned char tx_buf[128];
@@ -326,6 +331,7 @@ void modbus_read_pack(void)
     if (modbus_usr.Func == MODBUS_FUNC_ONLYREAD ||
             modbus_usr.Func == MODBUS_FUNC_READ)
     {
+        real_rx = real_rx + 8;
         //reg_tmp = modbus_usr.RegStart;
         //tx_buf[i++] = modbus_usr.len>>8;//dat
         modbus_usr.tx_buf[i++] = modbus_usr.len ;
@@ -1104,10 +1110,11 @@ void modbus_recv_proc()
         {
             //cs1237_pwr_pd();
             modbus_usr.Func = ModbusResponseAnalySlave();//rs485 data analy
-            modbus_analy_func(modbus_usr.Func);
-            p->recv_update = 0;
+             p->recv_update = 0;
             memset(p->rx_buf, 0, RX_BUF_SIZE);
-            p->index = 0;
+            p->index = 0;           
+            modbus_analy_func(modbus_usr.Func);
+
         }
         if (GetRegPrivate()->save == 1
                 || GetRegPrivate()->mode == 2) //delay 5s write to flash

@@ -405,6 +405,7 @@ void adc_proc(void)
     {
         if (get_adc_flag() == 1)
         {
+            read_data();
             g_cs1237_device_st.adc_calculate_deal_data = calculate_adc_num(
                         &g_cs1237_device_st);
 
@@ -519,14 +520,7 @@ void cal_press(void)
 
         if (adc_usr.adc_ori_filter != 0)
         {
-            if (GetRegPrivate()->zero_cmd == 1)
-            {
-                adc_usr.adc_ori_filter = adc_usr.adc_ori_filter -
-                                         GetRegPrivate()->zero_value;
-            }
 
-            else
-                adc_usr.adc_ori_filter = adc_usr.adc_ori_filter;
 
             adc_usr.adc_vol =  adc_usr.adc_ori_filter;
 
@@ -573,6 +567,11 @@ void cal_press(void)
         tmp6 = tmp6 + GetRegPrivate()->coe5 ;
 
         tmp6 =    tmp6 - GetRegPrivate()->offset;
+		if (GetRegPrivate()->zero_cmd == 1)
+		{
+			tmp6 = tmp6 - GetRegPrivate()->zero_value;
+		}
+
 
         //tmp6 = kalman_filter(&g_kfp_st2, tmp6);
         adc_usr.dat_unit_factory = tmp6;

@@ -348,6 +348,7 @@ void SysTick_IRQnHandler(void)
 	  #ifdef DISPLAY_DEBUG 
 	if(getTaskIndex() == 0)
 		 display();
+
 	else
 	display_led(GetDisp()->cusor, getKey()->bit_sel);
 #endif
@@ -376,23 +377,38 @@ void SPI1_IRQHandler(void)
 /**
  * @brief This funcation handles UART1
  */
+uint32_t rx_count = 0;
+uint32_t tx_count = 0;
+uint32_t idle_flag3 = 0;
+uint32_t flag;
 void UART1_IRQHandler(void)
 {
 	  uint8_t result;
 
 		/* USER CODE BEGIN */
+	
 		if (UART_GetITStatus(CW_UART1, UART_IT_RC) != RESET)
 		{
 			result = UART_ReceiveData_8bit(CW_UART1);
+//			uart_tx(&result, 1);
+		
+		
 			uart_recv_proc(result,0);
 			UART_ClearITPendingBit(CW_UART1, UART_IT_RC);
+			rx_count++;
 		}
 		if (UART_GetITStatus(CW_UART1, UART_IT_RXIDLE) != RESET)
 		{
 			//uart_recv_proc(UART_ReceiveData_8bit(CW_UART1),1);
+			tx_count =tx_count  + 8;
 			getuart()->recv_update = 1;
+			if(rx_count%8 !=0)
+			{
+				idle_flag3++;					
+			}
+
 			UART_ClearITPendingBit(CW_UART1, UART_IT_RXIDLE);
-			UART_ClearITPendingBit(CW_UART1, UART_IT_RC);
+			//UART_ClearITPendingBit(CW_UART1, UART_IT_RC);
 		}
 	
 
