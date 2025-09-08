@@ -32,14 +32,17 @@ void uart_tx(uint8_t *dat, unsigned char len)
 {
     unsigned int i;
     GPIO_WritePin(EN_GPIO_PORT, EN_GPIO_PIN, GPIO_Pin_SET);
-	SysTickDelay(5);
+	SysTickDelay(1);
+
     for (i = 0; i < len; i ++)
     {
         UART_SendData_8bit(DEBUG_UARTx, dat[i]);
         while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET);
 
     }
-    SysTickDelay(25);
+		for(unsigned int i = 0;i<400;i++)
+		;
+    SysTickDelay(1);
     GPIO_WritePin(EN_GPIO_PORT, EN_GPIO_PIN, GPIO_Pin_RESET);
 		// SysTickDelay(25);
 }

@@ -128,10 +128,10 @@ int32_t main(void)
     InitTick(MAIN_FREQ);
     SysTickDelay(2000);
 #ifdef DISPLAY_DEBUG
-//    GPIO_SWD2GPIO();
+    GPIO_SWD2GPIO();
 
-//    REGBITS_CLR(CW_GPIOA->ANALOG, bv7 | bv8);       //设置PA07/PA08为数字功能
-//    REGBITS_CLR(CW_GPIOA->DIR, bv7 | bv8); //设置PA07为输入，PA08为输出
+    REGBITS_CLR(CW_GPIOA->ANALOG, bv7 | bv8);       //设置PA07/PA08为数字功能
+    REGBITS_CLR(CW_GPIOA->DIR, bv7 | bv8); //设置PA07为输入，PA08为输出
 
 #endif
     //配置GPIO
@@ -247,6 +247,7 @@ void GPIO_Configuration(void)
 
     GPIO_InitStruct.Pins = EN_GPIO_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	
     GPIO_InitStruct.IT = GPIO_IT_NONE;
     GPIO_Init(EN_GPIO_PORT, &GPIO_InitStruct);
     GPIO_WritePin(EN_GPIO_PORT, EN_GPIO_PIN, GPIO_Pin_RESET);
@@ -374,7 +375,7 @@ void UART_Configuration(void)
     UART_Init(DEBUG_UARTx, &UART_InitStructure);
     UART_ITConfig(DEBUG_UARTx, UART_IT_RC | UART_IT_RXIDLE, ENABLE);
     UART_ClearITPendingBit(CW_UART1, UART_IT_RC);
-    UART_ClearITPendingBit(CW_UART1, UART_IT_RXIDLE);
+//    UART_ClearITPendingBit(CW_UART1, UART_IT_RXIDLE);
 
 }
 
@@ -464,6 +465,10 @@ void NVIC_Configuration(void)
     NVIC_EnableIRQ(UART1_IRQn);
     NVIC_EnableIRQ(GTIM1_IRQn);
     NVIC_EnableIRQ(SysTick_IRQn);
+	NVIC_SetPriority(GPIOA_IRQn, 2);
+	NVIC_SetPriority(GPIOB_IRQn, 2);
+	NVIC_SetPriority(UART1_IRQn, 0);
+	NVIC_SetPriority(SysTick_IRQn, 1);
 
 
 

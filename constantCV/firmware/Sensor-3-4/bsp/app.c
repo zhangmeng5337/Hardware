@@ -27,7 +27,7 @@ void app_proc()
     static uint32_t tick_tmp;
     //if (getuart()->recv_update == 0)
 
-    // if (GetTick() - tick_tmp >= 10)
+     if (GetTick() - tick_tmp >= 50)
     {
 
         tick_tmp = GetTick();

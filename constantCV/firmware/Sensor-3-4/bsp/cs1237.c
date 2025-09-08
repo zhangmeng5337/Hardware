@@ -732,14 +732,14 @@ int32_t cs1237_read_data(struct cs1237_device *dev)
             for (i = 0; i < 8; i++) // 获取24位有效转??
             {
                 CS1237_SCL_H; // CLK=1;
-                delay_us(5);
+                delay_us(1);//5
                 dat <<= 1;
                 if (CS1237_SDA_READ == 1)
                     dat++;
                 CS1237_SCL_L; // CLK=0;
-                delay_us(5);
+                delay_us(1);//5
             }
-            delay_us(5);
+            delay_us(1);
 
         }
 
