@@ -27,7 +27,7 @@
 
 #define UAPP3   3
 
-#define VERSION        "V1.0.248"
+#define VERSION        "V1.0.250"
 
 #define BootLoader_Size             0x10000U                        // BootLoader size 64K
 #define Application_Size            0x40000U                    // Application size 256K

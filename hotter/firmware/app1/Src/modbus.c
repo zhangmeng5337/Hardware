@@ -112,19 +112,20 @@ modbus_stru *get_tx_machine()
 {
     return &modbus_tx;
 }
-void get_cmd_list(unsigned char *buf)
+void get_cmd_list(short unsigned int *buf)
 {
     modbus_cmd_list[PUMP_WCMD_ANYSTART].addr = buf[0];
-    modbus_cmd_list[PUMP_WCMD_ANYSTART].func = buf[1];
-    modbus_cmd_list[PUMP_WCMD_ANYSTART].reg = buf[2];
-    modbus_cmd_list[PUMP_WCMD_ANYSTART].reg = modbus_cmd_list[PUMP_WCMD_ANYSTART].reg << 8;
-    modbus_cmd_list[PUMP_WCMD_ANYSTART].reg = modbus_cmd_list[PUMP_WCMD_ANYSTART].reg | buf[3];
+    modbus_cmd_list[PUMP_WCMD_ANYSTART].func = MODBUS_WRITE_ONE_CMD;
+    modbus_cmd_list[PUMP_WCMD_ANYSTART].reg = buf[1];
     modbus_cmd_list[PUMP_WCMD_ANYSTART].regCount = 2;
-    modbus_cmd_list[PUMP_WCMD_ANYSTART].payload[0] = buf[4];
-    modbus_cmd_list[PUMP_WCMD_ANYSTART].payload[1] = buf[5];
+    modbus_cmd_list[PUMP_WCMD_ANYSTART].payload[0] = buf[2]>>8;
+    modbus_cmd_list[PUMP_WCMD_ANYSTART].payload[1] = buf[2];
     cmd_list.devtype = PUMP;
     cmd_list.wr = 2;
-    cmd_list.addr = 1;
+    cmd_list.addr = PUMP_SADDR;
+	cmd_list.retry_count = 5;
+	cmd_list.start_cmd = PUMP_WCMD_ANYSTART;
+	cmd_list.cmd_seq = cmd_list.start_cmd;
 
 
 }
@@ -855,7 +856,7 @@ void modbus_proc_poll()
     {
         if (modbus_tx.ctrl_mode == 0) //global ctrl
         {
-            if (cmd_list.cmd_seq <= CMD_SIZE)
+            if (cmd_list.cmd_seq <= CMD_SIZE||cmd_list.cmd_seq == PUMP_WCMD_ANYSTART)
             {
                 if (cmd_list.retry_count > 0)
                 {
@@ -1258,7 +1259,7 @@ void dev_poll_proc(void)
         }
 
     }
-    else if (cmd_list.wr == 1)
+    else if (cmd_list.wr == 1)//write reg cycly
     {
         if (cmd_list.devtype == PUMP)
         {
@@ -1295,7 +1296,7 @@ void dev_poll_proc(void)
         }
 
     }
-    else  //pump reg write
+    else  //pump reg write by one
     {
         cmd_list.start_cmd = PUMP_WCMD_ANYSTART;
         if (cmd_list.retry_count == 0)

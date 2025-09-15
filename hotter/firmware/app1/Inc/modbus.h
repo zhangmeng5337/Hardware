@@ -19,7 +19,7 @@
 #define PUMP_WCMD_ANYSTART   10 
 
 #define ENERGY_CMD_START   5
-#define ENERGY_SADDR     1
+#define ENERGY_SADDR     17
 #define PUMP_SADDR     1
 
 
@@ -117,8 +117,9 @@ void modbus_init(void);
 modbus_stru *get_tx_machine(void);
 void modbus_test(void);
 
-void get_cmd_list(unsigned char *buf);
+
 void modbus_proc_sec(void);
+void get_cmd_list(short unsigned int *buf);
 
 #endif
 
