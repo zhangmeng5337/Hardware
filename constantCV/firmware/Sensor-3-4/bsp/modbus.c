@@ -1114,6 +1114,7 @@ void modbus_recv_proc()
             memset(p->rx_buf, 0, RX_BUF_SIZE);
             p->index = 0;           
             modbus_analy_func(modbus_usr.Func);
+		p->index = 0; 
 
         }
         if (GetRegPrivate()->save == 1

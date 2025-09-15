@@ -38,11 +38,13 @@ void uart_tx(uint8_t *dat, unsigned char len)
     {
         UART_SendData_8bit(DEBUG_UARTx, dat[i]);
         while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET);
+	//while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TC) != RESET);
 
     }
-		for(unsigned int i = 0;i<400;i++)
-		;
-    SysTickDelay(1);
+
+	
+
+    SysTickDelay(10);
     GPIO_WritePin(EN_GPIO_PORT, EN_GPIO_PIN, GPIO_Pin_RESET);
 		// SysTickDelay(25);
 }

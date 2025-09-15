@@ -505,7 +505,8 @@ void display_val_proc(unsigned char dis_mode)
 
 		 
         tmp = dis_usr.dis_val;
-		
+//		tmp=-1999;
+			dis_usr.dis_val = -1999;
         if (tmp < 0)
         {
             dis_usr.signedFlag = 1;

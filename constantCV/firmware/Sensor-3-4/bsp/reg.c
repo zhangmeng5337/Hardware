@@ -840,6 +840,7 @@ void reg_proc(void)
     {
         RegWrite();
         cal_number();
+		modbus_init();
 
         reg_usr.update = 0;
         getKey()->update  = 0;

@@ -122,7 +122,7 @@ void ver_menu()
 {
     if (task_index == 21)
     {
-	if ((GetTick() - tick_tmp) >= 1000)
+        if ((GetTick() - tick_tmp) >= 1000)
         {
             task_index = 0;
         }
@@ -155,15 +155,15 @@ void dev_addr_menu()
         }
         if (key_irq_usr.double_check == MOVE)
         {
-			
+
 
             GetDisp()->dis_buf[0] = A;
-            key_irq_usr.indat[0].passw[1] =  
-				                   GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat/100;
-            key_irq_usr.indat[0].passw[2] =  
-				                GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat% 100/10;
-            key_irq_usr.indat[0].passw[3] =  
-				                  GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat% 10;
+            key_irq_usr.indat[0].passw[1] =
+                GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat / 100;
+            key_irq_usr.indat[0].passw[2] =
+                GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat % 100 / 10;
+            key_irq_usr.indat[0].passw[3] =
+                GetReg()->pb[eREG_DEV_ADDR].val_u32ToFloat % 10;
 
 
             // GetDisp()->dis_buf[0] =  GetSeg(key_irq_usr.indat[0].passw[1]);
@@ -229,6 +229,7 @@ void zero_menu(void)//password menu
         display_led(1, key_irq_usr.bit_sel);
         if (key_irq_usr.double_check == SHORT_PRE)
         {
+            key_irq_usr.update = 1;
             key_irq_usr.update = 1;
             key_irq_usr.double_check = NO_PRE;
             GetRegPrivate()->zero_cmd = 0;
@@ -348,7 +349,13 @@ void save2_menu(void)//password menu
         }
         else
         {
-            key_irq_usr.double_check = NO_PRE;
+            if(key_irq_usr.indat[0].status == 0 && key_irq_usr.double_check == SHORT_PRE)
+        {
+            key_irq_usr.indat[0].status = 2;
+                key_irq_usr.double_check = NO_PRE;
+
+            }
+
         }
 
     }
@@ -1285,9 +1292,13 @@ void KeyProc(void)
                                 key_irq_usr.key_irq_status = key_irq_usr.key_irq_status & 0xfd;
 
                             }
+
+
+
                         }
                     }
                 }
+
                 break;
             case 1:
                 if ((GPIO_ReadPin(KEY1_GPIO_PORT, KEY1_GPIO_PIN) &&
@@ -1311,7 +1322,7 @@ void KeyProc(void)
                                 key_irq_usr.double_check = INC;
                                 if (task_index == 0 || task_index == 22)
                                 {
-                                tick_tmp = GetTick();
+                                    tick_tmp = GetTick();
                                     task_index = 21;
                                 }
                                 task_index = task_table[task_index].next;
@@ -1324,7 +1335,7 @@ void KeyProc(void)
                                 key_irq_usr.double_check = MOVE;
                                 if (task_index == 0 || task_index == 21)
                                 {
-                                tick_tmp = GetTick();
+                                    tick_tmp = GetTick();
                                     task_index = 22;
                                 }
                                 task_table[task_index].move = MOVE;
@@ -1342,6 +1353,17 @@ void KeyProc(void)
                             key_irq_usr.double_check = LONG_PRE;//long pre
                             key_irq_usr.key_irq_status = 0;
                         }
+                    }
+                    key_irq_usr.state = 0 ;
+                }
+                if ((time_tick) >= LONG_PRES)  //5s
+                {
+                    if ((key_irq_usr.key_irq_status & 0x03) == 0x03)
+                    {
+                        key_irq_usr.update = 0;
+                        task_index = 1;
+                        key_irq_usr.double_check = LONG_PRE;//long pre
+                        key_irq_usr.key_irq_status = 0;
                     }
                     key_irq_usr.state = 0 ;
                 }

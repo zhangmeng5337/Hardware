@@ -46,6 +46,19 @@ namespace AdminConsole
         //static int port_restatus = 0;
         static int port_wrstatus = 0;
         #region 初始化
+        public static bool Delay_user(int ms)
+        {
+            DateTime now = DateTime.Now;
+            int s;
+            do
+            {
+                TimeSpan spand = DateTime.Now - now;
+                s = spand.Minutes * 60 * 1000 + spand.Seconds * 1000 + spand.Milliseconds;
+                // Application.DoEvents();
+            }
+            while (s < ms);
+            return true;
+        }
         public MainForm()
         {
             InitializeComponent();
@@ -1490,6 +1503,7 @@ namespace AdminConsole
                 {
                     // 发送无害的读取请求（如读取保持寄存器）
                     ushort[] registers = _modbusMaster.ReadHoldingRegisters(address, 0, 1);
+                    //Delay_user(100);
                     dzselectId.Items.Add(address);
                     if (dzselectId.SelectedIndex == -1)
                     {
@@ -1630,8 +1644,8 @@ namespace AdminConsole
             _modbusMaster = ModbusSerialMaster.CreateRtu(_serialPort);
 
             // 配置超时与重试机制‌:ml-citation{ref="5,8" data="citationList"}
-            _modbusMaster.Transport.ReadTimeout = 300;
-            _modbusMaster.Transport.WriteTimeout = 1000;
+            _modbusMaster.Transport.ReadTimeout = 500;
+            _modbusMaster.Transport.WriteTimeout =1000;
             _modbusMaster.Transport.Retries = 3;
 
 
@@ -1792,8 +1806,8 @@ namespace AdminConsole
                     xiaozhundianinput.SelectedValue = "5";
                 }
 
-
-                TimerEventProcessor(null, null);
+                wr_flag = 1;
+               // TimerEventProcessor(null, null);
                 if (!bl)
                 {
                     return;
@@ -2001,13 +2015,24 @@ namespace AdminConsole
                 return ;
             }
             //  timer.Stop();
+            Delay_user(100);
+             bl = CmdDataWriteSave();
+            Delay_user(100);
             bl = CmdDataWriteSave();
             if (!bl)
             {
                 wr_flag = 0;
                 yonghushezhixieruBut.Enabled = true;
-                return ;
+                return;
             }
+
+         /*   bl = CmdDataWriteSave();
+            if (!bl)
+            {
+                wr_flag = 0;
+                yonghushezhixieruBut.Enabled = true;
+                return ;
+            }*/
 			wr_flag = 0;
             _serialPort.Close();
 			MessageBox.Show("修改串口参数后，请重新配置上位机软件串口参数！", "提示", MessageBoxButtons.OK,
@@ -2091,6 +2116,9 @@ namespace AdminConsole
                 jiaozhunxieruBut.Enabled = true;
                 return;
             }
+            Delay_user(100);
+            bl = CmdDataWriteSave();
+            Delay_user(100);
             bl = CmdDataWriteSave();
             if (!bl)
             {
@@ -2217,7 +2245,7 @@ namespace AdminConsole
                 xieruquanbushujuBut.Enabled = true;
                 return;
             }
-
+            Delay_user(100);
             bl = CmdDataWriteSave();
             if (!bl)
             {
@@ -2318,6 +2346,7 @@ namespace AdminConsole
                 gcbcsjBut.Enabled = true;
                 return;
             }
+            Delay_user(100);
             bl = CmdDataWriteSave();
             if (!bl)
             {
@@ -2673,12 +2702,21 @@ namespace AdminConsole
                 }
             }
 
+            Delay_user(100);
             var bl = CmdDataWriteSave();
 
             if (!bl)
             {
                 wr_flag = 0;
                 LieBIAOxieru.Enabled = true;
+                 bl = CmdDataWriteSave();
+
+                if (!bl)
+                {
+                    wr_flag = 0;
+                    LieBIAOxieru.Enabled = true;
+                    return;
+                }
                 return;
             }
             msglable.Text = "写入寄存器组态数据成功";

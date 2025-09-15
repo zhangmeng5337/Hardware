@@ -187,7 +187,7 @@ namespace Sunny.UI
 
         private byte[] ReadCommBytes()
         {
-          //  Thread.Sleep(200);
+          //  Thread.Sleep(300);
             var bytesRead = _comm.BytesToRead;
             var dataBytes = new byte[bytesRead];
             //读取缓冲区数据

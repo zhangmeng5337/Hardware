@@ -38,7 +38,7 @@ void app_proc()
     display_menu();
     modbus_recv_proc();
     reg_proc();
-    modbus_init();
+   
     uart_proc();
 
 
