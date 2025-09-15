@@ -305,20 +305,20 @@ uint32_t datx_proc(float dat)
             }
 
         }
-        else  if (dat <= 100) //99.12 10.12
+        else  if (dat < 100) //99.12 10.12
         {
 
             if (decm_bit == 0)//no dot
             {
                 result = dat;
                 dis_usr.dot_pos = 4;
-                dis_usr.dat_bits = 3;
+                dis_usr.dat_bits = 2;
             }
             else if (decm_bit == 1)
             {
                 dis_usr.dot_pos = 3;
                 result = dat * 10;
-                dis_usr.dat_bits = 4;
+                dis_usr.dat_bits = 3;
 
             }
 
@@ -506,7 +506,7 @@ void display_val_proc(unsigned char dis_mode)
 		 
         tmp = dis_usr.dis_val;
 //		tmp=-1999;
-			dis_usr.dis_val = -1999;
+		//	dis_usr.dis_val = -100.123;
         if (tmp < 0)
         {
             dis_usr.signedFlag = 1;

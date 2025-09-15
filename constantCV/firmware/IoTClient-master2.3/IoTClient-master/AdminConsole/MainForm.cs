@@ -1644,9 +1644,9 @@ namespace AdminConsole
             _modbusMaster = ModbusSerialMaster.CreateRtu(_serialPort);
 
             // 配置超时与重试机制‌:ml-citation{ref="5,8" data="citationList"}
-            _modbusMaster.Transport.ReadTimeout = 500;
-            _modbusMaster.Transport.WriteTimeout =1000;
-            _modbusMaster.Transport.Retries = 3;
+            _modbusMaster.Transport.ReadTimeout = 400;
+            _modbusMaster.Transport.WriteTimeout =400;
+            _modbusMaster.Transport.Retries = 2;
 
 
             if (!_serialPort.IsOpen)
@@ -3029,6 +3029,8 @@ namespace AdminConsole
             var huifu = InitData.registers.FirstOrDefault(w => w.Id ==
                         EnumDataId.恢复出厂设置);
             var bl = modbusWriter.WritePrivate0x56Register(huifu);
+            Delay_user(100);
+            bl = modbusWriter.WritePrivate0x56Register(huifu);
             if (!bl)
             {
                 huifuchuchangBut.Enabled = true;

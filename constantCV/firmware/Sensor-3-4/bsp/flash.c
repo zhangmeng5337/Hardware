@@ -84,7 +84,13 @@ float uint32TofloatR(unsigned char *buf)
 	
 	return *((float *)&tmp);
 }
-
+float uint32TofloatL(unsigned char *buf)
+{
+	uint32_t tmp;
+	tmp = (buf[0]<<0)|(buf[1]<<8)|(buf[2]<<16)|(buf[3]<<24);
+	
+	return *((float *)&tmp);
+}
 //uint32_t  uint32Tofloat_pos(unsigned char *pb,unsigned char pos)
 //{
 //	uint32_t tmp;

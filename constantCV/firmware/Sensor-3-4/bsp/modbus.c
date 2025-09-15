@@ -851,6 +851,13 @@ void modbus_PrivaReg_write_pack(void)
             else if ((modbus_usr.RegStart + i) == FAC_OFFSET_HREG)
             {
                 result = 1;
+				modbus_usr.RegStart = GetReg()->pb[eREG_OFFSET_HF16].reg_remap;
+					
+				  ModbusDatToRegDat(modbus_usr.RegStart, &modbus_usr.payload[k-2], CHANGE_DAT);
+				modbus_usr.RegStart = GetReg()->pb[eREG_OFFSET_LF16].reg_remap;
+					
+				  ModbusDatToRegDat(modbus_usr.RegStart, &modbus_usr.payload[k], CHANGE_DAT);
+				  					  				  				  
                 GetRegPrivate()->offset = uint32TofloatR(&modbus_usr.payload[k]);
                 result = 1;
             }

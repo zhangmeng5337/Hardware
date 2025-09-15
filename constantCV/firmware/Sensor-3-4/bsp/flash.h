@@ -12,6 +12,7 @@ void floatTouint32_pos(uint32_t dat,unsigned char *pb,unsigned char pos);
 uint32_t  uint32Tofloat_pos(unsigned char *pb,unsigned char pos);
 void floatTouint32_m(float dat,unsigned char *pb);
 float uint32TofloatR(unsigned char *buf);
+float uint32TofloatL(unsigned char *buf);
 
 #endif
 

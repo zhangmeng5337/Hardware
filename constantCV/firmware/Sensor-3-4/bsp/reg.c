@@ -325,6 +325,15 @@ void ModbusDatToRegDat(uint16_t RegNum, uint8_t *dat, unsigned char dir)
                 FlshDatToRegDatNoDefault(&reg_usr.pb[i], &dat[2], reg_usr.pb[i].dat_type);
             }
 
+		if(RegNum == GetReg()->pb[eREG_OFFSET_HF16].reg_remap)
+		{
+		 
+		unsigned char pb[4];
+		memcpy(pb,&reg_usr.pb[i].val_u32ToFloat,4);
+			//pb = (unsigned char *)reg_usr.pb[i].val_u32ToFloat;
+		GetRegPrivate()->offset =  uint32TofloatL(pb);
+
+		}
 
         }
     }
@@ -734,6 +743,15 @@ unsigned char RegRead(void)
             else
                 break;
         }
+	//if(RegNum == GetReg()->pb[eREG_OFFSET_HF16].reg_remap)
+		{
+		 
+		unsigned char pb[4];
+		memcpy(pb,&GetReg()->pb[eREG_OFFSET_HF16].val_u32ToFloat,4);
+			//pb = (unsigned char *)reg_usr.pb[i].val_u32ToFloat;
+		GetRegPrivate()->offset =  uint32TofloatL(pb);
+
+		}
 
     }
     else
@@ -841,6 +859,7 @@ void reg_proc(void)
         RegWrite();
         cal_number();
 		modbus_init();
+		//RegRead();
 
         reg_usr.update = 0;
         getKey()->update  = 0;
