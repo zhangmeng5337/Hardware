@@ -140,7 +140,7 @@ unsigned char heater_cooller_ctrl()
 
                 air_usr.heat_pid_out =  pid_proc_fan_heat(2, tmep_T);
                 //pwm_set(HEATER_2,  air_usr.heat_pid_out);
-                pwm_set(HEATER_1, 1000);
+                pwm_set(HEATER_2, 1000);
 
                 air_usr.heat_pid_out =  pid_proc_fan_heat(3, tmep_T);
                 //  pwm_set(HEATER_3,  air_usr.heat_pid_out);
@@ -149,6 +149,8 @@ unsigned char heater_cooller_ctrl()
                 air_usr.heat_pid_out =  pid_proc_fan_heat(4, tmep_T);
                 //pwm_set(HEATER_4,  air_usr.heat_pid_out);
                 pwm_set(HEATER_4, 1000);
+
+				
                 if (getConfig()->warn_T >= tmep_T)
                     getConfig()->status = RUN;
                 else
