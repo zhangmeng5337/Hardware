@@ -297,10 +297,13 @@ void UpdateUI()
             SetLableValue(page_Id, BATTERY_ID, str);
         }
         //if (get_rf_status()->average_T != last_t)
+       
+//         if ( getConfig()->max_T!= last_t)
         if (get_temperature()->T_value[0] != last_t)
         {
 
             float tmp2;
+//			 tmp2 = getConfig()->max_T;
             tmp2 = get_temperature()->T_value[0];
             last_t = tmp2;
 
