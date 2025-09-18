@@ -44,7 +44,12 @@ void flash_save()
 		 //flash_usr.used_len= flash_usr.used_len +4;
 
 		 memcpy(pb, &getConfig()->power_save, 4);
+
+		 
 		 WriteFlash(addr, pb, 4);addr = addr + 4;
+		 memcpy(pb, &getConfig()->mode, 4);
+
+		 WriteFlash(addr, pb, 4);addr = addr + 4;		 
 		//flash_usr.used_len= flash_usr.used_len +4;
 __enable_irq();
 
@@ -125,6 +130,12 @@ void flash_init()
 
 		ReadFlash(addr, pb, 4);addr = addr + 4;
 		memcpy(&getConfig()->power_save,pb,4);//休眠模式	
+		ReadFlash(addr, pb, 4);addr = addr + 4;
+		memcpy(&getConfig()->mode,pb,1);//休眠模式	
+
+
+
+		
 		//Erase_page(Application_1_Addr, 1);
     }
     else
@@ -142,6 +153,7 @@ void flash_init()
 		 getConfig()->power_save = 15;//s
 		 getConfig()->update_T = 0;
 		 getConfig()->record_time = 0;
+		 getConfig()->mode = MODE_COOLLER;
 		flash_save();
         //Erase_page(Application_1_Addr, 1);
 

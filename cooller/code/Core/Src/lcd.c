@@ -849,10 +849,12 @@ void lcd_proc()
             #if DEBUG_EN
             if ((HAL_GetTick() - timeout2) >= 25000 && getConfig()->export_flag == 0)
             {
-                SetPage(Main_PAGE);//主页面Id号是4
-                SetBackLight(0);
+
                 if (getConfig()->status == SLEEP)
-                {
+                {               
+
+				   SetPage(Main_PAGE);//主页面Id号是4
+                    SetBackLight(0);
                     flash_save();
                     sys_enter_standy_mode();
                     HAL_NVIC_SystemReset();
