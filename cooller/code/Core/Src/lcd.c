@@ -850,7 +850,7 @@ void lcd_proc()
         {
             //  static uint32_t timeout2;
             #if DEBUG_EN
-            if ((HAL_GetTick() - timeout2) >= 25000 && getConfig()->export_flag == 0)
+            if ((HAL_GetTick() - timeout2) >= SLEEP_TIME && getConfig()->export_flag == 0)
             {
 
                 if (getConfig()->status == SLEEP)

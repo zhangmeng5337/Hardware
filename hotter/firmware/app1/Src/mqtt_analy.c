@@ -1153,6 +1153,7 @@ void anlysis_mqtt_recv()
         // get_config()- w  >update_setting = 2;
         tmp_f = atof(&dev_id[0]);
         get_config()->set_up_period = tmp_f;
+		get_config()->update_setting = 1;
     }
     dev_id = find_json_string("\"do_num\": ", "\r\n", 0);
     if (dev_id != NULL)

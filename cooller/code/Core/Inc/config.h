@@ -7,6 +7,8 @@
 #define RUN			0x00
 #define SLEEP       0x01
 #define WARN        0x02
+
+#define SLEEP_TIME  20*60*1000
 typedef struct 
 {
 	float max_T;
