@@ -92,7 +92,7 @@ void uart_config()
                 uart_usr.baudrate = getKey()->indat[0].baud;
 
             }
-            else  if (uart_usr.reconfig == 2 || uart_usr.reconfig == 3)
+            else  if (uart_usr.reconfig == 2 || uart_usr.reconfig == 3 || uart_usr.reconfig == 4)
             {
                 //GetReg()->pb[eREG_RATE].val_u32ToFloat = GetReg()->pb[eREG_CHECK];
 
@@ -121,9 +121,10 @@ void uart_config()
         }
 
         if (uart_usr.reconfig == 2 || uart_usr.reconfig == 1 ||
-                uart_usr.reconfig == 3)
+                uart_usr.reconfig == 3||
+                uart_usr.reconfig == 4)
         {
-            if (uart_usr.reconfig == 3)
+            if (uart_usr.reconfig <= 3)
             {
                 uart_usr.reconfig =  0;
                 delay_time = GetTick();
@@ -286,7 +287,7 @@ void uart_init(void)
     uart_usr.reconfig = 0;
     uart_usr.parity = GetReg()->pb[eREG_CHECK].val_u32ToFloat;
     uart_usr.baudrate = GetReg()->pb[eREG_RATE].val_u32ToFloat;
-    uart_usr.reconfig = 2;
+    uart_usr.reconfig = 4;
     uart_config();
     uart_usr.recv_update = 0;
     uart_usr.index = 0;

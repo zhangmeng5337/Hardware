@@ -40,7 +40,8 @@ namespace AdminConsole.Model
                 new KeyValue{ID= "0.2",Name="0.2"},
                 new KeyValue{ID= "0.3",Name="0.3"},
                 new KeyValue{ID= "0.4",Name="0.4"},
-                new KeyValue{ID= "0.5",Name="0.5"}
+                new KeyValue{ID= "0.5",Name="0.5"},
+                new KeyValue{ID= "0.8",Name="0.8"}
         };
         public static List<KeyValue> xiaozhundianData = new List<KeyValue> {
                 new KeyValue{ID= "2",Name="2"},
