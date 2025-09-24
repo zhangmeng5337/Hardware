@@ -216,6 +216,7 @@ void zero_menu(void)//password menu
             GetRegPrivate()->zero_cmd = 1;
             GetRegPrivate()->zero_value = getadc()->dat_unit_factory;
             task_index = 0;
+		   key_irq_usr.bit_sel = BIT_SEL;
 
         }
 
@@ -232,8 +233,10 @@ void zero_menu(void)//password menu
             key_irq_usr.update = 1;
             key_irq_usr.update = 1;
             key_irq_usr.double_check = NO_PRE;
+			GetRegPrivate()->zero_value = 0;
             GetRegPrivate()->zero_cmd = 0;
             task_index = 0;
+			   key_irq_usr.bit_sel = BIT_SEL;
         }
     }
     else //rst
@@ -248,6 +251,7 @@ void zero_menu(void)//password menu
             key_irq_usr.double_check = NO_PRE;
             //GetRegPrivate()->zero_cmd = 1;
             task_index = 0;
+			   key_irq_usr.bit_sel = BIT_SEL;
         }
     }
 
@@ -1122,6 +1126,8 @@ void normal_menu(void)//password menu
     key_irq_usr.indat[0].passw[1] = 0;
     key_irq_usr.indat[0].passw[2] = 0;
     key_irq_usr.indat[0].passw[3] = 0;
+	
+	key_irq_usr.bit_sel = BIT_SEL;
 }
 
 
@@ -1165,6 +1171,7 @@ void password_menu(void)//password menu
             *getAdcReconfig() = 1;
             GetRegPrivate()->save = 1;
             key_irq_usr.update = 1;
+			key_irq_usr.indat[0].status = 0;
 
         }
         else  if (key_irq_usr.indat[0].passw[3] == 0x06 &&
@@ -1181,6 +1188,8 @@ void password_menu(void)//password menu
             GetDisp()->dis_buf[1] = 0x6e;
             GetDisp()->dis_buf[2] = 0x79;
             GetDisp()->dis_buf[3] = 0x6d;
+			key_irq_usr.indat[0].status = 1;
+			key_irq_usr.key_irq_status = 0;
         }
 
     }
@@ -1387,18 +1396,39 @@ void display_menu(void)
 void GPIOA_IRQHandlerCallback(void)
 {
 
-
+    static uint32_t tick_tmp;
+	tick_tmp = GetTick();
     if (CW_GPIOA->ISR_f.PIN3)
     {
         GPIOA_INTFLAG_CLR(bv3);
-        key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x04;
-        key_irq_usr.delay_tick = GetTick();
+		if( GPIO_ReadPin(KEY1_GPIO_PORT,KEY1_GPIO_PIN)== 0)
+		{
+			while((GetTick()-tick_tmp)<KEY_FILTER)
+				;
+			if( GPIO_ReadPin(KEY1_GPIO_PORT,KEY1_GPIO_PIN)== 0)
+			{
+			key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x04;
+			key_irq_usr.delay_tick = GetTick();
+
+			}
+		}
+
     }
     if (CW_GPIOA->ISR_f.PIN4)
     {
         GPIOA_INTFLAG_CLR(bv4);
-        key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x02;
-        key_irq_usr.delay_tick = GetTick();
+		if( GPIO_ReadPin(KEY3_GPIO_PORT,KEY3_GPIO_PIN)== 0)
+		{
+			while((GetTick()-tick_tmp)<KEY_FILTER)
+				;
+			if( GPIO_ReadPin(KEY3_GPIO_PORT,KEY3_GPIO_PIN)== 0)
+			{
+			key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x02;
+			key_irq_usr.delay_tick = GetTick();
+
+			}
+		}
+
     }
 
 
@@ -1422,6 +1452,17 @@ void GPIOB_IRQHandlerCallback(void)
         GPIOB_INTFLAG_CLR(bv2);
         key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x01;
         key_irq_usr.delay_tick = GetTick();
+		if( GPIO_ReadPin(KEY2_GPIO_PORT,KEY2_GPIO_PIN)== 0)
+		{
+			while((GetTick()-tick_tmp)<KEY_FILTER)
+				;
+			if( GPIO_ReadPin(KEY2_GPIO_PORT,KEY2_GPIO_PIN)== 0)
+			{
+			key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x01;
+			key_irq_usr.delay_tick = GetTick();
+		
+			}
+		}
 
     }
 
@@ -1432,8 +1473,17 @@ void GPIOB_IRQHandlerCallback(void)
     if (CW_GPIOB->ISR_f.PIN7)
     {
         GPIOB_INTFLAG_CLR(bv7);
-        key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x01;
-        key_irq_usr.delay_tick = GetTick();
+		if( GPIO_ReadPin(KEY2_GPIO_PORT,KEY2_GPIO_PIN)== 0)
+		{
+			while((GetTick()-tick_tmp)<KEY_FILTER)
+				;
+			if( GPIO_ReadPin(KEY2_GPIO_PORT,KEY2_GPIO_PIN)== 0)
+			{
+			key_irq_usr.key_irq_status = key_irq_usr.key_irq_status | 0x01;
+			key_irq_usr.delay_tick = GetTick();
+		
+			}
+		}
 
     }
     if (CW_GPIOB->ISR_f.PIN6)

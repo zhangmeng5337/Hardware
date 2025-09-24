@@ -567,15 +567,17 @@ void cal_press(void)
         tmp6 = tmp6 + GetRegPrivate()->coe5 ;
 
         tmp6 =    tmp6 - GetRegPrivate()->offset;
+		adc_usr.dat_unit_factory = tmp6;
 		if (GetRegPrivate()->zero_cmd == 1)
 		{
 			tmp6 = tmp6 - GetRegPrivate()->zero_value;
+			adc_usr.dat_unit_factory = tmp6;
 		}
 
 
         //tmp6 = kalman_filter(&g_kfp_st2, tmp6);
-        adc_usr.dat_unit_factory = tmp6;
-        dat_cal_proc(adc_usr.dat_unit_factory);
+        
+        dat_cal_proc(tmp6);
         g_cs1237_device_st.update = 0;
 //                    printf("            %.5f            %.4f\r\n",adc_usr.adc_ori,adc_usr.adc_data_KF);
 

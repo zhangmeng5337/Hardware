@@ -6,7 +6,7 @@
 #define KEY3_NUM  3
 
 #define BIT_SEL  4
-
+#define KEY_FILTER 5
 #define SHORT_PRES 1000
 #define LONG_PRES 5000
 #define KEY_TIMEOUT 60000    //key press time out 
