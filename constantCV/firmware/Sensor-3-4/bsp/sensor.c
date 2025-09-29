@@ -11,8 +11,8 @@
 #include "display.h"
 extern struct cs1237_device g_cs1237_device_st;
 kalman g_kfp_st = {0};
-kalman g_kfp_st2 = {0};
-kalman g_kfp_st3 = {0};
+//kalman g_kfp_st2 = {0};
+//kalman g_kfp_st3 = {0};
 
 adc_stru adc_usr;
 
@@ -28,7 +28,12 @@ unsigned char *getAdcReconfig(void)
 void adc_init(void)
 {
     //cs1237_init(&g_cs1237_device_st, DEV_FREQUENCY_10, DEV_PGA_1, DEV_CH_A);
-    cs1237_init(&g_cs1237_device_st, GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat + 1,
+    unsigned char tmp;
+	if(GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 10)
+		tmp = 1;
+	else 
+		tmp = 2;
+    cs1237_init(&g_cs1237_device_st, tmp,
                 getPgaToADC(GetRegPrivate()->pga), DEV_CH_A);
 
 
@@ -36,19 +41,19 @@ void adc_init(void)
     kalman_init(&g_kfp_st);
     filter_level_sel(GetRegPrivate()->filter_level);
 	
-    g_kfp_st2.Last_P = 300;
-    g_kfp_st2.Now_P = 0;
-    g_kfp_st2.out = 0;
-    g_kfp_st2.Kg = 0;
-    g_kfp_st2.Q = 0.01;
-    g_kfp_st2.R = 0.15;
-
-    g_kfp_st3.Last_P = 300;
-    g_kfp_st3.Now_P = 0;
-    g_kfp_st3.out = 0;
-    g_kfp_st3.Kg = 0;
-    g_kfp_st3.Q = 0.0001;
-    g_kfp_st3.R = 0.1;
+//    g_kfp_st2.Last_P = 300;
+//    g_kfp_st2.Now_P = 0;
+//    g_kfp_st2.out = 0;
+//    g_kfp_st2.Kg = 0;
+//    g_kfp_st2.Q = 0.01;
+//   // g_kfp_st2.R = 0.15;
+//
+//    g_kfp_st3.Last_P = 300;
+//    g_kfp_st3.Now_P = 0;
+//    g_kfp_st3.out = 0;
+//    g_kfp_st3.Kg = 0;
+//    g_kfp_st3.Q = 0.0001;
+//   // g_kfp_st3.R = 0.1;
 
 }
 
@@ -59,11 +64,11 @@ void adc_config()
     {
         if (getKey()->indat[0].spd == 0)
         {
-            GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = getKey()->indat[0].spd;
+            GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 10;
 
         }
         else
-            GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 1;
+            GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 40;
 
     }
 

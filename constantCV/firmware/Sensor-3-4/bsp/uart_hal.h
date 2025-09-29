@@ -13,7 +13,7 @@
 #include "main.h"
 #define LOG_ENABLE  0
 
-#define TX_BUF_SIZE		128
+#define TX_BUF_SIZE		64
 #define RX_BUF_SIZE		128
 
 typedef struct

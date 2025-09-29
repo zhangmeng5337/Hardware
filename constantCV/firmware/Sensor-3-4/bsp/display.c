@@ -5,6 +5,7 @@
 #include "sensor.h"
 #include "stdlib.h"
 #include "math.h"
+#include "key.h"
 
 static dis_stru dis_usr;
 //共阳极数码管的编码：
@@ -15,6 +16,8 @@ static dis_stru dis_usr;
 unsigned char ledcode[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x00, 0x39, 0x5e, 0x79, 0x71, 0x00, 0x73, 0x00}; //0-F,空白，P
 unsigned char dot_dat = 0x80;//.
 unsigned char neg_dat = 0x40;//- 1011111011
+unsigned char ledcode_H[] = {H, E, E, E}; //0-F,空白，P
+unsigned char ledcode_L[] = {L, E, E, E}; //0-F,空白，P
 
 void display_sel(unsigned char led_num, unsigned char status)
 {
@@ -535,69 +538,89 @@ void display_val_proc(unsigned char dis_mode)
 
     if (dis_usr.signedFlag == 0)
     {
-        if ((dis_usr.dot_pos) == bit_count)
+        if (fabs(dis_usr.dis_val) > 1999)
         {
-            if (dis_usr.dot_pos != 4)
-                tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | dot_dat;
-
+                tmp_dat = ledcode_H[bit_count - 1];
         }
+
         else
         {
-            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]];
+            if ((dis_usr.dot_pos) == bit_count)
+            {
+                if (dis_usr.dot_pos != 4)
+                    tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | dot_dat;
+
+            }
+            else
+            {
+                tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]];
+
+            }
 
         }
+
         // XL74HC595_MultiWrite(&tmp_dat, 1); //
     }
     if (dis_usr.signedFlag == 1)
     {
-
-        if ((dis_usr.dat_bits + bit_count) >= 4)
+        if (fabs(dis_usr.dis_val) > 1999)
         {
+                tmp_dat = ledcode_L[bit_count - 1];
 
-            //            if (dis_usr.dis_buf[bit_count - 1] <= 0x0f && bit_count == 1)
-            //                tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | neg_dat;
-            //            else
-            //                tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]];
+        }
+        else
+        {
+            if ((dis_usr.dat_bits + bit_count) >= 4)
+            {
 
-            if (dis_usr.dis_buf[bit_count - 1] <= 0x0f)
-                if (dis_usr.dat_bits < 4)
-                {
-                    if ((dis_usr.dat_bits + bit_count) == 4)
-                        tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]] | neg_dat;
+                //			 if (dis_usr.dis_buf[bit_count - 1] <= 0x0f && bit_count == 1)
+                //				 tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]] | neg_dat;
+                //			 else
+                //				 tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1]];
+
+                if (dis_usr.dis_buf[bit_count - 1] <= 0x0f)
+                    if (dis_usr.dat_bits < 4)
+                    {
+                        if ((dis_usr.dat_bits + bit_count) == 4)
+                            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]] | neg_dat;
+                        else
+                            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]];
+                    }
                     else
-                        tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]];
-                }
+                    {
+                        if (bit_count == 1)
+                            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]] | neg_dat;
+                        else
+                            tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]];
+                    }
+
                 else
-                {
-                    if (bit_count == 1)
-                        tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]] | neg_dat;
-                    else
-                        tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]];
-                }
+                    tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]];
 
+            }
             else
-                tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]];
+            {
+                if (dis_usr.dis_buf[bit_count ] <= 0x0f)
+                    tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]] ;
+                else
+                    tmp_dat = 0;
+            }
 
-        }
-        else
-        {
-            if (dis_usr.dis_buf[bit_count ] <= 0x0f)
-                tmp_dat = ledcode[dis_usr.dis_buf[bit_count - 1 ]] ;
+            if ((dis_usr.dot_pos) == bit_count)
+            {
+                if (dis_usr.dot_pos != 4)
+                    tmp_dat = tmp_dat | dot_dat;
+
+            }
             else
-                tmp_dat = 0;
-        }
+            {
+                tmp_dat = tmp_dat;
 
-        if ((dis_usr.dot_pos) == bit_count)
-        {
-            if (dis_usr.dot_pos != 4)
-                tmp_dat = tmp_dat | dot_dat;
+            }
 
         }
-        else
-        {
-            tmp_dat = tmp_dat;
 
-        }
+
 
     }
     display_sel(bit_count++, 0);//bit_count++
