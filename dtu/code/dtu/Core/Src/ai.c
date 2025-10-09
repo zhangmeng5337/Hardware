@@ -38,7 +38,7 @@ void adc_proc(void)
 			adc_usr.ai_buf[i] = kalman_filter(&kalman_table[i], buf[i]);
 		}
 	    
-		reset_registerTick(ADC_POLL_TICK);
+		   reset_registerTick(ADC_POLL_TICK);
 	    registerTick(ADC_POLL_TICK,ADC_POLL_TIME);
 		
 	}

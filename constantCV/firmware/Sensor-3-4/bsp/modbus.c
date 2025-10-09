@@ -721,8 +721,8 @@ void modbus_oneReg_write_pack(void)
             GetRegPrivate()->zero_cmd = GetReg()->pb[eREG_CLR_ZEROE].val_u32ToFloat;
         }
 
-
-
+       
+      GetRegPrivate()->save = 1;
 
         modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
         modbus_usr.tx_buf[i++] = modbus_usr.Func;
@@ -788,7 +788,7 @@ void modbus_mulReg_write_pack(void)
     //      tx_buf[i++] = crc_cal;
     //      tx_buf[i++] = crc_cal >> 8;
     modbus_tx(modbus_usr.tx_buf, 6);
-
+ GetRegPrivate()->save = 1;
     modbus_usr.tick = GetTick();
 
 }
