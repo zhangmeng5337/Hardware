@@ -49,8 +49,8 @@ reg_dat_pack reg_dat_usr[REG_SIZE] =
     {REG_HF16,        0,  1, 0xbf000000, 0x40266666,  3,  0,     0, 1},
     {REG_LF16,        0,  1, 0xbf000000, 0x40266666,  3,  1,     0, 1},
     {REG_X1000,       0,  1, 0,          0,          2,  0,      0, 1},
-    {REG_RANGZ_HF16,  0,  1, 0xbf000000,          0,          3,  0,      1, 1},
-    {REG_RANGZ_LF16,  0,  1, 0xbf000000,          0,          3,  1,      1, 1},
+    {REG_RANGZ_HF16,  0,  1, 0,          0,          3,  0,      1, 1},
+    {REG_RANGZ_LF16,  0,  1, 0,          0,          3,  1,      1, 1},
     {REG_RANGF_HF16,  0,  1, 0x3f800000, 0x3f800000,  3,  0,     1, 1},
     {REG_RANGF_LF16,  0,  1, 0x3f800000, 0x3f800000,  3,  1,     1, 1},
     {REG_OFFSET_HF16, 0,  1, 0x3f800000, 0x40000000,  3,  0,    1, 1},
@@ -764,10 +764,10 @@ void reg_init(void)
     unsigned int i;
     reg_usr.update = 0;
     params_private.coe = 1;
-    params_private.cur_set = 0.8;
+    params_private.cur_set = 0.2;
     params_private.vol_set = 1;
     params_private.offset = 0;
-    params_private.pga = 0;
+    params_private.pga = 7;
     //params_private.sei = 0;
     params_private.typ = 1;
     params_private.unit = 2;//MPa
