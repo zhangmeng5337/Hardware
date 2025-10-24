@@ -2922,7 +2922,7 @@ void mqtt_proc()
             }
 
             else
-                registerTick(MQTT_TX_TICK_NO, 10000);
+                registerTick(MQTT_TX_TICK_NO, 500);
             if (GetTickResult(MQTT_TX_TICK_NO) == 1) //10s
             {
                 reset_registerTick(MQTT_TX_TICK_NO);
