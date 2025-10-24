@@ -73,7 +73,7 @@ sourceinsight/!*.siproj
 *.htm
 *.dep
 *.dbgconf
-
+*.uvprojx
 #######pcb#################
 *.log,**
 *.dat
