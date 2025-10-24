@@ -250,7 +250,7 @@ void do_num_sel(int num)
     unsigned int tmp, nor_num;
     unsigned char i, k;
     nor_num = 1;
-    k = 1;
+    k = 0;
     tmp = (unsigned int)num;
     for (i = 0; i < DO_SIZE; i++)
     {
