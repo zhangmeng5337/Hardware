@@ -5,22 +5,7 @@
 #include "uart_hal.h"
 #include "cs1237.h"
 
-#define A 0x77
-#define B 0x7C
-#define C 0x58
-#define D 0x5e
-#define E 0x79
-#define F 0x71
-#define I 0x06
-#define N 0x37
-#define U 0x3e
-#define O 0x5c
-#define P 0x73
-#define R 0x50
-#define S 0x6d
-#define T 0x78
-#define Y 0x6e
-#define V 0x62
+
 
 
 unsigned char task_index = 0;
@@ -306,7 +291,10 @@ void save2_menu(void)//password menu
                 GetReg()->pb[eREG_CHECK].val_u32ToFloat = key_irq_usr.indat[0].par;
                 GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat = key_irq_usr.indat[0].dot;
                 GetReg()->pb[eREG_UNIT].val_u32ToFloat = key_irq_usr.indat[0].unit;
-                GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat =  key_irq_usr.indat[0].spd;
+				if(key_irq_usr.indat[0].spd == 0)
+                GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 10;
+				else
+				GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 40;	
 
 
                 //                printf("addr=%d\r\n", key_irq_usr.indat[0].addr);
@@ -1210,7 +1198,10 @@ void key_init(void)
     input_dat[0].baud = GetReg()->pb[eREG_RATE].val_u32ToFloat;
     input_dat[0].baud = input_dat[0].baud ;
     input_dat[0].par  =  GetReg()->pb[eREG_CHECK].val_u32ToFloat;
-    input_dat[0].spd  =  GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat;
+	if(GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 10)
+    input_dat[0].spd  =  0;
+	else
+    input_dat[0].spd  =  1;		
     input_dat[0].unit = GetReg()->pb[eREG_UNIT].val_u32ToFloat;
     input_dat[0].dot  =  GetReg()->pb[eREG_DECM_BIT].val_u32ToFloat;
     if (input_dat[0].dot > 3)

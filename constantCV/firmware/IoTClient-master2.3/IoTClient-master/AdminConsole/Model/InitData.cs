@@ -29,8 +29,8 @@ namespace AdminConsole.Model
                 new KeyValue { ID = "12", Name = "℉" }
             };
         public static List<KeyValue> adcsulvData = new List<KeyValue> {
-                new KeyValue{ID= "0",Name="10"},
-                new KeyValue{ID= "1",Name="40"}
+                new KeyValue{ID= "10",Name="10"},
+                new KeyValue{ID= "40",Name="40"}
         };
         public static List<KeyValue> yiBiaoLeiXingData = new List<KeyValue> {
                 new KeyValue{ID= "0",Name="温度"},

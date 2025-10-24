@@ -34,7 +34,8 @@ modbus_reg_cmdCheck_stru  modbus_reg_list[REG_COUNT] =
     {REG_DECM_BIT,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
     {REG_UNIT,          {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
     {REG_ADC_RATE,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
-    {REG_CLR_ZEROE,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4}
+    {REG_CLR_ZEROE,      {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD, MODBUS_FUNC_ONE_WRITE, MODBUS_FUNC_MUL_WRITE}, 4},
+	{REG_HF16_4, 	 {MODBUS_FUNC_READ, MODBUS_FUNC_ONLYREAD}, 4}
 
 };
 
@@ -708,11 +709,11 @@ void modbus_oneReg_write_pack(void)
         if (modbus_usr.RegStart == GetReg()->pb[eREG_ADC_RATE].reg_remap)
         {
             *getAdcReconfig() = 2;
-            if (GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 0 ||
-                    GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 1)
+            if (GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 10 ||
+                    GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat == 40)
                 ;
             else
-                GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 0;
+                GetReg()->pb[eREG_ADC_RATE].val_u32ToFloat = 10;
 
         }
         if (modbus_usr.RegStart == GetReg()->pb[eREG_CLR_ZEROE].reg_remap)
@@ -720,8 +721,8 @@ void modbus_oneReg_write_pack(void)
             GetRegPrivate()->zero_cmd = GetReg()->pb[eREG_CLR_ZEROE].val_u32ToFloat;
         }
 
-
-
+       
+      GetRegPrivate()->save = 1;
 
         modbus_usr.tx_buf[i++] = modbus_usr.DevAddr;
         modbus_usr.tx_buf[i++] = modbus_usr.Func;
@@ -787,7 +788,7 @@ void modbus_mulReg_write_pack(void)
     //      tx_buf[i++] = crc_cal;
     //      tx_buf[i++] = crc_cal >> 8;
     modbus_tx(modbus_usr.tx_buf, 6);
-
+ GetRegPrivate()->save = 1;
     modbus_usr.tick = GetTick();
 
 }
