@@ -62,6 +62,10 @@ void config_save()
 		memcpy(buf + index, buf2, 4);
 	   len = 4;
 	   index = index + len;
+	   floatTouint32(get_config()->set_up_period, buf2);
+		memcpy(buf + index, buf2, 4);
+	   len = 4;
+	   index = index + len;
 
        WriteFlashBytes((CONFIG_Addr), (uint8_t *)(buf), 512);
         config_usr.update_setting = 0;
@@ -132,6 +136,9 @@ void config_init()
         ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
 		index = index + 4;
 		get_pid_params()->out_min = uint32Tofloat(buf);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)buf, 4);
+		index = index + 4;
+		get_config()->set_up_period = uint32Tofloat(buf);
 
 
 		//ReadFlash(CONFIG_Addr + index, buf, 4);
@@ -164,7 +171,7 @@ void config_init()
         get_config()->set_tout = 45;
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
-        get_config()->set_up_period = 5;
+        get_config()->set_up_period = 0.5;
         get_config()->mode = OFF_MODE;
 		get_config()->instru_num = DELI;
         get_config()->dev_size = DEV_SIZE;
