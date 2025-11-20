@@ -6,10 +6,10 @@ unsigned char do_index[16];
 void do_init()
 {
     unsigned int i,k;
-    i = 1;
-	 k = 14;
+
+	 k = 15;
     do_usr.do_status = 0;
-	for(i = 1;i<16;i++)
+	for(i = 0;i<16;i++)
 	{
     do_index[i] = k;
 	k--;
