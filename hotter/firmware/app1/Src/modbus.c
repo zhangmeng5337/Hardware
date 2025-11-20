@@ -10,6 +10,7 @@
 #include "schedule.h"
 #include "lte_hal.h"
 #include "stmflash.h"
+#include "FuzzyPID.h"
 #include "power_energy.h"
 modbus_pump_cmd_stru  modbus_cmd_list[] =
 {
