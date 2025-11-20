@@ -9,6 +9,20 @@
 #define DELI		0
 #define ZT			1
 
+
+
+#define  UCHAR_TYP 		0
+#define  UINT_TYP 		1
+#define  FLOAT_TYP 	    2
+#define  INT_TYP 		3
+#define  STRING_TYP 	4
+#define  UINT64_TYP 	5
+
+
+#define  MATCH_ID 	    1
+#define  NO_MATCH_ID 	0
+#define  UPDATE_SET 	1
+#define  NOUPDATE_SET 	0
 void delay_us(uint32_t nCount);
 #include "main.h"
 
@@ -87,7 +101,7 @@ typedef struct
 	//unsigned char sub_sring[3][64];
 
 } CONFIG_stru;
-
+extern  CONFIG_stru config_usr;
 CONFIG_stru *get_config(void);
 void config_save(void);
 void config_init(void);

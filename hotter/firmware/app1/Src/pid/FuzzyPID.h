@@ -100,7 +100,7 @@ typedef struct
 
 
 }Error;
-
+extern FuzzyPID myfuzzypid;
 void FuzzyPID_Init(FuzzyPID* pid);
 void Get_grad_membership(FuzzyPID* pid,float erro, float erro_c);
 float Quantization(float maximum, float minimum, float x);

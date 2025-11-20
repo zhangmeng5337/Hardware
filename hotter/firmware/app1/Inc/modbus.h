@@ -55,6 +55,8 @@
 
 #define RETRY_COUNT		5
 #define FAULT_COUNT		4
+
+
 typedef struct 
 {
  unsigned char addr;
@@ -107,7 +109,7 @@ typedef struct
 	unsigned char tx_index;
 	unsigned char dev_addr_mask;//tx to specified dev
 }modbus_stru;
-
+extern modbus_stru modbus_tx;
 unsigned char modbus_trans(unsigned char addr,unsigned char func,unsigned int reg,unsigned char *payload,unsigned int reg_count,unsigned char len,unsigned char retry_times);
 void modbus_proc(void);
 void modbus_pack(unsigned char mode, unsigned char *pb);

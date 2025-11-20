@@ -6,7 +6,7 @@
 
 
 
-static CONFIG_stru config_usr;
+ CONFIG_stru config_usr;
 
 
 void config_save()

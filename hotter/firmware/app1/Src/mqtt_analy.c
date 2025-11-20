@@ -19,7 +19,7 @@
 #include "do.h"
 #include "power_energy.h"
 #include "malloc.h"
-
+extern cmd_stru mqtt_cmd_list[];
 tsATCmds     mqtt_at_cmds;
 teATCmdNum    mqtt_at_cmd_num;
 teATStatus    mqtt_at_status;
@@ -27,7 +27,90 @@ tsLpuart1type *mqtt_recv;
 char json_mqtt_send_buf[2048];
 
 extern tsLpuart1type *lte_recv;
+//    unsigned int cmd_info;
+//	unsigned char Lfind_string[STRING_SIZE];
+//	unsigned char Rfind_string[STRING_SIZE];
+//	unsigned char find_flag; //1:match id 0:not need match
+//	unsigned char ret_dat_type;//0:unsigned char 1:unsigned int 2:float 3:int 4:string
+//	unsigned char set_flag;//1:call update
+//	void *memptr1; //update
+//	void *memptr2;
+//	void *memptr3;
+char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
+{
 
+
+    char recv_buf[512];
+    static unsigned char valid_dat;
+    memset(recv_buf, 0, 512);
+    if (end_flag == 0)
+    {
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id,
+                        ",\r\n", recv_buf) == 1)
+        {
+            valid_dat = 1;
+        }
+
+    }
+    else
+    {
+
+    }
+    // if (valid_dat == 1)
+    {
+        memset(recv_buf, 0, 128);
+        if (end_flag == 1)
+            valid_dat = 0;
+        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, pb_left, pb_right,
+                        recv_buf) == 1)
+            return recv_buf;
+        else
+            return NULL;
+
+    }
+    //    else
+    //   return NULL;
+
+}
+void action_searchtable()
+{
+    unsigned int i;
+    char *result;
+    float tmp_f;
+    int32_t tmp;
+    for (i = 0; i < 0xffff; i++)
+    {
+        if (i == 0xffff)
+            return ;
+        result = find_json_string(mqtt_cmd_list[i].Lfind_string,
+                                  mqtt_cmd_list[i].Rfind_string, mqtt_cmd_list[i].find_flag);
+        if (result != NULL)
+        {
+            if (mqtt_cmd_list[i].set_flag == 1)
+            {
+                tmp = 1;
+                memcpy(mqtt_cmd_list[i].memptr1, &tmp, 1);
+            }
+            switch (mqtt_cmd_list[i].ret_dat_type)
+            {
+                case INT_TYP:// int
+                    //sprintf(&get_config()->reboot, "%s", dev_id); //????
+                    tmp_f = atoi(&result[0]);
+                    tmp = tmp_f;
+                    memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
+                break;
+            }
+			if(mqtt_cmd_list[i].cmd_info == 2)
+			{
+				 tmp = *(int32_t *)(mqtt_cmd_list[i].memptr2);
+				 tmp = tmp |0x0001;
+				 memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
+				*(int32_t *)(mqtt_cmd_list[i].memptr3) = 0;	 
+				
+			}
+       }
+    }
+}
 
 void json_plan_analy(unsigned char *p, unsigned char index);
 
@@ -122,42 +205,7 @@ void find_number_f(char *pb, float *result)
         i++;
     }
 }
-char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
-{
 
-
-    char recv_buf[512];
-    static unsigned char valid_dat;
-    memset(recv_buf, 0, 512);
-    if (end_flag == 0)
-    {
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, get_config()->user_id,
-                        ",\r\n", recv_buf) == 1)
-        {
-            valid_dat = 1;
-        }
-
-    }
-    else
-    {
-
-    }
-    // if (valid_dat == 1)
-    {
-        memset(recv_buf, 0, 128);
-        if (end_flag == 1)
-            valid_dat = 0;
-        if (Find_string((char *)mqtt_recv->Lpuart1RecBuff, pb_left, pb_right,
-                        recv_buf) == 1)
-            return recv_buf;
-        else
-            return NULL;
-
-    }
-    //    else
-    //   return NULL;
-
-}
 void plan_analy(unsigned char *p, unsigned char index)
 {
     //if (p != NULL)
@@ -231,14 +279,14 @@ void json_plan_analy(unsigned char *p, unsigned char index)
 void json_clear()
 {
 
-//    json_decref(root);
-//    json_decref(sensorSta);
-//    json_decref(emeterData);
-//    json_decref(airpumpData);
-//    json_decref(devParams);
-//    json_decref(diSta);
-//    json_decref(doSta);
-//    free(out);
+    //    json_decref(root);
+    //    json_decref(sensorSta);
+    //    json_decref(emeterData);
+    //    json_decref(airpumpData);
+    //    json_decref(devParams);
+    //    json_decref(diSta);
+    //    json_decref(doSta);
+    //    free(out);
 
 
 
@@ -362,20 +410,20 @@ void jsson_pack(unsigned char mqtt_packNum)
             }
             p = sprintf_array_f(buf_f, AI_SIZE_T + AI_SIZE_P);
 
-//            json_object_set_new(sensorSta, "diSta", json_integer(get_di_data()->di_status));
-//            //do
-//            json_object_set_new(sensorSta, "doSta", json_integer(get_do_status()));
+            //            json_object_set_new(sensorSta, "diSta", json_integer(get_di_data()->di_status));
+            //            //do
+            //            json_object_set_new(sensorSta, "doSta", json_integer(get_do_status()));
 
-//            unsigned char buf2[128];
-//            buf2[i++] = getRtcDate()->Year;
-//            buf2[i++] = getRtcDate()->Month;
-//            buf2[i++] = getRtcDate()->Date;
-//            buf2[i++] = getRtcDate()->WeekDay;
-//            buf2[i++] = getRtcTime()->Hours;
-//            buf2[i++] = getRtcTime()->Minutes;
-//            buf2[i++] = getRtcTime()->Seconds;
-//            json_object_set_new(devParams, "time", json_string(buf2));
-//            json_object_set_new(root, "sensorSta", sensorSta);
+            //            unsigned char buf2[128];
+            //            buf2[i++] = getRtcDate()->Year;
+            //            buf2[i++] = getRtcDate()->Month;
+            //            buf2[i++] = getRtcDate()->Date;
+            //            buf2[i++] = getRtcDate()->WeekDay;
+            //            buf2[i++] = getRtcTime()->Hours;
+            //            buf2[i++] = getRtcTime()->Minutes;
+            //            buf2[i++] = getRtcTime()->Seconds;
+            //            json_object_set_new(devParams, "time", json_string(buf2));
+            //            json_object_set_new(root, "sensorSta", sensorSta);
             //            //devdevParams
             //            json_object_set_new(devParams, "ver", json_string(get_config()->version));
             //            json_object_set_new(devParams, "setOT", json_integer(get_config()->set_tout));
@@ -411,12 +459,12 @@ void jsson_pack(unsigned char mqtt_packNum)
                     get_config()->set_tindoor,
                     get_config()->mode,
                     get_config()->set_up_period);
-//getRtcTime()->Hours,
-//getRtcTime()->Minutes,
-//getRtcTime()->Seconds,
-//getRtcDate()->Year,
-//getRtcDate()->Month,
-//getRtcDate()->Date);
+            //getRtcTime()->Hours,
+            //getRtcTime()->Minutes,
+            //getRtcTime()->Seconds,
+            //getRtcDate()->Year,
+            //getRtcDate()->Month,
+            //getRtcDate()->Date);
             break;
         case 1:
             k = 0;
@@ -838,17 +886,17 @@ void anlysis_mqtt_recv()
         get_config()->reboot = tmp_f;
     }
 
-//    dev_id = find_json_string("\"heatPump1\":", "\r\n", 0);
-//    if (dev_id != NULL)
-//    {
-//        //memset(dev_id, 0, 128);
-//        get_config()->update_setting = 1;
-//        //sprintf(&get_config()->machine, "%s", dev_id); //????
-//        tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
-//          get_config()->machine = get_config()->machine|0x0001;
-//
-//    }
+    //    dev_id = find_json_string("\"heatPump1\":", "\r\n", 0);
+    //    if (dev_id != NULL)
+    //    {
+    //        //memset(dev_id, 0, 128);
+    //        get_config()->update_setting = 1;
+    //        //sprintf(&get_config()->machine, "%s", dev_id); //????
+    //        tmp_f = atoi(&dev_id[0]);
+    //      if(tmp_f == 1)
+    //          get_config()->machine = get_config()->machine|0x0001;
+    //
+    //    }
     dev_id = find_json_string("\"heatPumpAll\" :", "\r\n", 0);
     if (dev_id != NULL)
     {
@@ -856,7 +904,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 0;
             get_config()->machine = get_config()->machine | 0x0001;
@@ -1003,7 +1051,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0001;
@@ -1020,7 +1068,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0002;
@@ -1038,7 +1086,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0004;
@@ -1056,7 +1104,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0008;
@@ -1074,7 +1122,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0010;
@@ -1092,7 +1140,7 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
         //sprintf(&get_config()->machine, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
-//      if(tmp_f == 1)
+        //      if(tmp_f == 1)
         {
             get_tx_machine()->ctrl_mode = 1;
             get_config()->machine = get_config()->machine | 0x0020;
@@ -1153,7 +1201,7 @@ void anlysis_mqtt_recv()
         // get_config()- w  >update_setting = 2;
         tmp_f = atof(&dev_id[0]);
         get_config()->set_up_period = tmp_f;
-		get_config()->update_setting = 1;
+        get_config()->update_setting = 1;
     }
     dev_id = find_json_string("\"do_num\": ", "\r\n", 0);
     if (dev_id != NULL)
