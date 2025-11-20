@@ -118,14 +118,14 @@ void get_cmd_list(short unsigned int *buf)
     modbus_cmd_list[PUMP_WCMD_ANYSTART].func = MODBUS_WRITE_ONE_CMD;
     modbus_cmd_list[PUMP_WCMD_ANYSTART].reg = buf[1];
     modbus_cmd_list[PUMP_WCMD_ANYSTART].regCount = 2;
-    modbus_cmd_list[PUMP_WCMD_ANYSTART].payload[0] = buf[2]>>8;
+    modbus_cmd_list[PUMP_WCMD_ANYSTART].payload[0] = buf[2] >> 8;
     modbus_cmd_list[PUMP_WCMD_ANYSTART].payload[1] = buf[2];
     cmd_list.devtype = PUMP;
     cmd_list.wr = 2;
     cmd_list.addr = PUMP_SADDR;
-	cmd_list.retry_count = 5;
-	cmd_list.start_cmd = PUMP_WCMD_ANYSTART;
-	cmd_list.cmd_seq = cmd_list.start_cmd;
+    cmd_list.retry_count = 5;
+    cmd_list.start_cmd = PUMP_WCMD_ANYSTART;
+    cmd_list.cmd_seq = cmd_list.start_cmd;
 
 
 }
@@ -150,11 +150,11 @@ void rs485_recv()
 
         for (i = 0; i < rs485_u->recv_len; i++)
         {
-            if (cmd_list.cmd_seq == INSTR_DELI_INDEX ||
-                    cmd_list.cmd_seq == INSTR_ZT_INDEX)
+            if (cmd_list.cmd_seq >= INSTR_DELI_INDEX &&
+                    cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
             {
-                if (rs485_u->recv_buf[i] == DELI_ADDR ||
-                        rs485_u->recv_buf[i] == ZT_ADDR) //addr ok
+                //  if (rs485_u->recv_buf[i] == DELI_ADDR ||
+                //  rs485_u->recv_buf[i] == ZT_ADDR) //addr ok
                 {
                     //  *get_power() = 1.3;
                     modbus_recv.dev_addr_index = i;
@@ -719,7 +719,8 @@ void analy_modbus_recv()
         {
             case MODBUS_READ_CMD:
             {
-                if (cmd_list.cmd_seq >= INSTR_DELI_SINDEX && cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
+                if (cmd_list.cmd_seq >= INSTR_DELI_SINDEX
+                        && cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
 
                 {
                     machine_status_anly(cmd_list.pb[cmd_list.cmd_seq].reg);
@@ -753,6 +754,16 @@ void analy_modbus_recv()
                             //   if(modbus_recv.recv_len <= (cmd_list.pb[STATUS2_INDEX].regCount*2+5))//status2
                             {
                                 machine_status_anly(cmd_list.pb[STATUS2_INDEX].reg);
+
+
+                            }
+                        }
+                        else  if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
+                                  cmd_list.pb[STATUS3_INDEX].reg)
+                        {
+                            //   if(modbus_recv.recv_len <= (cmd_list.pb[STATUS2_INDEX].regCount*2+5))//status2
+                            {
+                                machine_status_anly(cmd_list.pb[STATUS3_INDEX].reg);
 
 
                             }
@@ -856,7 +867,7 @@ void modbus_proc_poll()
     {
         if (modbus_tx.ctrl_mode == 0) //global ctrl
         {
-            if (cmd_list.cmd_seq <= CMD_SIZE||cmd_list.cmd_seq == PUMP_WCMD_ANYSTART)
+            if (cmd_list.cmd_seq <= CMD_SIZE || cmd_list.cmd_seq == PUMP_WCMD_ANYSTART)
             {
                 if (cmd_list.retry_count > 0)
                 {
@@ -1328,7 +1339,7 @@ void dev_poll_proc(void)
 void modbus_proc_sec(void)
 {
 
-   // get_config()->connectTimeOut = 10;
+    // get_config()->connectTimeOut = 10;
 
     if ((get_uart_recv(RS485_No)->recv_update == 0
             &&  get_mqtt_status() >= AT_MPUB_RECV) || get_config()->connectTimeOut >= 10)
@@ -1355,10 +1366,35 @@ void modbus_proc_sec(void)
         {
             modbus_tx.update = 0;  //server setting
             if (cmd_list.state >= CMD_SIZE)
-                cmd_list.state = PWR_INDEX;
+            {
+                if (get_config()->mode < OFF_MODE)
+                {
+                    cmd_list.state = PWR_INDEX;
+
+                }
+                else
+                {
+                    cmd_list.state = STATUS1_INDEX;
+
+                }
+            }
+			if (get_config()->mode < OFF_MODE)
+			{
+				cmd_list.pb[PWR_INDEX].func = MODBUS_WRITE_ONE_CMD;
+				cmd_list.pb[PID_INDEX].func = MODBUS_WRITE_ONE_CMD;
+			}
+			else
+			{
+
+				cmd_list.pb[PWR_INDEX].func = MODBUS_READ_CMD;
+				cmd_list.pb[PID_INDEX].func = MODBUS_READ_CMD;
+			}
+
+
+
 
             if (GetTickResult(MODBUS_MQTT_PID_TICK_NO) == 1
-                    && get_config()->mode <= OFF_MODE) //pid poll
+                    && get_config()->mode < OFF_MODE) //pid poll
             {
                 unsigned int u;
                 float u1;
@@ -1366,7 +1402,9 @@ void modbus_proc_sec(void)
                 fuzzy_proc(get_config()->mode);  //smart ctrl
                 u1 = get_pid_output();
                 u = (unsigned int)u1;
-                if (get_config()->set_tindoor < 15) //below 15 no pid ctrl
+				if(u <get_pid_params()->out_min)
+					u = get_pid_params()->out_min;
+                if (get_config()->set_tindoor < get_pid_params()->out_min) //below 15 no pid ctrl
                 {
 
                     memcpy(cmd_list.pb[PID_INDEX].payload, get_config()->set_tout, 2);
