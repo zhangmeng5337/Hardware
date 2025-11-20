@@ -53,7 +53,7 @@ typedef struct
 	short int do_num;
 	short int do_out;
 } stru_do_stru;
-
+extern stru_do_stru  do_usr;
 void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set);
 void do_off(void);
 long unsigned int get_do_status(void);

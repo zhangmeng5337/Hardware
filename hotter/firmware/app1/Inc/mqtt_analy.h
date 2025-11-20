@@ -32,7 +32,7 @@
 #define DEV_FAULT_INDEX         2
 #define DEV_PUMP_STATUS_INDEX         3
 
-
+#define STRING_SIZE  100
 typedef struct 
 {
 	float data[64];
@@ -46,7 +46,19 @@ typedef struct
 	
 }mqtt_payload_stru;
 
-
+typedef struct 
+{
+    unsigned int cmd_info;
+	unsigned char Lfind_string[STRING_SIZE];
+	unsigned char Rfind_string[STRING_SIZE];	
+	unsigned char find_flag; //1:match id 0:not need match
+	unsigned char ret_dat_type;//0:unsigned char 1:unsigned int 2:float 3:int 4:string
+	unsigned char set_flag;//1:call update
+	void *memptr1; //update	
+	void *memptr2; 
+	void *memptr3; 
+	
+}cmd_stru;
 void anlysis_mqtt_recv(void);
 void upload(void);
 void mqtt_recv_proc(void);
