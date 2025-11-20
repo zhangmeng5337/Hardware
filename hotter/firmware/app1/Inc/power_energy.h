@@ -9,8 +9,8 @@
 #define INSTR_DELI_EINDEX		6  //0x73c
 #define INSTR_ZT_SINDEX		    7  // 0x0006
 #define INSTR_ZT_EINDEX		    9 //0x401e
-#define INSTR_DELI_INDEX       0//for debug
-#define  INSTR_ZT_INDEX        2//for debug
+#define INSTR_DELI_INDEX       5//for debug
+#define  INSTR_ZT_INDEX        6//for debug
 
 #define INSTR_DELI_SIZE		    2
 #define INSTR_ZT_SIZE		    3

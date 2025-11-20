@@ -990,7 +990,7 @@ void anlysis_mqtt_recv()
         find_number_u(dev_id, buf);
         get_cmd_list(buf);
         get_config()->update_setting = 1;
-        sprintf(&get_config()->reboot, "%s", dev_id); //????
+        //sprintf(&get_config()->reboot, "%s", dev_id); //????
         tmp_f = atoi(&dev_id[0]);
         get_config()->dev_size = tmp_f;
 

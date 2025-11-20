@@ -171,7 +171,9 @@ void config_init()
         get_config()->set_tout = 45;
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
-        get_config()->set_up_period = 0.5;
+        get_config()->set_up_period =5;
+		get_pid_params()->out_max = 50;
+		get_pid_params()->out_min = 20;
         get_config()->mode = OFF_MODE;
 		get_config()->instru_num = DELI;
         get_config()->dev_size = DEV_SIZE;
@@ -203,7 +205,7 @@ void config_init()
     get_config()->set_tout = 45;
     get_config()->set_tindoor = 25;
     get_config()->reboot = 0;
-    get_config()->set_up_period = 20;
+    get_config()->set_up_period = 5;
     //get_config()->mode = 2;
     get_config()->fault_mask = 0xffffffff;
     get_config()->update_setting = 1;
