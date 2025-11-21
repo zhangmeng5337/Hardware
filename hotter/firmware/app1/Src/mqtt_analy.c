@@ -72,6 +72,7 @@ char *find_json_string(char *pb_left, char *pb_right, unsigned char end_flag)
     //   return NULL;
 
 }
+uint64_t tmp_utc;
 void action_searchtable()
 {
     unsigned int i;
@@ -93,51 +94,166 @@ void action_searchtable()
             }
             switch (mqtt_cmd_list[i].ret_dat_type)
             {
-                case INT_TYP:// int
+                case UCHAR_TYP:// uint
                     //sprintf(&get_config()->reboot, "%s", dev_id); //????
                     tmp_f = atoi(&result[0]);
                     tmp = tmp_f;
                     memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
-                break;
+                    break;
+                case UINT_TYP:// uint
+                case INT_TYP:// int
+                    //sprintf(&get_config()->reboot, "%s", dev_id); //????
+                    tmp_f = atoi(&result[0]);
+                    tmp = tmp_f;
+                    memcpy(mqtt_cmd_list[i].memptr2, &tmp, 2);
+                    break;
                 case FLOAT_TYP:// int
                     //sprintf(&get_config()->reboot, "%s", dev_id); //????
                     tmp_f = atof(&result[0]);
                     tmp = tmp_f;
                     memcpy(mqtt_cmd_list[i].memptr2, &tmp, 4);
-                break;
-				
+                    break;
+                default:
+                    break;
+
             }
-			if(mqtt_cmd_list[i].cmd_info == 2)
-			{
-				 tmp = *(int32_t *)(mqtt_cmd_list[i].memptr2);
-				 tmp = tmp |0x0001;
-				 memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
-				*(int32_t *)(mqtt_cmd_list[i].memptr3) = 0;	 
-				
-			}
-			else if(mqtt_cmd_list[i].cmd_info >=8 && mqtt_cmd_list[i].cmd_info <=11 )
-			{
-			     switch(mqtt_cmd_list[i].cmd_info)
-			     {
-					case 8:
-						tmp = SCHE_MODE;
-						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
-					break;
-					case 9:
-						tmp = OFF_MODE;
-						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
-					break;
-					case 10:
-						tmp = NATIVE_MODE;
-						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
-					break;
-					case 11:
-						tmp = SMART_MODE;
-						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
-					break;
-				 }			
-			}
-       }
+            if (mqtt_cmd_list[i].cmd_info == 2)
+            {
+                tmp = *(int32_t *)(mqtt_cmd_list[i].memptr2);
+                if (tmp == 0xff)
+                {
+                    *(int32_t *)(mqtt_cmd_list[i].memptr3) = 0;
+                    tmp = 0x0001;
+                    memcpy(mqtt_cmd_list[i].memptr2, &tmp, 2);
+                }
+
+                else
+                {
+                    *(int32_t *)(mqtt_cmd_list[i].memptr3) = 1;
+                    tmp = *(int32_t *)(mqtt_cmd_list[i].memptr2) | tmp;
+                    memcpy(mqtt_cmd_list[i].memptr2, &tmp, 2);
+                }
+
+
+            }
+            else if (mqtt_cmd_list[i].cmd_info == 10)
+            {
+                memcpy(mqtt_cmd_list[i].memptr3, &tmp, 4);
+            }
+            else if (mqtt_cmd_list[i].cmd_info == 12)
+            {
+                result = find_json_string("timestamp", ",", 0);
+                if (result != NULL)
+                {
+                    //  memset(dev_id, 0, 128);
+                    result = find_json_string("byte,", "\r\n", 0);
+                    if (result != NULL)
+                    {
+                        unsigned int i = 0;
+                        unsigned int j;
+                        tmp_utc = 0;
+                        while (result[i] >= 0x30 && result[i] <= 0x39)
+                        {
+                            j = result[i];
+                            j = j - 0x30;
+                            // tmp_utc = 0;
+                            tmp_utc = tmp_utc * 10 + j;
+                            i++;
+
+                        }
+                        utcTortc(tmp_utc);
+
+                    }
+                }
+            }
+            else if (mqtt_cmd_list[i].cmd_info == 16)
+            {            
+            float *bufa;
+                    unsigned char buf[32];
+					unsigned int j,k;
+                if (result != NULL)
+                {
+                    //memset(dev_id, 0, 128);
+
+                    j = 0;
+                    k = 0;
+                    i = 0;
+                    get_config()->tlen = 0;
+                    while (result[i] != ']')
+                    {
+                        if (result[i] >= 0x2e)
+                        {
+                            get_config()->count = 0;
+
+                        }
+
+                        if (result[i] != ',' && result[i] != ']')
+                        {
+
+                            buf[j++] = result[i];
+
+                        }
+
+                        else
+                        {
+
+                            tmp_f = atof(buf);
+                            get_config()->indoor_temperature[k++] = tmp_f;
+                            get_config()->tlen++;
+                            memset(buf, 0, 16);
+                            j = 0;
+                        }
+                        i++;
+
+                        get_config()->update_setting = 2;
+
+                    }
+
+                    tmp_f = atof(buf);
+                    get_config()->indoor_temperature[k++] = tmp_f;
+#if CTRL_EN
+
+                    bufa = low_temperature_cal(get_config()->indoor_temperature,
+                                               get_config()->tlen + 1);
+                    get_temp_cal(bufa);
+                    //fuzzy_proc(get_config()->mode);  //smart ctrl
+                    memset(get_config()->indoor_temperature, 0, 64);
+#endif
+
+                }
+                else
+                {
+                    result = find_json_string("\"Temp\": ", ",\r\n", 1);//schedule paln
+                    if (result != NULL)
+                    {
+                        if (result[i] >= 0x2e)
+                        {
+                            get_config()->count = 0;
+
+                        }
+
+
+                        j = 0;
+                        k = 0;
+                        i = 0;
+                        get_config()->tlen = 0;
+
+                        tmp_f = atof(&result[0]);
+                        get_config()->indoor_temperature[k++] = tmp_f;
+#if CTRL_EN
+
+                        bufa = low_temperature_cal(get_config()->indoor_temperature,
+                                                   get_config()->tlen + 1);
+                        get_temp_cal(bufa);
+                        //fuzzy_proc(get_config()->mode);  //smart ctrl
+                        memset(get_config()->indoor_temperature, 0, 64);
+#endif
+
+                    }
+
+                }
+            }
+        }
     }
 }
 
@@ -503,7 +619,7 @@ void jsson_pack(unsigned char mqtt_packNum)
                 unsigned int tmp_addr;
                 tmp_addr = get_energy_data()->pb[i].addr;
                 p = sprintf_array_f(&get_energy_data()->pb[i].payload[0], ENERGY_BUF_SIZE - 2);
-
+                
 
                 if (i == (ENERGY_COUNT - 1))
                 {
@@ -527,7 +643,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 \"emeterData\":[%s\r\n\
 ]\r\n\
 }", buf_tmp, buf_tmp_large);
-
+             memset(&get_energy_data()->pb[i].payload[0],0,ENERGY_BUF_SIZE - 2);
             break;
         default :
             k = 0;
@@ -624,8 +740,9 @@ void jsson_pack(unsigned char mqtt_packNum)
             }
             count++;
 
-            if (count >= 2 * AIR_PUMP_SIZE)
-                count = 0;
+			
+			memset(&get_hotter(i)->status[1],0,(STATUS1_SIZE - 1) * 2);
+			memset(&get_hotter(i)->status2[1],0,(STATUS2_SIZE - 1) * 2);			
             break;
 
     }
@@ -882,7 +999,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 
 
 //}
-uint64_t tmp_utc;
+
 void anlysis_mqtt_recv()
 {
 
