@@ -167,10 +167,10 @@ void action_searchtable()
                 }
             }
             else if (mqtt_cmd_list[i].cmd_info == 16)
-            {            
-            float *bufa;
-                    unsigned char buf[32];
-					unsigned int j,k;
+            {
+                float *bufa;
+                unsigned char buf[32];
+                unsigned int j, k;
                 if (result != NULL)
                 {
                     //memset(dev_id, 0, 128);
@@ -619,7 +619,7 @@ void jsson_pack(unsigned char mqtt_packNum)
                 unsigned int tmp_addr;
                 tmp_addr = get_energy_data()->pb[i].addr;
                 p = sprintf_array_f(&get_energy_data()->pb[i].payload[0], ENERGY_BUF_SIZE - 2);
-                
+
 
                 if (i == (ENERGY_COUNT - 1))
                 {
@@ -635,8 +635,9 @@ void jsson_pack(unsigned char mqtt_packNum)
 \"data\":%s},", tmp_addr, p);
                     k = strlen(buf_tmp_large);
 
-                } 
-				memset(&get_energy_data()->pb[i].payload[0],0,ENERGY_BUF_SIZE - 2);
+                }
+                for (unsigned int j = 0; j < ENERGY_BUF_SIZE - 2; j++)
+                    get_energy_data()->pb[i].payload[j] = 0;
             }
             sprintf(json_mqtt_send_buf,
                     "{\r\n\
@@ -644,7 +645,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 \"emeterData\":[%s\r\n\
 ]\r\n\
 }", buf_tmp, buf_tmp_large);
-            
+
             break;
         default :
             k = 0;
@@ -737,14 +738,17 @@ void jsson_pack(unsigned char mqtt_packNum)
 
                     }
 
-                }	
-					memset(&get_hotter(i)->status[1],0,(STATUS1_SIZE - 1) * 2);
-			memset(&get_hotter(i)->status2[1],0,(STATUS2_SIZE - 1) * 2);
+                }
+                for (unsigned int j = 0; j < (STATUS1_SIZE - 1) * 2; j++)
+                    get_hotter(i)->status[j] = 0;
+                for (unsigned int j = 0; j < (STATUS2_SIZE - 1) * 2; j++)
+                    get_hotter(i)->status2[j] = 0;
+
             }
             count++;
 
-			
-			
+
+
             break;
 
     }
