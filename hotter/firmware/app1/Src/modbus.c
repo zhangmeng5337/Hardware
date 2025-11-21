@@ -812,10 +812,10 @@ void analy_modbus_recv()
         modbus_recv.func = 0;
         modbus_recv.update = 0;
     }
-	if(result == 1)
-	{
-		cmd_list.retry_count = 0;
-	}
+//	if(result == 1)
+//	{
+//		cmd_list.retry_count = 0;
+//	}
 
 }
 /*************************************************

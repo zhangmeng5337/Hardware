@@ -703,6 +703,11 @@ void jsson_pack(unsigned char mqtt_packNum)
 						]\r\n\
 						}", buf_tmp, buf_tmp_large);
                         free(pb);
+
+                        for (unsigned int j = 0; j < (STATUS1_SIZE - 1) * 2; j++)
+                            get_hotter(i)->status[j] = 0;
+                        for (unsigned int j = 0; j < (STATUS2_SIZE - 1) * 2; j++)
+                            get_hotter(i)->status2[j] = 0;
                     }
                     else
                     {
@@ -734,15 +739,13 @@ void jsson_pack(unsigned char mqtt_packNum)
 										 \"airpumpData\":[%s\r\n\
 										 ]\r\n\
 										 }", buf_tmp, buf_tmp_large);
-
+                        for (unsigned int j = 0; j < (STATUS3_SIZE - 1) ; j++)
+                            get_hotter(i)->status3[j] = 0;
 
                     }
 
                 }
-                for (unsigned int j = 0; j < (STATUS1_SIZE - 1) * 2; j++)
-                    get_hotter(i)->status[j] = 0;
-                for (unsigned int j = 0; j < (STATUS2_SIZE - 1) * 2; j++)
-                    get_hotter(i)->status2[j] = 0;
+
 
             }
             count++;
