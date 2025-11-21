@@ -451,12 +451,13 @@ void modbus_trans2(modbus_pump_cmd_stru pbDat)
 
 static unsigned int zt_tmp;
 
-void machine_status_anly(unsigned int status_num)
+unsigned char machine_status_anly(unsigned int status_num)
 {
     unsigned int i;
     //  unsigned int byte_uint, index_cal;
     unsigned int pb3, pb4;
-
+    unsigned char result;
+	result = 0;
 
     rs485_stru *rs485_u;
     rs485_u =  get_uart_recv(RS485_No);
@@ -484,6 +485,8 @@ void machine_status_anly(unsigned int status_num)
                 //get_hotter(1)->status2[3+i] = buf[i];
                 get_hotter(modbus_recv.address)->status[1 + i] = pb3;
             }
+			result = 1;
+
         }
 
     }
@@ -510,6 +513,7 @@ void machine_status_anly(unsigned int status_num)
                 //get_hotter(1)->status2[3+i] = buf[i];
                 get_hotter(modbus_recv.address)->status2[1 + i] = pb3;
             }
+			result = 1;
         }
 
     }
@@ -536,6 +540,7 @@ void machine_status_anly(unsigned int status_num)
                 //get_hotter(1)->status2[3+i] = buf[i];
                 get_hotter(modbus_recv.address)->status3[1 + i] = pb3;
             }
+			result = 1;
         }
 
     }
@@ -543,6 +548,7 @@ void machine_status_anly(unsigned int status_num)
     else //if (status_num == cmd_list.pb[INSTR_DELI_SINDEX].reg)
     {
         power_cal(cmd_list.cmd_seq, &rs485_u->recv_buf[modbus_recv.dev_addr_index]);
+		result = 1;
         //        if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == 0x03 &&
         //                rs485_u->recv_buf[modbus_recv.dev_addr_index + 2] == 0x04)
         //        {
@@ -602,6 +608,7 @@ void machine_status_anly(unsigned int status_num)
     //
     //        }
     //    }
+    return result;
 
 }
 
@@ -713,6 +720,8 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
 void analy_modbus_recv()
 {
     rs485_stru *rs485_u;
+	unsigned char result;
+	result = 0;
     rs485_u =  get_uart_recv(RS485_No);
 
     // if (modbus_recv.update == 1)
@@ -725,7 +734,7 @@ void analy_modbus_recv()
                         && cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
 
                 {
-                    machine_status_anly(cmd_list.pb[cmd_list.cmd_seq].reg);
+                    result = machine_status_anly(cmd_list.pb[cmd_list.cmd_seq].reg);
                 }
                 else
                 {
@@ -745,7 +754,7 @@ void analy_modbus_recv()
                             //  if(modbus_recv.recv_len <= (cmd_list.pb[STATUS1_INDEX].regCount*2+5))//status2
                             {
                                 get_hotter(modbus_recv.address)->status[0] = 2;//…Ë±∏µÿ÷∑
-                                machine_status_anly(cmd_list.pb[STATUS1_INDEX].reg);
+                                result = machine_status_anly(cmd_list.pb[STATUS1_INDEX].reg);
                             }
 
 
@@ -755,7 +764,7 @@ void analy_modbus_recv()
                         {
                             //   if(modbus_recv.recv_len <= (cmd_list.pb[STATUS2_INDEX].regCount*2+5))//status2
                             {
-                                machine_status_anly(cmd_list.pb[STATUS2_INDEX].reg);
+                                result = machine_status_anly(cmd_list.pb[STATUS2_INDEX].reg);
 
 
                             }
@@ -765,7 +774,7 @@ void analy_modbus_recv()
                         {
                             //   if(modbus_recv.recv_len <= (cmd_list.pb[STATUS2_INDEX].regCount*2+5))//status2
                             {
-                                machine_status_anly(cmd_list.pb[STATUS3_INDEX].reg);
+                                result = machine_status_anly(cmd_list.pb[STATUS3_INDEX].reg);
 
 
                             }
@@ -803,6 +812,10 @@ void analy_modbus_recv()
         modbus_recv.func = 0;
         modbus_recv.update = 0;
     }
+	if(result == 1)
+	{
+		cmd_list.retry_count = 0;
+	}
 
 }
 /*************************************************
