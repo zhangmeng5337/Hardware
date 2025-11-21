@@ -17,6 +17,7 @@
 
 cmd_stru mqtt_cmd_list[]=
 {
+<<<<<<< HEAD
 {0,"\"Updat Frimware\":",     "\r\n",NO_MATCH_ID,INT_TYP,UPDATE_SET,&config_usr.update_setting,&config_usr.reboot},
 {1,"\"Reboot Dev\":",         "\r\n",NO_MATCH_ID,INT_TYP,UPDATE_SET,&config_usr.update_setting,&config_usr.reboot},
 {2,"\"heatPumpAll\":",        "\r\n",NO_MATCH_ID,INT_TYP,UPDATE_SET,&config_usr.update_setting,&config_usr.machine,&modbus_tx.ctrl_mode},
@@ -47,6 +48,7 @@ cmd_stru mqtt_cmd_list[]=
 {27,"\"Plan8\":["            , "\r\n",NO_MATCH_ID,INT_ARRAY_TYP,NOUPDATE_SET,&schedule_u.buf[7]},
 {28,"\"Plan9\":["            , "\r\n",NO_MATCH_ID,INT_ARRAY_TYP,NOUPDATE_SET,&schedule_u.buf[8]},
 {29,"\"Plan10\":["            , "\r\n",NO_MATCH_ID,INT_ARRAY_TYP,NOUPDATE_SET,&schedule_u.buf[9]},
+
 
 {40,"\heatPump1\":",          "\r\n",NO_MATCH_ID,UINT_TYP ,UPDATE_SET,&config_usr.update_setting,&config_usr.machine,&modbus_tx.ctrl_mode},
 {41,"\heatPump2\":",          "\r\n",NO_MATCH_ID,UINT_TYP ,UPDATE_SET,&config_usr.update_setting,&config_usr.machine,&modbus_tx.ctrl_mode},

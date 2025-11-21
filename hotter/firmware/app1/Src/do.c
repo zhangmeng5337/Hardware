@@ -135,7 +135,7 @@ void do_NO_set(unsigned int do_NO_sel, unsigned char bit_set)
     unsigned int no_tmp;
     unsigned char shift_bit;
 	
-    if (do_NO_sel < (DO_SIZE - 1)) //3个级联，最大24bit
+    if (do_NO_sel <= (DO_SIZE - 1)) //3个级联，最大24bit
     {
         if (do_NO_sel >= 8 && do_NO_sel < 16)
         {
