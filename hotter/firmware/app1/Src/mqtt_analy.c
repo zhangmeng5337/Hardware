@@ -612,16 +612,24 @@ void jsson_pack(unsigned char mqtt_packNum)
             //getRtcDate()->Date);
             break;
         case 1:
+			unsigned char engy_size;
             k = 0;
+		if(get_config()->dev_size>0&&get_config()->dev_size<=AIR_PUMP_SIZE)
+		{
+		engy_size = get_config()->energy_size;
+
+		}
+		else
+		engy_size = ENERGY_COUNT;		
             memset(buf_tmp_large, sizeof(buf_tmp_large), 0);
-            for (i = 0; i < ENERGY_COUNT; i++)
+            for (i = 0; i < engy_size; i++)
             {
                 unsigned int tmp_addr;
                 tmp_addr = get_energy_data()->pb[i].addr;
                 p = sprintf_array_f(&get_energy_data()->pb[i].payload[0], ENERGY_BUF_SIZE - 2);
 
 
-                if (i == (ENERGY_COUNT - 1))
+                if (i == (engy_size - 1))
                 {
                     sprintf(&buf_tmp_large[k], "{\r\n\
 \"addr\":%u,\r\n\
@@ -649,12 +657,18 @@ void jsson_pack(unsigned char mqtt_packNum)
             break;
         default :
             k = 0;
-            unsigned char tmpi;
+            unsigned char tmpi,air_size;
+		if(get_config()->dev_size>0&&get_config()->dev_size<=AIR_PUMP_SIZE)
+		{
+		air_size = get_config()->dev_size;
 
-            if (count < AIR_PUMP_SIZE)
+		}
+		else
+		air_size = AIR_PUMP_SIZE;
+            if (count < air_size)
                 tmpi = count;
             else
-                tmpi = count - AIR_PUMP_SIZE;
+                tmpi = count - air_size;
             for (i = tmpi; i < (1 + tmpi); i++)
             {
 
@@ -663,7 +677,7 @@ void jsson_pack(unsigned char mqtt_packNum)
                 {
                     unsigned int tmp_addr;
 
-                    if (count < (AIR_PUMP_SIZE))
+                    if (count < (air_size))
                     {
                         short unsigned int *pb;
                         memset(buf_tmp_large, sizeof(buf_tmp_large), 0);
@@ -680,7 +694,7 @@ void jsson_pack(unsigned char mqtt_packNum)
                             memcpy(pb + (STATUS1_SIZE - 1), &get_hotter(i)->status2[1],
                                    (STATUS2_SIZE - 1) * 2);
                             p = sprintf_array_u(pb, (STATUS1_SIZE + STATUS2_SIZE - 2), 1);
-                            if (i < AIR_PUMP_SIZE)
+                            if (i < air_size)
                             {
                                 sprintf(&buf_tmp_large[k], "{\r\n\
 						\"addr\":%u,\r\n\
@@ -717,7 +731,7 @@ void jsson_pack(unsigned char mqtt_packNum)
                             unsigned int tmp_addr;
                             tmp_addr = get_hotter(i)->status[0];
                             p = sprintf_array_u(&(get_hotter(i)->status3[1]), (STATUS3_SIZE - 1), 1);
-                            if (i < AIR_PUMP_SIZE)
+                            if (i < air_size)
                             {
                                 sprintf(&buf_tmp_large[k], "{\r\n\
 										 \"addr\":%u,\r\n\
@@ -750,7 +764,7 @@ void jsson_pack(unsigned char mqtt_packNum)
             }
             count++;
 
-            if (count >= 2 * AIR_PUMP_SIZE)
+            if (count >= 2 * air_size)
                 count = 0;
 
             break;
@@ -848,7 +862,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 //        case 1:
 //            emeterData = json_array();
 //            k = 0;
-//            for (i = 0; i < ENERGY_COUNT; i++)
+//            for (i = 0; i < engy_size; i++)
 //            {
 //                // if (get_energy_data()->pb[i].addr != 0)
 //                {
@@ -1530,14 +1544,22 @@ void anlysis_mqtt_recv()
 
 void json_upload()
 {
+    static unsigned char max_step;
     if (mqtt_payload_u.mqtt_state == MQTT_READY &&
             lte_recv->Lpuart1RecFlag == 0)
     {
         jsson_pack(mqtt_payload_u.process_step);
         mqtt_payload_u.mqtt_state = MQTT_BUSY;
         mqtt_payload_u.process_step ++ ;
+		if(get_config()->dev_size>0&&get_config()->dev_size<=AIR_PUMP_SIZE)
+		{
+		max_step = 2+2*get_config()->dev_size;
 
-        if (mqtt_payload_u.process_step >= MAX_STEP)
+		}
+		else
+			max_step = 2+2*AIR_PUMP_SIZE;
+	
+        if (mqtt_payload_u.process_step >= max_step)
         {
             mqtt_payload_u.process_step = 0;
         }
