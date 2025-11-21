@@ -750,7 +750,8 @@ void jsson_pack(unsigned char mqtt_packNum)
             }
             count++;
 
-
+            if (count >= 2 * AIR_PUMP_SIZE)
+                count = 0;
 
             break;
 
