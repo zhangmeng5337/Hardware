@@ -635,7 +635,8 @@ void jsson_pack(unsigned char mqtt_packNum)
 \"data\":%s},", tmp_addr, p);
                     k = strlen(buf_tmp_large);
 
-                }
+                } 
+				memset(&get_energy_data()->pb[i].payload[0],0,ENERGY_BUF_SIZE - 2);
             }
             sprintf(json_mqtt_send_buf,
                     "{\r\n\
@@ -643,7 +644,7 @@ void jsson_pack(unsigned char mqtt_packNum)
 \"emeterData\":[%s\r\n\
 ]\r\n\
 }", buf_tmp, buf_tmp_large);
-             memset(&get_energy_data()->pb[i].payload[0],0,ENERGY_BUF_SIZE - 2);
+            
             break;
         default :
             k = 0;
@@ -736,13 +737,14 @@ void jsson_pack(unsigned char mqtt_packNum)
 
                     }
 
-                }
+                }	
+					memset(&get_hotter(i)->status[1],0,(STATUS1_SIZE - 1) * 2);
+			memset(&get_hotter(i)->status2[1],0,(STATUS2_SIZE - 1) * 2);
             }
             count++;
 
 			
-			memset(&get_hotter(i)->status[1],0,(STATUS1_SIZE - 1) * 2);
-			memset(&get_hotter(i)->status2[1],0,(STATUS2_SIZE - 1) * 2);			
+			
             break;
 
     }
