@@ -11,6 +11,7 @@
 #include "lte_hal.h"
 #include "stmflash.h"
 #include "power_energy.h"
+#include "FuzzyPID.h"
 modbus_pump_cmd_stru  modbus_cmd_list[] =
 {
     //

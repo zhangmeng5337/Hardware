@@ -50,8 +50,8 @@ typedef struct
 	 unsigned int do_status;
 	unsigned char do_No_out[3];
 	unsigned char do_update;
-	short int do_num;
-	short int do_out;
+	unsigned int do_num;
+	unsigned int do_out;
 } stru_do_stru;
 extern stru_do_stru  do_usr;
 void do_ctrl_proc(unsigned int do_NO_sel,unsigned char bit_set);

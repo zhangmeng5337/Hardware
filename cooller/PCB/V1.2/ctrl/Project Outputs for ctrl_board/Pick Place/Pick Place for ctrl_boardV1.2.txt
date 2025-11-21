@@ -1,0 +1,268 @@
+Altium Designer Pick and Place Locations
+D:\GH0050\pcb\Others\冰箱\PCB\V1.2\ctrl\Project Outputs for ctrl_board\Pick Place\Pick Place for ctrl_boardV1.2.txt
+
+========================================================================================================================
+File Design Information:
+
+Date:       05/11/25
+Time:       16:21
+Revision:   Not in VersionControl
+Variant:    No variations
+Units used: mil
+
+Designator Comment                 Layer       Footprint                          Center-X(mil) Center-Y(mil) Rotation Description                                                                           
+T2         12V                     TopLayer    FIX-4.5                            6400.000      774.000       0        ""                                                                                    
+T1         12V                     TopLayer    FIX-4.5                            6715.000      787.000       0        ""                                                                                    
+C34        CEN5R5155CF-ZG          TopLayer    CAP-TH_BD21.0-P5.00-D0.8_CENXXX-CF 1282.425      500.000       180      电解电容                                                                                  
+R93        1k/1%                   TopLayer    0603R                              1752.473      797.000       180      ""                                                                                    
+D29        1N4148WS                TopLayer    SOD323                             1740.245      883.000       0        ""                                                                                    
+D28        BZT52C12S               TopLayer    DIOD-SOD323-2_V                    659.000       2859.001      270      "Surface Mount Zener Diode, 12 V, -65 to 150 degC, 2-Pin SOD323, RoHS, Tape and Reel" 
+T10        GND                     TopLayer    FIX-4.5                            6956.000      430.000       0        ""                                                                                    
+T9         12V                     TopLayer    FIX-4.5                            5901.150      459.150       0        ""                                                                                    
+C4         1uF/50V/X5R             TopLayer    0805C                              4554.150      1912.780      270      Capacitor                                                                             
+C5         2.2uF/25V               TopLayer    1210C                              4047.150      1946.174      270      Capacitor                                                                             
+C6         1uF/50V/X5R             TopLayer    0603C                              4988.733      2167.150      0        Capacitor                                                                             
+C7         1uF/50V/X5R             TopLayer    0603C                              4545.150      2319.678      90       Capacitor                                                                             
+C8         10uF/25V                TopLayer    0603C                              5898.150      1145.622      270      Capacitor                                                                             
+C9         22pF/50V                TopLayer    0603C                              4773.150      2315.678      90       Capacitor                                                                             
+C10        10uF/25V                TopLayer    0603C                              5968.150      1145.622      270      Capacitor                                                                             
+C11        0.1uF/50V/X5R           TopLayer    0603C                              4426.150      2155.622      270      Capacitor                                                                             
+C12        0.1uF/50V/X5R           TopLayer    0603C                              4611.150      2317.622      270      Capacitor                                                                             
+D1         1N4007                  TopLayer    DO-214-AC                          5855.150      2420.150      90       贴片二极管                                                                                 
+D2         1N4007                  TopLayer    DO-214-AC                          6473.150      2353.150      90       贴片二极管                                                                                 
+D3         1N4007                  TopLayer    DO-214-AC                          5872.150      1942.150      90       贴片二极管                                                                                 
+D4         1N4007                  TopLayer    DO-214-AC                          7205.150      2444.150      0        贴片二极管                                                                                 
+D5         1N4007                  TopLayer    DO-214-AC                          7107.150      1600.150      0        贴片二极管                                                                                 
+D6         1N4007                  TopLayer    DO-214-AC                          6505.150      1895.150      90       贴片二极管                                                                                 
+D7         1N4007                  TopLayer    DO-214-AC                          6509.150      1405.150      90       贴片二极管                                                                                 
+D8         1N4007                  TopLayer    DO-214-AC                          5848.150      1401.150      90       贴片二极管                                                                                 
+D9         1N4007                  TopLayer    DO-214-AC                          7135.150      1993.150      0        贴片二极管                                                                                 
+D10        1N4007                  TopLayer    DO-214-AC                          7106.150      1248.150      0        贴片二极管                                                                                 
+D11        1N4007                  TopLayer    DO-214-AC                          6999.150      2883.150      180      贴片二极管                                                                                 
+D12        PDS1040-13              BottomLayer POWERDI-5_L5.4-W4.0-LS6.5-RD       4624.150      1128.150      270      ""                                                                                    
+D13        PDS1040-13              BottomLayer POWERDI-5_L5.4-W4.0-LS6.5-RD       4912.150      1130.150      270      ""                                                                                    
+D14        bat54c                  TopLayer    sot23-3                            4302.709      2164.780      180      ""                                                                                    
+D16        SMCJ28CA                BottomLayer SMC                                4258.150      1451.276      270      "Schottky Diode"                                                                      
+D17        BZT52C27                BottomLayer sod123                             4082.784      1026.150      0        ""                                                                                    
+L2         SMMS1040-3R3M           BottomLayer MSS1038                            5479.150      1504.111      270      ""                                                                                    
+LED1       发光二极管                   TopLayer    0603LED                            4825.071      1889.370      180      ""                                                                                    
+LED2       发光二极管                   TopLayer    0603LED                            4823.071      1955.370      180      ""                                                                                    
+NTC        NCP18XH103F03RB         TopLayer    HDR1X2                             4843.150      2135.150      270      "XH2.54 2P 立贴"                                                                        
+Q1         BC817-16                TopLayer    SOT23-3                            5638.520      2462.363      270      三极管                                                                                   
+Q2         BC817-16                TopLayer    SOT23-3                            6257.520      2425.363      270      三极管                                                                                   
+Q3         BC817-16                TopLayer    SOT23-3                            5599.520      2003.363      270      三极管                                                                                   
+Q6         AO3400                  TopLayer    SOT23-3                            5637.780      2247.938      90       "MOSFET N"                                                                            
+Q7         AO3400                  TopLayer    SOT23-3                            6265.780      2175.938      90       "MOSFET N"                                                                            
+Q8         AO3400                  TopLayer    SOT23-3                            5603.780      1775.938      90       "MOSFET N"                                                                            
+Q9         S8050                   TopLayer    SOT23-3                            6921.937      2291.520      0        "NPN Bipolar Transistor"                                                              
+Q10        S8050                   TopLayer    SOT23-3                            6888.937      1431.520      0        "NPN Bipolar Transistor"                                                              
+Q11        BC817-16                TopLayer    SOT23-3                            6262.520      1990.363      270      三极管                                                                                   
+Q12        BC817-16                TopLayer    SOT23-3                            6258.520      1510.363      270      三极管                                                                                   
+Q13        BC817-16                TopLayer    SOT23-3                            5620.520      1468.363      270      三极管                                                                                   
+Q14        AO3400                  TopLayer    SOT23-3                            6264.780      1753.938      90       "MOSFET N"                                                                            
+Q15        AO3400                  TopLayer    SOT23-3                            6255.780      1286.938      90       "MOSFET N"                                                                            
+Q16        AO3400                  TopLayer    SOT23-3                            5605.780      1229.938      90       "MOSFET N"                                                                            
+Q19        S8050                   TopLayer    SOT23-3                            6892.937      1850.520      0        "NPN Bipolar Transistor"                                                              
+Q20        S8050                   TopLayer    SOT23-3                            6886.937      1071.520      0        "NPN Bipolar Transistor"                                                              
+Q21        S8050                   TopLayer    SOT23-3                            6964.937      2675.520      0        "NPN Bipolar Transistor"                                                              
+R1         100                     TopLayer    0603R                              5523.150      2449.678      90       "贴片电阻 5%"                                                                             
+R2         100                     BottomLayer 0603R                              6290.150      2401.622      90       "贴片电阻 5%"                                                                             
+R3         100                     TopLayer    0603R                              5417.496      1975.993      90       "贴片电阻 5%"                                                                             
+R4         10K                     TopLayer    0603R                              6926.677      2486.150      0        Resistor                                                                              
+R5         10K                     TopLayer    0603R                              6884.677      1540.150      0        Resistor                                                                              
+R6         100                     TopLayer    0603R                              6927.677      2413.150      0        "贴片电阻 5%"                                                                             
+R7         100                     TopLayer    0603R                              6885.677      1600.150      0        "贴片电阻 5%"                                                                             
+R8         10K                     TopLayer    0603R                              5453.150      2446.622      270      "贴片电阻 5%"                                                                             
+R9         10K                     BottomLayer 0603R                              6219.150      2402.678      270      "贴片电阻 5%"                                                                             
+R10        10K                     TopLayer    0603R                              5481.496      1974.938      270      "贴片电阻 5%"                                                                             
+R11        10K                     TopLayer    0603R                              5755.150      2445.678      90       "贴片电阻 5%"                                                                             
+R12        10K                     TopLayer    0603R                              6363.150      2405.678      90       "贴片电阻 5%"                                                                             
+R13        10K                     TopLayer    0603R                              5705.150      1986.678      90       "贴片电阻 5%"                                                                             
+R14        1k/1%                   TopLayer    0603R                              7050.150      2281.678      90       Resistor                                                                              
+R15        1k/1%                   TopLayer    0603R                              7023.150      1420.678      90       Resistor                                                                              
+R16        1k/1%                   TopLayer    0603R                              7111.150      2279.622      270      Resistor                                                                              
+R17        1k/1%                   TopLayer    0603R                              7091.150      1420.622      270      Resistor                                                                              
+R18        100                     TopLayer    0603R                              6145.150      1971.678      90       "贴片电阻 5%"                                                                             
+R19        100                     TopLayer    0603R                              6081.150      1491.678      90       "贴片电阻 5%"                                                                             
+R20        100                     TopLayer    0603R                              5507.150      1450.678      90       "贴片电阻 5%"                                                                             
+R21        10K                     TopLayer    0603R                              6072.150      1970.622      270      "贴片电阻 5%"                                                                             
+R22        10K                     TopLayer    0603R                              6147.150      1491.622      270      "贴片电阻 5%"                                                                             
+R23        10K                     TopLayer    0603R                              5443.150      1451.622      270      "贴片电阻 5%"                                                                             
+R24        10K                     TopLayer    0603R                              6384.150      1969.678      90       "贴片电阻 5%"                                                                             
+R25        10K                     TopLayer    0603R                              6373.150      1490.678      90       "贴片电阻 5%"                                                                             
+R26        10K                     TopLayer    0603R                              5743.150      1455.678      90       "贴片电阻 5%"                                                                             
+R27        10K                     TopLayer    0603R                              6900.677      1962.150      0        Resistor                                                                              
+R28        10K                     TopLayer    0603R                              6886.677      1191.150      0        Resistor                                                                              
+R29        100                     TopLayer    0603R                              6899.677      2034.150      0        "贴片电阻 5%"                                                                             
+R30        100                     TopLayer    0603R                              6886.677      1252.150      0        "贴片电阻 5%"                                                                             
+R31        1k/1%                   TopLayer    0603R                              7043.150      1842.678      90       Resistor                                                                              
+R32        1k/1%                   TopLayer    0603R                              7012.150      1064.678      90       Resistor                                                                              
+R33        1k/1%                   TopLayer    0603R                              7107.150      1840.622      270      Resistor                                                                              
+R34        1k/1%                   TopLayer    0603R                              7078.150      1064.622      270      Resistor                                                                              
+R35        10K                     TopLayer    0603R                              6809.622      2643.150      180      Resistor                                                                              
+R36        100                     TopLayer    0603R                              6811.622      2710.150      180      "贴片电阻 5%"                                                                             
+R37        1k/1%                   TopLayer    0603R                              7083.150      2665.678      90       Resistor                                                                              
+R38        10K                     TopLayer    0603R                              7050.622      2779.150      180      Resistor                                                                              
+R64        100K/1%                 BottomLayer 0603R                              4116.607      1124.150      180      ""                                                                                    
+R65        1k/1%                   BottomLayer 0603R                              4116.607      915.150       180      ""                                                                                    
+R66        10k                     BottomLayer 0603R                              4009.150      781.693       90       ""                                                                                    
+R67        2/1W                    TopLayer    2512R                              4246.150      1893.260      90       Resistor                                                                              
+R68        10/1/4W                 TopLayer    1206R                              4442.150      1891.127      90       Resistor                                                                              
+R69        215k/1%                 BottomLayer 0603R                              4478.803      1990.237      90       Resistor                                                                              
+R70        5mR                     BottomLayer 2512R                              5606.260      1013.150      0        Resistor                                                                              
+R71        5.23K/1%                TopLayer    0603R                              4989.677      2104.150      180      Resistor                                                                              
+R72        11.8K/1%/25.5K/1%       BottomLayer 0603R                              4538.150      1990.622      270      Resistor                                                                              
+R73        698K/1%                 TopLayer    0603R                              4869.622      2355.150      180      Resistor                                                                              
+R74        30.1K/1%                TopLayer    0603R                              4637.150      1914.622      270      Resistor                                                                              
+R75        1k/1%                   TopLayer    0603R                              4985.126      1889.370      0        ""                                                                                    
+R76        100K/1%                 TopLayer    0603R                              4869.677      2285.803      0        Resistor                                                                              
+R77        1k/1%                   TopLayer    0603R                              4985.677      1956.150      0        ""                                                                                    
+12V        12V                     TopLayer    FIX-4.5                            7727.150      2606.150      0        ""                                                                                    
+12V-       12V-                    TopLayer    FIX-4.5                            8093.150      2467.150      0        ""                                                                                    
+VBAT       12V                     TopLayer    FIX-4.5                            5186.261      443.150       180      ""                                                                                    
+Adapter    12V                     TopLayer    FIX-4.5                            4471.150      443.150       0        ""                                                                                    
+GND        GND                     TopLayer    FIX-4.5                            4828.706      443.150       0        ""                                                                                    
+TVS1       ESD5Z5.0CT1G            TopLayer    SOD-523                            5641.150      2354.150      0        TVS                                                                                   
+TVS2       ESD5Z5.0CT1G            TopLayer    SOD-523                            6264.150      2299.150      0        TVS                                                                                   
+TVS3       ESD5Z5.0CT1G            TopLayer    SOD-523                            5605.150      1894.150      0        TVS                                                                                   
+TVS4       ESD5Z5.0CT1G            TopLayer    SOD-523                            6272.150      1876.150      0        TVS                                                                                   
+TVS5       ESD5Z5.0CT1G            TopLayer    SOD-523                            6252.150      1393.150      0        TVS                                                                                   
+TVS6       ESD5Z5.0CT1G            TopLayer    SOD-523                            5613.150      1345.150      0        TVS                                                                                   
+U1         Si7997DP                BottomLayer PowerPAK_SO-8                      4360.772      1026.741      90       Sia430DJ                                                                              
+U2         Si7288DP                BottomLayer PowerPAK_SO-8                      4674.528      1576.560      270      Sia430DJ                                                                              
+U3         Si7997DP                BottomLayer PowerPAK_SO-8                      7108.741      2666.528      0        Sia430DJ                                                                              
+U4         Si7288DP                BottomLayer PowerPAK_SO-8                      4981.772      1578.741      90       Sia430DJ                                                                              
+U5         BQ24650RVAR             TopLayer    VQFN-16_L3.6-W3.6-P0.50-BL-EP      4582.150      2152.150      0        ""                                                                                    
+Q23        MMBT4403-7-F            BottomLayer SOT23-3                            4120.520      781.938       90       ""                                                                                    
+U6         Si7997DP                BottomLayer PowerPAK_SO-8                      7079.056      1798.579      180      Sia430DJ                                                                              
+U7         Si7997DP                BottomLayer PowerPAK_SO-8                      7089.056      2279.983      180      Sia430DJ                                                                              
+U8         Si7997DP                BottomLayer PowerPAK_SO-8                      7079.056      1427.176      180      Sia430DJ                                                                              
+U9         Si7997DP                BottomLayer PowerPAK_SO-8                      7079.056      1065.772      180      Sia430DJ                                                                              
+H1+        12V                     TopLayer    FIX-4.5                            7724.150      1882.817      180      ""                                                                                    
+H1-        12V                     TopLayer    FIX-4.5                            8093.150      2107.150      270      ""                                                                                    
+H2+        12V                     TopLayer    FIX-4.5                            7724.150      1358.483      270      ""                                                                                    
+H2-        12V                     TopLayer    FIX-4.5                            8093.150      1578.150      270      ""                                                                                    
+H3+        12V                     TopLayer    FIX-4.5                            7724.150      834.150       270      ""                                                                                    
+H3-        12V                     TopLayer    FIX-4.5                            8093.150      1049.150      270      ""                                                                                    
+H4+        12V                     TopLayer    FIX-4.5                            7331.594      443.150       270      ""                                                                                    
+H4-        12V                     TopLayer    FIX-4.5                            7689.150      443.150       270      ""                                                                                    
+F1         1812L300/16GR           BottomLayer 1812-F                             5812.567      717.150       180      Fuse                                                                                  
+F2         1812L300/16GR           BottomLayer 1812-F                             6145.000      858.583       90       Fuse                                                                                  
+F4         1812L300/16GR           BottomLayer 1812-F                             5286.733      736.150       0        Fuse                                                                                  
+P8         ZX-XH2.54-2PZZ          TopLayer    SIP-2A                             4405.000      2768.001      180      "XH2.54 2P 立贴"                                                                        
+P7         ZX-XH2.54-2PZZ          TopLayer    SIP-2A                             4416.000      3150.001      180      "XH2.54 2P 立贴"                                                                        
+P6         ZX-XH2.54-2PZZ          TopLayer    SIP-2A                             4857.000      3146.001      180      "XH2.54 2P 立贴"                                                                        
+P3         ZX-XH2.54-2PZZ          TopLayer    SIP-2A                             4858.150      2760.150      180      "XH2.54 2P 立贴"                                                                        
+cooler2    ZX-XH2.54-2PZZ          TopLayer    SIP-2A                             5246.000      3146.001      180      "XH2.54 2P 立贴"                                                                        
+cooler1    ZX-XH2.54-2PZZ          TopLayer    SIP-2A                             5253.000      2774.001      180      "XH2.54 2P 立贴"                                                                        
+T7         12V                     TopLayer    FIX-4.5                            6400.000      441.000       0        ""                                                                                    
+T8         GND                     TopLayer    FIX-4.5                            5543.150      445.150       0        ""                                                                                    
+R49        49.9                    TopLayer    0603R                              3095.473      2586.001      180      Resistor                                                                              
+R48        49.9                    TopLayer    0603R                              3097.473      2648.001      180      Resistor                                                                              
+R89        10K                     TopLayer    0603R                              2735.528      1471.001      0        Resistor                                                                              
+R88        1k/1%                   TopLayer    0603R                              2736.473      1546.001      180      Resistor                                                                              
+R87        1k/1%                   TopLayer    0603R                              2876.473      1759.001      180      Resistor                                                                              
+R86        100K/1%                 TopLayer    0603R                              2772.000      1656.473      270      Resistor                                                                              
+Q25        S8050                   TopLayer    SOT23-3                            2896.213      1503.630      180      "NPN Bipolar Transistor"                                                              
+Q24        SI2301                  TopLayer    SOT23-3                            2895.213      1653.630      180      "P-Channel MOSFET"                                                                    
+C26        1uF/50V/X5R             TopLayer    0603C                              725.528       2110.001      0        Capacitor                                                                             
+C29        22uF/10V                TopLayer    1210C                              1820.000      2088.977      90       Capacitor                                                                             
+C30        0.1uF/50V/X5R           TopLayer    0603C                              1512.000      2061.528      90       Capacitor                                                                             
+C25        0.01uF/50V              TopLayer    0603C                              1100.528      2100.001      0        Capacitor                                                                             
+C32        0.1uF/50V/X5R           TopLayer    0603C                              1561.528      1085.001      0        Capacitor                                                                             
+C28        47uF/25V                TopLayer    1210C                              692.024       2230.001      180      Capacitor                                                                             
+D24        SS54                    TopLayer    SMC                                701.000       1802.874      90       "Schottky Diode"                                                                      
+D19        CESDB5V0D3              TopLayer    SOD323                             2035.000      1545.756      270      "Schottky Diode"                                                                      
+D15        CESDB5V0D3              TopLayer    SOD323                             2150.000      1538.756      270      "Schottky Diode"                                                                      
+D27        5.1V                    TopLayer    SMA                                1402.000      1268.741      90       "Schottky Diode"                                                                      
+F3         1812L200/16GR           TopLayer    1812-F                             1592.000      1261.418      270      Fuse                                                                                  
+J1         "TYPE C_16P"            TopLayer    TYPEC_16P                          2789.000      144.809       0        ""                                                                                    
+L1         MPZ1608D101BTA00        TopLayer    0603R                              2174.000      2766.528      90       "磁珠电感 100R 100MHz"                                                                    
+L3         CDRH105NP-100NC         TopLayer    CDRH105                            1146.788      1830.788      90       ""                                                                                    
+P2         USB-A                   TopLayer    USB-A                              2212.843      424.119       0        "Header, 6-Pin"                                                                       
+P14        PZ254V-11-02P           TopLayer    HDR1X2                             3156.000      2292.001      90       "Header, 2-Pin"                                                                       
+P1         XH-3A                   TopLayer    3X2.54MMZ                          3336.000      197.000       0        "Header, 3-Pin"                                                                       
+P4         ZX-XH2.54-2PZZ          TopLayer    SIP-2A                             3763.000      123.001       180      "XH2.54 2P 立贴"                                                                        
+P10        ZX-XH2.54-5PZZ          TopLayer    4X2.54MMZ                          2094.000      3176.969      180      "Header, 4-Pin"                                                                       
+P13        KH-2.54PH180-1X5P-L11.5 TopLayer    HDR1X4                             3408.000      2158.001      90       "Header, 4-Pin"                                                                       
+Q18        LH8050QLT1G             TopLayer    SOT-23                             1902.000      2773.001      0        NPN                                                                                   
+R50        49.9                    TopLayer    0603R                              2095.528      2297.001      0        Resistor                                                                              
+R90        2K/1%                   TopLayer    0603R                              3115.000      2816.473      270      ""                                                                                    
+R91        2K/1%                   TopLayer    0603R                              3155.473      2712.001      180      ""                                                                                    
+R92        75                      TopLayer    0603R                              3190.000      2818.473      270      ""                                                                                    
+R80        100K/1%                 TopLayer    0603R                              1092.528      2420.001      0        Resistor                                                                              
+R84        120K/1%                 TopLayer    0603R                              1472.473      1504.001      180      R                                                                                     
+R85        71.5K/1%                TopLayer    0603R                              1472.473      1569.001      180      R                                                                                     
+U12        LM22676MRE-5.0/NOPB     TopLayer    SOP127P600X168_HS-8N               1106.000      2260.001      180      ""                                                                                    
+U11        AD8615AUJZ-R2           TopLayer    sot-23-5                           1679.000      2919.001      0        ""                                                                                    
+U14        MIC29302                TopLayer    TO228P1435X457-6N                  972.465       1330.733      180      ""                                                                                    
+Y1         XG1SI-111-8M            TopLayer    CRAY_5032                          2580.835      2774.001      0        晶振                                                                                    
+C2         1uF/50V/X5R             TopLayer    0603C                              2864.000      1878.528      90       "贴片电容 20%"                                                                            
+C3         0.1uF/50V/X5R           TopLayer    0603C                              2958.473      2504.001      180      "贴片电容 20%"                                                                            
+C13        0.1uF/50V/X5R           TopLayer    0603C                              2103.528      2149.001      0        "贴片电容 20%"                                                                            
+C14        0.1uF/50V/X5R           TopLayer    0603C                              2662.000      1881.528      90       "贴片电容 20%"                                                                            
+C15        0.1uF/50V/X5R           TopLayer    0603C                              2103.000      2768.473      270      "贴片电容 20%"                                                                            
+C16        0.1uF/50V/X5R           TopLayer    0603C                              2318.000      2766.473      270      "贴片电容 20%"                                                                            
+C17        "12P 50V"               TopLayer    0603C                              2743.000      2778.528      90       "贴片电容 20%"                                                                            
+C18        1uF/50V/X5R             TopLayer    0603C                              2954.473      2437.001      180      "贴片电容 20%"                                                                            
+C19        0.1uF/50V/X5R           TopLayer    0603C                              2727.000      1882.528      90       "贴片电容 20%"                                                                            
+C20        1uF/50V/X5R             TopLayer    0603C                              2100.528      2081.001      0        "贴片电容 20%"                                                                            
+C1         0.1uF/50V/X5R           TopLayer    0603C                              2090.528      2364.001      0        "贴片电容 20%"                                                                            
+C22        1uF/50V/X5R             TopLayer    0603C                              2092.528      2432.001      0        "贴片电容 20%"                                                                            
+C23        0.1uF/50V/X5R           TopLayer    0603C                              2793.000      1878.528      90       "贴片电容 20%"                                                                            
+C24        "12P 50V"               TopLayer    0603C                              2408.000      2768.528      90       "贴片电容 20%"                                                                            
+R46        100                     TopLayer    0603R                              2702.000      3043.473      270      "贴片电阻 5%"                                                                             
+R51        0                       TopLayer    0603R                              2830.000      2770.473      270      "贴片电阻 5%"                                                                             
+R53        10K                     TopLayer    0603R                              2243.000      2766.473      270      "贴片电阻 5%"                                                                             
+R62        51R                     TopLayer    0603R                              1615.528      2305.001      0        "贴片电阻 5%"                                                                             
+R63        4.7K                    TopLayer    0603R                              1897.473      2561.001      180      "贴片电阻 5%"                                                                             
+R78        1k/1%                   TopLayer    0603R                              2025.000      2781.473      270      "贴片电阻 5%"                                                                             
+R79        47K                     TopLayer    0603R                              1896.528      2636.001      0        "贴片电阻 5%"                                                                             
+BEEP1      BEEP-9.5X5.5            TopLayer    BEEP-9.5X5.5                       1588.000      2556.001      90       ""                                                                                    
+C21        0.1uF/50V/X5R           TopLayer    0603C                              2958.473      2568.001      180      "贴片电容 20%"                                                                            
+C31        22uF/10V                TopLayer    1210C                              1640.000      2088.977      90       Capacitor                                                                             
+C27        47uF/25V                TopLayer    1210C                              692.024       2385.001      180      Capacitor                                                                             
+D18        CESDB5V0D3              TopLayer    SOD323                             2269.000      1539.756      270      "Schottky Diode"                                                                      
+Q4         AO3400                  TopLayer    SOT-23                             3173.000      1337.001      180      NPN                                                                                   
+Q17        AO3400                  TopLayer    SOT23-3                            3762.213      1197.630      180      NPN                                                                                   
+R54        10K                     TopLayer    0603R                              2949.528      2346.001      0        "贴片电阻 5%"                                                                             
+R55        100K/1%                 TopLayer    0603R                              1483.473      2810.001      180      Resistor                                                                              
+R56        100K/1%                 TopLayer    0603R                              1484.528      2880.001      0        Resistor                                                                              
+R59        20K                     TopLayer    0603R                              1486.473      2959.001      180      Resistor                                                                              
+R43        10K                     TopLayer    0603R                              3638.000      1190.528      90       Resistor                                                                              
+R44        1k/1%                   TopLayer    0603R                              3684.473      1375.001      180      Resistor                                                                              
+R45        1k/1%                   TopLayer    0603R                              3683.473      1302.001      180      Resistor                                                                              
+R81        100K/1%                 TopLayer    0603R                              707.000       2738.544      90       ""                                                                                    
+R82        1k/1%                   TopLayer    0603R                              542.819       2705.001      180      ""                                                                                    
+R83        10k                     TopLayer    0603R                              446.000       2844.457      270      ""                                                                                    
+R52        10K                     TopLayer    0603R                              3125.473      2125.001      180      "贴片电阻 5%"                                                                             
+R47        100                     TopLayer    0603R                              2624.000      3043.473      270      "贴片电阻 5%"                                                                             
+D25        SMCJ18CA                TopLayer    SMC                                1205.000      2850.126      270      "Schottky Diode"                                                                      
+D26        BZT52C18                TopLayer    sod123                             570.634       2601.001      0        ""                                                                                    
+Q5         AO3400                  TopLayer    SOT-23                             3442.000      1317.001      0        NPN                                                                                   
+Q22        MMBT4403-7-F            TopLayer    SOT23-3                            554.630       2848.213      270      ""                                                                                    
+P9         "2.0-6P ZZDK"           TopLayer    6X2MMZ                             2663.571      3214.001      180      "Header, 6-Pin"                                                                       
+TVS7       ESD5Z5.0CT1G            TopLayer    SOD-523                            2789.000      3043.001      90       TVS                                                                                   
+TVS8       ESD5Z5.0CT1G            TopLayer    SOD-523                            2540.000      3043.001      90       TVS                                                                                   
+C33        47uF/25V                TopLayer    1206C                              1527.977      984.000       0        Capacitor                                                                             
+U13        Si7997DP                TopLayer    PowerPAK_SO-8                      890.622       2827.410      270      Sia430DJ                                                                              
+U10        STM32F405RGT6           TopLayer    LQFP-64                            2534.363      2276.938      270      MCU                                                                                   
+D23        CESDB5V0D3              TopLayer    SOD323                             423.880       1396.531      90       "Schottky Diode"                                                                      
+D22        CESDB5V0D3              TopLayer    SOD323                             421.880       1090.531      90       "Schottky Diode"                                                                      
+D20        CESDB5V0D3              TopLayer    SOD323                             423.880       468.531       90       "Schottky Diode"                                                                      
+D21        CESDB5V0D3              TopLayer    SOD323                             423.880       778.531       90       "Schottky Diode"                                                                      
+FB1        "JWWBW2012 M600HT"      TopLayer    0805CZ                             1765.000      1209.371      90       ""                                                                                    
+R60        1k/1%                   TopLayer    0603R                              339.880       1104.759      270      ""                                                                                    
+R57        1k/1%                   TopLayer    0603R                              339.880       480.759       270      ""                                                                                    
+R58        1k/1%                   TopLayer    0603R                              338.880       796.247       270      ""                                                                                    
+R61        1k/1%                   TopLayer    0603R                              337.880       1414.759      270      ""                                                                                    
+SW3        "SW PUSHBUTTON"         TopLayer    SW-SMD_L3.9-W3.0-P4.45             181.880       1134.620      0        ""                                                                                    
+SW4        "SW PUSHBUTTON"         TopLayer    SW-SMD_L3.9-W3.0-P4.45             181.880       1446.287      0        ""                                                                                    
+SW1        "SW PUSHBUTTON"         TopLayer    SW-SMD_L3.9-W3.0-P4.45             181.880       511.287       0        ""                                                                                    
+SW2        "SW PUSHBUTTON"         TopLayer    SW-SMD_L3.9-W3.0-P4.45             181.880       822.953       0        ""                                                                                    
+P12        ZX-XH2.54-5PZZ          TopLayer    4X2.54MMZ                          3556.000      3178.969      180      "Header, 4-Pin"                                                                       
+P16        KF250NH-3.5-2P          TopLayer    KF250NH-3.5-2P                     3111.103      3110.001      180      ""                                                                                    
+R39        10K                     TopLayer    0603r                              3170.528      1535.001      0        "贴片电阻 1%"                                                                             
+R42        10K                     TopLayer    0603r                              3313.000      1303.528      90       "贴片电阻 1%"                                                                             
+R41        10K                     TopLayer    0603r                              3551.000      1327.528      90       "贴片电阻 1%"                                                                             
+R40        10K                     TopLayer    0603r                              3202.528      1211.001      0        "贴片电阻 1%"                                                                             

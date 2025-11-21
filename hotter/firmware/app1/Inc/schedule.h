@@ -39,6 +39,7 @@ typedef struct
   unsigned char current_plan_pwr_update;
   unsigned char mode;//0:ctrl indoor 1:ctrl pum water temp 2:smart ctrl
 } schedule_pack_stru;
+extern schedule_pack_stru schedule_u;
 schedule_pack_stru *get_schedule(void);
 void pwr_schedul_set(void);
 void pwr_schedul_init(void);

@@ -17,7 +17,7 @@
 #define  INT_TYP 		3
 #define  STRING_TYP 	4
 #define  UINT64_TYP 	5
-
+#define  INT_ARRAY_TYP 	6
 
 #define  MATCH_ID 	    1
 #define  NO_MATCH_ID 	0

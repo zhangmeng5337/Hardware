@@ -99,6 +99,13 @@ void action_searchtable()
                     tmp = tmp_f;
                     memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
                 break;
+                case FLOAT_TYP:// int
+                    //sprintf(&get_config()->reboot, "%s", dev_id); //????
+                    tmp_f = atof(&result[0]);
+                    tmp = tmp_f;
+                    memcpy(mqtt_cmd_list[i].memptr2, &tmp, 4);
+                break;
+				
             }
 			if(mqtt_cmd_list[i].cmd_info == 2)
 			{
@@ -107,6 +114,28 @@ void action_searchtable()
 				 memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
 				*(int32_t *)(mqtt_cmd_list[i].memptr3) = 0;	 
 				
+			}
+			else if(mqtt_cmd_list[i].cmd_info >=8 && mqtt_cmd_list[i].cmd_info <=11 )
+			{
+			     switch(mqtt_cmd_list[i].cmd_info)
+			     {
+					case 8:
+						tmp = SCHE_MODE;
+						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
+					break;
+					case 9:
+						tmp = OFF_MODE;
+						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
+					break;
+					case 10:
+						tmp = NATIVE_MODE;
+						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
+					break;
+					case 11:
+						tmp = SMART_MODE;
+						memcpy(mqtt_cmd_list[i].memptr2, &tmp, 1);
+					break;
+				 }			
 			}
        }
     }
