@@ -19,12 +19,13 @@ void queue_reset()
 	cmd_pos =  0;
 }
 
-void queue_push(qdata _data)
+void queue_push(qdata *_data,unsigned int len)
 {
-	qsize pos = (que._head+1)%QUEUE_MAX_SIZE;
+	qsize pos = (que._head+len)%QUEUE_MAX_SIZE;
 	if(pos!=que._tail)//非满状态
-	{
-		que._data[que._head] = _data;
+	{  
+	    for(unsigned int i = que._head;i<(pos+que._head);i++)
+		que._data[i] = _data[i-que._head];
 		que._head = pos;
 	}
 }
@@ -69,7 +70,7 @@ qsize queue_find_cmd(qdata *buffer,qsize buf_len)
 			}
 			buffer[cmd_pos++] = _data;
 		}
-
+       
 
 		//得到完整的帧
 		if(_length >0 && cmd_pos>_length)
@@ -86,10 +87,9 @@ qsize queue_find_cmd(qdata *buffer,qsize buf_len)
 			
 			return cmd_size;
 		}
-	}
-
 	return 0;//没有形成完整的一帧
 }
+	}
 
 
 uint8_t CheckSum(uint8_t *buffer,uint8_t n)

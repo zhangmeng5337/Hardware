@@ -1,0 +1,10 @@
+Output: Bill of Materials
+Type  : BOM
+From  : Variant [[No Variations]] of PCB Document [TestBoard.PcbDoc]
+   Generated File[Bill of Materials-TestBoard.xlsx]
+
+
+Files Generated   : 1
+Documents Printed : 0
+
+Finished Output Generation At 11:17:12 On 2026/1/12

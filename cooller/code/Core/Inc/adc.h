@@ -21,7 +21,7 @@
 #define MIN_TEMP_VOL -60
 
 
-#define BATTERY_V    16.8
+#define BATTERY_V    16.75
 
 typedef struct
 {

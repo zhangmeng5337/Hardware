@@ -24,21 +24,21 @@ modbus_pump_cmd_stru  modbus_cmd_list[] =
     //    {0x00, MODBUS_READ_CMD, 0x0006, 1, {0, 1, 2}, TRUE, FALSE, 0, 0},//
     //    {0x00, MODBUS_READ_CMD, 0x401e, 2, {0, 1, 2}, TRUE, FALSE, 0, 0}//zhengtai
 
-    {0x00, MODBUS_WRITE_ONE_CMD, CONTROLLER_REG, 2, {0, 1, 2}, 50, 0, 0},//0
-    {0x00, MODBUS_WRITE_ONE_CMD, TEMPERATURE_REG, 2, {0, 1, 2}, 50, 0, 0},//1
+    {0x00, MODBUS_WRITE_ONE_CMD, CONTROLLER_REG, 2, {0, 0xf1, 2}, 150, 0, 0},//0
+    {0x00, MODBUS_WRITE_ONE_CMD, TEMPERATURE_REG, 2, {0, 1, 2}, 150, 0, 0},//1
     //******************air pump*********************************
-    {0x00, MODBUS_READ_CMD, 0x0000, 0x000b, {0, 1, 2}, 50, 0, 0},//2
-    {0x00, MODBUS_READ_CMD, 0x0028, 9, {0, 1, 2}, 50, 0, 0},//3
-    {0x00, MODBUS_READ_CMD, 0x0040, 72, {0, 1, 2}, 200, 0, 0},//4
+    {0x00, MODBUS_READ_CMD, 0x0000, 0x000b, {0, 1, 2}, 150, 0, 0},//2
+    {0x00, MODBUS_READ_CMD, 0x0028, 9, {0, 1, 2}, 150, 0, 0},//3
+    {0x00, MODBUS_READ_CMD, 0x0040, 72, {0, 1, 2}, 250, 0, 0},//4
     //*******************power energy************************************
-    {0x00, MODBUS_READ_CMD, 0x700, 26, {0, 1, 2}, 100, 0, 0},//delixi 5
-    {0x00, MODBUS_READ_CMD, 0x73c, 2, {0, 1, 2}, 50, 0, 0},//delixi 6
+    {0x00, MODBUS_READ_CMD, 0x700, 26, {0, 1, 2}, 250, 0, 0},//delixi 5
+    {0x00, MODBUS_READ_CMD, 0x73c, 2, {0, 1, 2}, 200, 0, 0},//delixi 6
 
-    {0x00, MODBUS_READ_CMD, 0x0006, 2, {0, 1, 2}, 50, 0, 0},//zhengtai 7
-    {0x00, MODBUS_READ_CMD, 0x2000, 26, {0, 1, 2}, 100, 0, 0},//zhengtai 8
-    {0x00, MODBUS_READ_CMD, 0x401e, 2, {0, 1, 2}, 50, 0, 0},//zhengtai 9
+    {0x00, MODBUS_READ_CMD, 0x0006, 2, {0, 1, 2}, 200, 0, 0},//zhengtai 7
+    {0x00, MODBUS_READ_CMD, 0x2000, 26, {0, 1, 2}, 250, 0, 0},//zhengtai 8
+    {0x00, MODBUS_READ_CMD, 0x401e, 2, {0, 1, 2}, 200, 0, 0},//zhengtai 9
 
-    {0x00, MODBUS_WRITE_ONE_CMD, 0x401e, 2, {0, 1, 2}, 50, 0, 0}//zhengtai 10
+    {0x00, MODBUS_WRITE_ONE_CMD, 0x401e, 2, {0, 1, 2}, 250, 0, 0}//zhengtai 10
 
 
 };
@@ -152,8 +152,11 @@ void rs485_recv()
 
         for (i = 0; i < rs485_u->recv_len; i++)
         {
-            if (cmd_list.cmd_seq >= INSTR_DELI_INDEX &&
-                    cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
+            if (rs485_u->recv_buf[i] >= get_config()->energy_start_addr
+                    && rs485_u->recv_buf[i] <= (get_config()->energy_size +
+                                                get_config()->energy_start_addr))
+//            if (cmd_list.cmd_seq >= INSTR_DELI_INDEX &&
+//                    cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
             {
                 //  if (rs485_u->recv_buf[i] == DELI_ADDR ||
                 //  rs485_u->recv_buf[i] == ZT_ADDR) //addr ok
@@ -457,7 +460,7 @@ unsigned char machine_status_anly(unsigned int status_num)
     //  unsigned int byte_uint, index_cal;
     unsigned int pb3, pb4;
     unsigned char result;
-	result = 0;
+    result = 0;
 
     rs485_stru *rs485_u;
     rs485_u =  get_uart_recv(RS485_No);
@@ -469,7 +472,10 @@ unsigned char machine_status_anly(unsigned int status_num)
                 rs485_u->recv_buf[modbus_recv.dev_addr_index + 2] ==
                 cmd_list.pb[STATUS1_INDEX].regCount * 2)
         {
-            get_hotter(modbus_recv.address)->status[0] = modbus_recv.address;
+            if (modbus_recv.address > 0)
+                get_hotter(modbus_recv.address - 1)->status[0] = modbus_recv.address;
+            else
+                return 0;
             //get_hotter(modbus_recv.address)->status[1] = rs485_u->recv_buf[modbus_recv.dev_addr_index + 1];
             // get_hotter(modbus_recv.address)->status[2] = rs485_u->recv_buf[modbus_recv.dev_addr_index + 2];
             for (i = 0; i < cmd_list.pb[STATUS1_INDEX].regCount; i++)
@@ -483,9 +489,9 @@ unsigned char machine_status_anly(unsigned int status_num)
                 pb4 = pb4 + 4;
                 pb3 =  pb3 | rs485_u->recv_buf[pb4];
                 //get_hotter(1)->status2[3+i] = buf[i];
-                get_hotter(modbus_recv.address)->status[1 + i] = pb3;
+                get_hotter(modbus_recv.address - 1)->status[1 + i] = pb3;
             }
-			result = 1;
+            result = 1;
 
         }
 
@@ -497,7 +503,11 @@ unsigned char machine_status_anly(unsigned int status_num)
                 rs485_u->recv_buf[modbus_recv.dev_addr_index + 2] ==
                 cmd_list.pb[STATUS2_INDEX].regCount * 2)
         {
-            get_hotter(modbus_recv.address)->status2[0] = modbus_recv.address;
+            if (modbus_recv.address > 0)
+                get_hotter(modbus_recv.address - 1)->status2[0] = modbus_recv.address;
+            else
+                return 0;
+            // get_hotter(modbus_recv.address)->status2[0] = modbus_recv.address;
             //get_hotter(modbus_recv.address)->status2[1] = rs485_u->recv_buf[modbus_recv.dev_addr_index + 1];
             // get_hotter(modbus_recv.address)->status2[2] = rs485_u->recv_buf[modbus_recv.dev_addr_index + 2];
             for (i = 0; i < cmd_list.pb[STATUS2_INDEX].regCount; i++)
@@ -511,9 +521,9 @@ unsigned char machine_status_anly(unsigned int status_num)
                 pb4 = pb4 + 4;
                 pb3 =  pb3 | rs485_u->recv_buf[pb4];
                 //get_hotter(1)->status2[3+i] = buf[i];
-                get_hotter(modbus_recv.address)->status2[1 + i] = pb3;
+                get_hotter(modbus_recv.address - 1)->status2[1 + i] = pb3;
             }
-			result = 1;
+            result = 1;
         }
 
     }
@@ -524,7 +534,11 @@ unsigned char machine_status_anly(unsigned int status_num)
                 rs485_u->recv_buf[modbus_recv.dev_addr_index + 2] ==
                 cmd_list.pb[STATUS3_INDEX].regCount * 2)
         {
-            get_hotter(modbus_recv.address)->status2[0] = modbus_recv.address;
+            if (modbus_recv.address > 0)
+                get_hotter(modbus_recv.address - 1)->status3[0] = modbus_recv.address;
+            else
+                return 0;
+            //get_hotter(modbus_recv.address)->status2[0] = modbus_recv.address;
             //get_hotter(modbus_recv.address)->status2[1] = rs485_u->recv_buf[modbus_recv.dev_addr_index + 1];
             // get_hotter(modbus_recv.address)->status2[2] = rs485_u->recv_buf[modbus_recv.dev_addr_index + 2];
             for (i = 0; i < cmd_list.pb[STATUS3_INDEX].regCount; i++)
@@ -538,17 +552,19 @@ unsigned char machine_status_anly(unsigned int status_num)
                 pb4 = pb4 + 4;
                 pb3 =  pb3 | rs485_u->recv_buf[pb4];
                 //get_hotter(1)->status2[3+i] = buf[i];
-                get_hotter(modbus_recv.address)->status3[1 + i] = pb3;
+                get_hotter(modbus_recv.address - 1)->status3[1 + i] = pb3;
             }
-			result = 1;
+            result = 1;
         }
 
     }
 
     else //if (status_num == cmd_list.pb[INSTR_DELI_SINDEX].reg)
     {
-        power_cal(cmd_list.cmd_seq, &rs485_u->recv_buf[modbus_recv.dev_addr_index]);
-		result = 1;
+
+        power_cal(status_num, cmd_list.cmd_seq,
+                  &rs485_u->recv_buf[modbus_recv.dev_addr_index]);
+        result = 1;
         //        if (rs485_u->recv_buf[modbus_recv.dev_addr_index + 1] == 0x03 &&
         //                rs485_u->recv_buf[modbus_recv.dev_addr_index + 2] == 0x04)
         //        {
@@ -720,9 +736,14 @@ unsigned char modbus_trans(unsigned char addr, unsigned char func,
 void analy_modbus_recv()
 {
     rs485_stru *rs485_u;
-	unsigned char result;
-	result = 0;
+    unsigned char result;
+    result = 0;
     rs485_u =  get_uart_recv(RS485_No);
+//#define DELI_INDEX1               5//0x700
+//#define DELI_INDEX12          6//0x73c
+//#define ZHENT_INDEX1          7//0x0006
+//#define ZHENT_INDEX2          8//0x02000
+//#define ZHENT_INDEX3          9//0x701e
 
     // if (modbus_recv.update == 1)
     {
@@ -730,11 +751,21 @@ void analy_modbus_recv()
         {
             case MODBUS_READ_CMD:
             {
-                if (cmd_list.cmd_seq >= INSTR_DELI_SINDEX
-                        && cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
+//                if (cmd_list.cmd_seq >= INSTR_DELI_SINDEX
+//                        && cmd_list.cmd_seq <= INSTR_ZT_EINDEX)
+                if (modbus_recv.address >= get_config()->energy_start_addr &&
+                        modbus_recv.address <= (get_config()->energy_size +
+                                                get_config()->energy_start_addr))
+
+//                if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==cmd_list.pb[DELI_INDEX1].reg||
+//                     cmd_list.pb[cmd_list.cmd_seq].last_reg ==cmd_list.pb[DELI_INDEX2].reg||
+//                     cmd_list.pb[cmd_list.cmd_seq].last_reg ==cmd_list.pb[ZHENT_INDEX1].reg||
+//                     cmd_list.pb[cmd_list.cmd_seq].last_reg ==cmd_list.pb[ZHENT_INDEX2].reg||
+//                     cmd_list.pb[cmd_list.cmd_seq].last_reg ==cmd_list.pb[ZHENT_INDEX3].reg)
 
                 {
-                    result = machine_status_anly(cmd_list.pb[cmd_list.cmd_seq].reg);
+
+                    result = machine_status_anly(modbus_tx.reg);
                 }
                 else
                 {
@@ -750,7 +781,7 @@ void analy_modbus_recv()
                         if (cmd_list.pb[cmd_list.cmd_seq].last_reg ==
                                 cmd_list.pb[STATUS1_INDEX].reg)
                         {
-                            get_hotter(modbus_recv.address)->status[0] = 1;//设备地址
+                            get_hotter(modbus_recv.address)->status[0] = 55;//设备地址
                             //  if(modbus_recv.recv_len <= (cmd_list.pb[STATUS1_INDEX].regCount*2+5))//status2
                             {
                                 get_hotter(modbus_recv.address)->status[0] = 2;//设备地址
@@ -812,10 +843,10 @@ void analy_modbus_recv()
         modbus_recv.func = 0;
         modbus_recv.update = 0;
     }
-//	if(result == 1)
-//	{
-//		cmd_list.retry_count = 0;
-//	}
+//  if(result == 1)
+//  {
+//      cmd_list.retry_count = 0;
+//  }
 
 }
 /*************************************************
@@ -857,15 +888,20 @@ void reg_payload_val()
         {
             cmd_list.pb[PWR_INDEX].payload[0] = 0x00;
             cmd_list.pb[PWR_INDEX].payload[1] =
-                get_schedule()->buf[get_schedule()->current_plan].pwr_state | 0x72;
+                get_schedule()->buf[get_schedule()->current_plan].pwr_state | 0xf0;
+            if (get_config()->private_reg != 0xff)
+            {
+                cmd_list.pb[PWR_INDEX].payload[1] = get_config()->private_reg;
+                //get_config()->private_reg = 0;
+            }
 
         }
     }
     else
     {
 
-        cmd_list.pb[PWR_INDEX].payload[0] = get_config()->machine >> 8;
-        cmd_list.pb[PWR_INDEX].payload[1] = get_config()->machine | 0x40;
+//        cmd_list.pb[PWR_INDEX].payload[0] = get_config()->machine >> 8;
+//        cmd_list.pb[PWR_INDEX].payload[1] = get_config()->machine | 0x40;
 
     }
     cmd_list.pb[PWR_INDEX].regCount = 2;
@@ -1020,15 +1056,21 @@ void modbus_data_pack(unsigned char pack_num)
             {
                 cmd_list.pb[PWR_INDEX].payload[0] = 0x00;
                 cmd_list.pb[PWR_INDEX].payload[1] =
-                    get_schedule()->buf[get_schedule()->current_plan].pwr_state | 0x72;
+                    get_schedule()->buf[get_schedule()->current_plan].pwr_state | 0xf0;
 
             }
+            if (get_config()->private_reg != 0xff)
+            {
+                cmd_list.pb[PWR_INDEX].payload[1] = get_config()->private_reg;
+                //get_config()->private_reg = 0;
+            }
+
         }
         else
         {
 
             cmd_list.pb[PWR_INDEX].payload[0] = get_config()->machine >> 8;
-            cmd_list.pb[PWR_INDEX].payload[1] = get_config()->machine | 0x40;
+            cmd_list.pb[PWR_INDEX].payload[1] = get_config()->machine | 0x00;
 
         }
         cmd_list.pb[PWR_INDEX].regCount = 2;
@@ -1038,7 +1080,7 @@ void modbus_data_pack(unsigned char pack_num)
     {
         unsigned int u;
         float u1;
-
+        //get_config()->private_reg = 0xff;
         if (flag == 0)
         {
             fuzzy_proc(get_config()->mode);  //smart ctrl
@@ -1048,12 +1090,12 @@ void modbus_data_pack(unsigned char pack_num)
 
         u1 = get_pid_output();
         u = (unsigned int)u1;
-        if (get_config()->set_tindoor < 15) //below 15 no pid ctrl
-        {
-
-            memcpy(cmd_list.pb[PID_INDEX].payload, get_config()->set_tout, 2);
-        }
-        else
+//        if (get_config()->set_tindoor < 15) //below 15 no pid ctrl
+//        {
+//
+//            memcpy(cmd_list.pb[PID_INDEX].payload, get_config()->set_tout, 2);
+//        }
+//        else
         {
             cmd_list.pb[PID_INDEX].payload[0] = u >> 8;
             cmd_list.pb[PID_INDEX].payload[1] = u;
@@ -1243,8 +1285,17 @@ void dev_poll_proc(void)
                     else
                     {
                         cmd_list.devtype = POWER_ENERGY;
+                        cmd_list.retry_count = RETRY_COUNT;
                         cmd_list.start_cmd = ENERGY_CMD_START;
-                        cmd_list.addr = ENERGY_SADDR;
+                        if (get_config()->energy_start_addr != 0)
+                            cmd_list.addr = get_config()->energy_start_addr;
+                        else
+                        {
+                            get_config()->energy_start_addr = ENERGY_SADDR;
+                            cmd_list.addr = ENERGY_SADDR;
+
+                        }
+
                         cmd_list.cmd_seq = cmd_list.start_cmd;
                     }
                 }
@@ -1276,6 +1327,7 @@ void dev_poll_proc(void)
                         cmd_list.devtype = PUMP;
                         cmd_list.start_cmd = PUMP_CMD_START;
                         cmd_list.addr = PUMP_SADDR;
+                        cmd_list.retry_count = RETRY_COUNT;
                         cmd_list.cmd_seq = cmd_list.start_cmd;
                     }
                 }
@@ -1313,6 +1365,7 @@ void dev_poll_proc(void)
                         cmd_list.start_cmd = PUMP_CMD_START;
                         cmd_list.addr = PUMP_SADDR;
                         cmd_list.wr = 0;
+                        cmd_list.retry_count = 0;
                         cmd_list.cmd_seq = cmd_list.start_cmd;
                     }
                 }
@@ -1355,14 +1408,16 @@ void modbus_proc_sec(void)
 {
 
     // get_config()->connectTimeOut = 10;
+//    if ((get_uart_recv(RS485_No)->recv_update == 0
+//            &&  get_mqtt_status() >= AT_MPUB_RECV) || get_config()->connectTimeOut >= 10)
 
     if ((get_uart_recv(RS485_No)->recv_update == 0
-            &&  get_mqtt_status() >= AT_MPUB_RECV) || get_config()->connectTimeOut >= 10)
+        ) || get_config()->connectTimeOut >= 10)
     {
         if (get_config()->update_setting == 1 ||
                 get_schedule()->current_plan_pwr_update == 1)//server command
         {
-            get_config()->update_setting = 0;
+
             if (modbus_tx.update == 0)
             {
                 config_save();//位置不能变
@@ -1374,7 +1429,7 @@ void modbus_proc_sec(void)
             get_config()->dev_size_tmp = get_config()->dev_size;//air pum size
             reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
             registerTick(MODBUS_MQTT_PID_TICK_NO, PID_TICK_TIME);
-
+            get_config()->update_setting = 0;
 
         }
         else
@@ -1393,17 +1448,17 @@ void modbus_proc_sec(void)
 
                 }
             }
-			if (get_config()->mode < OFF_MODE)
-			{
-				cmd_list.pb[PWR_INDEX].func = MODBUS_WRITE_ONE_CMD;
-				cmd_list.pb[PID_INDEX].func = MODBUS_WRITE_ONE_CMD;
-			}
-			else
-			{
-
-				cmd_list.pb[PWR_INDEX].func = MODBUS_READ_CMD;
-				cmd_list.pb[PID_INDEX].func = MODBUS_READ_CMD;
-			}
+            if (get_config()->mode < OFF_MODE)
+            {
+                cmd_list.pb[PWR_INDEX].func = MODBUS_WRITE_ONE_CMD;
+                cmd_list.pb[PID_INDEX].func = MODBUS_WRITE_ONE_CMD;
+            }
+            else
+            {
+                cmd_list.wr = 0;
+                cmd_list.pb[PWR_INDEX].func = MODBUS_READ_CMD;
+                cmd_list.pb[PID_INDEX].func = MODBUS_READ_CMD;
+            }
 
 
 
@@ -1417,14 +1472,16 @@ void modbus_proc_sec(void)
                 fuzzy_proc(get_config()->mode);  //smart ctrl
                 u1 = get_pid_output();
                 u = (unsigned int)u1;
-				if(u <get_pid_params()->out_min)
-					u = get_pid_params()->out_min;
-                if (get_config()->set_tindoor < get_pid_params()->out_min) //below 15 no pid ctrl
-                {
-
-                    memcpy(cmd_list.pb[PID_INDEX].payload, get_config()->set_tout, 2);
-                }
-                else
+                if (u < get_pid_params()->out_min)
+                    u = get_pid_params()->out_min;
+                get_pid_params()->out_val = u;
+//                if (get_config()->set_tindoor <
+//                        get_pid_params()->out_min) //below 15 no pid ctrl
+//                {
+//
+//                    memcpy(cmd_list.pb[PID_INDEX].payload, get_config()->set_tout, 2);
+//                }
+//                else
                 {
                     cmd_list.pb[PID_INDEX].payload[0] = u >> 8;
                     cmd_list.pb[PID_INDEX].payload[1] = u;
@@ -1435,6 +1492,7 @@ void modbus_proc_sec(void)
                 cmd_list.devtype = PUMP;
                 cmd_list.cmd_seq = PUMP_WCMD_START;
                 cmd_list.addr = PUMP_SADDR;
+                cmd_list.retry_count = RETRY_COUNT;
 
                 reset_registerTick(MODBUS_MQTT_PID_TICK_NO);
                 reset_registerTick(MODBUS_POLL_TICK_NO);

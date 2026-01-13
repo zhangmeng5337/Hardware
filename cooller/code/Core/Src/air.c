@@ -33,7 +33,7 @@ void sys_enter_standy_mode()
     __HAL_RCC_PWR_CLK_ENABLE();
     __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
     uint32_t tmp;
-    tmp = getConfig()->power_save ;
+    tmp = 120;//getConfig()->power_save ;
     HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, tmp, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
     HAL_PWR_EnterSTANDBYMode();
 }

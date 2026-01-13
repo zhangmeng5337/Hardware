@@ -28,6 +28,11 @@
 #define STATUS1_INDEX			2//0x0000
 #define STATUS2_INDEX			3//0x0028
 #define STATUS3_INDEX			4//0x0040
+#define DELI_INDEX1			    5//0x700
+#define DELI_INDEX2			6//0x73c
+#define ZHENT_INDEX1			7//0x0006
+#define ZHENT_INDEX2			8//0x02000
+#define ZHENT_INDEX3			9//0x701e
 
 
 
@@ -53,7 +58,7 @@
 
 #define DEV_ADDR  0xfe
 
-#define RETRY_COUNT		5
+#define RETRY_COUNT		2
 #define FAULT_COUNT		4
 
 
@@ -69,7 +74,7 @@ unsigned int timout;
 // unsigned char enable;// tx  poll by cpu
 // unsigned char status;//to be tx 
  unsigned int crc; 
- unsigned char last_reg;
+ unsigned int last_reg;
  
 }modbus_pump_cmd_stru;
 typedef struct 

@@ -115,11 +115,15 @@ void uart_transmit(unsigned char uart_num,uint8_t * pData,uint16_t Size)
         break;
     case RS485_No:
     {
+        __HAL_UART_DISABLE_IT(&huart4, UART_IT_IDLE);
         HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_SET);
-        HAL_UART_Transmit(&huart4, pData, Size, 100);
-        HAL_Delay(3);
+		HAL_Delay(5);
+        HAL_UART_Transmit(&huart4, pData, Size, 200);
+		while(__HAL_UART_GET_FLAG(&huart1,UART_FLAG_TC)==0)
+			;
+        HAL_Delay(1);
 		
-		__HAL_UART_DISABLE_IT(&huart4, UART_IT_IDLE);	 
+			 
         HAL_GPIO_WritePin(Mb_rxen1_GPIO_Port, Mb_rxen1_Pin, GPIO_PIN_RESET);	
 		HAL_Delay(1);
       __HAL_UART_CLEAR_IDLEFLAG(&huart4);

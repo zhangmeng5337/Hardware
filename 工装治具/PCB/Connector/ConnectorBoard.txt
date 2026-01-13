@@ -1,0 +1,10 @@
+Board Information Report
+Filename     : F:\projects\gitt\Hardware\工装治具\PCB\Connector\ConnectorBoard.PcbDoc
+Date         : 2026/1/12
+Time         : 10:50:47
+Time Elapsed : 00:00:00
+
+General
+    Board Size, 139.1864mmx208mm
+    Components on board, 72
+count : 2

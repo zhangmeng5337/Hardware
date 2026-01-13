@@ -100,24 +100,24 @@ void set_label_proc(unsigned char num)
     {
         case 0:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "");
-			//Display_String(172, 121,1,32,0,0,255, "          " );
+            //Display_String(172, 121,1,32,0,0,255, "          " );
             break;
         case 1:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "请插入U盘");
-			//Display_String(172, 121,1,32,0,0,255, "请插入U盘" );
+            //Display_String(172, 121,1,32,0,0,255, "请插入U盘" );
             break;
         case 2:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "未识别到U盘");
             break;
         case 3:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "数据导出中...");
-			//Display_String(172, 121,1,32,0,0,255, "数据导出中..." );
+            //Display_String(172, 121,1,32,0,0,255, "数据导出中..." );
             break;
         case 4:
             SetLableValue(WAVE_PAGE, USB_LOG_ID, "数据导出完成");
-			//Display_String(172, 121,1,32,0,0,255, "数据导出完成" );
+            //Display_String(172, 121,1,32,0,0,255, "数据导出完成" );
             break;
-	
+
 
     }
 }
@@ -127,8 +127,8 @@ void UpdateUI()
     int i;
     int value;
     char str[65];
-    static unsigned char flag;
-    if (page_Id == Setting_PAGE )
+    static unsigned char flag, flag2;
+    if (page_Id == Setting_PAGE)
     {
         if (flag == 0)
         {
@@ -178,7 +178,7 @@ void UpdateUI()
 //        }
 
     }
-    else if (page_Id == WAVE_PAGE )
+    else if (page_Id == WAVE_PAGE)
     {
         if (getConfig()->export_flag == 1)
         {
@@ -216,12 +216,13 @@ void UpdateUI()
             //SetLableValue(page_Id, TEMPERATURE_ID, str);
             if (get_temperature()->T_value[0] < 0)
             {
-                if(TEMPER_SEL == 1)
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
-                 else
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                               get_temperature()->T_value[0] * 8 + 40); //       -5---0 0---40				 	
+                if (TEMPER_SEL == 1)
+                    SetWaveformValue(page_Id, WAVE_ID, 1,
+                                     get_rf_status()->average_T * 8 + 40); //       -5---0 0---40
+                else
+                    SetWaveformValue(page_Id, WAVE_ID, 1,
+                                     get_temperature()->T_value[0] * 8 +
+                                     40); //       -5---0 0---40
                 fig_count++;
             }
 #if DEBUG_EN == 0
@@ -232,16 +233,16 @@ void UpdateUI()
             {
 #if DEBUG_EN == 0
                 SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_rf_status()->average_T * 40 / 4 + 40);//0---40  15---240
+                                 get_rf_status()->average_T * 40 / 4 + 40);//0---40  15---240 40 / 4
 
 #else if
-				if(TEMPER_SEL == 1)
+                if (TEMPER_SEL == 1)
 
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                                 get_rf_status()->average_T * 40 / 8.6 + 40);//0---40  15---240
-                 else
-                SetWaveformValue(page_Id, WAVE_ID, 1,
-                               get_temperature()->T_value[0] *40/ 8.6 + 40); //       -5---0 0---40	
+                    SetWaveformValue(page_Id, WAVE_ID, 1,
+                                     get_rf_status()->average_T * (40 / 8.6) + 40); //0---40  15---240
+                else
+                    SetWaveformValue(page_Id, WAVE_ID, 1,
+                                     get_temperature()->T_value[0] * (40 / 8.6) + 40); //    40/ 8.6   -5---0 0---40
 
 
 #endif
@@ -255,35 +256,41 @@ void UpdateUI()
                 //   WaveformDataClear(page_Id, WAVE_ID);
 
             }
-		getConfig()->update_fig = 0;
+            getConfig()->update_fig = 0;
 
 
         }
     }
 
-    else if (page_Id == Main_PAGE )
+    else if (page_Id == Main_PAGE)
     {
 
         static uint32_t last_mode = 2;
         static uint32_t last_v_value = 0;
         static uint32_t last_t = 0;
-        if (getConfig()->mode  == MODE_COOLLER
-           ) //cooller heater&& last_mode != getConfig()->mode&& last_mode != getConfig()->mode
+        if (getConfig()->update == 1 || flag2 != page_Id)
         {
+            if (getConfig()->mode  == MODE_COOLLER
+               ) //cooller heater&& last_mode != getConfig()->mode&& last_mode != getConfig()->mode
+            {
 
-            last_mode = getConfig()->mode;
-            Display_Image(MODE_X_POS, MODE_Y_POS, COOLLER_ID);
-        }
-        else if (getConfig()->mode  == MODE_HEATER)
-        {
-            Display_Image(MODE_X_POS, MODE_Y_POS, HEATER_ID);
-            last_mode = getConfig()->mode;
+                last_mode = getConfig()->mode;
+                Display_Image(MODE_X_POS, MODE_Y_POS, COOLLER_ID);
+            }
+            else if (getConfig()->mode  == MODE_HEATER)
+            {
+                Display_Image(MODE_X_POS, MODE_Y_POS, HEATER_ID);
+                last_mode = getConfig()->mode;
+
+            }
+            getConfig()->update  = 0;
 
         }
+
 
 
         if (get_temperature()->T_value[1] <= 1
-                && get_temperature()->T_value[1] != last_v_value)
+                && get_temperature()->T_value[1] != last_v_value || flag2 != page_Id)
         {
             unsigned char tmp;
             float tmp2;
@@ -291,28 +298,32 @@ void UpdateUI()
             tmp = get_temperature()->T_value[1] * 100;
             tmp2 = tmp;
             memset(str, 0, 65);
-            float2char(tmp2, str, 4);
+			sprintf(str, "%u,", tmp2);
+//            float2char(tmp2, str, 4);
 
             str[3] = '%';//100%
             SetLableValue(page_Id, BATTERY_ID, str);
         }
         //if (get_rf_status()->average_T != last_t)
-       
+
 //         if ( getConfig()->max_T!= last_t)
-        if (get_temperature()->T_value[0] != last_t)
+        if (get_temperature()->T_value[0] != last_t || flag2 != page_Id)
         {
 
             float tmp2;
-//			 tmp2 = getConfig()->max_T;
+			memset(str,0,strlen(str));
+//           tmp2 = getConfig()->max_T;
             tmp2 = get_temperature()->T_value[0];
             last_t = tmp2;
-
-            float2char(tmp2, str, 4);  //浮点型数，存储的字符数组，字符数组的长度
+			sprintf(str, "%.1f,", tmp2);
+//                float2char(tmp2, str, 4);  //浮点型数，存储的字符数组，字符数组的长度
+            
             // sprintf(str, "%f", tmp2);
             SetLableValue(page_Id, TEMPERATURE_ID, str);
         }
 
     }
+    flag2 = page_Id;
 
 }
 
@@ -435,6 +446,7 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
 
                 if (control_id == MODE_CHANGE_ID)
                 {
+                    getConfig()->update = 1;
                     if (getConfig()->mode == MODE_COOLLER)
                         getConfig()->mode = MODE_HEATER;
                     else
@@ -451,7 +463,7 @@ void NotifyTouchButton(uint8_t page_id, uint8_t control_id, uint8_t  state,
     {
         page_Id = value;
         update_en = 1;
-       // UpdateUI();
+        // UpdateUI();
     }
     else if (type == ENTER && state == KEY_RELEASE)
     {
@@ -844,19 +856,22 @@ void lcd_proc()
                 msg_type = 0;
                 timeout2 = HAL_GetTick();
             }
+            queue_reset();
 
         }
         else
         {
             //  static uint32_t timeout2;
-            #if DEBUG_EN
-            if ((HAL_GetTick() - timeout2) >= SLEEP_TIME && getConfig()->export_flag == 0)
+#if DEBUG_EN
+
+            if ((HAL_GetTick() - timeout2) >= getConfig()->power_save * 1000
+                    && getConfig()->export_flag == 0)
             {
 
                 if (getConfig()->status == SLEEP)
-                {               
+                {
 
-				   SetPage(Main_PAGE);//主页面Id号是4
+                    SetPage(Main_PAGE);//主页面Id号是4
                     SetBackLight(0);
                     flash_save();
                     sys_enter_standy_mode();
@@ -865,7 +880,7 @@ void lcd_proc()
                 }
                 timeout2 = HAL_GetTick();
             }
-			#endif
+#endif
         }
 
         /****************************************************************************************************************
@@ -885,8 +900,8 @@ void lcd_proc()
             UpdateUI();
 
         }
-       // else
-         //   UpdateUI(WAVE_PAGE);
+        // else
+        //   UpdateUI(WAVE_PAGE);
     }
 
 }

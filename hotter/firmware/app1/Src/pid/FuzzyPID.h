@@ -61,6 +61,7 @@ typedef struct FuzzyPID
    float actual_value;
    float out_max;
    float out_min;
+   float out_val;
 //    int  Kp_rule_list[7][7];
 //
 //    int  Ki_rule_list[7][7];

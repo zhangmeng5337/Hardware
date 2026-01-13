@@ -3,7 +3,7 @@
 #include "main.h"
 
 #define ENERGY_BUF_SIZE  16
-#define ENERGY_COUNT   5
+#define ENERGY_COUNT  7
 
 #define INSTR_DELI_SINDEX		5  //0x700
 #define INSTR_DELI_EINDEX		6  //0x73c
@@ -29,7 +29,8 @@ typedef struct
 	energy_stru *pb;
 }energylist_stru;
 
-void power_cal(unsigned char index,unsigned char *p);
+
+void power_cal(unsigned int reg,unsigned char index, unsigned char *p);
 
 energylist_stru *get_energy_data(void);
 void energy_init(void);

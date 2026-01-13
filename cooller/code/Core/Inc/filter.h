@@ -10,6 +10,7 @@
 float filter(unsigned char adc_num,float *p);
 float  GetMedianNum(float * bArray, int iFilterLen);
 float average_filter(float bArray);  
+float averageFilter(float in_data);
 
 #endif
 

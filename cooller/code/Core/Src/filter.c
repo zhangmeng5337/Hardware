@@ -120,6 +120,20 @@ float average_filter(float bArray)
 
     return result;
 }
+float data[10];
 
+float averageFilter(float in_data)
+{
+	float sum = 0;
+	for(int i=0; i<9; i++)
+	{
+		data[i]=data[i+1];
+		sum = sum + data[i];
+	}
+	data[9] = in_data;
+	sum = sum + data[9];
+	
+	return(sum/10);
+}
 
 
