@@ -545,6 +545,8 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
             float buf_f[AI_SIZE_T + AI_SIZE_P];
             // memset(buf_tmp2, sizeof(buf_tmp2), 0);
 
+            count = 0;
+            em_count = 0;
 
             for (i = 0; i < AI_SIZE_T; i++)
             {
@@ -603,11 +605,7 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
 \"esize\":%u,\r\n\
 \"out\":%.3f,\r\n\
 \"mode\":%u,\r\n\
-\"upt\":%.1f,\r\n\
-\"pNum\":%u,\r\n\
-\"stp\":%u,\r\n\
-\"cnt\":%u,\r\n\
-\"ecnt\":%u,\r\n\
+\"upt\":%.1f\r\n\
 }\r\n\
 }",
                     buf_tmp, p,
@@ -615,20 +613,16 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
                     get_do_status(),
                     get_config()->version,
                     get_config()->set_tout,
-                    set_indoor_temp()->temp_average,                   
+                    set_indoor_temp()->temp_average,
                     get_pid_params()->kp_u,
-                     get_pid_params()->ki_u,
-                     get_pid_params()->kd_u,
-                     get_config()->dev_size,
-                     get_config()->energy_size, 
-                     get_pid_params()->out_val,                    
+                    get_pid_params()->ki_u,
+                    get_pid_params()->kd_u,
+                    get_config()->dev_size,
+                    get_config()->energy_size,
+                    get_pid_params()->out_val,
                     get_config()->mode,
-                    get_config()->set_up_period,
-                    mqtt_packNum,
-                    mqtt_payload_u.process_step,
-                    count,
-			        em_count
-                    );
+                    get_config()->set_up_period
+                   );
             //getRtcTime()->Hours,
             //getRtcTime()->Minutes,
             //getRtcTime()->Seconds,
@@ -638,42 +632,38 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
             result = 1;
             break;
         case 1:
+            count = 0;
+            //em_count = 0;
             unsigned char engy_size;
             k = 0;
             if (get_config()->dev_size > 0 && get_config()->dev_size <= AIR_PUMP_SIZE)
             {
                 engy_size = get_config()->energy_size;
 
-							
+
             }
             else
                 engy_size = ENERGY_COUNT;
             if (engy_size <= 0 || engy_size >= 255)
                 return 1;
-						for(unsigned kk = 0;kk<2048;kk++)
-            buf_tmp_large[kk] = 0;
+            for (unsigned kk = 0; kk < 2048; kk++)
+                buf_tmp_large[kk] = 0;
 
 
             //  for (i = 0; i < engy_size; i++)
             {
                 unsigned int tmp_addr;
                 tmp_addr = get_energy_data()->pb[em_count].addr;
-                p=sprintf_array_f(&get_energy_data()->pb[em_count].payload[0],
-                                ENERGY_BUF_SIZE - 2); //
+                p = sprintf_array_f(&get_energy_data()->pb[em_count].payload[0],
+                                    ENERGY_BUF_SIZE - 2); //
 
 
                 // if (em_count == (engy_size - 1))
                 {
                     sprintf(&buf_tmp_large[k], "{\r\n\
 \"addr\":%u,\r\n\
-\"data\":%s,\r\n\
-	\"pNum\":%u,\r\n\
-	\"stp\":%u,\r\n\
-	\"cnt\":%u,\r\n\
-	\"ecnt\":%u,\r\n\}", tmp_addr, p,mqtt_packNum,
-                    mqtt_payload_u.process_step,
-                    count,
-			        em_count);
+\"data\":%s\r\n\
+}", tmp_addr, p);
 
                 }
 //                else
@@ -687,10 +677,10 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
 
                 for (unsigned int j = 0; j < ENERGY_BUF_SIZE - 2; j++)
                 {
-				get_energy_data()->pb[em_count].payload[j] = 0;
-								// get_energy_data()->pb[em_count].addr = 0;
+                    get_energy_data()->pb[em_count].payload[j] = 0;
+                    // get_energy_data()->pb[em_count].addr = 0;
 
-				}    
+                }
             }
             sprintf(json_mqtt_send_buf,
                     "{\r\n\
@@ -710,6 +700,8 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
             break;
         default :
             k = 0;
+            //count = 0;
+            em_count = 0;
             unsigned char tmpi, air_size;
             if (get_config()->dev_size > 0 && get_config()->dev_size <= AIR_PUMP_SIZE)
             {
@@ -750,32 +742,26 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
                             if (i < air_size)
                             {
                                 sprintf(&buf_tmp_large[k], "{\r\n\
-						\"addr\":%u,\r\n\
-						\"data1\":%s,\r\n\
-						\"pNum\":%u,\r\n\
-	      				\"stp\":%u,\r\n\
-						\"cnt\":%u,\r\n\
-						\"ecnt\":%u\r\n\}", tmp_addr, p,mqtt_packNum,
-                    mqtt_payload_u.process_step,
-                    count,
-			        em_count);
+\"addr\":%u,\r\n\
+\"data1\":%s\r\n\
+}", tmp_addr, p);
 
                             }
                             else
                             {
                                 sprintf(&buf_tmp_large[k], "{\r\n\
-						\"addr\":%u,\r\n\
-						\"data1\":%s\r\n\},", tmp_addr, p);
+\"addr\":%u,\r\n\
+\"data1\":%s\r\n\},", tmp_addr, p);
                                 k = strlen(buf_tmp_large);
 
                             }
                         }
                         sprintf(json_mqtt_send_buf,
                                 "{\r\n\
-						\"devid\":\"%s\",\r\n\
-						\"airpumpData\":[%s\r\n\
-						]\r\n\
-						}", buf_tmp, buf_tmp_large);
+\"devid\":\"%s\",\r\n\
+\"airpumpData\":[%s\r\n\
+]\r\n\
+}", buf_tmp, buf_tmp_large);
                         free(pb);
 
                         for (unsigned int j = 1; j < (STATUS1_SIZE - 1) * 2; j++)
@@ -800,22 +786,16 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
                             if (i < air_size)
                             {
                                 sprintf(&buf_tmp_large[k], "{\r\n\
-										 \"addr\":%u,\r\n\
-										\"data2\":%s,\r\n\
-										 \"pNum\":%u,\r\n\
-										 \"stp\":%u,\r\n\
-										 \"cnt\":%u,\r\n\
-										 \"ecnt\":%u\r\n\}", tmp_addr, p,mqtt_packNum,
-                    mqtt_payload_u.process_step,
-                    count,
-			        em_count);
+\"addr\":%u,\r\n\
+\"data2\":%s\r\n\
+}", tmp_addr, p);
 
                             }
                             else
                             {
                                 sprintf(&buf_tmp_large[k], "{\r\n\
-										 \"addr\":%u,\r\n\
-										 \"data2\":%s\r\n\
+\"addr\":%u,\r\n\
+\"data2\":%s\r\n\
 },", tmp_addr, p);
                                 k = strlen(buf_tmp_large);
 
@@ -823,9 +803,9 @@ unsigned char jsson_pack(unsigned char mqtt_packNum)
                         }
                         sprintf(json_mqtt_send_buf,
                                 "{\r\n\
-										 \"devid\":\"%s\",\r\n\
-										 \"airpumpData\":[%s\r\n\
-										 ]\r\n\
+\"devid\":\"%s\",\r\n\
+\"airpumpData\":[%s\r\n\
+]\r\n\
 }", buf_tmp, buf_tmp_large);
                         for (unsigned int j = 1; j < (STATUS3_SIZE - 1) ; j++)
                             get_hotter(i)->status3[j] = 0;
@@ -1440,7 +1420,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"Set Room Temp\": " , "\r\n", 0);
+    dev_id = find_json_string("\"Set Room Temp\": ", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
