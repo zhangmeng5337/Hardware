@@ -25,7 +25,8 @@ extern void queue_reset(void);
  * \detial 串口接收的数据，通过此函数放入指令队列 
  *  \param  _data 指令数据
  */
-extern void queue_push(qdata _data);
+ //void queue_push(qdata _data);
+extern void queue_push(qdata *_data,unsigned int len);
 
 /*! 
  *  \brief  从指令队列中取出一条完整的指令

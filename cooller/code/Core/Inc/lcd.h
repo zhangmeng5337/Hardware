@@ -12,7 +12,7 @@
 #define WAVE_WIDTH 		300
 #define WAVE_HEIGHT 	180
 
-#define TIME_100MS 1500
+#define TIME_100MS 500
 
 #define BATTERY_ID   	 23
 #define TEMPERATURE_ID   27

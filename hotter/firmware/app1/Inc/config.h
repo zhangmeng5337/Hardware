@@ -98,6 +98,8 @@ typedef struct
 	uint32_t timeout;
 	unsigned char valid_flag;
 	unsigned char connectTimeOut;
+	unsigned int private_reg;
+	unsigned char energy_start_addr;
 	//unsigned char sub_sring[3][64];
 
 } CONFIG_stru;

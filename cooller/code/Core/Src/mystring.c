@@ -47,31 +47,36 @@ void string_to_float(char *string, float *data,uint32_t *result)
 void float2char(float slope,char*buffer,int n)  //浮点型数，存储的字符数组，字符数组的长度
 {
     int temp,i,j;
-    if(slope>=0)//判断是否大于0
-        buffer[0] = ' ';
-    else
-    {
-        buffer[0] = '-';
-        slope = -slope;
-    }
-    temp = (int)slope;//取整数部分
-    for(i=0;temp!=0;i++)//计算整数部分的位数
-        temp /=10;
-    temp =(int)slope;
-    for(j=i;j>0;j--)//将整数部分转换成字符串型
-    {
-        buffer[j] = temp%10+'0';
-        temp /=10;
-    }
-    buffer[i+1] = '.';
-    slope -=(int)slope;
-    for(i=i+2;i<n-1;i++)//将小数部分转换成字符串型
-    {
-        slope*=10;
-        buffer[i]=(int)slope+'0';
-        slope-=(int)slope;
-    }
-    buffer[n-1] = '\0';
+//    if(slope>=0)//判断是否大于0
+//        buffer[0] = ' ';
+//    else
+//    {
+//        buffer[0] = '-';
+//        slope = -slope;
+//    }
+//    temp = (int)slope;//取整数部分
+//    i = 0;
+
+	sprintf(&buffer[0], "%.1f,", slope);
+
+	
+//    for(i=0;temp!=0;i++)//计算整数部分的位数
+//        temp /=10;
+//    temp =(int)slope;
+//    for(j=i;j>0;j--)//将整数部分转换成字符串型
+//    {
+//        buffer[j] = temp%10+'0';
+//        temp /=10;
+//    }
+//    buffer[i+1] = '.';
+//    slope -=(int)slope;
+//    for(i=i+2;i<n-1;i++)//将小数部分转换成字符串型
+//    {
+//        slope*=10;
+//        buffer[i]=(int)slope+'0';
+//        slope-=(int)slope;
+//    }
+//    buffer[n-1] = '\0';
 }
 
 

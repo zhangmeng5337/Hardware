@@ -41,10 +41,12 @@ void uart_init()
                          UART_DMA_REC_SIZE);
 
     //rs232 uart init for cdg
-    __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+  //  __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+	//__HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
 	//HAL_UART_Receive_IT(&huart1, &push_data, 1);
-   // HAL_UART_Receive_DMA(&huart1, uart_lcd_recv.uartDMARecBuff,
-                      //   UART_CDG_DMA_REC_SIZE);
+	 __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+    HAL_UART_Receive_DMA(&huart1, uart_lcd_recv.uartDMARecBuff,
+                         UART_CDG_DMA_REC_SIZE);
 
 
     //rs232 uart init for debug
@@ -141,13 +143,20 @@ void uart_transmit(unsigned char uart_num, uint8_t *pData, uint16_t Size)
 void uart_lcd_recv_proc()
 {
 
-    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
-    {
-       HAL_UART_Receive(&huart1, &push_data, 1, 10);
-        queue_push( push_data);
-        //uart_lcd_recv.uartRecLen  = UART_CDG_DMA_REC_SIZE - __HAL_DMA_GET_COUNTER(
-          //                              &hdma_usart1_rx);
-        __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
+    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE)!=0)
+    { 
+			
+     //  HAL_UART_Receive(&huart1, &push_data, 1, 1);
+        
+        uart_lcd_recv.uartDMARecLen  = UART_CDG_DMA_REC_SIZE - __HAL_DMA_GET_COUNTER(
+                                        &hdma_usart1_rx);
+		uart_lcd_recv.uartRecLen += uart_lcd_recv.uartDMARecLen;
+
+		//queue_push( push_data);
+			queue_push(uart_lcd_recv.uartDMARecBuff,uart_lcd_recv.uartRecLen);
+										uart_lcd_recv.uartRecLen = 0;
+
+										//__HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
 		//HAL_UART_Receive_IT(&huart1, & push_data, 1);
 		
 
@@ -161,10 +170,11 @@ void uart_lcd_recv_proc()
         //                                 uart_cdg_recv.uartRecBuff_index;
         //if (uart_cdg_recv.uartRecBuff_index >= (UART_REC_SIZE - 8))
         //    uart_cdg_recv.uartRecBuff_index = 0;
-        //HAL_UART_DMAStop(&huart1);
-        //HAL_UART_DMAResume(&huart1);
-        //HAL_UART_Receive_DMA(&huart1, (uint8_t *)uart_lcd_recv.uartDMARecBuff,
-                         //    UART_CDG_DMA_REC_SIZE);
+        HAL_UART_DMAStop(&huart1);
+        HAL_UART_DMAResume(&huart1);
+        HAL_UART_Receive_DMA(&huart1, (uint8_t *)uart_lcd_recv.uartDMARecBuff,
+                             UART_CDG_DMA_REC_SIZE);
+		__HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_IDLE);
     }
 
 }

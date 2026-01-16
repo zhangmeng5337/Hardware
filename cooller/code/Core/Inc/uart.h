@@ -1,7 +1,7 @@
 #ifndef UART_H_
 #define UART_H_
 #include "main.h"
-#define UART_CDG_DMA_REC_SIZE   9
+#define UART_CDG_DMA_REC_SIZE 256
 
 #define UART_DMA_REC_SIZE   128
 #define UART_REC_SIZE       512

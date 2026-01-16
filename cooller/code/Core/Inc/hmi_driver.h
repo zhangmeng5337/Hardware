@@ -9,9 +9,9 @@
 #ifndef _HMI_DRIVER_
 #define _HMI_DRIVER_
 
-#define CMD_MAX_SIZE 65        /*!<单条指令大小，根据需要调整，尽量设置大一些*/
-#define QUEUE_MAX_SIZE 128   /*!< 指令接收缓冲区大小，根据需要调整，尽量设置大一些*/
-#define TIME_100MS 2000
+#define CMD_MAX_SIZE 128        /*!<单条指令大小，根据需要调整，尽量设置大一些*/
+#define QUEUE_MAX_SIZE 512   /*!< 指令接收缓冲区大小，根据需要调整，尽量设置大一些*/
+//#define TIME_100MS 2000
 #include "main.h"
 
 

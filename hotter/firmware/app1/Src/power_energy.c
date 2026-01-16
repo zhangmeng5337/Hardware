@@ -8,6 +8,8 @@ energy_stru energy_usr[ENERGY_COUNT] =
     {0, DELI, {0}},
     {0, DELI, {0}},
     {0, DELI, {0}},
+    {0, DELI, {0}},
+    {0, DELI, {0}},
     {0, DELI, {0}}
 
 
@@ -27,39 +29,29 @@ void energy_init()
         energy_usr[i].addr = k++;
         energy_usr[i].energy_typ = 0;
         for (l = 0; l < ENERGY_BUF_SIZE; l++)
-            energy_usr[i].payload[l] = 88888888.333;
+            energy_usr[i].payload[l] = 0;
 
     }
     energylist.pb = energy_usr;
 }
 
-void deli_proc(unsigned char index, unsigned char *p)
+void deli_proc(unsigned int index, unsigned char *p)
 {
-		float uin32_to_float;
-		unsigned char i, j;
-		for (j = 0; j < ENERGY_COUNT; j++)
-		{
-			if (energy_usr[j].addr > 0 && energy_usr[j].addr == p[0])
-				break;
-	
-		}
-		if (j != ENERGY_COUNT)
-		{
-	//		  for (i = 0; i < ENERGY_COUNT; i++)
-	//		  {
-	//			  if (energy_usr[i].addr == 0 && energy_usr[i].addr == p[0])
-	//			  {
-			energy_usr[j].addr = p[0];
-	//				  j = i;
-	//				  break;
-	//			  }
-	//		  }
-	
-		}
-		else
-			return ;
+    float uin32_to_float;
+    unsigned char i, j;
+    for (j = 0; j < ENERGY_COUNT; j++)
+    {
+        if (energy_usr[j].addr > 0 && energy_usr[j].addr == p[0])
+        {
+            energy_usr[j].addr = p[0];
+            break;
+        }
 
-    if (index == INSTR_DELI_SINDEX)
+
+    }
+
+
+    if (index == 0x0700)
     {
         if (p[2] == 52)
         {
@@ -69,106 +61,127 @@ void deli_proc(unsigned char index, unsigned char *p)
             k = 3;
             //0x700-0x705
             tmp = uint8Touint322(&p[k]);
+            float uin32_to_float;
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp) ;
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
 
             //0x706-0x70b
             i = 1;
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             //0x70c-0x719
             i = 7;
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float  = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[i] = *(float *)tmp;
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
-            energy_usr[j].payload[i] = *(float *)tmp;
+
+            tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
+            energy_usr[j].payload[i] = uin32_to_float;
             i++;
+            return;
 
         }
     }
-    else if (index == INSTR_DELI_EINDEX)
+    else if (index == 0x073c)
     {
+        energy_usr[j].payload[0] = 10;
         if (p[2] == 4)
         {
             uint32_t tmp;
             unsigned char k;
+            // uint32_t tmp;
             i = 0;
             k = 3;
             //0x73c-0x73d
             tmp = uint8Touint322(&p[k]);
+            uin32_to_float = *(float *)(&tmp);
             k = k + 4;
-            energy_usr[j].payload[0] = *(float *)tmp;
+            energy_usr[j].payload[0] = uin32_to_float;
             energy_usr[j].payload[0] = energy_usr[j].payload[0] / 1000.0;
+            return;
         }
     }
 }
-void zhengtai_proc(unsigned char index, unsigned char *p)
-{     
+void zhengtai_proc(unsigned int index, unsigned char *p)
+{
     float uin32_to_float;
     unsigned char i, j;
     for (j = 0; j < ENERGY_COUNT; j++)
     {
+
         if (energy_usr[j].addr > 0 && energy_usr[j].addr == p[0])
+        {
+            energy_usr[j].addr = p[0];
             break;
+        }
 
     }
-    if (j != ENERGY_COUNT)
-    {
-//        for (i = 0; i < ENERGY_COUNT; i++)
-//        {
-//            if (energy_usr[i].addr == 0 && energy_usr[i].addr == p[0])
-//            {
-        energy_usr[j].addr = p[0];
-//                j = i;
-//                break;
-//            }
-//        }
 
-    }
-    else
-        return ;
 
-    if (index == INSTR_ZT_SINDEX)//0x0006 0x0007
+    if (index == 0x0006)//0006 0x0007
     {
         if (p[2] == 4)
         {
@@ -207,7 +220,7 @@ void zhengtai_proc(unsigned char index, unsigned char *p)
         }
 
     }
-    else if (index == INSTR_ZT_EINDEX) //0x401e 0x401f
+    else if (index == 0x401e) //0x401e 0x401f
     {
         uint32_t tmp;
         unsigned char k;
@@ -216,7 +229,7 @@ void zhengtai_proc(unsigned char index, unsigned char *p)
         {
             tmp = uint8Touint322(&p[k]);
             k = k + 4;
-			uin32_to_float =  *(float *)(&tmp);
+            uin32_to_float =  *(float *)(&tmp);
             energy_usr[j].payload[0] = uin32_to_float;
             energy_usr[j].payload[0] = energy_usr[j].payload[0] *
                                        energy_usr[j].payload[ENERGY_BUF_SIZE - 1];
@@ -237,13 +250,30 @@ void zhengtai_proc(unsigned char index, unsigned char *p)
             float uin32_to_float;
             unsigned char k;
             k = 3;
-            for (i = 1; i < 10; i++)
+            for (i = 1; i < 7; i++)
             {
                 tmp = uint8Touint322(&p[k]);
                 k = k + 4;
                 uin32_to_float =  *(float *)(&tmp);
-                energy_usr[j].payload[i] = uin32_to_float;
+                energy_usr[j].payload[i] = uin32_to_float *
+                                           energy_usr[j].payload[ENERGY_BUF_SIZE - 2];
+                energy_usr[j].payload[i] = energy_usr[j].payload[i] * 0.01;
+
+
             }
+            for (i = 7; i < 10; i++)
+            {
+                tmp = uint8Touint322(&p[k]);
+                k = k + 4;
+                uin32_to_float =  *(float *)(&tmp);
+                energy_usr[j].payload[i] = uin32_to_float *
+                                           energy_usr[j].payload[ENERGY_BUF_SIZE - 1] * 0.001;;
+                energy_usr[j].payload[i] = energy_usr[j].payload[i] * 0.001;
+
+            }
+
+
+
             i = 13;
             tmp = uint8Touint322(&p[k]);
             k = k + 4;
@@ -254,8 +284,13 @@ void zhengtai_proc(unsigned char index, unsigned char *p)
                 tmp = uint8Touint322(&p[k]);
                 k = k + 4;
                 uin32_to_float =  *(float *)(&tmp);
-                energy_usr[j].payload[i] = uin32_to_float;
-            }
+                energy_usr[j].payload[i] = uin32_to_float*
+                                           energy_usr[j].payload[ENERGY_BUF_SIZE - 1];
+
+			energy_usr[j].payload[i] = energy_usr[j].payload[i] * energy_usr[j].payload[ENERGY_BUF_SIZE - 2];
+			energy_usr[j].payload[i] = energy_usr[j].payload[i]*0.001;
+
+			}
 
 
         }
@@ -264,15 +299,17 @@ void zhengtai_proc(unsigned char index, unsigned char *p)
 
 }
 
-void power_cal(unsigned char index, unsigned char *p)
+void power_cal(unsigned int reg, unsigned char index, unsigned char *p)
 {
-    if (index >= INSTR_DELI_SINDEX && index <= INSTR_DELI_EINDEX)
+    if (reg == 0x0700 || reg == 0x073c)
     {
-        deli_proc(index, p);
+        get_energy_data()->pb[0].addr = 17;
+        deli_proc(reg, p);
     }
-    else if (index >= INSTR_ZT_SINDEX && index <= INSTR_ZT_EINDEX)
+    else  if (reg == 0x0006 || reg == 0x2000 || reg == 0x401e)
     {
-        zhengtai_proc(index, p);
+        get_energy_data()->pb[0].addr = 17;
+        zhengtai_proc(reg, p);
 
     }
 }

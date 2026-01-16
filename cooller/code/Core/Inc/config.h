@@ -30,6 +30,7 @@ typedef struct
 	float interval_tick;
 	unsigned char export_flag;//usb export 
 	unsigned char update_params;//params set
+	unsigned char update;
 	
 } config_stru;
 
