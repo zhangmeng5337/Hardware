@@ -239,10 +239,10 @@ void UpdateUI()
                 if (TEMPER_SEL == 1)
 
                     SetWaveformValue(page_Id, WAVE_ID, 1,
-                                     get_rf_status()->average_T * (40 / 8.6) + 40); //0---40  15---240
+                                     get_rf_status()->average_T * (-40 / 8.6) + 40); //0---40  15---240
                 else
                     SetWaveformValue(page_Id, WAVE_ID, 1,
-                                     get_temperature()->T_value[0] * (40 / 8.6) + 40); //    40/ 8.6   -5---0 0---40
+                                     get_temperature()->T_value[0] * (-40 / 22) + 40); //    40/ 8.6   -5---0 0---40
 
 
 #endif
