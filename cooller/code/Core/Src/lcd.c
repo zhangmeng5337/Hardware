@@ -267,7 +267,7 @@ void UpdateUI()
 
         static uint32_t last_mode = 2;
         static uint32_t last_v_value = 0;
-        static uint32_t last_t = 0;
+        static float last_t = 0;
         if (getConfig()->update == 1 || flag2 != page_Id)
         {
             if (getConfig()->mode  == MODE_COOLLER
@@ -292,16 +292,17 @@ void UpdateUI()
         if (get_temperature()->T_value[1] <= 1
                 && get_temperature()->T_value[1] != last_v_value || flag2 != page_Id)
         {
-            unsigned char tmp;
-            float tmp2;
+            unsigned int tmp;
+            unsigned int tmp2;
             last_v_value = get_temperature()->T_value[1];
             tmp = get_temperature()->T_value[1] * 100;
             tmp2 = tmp;
-            memset(str, 0, 65);
-			sprintf(str, "%u,", tmp2);
+			memset(str,0,strlen(str));
+			sprintf(str, "%u%s", tmp2,"%");
+			//sprintf(str, "%u", tmp2);
 //            float2char(tmp2, str, 4);
 
-            str[3] = '%';//100%
+           
             SetLableValue(page_Id, BATTERY_ID, str);
         }
         //if (get_rf_status()->average_T != last_t)
@@ -310,12 +311,12 @@ void UpdateUI()
         if (get_temperature()->T_value[0] != last_t || flag2 != page_Id)
         {
 
-            float tmp2;
+            float tmp3;
 			memset(str,0,strlen(str));
 //           tmp2 = getConfig()->max_T;
-            tmp2 = get_temperature()->T_value[0];
-            last_t = tmp2;
-			sprintf(str, "%.1f,", tmp2);
+            tmp3 = get_temperature()->T_value[0];
+            last_t = tmp3;
+			sprintf(str, "%.1f", tmp3);
 //                float2char(tmp2, str, 4);  //浮点型数，存储的字符数组，字符数组的长度
             
             // sprintf(str, "%f", tmp2);

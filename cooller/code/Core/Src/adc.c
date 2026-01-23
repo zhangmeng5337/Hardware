@@ -69,8 +69,14 @@ void adc_proc()
                 tmp = sensor_adc_value.adc_value[2] *
                                               sensor_adc_value.ref / 4095;
                 tmp = tmp  * 11;
-                tmp = tmp / BATTERY_V;
-				sensor_adc_value.T_value[1] =averageFilter(tmp);
+                tmp = (tmp*tmp-121) / (BATTERY_V*BATTERY_V-121);
+//				sensor_adc_value.T_value[1] =averageFilter(tmp);
+				if(tmp < 0)
+					tmp = 0;
+				if(tmp > 1)
+					tmp = 1;				
+				sensor_adc_value.T_value[1] = average_filter2(tmp,1);				
+				
 
 
 				x2 = 2 * adc_pt1_v;
@@ -104,7 +110,8 @@ void adc_proc()
                              60;
                     sensor_adc_value.T_value[0] = average_filter(result)-2;
                 }
-				
+			sensor_adc_value.T_value[0] = average_filter2(sensor_adc_value.T_value[0],0);
+			//sensor_adc_value.T_value[1] = average_filter2(sensor_adc_value.T_value[1],1);				
 
 
             }

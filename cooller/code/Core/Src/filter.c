@@ -125,15 +125,58 @@ float data[10];
 float averageFilter(float in_data)
 {
 	float sum = 0;
-	for(int i=0; i<9; i++)
+	for(int i=0; i<30; i++)
 	{
 		data[i]=data[i+1];
 		sum = sum + data[i];
 	}
-	data[9] = in_data;
-	sum = sum + data[9];
+	data[30] = in_data;
+	sum = sum + data[30];
 	
-	return(sum/10);
+	return(sum/30);
+}
+
+float sum1;
+float sum2;
+unsigned char count1,count2;
+float average_filter2(float bArray,unsigned char index)
+{
+   if(index == 0)
+   	{
+   if (count1 <= N2)
+   {
+	   sum1	= sum1 + bArray;
+	   count1++;
+	   result = sum1 / count1 ;
+   }
+   else
+   {	 
+	  result = sum1 / N2;
+	  sum1 = result;
+	   count1 = 1;
+   
+   }
+
+   }
+   else
+   	{
+   if (count2 <= N2)
+   {
+	   sum2	= sum2 + bArray;
+	   count2++;
+	   result = sum2 / count2 ;
+   }
+   else
+   {	 
+	  result = sum2 / N2;
+	  sum2 = result;
+	   count2 = 1;
+   
+   }
+
+   }
+
+    return result;
 }
 
 
