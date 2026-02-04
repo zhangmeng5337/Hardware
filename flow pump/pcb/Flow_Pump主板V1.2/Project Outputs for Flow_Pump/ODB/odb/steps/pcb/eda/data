@@ -1,8 +1,8 @@
-# 2026/2/2 9:52:41
+# 2026/2/2 16:29:40
 #
 HDR Altium Designer file - Version 1.0.0.30000
 UNITS=MM
-LYR dielectric_1 bottom_overlay bottom_paste bottom_solder drill_plated_bottom_layer-top_layer top_paste top_solder bottom_layer top_overlay top_layer 
+LYR dielectric_1 bottom_paste bottom_overlay bottom_solder drill_plated_bottom_layer-top_layer top_paste top_solder bottom_layer top_overlay top_layer 
 #
 #NET 0
 NET $NONE$
@@ -2675,7 +2675,7 @@ FID C 9 2952
 SNT PLN S C 0.00
 FID C 9 2910
 SNT TOP B 0 0
-FID C 2 1
+FID C 1 1
 FID C 3 90
 FID C 7 403
 SNT TOP T 249 1
@@ -4231,7 +4231,7 @@ FID C 5 229
 FID C 6 268
 FID C 9 1762
 SNT TOP B 1 0
-FID C 2 0
+FID C 1 0
 FID C 3 39
 FID C 7 350
 SNT TOP T 6 1

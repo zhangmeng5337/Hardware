@@ -2,6 +2,58 @@
 FileName = Flow_Pumpœ‘ æ∞Â_V2.0.GBR
 AutoAperture = True
 *************************************************************
+Generating : Mechanical 1
+      File : Flow_Pumpœ‘ æ∞Â_V2.0.GM1
+
+    Adding Layer      : Mechanical 1
+
+
+Used DCodes :
+    D11
+    D48
+    D49
+*************************************************************
+
+*************************************************************
+Generating : Bottom Paste
+      File : Flow_Pumpœ‘ æ∞Â_V2.0.GBP
+
+    Adding Layer      : Bottom Paste
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D39
+    D46
+    D47
+*************************************************************
+
+*************************************************************
+Generating : Top Paste
+      File : Flow_Pumpœ‘ æ∞Â_V2.0.GTP
+
+    Adding Layer      : Top Paste
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+*************************************************************
+
+*************************************************************
 Generating : Bottom Solder
       File : Flow_Pumpœ‘ æ∞Â_V2.0.GBS
 
@@ -22,16 +74,40 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : Mechanical 1
-      File : Flow_Pumpœ‘ æ∞Â_V2.0.GM1
+Generating : Top Solder
+      File : Flow_Pumpœ‘ æ∞Â_V2.0.GTS
 
-    Adding Layer      : Mechanical 1
+    Adding Layer      : Top Solder
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
 
 
 Used DCodes :
+    D20
+    D21
+    D22
+    D23
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+*************************************************************
+
+*************************************************************
+Generating : Bottom Overlay
+      File : Flow_Pumpœ‘ æ∞Â_V2.0.GBO
+
+    Adding Layer      : Bottom Overlay
+
+
+Used DCodes :
+    D10
     D11
-    D48
-    D49
 *************************************************************
 
 *************************************************************
@@ -71,48 +147,6 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : Bottom Paste
-      File : Flow_Pumpœ‘ æ∞Â_V2.0.GBP
-
-    Adding Layer      : Bottom Paste
-
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D39
-    D46
-    D47
-*************************************************************
-
-*************************************************************
-Generating : Top Solder
-      File : Flow_Pumpœ‘ æ∞Â_V2.0.GTS
-
-    Adding Layer      : Top Solder
-
-    Adding Layer      : Top Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D20
-    D21
-    D22
-    D23
-    D24
-    D25
-    D26
-    D27
-    D28
-    D29
-    D30
-*************************************************************
-
-*************************************************************
 Generating : Top Layer
       File : Flow_Pumpœ‘ æ∞Â_V2.0.GTL
 
@@ -139,40 +173,6 @@ Used DCodes :
     D36
     D37
     D38
-*************************************************************
-
-*************************************************************
-Generating : Top Paste
-      File : Flow_Pumpœ‘ æ∞Â_V2.0.GTP
-
-    Adding Layer      : Top Paste
-
-    Adding Layer      : Top Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D12
-    D13
-    D14
-    D15
-    D16
-    D17
-    D18
-    D19
-*************************************************************
-
-*************************************************************
-Generating : Bottom Overlay
-      File : Flow_Pumpœ‘ æ∞Â_V2.0.GBO
-
-    Adding Layer      : Bottom Overlay
-
-
-Used DCodes :
-    D10
-    D11
 *************************************************************
 
 *************************************************************

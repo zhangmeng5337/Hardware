@@ -1,236 +1,130 @@
-/**
- * @file ads1118.h
- *
- * @brief This header file contains all register map definitions for the ADS1118 device family.
- * @warning This software utilizes TI Drivers
- *
- * @copyright Copyright (C) 2021 Texas Instruments Incorporated - http://www.ti.com/
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *
- *    Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- *    Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the
- *    distribution.
- *
- *    Neither the name of Texas Instruments Incorporated nor the names of
- *    its contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */
-#ifndef ADS1118_H
-#define ADS1118_H
+/*******************************************************************
 
-//****************************************************************************
-//
-// Standard Libraries
-//
-//****************************************************************************
-#include <assert.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
-//****************************************************************************
-//
-// Custom Libraries
-//
-//****************************************************************************
-#include "hal.h"
+*******************************************************************/
+#ifndef _ADS1118_H
+#define _ADS1118_H
+#include "stdint.h"
+#include "main.h"
+#define ADS1118_CS_PIN    HAL_GPIO_WritePin(EXTPROC_SPI2_ADC_CS3_GPIO_Port, EXTPROC_SPI2_ADC_CS3_Pin, GPIO_PIN_RESET)
+#define ADS1118_CS_RELEASE HAL_GPIO_WritePin(EXTPROC_SPI2_ADC_CS3_GPIO_Port,EXTPROC_SPI2_ADC_CS3_Pin, GPIO_PIN_SET)
 
-//****************************************************************************
-//
-// Global variables
-//
-//****************************************************************************
-extern const char *adcRegisterNames[];
-
-//****************************************************************************
-//
-// Function prototypes
-//
-//****************************************************************************
-void adcStartup(void);
-int16_t readData(void);
-uint16_t readSingleRegister(uint8_t address);
-uint16_t writeSingleRegister(uint8_t address, uint16_t data);
-uint16_t startAdcConversion(void);
-uint16_t stopAdcConversion(void);
-float ads1118_measure_internal_temperature_example(void);
-
-// Getter functions
-uint16_t    getRegisterValue(uint8_t address);
-
-// Helper functions
-uint8_t     upperByte(uint16_t uint16_Word);
-uint8_t     lowerByte(uint16_t uint16_Word);
-uint16_t    combineBytes(uint8_t upperByte, uint8_t lowerByte);
-int32_t     signExtend(const uint8_t dataBytes[]);
-
-//****************************************************************************
-//
-// Register macros
-//
-//****************************************************************************
-
-#define WLENGTH     1
-
-//**********************************************************************************
-//
-// Device commands
-//
-//**********************************************************************************
-
-//****************************************************************************
-//
-// Constants
-//
-//****************************************************************************
-/* The ADS1118 does not have addressable registers, but a numbered register concept
- * is used to maintain synchronization between the device and the firmware.
- * Register 0 can be considered the Conversion register and Register 1 can be
- * considered the Configuration register.
- *
- */
-#define NUM_REGISTERS                           ((uint8_t) 2)
-/* Maximum register address or address of the last register in the regmap */
-#define MAX_REGISTER_ADDRESS                    ((uint8_t) 1)
-
-//****************************************************************************
-//
-// Register definitions
-//
-//****************************************************************************
-
-/* NOTE: Whenever possible, macro names (defined below) were derived from
- * datasheet defined names; however, updates to documentation or readability
- * may cause mismatches between names defined here in example code from those
- * shown in the device datasheet.
- */
+// 寄存器地址
+#define ADS_CONFIG_REG    0x01
+#define ADS_CONVERSION_REG 0x00
 
 
-/* Register 0x00 (CONVERSION) definition
- * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- * |  Bit 15  |  Bit 14  |  Bit 13  |  Bit 12  |  Bit 11  |  Bit 10  |   Bit 9  |   Bit 8  |   Bit 7  |   Bit 6  |   Bit 5  |   Bit 4  |   Bit 3  |   Bit 2  |   Bit 1  |   Bit 0  |
- * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- * |                                                                                    CONV[15:0]                                                                                   |
- * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- */
+/**单次转换启动**/
 
-    /* CONVERSION register address */
-    #define CONVERSION_ADDRESS                                              ((uint16_t) 0x00)
+#define ADS1118_SS_NONE  0 // 无效
 
-    /* CONVERSION default (reset) value */
-    #define CONVERSION_DEFAULT                                              ((uint16_t) 0x0000)
-
-    /* CONVERSION register field masks */
-    #define CONVERSION_CONV_MASK                                            ((uint16_t) 0xFFFF)
+#define ADS1118_SS_ONCE  1 // 启动单次转换
 
 
-/* Register 0x01 (CONFIG) definition
- * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- * |  Bit 15  |  Bit 14  |  Bit 13  |  Bit 12  |  Bit 11  |  Bit 10  |   Bit 9  |   Bit 8  |   Bit 7  |   Bit 6  |   Bit 5  |   Bit 4  |   Bit 3  |   Bit 2  |   Bit 1  |   Bit 0  |
- * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- * |    SS    |            MUX[2:0]            |            PGA[2:0]            |   MODE   |             DR[2:0]            |  TS_MODE |PULL_UP_EN|       NOP[1:0]      | RESERVED |
- * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- */
 
-    /* CONFIG register address */
-    #define CONFIG_ADDRESS                                                  ((uint16_t) 0x01)
+/**输入多路复用器配置**/
 
-    /* CONFIG default (reset) value */
-    #define CONFIG_DEFAULT                                                  ((uint16_t) 0x8583)
+#define ADS1118_MUX_01 0 // 000 = AINP 为 AIN0 且 AINN 为 AIN1（默认）
 
-    /* CONFIG register field masks */
-    #define CONFIG_SS_MASK                                                  ((uint16_t) 0x8000)
-    #define CONFIG_MUX_MASK                                                 ((uint16_t) 0x7000)
-    #define CONFIG_PGA_MASK                                                 ((uint16_t) 0x0E00)
-    #define CONFIG_MODE_MASK                                                ((uint16_t) 0x0100)
-    #define CONFIG_DR_MASK                                                  ((uint16_t) 0x00E0)
-    #define CONFIG_TS_MODE_MASK                                             ((uint16_t) 0x0010)
-    #define CONFIG_PULL_UP_EN_MASK                                          ((uint16_t) 0x0008)
-    #define CONFIG_NOP_MASK                                                 ((uint16_t) 0x0006)
-    #define CONFIG_RESERVED_MASK                                            ((uint16_t) 0x0001)
+#define ADS1118_MUX_03 1 // 001 = AINP 为 AIN0 且 AINN 为 AIN3
 
-    /* SS field values */
-    #define CONFIG_SS_NA                                                    ((uint16_t) 0x0000)
-    #define CONFIG_SS_CONV_START                                            ((uint16_t) 0x8000)
+#define ADS1118_MUX_13 2 // 010 = AINP 为 AIN1 且 AINN 为 AIN3
 
-    /* MUX field values */
-    #define CONFIG_MUX_AIN0_AIN1                                            ((uint16_t) 0x0000)
-    #define CONFIG_MUX_AIN0_AIN3                                            ((uint16_t) 0x1000)
-    #define CONFIG_MUX_AIN1_AIN3                                            ((uint16_t) 0x2000)
-    #define CONFIG_MUX_AIN2_AIN3                                            ((uint16_t) 0x3000)
-    #define CONFIG_MUX_AIN0_GND                                             ((uint16_t) 0x4000)
-    #define CONFIG_MUX_AIN1_GND                                             ((uint16_t) 0x5000)
-    #define CONFIG_MUX_AIN2_GND                                             ((uint16_t) 0x6000)
-    #define CONFIG_MUX_AIN3_GND                                             ((uint16_t) 0x7000)
+#define ADS1118_MUX_23 3 // 011 = AINP 为 AIN2 且 AINN 为 AIN3
 
-    /* PGA field values */
-    #define CONFIG_PGA_6p144V                                               ((uint16_t) 0x0000)
-    #define CONFIG_PGA_4p096V                                               ((uint16_t) 0x0200)
-    #define CONFIG_PGA_2p048V                                               ((uint16_t) 0x0400)
-    #define CONFIG_PGA_1p024V                                               ((uint16_t) 0x0600)
-    #define CONFIG_PGA_0p512V                                               ((uint16_t) 0x0800)
-    #define CONFIG_PGA_0p256V                                               ((uint16_t) 0x0A00)
+#define ADS1118_MUX_0G 4 // 100 = AINP 为 AIN0 且 AINN 为 GND
 
-    /* MODE field values */
-    #define CONFIG_MODE_CONT                                                ((uint16_t) 0x0000)
-    #define CONFIG_MODE_SS                                                  ((uint16_t) 0x0100)
+#define ADS1118_MUX_1G 5 // 101 = AINP 为 AIN1 且 AINN 为 GND
 
-#ifdef ADS1018
-    /* DR field values */
-    #define CONFIG_DR_128SPS                                                ((uint16_t) 0x0000)
-    #define CONFIG_DR_250SPS                                                ((uint16_t) 0x0020)
-    #define CONFIG_DR_490SPS                                                ((uint16_t) 0x0040)
-    #define CONFIG_DR_920SPS                                                ((uint16_t) 0x0060)
-    #define CONFIG_DR_1600SPS                                               ((uint16_t) 0x0080)
-    #define CONFIG_DR_2400SPS                                               ((uint16_t) 0x00A0)
-    #define CONFIG_DR_3300_1SPS                                             ((uint16_t) 0x00C0)
-    #define CONFIG_DR_3300_2SPS                                             ((uint16_t) 0x00E0)
-#else
-    /* DR field values */
-    #define CONFIG_DR_8SPS                                                  ((uint16_t) 0x0000)
-    #define CONFIG_DR_16SPS                                                 ((uint16_t) 0x0020)
-    #define CONFIG_DR_32SPS                                                 ((uint16_t) 0x0040)
-    #define CONFIG_DR_64SPS                                                 ((uint16_t) 0x0060)
-    #define CONFIG_DR_128SPS                                                ((uint16_t) 0x0080)
-    #define CONFIG_DR_250SPS                                                ((uint16_t) 0x00A0)
-    #define CONFIG_DR_475SPS                                                ((uint16_t) 0x00C0)
-    #define CONFIG_DR_860SPS                                                ((uint16_t) 0x00E0)
+#define ADS1118_MUX_2G 6 // 110 = AINP 为 AIN2 且 AINN 为 GND
+
+#define ADS1118_MUX_3G 7 // 111 = AINP 为 AIN3 且 AINN 为 GND
+
+
+
+/**可编程增益放大器配置**/
+
+#define ADS1118_PGA_61  0 // 000 = FSR 为 ±6.144V
+
+#define ADS1118_PGA_40  1 // 001 = FSR 为 ±4.096V
+
+#define ADS1118_PGA_20  2 // 010 = FSR 为 ±2.048V（默认）
+
+#define ADS1118_PGA_10  3 // 011 = FSR 为 ±1.024V
+
+#define ADS1118_PGA_05  4 // 100 = FSR 为 ±0.512V
+
+#define ADS1118_PGA_02  5 // 101 = FSR 为 ±0.256V
+
+
+
+/**器件工作模式配置**/
+
+#define ADS1118_MODE_LX  0 // 连续转换模式
+
+#define ADS1118_MODE_DC  1 // 断电并采用单次转换模式（默认）
+
+
+
+/**数据传输速率**/
+
+#define ADS1118_DR_8      0 // 000 = 8SPS
+
+#define ADS1118_DR_16     1 // 001 = 16SPS
+
+#define ADS1118_DR_32     2 // 010 = 32SPS
+
+#define ADS1118_DR_64     3 // 011 = 64SPS
+
+#define ADS1118_DR_128    4 // 100 = 128SPS（默认）
+
+#define ADS1118_DR_250    5 // 101 = 250SPS
+
+#define ADS1118_DR_475    6 // 110 = 475SPS
+
+#define ADS1118_DR_860    7 // 111 = 860SPS
+
+
+
+/**温度传感器模式**/
+
+#define ADS1118_TS_MODE_ADC 0 // 0 = ADC 模式（默认）
+
+#define ADS1118_TS_MODE_T 1 // 1 = 温度传感器模式
+
+
+
+/**上拉使能**/
+
+#define ADS1118_PULL_UP_EN_N 0 // 禁用 DOUT/DRDY 引脚的上拉电阻
+
+#define ADS1118_PULL_UP_EN_E 1 // 使能 DOUT/DRDY 引脚的上拉电阻（默认）
+
+
+
+/**控制数据是否写入配置寄存器**/
+
+#define ADS1118_NOP_N 0 // 00 = 无效数据， 不更新配置寄存器内容
+
+#define ADS1118_NOP_W 1 // 01 = 有效数据， 更新配置寄存器（默认）
+
+
+
+/**保留**/
+
+#define ADS1118_CNV_RDY_FL    1 // 始终写入 1h
+
+typedef struct
+{
+	int16_t adcdat;
+	float voltage;
+	float current;
+}adc_stru;
+
+void ADS1118_Init(void);
+void adcProc(void);
 #endif
 
-    /* TS_MODE field values */
-    #define TS_MODE_ADC                                                     ((uint16_t) 0x0000)
-    #define TS_MODE_TS                                                      ((uint16_t) 0x0010)
 
-    /* PULL_UP_EN field values */
-    #define PULL_UP_EN_DISABLE                                              ((uint16_t) 0x0000)
-    #define PULL_UP_EN_ENABLE                                               ((uint16_t) 0x0080)
 
-    /* NOP field values */
-    #define NOP_INV_0                                                       ((uint16_t) 0x0000)
-    #define NOP_VALID                                                       ((uint16_t) 0x0002)
-    #define NOP_INV_2                                                       ((uint16_t) 0x0004)
-    #define NOP_INV_3                                                       ((uint16_t) 0x0006)
 
-    /* RESERVED field values */
-#define RESERVED_VALUE                                                      ((uint16_t) 0x0001)
 
-#endif

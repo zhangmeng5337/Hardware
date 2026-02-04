@@ -1,0 +1,86 @@
+/*******************************************************************************
+*
+* 浠ｇ爜璁稿彲鍜屽厤璐ｄ俊�?* 姝︽眽鑺簮鍗婂浣撴湁闄愬叕鍙告巿浜堟偍浣跨敤鎵€鏈夌紪绋嬩唬鐮佺ず渚嬬殑闈炰笓灞炵殑鐗堟潈璁稿彲锛屾偍鍙互鐢辨�?* 鐢熸垚鏍规嵁鎮ㄧ殑鐗瑰畾闇€瑕佽€屽畾鍒剁殑鐩镐技鍔熻兘銆傛牴鎹笉鑳借鎺掗櫎鐨勪换浣曟硶瀹氫繚璇侊紝姝︽眽鑺簮�?* 瀵间綋鏈夐檺鍏徃鍙婂叾绋嬪簭寮€鍙戝晢鍜屼緵搴斿晢瀵圭▼搴忔垨鎶€鏈敮鎸侊紙濡傛灉鏈夛級涓嶆彁渚涗换浣曟槑绀烘垨�?* 鍚殑淇濊瘉鎴栨潯浠讹紝鍖呮嫭浣嗕笉闄愪簬鏆楀惈鐨勬湁鍏抽€傞攢鎬с€侀€傜敤浜庢煇绉嶇壒瀹氱敤閫斿拰闈炰镜鏉冪殑淇濊�?* 鎴栨潯浠躲€?* 鏃犺浣曠鎯呭舰锛屾姹夎姱婧愬崐瀵间綋鏈夐檺鍏徃鍙婂叾绋嬪簭寮€鍙戝晢鎴栦緵搴斿晢鍧囦笉瀵逛笅鍒楀悇椤硅礋璐ｏ�?* 鍗充娇琚憡鐭ュ叾鍙戠敓鐨勫彲鑳芥€ф椂锛屼篃鏄姝わ細鏁版嵁鐨勪涪澶辨垨鎹熷潖锛涚洿鎺ョ殑銆佺壒鍒殑銆侀檮甯︾殑
+* 鎴栭棿鎺ョ殑鎹熷锛屾垨浠讳綍鍚庢灉鎬х粡娴庢崯瀹筹紱鎴栧埄娑︺€佷笟鍔°€佹敹鍏ャ€佸晢瑾夋垨棰勬湡鍙妭鐪侀噾棰濈殑
+* 鎹熷け銆?* 鏌愪簺鍙告硶杈栧尯涓嶅厑璁稿鐩存帴鐨勩€侀檮甯︾殑鎴栧悗鏋滄€х殑鎹熷鏈変换浣曠殑鎺掗櫎鎴栭檺鍒讹紝鍥犳鏌愪簺鎴?* 鍏ㄩ儴涓婅堪鎺掗櫎鎴栭檺鍒跺彲鑳藉苟涓嶉€傜敤浜庢偍�?*
+*******************************************************************************/
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __SENSOR_H
+#define __SENSOR_H
+#include "main.h"
+
+
+#define MODBUS_RECV_SIZE		128
+#define REG_COUNT 32
+#define SUPPORT_CMD_SIZE 4
+
+/*modbus**************************************************/
+#define MODBUS_FUNC_READ  				0x03
+#define MODBUS_FUNC_ONLYREAD  			0x04
+#define MODBUS_FUNC_ONE_WRITE	  		0x06
+#define MODBUS_FUNC_MUL_WRITE	  		0x10
+
+
+
+
+
+
+
+typedef struct
+{
+unsigned int Reg;
+unsigned char SupportCmd[SUPPORT_CMD_SIZE];//analy request
+unsigned char CmdSize;
+unsigned char enable;
+unsigned char save;
+unsigned char payload[2];
+unsigned char datType;//0:unsigned char 1:unsigned int 2:uint32_t 
+                      //3:int8 4:int16 5:float high 2byte 6:float low 2byte
+
+}modbus_reg_cmdCheck_stru;
+//typedef struct
+//{
+//modbus_reg_cmd_stru *RegCmd;
+//
+////unsigned int val_uint; 
+//reg_dat_pack *RegDat;
+//
+//}modbus_reg_stru;
+
+typedef struct
+{
+modbus_reg_cmdCheck_stru *RegCmdDat;
+unsigned int cmd_sup;
+}modbus_reg_cmd_stru;
+
+typedef struct
+{
+unsigned char DevAddr;
+unsigned char Addr;
+unsigned char Func;
+unsigned int RegStart;
+unsigned int RegEnd;
+unsigned int RegCount;
+unsigned int len;
+unsigned int crc;
+unsigned char payload[MODBUS_RECV_SIZE];//analy request
+unsigned char tx_buf[MODBUS_RECV_SIZE];//decto mcu
+uint32_t tick;
+}modbus_stru;
+
+typedef struct
+{
+unsigned int reg;
+unsigned int val_uint; 
+int val_int;
+float f;
+unsigned char data_type;//0:unint;1:int  2:float
+}reg_dat_type_stru;
+
+
+
+void modbus_recv_proc(void);
+void modbus_init(void);
+
+#endif /*__CW32L010_SPI_H */
+
