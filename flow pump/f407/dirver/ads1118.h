@@ -118,6 +118,7 @@ typedef struct
 	int16_t adcdat;
 	float voltage;
 	float current;
+	float zero;
 }adc_stru;
 
 void ADS1118_Init(void);

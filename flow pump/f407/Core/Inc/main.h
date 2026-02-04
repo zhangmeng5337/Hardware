@@ -120,6 +120,8 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 #define TIM4PERIOD 65535
+#define TIM1PERIOD 1
+#define TIM1PS  (uint32_t) ((SystemCoreClock  / 100000000) - 1) 
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

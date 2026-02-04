@@ -48,10 +48,10 @@ void DAC8552_Out_Put_Voltage(float volf)
    
 	if(dac_usr.mode == DAC_4To20MA)
 	{
-		 dac_usr.dacVoltage = (volf+0.4)/65535*dac_usr.vref;
+		 dac_usr.dacVoltage = (volf+0.4-dac_usr.zero)/65535*dac_usr.vref;
 	}
 	else
-		 dac_usr.dacVoltage = (volf)/65535*dac_usr.vref;
+		 dac_usr.dacVoltage = (volf-dac_usr.zero)/65535*dac_usr.vref;
    
 	
     DAC8552_DA_convert(dac_usr.dacVoltage);

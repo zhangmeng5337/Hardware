@@ -29,6 +29,7 @@ typedef struct
 	uint32_t dacDat;
 	float dacVoltage;
 	float vref;
+	float zero;
 	uint8_t mode;//0:4-20ma   1:0-20ma
 	
 }dac_stru;
