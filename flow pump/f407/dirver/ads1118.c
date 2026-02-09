@@ -8,13 +8,13 @@ uint8_t config_data[3] =
 {
     ADS_CONFIG_REG,     // 寄存器地址
     ADS1118_SS_ONCE << 8 |
-                    ADS1118_MUX_1G  << 7 |
-                    ADS1118_PGA_20  << 6 |
+                    ADS1118_MUX_1G  << 7 ||
+                    ADS1118_PGA_20  << 6 ||
                     ADS1118_MODE_LX << 5,
 
-                    ADS1118_DR_128       << 8 |
-                    ADS1118_TS_MODE_ADC  << 7 |
-                    ADS1118_PULL_UP_EN_N << 6 |
+                    ADS1118_DR_128       << 8 ||
+                    ADS1118_TS_MODE_ADC  << 7 ||
+                    ADS1118_PULL_UP_EN_N << 6 ||
                     ADS1118_NOP_W        << 5
                     ,               // 单次转换+增益1+128SPS
 

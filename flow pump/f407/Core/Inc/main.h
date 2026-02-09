@@ -55,7 +55,8 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+#define FORWARD 0
+#define BACKWORD 1
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

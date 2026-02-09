@@ -89,8 +89,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
   encoder_over_flow();
   }
-  
-
+}
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) 
+{
+	if (GPIO_Pin == KEYSW_Pin)
+	{
+      get_button()->enter = 1;
+	} 
 }
 
 /* USER CODE END 0 */

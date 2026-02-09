@@ -70,7 +70,10 @@ encoder_stru *get_encoder(void)
 {
     return &encoder_u;
 }
-
+button_stru *get_button(void)
+{
+    return &button_u;
+}
 /**
   * @brief  编码器接口初始化
   * @param  无
@@ -105,6 +108,12 @@ void encoder_over_flow(void)
 void updateButton(void)
 {
     uint32_t tmp1;
+        if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4))
+            /* ??ò? */
+           button_u.dir = FORWARD;
+        else
+            button_u.dir = BACKWORD;
+	
     if (button_u.pollPeriod >= 50)
     {
         button_u.capture_count = __HAL_TIM_GET_COUNTER(&htim3);
@@ -141,4 +150,9 @@ void update_speed(void)
         encoder_u.speed = encoder_u.capture_per_unit / ENCODER_TOTAL_RESOLUTION * 10;
         div = 0;
     }
+}
+void encoder_proc(void)
+{
+	updateButton();
+	update_speed();
 }

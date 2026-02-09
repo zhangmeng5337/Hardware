@@ -68,11 +68,15 @@ typedef struct
      float capture_per_unit ;//
      unsigned int pollPeriod;
 	 unsigned char status;//1:hitted
+	 unsigned char dir;
+	 unsigned char enter;
 }button_stru;
 
 encoder_stru *get_encoder(void);
 void Encoder_Init(void);
 void encoder_over_flow(void);
 void clear_encoder(void);
+void encoder_proc(void);
+button_stru *get_button(void);
 #endif   /* __BSP_ENCODER_H */
 

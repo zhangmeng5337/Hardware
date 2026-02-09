@@ -2,7 +2,7 @@
 #include "crc.h"
 #include "uart.h"
 
-
+void modbus_analy_func(unsigned char func);
 // 鍋囪浠庣珯瀵勫瓨鍣ㄦ暟�?
 unsigned char partNo[] = {"CNG-35"};
 modbus_stru modbus_usr;
@@ -19,7 +19,7 @@ modbus_reg_cmdCheck_stru  modbus_reg_list[REG_COUNT] =
 void modbus_init()
 {
     //modbus_cmd_list.pb = modbus_reg_list.RegCmd;
-    modbus_usr.DevAddr;
+    //modbus_usr.DevAddr;
     //    if (modbus_usr.DevAddr > DEV_ADDR_MAX)
     //        modbus_usr.DevAddr = 1;
     //    modbus_cmd_list.RegNum = GetReg()->pb;
@@ -217,6 +217,7 @@ unsigned char ModbusResponseAnalySlave()
                 memset(modbus_usr.payload, 0, MODBUS_RECV_SIZE);
                 memcpy(modbus_usr.payload, pb + 2,  modbus_usr.len + 6);
             }
+			 modbus_analy_func(modbus_usr.Func);
         }
 
     }
@@ -393,8 +394,6 @@ void modbus_recv_proc()
             modbus_usr.Func = ModbusResponseAnalySlave();//rs485 data analy
             p->recv_update = 0;
             memset(p->recv_buf, 0, RSBUFFER_SIZE);
-           
-            modbus_analy_func(modbus_usr.Func);
             p->recv_len = 0;
 
         }

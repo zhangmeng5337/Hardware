@@ -100,7 +100,10 @@ void set_bldcm_speed(uint16_t v)
 
     set_pwm_pulse(v);     // 设置速度
 }
-
+void setMotorSpeed(float speed)
+{
+	set_pid_target(speed);
+}
 /**
   * @brief  设置电机方向
   * @param  无
@@ -157,6 +160,10 @@ void bldcm_pid_control(void)
         set_bldcm_speed(cont_val);
 
     }
+	else
+	{
+		stop_pwm_output();
+	}
 }
 
 
