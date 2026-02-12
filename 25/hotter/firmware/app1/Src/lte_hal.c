@@ -302,7 +302,7 @@ unsigned char *pb;
 unsigned int crc_re, crc_cal;
 uint8_t lte_info_ota_show()
 {
-    unsigned char buf[64];
+    unsigned char buf[512];
     switch (at_cmd_ota_num)
     {
     //***************************************************http
@@ -364,6 +364,8 @@ uint8_t lte_info_ota_show()
         }
         break;
     case AT_HTTPPARA_2:
+//        sprintf(buf, "AT+HTTPPARA=\"URL\",%s%d\r\n", get_config()->http_download,
+//                get_config()->seq_count); //url set		
         sprintf(buf, "AT+HTTPPARA=\"URL\",%s%d\r\n", get_config()->http_download,
                 get_config()->seq_count); //url set
         if (lte_Send_Cmd(buf, "OK", LTE_LONG_DELAY)) //≤È—ØAT

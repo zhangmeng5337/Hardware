@@ -1091,7 +1091,7 @@ void anlysis_mqtt_recv()
     //valid_flag = 0;
     get_config()->update_setting = 0;
 
-    dev_id = find_json_string("\"Updat Frimware\": ", "\r\n", 0);
+    dev_id = find_json_string("\"Updat Frimware\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         // memset(dev_id, 0, 128);
@@ -1102,7 +1102,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"Reboot Dev\": ", "\r\n", 0);
+    dev_id = find_json_string("\"Reboot Dev\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1139,7 +1139,7 @@ void anlysis_mqtt_recv()
 
 
     }
-    dev_id = find_json_string("\"outmax\": ", "\r\n", 0);
+    dev_id = find_json_string("\"outmax\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1147,7 +1147,7 @@ void anlysis_mqtt_recv()
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->out_max = tmp_f;
     }
-    dev_id = find_json_string("\"outmin\": ", "\r\n", 0);
+    dev_id = find_json_string("\"outmin\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1156,7 +1156,7 @@ void anlysis_mqtt_recv()
         get_pid_params()->out_min = tmp_f;
     }
 
-    dev_id = find_json_string("\"kp\": ", "\r\n", 0);
+    dev_id = find_json_string("\"kp\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1164,7 +1164,7 @@ void anlysis_mqtt_recv()
         tmp_f = atof(&dev_id[0]);
         get_pid_params()->kp_u = tmp_f;
     }
-    dev_id = find_json_string("\"ki\": ", "\r\n", 0);
+    dev_id = find_json_string("\"ki\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1173,7 +1173,7 @@ void anlysis_mqtt_recv()
         get_pid_params()->ki_u = tmp_f;
     }
 
-    dev_id = find_json_string("\"kd\": ", "\r\n", 0);
+    dev_id = find_json_string("\"kd\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1222,31 +1222,31 @@ void anlysis_mqtt_recv()
         get_config()->update_setting = 1;
 
     }
-    dev_id = find_json_string("\"tin_index\": ", "\r\n", 0);
+    dev_id = find_json_string("\"tin_index\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         tt = atoi(&dev_id[0]);
         get_config()->tin_index = tt;
     }
-    dev_id = find_json_string("\"to_index\": ", "\r\n", 0);
+    dev_id = find_json_string("\"to_index\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         tt = atoi(&dev_id[0]);
         get_config()->to_index = tt;
     }
-    dev_id = find_json_string("\"pin_index\": ", "\r\n", 0);
+    dev_id = find_json_string("\"pin_index\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         tt = atoi(&dev_id[0]);
         get_config()->pin_index = tt;
     }
-    dev_id = find_json_string("\"po_index\": ", "\r\n", 0);
+    dev_id = find_json_string("\"po_index\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         tt = atoi(&dev_id[0]);
         get_config()->po_index = tt;
     }
-    dev_id = find_json_string("\"dev_size\": ", "\r\n", 0);
+    dev_id = find_json_string("\"dev_size\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         // memset(dev_id, 0, 128);
@@ -1256,7 +1256,7 @@ void anlysis_mqtt_recv()
         get_config()->dev_size = tmp_f;
 
     }
-    dev_id = find_json_string("\"energy_size\": ", "\r\n", 0);
+    dev_id = find_json_string("\"energy_size\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         // memset(dev_id, 0, 128);
@@ -1266,7 +1266,7 @@ void anlysis_mqtt_recv()
         get_config()->energy_size = tmp_f;
 
     }
-    dev_id = find_json_string("\"energy_addr\": ", "\r\n", 0);
+    dev_id = find_json_string("\"energy_addr\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         // memset(dev_id, 0, 128);
@@ -1408,7 +1408,7 @@ void anlysis_mqtt_recv()
 
 
 
-    dev_id = find_json_string("\"Set Out Temp\": ", "\r\n", 0);
+    dev_id = find_json_string("\"Set Out Temp\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1420,7 +1420,7 @@ void anlysis_mqtt_recv()
 
     }
 
-    dev_id = find_json_string("\"Set Room Temp\": ", "\r\n", 0);
+    dev_id = find_json_string("\"Set Room Temp\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1452,7 +1452,7 @@ void anlysis_mqtt_recv()
 
         }
     }
-    dev_id = find_json_string("\"Set Upload Period(second)\": ", "\r\n", 0);
+    dev_id = find_json_string("\"Set Upload Period(second)\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //  memset(dev_id, 0, 128);
@@ -1461,7 +1461,7 @@ void anlysis_mqtt_recv()
         get_config()->set_up_period = tmp_f;
         get_config()->update_setting = 1;
     }
-    dev_id = find_json_string("\"do_num\": ", "\r\n", 0);
+    dev_id = find_json_string("\"do_num\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1471,7 +1471,7 @@ void anlysis_mqtt_recv()
         //set_do_out()->do_update = 1;
 
     }
-    dev_id = find_json_string("\"do_set\": ", "\r\n", 0);
+    dev_id = find_json_string("\"do_set\":", "\r\n", 0);
     if (dev_id != NULL)
     {
         //memset(dev_id, 0, 128);
@@ -1536,7 +1536,7 @@ void anlysis_mqtt_recv()
     }
     else
     {
-        dev_id = find_json_string("\"Temp\": ", ",\r\n", 1);//schedule paln
+        dev_id = find_json_string("\"Temp\":", ",\r\n", 1);//schedule paln
         if (dev_id != NULL)
         {
             if (dev_id[i] >= 0x2e)
@@ -2674,8 +2674,8 @@ void mqtt_recv_proc()
 }
 void mqtt_init()
 {
-    //mqtt_at_cmd_num = AT_MCONFIG;
-    mqtt_at_cmd_num = AT_MIPSTART;
+    mqtt_at_cmd_num = AT_MCONFIG;
+  //  mqtt_at_cmd_num = AT_MIPSTART;
     mqtt_at_cmds.RtyNum = 0;
     mqtt_recv = get_lte_recv();
     mqtt_at_cmds.net_status = NO_REC;
@@ -2701,7 +2701,7 @@ uint8_t mqtt_Json_Info_Show(void)
     {
         case AT_MCONFIG:
         {
-            sprintf(buf, "AT+MCONFIG=%s,%s,%s\0D\0A",
+            sprintf(buf, "AT+MCONFIG=%s,%s,%s\r\n",
                     get_config()->user_id, get_config()->user, get_config()->password);
             if (lte_Send_Cmd(buf, "OK", LTE_SHORT_DELAY_MQTT)) //??AT
             {
@@ -2740,7 +2740,7 @@ uint8_t mqtt_Json_Info_Show(void)
                     get_config()->mqtt_port);
             if (lte_Send_Cmd(buf, "CONNECT", LTE_SHORT_DELAY_MQTT)) //??AT
             {
-                mqtt_at_cmd_num = AT_MIPCLOSE;
+                mqtt_at_cmd_num = AT_MCONFIG;
             }
             else
             {
@@ -3019,7 +3019,7 @@ uint8_t mqtt_Info_Show(void)
             else
             {
                 mqtt_at_cmds.RtyNum = 0;
-                mqtt_at_cmd_num = AT_MIPSTART;
+                mqtt_at_cmd_num = AT_MCONFIG;
 
                 //memset(get_lte_recv()->Lpuart1RecBuff,0,sizeof(get_lte_recv()->Lpuart1RecBuff));
             }
@@ -3216,6 +3216,7 @@ uint8_t mqtt_Info_Show(void)
     if (mqtt_at_cmds.RtyNum >= 10)
     {
         CAT1_Init();
+		 mqtt_init();
         mqtt_at_cmds.net_status = TIME_OUT;
 
     }
