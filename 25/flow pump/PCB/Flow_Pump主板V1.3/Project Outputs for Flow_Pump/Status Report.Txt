@@ -1,0 +1,14 @@
+Project Outputs Generation Report
+---------------------------------
+Start Output Generation At 14:04:42 On 2026/2/8
+
+Output: Generates pick and place files
+Type  : Pick Place
+From  : PCB Document [Flow_Pump.PcbDoc]
+   Generated File[Pick Place for Flow_Pump.txt]
+
+
+Files Generated   : 1
+Documents Printed : 0
+
+Finished Output Generation At 14:04:48 On 2026/2/8

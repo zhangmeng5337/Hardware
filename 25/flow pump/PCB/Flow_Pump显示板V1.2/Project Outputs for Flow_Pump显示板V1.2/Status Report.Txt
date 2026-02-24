@@ -1,0 +1,32 @@
+Output: ODB++ Files
+Type  : ODB
+From  : PCB Document [Flow_PumpÏÔÊ¾°å_V2.0.PcbDoc]
+   Generated File[profile]
+   Generated File[stephdr]
+   Generated File[features]
+   Generated File[features]
+   Generated File[tools]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[tools]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[features]
+   Generated File[components]
+   Generated File[features]
+   Generated File[components]
+   Generated File[data]
+   Generated File[netlist]
+   Generated File[matrix]
+   Generated File[Flow_PumpÏÔÊ¾°å_V2.0.REP]
+
+
+Files Generated   : 23
+Documents Printed : 0
+
+Finished Output Generation At 16:43:26 On 2026/2/2
