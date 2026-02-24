@@ -215,19 +215,34 @@ void config_init()
     }
     else
     {
+//        sprintf(get_config()->user, "%s", "usr");
+//        sprintf(get_config()->password, "%s", "7895621");
+//        sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
+//        sprintf(get_config()->mqtt_port, "%s", "1883");
+//        sprintf(get_config()->version, "%s", VERSION);
+//        if (OTA_UPDATE_TO == UAPP2)
+//            sprintf(get_config()->http_ip, "%s",
+//                    "http://39.106.131.169:666/ota/b/");
+//
+//        else
+//            sprintf(get_config()->http_ip, "%s",
+//                    "http://39.106.131.169:666/ota/a/");
+//        sprintf(get_config()->http_port, "%s", "666");
+
         sprintf(get_config()->user, "%s", "usr");
         sprintf(get_config()->password, "%s", "7895621");
-        sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
+        sprintf(get_config()->mqtt_ip, "%s", "39.106.43.157");
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", VERSION);
+
         if (OTA_UPDATE_TO == UAPP2)
             sprintf(get_config()->http_ip, "%s",
-                    "http://39.106.131.169:666/ota/b/");
+                    "http://39.106.43.157/api/ota/b/");
 
         else
             sprintf(get_config()->http_ip, "%s",
-                    "http://39.106.131.169:666/ota/a/");
-        sprintf(get_config()->http_port, "%s", "666");
+                    "http://39.106.43.157/api/ota/a/");
+        sprintf(get_config()->http_port, "%s", "666");		
         get_config()->machine = 1;
         get_config()->update_firm = 0;
         get_config()->set_tout = 45;
@@ -248,19 +263,32 @@ void config_init()
 
 
     }
+sprintf(get_config()->user, "%s", "usr");
+sprintf(get_config()->password, "%s", "7895621");
+sprintf(get_config()->mqtt_ip, "%s", "39.106.43.157");
+sprintf(get_config()->mqtt_port, "%s", "1883");
+sprintf(get_config()->version, "%s", VERSION);
 
-    sprintf(get_config()->user, "%s", "usr");
-    sprintf(get_config()->password, "%s", "7895621");
-    sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
-    sprintf(get_config()->mqtt_port, "%s", "1883");
-    sprintf(get_config()->version, "%s", VERSION);
-    if (OTA_UPDATE_TO == UAPP2)
-        sprintf(get_config()->http_ip, "%s",
-                "http://39.106.131.169:666/ota/b/");
+if (OTA_UPDATE_TO == UAPP2)
+	sprintf(get_config()->http_ip, "%s",
+			"http://39.106.43.157/api/ota/b/");
 
-    else
-        sprintf(get_config()->http_ip, "%s",
-                "http://39.106.131.169:666/ota/a/");
+else
+	sprintf(get_config()->http_ip, "%s",
+			"http://39.106.43.157/api/ota/a/");
+
+//    sprintf(get_config()->user, "%s", "usr");
+//    sprintf(get_config()->password, "%s", "7895621");
+//    sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
+//    sprintf(get_config()->mqtt_port, "%s", "1883");
+//    sprintf(get_config()->version, "%s", VERSION);
+//    if (OTA_UPDATE_TO == UAPP2)
+//        sprintf(get_config()->http_ip, "%s",
+//                "http://39.106.131.169:666/ota/b/");
+//
+//    else
+//        sprintf(get_config()->http_ip, "%s",
+//                "http://39.106.131.169:666/ota/a/");
     sprintf(get_config()->http_port, "%s", "666");
     get_config()->machine = 1;
     get_config()->update_firm = 0;
