@@ -211,7 +211,8 @@ static void MX_RTC_Init(void)
 {
 
   /* USER CODE BEGIN RTC_Init 0 */
-
+    RTC_TimeTypeDef sTime = {0};
+    RTC_DateTypeDef sDate = {0};
   /* USER CODE END RTC_Init 0 */
 
   /* USER CODE BEGIN RTC_Init 1 */
@@ -232,7 +233,49 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-
+if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ??¡ì?2?¡ì|?¡ìo???¨¨?D???¡ì?¡ì?1y?¡ì??????RTC?¡§o??¡§¡è?¡§o??¡§¡§|¡§??|¡§??2??a?¡ìo?¡§?RTC?¡ìo?¡§¡è??¡ì? */
+	{ 
+	/* USER CODE END Check_RTC_BKUP */
+   
+	/** Initialize RTC and set the Time and Date
+	*/
+	sTime.Hours = 0x14;
+	sTime.Minutes = 0x39;
+	sTime.Seconds = 0x0;
+	sTime.SubSeconds = 0x0;
+	sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+	sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+	if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+	{
+	  Error_Handler();
+	}
+	sDate.WeekDay = RTC_WEEKDAY_SATURDAY;
+	sDate.Month = RTC_MONTH_JUNE;
+	sDate.Date = 0x11;
+	sDate.Year = 0x26;
+	if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+	{
+	  Error_Handler();
+	}
+   
+	/** Enable the Alarm A
+	*/
+//	sAlarm.AlarmTime.Hours = 0x14;
+//	sAlarm.AlarmTime.Minutes = 0x30;
+//	sAlarm.AlarmTime.Seconds = 0x20;
+//	sAlarm.AlarmTime.SubSeconds = 0x0;
+//	sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+//	sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_SS14_9;
+//	sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+//	sAlarm.AlarmDateWeekDay = 0x1;
+//	sAlarm.Alarm = RTC_ALARM_A;
+//	if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+//	{
+//	  Error_Handler();
+//	}
+	/* USER CODE BEGIN RTC_Init 2 */
+	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //?a?¡ì?¨¨???¡ìa?¡ìo????a??????????|¡§???¡§¡è?¡ìo???¡ì|?¡ì?¡ì?a??2?|¡§???????|¡§??¡§o??????|¡§??|¡§??o?¡ì???¡ìa2???¡ì?¨¦???¡ì?¡ì?|¡§???a?¡ì?¨¨??¡ì?¨¨?? 
+	}
   /* USER CODE END RTC_Init 2 */
 
 }
