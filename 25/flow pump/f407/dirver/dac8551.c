@@ -43,15 +43,16 @@ void DAC8552_DA_convert(uint16_t datasheet)
 //函数功能：输出设定的电压
 //参数传递：无
 //------------------------------------------------------------------------------
-void DAC8552_Out_Put_Voltage(float volf)
+void DAC8552_Out_Put_Voltage(float cur)
 {
-   
+   float tmp;
+   tmp = cur * 0.1;
 	if(dac_usr.mode == DAC_4To20MA)
 	{
-		 dac_usr.dacVoltage = (volf+0.4-dac_usr.zero)/65535*dac_usr.vref;
+		 dac_usr.dacVoltage = (tmp+0.4-dac_usr.zero)/dac_usr.vref*65535;
 	}
 	else
-		 dac_usr.dacVoltage = (volf-dac_usr.zero)/65535*dac_usr.vref;
+		 dac_usr.dacVoltage = (tmp-dac_usr.zero)/dac_usr.vref*65535;
    
 	
     DAC8552_DA_convert(dac_usr.dacVoltage);

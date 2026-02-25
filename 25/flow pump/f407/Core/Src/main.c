@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bsp_encoder.h"
+#include "app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -142,7 +143,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_USB_Init();
   /* USER CODE BEGIN 2 */
-
+init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -152,6 +153,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	app();
   }
   /* USER CODE END 3 */
 }
@@ -233,7 +235,7 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ??¡ì?2?¡ì|?¡ìo???¨¨?D???¡ì?¡ì?1y?¡ì??????RTC?¡§o??¡§¡è?¡§o??¡§¡§|¡§??|¡§??2??a?¡ìo?¡§?RTC?¡ìo?¡§¡è??¡ì? */
+if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ??ï¿½ï¿½?2?ï¿½ï¿½|?ï¿½ï¿½o???ï¿½ï¿½?D???ï¿½ï¿½?ï¿½ï¿½?1y?ï¿½ï¿½??????RTC?ï¿½ï¿½o??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½o??ï¿½ï¿½ï¿½ï¿½|ï¿½ï¿½??|ï¿½ï¿½??2??a?ï¿½ï¿½o?ï¿½ï¿½?RTC?ï¿½ï¿½o?ï¿½ï¿½ï¿½ï¿½??ï¿½ï¿½? */
 	{ 
 	/* USER CODE END Check_RTC_BKUP */
    
@@ -274,7 +276,7 @@ if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ??¡ì?2?¡ì|?¡ìo???¨¨?D???
 //	  Error_Handler();
 //	}
 	/* USER CODE BEGIN RTC_Init 2 */
-	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //?a?¡ì?¨¨???¡ìa?¡ìo????a??????????|¡§???¡§¡è?¡ìo???¡ì|?¡ì?¡ì?a??2?|¡§???????|¡§??¡§o??????|¡§??|¡§??o?¡ì???¡ìa2???¡ì?¨¦???¡ì?¡ì?|¡§???a?¡ì?¨¨??¡ì?¨¨?? 
+	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //?a?ï¿½ï¿½?ï¿½ï¿½???ï¿½ï¿½a?ï¿½ï¿½o????a??????????|ï¿½ï¿½???ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½o???ï¿½ï¿½|?ï¿½ï¿½?ï¿½ï¿½?a??2?|ï¿½ï¿½???????|ï¿½ï¿½??ï¿½ï¿½o??????|ï¿½ï¿½??|ï¿½ï¿½??o?ï¿½ï¿½???ï¿½ï¿½a2???ï¿½ï¿½?ï¿½ï¿½???ï¿½ï¿½?ï¿½ï¿½?|ï¿½ï¿½???a?ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½?? 
 	}
   /* USER CODE END RTC_Init 2 */
 
@@ -301,9 +303,9 @@ static void MX_SPI1_Init(void)
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -341,7 +343,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -790,10 +792,11 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(nBREAK_GPIO_Port, nBREAK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, FLASH_nCS1_Pin|FLASH_nW_Pin|EXTPROC_SPI2_ADC_CS3_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, FLASH_nCS1_Pin|FLASH_nW_Pin|EXTPROC_SPI2_ADC_CS3_Pin|DO_ctrl_1_Pin
+                          |DO_ctrl_0_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, DC_Pin|DO_ctrl_1_Pin|DO_ctrl_0_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(DC_GPIO_Port, DC_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, RESX_Pin|FAULT_Pin|WARN_Pin, GPIO_PIN_RESET);
