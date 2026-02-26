@@ -70,4 +70,8 @@ void setDo(unsigned char doNum,unsigned char level)
 	}
 		
 }
+void diDoProc(void)
+{
+  readDi();
+}
 

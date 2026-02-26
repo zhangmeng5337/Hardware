@@ -187,7 +187,7 @@ void menu_manage()
     menuInterfaceMange();
     if (menuTable[menuTaskIndex].changeMenuSig == 1) //切换画面
     {
-        menuTable[menuTaskIndex].changeMenuSig = 0;
+        menuTable[menuTaskIndex].changeMenuSig = 0;//press ok button change menu
         menuTaskIndex = menuTable[menuTaskIndex].nextMenuNum;
         menuTable[menuTaskIndex].currentIconNum = 0;
         menuTable[menuTaskIndex].mode = 0;

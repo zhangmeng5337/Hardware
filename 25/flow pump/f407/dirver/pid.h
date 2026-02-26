@@ -10,8 +10,15 @@ typedef struct
     float actual_val;        		//实际值
     float err;             			//定义偏差值
     float err_last;          		//定义上一个偏差值
-    float Kp,Ki,Kd;          		//定义比例、积分、微分系数
+    float Kp;
+	float Ki;
+	float Kd;          		//定义比例、积分、微分系数
+	float pterm;
+	float iterm;
+	float dterm;
     float integral;          		//定义积分值
+    float outh;
+	float outL;
 }_pid;
 
 void  PID_param_init(void);

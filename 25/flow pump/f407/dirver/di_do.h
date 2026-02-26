@@ -25,5 +25,6 @@ void setDo(unsigned char doNum,unsigned char level);
 void getDiStatus(void);
 void readDi(void);
 void doInit(void);
+void diDoProc(void);
 #endif
 
