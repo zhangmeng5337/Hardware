@@ -75,7 +75,7 @@ float ADS1118_GetVoltage(int16_t adc_value)
 // Ö÷Ñ­»·
 void adcProc(void)
 {
-        HAL_Delay(1000);
+        //HAL_Delay(1000);
         adc_usr.adcdat = ADS1118_Read();
         adc_usr.voltage = ADS1118_GetVoltage(adc_usr.adcdat);
 }

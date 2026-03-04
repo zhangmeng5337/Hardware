@@ -42,7 +42,9 @@ typedef enum {
 
 typedef struct
 {
-   float a;
+   uint32_t lcdRefreshTime;
+   uint32_t adcRefreshTime;
+   uint32_t flashRefreshTime;
 } app_data;
 
 typedef struct
@@ -57,7 +59,7 @@ void WriteFlash(uint32_t addr, uint8_t *buff, int buf_len);
 void ReadFlash(uint32_t addr, uint8_t *buff, int buf_len);
 void WriteFlashBytes(uint32_t addr, uint8_t *buff, int buf_len);
 nvmem_state nvmem_stat_machine(void);
-
+void load_data_from_flash(void);
 #endif
 
 

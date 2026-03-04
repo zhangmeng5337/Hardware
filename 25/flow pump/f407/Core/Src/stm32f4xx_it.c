@@ -24,6 +24,8 @@
 /* USER CODE BEGIN Includes */
 #include "bsp_encoder.h"
 #include "bldc_ctronl.h"
+#include "key.h"
+#include "sys.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -195,6 +197,8 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 1 */
    encoder_proc();
   bldcm_pid_control();
+  keyProc();
+	TickPro();
   /* USER CODE END SysTick_IRQn 1 */
 }
 

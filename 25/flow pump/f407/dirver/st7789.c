@@ -215,7 +215,8 @@ void ST7789_Init(void)
     ST7789_WriteCommand(ST7789_DISPON);	//	Main screen turned on
 
     HAL_Delay(50);
-    ST7789_Fill_Color(BLACK);				//	Fill with Black.
+	ST7789_Fill_Color(GRAY);
+//    ST7789_Fill_Color(BLACK);				//	Fill with Black.
 }
 
 /**
@@ -790,6 +791,7 @@ void ST7789_Test(void)
     ST7789_Fill_Color(RED);
     ST7789_WriteString(10, 10, "Rect./Line.", Font_11x18, YELLOW, BLACK);
     ST7789_DrawRectangle(30, 30, 100, 100, WHITE);
+	
     HAL_Delay(1000);
 
     ST7789_Fill_Color(RED);

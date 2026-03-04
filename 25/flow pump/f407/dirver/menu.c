@@ -1,6 +1,6 @@
 #include "menu.h"
 #include "key.h"
-
+#include "st7789.h"
 void l1StandbyMenu(void);
 void l1RunPageMenu(void);
 void l2InfoMenu(void);
@@ -34,7 +34,7 @@ Menu_table_t menuTable[] =
     {RunPage,    RunICon,    	RunPage,		MaxRunicon,			l1StandbyMenu, 0, 0},
     {RunPage,    InfoIcon,   	InfoPage,		MaxInfoIcon,		l2InfoMenu, 0, 0},
     {RunPage,    WarnIcon,   	WarnPage,		MaxWarnIcon,		l2WarnMenu, 0, 0},
-    {RunPage,    SetIcon,    	SetPage,		MaxSetIcon,   	l2SetMenu, 0, 0},
+    {RunPage,    SetIcon,    	SetPage,		MaxSetIcon,   	    l2SetMenu, 0, 0},
     //L2
     {InfoPage,    date,      		InfoPage,			1,							l2InfoMenu, 0, 0},
     {InfoPage,    counter,   		CounterPage,	MaxCounterIcon,	l3InfoMenu, 0, 0},
@@ -69,10 +69,28 @@ Menu_table_t menuTable[] =
 };
 void l1StandbyMenu(void)
 {
+   
+    if(menuTable[menuTaskIndex].currentIconNum == RunICon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLACK);
+    if(menuTable[menuTaskIndex].currentIconNum == InfoIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, WHITE);
+    if(menuTable[menuTaskIndex].currentIconNum == WarnIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLUE);
+    if(menuTable[menuTaskIndex].currentIconNum == SetIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, RED);	
 
+	
 }
 void l1RunPageMenu(void)
 {
+    if(menuTable[menuTaskIndex].currentIconNum == RunICon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLACK);
+    if(menuTable[menuTaskIndex].currentIconNum == InfoIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, WHITE);
+    if(menuTable[menuTaskIndex].currentIconNum == WarnIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLUE);
+    if(menuTable[menuTaskIndex].currentIconNum == SetIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, RED);	
 
 }
 void l2InfoMenu(void)
@@ -181,6 +199,12 @@ void menuInterfaceMange()
         menuTable[menuTaskIndex].changeMenuSig = 1;
     }
 
+}
+void menu_init(void)
+{
+	menuTaskIndex = 0;
+	menuTable[menuTaskIndex].changeMenuSig = 0;
+	menuTable[menuTaskIndex].currentIconNum = 0;
 }
 void menu_manage()
 {

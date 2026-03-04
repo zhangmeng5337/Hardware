@@ -14,6 +14,7 @@ void keyProc(void)
 	{
 	    keyTable[ENCODER_KEY_INDEX].keyStatus = 1;
 		keyTable[ENCODER_KEY_INDEX].key_dir = get_button()->dir;
+		get_button()->status = 0;
 		 
 	}
 	keyTable[ENCODER_KEY_INDEX].keyEnter = get_button()->enter;
