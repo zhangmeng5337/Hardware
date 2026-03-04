@@ -92,10 +92,13 @@ void Error_Handler(void);
 #define RUN_GPIO_Port GPIOE
 #define SW2_Pin GPIO_PIN_13
 #define SW2_GPIO_Port GPIOE
+#define SW2_EXTI_IRQn EXTI15_10_IRQn
 #define SW1_Pin GPIO_PIN_14
 #define SW1_GPIO_Port GPIOE
+#define SW1_EXTI_IRQn EXTI15_10_IRQn
 #define KEYSW_Pin GPIO_PIN_15
 #define KEYSW_GPIO_Port GPIOE
+#define KEYSW_EXTI_IRQn EXTI15_10_IRQn
 #define EXTPROC_SPI2_ADC_CS3_Pin GPIO_PIN_15
 #define EXTPROC_SPI2_ADC_CS3_GPIO_Port GPIOB
 #define CS_Pin GPIO_PIN_9

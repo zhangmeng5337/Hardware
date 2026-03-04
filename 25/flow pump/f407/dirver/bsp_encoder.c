@@ -108,7 +108,7 @@ void encoder_over_flow(void)
 void updateButton(void)
 {
     uint32_t tmp1;
-        if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4))
+        if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim3))
             /* ??¨°? */
            button_u.dir = FORWARD;
         else
@@ -129,6 +129,8 @@ void updateButton(void)
 		button_u.last_count = button_u.capture_count;
         button_u.pollPeriod = 0;
     }
+	else
+		button_u.pollPeriod++;
 }
 void update_speed(void)
 {
