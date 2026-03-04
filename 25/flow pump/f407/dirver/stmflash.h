@@ -8,7 +8,8 @@
 #define READ        1
 #define SUCESS      0
 #define NOPARAMS        1
-
+#define FLASH_HEADER 0x82367480
+#define FLASH_THREAD_PERIOD   1
 //#define FLASH_BASE           0x08000000
 
 #define FLASH_SECTOR_SIZE       0x40001
@@ -55,7 +56,7 @@ int Erase_page(uint32_t pageaddr, uint32_t num);
 void WriteFlash(uint32_t addr, uint8_t *buff, int buf_len);
 void ReadFlash(uint32_t addr, uint8_t *buff, int buf_len);
 void WriteFlashBytes(uint32_t addr, uint8_t *buff, int buf_len);
-
+nvmem_state nvmem_stat_machine(void);
 
 #endif
 

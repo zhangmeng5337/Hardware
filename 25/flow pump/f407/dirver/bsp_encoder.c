@@ -92,7 +92,7 @@ void Set_Encoder_Zero()
     uint32_t encoder_tmp;
     //__HAL_GPIO_EXTI_CLEAR_IT(EZ_Pin);
 
-    float cal_val;
+
     encoder_tmp = __HAL_TIM_GET_COUNTER(&htim4);
 }
 void encoder_over_flow(void)
@@ -107,7 +107,7 @@ void encoder_over_flow(void)
 }
 void updateButton(void)
 {
-    uint32_t tmp1;
+
         if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim3))
             /* ??¨°? */
            button_u.dir = FORWARD;

@@ -175,6 +175,23 @@ nvmem_struct nvmem;
 void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue) {
   flash_it = true;
 }
+void write_to_flash(uint16_t timeout) {
+    if (!flash_busy) 
+    { // make sure that there are no write in progress
+      nvmem_state_machine = NVMEM_WAITING;
+      flashwritetimeout = timeout/FLASH_THREAD_PERIOD;
+    }       
+}
+void load_data_from_flash(void) {
+
+  memcpy(&nvmem, (uint8_t*)FLASH_USER_START_ADDR, sizeof(nvmem));  
+  if (nvmem.magic_number == FLASH_HEADER) {
+   
+  }
+  else
+  ;// memcpy(&nvmem, (uint8_t*)FLASH_USER_START_ADDR, sizeof(nvmem));
+     nvmem_state_machine = NVMEM_IDLE;
+}
 nvmem_state nvmem_stat_machine(void) {     
   static uint16_t delaycycles = 0;
   static uint8_t retries = 0;
@@ -184,7 +201,7 @@ nvmem_state nvmem_stat_machine(void) {
   
   switch (nvmem_state_machine) {
     case NVMEM_INIT:
-     // load_data_from_flash();
+      load_data_from_flash();
       HAL_FLASH_Unlock();
       break;
     case NVMEM_IDLE:
