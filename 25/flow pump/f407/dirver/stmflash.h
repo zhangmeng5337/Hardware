@@ -45,6 +45,8 @@ typedef struct
    uint32_t lcdRefreshTime;
    uint32_t adcRefreshTime;
    uint32_t flashRefreshTime;
+   float outh;
+   float outL;
 } app_data;
 
 typedef struct

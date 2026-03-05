@@ -4,7 +4,10 @@
 //定义全局变量
 
 _pid pid;
-
+_pid *getPid(void)
+{
+	return &pid;
+}
 /**
   * @brief  PID参数初始化
 	*	@note 	无

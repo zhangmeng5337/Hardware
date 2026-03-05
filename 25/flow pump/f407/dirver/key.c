@@ -4,9 +4,9 @@ key_stru  keyTable[] =
 {
 	{0,0,0}
 };
-key_stru *getEncoderKey()
+key_stru *getEncoderKey(unsigned char index)
 {
-	return &keyTable[ENCODER_KEY_INDEX];
+	return &keyTable[index];
 }
 void keyProc(void)
 {

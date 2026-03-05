@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "bsp_encoder.h"
 #include "app.h"
+#include "key.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,28 +85,39 @@ static void MX_USB_OTG_FS_USB_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-  
-  if (htim->Instance == TIM2) {
-
-  encoder_over_flow();
-  }
-}
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if (GPIO_Pin == KEYSW_Pin)
-	{
-      get_button()->enter = 1;
-	} 
-	if (GPIO_Pin == SW1_Pin)
-	{
-      get_button()->enter = 1;
-	}
-	if (GPIO_Pin == SW2_Pin)
-	{
-      get_button()->enter = 1;
-	}
-	
+
+    if (htim->Instance == TIM4)
+    {
+      
+        encoder_over_flow();
+    }
+    if (htim->Instance == TIM2)
+    {
+      get_encoder()->pulseOverRun = 1;
+
+    }	
+}
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == KEYSW_Pin)
+    {
+        if (HAL_GPIO_ReadPin(KEYSW_GPIO_Port, KEYSW_Pin) == 0)
+            get_button()->enter = 1;
+    }
+    if (GPIO_Pin == SW1_Pin)
+    {
+        if (HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin) == 0)
+			getEncoderKey(SW1_KEY_INDEX)->keyEnter = 1;
+            
+    }
+    if (GPIO_Pin == SW2_Pin)
+    {
+        if (HAL_GPIO_ReadPin(SW2_GPIO_Port, SW2_Pin) == 0)
+          getEncoderKey(SW2_KEY_INDEX)->keyEnter = 1;
+    }
+
 }
 
 /* USER CODE END 0 */
@@ -152,18 +164,18 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_USB_Init();
   /* USER CODE BEGIN 2 */
-init();
+    init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    while (1)
+    {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	app();
-  }
+        app();
+    }
   /* USER CODE END 3 */
 }
 
@@ -244,49 +256,51 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A) 			/* ??��?2?��|?��o???��?D???��?��?1y?��??????RTC?��o??����?��o??����|��??|��??2??a?��o?��?RTC?��o?����??��? */
-	{ 
-	/* USER CODE END Check_RTC_BKUP */
-   
-	/** Initialize RTC and set the Time and Date
-	*/
-	sTime.Hours = 0x14;
-	sTime.Minutes = 0x39;
-	sTime.Seconds = 0x0;
-	sTime.SubSeconds = 0x0;
-	sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-	sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-	if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
-	{
-	  Error_Handler();
-	}
-	sDate.WeekDay = RTC_WEEKDAY_SATURDAY;
-	sDate.Month = RTC_MONTH_JUNE;
-	sDate.Date = 0x11;
-	sDate.Year = 0x26;
-	if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
-	{
-	  Error_Handler();
-	}
-   
-	/** Enable the Alarm A
-	*/
-//	sAlarm.AlarmTime.Hours = 0x14;
-//	sAlarm.AlarmTime.Minutes = 0x30;
-//	sAlarm.AlarmTime.Seconds = 0x20;
-//	sAlarm.AlarmTime.SubSeconds = 0x0;
-//	sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
-//	sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_SS14_9;
-//	sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
-//	sAlarm.AlarmDateWeekDay = 0x1;
-//	sAlarm.Alarm = RTC_ALARM_A;
-//	if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
-//	{
-//	  Error_Handler();
-//	}
-	/* USER CODE BEGIN RTC_Init 2 */
-	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x0000);  //?a?��?��???��a?��o????a??????????|��???����?��o???��|?��?��?a??2?|��???????|��??��o??????|��??|��??o?��???��a2???��?��???��?��?|��???a?��?��??��?��?? 
-	}
+    if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) !=
+            0x5A5A) 			/* ??��?2?��|?��o???��?D???��?��?1y?��??????RTC?��o??����?��o??����|��??|��??2??a?��o?��?RTC?��o?����??��? */
+    {
+        /* USER CODE END Check_RTC_BKUP */
+
+        /** Initialize RTC and set the Time and Date
+        */
+        sTime.Hours = 0x14;
+        sTime.Minutes = 0x39;
+        sTime.Seconds = 0x0;
+        sTime.SubSeconds = 0x0;
+        sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+        sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+        if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+        {
+            Error_Handler();
+        }
+        sDate.WeekDay = RTC_WEEKDAY_SATURDAY;
+        sDate.Month = RTC_MONTH_JUNE;
+        sDate.Date = 0x11;
+        sDate.Year = 0x26;
+        if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+        {
+            Error_Handler();
+        }
+
+        /** Enable the Alarm A
+        */
+        //	sAlarm.AlarmTime.Hours = 0x14;
+        //	sAlarm.AlarmTime.Minutes = 0x30;
+        //	sAlarm.AlarmTime.Seconds = 0x20;
+        //	sAlarm.AlarmTime.SubSeconds = 0x0;
+        //	sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+        //	sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_SS14_9;
+        //	sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+        //	sAlarm.AlarmDateWeekDay = 0x1;
+        //	sAlarm.Alarm = RTC_ALARM_A;
+        //	if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+        //	{
+        //	  Error_Handler();
+        //	}
+        /* USER CODE BEGIN RTC_Init 2 */
+        HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0,
+                            0x0000);  //?a?��?��???��a?��o????a??????????|��???����?��o???��|?��?��?a??2?|��???????|��??��o??????|��??|��??o?��???��a2???��?��???��?��?|��???a?��?��??��?��??
+    }
   /* USER CODE END RTC_Init 2 */
 
 }
@@ -390,7 +404,7 @@ static void MX_SPI3_Init(void)
   hspi3.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi3.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -426,7 +440,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 0;
+  htim1.Init.Prescaler = TIM1PS;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 65535;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -527,7 +541,7 @@ static void MX_TIM2_Init(void)
   sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
   sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
   sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-  sConfigIC.ICFilter = 0;
+  sConfigIC.ICFilter = 15;
   if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
@@ -903,11 +917,11 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+    /* User can add his own implementation to report the HAL error return state */
+    __disable_irq();
+    while (1)
+    {
+    }
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -922,8 +936,8 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

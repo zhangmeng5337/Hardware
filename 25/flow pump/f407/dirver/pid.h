@@ -27,6 +27,6 @@ float get_pid_target(void);
 void  set_p_i_d(float p, float i, float d);
 float PID_realize(float actual_val);
 void  time_period_fun(void);
-
+_pid *getPid(void);
 #endif
 

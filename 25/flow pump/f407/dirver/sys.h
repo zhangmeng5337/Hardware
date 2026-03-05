@@ -5,8 +5,8 @@
 #define TICK_SIZE  10
 
 #define ADC_SAMP_TIME       100
-#define LCD_REFRESH_TIME    300
-#define FLASH_REFRESH_TIME  150
+#define LCD_REFRESH_TIME    200
+#define FLASH_REFRESH_TIME  50
 #define ADC_TICK_NO  		   0
 #define LCD_TICK_NO  		   1
 #define FLASH_TICK_NO  		   2

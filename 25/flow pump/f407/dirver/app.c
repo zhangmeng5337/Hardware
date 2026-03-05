@@ -18,14 +18,19 @@ void loadPrams(void)
         config_u.lcdRefreshTime = nvmem.app.lcdRefreshTime;
         config_u.adcRefreshTime = nvmem.app.adcRefreshTime;
         config_u.flashRefreshTime = nvmem.app.flashRefreshTime;
-
+		getPid()->outh = nvmem.app.outh;
+		getPid()->outL = nvmem.app.outL;
     }
     else
     {
         nvmem.app.lcdRefreshTime = LCD_REFRESH_TIME;
         nvmem.app.adcRefreshTime = ADC_SAMP_TIME;
         nvmem.app.flashRefreshTime = FLASH_REFRESH_TIME;
-
+		nvmem.app.outh = 60000;
+		nvmem.app.outL = 0;	
+		
+		getPid()->outh = nvmem.app.outh;
+		getPid()->outL = nvmem.app.outL;
         config_u.lcdRefreshTime = nvmem.app.lcdRefreshTime;
         config_u.adcRefreshTime = nvmem.app.adcRefreshTime;
         config_u.flashRefreshTime = nvmem.app.flashRefreshTime;
@@ -84,5 +89,5 @@ void app(void)
         registerTick(FLASH_TICK_NO, config_u.flashRefreshTime);
         nvmem_stat_machine();
     }
-
+    
 }

@@ -176,9 +176,9 @@ void l3SetBasicMenu(void)
 void menuInterfaceMange()
 {
 
-    if (getEncoderKey()->keyStatus == 1)
+    if (getEncoderKey(ENCODER_KEY_INDEX)->keyStatus == 1)
     {
-        if (getEncoderKey()->key_dir == FORWARD)
+        if (getEncoderKey(ENCODER_KEY_INDEX)->key_dir == FORWARD)
         {
             if (menuTable[menuTaskIndex].currentIconNum <
                     menuTable[menuTaskIndex].currMaxIconNum)
@@ -189,13 +189,13 @@ void menuInterfaceMange()
             if (menuTable[menuTaskIndex].currentIconNum > 0)
                 menuTable[menuTaskIndex].currentIconNum --;
         }
-        getEncoderKey()->keyStatus = 0;
+        getEncoderKey(ENCODER_KEY_INDEX)->keyStatus = 0;
         menuTable[menuTaskIndex].mode = 1;
 
     }
-    if (getEncoderKey()->keyEnter == 1)
+    if (getEncoderKey(ENCODER_KEY_INDEX)->keyEnter == 1)
     {
-        getEncoderKey()->keyEnter = 0;
+        getEncoderKey(ENCODER_KEY_INDEX)->keyEnter = 0;
         menuTable[menuTaskIndex].changeMenuSig = 1;
     }
 
