@@ -19,7 +19,7 @@
 encoder_stru encoder_u;
 button_stru button_u;
 /* 定时器溢出次数 */
-
+extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim3;
 /**
@@ -65,6 +65,8 @@ static void TIM_Encoder_Init(void)
     HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
     __HAL_TIM_SET_COUNTER(&htim3, PULSE_OFFSET);
 
+	HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_1); // 开启捕获中断
+
 }
 encoder_stru *get_encoder(void)
 {
@@ -83,6 +85,10 @@ void Encoder_Init(void)
 {
     // Encoder_GPIO_Init();    /* 引脚初始化 */
     TIM_Encoder_Init();     /* 配置编码器接口 */
+	encoder_u.pulseOverRun = 0;
+	encoder_u.poleCount = 4;
+	encoder_u.pulseLastValue = 0;
+	get_encoder()->last_count = 0;
 }
 
 /*********************************************END OF FILE**********************/
@@ -92,7 +98,7 @@ void Set_Encoder_Zero()
     uint32_t encoder_tmp;
     //__HAL_GPIO_EXTI_CLEAR_IT(EZ_Pin);
 
-    float cal_val;
+
     encoder_tmp = __HAL_TIM_GET_COUNTER(&htim4);
 }
 void encoder_over_flow(void)
@@ -107,8 +113,8 @@ void encoder_over_flow(void)
 }
 void updateButton(void)
 {
-    uint32_t tmp1;
-        if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4))
+
+        if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim3))
             /* ??ò? */
            button_u.dir = FORWARD;
         else
@@ -129,6 +135,8 @@ void updateButton(void)
 		button_u.last_count = button_u.capture_count;
         button_u.pollPeriod = 0;
     }
+	else
+		button_u.pollPeriod++;
 }
 void update_speed(void)
 {
@@ -147,10 +155,24 @@ void update_speed(void)
         encoder_u.totalNumRotation = encoder_u.capture_count / ENCODER_TOTAL_RESOLUTION;
         // 单位时间的脉冲数 = 当前的脉冲总计数值 - 上一次的脉冲总计数值
         get_encoder()->capture_per_unit = get_encoder()->capture_count - get_encoder()->last_count;
+		get_encoder()->last_count =  get_encoder()->capture_count;
         encoder_u.speed = encoder_u.capture_per_unit / ENCODER_TOTAL_RESOLUTION * 10;
         div = 0;
+
+		if(get_encoder()->pulseOverRun == 0)
+		{
+			get_encoder()->pulse_value = HAL_TIM_ReadCapturedValue(&htim2, TIM_CHANNEL_1);
+		    float tmp = get_encoder()->pulse_value -  get_encoder()->pulseLastValue;
+			get_encoder()->speedPulseI = tmp * 10*60/encoder_u.poleCount;
+
+		}
+	    get_encoder()->pulseLastValue = get_encoder()->pulse_value;
+		
+
     }
+	
 }
+
 void encoder_proc(void)
 {
 	updateButton();

@@ -58,7 +58,13 @@ typedef struct
 
   unsigned char hit_dir;//0:forward 1:back
   float speed;
+  float pulse_value;
+  float pulseLastValue;
+  float speedPulseI;
+  float speedPulseA;  
+  unsigned int poleCount;
   unsigned int pollPeriod;
+  unsigned char pulseOverRun;
 }encoder_stru;
 
 typedef struct

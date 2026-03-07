@@ -9,7 +9,7 @@
 extern SPI_HandleTypeDef ST7789_SPI_PORT;
 
 /* choose whether use DMA or not */
-#define USE_DMA
+//#define USE_DMA
 
 /* If u need CS control, comment below*/
 //#define CFG_NO_CS
@@ -39,13 +39,13 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
 
 /* Choose a type you are using */
 //#define USING_135X240
-#define USING_240X240
+#define USING_320X240
 //#define USING_170X320
 
 /* Choose a display rotation you want to use: (0-3) */
-//#define ST7789_ROTATION 0
-//#define ST7789_ROTATION 1
-#define ST7789_ROTATION 2				//  use Normally on 240x240
+#define ST7789_ROTATION 1
+//#define ST7789_ROTATION 1                //
+//#define ST7789_ROTATION 2				//  use Normally on 240x240
 //#define ST7789_ROTATION 3
 
 #ifdef USING_135X240
@@ -85,25 +85,25 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
     #define ST7789_WIDTH 240
     #define ST7789_HEIGHT 240
 
-		#if ST7789_ROTATION == 0
-			#define X_SHIFT 0
-			#define Y_SHIFT 80
-		#elif ST7789_ROTATION == 1
-			#define X_SHIFT 80
-			#define Y_SHIFT 0
-		#elif ST7789_ROTATION == 2
-			#define X_SHIFT 0
-			#define Y_SHIFT 0
-		#elif ST7789_ROTATION == 3
-			#define X_SHIFT 0
-			#define Y_SHIFT 0
-		#endif
+    #if ST7789_ROTATION == 0
+        #define X_SHIFT 0
+        #define Y_SHIFT 80
+    #elif ST7789_ROTATION == 1
+        #define X_SHIFT 80
+        #define Y_SHIFT 0
+    #elif ST7789_ROTATION == 2
+        #define X_SHIFT 0
+        #define Y_SHIFT 0
+    #elif ST7789_ROTATION == 3
+        #define X_SHIFT 0
+        #define Y_SHIFT 0
+    #endif
 
 #endif
 
 #ifdef USING_170X320
 
-	#if ST7789_ROTATION == 0
+    #if ST7789_ROTATION == 0
         #define ST7789_WIDTH 170
         #define ST7789_HEIGHT 320
         #define X_SHIFT 35
@@ -132,7 +132,33 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
     #endif
 
 #endif
+#ifdef USING_320X240
 
+
+
+    #if ST7789_ROTATION == 0
+        #define X_SHIFT 0
+        #define Y_SHIFT 0
+        #define ST7789_WIDTH 240
+        #define ST7789_HEIGHT 320
+    #elif ST7789_ROTATION == 1
+        #define X_SHIFT 0
+        #define Y_SHIFT 0
+        #define ST7789_WIDTH 320
+        #define ST7789_HEIGHT 240
+    #elif ST7789_ROTATION == 2
+        #define X_SHIFT 0
+        #define Y_SHIFT 0
+        #define ST7789_WIDTH 240
+        #define ST7789_HEIGHT 320
+    #elif ST7789_ROTATION == 3
+        #define X_SHIFT 0
+        #define Y_SHIFT 0
+        #define ST7789_WIDTH 320
+        #define ST7789_HEIGHT 240
+    #endif
+
+#endif
 /**
  *Color of pen
  *If you want to use another color, you can choose one in RGB565 format.
@@ -208,23 +234,42 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
 #define ST7789_RDID3   0xDC
 #define ST7789_RDID4   0xDD
 
+#define CFG_NO_CS  1
 /* Advanced options */
 #define ST7789_COLOR_MODE_16bit 0x55    //  RGB565 (16bit)
 #define ST7789_COLOR_MODE_18bit 0x66    //  RGB666 (18bit)
 
+
+#define TFT_SDA_0
+#define TFT_SDA_1
+
+#define TFT_RST_0         HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_RESET)// 设置DC接口到PB7
+#define TFT_RST_1         HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_SET)
+
+
+#define TFT_DC_0        HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_RESET)// 设置CS接口到PB8
+#define TFT_DC_1         HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_SET)
+
+#define TFT_CS_0     HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_RESET)
+#define TFT_CS_1    HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_SET)
+
+#define TFT_BL_0   HAL_GPIO_WritePin(BL_GPIO_Port,BL_Pin , GPIO_PIN_RESET)
+#define TFT_BL_1  HAL_GPIO_WritePin(BL_GPIO_Port,BL_Pin , GPIO_PIN_SET)
+
 /* Basic operations */
+#define ST7789_BL_Clr() HAL_GPIO_WritePin(BL_GPIO_Port,BL_Pin , GPIO_PIN_RESET)
+#define ST7789_RL_Set() HAL_GPIO_WritePin(BL_GPIO_Port,BL_Pin , GPIO_PIN_SET)
+
+
 #define ST7789_RST_Clr() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_RESET)
 #define ST7789_RST_Set() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_SET)
 
 #define ST7789_DC_Clr() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_RESET)
 #define ST7789_DC_Set() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_SET)
-#ifndef CFG_NO_CS
+
 #define ST7789_Select() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_RESET)
 #define ST7789_UnSelect() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_SET)
-#else
-#define ST7789_Select() asm("nop")
-#define ST7789_UnSelect() asm("nop")
-#endif
+
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 
@@ -250,7 +295,8 @@ void ST7789_WriteString(uint16_t x, uint16_t y, const char *str, FontDef font, u
 /* Extented Graphical functions. */
 void ST7789_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
 void ST7789_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
-void ST7789_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
+void ST7789_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3,
+                               uint16_t color);
 void ST7789_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
 
 /* Command functions */
@@ -259,6 +305,9 @@ void ST7789_TearEffect(uint8_t tear);
 /* Simple test function. */
 void ST7789_Test(void);
 
+
+void test(void);
+void TFT_init(void);	//ST7789
 #ifndef ST7789_ROTATION
     #error You should at least choose a display rotation!
 #endif

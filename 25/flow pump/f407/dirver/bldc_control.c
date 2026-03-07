@@ -20,7 +20,7 @@
 #include "bsp_encoder.h"
 extern TIM_HandleTypeDef htim1;
 /* 私有变量 */
-static bldcm_data_t bldcm_data;
+ bldcm_data_t bldcm_data;
 
 /* 局部函数 */
 static void sd_gpio_config(void);
@@ -69,6 +69,7 @@ void bldcm_init(void)
 {
     // PWM_TIMx_Configuration();    // 电机控制定时器，引脚初始化
     //hall_tim_config();           // 霍尔传感器初始化
+    bldcm_data.freq = 30000;
     bldcm_data.arr =  SystemCoreClock / (TIM1PS + 1) / bldcm_data.freq;
     __HAL_TIM_SET_COUNTER(&htim1, 0);
     __HAL_TIM_SET_AUTORELOAD(&htim1, bldcm_data.arr);
@@ -141,7 +142,7 @@ void bldcm_pid_control(void)
 
     if (bldcm_data.is_enable)
     {
-        float cont_val = 0;    // 当前控制值
+        uint16_t cont_val = 0;    // 当前控制值
 
         cont_val = PID_realize(speed_actual);
 

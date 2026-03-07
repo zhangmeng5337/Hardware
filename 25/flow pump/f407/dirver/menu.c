@@ -1,6 +1,6 @@
 #include "menu.h"
 #include "key.h"
-
+#include "st7789.h"
 void l1StandbyMenu(void);
 void l1RunPageMenu(void);
 void l2InfoMenu(void);
@@ -34,7 +34,7 @@ Menu_table_t menuTable[] =
     {RunPage,    RunICon,    	RunPage,		MaxRunicon,			l1StandbyMenu, 0, 0},
     {RunPage,    InfoIcon,   	InfoPage,		MaxInfoIcon,		l2InfoMenu, 0, 0},
     {RunPage,    WarnIcon,   	WarnPage,		MaxWarnIcon,		l2WarnMenu, 0, 0},
-    {RunPage,    SetIcon,    	SetPage,		MaxSetIcon,   	l2SetMenu, 0, 0},
+    {RunPage,    SetIcon,    	SetPage,		MaxSetIcon,   	    l2SetMenu, 0, 0},
     //L2
     {InfoPage,    date,      		InfoPage,			1,							l2InfoMenu, 0, 0},
     {InfoPage,    counter,   		CounterPage,	MaxCounterIcon,	l3InfoMenu, 0, 0},
@@ -69,10 +69,28 @@ Menu_table_t menuTable[] =
 };
 void l1StandbyMenu(void)
 {
+   
+    if(menuTable[menuTaskIndex].currentIconNum == RunICon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLACK);
+    if(menuTable[menuTaskIndex].currentIconNum == InfoIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, WHITE);
+    if(menuTable[menuTaskIndex].currentIconNum == WarnIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLUE);
+    if(menuTable[menuTaskIndex].currentIconNum == SetIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, RED);	
 
+	
 }
 void l1RunPageMenu(void)
 {
+    if(menuTable[menuTaskIndex].currentIconNum == RunICon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLACK);
+    if(menuTable[menuTaskIndex].currentIconNum == InfoIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, WHITE);
+    if(menuTable[menuTaskIndex].currentIconNum == WarnIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLUE);
+    if(menuTable[menuTaskIndex].currentIconNum == SetIcon)
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, RED);	
 
 }
 void l2InfoMenu(void)
@@ -158,9 +176,9 @@ void l3SetBasicMenu(void)
 void menuInterfaceMange()
 {
 
-    if (getEncoderKey()->keyStatus == 1)
+    if (getEncoderKey(ENCODER_KEY_INDEX)->keyStatus == 1)
     {
-        if (getEncoderKey()->key_dir == FORWARD)
+        if (getEncoderKey(ENCODER_KEY_INDEX)->key_dir == FORWARD)
         {
             if (menuTable[menuTaskIndex].currentIconNum <
                     menuTable[menuTaskIndex].currMaxIconNum)
@@ -171,23 +189,29 @@ void menuInterfaceMange()
             if (menuTable[menuTaskIndex].currentIconNum > 0)
                 menuTable[menuTaskIndex].currentIconNum --;
         }
-        getEncoderKey()->keyStatus = 0;
+        getEncoderKey(ENCODER_KEY_INDEX)->keyStatus = 0;
         menuTable[menuTaskIndex].mode = 1;
 
     }
-    if (getEncoderKey()->keyEnter == 1)
+    if (getEncoderKey(ENCODER_KEY_INDEX)->keyEnter == 1)
     {
-        getEncoderKey()->keyEnter = 0;
+        getEncoderKey(ENCODER_KEY_INDEX)->keyEnter = 0;
         menuTable[menuTaskIndex].changeMenuSig = 1;
     }
 
+}
+void menu_init(void)
+{
+	menuTaskIndex = 0;
+	menuTable[menuTaskIndex].changeMenuSig = 0;
+	menuTable[menuTaskIndex].currentIconNum = 0;
 }
 void menu_manage()
 {
     menuInterfaceMange();
     if (menuTable[menuTaskIndex].changeMenuSig == 1) //切换画面
     {
-        menuTable[menuTaskIndex].changeMenuSig = 0;
+        menuTable[menuTaskIndex].changeMenuSig = 0;//press ok button change menu
         menuTaskIndex = menuTable[menuTaskIndex].nextMenuNum;
         menuTable[menuTaskIndex].currentIconNum = 0;
         menuTable[menuTaskIndex].mode = 0;
