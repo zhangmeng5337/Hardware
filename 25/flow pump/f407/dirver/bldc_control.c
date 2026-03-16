@@ -69,7 +69,7 @@ void bldcm_init(void)
 {
     // PWM_TIMx_Configuration();    // 电机控制定时器，引脚初始化
     //hall_tim_config();           // 霍尔传感器初始化
-    bldcm_data.freq = 30000;
+    bldcm_data.freq = 10000;
     bldcm_data.arr =  SystemCoreClock / (TIM1PS + 1) / bldcm_data.freq;
     __HAL_TIM_SET_COUNTER(&htim1, 0);
     __HAL_TIM_SET_AUTORELOAD(&htim1, bldcm_data.arr);
