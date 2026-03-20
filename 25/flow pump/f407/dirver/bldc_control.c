@@ -20,7 +20,7 @@
 #include "bsp_encoder.h"
 extern TIM_HandleTypeDef htim1;
 /* 私有变量 */
- bldcm_data_t bldcm_data;
+bldcm_data_t bldcm_data;
 
 /* 局部函数 */
 static void sd_gpio_config(void);
@@ -38,7 +38,10 @@ void stop_pwm_output(void)
 void set_pwm_pulse(uint16_t pulse)
 {
     /* 设置定时器通道输出 PWM 的占空比 */
-    bldcm_data.bldcm_pulse = pulse;
+    if (pulse >= bldcm_data.arr)
+        bldcm_data.bldcm_pulse = bldcm_data.arr;
+    else
+        bldcm_data.bldcm_pulse = pulse;
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); //?? PWM ??
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, bldcm_data.bldcm_pulse);
     BLDCM_ENABLE_SD();
@@ -75,6 +78,7 @@ void bldcm_init(void)
     __HAL_TIM_SET_AUTORELOAD(&htim1, bldcm_data.arr);
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, bldcm_data.arr / 2);
     sd_gpio_config();        // sd 引脚初始化
+    set_bldcm_enable();
 }
 
 /**
@@ -103,7 +107,7 @@ void set_bldcm_speed(uint16_t v)
 }
 void setMotorSpeed(float speed)
 {
-	set_pid_target(speed);
+    set_pid_target(speed);
 }
 /**
   * @brief  设置电机方向
@@ -161,10 +165,10 @@ void bldcm_pid_control(void)
         set_bldcm_speed(cont_val);
 
     }
-	else
-	{
-		stop_pwm_output();
-	}
+    else
+    {
+        stop_pwm_output();
+    }
 }
 
 

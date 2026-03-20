@@ -215,7 +215,7 @@ void ST7789_Init(void)
     ST7789_WriteCommand(ST7789_DISPON);	//	Main screen turned on
 
     HAL_Delay(50);
-	ST7789_Fill_Color(GRAY);
+	ST7789_Fill_Color(WHITE);
 //    ST7789_Fill_Color(BLACK);				//	Fill with Black.
 }
 
@@ -456,6 +456,7 @@ void ST7789_DrawCircle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color)
  */
 void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data)
 {
+   uint32_t img_size;
     if ((x >= ST7789_WIDTH) || (y >= ST7789_HEIGHT))
         return;
     if ((x + w - 1) >= ST7789_WIDTH)
@@ -465,10 +466,35 @@ void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint
 
     ST7789_Select();
     ST7789_SetAddressWindow(x, y, x + w - 1, y + h - 1);
-    for (uint32_t i = 0; i < sizeof(uint16_t) * w * h; i++)
-        ST7789_WriteData(data[i], 1);
+	img_size =  w * h;
+    for (uint32_t i = 0; i < img_size ; i++)
+    {
+         ST7789_WriteData(data[i]>>8, 1);   
+         ST7789_WriteData(data[i]&0xff, 1);  
+	}
+
     ST7789_UnSelect();
 }
+//void ST7789_DrawImage_8(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_t *data)
+//{
+//    if ((x >= ST7789_WIDTH) || (y >= ST7789_HEIGHT))
+//        return;
+//    if ((x + w - 1) >= ST7789_WIDTH)
+//        return;
+//    if ((y + h - 1) >= ST7789_HEIGHT)
+//        return;
+//
+//    ST7789_Select();
+//    ST7789_SetAddressWindow(x, y, x + w - 1, y + h - 1);
+//	for(unsigned int i=0;i<w;i++)
+//	{
+//		for(unsigned int j=0;j<h;j++)
+//		{
+//			ST7789_WriteData(*data++, 1);
+//		}
+//	}   
+//    ST7789_UnSelect();
+//}
 
 /**
  * @brief Invert Fullscreen color

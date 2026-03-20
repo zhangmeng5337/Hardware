@@ -8,6 +8,7 @@
 #include "bsp_encoder.h"
 #include "stmflash.h"
 #include "sys.h"
+#include "controller.h"
 config_stru config_u;
 extern nvmem_struct nvmem;
 void loadPrams(void)
@@ -37,7 +38,7 @@ void loadPrams(void)
         nvmem.magic_number = FLASH_HEADER;
         write_to_flash(50 );
     }
-
+    controlInit();
 
 }
 void RegisterTick(void)

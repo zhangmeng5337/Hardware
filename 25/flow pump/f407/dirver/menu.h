@@ -1,6 +1,7 @@
 #ifndef MENU_H_
 #define MENU_H_
 #include "main.h"
+#include "devinfo.h"
 typedef enum
 {
 	StandByPage = 0,
@@ -83,6 +84,25 @@ typedef enum
 	MaxAnalogout = 3,
 	MaxSLow = 3,
 }MaxIcon_enum;
+
+typedef struct
+{
+uint16_t status;
+uint32_t image_index;
+uint32_t pointType;//0:status 1 ctrlMode 2:ext display
+uint32_t imageBackIndex;
+unsigned char backEnable;
+}image_stru;
+
+typedef struct
+{
+uint16_t index;
+uint16_t fontBuf[32];
+unsigned char len;
+uint32_t pointType;//0:
+
+}font_stru;
+
 typedef struct
 {
     // unsigned char mode;
