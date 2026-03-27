@@ -50,6 +50,7 @@ void RegisterTick(void)
     registerTick(LCD_TICK_NO, config_u.lcdRefreshTime);
     registerTick(FLASH_TICK_NO, config_u.flashRefreshTime);
 }
+unsigned char initComplete = 0;
 void init(void)
 {
     HAL_NVIC_SetPriority(FLASH_IRQn, 1, 0); // 优先级数值根据你的项目需求设定
@@ -64,6 +65,7 @@ void init(void)
     Encoder_Init();
     menu_init();
     RegisterTick();
+	initComplete = 1;
     // TFT_init();	//ST7789
 }
 float cur_set = 0;
@@ -90,5 +92,5 @@ void app(void)
         registerTick(FLASH_TICK_NO, config_u.flashRefreshTime);
         nvmem_stat_machine();
     }
-    
+    urtc_proc();
 }

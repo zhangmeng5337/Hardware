@@ -65,7 +65,7 @@ extern TIM_HandleTypeDef htim4;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
-
+extern unsigned char initComplete;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -195,10 +195,14 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-   encoder_proc();
+  if(initComplete == 1)
+  	{
+  encoder_proc();
   bldcm_pid_control();
   keyProc();
-	TickPro();
+  TickPro();
+  }
+
   /* USER CODE END SysTick_IRQn 1 */
 }
 

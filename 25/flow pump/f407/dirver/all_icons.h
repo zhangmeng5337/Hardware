@@ -17768,6 +17768,7 @@ typedef struct {
  *   [58] 选择2-2.bmp (xuan_ze_2_2)
  *   [59] 闪光符号.bmp (shan_guang_fu_hao)
  */
+
 const image_info_t images[] = {
     { .width = CIU_WIDTH, .height = CIU_HEIGHT, .data = ciu },
     { .width = OOVERT_WIDTH, .height = OOVERT_HEIGHT, .data = oovert },

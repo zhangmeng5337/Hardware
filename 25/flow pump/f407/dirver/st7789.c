@@ -144,6 +144,38 @@ static void ST7789_SetAddressWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint1
     ST7789_WriteCommand(ST7789_RAMWR);
     //ST7789_UnSelect();
 }
+void LCD_ShowChinese(uint16_t x, uint16_t y,  unsigned char fontSize,unsigned char *font, uint16_t color) 
+{
+    uint8_t temp;
+    for (uint8_t row = 0; row < fontSize; row++) {          // 行
+        temp = font[row * 2];                         // 左半字节
+        for (uint8_t col = 0; col < 8; col++) {
+            if (temp & (0x80 >> col))
+                ST7789_DrawPixel(x + col, y + row, color);
+        }
+        temp = font[row * 2 + 1];                     // 右半字节
+        for (uint8_t col = 0; col < 8; col++) {
+            if (temp & (0x80 >> col))
+                ST7789_DrawPixel(x + 8 + col, y + row, color);
+        }
+    }
+}
+
+void LCD_ShowString(uint16_t x, uint16_t y, const char *str, uint16_t color) {
+    uint16_t offset;
+    while (*str) {
+        if (*str < 0x80) { // ASCII 字符（可选）
+            // 显示 ASCII 字符...
+        } else { // 汉字（GB2312 双字节）
+            offset = ((*str - 0xA1) * 94 + (*(str+1) - 0xA1)) * 32; // 16x16点阵占32字节
+            LCD_ShowChinese(x, y, &font_lib[offset], color);
+            x += 16;   // 汉字宽度
+            str += 2;
+        }
+    }
+}
+uint8_t chinese_font[] = {0x08,0x80,0x08,0x80,0x08,0x80,0x11,0xFE,0x11,0x02,0x32,0x04,0x34,0x20,0x50,0x20,
+0x91,0x28,0x11,0x24,0x12,0x24,0x12,0x22,0x14,0x22,0x10,0x20,0x10,0xA0,0x10,0x40};/*"你",0*/
 
 /**
  * @brief Initialize ST7789 controller
@@ -158,9 +190,9 @@ void ST7789_Init(void)
     ST7789_RL_Set();
     HAL_Delay(100);
     ST7789_RST_Clr();
-    HAL_Delay(100);
+    HAL_Delay(200);
     ST7789_RST_Set();
-    HAL_Delay(100);
+    HAL_Delay(300);
 
     ST7789_WriteCommand(ST7789_COLMOD);		//	Set color mode
     ST7789_WriteSmallData(ST7789_COLOR_MODE_16bit);
@@ -216,6 +248,9 @@ void ST7789_Init(void)
 
     HAL_Delay(50);
 	ST7789_Fill_Color(WHITE);
+	HAL_Delay(100);
+	LCD_ShowChinese(0, 0, &chinese_font[0], RED);
+
 //    ST7789_Fill_Color(BLACK);				//	Fill with Black.
 }
 
@@ -849,6 +884,7 @@ void ST7789_Test(void)
     ST7789_Fill_Color(WHITE);
     ST7789_DrawImage(0, 0, 128, 128, (uint16_t *)saber);
     HAL_Delay(3000);
+	
 }
 
 

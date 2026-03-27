@@ -15,16 +15,12 @@
 #include <stdint.h>
 #include "main.h"
 /*========================= 字库元数据 =========================*/
-//#define MY_FONT_CHAR_COUNT  4
-//#define MY_FONT_MAX_WIDTH   16
-//#define MY_FONT_MAX_HEIGHT  16
-//#define MY_FONT_FIXED_WIDTH  16
-//#define MY_FONT_FIXED_HEIGHT 16
-#define BOLD_FONT_CHAR_COUNT 4
-#define BOLD_FONT_MAX_WIDTH   32
-#define BOLD_FONT_MAX_HEIGHT  32
-#define BOLD_FONT_FIXED_WIDTH  32
-#define BOLD_FONT_FIXED_HEIGHT 32
+
+#define BOLD_FONT_CHAR_COUNT16x16 11
+#define BOLD_FONT_CHAR_COUNT32x32 9
+
+
+
 /**
  * @brief 字符信息结构体
  */
@@ -67,7 +63,7 @@ typedef struct {
  * @endcode
  */
 bold_font_char_info_t *findFont(unsigned char *unicode);
-uint16_t *piexls(uint16_t unicode);
-bold_font_char_info_t *find_char(uint16_t unicode);
+uint16_t *piexls(uint16_t unicode,unsigned char fontSize);
+bold_font_char_info_t *find_char(uint16_t unicode, unsigned char fontSize);
 #endif /* MY_FONT_H */
 
