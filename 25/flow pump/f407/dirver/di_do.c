@@ -38,12 +38,9 @@ void readDi()
     else
         diDoSt.diLevel = diDoSt.diLevel & (~di6);
 }
-void getDiStatus(void)
+unsigned int getDi(void)
 {
-	if(diDoSt.diLevel == 0)
-		diDoSt.diStatus = 0;
-	else
-		diDoSt.diStatus = 1;
+return diDoSt.diLevel;
 }
 void doInit(void)
 {

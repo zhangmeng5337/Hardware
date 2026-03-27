@@ -304,6 +304,7 @@ void ST7789_TearEffect(uint8_t tear);
 
 /* Simple test function. */
 void ST7789_Test(void);
+void ST7789_DrawImage_8(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_t *data);
 
 
 void test(void);

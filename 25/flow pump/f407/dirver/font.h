@@ -3,6 +3,14 @@
 
 #include "stdint.h"
 
+
+
+
+#define IMAGE_WIDTH 32
+#define IMAGE_HEIGHT 32
+#define IMAGE_SIZE 1024
+
+
 typedef struct {
     const uint8_t width;
     uint8_t height;

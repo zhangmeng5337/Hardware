@@ -22,7 +22,7 @@ typedef struct
 	unsigned char dolevel;
 }di_do_stru;
 void setDo(unsigned char doNum,unsigned char level);
-void getDiStatus(void);
+unsigned int getDi(void);
 void readDi(void);
 void doInit(void);
 void diDoProc(void);

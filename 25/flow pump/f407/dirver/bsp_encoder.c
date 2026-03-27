@@ -84,11 +84,13 @@ button_stru *get_button(void)
 void Encoder_Init(void)
 {
     // Encoder_GPIO_Init();    /* Òý½Å³õÊ¼»¯ */
-    TIM_Encoder_Init();     /* ÅäÖÃ±àÂëÆ÷½Ó¿Ú */
+    button_u.last_count = PULSE_OFFSET;
+	TIM_Encoder_Init();     /* ÅäÖÃ±àÂëÆ÷½Ó¿Ú */
 	encoder_u.pulseOverRun = 0;
 	encoder_u.poleCount = 4;
 	encoder_u.pulseLastValue = 0;
 	get_encoder()->last_count = 0;
+	
 }
 
 /*********************************************END OF FILE**********************/
@@ -120,7 +122,7 @@ void updateButton(void)
         else
             button_u.dir = BACKWORD;
 	
-    if (button_u.pollPeriod >= 50)
+    if (button_u.pollPeriod >= 10)
     {
         button_u.capture_count = __HAL_TIM_GET_COUNTER(&htim3);
         button_u.capture_per_unit = button_u.capture_count - button_u.last_count;

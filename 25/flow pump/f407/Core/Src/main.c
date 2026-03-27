@@ -99,8 +99,24 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
     }	
 }
+ uint32_t last_interrupt_time = 0;
+ uint32_t debounce_delay_ms = 200;   // 消抖时间，根据按键调整
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+
+   static uint32_t current_time;
+	current_time = HAL_GetTick();
+
+    // 如果距离上次中断时间小于消抖时间，认为是抖动，直接返回
+    if ((current_time - last_interrupt_time) < debounce_delay_ms)
+    {
+        return;
+    }
+
+    // 更新最后有效中断的时间
+    last_interrupt_time = current_time;
+
+	
     if (GPIO_Pin == KEYSW_Pin)
     {
         if (HAL_GPIO_ReadPin(KEYSW_GPIO_Port, KEYSW_Pin) == 0)
@@ -571,7 +587,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
+  htim3.Init.Prescaler = 3;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 65535;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -580,11 +596,11 @@ static void MX_TIM3_Init(void)
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC1Filter = 4;
+  sConfig.IC1Filter = 128;
   sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC2Filter = 4;
+  sConfig.IC2Filter = 128;
   if (HAL_TIM_Encoder_Init(&htim3, &sConfig) != HAL_OK)
   {
     Error_Handler();

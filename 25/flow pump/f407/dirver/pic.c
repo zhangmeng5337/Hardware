@@ -16,7 +16,7 @@ _pid *getPid(void)
 void PID_param_init()
 {
     /* 初始化参数 */
-    pid.target_val = 0.0;
+    pid.target_val = 1000.0;
     pid.actual_val = 0.0;
     pid.err = 0.0;
     pid.err_last = 0.0;

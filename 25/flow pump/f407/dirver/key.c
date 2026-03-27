@@ -2,6 +2,8 @@
 #include "bsp_encoder.h"
 key_stru  keyTable[] = 
 {
+	{0,0,0},
+	{0,0,0},
 	{0,0,0}
 };
 key_stru *getEncoderKey(unsigned char index)
@@ -17,5 +19,10 @@ void keyProc(void)
 		get_button()->status = 0;
 		 
 	}
+	if(get_button()->enter == 1)
+	{
 	keyTable[ENCODER_KEY_INDEX].keyEnter = get_button()->enter;
+	get_button()->enter = 0;
+	}
+
 }
