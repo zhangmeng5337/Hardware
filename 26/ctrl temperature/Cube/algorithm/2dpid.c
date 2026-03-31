@@ -273,19 +273,11 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
     }
     return extra;
 }
-void Hardware_SetHeaterOutput(unsigned char channel,uint32_t final_out);
- {
- if(channel == 0)
-__HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_1,final_out);
- else  if(channel == 1)
- __HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_2,final_out);	
- else  if(channel == 2)
-__HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_3,final_out);
- }
+
 // 在 TemperatureControl_Init 中添加初始化：
 // Predictor_Init(&g_predictor, 0.3f, 1.2f, 0.2f);   // 预测0.3秒，系数1.2，最大补偿±0.2
 
- void ControlTask_Run(float setpoint) {
+ void ControlTask_Run(unsigned char channel ,float setpoint) {
     float pv = g_filter.filtered_value;
     
     // 1. 更新预测器 (温度、时间)
@@ -343,14 +335,13 @@ void MainLoop_Process(void) {
 /* ======================== 系统初始化 ======================== */
 void TemperatureControl_Init(void) {
     PID_Init(&g_pid, CONTROL_PERIOD_SEC);
-    Filter_Init(&g_filter);
+    //Filter_Init(&g_filter);
     GainSchedule_InitTable();
     AgingComp_Init(&g_aging, 2.0f);      // 期望升温速率2℃/s，默认关闭
     OvershootSuppress_Init(&g_oss);
     UnderhootSuppress_Init(&g_under);
 	Predictor_Init(&g_predictor, 0.3f, 1.2f, 0.2f);   // 新增
-    Hardware_InitTimers();
-    Hardware_SetHeaterOutput(0.0f);
+
 }
 
 /* ======================== 用户 API ======================== */

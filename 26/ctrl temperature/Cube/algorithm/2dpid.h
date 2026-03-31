@@ -80,6 +80,7 @@ typedef struct {
     uint32_t last_time_ms;
     float predicted_temp;
 } TemperaturePredictor_t;
-
+void TemperatureControl_Init(void);
+ void ControlTask_Run(unsigned char channel ,float setpoint) ;
 #endif
 
