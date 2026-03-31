@@ -1,6 +1,6 @@
 #include "2dpid.h"
 
-
+extern  temperatureStru temperatureU[3];
 /* ======================== 全局变量 ======================== */
  OmronPID_t g_pid; 
  OversampleFilter_t g_filter;
@@ -8,7 +8,7 @@
  AgingComp_t g_aging;
  OvershootSuppress_t g_oss;
  UnderhootSuppress_t g_under;
- volatile bool g_control_ready = false;
+ //volatile bool g_control_ready = false;
  volatile uint32_t g_sys_ms = 0;
  TemperaturePredictor_t g_predictor;   // 全局预测器
  
@@ -278,7 +278,7 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
 // Predictor_Init(&g_predictor, 0.3f, 1.2f, 0.2f);   // 预测0.3秒，系数1.2，最大补偿±0.2
 
  void ControlTask_Run(unsigned char channel ,float setpoint) {
-    float pv = g_filter.filtered_value;
+    float pv = temperatureU[channel].temperatureFlt;
     
     // 1. 更新预测器 (温度、时间)
     Predictor_Update(&g_predictor, pv, g_sys_ms);
@@ -315,13 +315,7 @@ void sysTickGet(void) {
     g_sys_ms = xTaskGetTickCount();
 }
 
-void temperatureMeter(void) {
-    static uint8_t ctrl_counter = 0;
-    //float raw_temp = Hardware_ReadTemperature();
-    Filter_Update(&g_filter, raw_temp);
-        g_control_ready = true;
-    }
-}
+
 
 /* ======================== 主循环处理 ======================== */
 void MainLoop_Process(void) {

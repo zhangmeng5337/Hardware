@@ -82,5 +82,6 @@ typedef struct {
 } TemperaturePredictor_t;
 void TemperatureControl_Init(void);
  void ControlTask_Run(unsigned char channel ,float setpoint) ;
+ void sysTickGet(void);
 #endif
 

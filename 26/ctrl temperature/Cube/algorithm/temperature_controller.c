@@ -16,7 +16,7 @@
 extern TIM_HandleTypeDef htim4;
  temperatureStru temperatureU[3];
  KalmanFilter_t kf;
-KalmanConfig_t cfg;
+ KalmanFilter_t cfg;
  KalmanFilter_t slopekf;
  float slope[3],slopekft[3];
  float last[3];
@@ -53,23 +53,15 @@ void controllerInit(void)
 	temperatureU[0].periodMeter = 0.002;
 	temperatureU[1].periodMeter = 0.1;	
 	temperatureU[2].periodMeter = 0.1;
-	Kalman_Init(kalman *kfp,KalmanFilter_t* cfg)
-//	g_tc[0].pid_heat.periodMeter = temperatureU[0].periodMeter;
-//	g_tc[1].pid_heat.periodMeter = temperatureU[1].periodMeter;
-//	g_tc[2].pid_heat.periodMeter = temperatureU[2].periodMeter;
-//	// 温控系统初始化：初始温度假设为25℃，初始目标温度25℃
-//	TempControl_Init(&g_tc[0], 25.0f, -200.0f);
-//	TempControl_Init(&g_tc[1], 25.0f, -200.0f);
-//	TempControl_Init(&g_tc[2], 25.0f, -200.0f);
-//	// 设置目标温度（例如：从室温加热到200℃）
-//	TempControl_SetSetpoint(&g_tc[0], -200.0f);
-//	TempControl_SetSetpoint(&g_tc[1], -200.0f);
-//	TempControl_SetSetpoint(&g_tc[2], -200.0f);
+	
+	Kalman_Init(&kf[0],&cfg)
+	Kalman_Init(&kf[1],&cfg)
+	Kalman_Init(&kf[2],&cfg)	
 	TemperatureControl_Init();
 }
 void controller(unsigned char channel) {
 
-
+  sysTickGet();
   ControlTask_Run(channel,temperatureU[channel].temperatureTarget);	
  //TempControl_Step(&g_tc[channel],channel);
     
