@@ -1,14 +1,14 @@
-
-#ifndef 2DPID_H_
-#define 2DPID_H_
+﻿
+#ifndef DPID_H_
+#define DPID_H_
 #include "main.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 
 /* ======================== 用户配置 ======================== */
-#define CONTROL_PERIOD_SEC    0.1f     // 控制周期 100ms
-#define SAMPLE_PERIOD_SEC     0.01f    // 采样周期 10ms
+//#define CONTROL_PERIOD_SEC    0.1f     // 控制周期 100ms
+//#define SAMPLE_PERIOD_SEC     0.01f    // 采样周期 10ms
 #define OVERSAMPLE_RATE       10       // 过采样率 = 控制周期/采样周期
 #define TEMP_MIN              -150.0f
 #define TEMP_MAX              200.0f

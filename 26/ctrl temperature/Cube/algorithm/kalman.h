@@ -30,7 +30,7 @@ typedef struct
  * @param kf  滤波器实例指针
  * @param cfg 配置参数
  */
-void Kalman_Init(KalmanFilter_t* kf, KalmanConfig_t* cfg);
+void Kalman_Init(KalmanFilter_t* kf, KalmanFilter_t* cfg);
 
 /**
  * 更新卡尔曼滤波器

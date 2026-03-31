@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
  * 文件: temp_control_heater_only.c
  * 描述: 单加热器温控系统（无主动制冷），适应 -150℃~200℃ 温区
  *       实现大温差全速加热 + 分段自适应PID + 卡尔曼滤波 + 前馈
@@ -15,21 +15,22 @@
 /* ======================= 硬件抽象层（需用户实现） ========================= */
 extern TIM_HandleTypeDef htim4;
  temperatureStru temperatureU[3];
- KalmanFilter_t kf;
+ KalmanFilter_t kf[3];
  KalmanFilter_t cfg;
  KalmanFilter_t slopekf;
  float slope[3],slopekft[3];
  float last[3];
+ float pwmMax = 40000;
 
 TempControl_t g_tc[3];
 void Hardware_SetHeaterOutput(unsigned char channel,uint32_t final_out)
  {
  if(channel == 0)
-__HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_1,final_out);
+__HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_1,final_out*pwmMax);
  else  if(channel == 1)
- __HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_2,final_out);	
+ __HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_2,final_out*pwmMax);	
  else  if(channel == 2)
-__HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_3,final_out);
+__HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_3,final_out*pwmMax);
  }
 
 void TempControl_Step(TempControl_t *tc,unsigned char channel) {
@@ -53,10 +54,13 @@ void controllerInit(void)
 	temperatureU[0].periodMeter = 0.002;
 	temperatureU[1].periodMeter = 0.1;	
 	temperatureU[2].periodMeter = 0.1;
-	
-	Kalman_Init(&kf[0],&cfg)
-	Kalman_Init(&kf[1],&cfg)
-	Kalman_Init(&kf[2],&cfg)	
+	cfg.Q = 0.01;
+	cfg.R = 5;
+	cfg.Kg = 1;
+    cfg.Last_P = 0;
+	Kalman_Init(&kf[0],&cfg);
+	Kalman_Init(&kf[1],&cfg);
+	Kalman_Init(&kf[2],&cfg);	
 	TemperatureControl_Init();
 }
 void controller(unsigned char channel) {
