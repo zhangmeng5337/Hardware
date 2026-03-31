@@ -23,6 +23,8 @@ typedef struct {
     // 内部状态
     float integral;             // 积分累计值（归一化后）
     float prev_pv;              // 上一次测量值（原始量纲）
+	 float dout;
+	float pterm;
     float prev_error;           // 上一次误差（原始量纲）
     float last_output;          // 上一次输出
     
@@ -30,6 +32,7 @@ typedef struct {
     uint8_t derivative_on_pv;   // 1=微分先行，0=标准微分
     bool anti_windup;           // 是否启用遇限削弱积分
     bool enable_normalization;  // 是否启用归一化
+		float out;
 } PIDController_t;
 
 /**
@@ -49,6 +52,7 @@ typedef struct {
     
     uint8_t derivative_on_pv;   // 微分方式：1=微分先行，0=标准微分
     bool anti_windup;           // 是否启用抗饱和
+	  float out;
 } PIDConfig_t;
 
 void PID_Init(PIDController_t* pid, PIDConfig_t* cfg);

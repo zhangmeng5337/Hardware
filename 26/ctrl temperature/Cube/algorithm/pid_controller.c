@@ -99,7 +99,7 @@ float PID_Update(PIDController_t* pid, float pv, float dt)
     
     // 1. 比例项
     float Pout = pid->Kp * error;
-    
+    pid->pterm = Pout;
     // 2. 积分项
     float Iout = pid->integral;
     bool integrate = (fabsf(error) < pid->integral_sep_thresh);
@@ -137,6 +137,7 @@ float PID_Update(PIDController_t* pid, float pv, float dt)
             if (derivative < -1.0f) derivative = -1.0f;
         }
         Dout = -pid->Kd * derivative;
+				pid->dout = Dout;
         pid->prev_pv = pv;
     } else {
         // 标准微分：对误差求导

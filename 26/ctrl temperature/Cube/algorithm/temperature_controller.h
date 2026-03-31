@@ -1,187 +1,48 @@
-#ifndef TEMPERATURE_CONTROLLER_H
-#define TEMPERATURE_CONTROLLER_H
-
-#include <stdint.h>
-#include <stdbool.h>
+#ifndef TEMPERATURE_H
+#define TEMPERATURE_H
 #include "kalman.h"
-#include "slope_calculator.h"
-#include "pid_controller.h"
-
-/**
- * ¿ØÖÆÄ£Ê½
- */
-typedef enum {
-    CTRL_MODE_FULL,     // È«ËÙ¼ÓÈÈÄ£Ê½£¨ÎÂ²î´óÊ±£©
-    CTRL_MODE_RATE,     // ËÙÂÊ¿ØÖÆÄ£Ê½£¨ÉıÎÂ½×¶Î£©
-    CTRL_MODE_TEMP      // ÎÂ¶ÈPIDÄ£Ê½£¨ÎÈÌ¬½×¶Î£©
-} ControlMode_t;
-
-/**
- * ÎÂÇø×ÔÊÊÓ¦²ÎÊı
- */
+// PIDæ§åˆ¶å™¨ (ä»…ç”¨äºåŠ çƒ­æ–¹å‘)
 typedef struct {
-    float temp_low;         // ÎÂÇøÏÂÏŞ
-    float temp_high;        // ÎÂÇøÉÏÏŞ
-    float kp_factor;        // KpÏµÊı
-    float ki_factor;        // KiÏµÊı
-    float kd_factor;        // KdÏµÊı
-    float rate_factor;      // Ä¿±êËÙÂÊÏµÊı
-    float full_power_factor; // È«¹¦ÂÊãĞÖµÏµÊı
-    float switch_factor;    // ÇĞ»»ãĞÖµÏµÊı
-} ZoneParam_t;
+    float Kp;       // æ¯”ä¾‹ç³»æ•°
+    float Ki;       // ç§¯åˆ†ç³»æ•°
+    float Kd;       // å¾®åˆ†ç³»æ•°
+    float integral; // ç§¯åˆ†ç´¯åŠ å’Œ
+    float prev_err; // ä¸Šä¸€æ¬¡è¯¯å·®
+    float out_min;  // è¾“å‡ºä¸‹é™ (0%)
+    float out_max;  // è¾“å‡ºä¸Šé™ (100%)
+    float periodMeter;
+	float output;
+	float pterm;
+	float dterm;
+	float fterm;
 
-/**
- * »ìºÏ¿ØÖÆÆ÷
- */
+} PID_t;
+
+// æ¸©æ§ç³»ç»Ÿä¸»ç»“æ„
 typedef struct {
-    // ¿¨¶ûÂüÂË²¨Æ÷
-    KalmanFilter_t kalman_filter;
+   KalmanFilter_t kalman;        // å¡å°”æ›¼æ»¤æ³¢å™¨
+    PID_t    pid_heat;      // åŠ çƒ­PID (è¾“å‡º0~100)
     
-    // PID¿ØÖÆÆ÷
-    PIDController_t rate_pid;       // ËÙÂÊ¿ØÖÆPID
-    PIDController_t temp_pid;       // ÎÂ¶È¿ØÖÆPID
+    float setpoint;         // ç›®æ ‡æ¸©åº¦ (â„ƒ)
+    float output;           // æœ€ç»ˆè¾“å‡ºåŠŸç‡ç™¾åˆ†æ¯”(0~100)
     
-    // Ğ±ÂÊ¼ÆËãÆ÷
-    SlopeCalculator_t slope_calc;
+    float heat_ff_gain;     // åŠ çƒ­å‰é¦ˆå¢ç›Š (%/â„ƒ)
     
-    // Ä¿±ê²ÎÊı
-    float target_temp;
-    float target_rate;
-    float switch_threshold;
-    float full_power_threshold;
-    
-    // ¹éÒ»»¯·¶Î§
-    float temp_error_range;         // ÎÂ¶ÈÎó²î¹éÒ»»¯·¶Î§£¨¡æ£©
-    float rate_error_range;         // ËÙÂÊÎó²î¹éÒ»»¯·¶Î§£¨¡æ/s£©
-    
-    // »ù×¼²ÎÊı
-    float base_target_rate;
-    float base_switch_threshold;
-    float base_full_power_threshold;
-    
-    // ÎÂÇø×ÔÊÊÓ¦
-    ZoneParam_t zones[7];
-    int current_zone;
-    bool adaptive_enabled;
-    
-    // PID»ù×¼²ÎÊı
-    float base_kp_rate, base_ki_rate, base_kd_rate;
-    float base_kp_temp, base_ki_temp, base_kd_temp;
-    
-    // Ä£Ê½¹ÜÀí
-    ControlMode_t mode;
-    ControlMode_t last_mode;
-    
-    // Êä³öÏŞÖÆ
-    float output_rate_limit;
-    float last_output;
-    
-    // ÇĞ»»Ìõ¼ş
-    bool require_rate_zero;
-    float rate_zero_thresh;
-    float early_switch_factor;
-    
-    // ×´Ì¬¼à¿Ø
-    float filtered_temp;
-    float current_rate;
-    float temp_error;
-    bool switch_ready;
-    bool first_rate_entry;
-    int rate_mode_entry_count;
-    
-    // ¹ı³åÔ¤·À
-    float peak_temp;
-    bool overshoot_detected;
-    
-    // µÍÎÂ±£»¤
-    bool low_temp_protection;
-    float min_heating_power;
-    
-    // Ä¿±ê±ä»¯¼ì²â
-    float last_target_temp;
-    bool target_changed;
-} HybridController_t;
-
-/**
- * ÅäÖÃ²ÎÊı
- */
-typedef struct {
-    // Ä¿±ê²ÎÊı
-    float target_temp;
-    float target_rate;
-    float switch_threshold;
-    float full_power_threshold;
-    
-    // ¹éÒ»»¯·¶Î§
-    float temp_error_range;         // ÎÂ¶ÈÎó²î¹éÒ»»¯·¶Î§£¨½¨Òé100¡æ£©
-    float rate_error_range;         // ËÙÂÊÎó²î¹éÒ»»¯·¶Î§£¨½¨Òé5¡æ/s£©
-    
-    // ÎÂÇø×ÔÊÊÓ¦
-    bool adaptive_enabled;
-    ZoneParam_t zones[7];
-    
-    // PID»ù×¼²ÎÊı£¨ÎŞÁ¿¸Ù£¬»ùÓÚ¹éÒ»»¯Îó²î£©
-    float base_kp_rate;
-    float base_ki_rate;
-    float base_kd_rate;
-    float base_kp_temp;
-    float base_ki_temp;
-    float base_kd_temp;
-    
-    // »ù×¼Ä¿±ê²ÎÊı
-    float base_target_rate;
-    float base_switch_threshold;
-    float base_full_power_threshold;
-    
-    // ¿¨¶ûÂüÂË²¨Æ÷ÅäÖÃ
-    KalmanConfig_t kalman_cfg;
-    
-    // ËÙÂÊPIDÅäÖÃ£¨»ù×¼Öµ£©
-    PIDConfig_t rate_pid_cfg;
-    
-    // ÎÂ¶ÈPIDÅäÖÃ£¨»ù×¼Öµ£©
-    PIDConfig_t temp_pid_cfg;
-    
-    // Ğ±ÂÊ¼ÆËãÅäÖÃ
-    SlopeConfig_t slope_cfg;
-    
-    // Êä³öÏŞÖÆ
-    float output_rate_limit;
-    
-    // ÇĞ»»Ìõ¼ş
-    bool require_rate_zero;
-    float rate_zero_thresh;
-    float early_switch_factor;
-    
-    // µÍÎÂ±£»¤
-    bool low_temp_protection;
-    float min_heating_power;
-} HybridConfig_t;
-
-// º¯ÊıÉùÃ÷
-void Hybrid_Init(HybridController_t* hc, HybridConfig_t* cfg);
-float Hybrid_Update(HybridController_t* hc, float pv_raw, float dt);
-void Hybrid_SetTargetTemp(HybridController_t* hc, float target_temp);
-void Hybrid_SetTargetRate(HybridController_t* hc, float target_rate);
-void Hybrid_ResetStateMachine(HybridController_t* hc);
-ControlMode_t Hybrid_GetMode(HybridController_t* hc);
-const char* Hybrid_GetModeName(ControlMode_t mode);
-float Hybrid_GetCurrentRate(HybridController_t* hc);
-float Hybrid_GetFilteredTemp(HybridController_t* hc);
-float Hybrid_GetTempError(HybridController_t* hc);
-void Hybrid_SetAdaptiveEnabled(HybridController_t* hc, bool enabled);
-int Hybrid_GetCurrentZone(HybridController_t* hc);
-#include "main.h"
-#define PERIOD_SAMPLE  0.1f
+    uint8_t zone;           // å½“å‰æ¸©åŒº (0:ä½æ¸©åŒº, 1:ä¸­æ¸©åŒº, 2:é«˜æ¸©åŒº)
+    uint8_t enable;         // ç³»ç»Ÿä½¿èƒ½æ ‡å¿—
+    uint8_t large_error_mode; // å¤§æ¸©å·®æ¨¡å¼æ ‡å¿— (1:å…¨é€ŸåŠ çƒ­, 0:æ­£å¸¸PID)
+	 float totaloutput;
+	float fterm;
+	
+} TempControl_t;
 typedef struct
 {
-  float temperatureOri;
-  float temperatureTarget;
-  float pwmFraction;
-  float periodMeter;
-  
+float temperatureOri;
+	float temperatureTarget;
+float	temperatureFlt;
+	float periodMeter;
 }temperatureStru;
-void controllerInit(void);
-
+void controller(unsigned char channel);
+void kalmanProc(unsigned char channel);
 #endif
 

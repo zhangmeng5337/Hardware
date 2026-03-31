@@ -163,7 +163,7 @@ osThreadId Tem_TXHandle;
 osThreadId Tem_RXHandle;
 osThreadId get_temTaskHandle;
 osThreadId get_pidHandle;
-
+osThreadId tid;
 osMessageQId MFC_QueueHandle;
 osMessageQId Value_QueueHandle;
 osMessageQId TEM_QueueHandle;
@@ -197,6 +197,7 @@ unsigned char key[16] ={0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0x
 
 /* USER CODE END FunctionPrototypes */
 // 线程函数声明
+void Task_Periodic1(void const *argument);
 void Task_Periodic(void const *argument);
 void StartDefaultTask(void const * argument);
 void MFC_RX_Task(void const * argument);
@@ -352,7 +353,8 @@ void MX_FREERTOS_Init(void) {
 	osThreadDef(get_temTask, get_tem, osPriorityNormal, 0, 128);	//osPriorityNormal
   get_temTaskHandle = osThreadCreate(osThread(get_temTask), NULL);
 	// 定义线程
-	osThreadDef(Task_Periodic, Task_Periodic,osPriorityNormal, 1, 128);
+	osThreadDef(Task_Periodic, Task_Periodic1,osPriorityNormal, 0, 128);
+	 tid = osThreadCreate(osThread(Task_Periodic), NULL);	
 	  /* definition and creation of pid */
   osThreadDef(pidTask, pid_update, osPriorityLow, 0, 128);//osPriorityNormal
   get_pidHandle = osThreadCreate(osThread(pidTask), NULL);
@@ -1758,14 +1760,22 @@ int32_t duty2 = 0;
 uint32_t delayms = 0;
 float filtered_temp;
 float alpha = 0.85;
-void Task_Periodic(void const *argument)
+uint32_t t1,t2,t3;
+unsigned char divT = 15;
+void Task_Periodic1(void const *argument)
 {
-    uint32_t last_wake_time = osKernelSysTick();  // 获取当前系统滴答计数
-    uint32_t period = temperatureU[0].periodMeter*1000;
+    uint32_t last_wake_time = xTaskGetTickCount();  // 获取当前系统滴答计数
+    static unsigned char div = 5;
     while (1)
     {
+			// div = divT;
+			kalmanProc(0);
+			kalmanProc(1);
+			kalmanProc(2);
+			uint32_t period = temperatureU[0].periodMeter*1000;
         // 周期性任务代码
         // ...
+			t1 = xTaskGetTickCount();
 			temperatureU[0].temperatureOri = TEM1.temp_tc;
 			temperatureU[0].temperatureTarget = pid1.ref;
 
@@ -1774,10 +1784,18 @@ void Task_Periodic(void const *argument)
 
 			temperatureU[2].temperatureOri = TEM3.temp_tc;
 			temperatureU[2].temperatureTarget = pid3.ref;
-
-			controller(0);
+      if(div == 0)
+			{
+				controller(0);
 			controller(1);
-			controller(2); 
+			controller(2); 	
+div = divT;				
+			}
+			else 
+				div--;
+
+			t2 = xTaskGetTickCount();
+			t3 = t2 - t1;
         // 精确延时 100 个系统滴答（假设系统滴答为 1ms，则延时 100ms）
         osDelayUntil(&last_wake_time, period);
     }
