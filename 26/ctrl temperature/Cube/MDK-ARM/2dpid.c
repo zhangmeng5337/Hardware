@@ -10,7 +10,7 @@ extern unsigned char divT ;
  OvershootSuppress_t g_oss[3];
  UnderhootSuppress_t g_under[3];
  //volatile bool g_control_ready = false;
- volatile uint32_t g_sys_ms[3] = 0;
+ volatile uint32_t g_sys_ms = 0;
  TemperaturePredictor_t g_predictor[3];   // 全局预测器
  
 void Predictor_Init(TemperaturePredictor_t *pred, float dt_predict, float K_pred, float max_comp) {
@@ -111,9 +111,10 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
     float error = pid->setpoint - pid->pv;
     pid->error[1] = pid->error[0];
     pid->error[0] = error;
-  // 积分复位：超温或设定值下降时清零积分，防止饱和
-    if (pv > setpoint+0.5 ) {
-        pid->i_term = 0.0f;
+
+    // 积分复位：超温或设定值下降时清零积分，防止饱和
+    if (pv > setpoint + 1.0f || (setpoint < pid->last_setpoint && pv > setpoint)) {
+        pid->integral = 0.0f;
     }
     pid->last_setpoint = setpoint;
 
@@ -142,7 +143,6 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
     if ((pid->mv >= pid->mv_max && error > 0) || (pid->mv <= pid->mv_min && error < 0)) {
         pid->i_term -= (pid->Kp / pid->Ti) * error * pid->dt;
     }
-   
 
     return pid->mv;
 }
@@ -152,8 +152,8 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
     g_gainTable[0] = (GainScheduleEntry_t){-200.0f, -50.0f, 1.5f, 40.0f, 8.0f};
     g_gainTable[1] = (GainScheduleEntry_t){-50.0f,   0.0f, 2.0f, 30.0f, 6.0f};
     g_gainTable[2] = (GainScheduleEntry_t){  0.0f,  50.0f, 2.5f, 25.0f, 5.0f};
-    g_gainTable[3] = (GainScheduleEntry_t){ 50.0f, 100.0f, 0.01f, 5.0f, 7.0f};
-    g_gainTable[4] = (GainScheduleEntry_t){100.0f, 150.0f, 3.5f, 2.0f, 1.0f};
+    g_gainTable[3] = (GainScheduleEntry_t){ 50.0f, 100.0f, 3.0f, 20.0f, 4.0f};
+    g_gainTable[4] = (GainScheduleEntry_t){100.0f, 150.0f, 3.5f, 15.0f, 3.0f};
     g_gainTable[5] = (GainScheduleEntry_t){150.0f, 250.0f, 4.0f, 10.0f, 2.0f};
 }
 
@@ -206,15 +206,14 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
 // ---------- 超调抑制 (升温速率、设定值下降、超温关断) ----------
  void OvershootSuppress_Init(OvershootSuppress_t *oss) {
     oss->max_heating_rate = 5.0f;        // 最大升温速率 5℃/s，根据实际调整
-    oss->cool_deadband = 1.0f;           // 自然冷却死区 ±2℃
+    oss->cool_deadband = 2.0f;           // 自然冷却死区 ±2℃
     oss->overshoot_stop_thres = 1.5f;    // 超过设定值1.5℃立即关断加热
     oss->setpoint_decreasing = false;
     oss->last_setpoint = 25.0f;
-	 oss->factor = 1.0f;
 }
 
  float OvershootSuppress_Compute(OvershootSuppress_t *oss, float setpoint, float pv, float raw_output) {
-     oss->limited = raw_output;
+    float limited = raw_output;
 
     // 检测设定值下降
     if (setpoint < oss->last_setpoint - 0.1f) {
@@ -234,25 +233,24 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
     if (pv > setpoint + oss->overshoot_stop_thres) return 0.0f;
 
     // 升温速率限制：根据误差动态限制最大输出
-     oss->error = setpoint - pv;
-    if (oss->error > 0) {
-         oss->max_output = (oss->error > 20.0f) ? 1.0f : (oss->error* oss->factor/ 20.0f);
-        if (oss->max_output < 0.05f) oss->max_output = 0.05f;
-        if (oss->limited > oss->max_output) oss->limited = oss->max_output;
+    float error = setpoint - pv;
+    if (error > 0) {
+        float max_output = (error > 20.0f) ? 1.0f : (error / 20.0f);
+        if (max_output < 0.05f) max_output = 0.05f;
+        if (limited > max_output) limited = max_output;
     }
-    return oss->limited;
+    return limited;
 }
 
 // ---------- 过冷抑制 (基于下降速率的提前补偿) ----------
  void UnderhootSuppress_Init(UnderhootSuppress_t *us) {
     us->enable = true;
-    us->rate_threshold = -0.1f;     // 下降速率低于 -0.5℃/s 时触发
+    us->rate_threshold = -0.5f;     // 下降速率低于 -0.5℃/s 时触发
     us->K_under = 0.1f;             // 补偿系数
-    us->max_extra_output = 0.6f;    // 最大额外输出 30%
+    us->max_extra_output = 0.3f;    // 最大额外输出 30%
     us->last_temp = 25.0f;
     us->last_time_ms = 0;
     us->current_slope = 0.0f;
-	 
 }
 
  void UnderhootSuppress_UpdateSlope(UnderhootSuppress_t *us, float current_temp, uint32_t now_ms) {
@@ -279,54 +277,43 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
 
 // 在 TemperatureControl_Init 中添加初始化：
 // Predictor_Init(&g_predictor, 0.3f, 1.2f, 0.2f);   // 预测0.3秒，系数1.2，最大补偿±0.2
-float buf[3];
-extern  float slopekft[3];
+
  void ControlTask_Run(unsigned char channel ,float setpoint) {
-    float pv = slopekft[channel];//temperatureU[channel].temperatureFlt;
+    float pv = temperatureU[channel].temperatureFlt;
     
     // 1. 更新预测器 (温度、时间)
-    Predictor_Update(&g_predictor[channel], pv, g_sys_ms[channel]);
+    Predictor_Update(&g_predictor[channel], pv, g_sys_ms);
     
     // 2. PID计算 (与原流程相同)
-    UnderhootSuppress_UpdateSlope(&g_under[channel], pv, g_sys_ms[channel]);
+    UnderhootSuppress_UpdateSlope(&g_under[channel], pv, g_sys_ms);
     GainSchedule_Update(&g_pid[channel], setpoint);
-     g_pid[channel].raw_out = PID_Compute(&g_pid[channel], setpoint, pv);
+    float raw_out = PID_Compute(&g_pid[channel], setpoint, pv);
     
 //    // 3. 老化补偿
 //    float comp = AgingComp_Update(&g_aging[channel], pv, g_sys_ms);
 //    raw_out *= comp;
 //    raw_out = (raw_out > 1.0f) ? 1.0f : (raw_out < 0.0f) ? 0.0f : raw_out;
     
-
-    // 5. 预测补偿 (提前调节)
-     g_pid[channel].pred_comp = Predictor_ComputeCompensation(&g_predictor[channel], setpoint);
-     g_pid[channel].after_pred =  g_pid[channel].raw_out +  g_pid[channel].pred_comp;
-    if (g_pid[channel].after_pred > 1.0f) g_pid[channel].after_pred = 1.0f;
-    if (g_pid[channel].after_pred < 0.0f) g_pid[channel].after_pred = 0.0f;
+    // 4. 超调抑制 (安全边界)
+    float suppressed_out = OvershootSuppress_Compute(&g_oss[channel], setpoint, pv, raw_out);
     
-
-		
+    // 5. 预测补偿 (提前调节)
+    float pred_comp = Predictor_ComputeCompensation(&g_predictor[channel], setpoint);
+    float after_pred = suppressed_out + pred_comp;
+    if (after_pred > 1.0f) after_pred = 1.0f;
+    if (after_pred < 0.0f) after_pred = 0.0f;
+    
     // 6. 过冷抑制 (基于下降速率的最后补偿)
-     g_pid[channel].under_extra = UnderhootSuppress_Compute(&g_under[channel], setpoint, pv);
-     g_pid[channel].after_under = g_pid[channel].after_pred +g_pid[channel]. under_extra;
-    if (g_pid[channel].after_under > 1.0f) g_pid[channel].after_under = 1.0f;   
-
-// 4. 超调抑制 (安全边界)
-if(channel == 2)
-{
-	unsigned char result;
-	result = 1;
-}
-     g_pid[channel].suppressed_out = OvershootSuppress_Compute(&g_oss[channel], setpoint, pv,  g_pid[channel].after_under);
-    		 g_pid[channel].final_out =  g_pid[channel].suppressed_out;
-    if(g_pid[channel].suppressed_out!=0)
-			buf[channel] = g_pid[channel].final_out;
-    Hardware_SetHeaterOutput(channel,g_pid[channel].final_out);
+    float under_extra = UnderhootSuppress_Compute(&g_under[channel], setpoint, pv);
+    float final_out = after_pred + under_extra;
+    if (final_out > 1.0f) final_out = 1.0f;
+    
+    Hardware_SetHeaterOutput(channel,final_out);
 }
 
 /* ======================== 定时器中断处理 (用户需在中断中调用) ======================== */
-void sysTickGet(unsigned char channel) {
-    g_sys_ms[channel] = xTaskGetTickCount();
+void sysTickGet(void) {
+    g_sys_ms = xTaskGetTickCount();
 }
 
 
@@ -338,9 +325,9 @@ void MainLoop_Process(void) {
 
 /* ======================== 系统初始化 ======================== */
 void TemperatureControl_Init(void) {
-  PID_Init(&g_pid[0], temperatureU[0].periodMeter*temperatureU[0].periodTask);
-	PID_Init(&g_pid[1], temperatureU[1].periodMeter*temperatureU[1].periodTask);
-	PID_Init(&g_pid[2], temperatureU[2].periodMeter*temperatureU[2].periodTask);
+    PID_Init(&g_pid[0], temperatureU[0].periodMeter*divT);
+	PID_Init(&g_pid[1], temperatureU[1].periodMeter*divT);
+	PID_Init(&g_pid[2], temperatureU[2].periodMeter*divT);
     //Filter_Init(&g_filter);
     GainSchedule_InitTable();
     AgingComp_Init(&g_aging[0], 2.0f);      // 期望升温速率2℃/s，默认关闭
@@ -353,11 +340,10 @@ void TemperatureControl_Init(void) {
     UnderhootSuppress_Init(&g_under[0]);
 	UnderhootSuppress_Init(&g_under[1]);
 	UnderhootSuppress_Init(&g_under[2]);
-	Predictor_Init(&g_predictor[0], 0.5f, 1.2f, 1.0f);   // 新增
-	Predictor_Init(&g_predictor[1], 0.5f, 1.2f, 1.0f);	 // 新增
-	Predictor_Init(&g_predictor[2], 0.8f, 1.8f, 1.0f);	 // 新增
-//0.8 1.8 1  
-	//pid 5 2 1//0.01 5 7
+	Predictor_Init(&g_predictor[0], 0.3f, 1.2f, 0.2f);   // 新增
+	Predictor_Init(&g_predictor[1], 0.3f, 1.2f, 0.2f);	 // 新增
+	Predictor_Init(&g_predictor[2], 0.3f, 1.2f, 0.2f);	 // 新增
+
 }
 
 /* ======================== 用户 API ======================== */
@@ -370,13 +356,6 @@ void SetTargetTemperature(float temp) {
     // 实际使用时需要在 MainLoop_Process 中读取该值，这里为了示例，直接用 static 变量，
     // 更好的做法是使用 volatile 全局变量并在 ControlTask_Run 中读取。
     // 由于代码中 ControlTask_Run 使用的是局部 static target_temperature，用户可自行修改为全局变量。
-}
-void updatePIDperiod()
-{
-
-	g_pid[0].dt = temperatureU[0].periodMeter*temperatureU[0].periodTask;
-	g_pid[1].dt = temperatureU[1].periodMeter*temperatureU[1].periodTask;	
-	g_pid[2].dt = temperatureU[2].periodMeter*temperatureU[2].periodTask;	
 }
 
 //float GetCurrentTemperature(void) {

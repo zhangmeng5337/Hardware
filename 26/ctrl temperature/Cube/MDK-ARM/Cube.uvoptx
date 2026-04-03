@@ -223,82 +223,82 @@
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pid3.ref</ItemText>
+          <ItemText>pid1.ref</ItemText>
         </Ww>
         <Ww>
           <count>14</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pid1.ref</ItemText>
+          <ItemText>result</ItemText>
         </Ww>
         <Ww>
           <count>15</count>
           <WinNumber>1</WinNumber>
-          <ItemText>result</ItemText>
+          <ItemText>cfg</ItemText>
         </Ww>
         <Ww>
           <count>16</count>
           <WinNumber>1</WinNumber>
-          <ItemText>current_tempBuf[2]</ItemText>
+          <ItemText>temperatureU</ItemText>
         </Ww>
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dt</ItemText>
+          <ItemText>\\Cube\../algorithm/temperature_controller.c\g_tc[2].pid_heat.pterm</ItemText>
         </Ww>
         <Ww>
           <count>18</count>
           <WinNumber>1</WinNumber>
-          <ItemText>delayms,0x0A</ItemText>
+          <ItemText>kf</ItemText>
         </Ww>
         <Ww>
           <count>19</count>
           <WinNumber>1</WinNumber>
-          <ItemText>hc</ItemText>
+          <ItemText>g_predictor[2]</ItemText>
         </Ww>
         <Ww>
           <count>20</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temperatureU</ItemText>
+          <ItemText>buf</ItemText>
         </Ww>
         <Ww>
           <count>21</count>
           <WinNumber>1</WinNumber>
-          <ItemText>cfg</ItemText>
+          <ItemText>g_under</ItemText>
         </Ww>
         <Ww>
           <count>22</count>
           <WinNumber>1</WinNumber>
-          <ItemText>power,0x0A</ItemText>
+          <ItemText>g_pid</ItemText>
         </Ww>
         <Ww>
           <count>23</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_tc</ItemText>
+          <ItemText>pwmMax</ItemText>
         </Ww>
         <Ww>
           <count>24</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temperatureU</ItemText>
+          <ItemText>divT</ItemText>
         </Ww>
         <Ww>
           <count>25</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tc-&gt;kalman</ItemText>
+          <ItemText>g_gainTable</ItemText>
         </Ww>
         <Ww>
           <count>26</count>
           <WinNumber>1</WinNumber>
-          <ItemText>t3,0x0A</ItemText>
+          <ItemText>g_oss</ItemText>
         </Ww>
         <Ww>
           <count>27</count>
           <WinNumber>1</WinNumber>
-          <ItemText>t2</ItemText>
+          <ItemText>g_tc</ItemText>
         </Ww>
         <Ww>
           <count>28</count>
           <WinNumber>1</WinNumber>
-          <ItemText>t1</ItemText>
+          <ItemText>pwm,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>29</count>
@@ -308,27 +308,12 @@
         <Ww>
           <count>30</count>
           <WinNumber>1</WinNumber>
-          <ItemText>slope</ItemText>
+          <ItemText>slopekf</ItemText>
         </Ww>
         <Ww>
           <count>31</count>
           <WinNumber>1</WinNumber>
-          <ItemText>divT</ItemText>
-        </Ww>
-        <Ww>
-          <count>32</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>pwmTotal</ItemText>
-        </Ww>
-        <Ww>
-          <count>33</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>errThr</ItemText>
-        </Ww>
-        <Ww>
-          <count>34</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>\\Cube\../algorithm/temperature_controller.c\g_tc[2].pid_heat.pterm</ItemText>
+          <ItemText>g_sys_ms,0x10</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

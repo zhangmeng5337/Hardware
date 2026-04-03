@@ -1761,18 +1761,18 @@ uint32_t delayms = 0;
 float filtered_temp;
 float alpha = 0.85;
 uint32_t t1,t2,t3;
-unsigned char divT = 15;
+unsigned char divT = 10;
 void Task_Periodic1(void const *argument)
 {
     uint32_t last_wake_time = xTaskGetTickCount();  // 获取当前系统滴答计数
-    static unsigned char div = 5;
+    static unsigned char div = 10;
     while (1)
     {
 			// div = divT;
 			kalmanProc(0);
 			kalmanProc(1);
 			kalmanProc(2);
-			uint32_t period = temperatureU[0].periodMeter*1000;
+			uint32_t period = temperatureU[0].periodMeter;
         // 周期性任务代码
         // ...
 			t1 = xTaskGetTickCount();
@@ -1784,16 +1784,30 @@ void Task_Periodic1(void const *argument)
 
 			temperatureU[2].temperatureOri = TEM3.temp_tc;
 			temperatureU[2].temperatureTarget = pid3.ref;
-      if(div == 0)
+      if(temperatureU[0].div == 0)
 			{
-				controller(0);
-			controller(1);
-			controller(2); 	
-div = divT;				
+				controller(0); 	
+			temperatureU[0].div = temperatureU[0].periodTask;				
 			}
 			else 
-				div--;
-
+				temperatureU[0].div--;
+			
+      if(temperatureU[1].div == 0)
+			{
+			controller(1);
+			temperatureU[1].div = temperatureU[1].periodTask;				
+			}
+			else 
+				temperatureU[1].div--;
+			
+      if(temperatureU[2].div == 0)
+			{
+			controller(2); 	
+			temperatureU[2].div = temperatureU[2].periodTask;				
+			}
+			else 
+				temperatureU[2].div--;
+			
 			t2 = xTaskGetTickCount();
 			t3 = t2 - t1;
         // 精确延时 100 个系统滴答（假设系统滴答为 1ms，则延时 100ms）

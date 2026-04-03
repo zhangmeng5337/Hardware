@@ -40,9 +40,13 @@ typedef struct
 float temperatureOri;
 	float temperatureTarget;
 float	temperatureFlt;
+
 	float periodMeter;
+	unsigned char periodTask;
+	unsigned char div;
 }temperatureStru;
 void controller(unsigned char channel);
 void kalmanProc(unsigned char channel);
+void Hardware_SetHeaterOutput(unsigned char channel,float final_out);
 #endif
 

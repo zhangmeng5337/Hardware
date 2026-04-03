@@ -1,4 +1,4 @@
-﻿
+
 #ifndef DPID_H_
 #define DPID_H_
 #include "main.h"
@@ -7,8 +7,8 @@
 #include <string.h>
 
 /* ======================== 用户配置 ======================== */
-//#define CONTROL_PERIOD_SEC    0.1f     // 控制周期 100ms
-//#define SAMPLE_PERIOD_SEC     0.01f    // 采样周期 10ms
+#define CONTROL_PERIOD_SEC    0.1f     // 控制周期 100ms
+#define SAMPLE_PERIOD_SEC     0.01f    // 采样周期 10ms
 #define OVERSAMPLE_RATE       10       // 过采样率 = 控制周期/采样周期
 #define TEMP_MIN              -150.0f
 #define TEMP_MAX              200.0f
@@ -25,6 +25,13 @@ typedef struct {
     float mv, mv_min, mv_max;
     float integral_limit;
     float dt;
+	  float suppressed_out;
+	  float pred_comp;
+	  float after_pred;
+	  float under_extra;
+	  float final_out;
+	  float raw_out;
+	float after_under;
 } OmronPID_t;
 
 // 过采样滤波器 (去极值滑动平均)
@@ -55,6 +62,10 @@ typedef struct {
     float overshoot_stop_thres;
     bool setpoint_decreasing;
     float last_setpoint;
+	  float error;
+	  float max_output;
+	  float limited;
+	  float factor;
 } OvershootSuppress_t;
 
 // 过冷抑制 (基于斜率的提前补偿)
@@ -82,6 +93,7 @@ typedef struct {
 } TemperaturePredictor_t;
 void TemperatureControl_Init(void);
  void ControlTask_Run(unsigned char channel ,float setpoint) ;
- void sysTickGet(void);
+ void sysTickGet(unsigned char channel);
+void updatePIDperiod(void);
 #endif
 
