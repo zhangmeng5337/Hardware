@@ -56,12 +56,12 @@ void controllerInit(void)
 	temperatureU[0].periodMeter = 0.002;
 	temperatureU[1].periodMeter = 0.002;	
 	temperatureU[2].periodMeter = 0.002;
-	temperatureU[0].periodTask = 15;
-	temperatureU[1].periodTask = 15;
-	temperatureU[2].periodTask = 15;
-	temperatureU[0].div = 15;
-	temperatureU[1].div = 15;
-	temperatureU[2].div = 15;	
+	temperatureU[0].periodTask = 20;
+	temperatureU[1].periodTask = 20;
+	temperatureU[2].periodTask = 20;
+	temperatureU[0].div = 20;
+	temperatureU[1].div = 20;
+	temperatureU[2].div = 20;	
 	
 	cfg.Q = 0.0001;
 	cfg.R = 10;

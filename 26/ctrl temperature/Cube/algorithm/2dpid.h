@@ -46,7 +46,14 @@ typedef struct {
     float temp_low, temp_high;
     float Kp, Ti, Td;
 } GainScheduleEntry_t;
-
+typedef struct {
+	  float tempLow;
+	  float tempHigh;
+    float dtPredict;
+    float kPred;
+	  float maxComp;
+	  float factor;
+} predictor_stru;
 // 老化补偿 (可选)
 typedef struct {
     float target_slope, actual_slope, compensation, filter_alpha;

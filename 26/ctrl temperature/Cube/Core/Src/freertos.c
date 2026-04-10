@@ -679,12 +679,14 @@ void RS485_srevice_Task(void const * argument)
 																			printf("set v4\r\n");														
 																			if(rx_buffer[2+rx_buffer[2]]==0x01)
 																			{
-																				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9,GPIO_PIN_SET);
+																				//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9,GPIO_PIN_SET);
+																				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3,GPIO_PIN_SET);
 																				infoS.V4_C.byte0=1;
 																			}
 																			else if(rx_buffer[2+rx_buffer[2]]==0x00)
 																			{
-																				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9,GPIO_PIN_RESET);
+																				//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9,GPIO_PIN_RESET);
+																				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3,GPIO_PIN_RESET);
 																				infoS.V4_C.byte0=0;
 																			}
 																			command[3][8]=0x00;
@@ -928,12 +930,12 @@ void RS485_srevice_Task(void const * argument)
 																			if(TEM_SET.MS_T<2000)
 																					{
 //																						pid3.Sv = TEM_SET.MS_T*0.1;		//取出真实值
-																						pid3.ref = TEM_SET.MS_T*0.1;		//取出真实值
+																						pid2.ref = TEM_SET.MS_T*0.1;		//取出真实值
 																					}
 																				else
 																					{
 //																						pid3.Sv = -160.0;
-																						pid3.ref = -160.0;
+																						pid2.ref = -160.0;
 																					}
 																			
 																			command[11][8]=0x00;
@@ -960,11 +962,11 @@ void RS485_srevice_Task(void const * argument)
 																			TEM_SET.TRAP_T = (TRAP_T_SET[0]<<8) | TRAP_T_SET[1];
 																			if(TEM_SET.TRAP_T<2000)
 																					{
-																						pid2.ref = TEM_SET.TRAP_T*0.1;		//取出真实值
+																						pid3.ref = TEM_SET.TRAP_T*0.1;		//取出真实值
 																					}
 																				else
 																					{
-																						pid2.ref = -160.0;
+																						pid3.ref = -160.0;
 																					}
 																			
 																			command[12][8]=0x00;

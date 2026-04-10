@@ -59,7 +59,8 @@ extern int Vfid_flag_warning,Vms_flag_warning,Vheat_flag_warning,Tfid_flag_warni
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+#define PERIOD  2
+#define FREQ  84000000/50000/PERIOD -1
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

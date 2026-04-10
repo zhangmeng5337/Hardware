@@ -6,6 +6,8 @@ extern unsigned char divT ;
  OmronPID_t g_pid[3]; 
  OversampleFilter_t g_filter;
  GainScheduleEntry_t g_gainTable[6];
+ predictor_stru predictor[6];
+  predictor_stru predictorusr[3];
  AgingComp_t g_aging[3];
  OvershootSuppress_t g_oss[3];
  UnderhootSuppress_t g_under[3];
@@ -94,7 +96,7 @@ static float Filter_Update(OversampleFilter_t *f, float raw) {
 
 // ---------- 欧姆龙二自由度 PID ----------
 static void PID_Init(OmronPID_t *pid, float dt) {
-    pid->Kp = 2.0f;   pid->Ti = 30.0f;   pid->Td = 6.0f;   pid->alpha = 0.65f;
+    pid->Kp = 2.0f;   pid->Ti = 30.0f;   pid->Td = 6.0f;   pid->alpha = 1.0f;
     pid->dt = dt;
     pid->setpoint = 25.0f;   pid->pv = 25.0f;   pid->last_pv = 25.0f;   pid->last_setpoint = 25.0f;
     pid->error[0] = pid->error[1] = 0.0f;
@@ -102,7 +104,7 @@ static void PID_Init(OmronPID_t *pid, float dt) {
     pid->mv = 0.0f;
     pid->mv_min = 0.0f;      // 只加热，最小输出0
     pid->mv_max = 1.0f;
-    pid->integral_limit = 0.5f;
+    pid->integral_limit = 0.8f;
 }
 
 static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
@@ -149,14 +151,46 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
 
 // ---------- 增益调度 (6个温区) ----------
  void GainSchedule_InitTable(void) {
-    g_gainTable[0] = (GainScheduleEntry_t){-200.0f, -50.0f, 1.5f, 40.0f, 8.0f};
-    g_gainTable[1] = (GainScheduleEntry_t){-50.0f,   0.0f, 2.0f, 30.0f, 6.0f};
-    g_gainTable[2] = (GainScheduleEntry_t){  0.0f,  50.0f, 2.5f, 25.0f, 5.0f};
-    g_gainTable[3] = (GainScheduleEntry_t){ 50.0f, 100.0f, 0.01f, 5.0f, 7.0f};
-    g_gainTable[4] = (GainScheduleEntry_t){100.0f, 150.0f, 3.5f, 2.0f, 1.0f};
-    g_gainTable[5] = (GainScheduleEntry_t){150.0f, 250.0f, 4.0f, 10.0f, 2.0f};
+    g_gainTable[0] = (GainScheduleEntry_t){-200.0f, -50.0f, 0.02f, 40.0f, 8.0f};
+    g_gainTable[1] = (GainScheduleEntry_t){-50.0f,   0.0f, 0.02f, 60.0f, 6.0f};
+    g_gainTable[2] = (GainScheduleEntry_t){  0.0f,  50.0f, 0.02f, 80.0f, 5.0f};
+    g_gainTable[3] = (GainScheduleEntry_t){ 50.0f, 100.0f, 0.02f, 20.0f, 7.0f};
+    g_gainTable[4] = (GainScheduleEntry_t){100.0f, 150.0f, 0.05f, 6.0f, 1.0f};
+    g_gainTable[5] = (GainScheduleEntry_t){150.0f, 250.0f, 0.05f, 20.0f, 2.0f};
 }
-
+// ---------- 增益调度 (6个温区) ----------
+ void predictSchedule_InitTable(void) {
+    predictor[0] = (predictor_stru){-200.0f, -50.0f,	0.4,	1.5,	0.8,	20};
+    predictor[1] = (predictor_stru){-50.0,   0.0f,		0.4,	1.5,	1,		40};
+    predictor[2] = (predictor_stru){0.0,     50.0f,		0.4,	1.5,	0.8,	41};
+    predictor[3] = (predictor_stru){50.0,   100.0f,		0.6,	1.5,	0.8,	42};
+    predictor[4] = (predictor_stru){100.0,  150.0f,		0.4,	2.5,	1,		80};
+    predictor[5] = (predictor_stru){150.0,  250.0f,		0.4,	1.2,	1,		100};
+}
+  void preditc_Update(predictor_stru *predictorU, float setpoint) {
+    static int last_idx = -1;
+    int idx = -1;
+    for (int i = 0; i < 6; i++) {
+        if (setpoint >= predictor[i].tempLow && setpoint < predictor[i].tempHigh) {
+            idx = i;
+            break;
+        }
+    }
+		    float dtPredict;
+    float kPred;
+	  float maxComp;
+	  float factor;
+    if (idx < 0) idx = (setpoint < -200.0f) ? 0 : 5;
+    if (idx != last_idx) {
+			predictorU->dtPredict = predictor[idx].dtPredict;
+			predictorU->kPred = predictor[idx].kPred;
+			predictorU->maxComp = predictor[idx].maxComp;
+			predictorU->factor = predictor[idx].factor;
+			predictorU->tempLow =  predictor[idx].tempLow;
+			predictorU->tempHigh =  predictor[idx].tempHigh;
+        last_idx = idx;
+    }
+}
  void GainSchedule_Update(OmronPID_t *pid, float setpoint) {
     static int last_idx = -1;
     int idx = -1;
@@ -281,10 +315,16 @@ static float PID_Compute(OmronPID_t *pid, float setpoint, float pv) {
 // Predictor_Init(&g_predictor, 0.3f, 1.2f, 0.2f);   // 预测0.3秒，系数1.2，最大补偿±0.2
 float buf[3];
 extern  float slopekft[3];
- void ControlTask_Run(unsigned char channel ,float setpoint) {
+extern float pwmMax;
+void ControlTask_Run(unsigned char channel ,float setpoint) {
     float pv = slopekft[channel];//temperatureU[channel].temperatureFlt;
     
     // 1. 更新预测器 (温度、时间)
+	 preditc_Update(&predictorusr[0], setpoint);
+	 g_predictor[channel].dt_predict = predictorusr[0].dtPredict;
+	 g_predictor[channel].K_pred = predictorusr[0].kPred;
+	 g_predictor[channel].max_comp = predictorusr[0].maxComp;	 
+	 g_oss[channel].factor = predictorusr[0].factor;
     Predictor_Update(&g_predictor[channel], pv, g_sys_ms[channel]);
     
     // 2. PID计算 (与原流程相同)
@@ -321,6 +361,10 @@ if(channel == 2)
     		 g_pid[channel].final_out =  g_pid[channel].suppressed_out;
     if(g_pid[channel].suppressed_out!=0)
 			buf[channel] = g_pid[channel].final_out;
+		float pwmHighTime = pwmMax / 50/PERIOD;
+		
+		if(g_pid[channel].final_out*pwmHighTime < 10)
+			g_pid[channel].final_out = 0;
     Hardware_SetHeaterOutput(channel,g_pid[channel].final_out);
 }
 
@@ -343,10 +387,14 @@ void TemperatureControl_Init(void) {
 	PID_Init(&g_pid[2], temperatureU[2].periodMeter*temperatureU[2].periodTask);
     //Filter_Init(&g_filter);
     GainSchedule_InitTable();
+	  predictSchedule_InitTable();
     AgingComp_Init(&g_aging[0], 2.0f);      // 期望升温速率2℃/s，默认关闭
     AgingComp_Init(&g_aging[1], 2.0f);      // 期望升温速率2℃/s，默认关闭
     AgingComp_Init(&g_aging[2], 2.0f);      // 期望升温速率2℃/s，默认关闭
     
+	g_oss[0].factor = 5;
+	g_oss[1].factor = 5;
+	g_oss[1].factor = 5;
     OvershootSuppress_Init(&g_oss[0]);
 	OvershootSuppress_Init(&g_oss[1]);
 	OvershootSuppress_Init(&g_oss[2]);
