@@ -1,0 +1,1 @@
+const char dummy[] = {0x00};
