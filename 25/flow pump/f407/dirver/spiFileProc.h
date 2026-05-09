@@ -39,6 +39,7 @@ typedef struct {
 	
 }binStru;
 int stest(void); 
+uint32_t getLibBaseAddr(unsigned char type);
 
 #endif
 

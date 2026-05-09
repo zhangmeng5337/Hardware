@@ -89,7 +89,7 @@ void app(void)
     {
         reset_registerTick(LCD_TICK_NO);
         registerTick(LCD_TICK_NO, config_u.lcdRefreshTime);
-       // menu_manage();
+        menu_manage();
     }
     if (GetTickResult(FLASH_TICK_NO) == 1)
     {

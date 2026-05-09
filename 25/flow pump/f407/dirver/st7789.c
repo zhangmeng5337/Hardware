@@ -298,7 +298,7 @@ void ST7789_Init(void)
     HAL_Delay(50);
     ST7789_Fill_Color(WHITE);
     HAL_Delay(100);
-    LCD_ShowChinese(80, 80, 16, &chinese_font[0], RED,BLACK,0);
+//    LCD_ShowChinese(80, 80, 16, &chinese_font[0], RED,BLACK,0);
 //    ST7789_WriteString(10, 10, "Filled Rect.", Font_11x18, YELLOW, BLACK);
 
     //    ST7789_Fill_Color(BLACK);				//	Fill with Black.

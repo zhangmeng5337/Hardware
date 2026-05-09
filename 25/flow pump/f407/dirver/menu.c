@@ -5,6 +5,10 @@
 #include "devinfo.h"
 #include "controller.h"
 #include "my_font.h"
+#include "font_lib.h"
+#include "image_display.h"
+#include "spiFileProc.h"
+
 //python .\pic_py.py  .\icons\  .\lib\ -b -w 32 -H 32
 //python pic_py.py icons/ lib/all_icons.h -b -c -w 32 -H 32
 
@@ -21,41 +25,105 @@
 //	RunPage,
 //	InfoPage,
 //	WarnPage,
-//	SetPage,
+//	SetPage,const bold_font_char_info_t bold_font_chars16[11] = {
+extern image_info_t imageInfo;
 extern controller_stru controllerCustom;
 font_stru fontTable[] =
 {
     //index  			font        len  arri
     //0:manual; 1:pulse 2:0-20ma 3:4-20ma 4:batch 5:addByCycle 6:addByWeekly
 
-    {0, 	{0x624B, 0x52A8}, 	2, 		0},
-    {1, 	{0x8109, 0x51B2}, 	2, 		0}, //
-    {2, 	{0x6A21, 0x62DF}, 	2, 		0},  //
-    {3, 	{0x6A21, 0x62DF}, 	2, 		0},  //
-    {4, 	{0x6279, 0x6B21}, 	2, 		0},  //
-    {5, 	{0x8BA1, 0x65F6, 0x5668}, 	3, 		0}, //pulse
-    {6, 	{0x8BA1, 0x65F6, 0x5668}, 	3, 		0}, //pulse
+    {0, 	{"手动"}, 	2, 		0},
+    {1, 	{"脉冲"}, 	2, 		0}, //
+    {2, 	{"模拟"}, 	2, 		0},  //
+    {3, 	{"模拟"}, 	2, 		0},  //
+    {4, 	{"批次"}, 	2, 		0},  //
+    {5, 	{"计时器"}, 	3, 		0}, //pulse
+    {6, 	{"计时器"}, 	3, 		0}, //pulse
     //    StandByPage = 0,	RunPage,	InfoPage,	WarnPage,	SetPage,
-    {StandByPage, 	{0x8FD0, 0x884C}, 	2, 		1}, //manual
-    {RunPage, 	{0x8FD0, 0x884C}, 		2, 		1}, //manual
-    {InfoPage, 	{0x4FE1, 0x606F}, 		2, 		1},  //pulse
-    {WarnPage, 	{0x62A5, 0x8B66}, 		2, 		1},  //pulse
-    {SetPage, 	{0x8BBE, 0x7F6E}, 		2, 		1}  //pulse
+    {StandByPage, {"运行"}, 	2, 		1}, //manual
+    {RunPage, 	{"运行"}, 		2, 		1}, //manual
+    {InfoPage, 	{"信息"}, 		2, 		1},  //pulse
+    {WarnPage, 	{"警告"}, 		2, 		1},  //pulse
+    {SetPage, 	{"设置"}, 		2, 		1}  //pulse
 
+};
+bmpMap_stru bmpMap[] =
+{
+    "CIU_1",
+    "OoverT_1",
+    "airdischarge_1",
+    "analog_1",
+    "bar_1",
+    "cancel_1",
+    "cancelsel_1",
+    "counter_1",
+    "empty_1",
+    "flow_1",
+    "flowctrl_1",
+    "frame1LU_1",
+    "frame2RD_1",
+    "frame3LD_1",
+    "frame4RD_1",
+    "liquidLow_1",
+    "ok_1",
+    "outvale_1",
+    "overL_1",
+    "powerfault_1",
+    "pro_1",
+    "pulse_1",
+    "return1_1",
+    "return2_1",
+    "short_1",
+    "slowmode_1",
+    "standbyback_1",
+    "valvedischarge_1",
+    "valveposIn_1",
+    "valveposOut_1",
+    "warn1_1",
+    "warn2_1",
+    "XYJLSJ",
+    "XJCD",
+    "XX1",
+    "XX2",
+    "TJ",
+    "SYPL",
+    "TP1",
+    "WBTJ",
+    "SJBY",
+    "ZX",
+    "ZJTJRJ",
+    "SD",
+    "XTS",
+    "WX",
+    "ZDPQ",
+    "SZ1",
+    "SZ2",
+    "SRDL",
+    "YX2",
+    "YXZ",
+    "YXZT1",
+    "YXZT2",
+    "YXZT3",
+    "YXZT4",
+    "XZ1",
+    "XZ2-1",
+    "XZ2-2",
+    "SGFH"
 };
 
 image_stru  imageTable[] =
 {
-    {StandByPage, RunICon, {36, 51, 26, 2, 29, 28},				0, 0},
-    {StandByPage, RunICon, {43, 21, 3, 3, 20, 7},				1, 0},
-    {StandByPage, RunICon, {9, 9, 49, 49, 37, 40, 32, 42},		1, 1},
-    {StandByPage, RunICon, {25, 10, 44, 41, 46},				2, 0},
-    {StandByPage, RunICon, {39, 8, 15, 24, 0, 18, 27, 1, 17},		3, 0},
+    {StandByPage, RunICon, {36, 51, 26, 2, 29, 28},						0, 0},
+    {StandByPage, RunICon, {43, 21, 3, 3, 20, 7},						1, 0},
+    {StandByPage, RunICon, {9, 9, 49, 49, 37, 40, 32, 42},				1, 1},
+    {StandByPage, RunICon, {25, 10, 44, 41, 46},						2, 0},
+    {StandByPage, RunICon, {39, 8, 15, 24, 0, 18, 27, 1, 17},			3, 0},
 
-    {RunPage, RandomIcon, {36, 51, 26, 2, 29, 28},				0, 0},
-    {RunPage, RandomIcon, {43, 21, 3, 3, 20, 7},					1, 0},
-    {RunPage, RandomIcon, {9, 9, 49, 49, 37, 40, 32, 42},			1, 1},
-    {RunPage, RandomIcon, {25, 10, 44, 41, 46},					2, 0},
+    {RunPage, RandomIcon, {36, 51, 26, 2, 29, 28},						0, 0},
+    {RunPage, RandomIcon, {43, 21, 3, 3, 20, 7},						1, 0},
+    {RunPage, RandomIcon, {9, 9, 49, 49, 37, 40, 32, 42},				1, 1},
+    {RunPage, RandomIcon, {25, 10, 44, 41, 46},							2, 0},
     {RunPage, RandomIcon, {39, 8, 15, 24, 0, 18, 27, 1, 17},			3, 0},
     {RunPage, RandomIcon, {39, 8, 15, 24, 0, 18, 27, 1, 17},			3, 0},
     //run   info    warn set
@@ -139,28 +207,28 @@ Menu_table_t menuTableU;
 Menu_table_t menuTable[] =
 {
     // L1
-    {StandByPage, RunICon,   		RunPage, 			1,					l1StandbyMenu, 		0,1},//0
-    {RunPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0,1},//1
-    {RunPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l1RunPageMenu, 		0,5},//2
-    {RunPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l1RunPageMenu, 		0,14},//3
-    {RunPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l1RunPageMenu, 		0,15},//4
-    //L2    
-    {InfoPage,    date,      		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,5},//5
+    {StandByPage, RunICon,   		RunPage, 			1,					l1StandbyMenu, 		0, 1}, //0
+    {RunPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0, 1}, //1
+    {RunPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l1RunPageMenu, 		0, 5}, //2
+    {RunPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l1RunPageMenu, 		0, 14}, //3
+    {RunPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l1RunPageMenu, 		0, 15}, //4
+    //L2
+    {InfoPage,    date,      		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 5}, //5
     {InfoPage,    counter,   		CounterPage,		MaxCounterIcon,		l3InfoMenu, 		0,},//6
-    {InfoPage,    maintance, 		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,7},//7
-    {InfoPage,    servicePack,  	InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,8},//8
-    {InfoPage,    restore, 	    	InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,9},//9
-    {InfoPage,    softVer, 	   		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,10},//10
-    {InfoPage,    motorCtrl, 		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,11},//11
-    {InfoPage,    hwVer, 			InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,12},//12
-    {InfoPage,    serNo, 			InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0,13},//13
-    
+    {InfoPage,    maintance, 		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 7}, //7
+    {InfoPage,    servicePack,  	InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 8}, //8
+    {InfoPage,    restore, 	    	InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 9}, //9
+    {InfoPage,    softVer, 	   		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 10}, //10
+    {InfoPage,    motorCtrl, 		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 11}, //11
+    {InfoPage,    hwVer, 			InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 12}, //12
+    {InfoPage,    serNo, 			InfoPage,			MaxInfoIcon,		l2InfoMenu, 		0, 13}, //13
 
-    {WarnPage,    WarnIcon, 		WarnPage,			MaxWarnIcon,		l2WarnMenu, 		0,14},//14
+
+    {WarnPage,    WarnIcon, 		WarnPage,			MaxWarnIcon,		l2WarnMenu, 		0, 14}, //14
 
     //
-    {SetPage,    lang, 		    	setLangPage,		MaxLang,	    	l2SetMenu, 		0,31},//15
-    {SetPage,    ctrl, 		    	setCtrlPage,		MaxCtrl,	    	l3SetCtrlMenu, 		0,43},//16
+    {SetPage,    lang, 		    	setLangPage,		MaxLang,	    	l2SetMenu, 		0, 31}, //15
+    {SetPage,    ctrl, 		    	setCtrlPage,		MaxCtrl,	    	l3SetCtrlMenu, 		0, 43}, //16
     {SetPage,    analog, 			setAnalogPage,	    MaxAnalog,	    	l3SetAnalogMenu, 	0,},//17
     {SetPage,    analogOut, 		setAnalogOutPage,	MaxAnalogout,		l3SetAnalogOutMenu, 0,},//18
     {SetPage,    slowMode, 	    	setSlowPage,	    MaxAnalogout,		l3SetSlowMenu, 		0,},//19
@@ -176,44 +244,44 @@ Menu_table_t menuTable[] =
     //L4                                                                                                    //
     {inOutPage,  	relay1, 	       relay1Page,	    		7,					l4SetRelay1Menu, 	0,},//29
     {inOutPage,  	relay2, 	       relay2Page,	    		9,					l4SetRelay2Menu, 	0,},//30
-    
-    {setLangPage,	chinese, 	       langPage,	    		2,					l4SetRelay2Menu, 	0,31},//31
-    {setLangPage,	englsih, 	        langPage,	    		2,					l4SetRelay2Menu, 	0,32},//32
-    {setLangPage,	returnIcon, 	    langPage,	    		2,					l4SetRelay2Menu, 	0,15},//33
-    
-    {setCtrlPage,	manualMode, 		  setCtrlPage,	    7,				l4SetRelay2Menu, 	0,34},//34
-    {setCtrlPage,	pulseMode, 	    	setCtrlPage,	    7,				l4SetRelay2Menu, 	0,35},//34
-    {setCtrlPage,	cur0To20Mode, 		setCtrlPage,	    7,				l4SetRelay2Menu, 	0,36},//34
-    {setCtrlPage,	cur4To20Mode, 		setCtrlPage,	    7,				l4SetRelay2Menu, 	0,37},//34
-    {setCtrlPage,	batchCtrlMode, 		setCtrlPage,	    7,				l4SetRelay2Menu, 	0,38},//34
-    {setCtrlPage,	addByCycleMode, 	setCtrlPage,	    7,				l4SetRelay2Menu, 	0,39},//34
-    {setCtrlPage,	addByWeeklyMode, 	setCtrlPage,	    7,				l4SetRelay2Menu, 	0,40},//34
-    {setCtrlPage,	manufactureMode, 	setCtrlPage,	    7,				l4SetRelay2Menu, 	0,41},//34
-    {setCtrlPage,	customMode, 		  setCtrlPage,	    7,				l4SetRelay2Menu, 	0,42},//34
-//    {setAnalogPage,	, 		  ,	    7,				l4SetRelay2Menu, 	0,43},//34
 
-    {InfoPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0,1},//1
-    {InfoPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l2InfoMenu, 		0,5},//2
-    {InfoPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l2WarnMenu, 		0,14},//3
-    {InfoPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l2SetMenu, 		0,15},//4
-    
-    {WarnPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0,1},//1
-    {WarnPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l2InfoMenu, 		0,5},//2
-    {WarnPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l2SetMenu, 		0,15},//4
-    
-    {SetPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0,1},//1
-    {SetPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l2InfoMenu, 		0,5},//2
-    {SetPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l2WarnMenu, 		0,14},//3
-    {SetPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l2SetMenu, 		0,15},//4	
-	
+    {setLangPage,	chinese, 	       langPage,	    		2,					l4SetRelay2Menu, 	0, 31}, //31
+    {setLangPage,	englsih, 	        langPage,	    		2,					l4SetRelay2Menu, 	0, 32}, //32
+    {setLangPage,	returnIcon, 	    langPage,	    		2,					l4SetRelay2Menu, 	0, 15}, //33
+
+    {setCtrlPage,	manualMode, 		  setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 34}, //34
+    {setCtrlPage,	pulseMode, 	    	setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 35}, //34
+    {setCtrlPage,	cur0To20Mode, 		setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 36}, //34
+    {setCtrlPage,	cur4To20Mode, 		setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 37}, //34
+    {setCtrlPage,	batchCtrlMode, 		setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 38}, //34
+    {setCtrlPage,	addByCycleMode, 	setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 39}, //34
+    {setCtrlPage,	addByWeeklyMode, 	setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 40}, //34
+    {setCtrlPage,	manufactureMode, 	setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 41}, //34
+    {setCtrlPage,	customMode, 		  setCtrlPage,	    7,				l4SetRelay2Menu, 	0, 42}, //34
+    //    {setAnalogPage,	, 		  ,	    7,				l4SetRelay2Menu, 	0,43},//34
+
+    {InfoPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0, 1}, //1
+    {InfoPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l2InfoMenu, 		0, 5}, //2
+    {InfoPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l2WarnMenu, 		0, 14}, //3
+    {InfoPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l2SetMenu, 		0, 15}, //4
+
+    {WarnPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0, 1}, //1
+    {WarnPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l2InfoMenu, 		0, 5}, //2
+    {WarnPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l2SetMenu, 		0, 15}, //4
+
+    {SetPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0, 1}, //1
+    {SetPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l2InfoMenu, 		0, 5}, //2
+    {SetPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l2WarnMenu, 		0, 14}, //3
+    {SetPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l2SetMenu, 		0, 15}, //4
+
 };
 
 
 
-image_info_t *searchTable(unsigned char currentPage,  unsigned char currentIconNum, unsigned char iconIndex,
-                          unsigned char arrib, unsigned char arrib2)
+image_info2_t *searchTable(unsigned char currentPage,  unsigned char currentIconNum, unsigned char iconIndex,
+                           unsigned char arrib, unsigned char arrib2)
 {
-    image_info_t *tmp;
+    image_info2_t *tmp;
     uint16_t i = 0;
     for (i = 0; i < 0xfff; i++)
     {
@@ -224,7 +292,31 @@ image_info_t *searchTable(unsigned char currentPage,  unsigned char currentIconN
                     && imageTable[i].arrib == arrib &&
                     arrib2 ==  imageTable[i].arribSlave)
             {
-                tmp = (image_info_t *)&images[imageTable[i].image_index[iconIndex]];
+                tmp = (image_info2_t *)&images[imageTable[i].image_index[iconIndex]];
+                break;
+            }
+        }
+    }
+    if (i == 0xfff)
+        return NULL;
+    else
+        return tmp;
+}
+uint32_t searchBmpTable(unsigned char currentPage,  unsigned char currentIconNum, unsigned char iconIndex,
+                        unsigned char arrib, unsigned char arrib2)
+{
+    uint32_t tmp;
+    uint16_t i = 0;
+    for (i = 0; i < 0xfff; i++)
+    {
+        if (currentPage == imageTable[i].currentPage)
+        {
+            if ((currentIconNum == imageTable[i].currentPageIcon ||
+                    imageTable[i].currentPageIcon == RandomIcon)
+                    && imageTable[i].arrib == arrib &&
+                    arrib2 ==  imageTable[i].arribSlave)
+            {
+                tmp = imageTable[i].image_index[iconIndex];
                 break;
             }
         }
@@ -298,6 +390,7 @@ unsigned char searchFontTable(unsigned char index, uint16_t arrib,
             if (index == fontTable[i].index)
             {
                 offsetTmp = 0;
+               
                 for (j = 0; j < fontTable[i].len; j++)
                 {
                     info = find_char(fontTable[i].fontBuf[j], fontSize);
@@ -314,56 +407,94 @@ unsigned char searchFontTable(unsigned char index, uint16_t arrib,
     else
         return 0;
 }
+unsigned char *searchFont2Table(unsigned char index, uint16_t arrib)
+{
+
+    uint32_t i;
+    unsigned int j = 0, offsetTmp = 0;
+    bold_font_char_info_t *info;
+    for (i = 0; i < 0xfff; i++)
+    {
+
+        if (arrib == fontTable[i].arrib)
+        {
+            if (index == fontTable[i].index)
+            {
+                offsetTmp = 0;
+				return fontTable[i].fontBuf;
+                break;
+            }
+        }
+
+    }
+}
 void menuStatusBar()
 {
     unsigned char i, j;
     uint16_t offset;
-    image_info_t *images_point;
+	uint32_t bmpIndex;
+    image_info2_t *images_point;
     offset = 0;
     //	for(i = 0;i< MaxRunicon; i++)
     {
+
+		
+
+
+	
         for (j = 1; j < menuTableU.currentMenuNum; j++)
         {
 
-		    if(menuTableU.currentIconNum == (j-1))
-            images_point = searchTable(mainRandomPage,
-                                       RandomIcon,
-                                       j - 1,
-                                       4, 1);
-			else
-            images_point = searchTable(mainRandomPage,
-                                       RandomIcon,
-                                       j - 1,
-                                       4, 0);				
+            if (menuTableU.currentIconNum == (j - 1))
+                bmpIndex = searchBmpTable(mainRandomPage,
+                                           RandomIcon,
+                                           j - 1,
+                                           4, 1);
+            else
+                bmpIndex = searchBmpTable(mainRandomPage,
+                                           RandomIcon,
+                                           j - 1,
+                                           4, 0);
             //  images_point = searchTable(controllerCustom.settingU.status, 0, 0,&menuTable[menuTaskIndex]);
-            ST7789_DrawImage(offset,     0, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
-            offset = offset + images_point->width;
+           // ST7789_DrawImage(offset,     0, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+			show_image(bmpMap[bmpIndex].name, offset, 0);//run stop 0 60 34   TJ
+
+			offset = offset + imageInfo.width;
         }
-        searchFontTable(menuTableU.currentMenuNum, 1, 20, offset,  10, 50);
+//			unsigned char *p = searchFont2Table(controllerCustom.settingU.ctrlMode, 0);
+//		draw_string_ex(50, 136, BLACK, 24, p, WHITE);	
+
+
+
+		
+        unsigned char *p = searchFont2Table(menuTableU.currentMenuNum, 1);
+		draw_string_ex(offset, 10, BLACK, 32, p, WHITE);
         j = j + 1;
         offset = offset + 64;
-        offset = 320 - (SetPage - j+1) * 48;
+        offset = 320 - (SetPage - j + 1) * 48;
         for (; j <= SetPage; j++)
         {
-//            images_point = searchTable(mainRandomPage,
-//                                       RandomIcon,
-//                                       j - 1,
-//                                       4, 0);
+            //            images_point = searchTable(mainRandomPage,
+            //                                       RandomIcon,
+            //                                       j - 1,
+            //                                       4, 0);
 
-		    if(menuTableU.currentIconNum == (j-1))
-            images_point = searchTable(mainRandomPage,
-                                       RandomIcon,
-                                       j - 1,
-                                       4, 1);
-			else
-            images_point = searchTable(mainRandomPage,
-                                       RandomIcon,
-                                       j - 1,
-                                       4, 0);
-									   
+            if (menuTableU.currentIconNum == (j - 1))
+                bmpIndex = searchBmpTable(mainRandomPage,
+                                           RandomIcon,
+                                           j - 1,
+                                           4, 1);
+            else
+                bmpIndex = searchBmpTable(mainRandomPage,
+                                           RandomIcon,
+                                           j - 1,
+                                           4, 0);
+
             //  images_point = searchTable(controllerCustom.settingU.status, 0, 0,&menuTable[menuTaskIndex]);
-            ST7789_DrawImage(offset,     0, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
-            offset = offset + images_point->width;
+//            ST7789_DrawImage(offset,     0, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+			show_image(bmpMap[bmpIndex].name, offset, 0);//run stop 0 60 34   TJ
+
+			offset = offset + imageInfo.width;
         }
     }
 }
@@ -371,15 +502,15 @@ void l1StandbyMenu(void)
 {
 
 
-    image_info_t *images_point;
+    image_info2_t *images_point;
+    uint32_t bmpIndex;
     unsigned char buf[64];
-    images_point = searchTable(menuTableU.currentMenuNum,
-                               menuTableU.currentIconNum,
-                               controllerCustom.settingU.status,
-                               0, 0);
-    //  images_point = searchTable(controllerCustom.settingU.status, 0, 0,&menuTableU);
-    ST7789_DrawImage(0,     60, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+//    images_point = searchTable(menuTableU.currentMenuNum,
+//                               menuTableU.currentIconNum,
+//                               controllerCustom.settingU.status,
+//                               0, 0);
 
+    show_image(bmpMap[36].name, 0, 60);//run stop 0 60 34   TJ
     for (unsigned char i = 0; i < 64; i++)
         buf[i] = 0;
 
@@ -388,29 +519,35 @@ void l1StandbyMenu(void)
     else
         sprintf(buf, "%.1f gal/h", controllerCustom.dispFlow);
 
-    ST7789_WriteString(100,  69, buf, Font_16x26, BLACK, WHITE);
-    ST7789_DrawImage(240,   60, images[52].width, images[52].height, (uint16_t *)images[52].data);
+    draw_string_ex(100, 69, BLACK, 24, buf, WHITE);
 
-    images_point = searchTable(menuTableU.currentMenuNum,
-                               menuTableU.currentIconNum,
-                               controllerCustom.settingU.ctrlMode,
-                               1, 0);
-    ST7789_DrawImage(0,     120, images_point->width, images_point->height, (uint16_t *)images_point->data);
-    searchFontTable(controllerCustom.settingU.ctrlMode, 0, 16, 50,  146, 16);
+    show_image("YXZT1", 240, 60);//run stop 0 60 34	 TJ
+
+    bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
+                              menuTableU.currentIconNum,
+                              controllerCustom.settingU.ctrlMode,
+                              1, 0);
+
+    show_image(bmpMap[bmpIndex].name, 0, 120);//run stop 0 60 34   TJ
+	unsigned char *p = searchFont2Table(controllerCustom.settingU.ctrlMode, 0);
+	draw_string_ex(50, 146, BLACK, 24, p, WHITE);
+
+
+//    searchFontTable(controllerCustom.settingU.ctrlMode, 0, 16, 50,  146, 16);
     for (unsigned char i = 0; i < 64; i++)
         buf[i] = 0;
     if (controllerCustom.settingU.display.units == 0)
         sprintf(buf, "%.1fl/h", controllerCustom.dispFlow);
     else
         sprintf(buf, "%.1fgal/h", controllerCustom.dispFlow);
-    //
-    ST7789_WriteString(140, 144, buf, Font_11x18, BLACK, WHITE);
 
-    images_point = searchTable(menuTableU.currentMenuNum,
-                               menuTableU.currentIconNum,
-                               controllerCustom.settingU.ctrlMode,
-                               1, 1);
-    ST7789_DrawImage(240,     120, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+    draw_string_ex(140, 144, BLACK, 24, buf, WHITE);
+    bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
+                              menuTableU.currentIconNum,
+                              controllerCustom.settingU.ctrlMode,
+                              1, 1);
+
+    show_image(bmpMap[bmpIndex].name, 240, 120);//run stop 0 60 34   TJ
 
     unsigned char index;
 
@@ -424,87 +561,39 @@ void l1StandbyMenu(void)
         index = 3;
     else
         index = 4;
-    images_point = searchTable(menuTableU.currentMenuNum,
-                               menuTableU.currentIconNum,
-                               index,
-                               2, 0);
-    ST7789_DrawImage(0,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
-    images_point = searchTable(menuTableU.currentMenuNum,
-                               menuTableU.currentIconNum,
-                               controllerCustom.settingU.fault,
-                               3, 0);
-    ST7789_DrawImage(260,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+    bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
+                              menuTableU.currentIconNum,
+                              index,
+                              2, 0);
 
+    show_image(bmpMap[bmpIndex].name, 0, 180);//run stop 0 60 34   TJ
 
-    //
-    //
-    //    if (controllerCustom.settingU.slowMode == 1)
-    //        images_point = searchTable(controllerCustom.settingU.slowMode, 3, 0,&menuTableU);
-    //    else   if (controllerCustom.settingU.sysLock == 1)
-    //        images_point = searchTable(controllerCustom.settingU.sysLock, 5, 0,&menuTableU);
-    //    else   if (controllerCustom.settingU.autoVent == 1)
-    //        images_point = searchTable(controllerCustom.settingU.autoVent, 6, 0,&menuTableU);
-    //    else   if (controllerCustom.settingU.bus.status == 1)
-    //        images_point = searchTable(controllerCustom.settingU.bus.status, 7, 0,&menuTableU);
-    //    else
-    //        images_point = searchTable(0, 4, 0,&menuTableU);
-    //    ST7789_DrawImage(0,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
-    //
-    //
-    //    images_point = searchTable(controllerCustom.settingU.fault, 8, 0,&menuTableU);
-    //    ST7789_DrawImage(260,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
-    //    searchFontTable(0, 0, 24, 50,  136);
+    bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
+                              menuTableU.currentIconNum,
+                              controllerCustom.settingU.fault,
+                              3, 0);
 
+    show_image(bmpMap[bmpIndex].name, 260, 180);//run stop 0 60 34   TJ
 
-
-
-
-
-
-
-
-
-
-
-    // ST7789_DrawImage(0,     60, images[36].width, images[36].height, (uint16_t *)images[36].data);//36
-    //    ST7789_WriteString(80,  69, "12.3  l/h", Font_16x26, BLACK, WHITE);
-    //    ST7789_DrawImage(240,   60, images[52].width, images[52].height, (uint16_t *)images[52].data);
-    //    ST7789_DrawImage(0,     120, images[43].width, images[43].height, (uint16_t *)images[43].data);
-    //    ST7789_WriteString(120, 144, "12.3l/h", Font_11x18, BLACK, WHITE);
-    //    ST7789_DrawImage(240,   120, images[9].width, images[9].height, (uint16_t *)images[9].data);
-    //    ST7789_DrawImage(0,     180, images[10].width, images[10].height, (uint16_t *)images[10].data);
-    //    ST7789_DrawImage(260,   180, images[15].width, images[15].height, (uint16_t *)images[15].data);
-
-    //    if (controllerCustom.settingU.language == chinese)
-    //    {
-    //        bold_font_char_info_t *info;
-    //        uint16_t offset = 24, sx = 50, sy = 136;
-    //
-    //        info = find_char(0x624B);
-    //        ST7789_DrawImage(sx, sy, info->width, info->height, (uint16_t *)piexls(info->offset));
-    //        info = find_char(0x52A8);
-    //        ST7789_DrawImage(sx + offset, sy, info->width, info->height, (uint16_t *)piexls(info->offset));
-    //
-    //    }
 
 }
 extern const unsigned char gImage_L127[480];
 void l1RunPageMenu(void)
 {
 
-    image_info_t *images_point;
+    image_info2_t *images_point;
     unsigned char buf[64];
+	 uint32_t bmpIndex;
     menuStatusBar();
 
-//    searchFontTable(menuTableU.currentMenuNum, 1, 20, 0,  0, 32);
 
-    images_point = searchTable(menuTableU.currentMenuNum,
+   bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
                                menuTableU.currentIconNum,
                                controllerCustom.settingU.status,
                                0, 0);
-    //  images_point = searchTable(controllerCustom.settingU.status, 0, 0,&menuTableU);
-    ST7789_DrawImage(0,     60, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
 
+    show_image(bmpMap[bmpIndex].name, 0, 60);//run stop 0 60 34   TJ
+	
     for (unsigned char i = 0; i < 64; i++)
         buf[i] = 0;
 
@@ -512,16 +601,29 @@ void l1RunPageMenu(void)
         sprintf(buf, "%.1f l/h", controllerCustom.dispFlow);
     else
         sprintf(buf, "%.1f gal/h", controllerCustom.dispFlow);
+  
+   // ST7789_WriteString(100,  69, buf, Font_16x26, BLACK, WHITE);
+//    ST7789_DrawImage(240,   60, images[52].width, images[52].height, (uint16_t *)images[52].data);
 
-    ST7789_WriteString(100,  69, buf, Font_16x26, BLACK, WHITE);
-    ST7789_DrawImage(240,   60, images[52].width, images[52].height, (uint16_t *)images[52].data);
-
-    images_point = searchTable(menuTableU.currentMenuNum,
+//    images_point = searchTable(menuTableU.currentMenuNum,
+//                               menuTableU.currentIconNum,
+//                               controllerCustom.settingU.ctrlMode,
+//                               1, 0);
+//    ST7789_DrawImage(0,     120, images_point->width, images_point->height, (uint16_t *)images_point->data);
+   // searchFontTable(controllerCustom.settingU.ctrlMode, 0, 24, 50,  136, 16);
+		
+		 draw_string_ex(100, 69, BLACK, 24, buf, WHITE);
+		 show_image("YXZT1", 240, 60);//run stop 0 60 34	 TJ
+     bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
                                menuTableU.currentIconNum,
                                controllerCustom.settingU.ctrlMode,
                                1, 0);
-    ST7789_DrawImage(0,     120, images_point->width, images_point->height, (uint16_t *)images_point->data);
-    searchFontTable(controllerCustom.settingU.ctrlMode, 0, 24, 50,  136, 16);
+
+    show_image(bmpMap[bmpIndex].name, 0, 120);//run stop 0 60 34   TJ		
+		unsigned char *p = searchFont2Table(controllerCustom.settingU.ctrlMode, 0);
+	draw_string_ex(50, 136, BLACK, 24, p, WHITE);	
+		
+		
     for (unsigned char i = 0; i < 64; i++)
         buf[i] = 0;
     if (controllerCustom.settingU.display.units == 0)
@@ -529,14 +631,23 @@ void l1RunPageMenu(void)
     else
         sprintf(buf, "%.1fgal/h", controllerCustom.dispFlow);
     //
-    ST7789_WriteString(140, 144, buf, Font_11x18, BLACK, WHITE);
+    //ST7789_WriteString(140, 144, buf, Font_11x18, BLACK, WHITE);
 
-    images_point = searchTable(menuTableU.currentMenuNum,
+   // images_point = searchTable(menuTableU.currentMenuNum,
+   //                            menuTableU.currentIconNum,
+   //                            controllerCustom.settingU.ctrlMode,
+    //                           1, 1);
+    //ST7789_DrawImage(240,     120, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+
+		
+		draw_string_ex(140, 144, BLACK, 24, buf, WHITE);
+     bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
                                menuTableU.currentIconNum,
                                controllerCustom.settingU.ctrlMode,
                                1, 1);
-    ST7789_DrawImage(240,     120, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
 
+    show_image(bmpMap[bmpIndex].name, 240, 120);//run stop 0 60 34   TJ		
+		
     unsigned char index;
 
     if (controllerCustom.settingU.slowMode == 1)
@@ -549,26 +660,18 @@ void l1RunPageMenu(void)
         index = 3;
     else
         index = 4;
-    images_point = searchTable(menuTableU.currentMenuNum,
+    bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
                                menuTableU.currentIconNum,
                                index,
                                2, 0);
-    ST7789_DrawImage(0,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
-    images_point = searchTable(menuTableU.currentMenuNum,
+		show_image(bmpMap[bmpIndex].name, 0, 180);//run stop 0 60 34   TJ	
+   // ST7789_DrawImage(0,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+    bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
                                menuTableU.currentIconNum,
                                controllerCustom.settingU.fault,
                                3, 0);
-    ST7789_DrawImage(260,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
-
-
-
-
-
-
-
-
-
-
+   // ST7789_DrawImage(260,     180, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
+show_image(bmpMap[bmpIndex].name, 260, 180);//run stop 0 60 34   TJ	
 
 
 }
@@ -578,7 +681,7 @@ void l2InfoMenu(void)
 }
 void l2WarnMenu(void)
 {
- menuStatusBar();
+    menuStatusBar();
 }
 
 void l2SetMenu(void)
@@ -661,9 +764,9 @@ void menuInterfaceMange()
     {
         menuTableU.changeMenuSig = 1;
         menuTableU.currentMenuNum = RunPage;
-			getEncoderKey(ENCODER_KEY_INDEX)->keyStatus = 0;
-			 getEncoderKey(SW2_KEY_INDEX)->keyEnter = 0;
-			getEncoderKey(SW1_KEY_INDEX)->keyEnter = 0;
+        getEncoderKey(ENCODER_KEY_INDEX)->keyStatus = 0;
+        getEncoderKey(SW2_KEY_INDEX)->keyEnter = 0;
+        getEncoderKey(SW1_KEY_INDEX)->keyEnter = 0;
     }
 
     if (getEncoderKey(ENCODER_KEY_INDEX)->keyStatus == 1)
@@ -734,41 +837,41 @@ void searchMenuTable()
         {
             if (menuTable[i].currentIconNum == menuTableU.currentIconNum)
             {
-                 menuTaskIndex = menuTable[i].index;
-			     menuTableU.currentIconNum = menuTable[menuTaskIndex].currentIconNum ;
-				 menuTableU.currentMenuNum = menuTable[menuTaskIndex].currentMenuNum;
+                menuTaskIndex = menuTable[i].index;
+                menuTableU.currentIconNum = menuTable[menuTaskIndex].currentIconNum ;
+                menuTableU.currentMenuNum = menuTable[menuTaskIndex].currentMenuNum;
                 break;
             }
         }
     }
 
 
-//    for (j = 0; j < 255; j++)
-//    {
-//        if (menuTable[i].nextMenuNum == menuTable[j].currentMenuNum
-//                && (menuTable[i].nextMenuNum != menuTable[i].currentMenuNum))
-//        {
-//            menuTaskIndex = j;
-//            menuTableU.currentMenuNum = menuTable[j].currentMenuNum;
-//            flag = 1;
-//            if (menuTable[i].nextMenuNum != menuTable[i].currentMenuNum)
-//                menuTableU.currentIconNum = 0;
-//            break;
-//        }
-//        else
-//        {
-//            if (menuTable[i].nextMenuNum == menuTable[j].currentMenuNum
-//                    && (menuTable[j].nextMenuNum == menuTable[j].currentMenuNum))
-//            {
-//                if (menuTable[j].currentIconNum == menuTableU.currentIconNum)
-//                {
-//                    menuTaskIndex = j;
-//                    menuTableU.currentMenuNum = menuTable[j].currentMenuNum;
-//                    break;
-//                }
-//            }
-//        }
-//    }
+    //    for (j = 0; j < 255; j++)
+    //    {
+    //        if (menuTable[i].nextMenuNum == menuTable[j].currentMenuNum
+    //                && (menuTable[i].nextMenuNum != menuTable[i].currentMenuNum))
+    //        {
+    //            menuTaskIndex = j;
+    //            menuTableU.currentMenuNum = menuTable[j].currentMenuNum;
+    //            flag = 1;
+    //            if (menuTable[i].nextMenuNum != menuTable[i].currentMenuNum)
+    //                menuTableU.currentIconNum = 0;
+    //            break;
+    //        }
+    //        else
+    //        {
+    //            if (menuTable[i].nextMenuNum == menuTable[j].currentMenuNum
+    //                    && (menuTable[j].nextMenuNum == menuTable[j].currentMenuNum))
+    //            {
+    //                if (menuTable[j].currentIconNum == menuTableU.currentIconNum)
+    //                {
+    //                    menuTaskIndex = j;
+    //                    menuTableU.currentMenuNum = menuTable[j].currentMenuNum;
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //    }
 
 }
 void menu_manage()
@@ -778,8 +881,8 @@ void menu_manage()
     {
         menuTableU.changeMenuSig = 0;//press ok button change menu
         searchMenuTable();
-//        menuTaskIndex = menuTable[ menuTaskIndex].index;
-      
+        //        menuTaskIndex = menuTable[ menuTaskIndex].index;
+
         //menuTableU. = 0;
         ST7789_Fill_Color(WHITE);
     }

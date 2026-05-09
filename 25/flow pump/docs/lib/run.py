@@ -1,5 +1,4 @@
-python ascii8x16.py -f "C:/Windows/Fonts/arial.ttf" -o my_ascii8x16.bin
-python ascii16x16.py -f "C:/Windows/Fonts/arial.ttf" -o my_ascii16x16.bin
+
 
 python ascii16x16.py -f "C:/Windows/Fonts/msyh.ttc" -s 32 -o my_ascii8x32.bin
 
@@ -11,6 +10,7 @@ python font16x16.py -f "C:/Windows/Fonts/msyh.ttc" -o fon16.bin -t font16.txt
 python generate_ascii_font.py -f "C:/Windows/Fonts/consola.ttf" -s 16 -W 16 -H 16 -o ascii_16.bin --offset-table ascii_offset.txt --header ascii_font.h
 python pic_bin.py ./icons -o image_data.bin -w 48 -H 48
 python combin.py -f  .\my_ascii8x16.bin  .\my_ascii8x24.bin .\my_ascii8x32.bin .\fon16.bin .\fon32.bin .\image_data.bin -o all.bin --header index.h -a 256
+python rename_and_convert.py ./icons   -w 48 -H 48 -o image_data.bin
 
 //gb2312_16 data struct
 typedef struct {

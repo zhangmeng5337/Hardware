@@ -119,11 +119,16 @@ uint16_t arrib;
 uint16_t arribSlave;
 //uint32_t pointType;//0:status 1 ctrlMode 2:ext display
 }image_stru;
+typedef struct
+{
+	 char name[32];
+	//unsigned int index;
+}bmpMap_stru;
 
 typedef struct
 {
 uint16_t index;
-uint16_t fontBuf[32];
+unsigned char fontBuf[32];
 unsigned char len;
 uint32_t arrib;//0:
 

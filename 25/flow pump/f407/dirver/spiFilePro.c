@@ -39,8 +39,13 @@ void getBinBaseAddr(void)
 		FM25_Read((uint8_t *)&binU.fileIndex[i] , addrOffset , sizeof(binU.fileIndex[i]));
 		addrOffset = addrOffset + sizeof(binU.fileIndex[i])+FILE_NAME_SIZE;
    }
+   resourceInit(binU.fileIndex[IMAG_INDEX].offset,0x00043380+4,60);
 //   image_ins.base_addr = binU.fileIndex[FONT32_INDEX].offset;
 //   image_ins.index_start = image_ins.base_addr + 4;
+}
+uint32_t getLibBaseAddr(unsigned char type)
+{
+	return binU.fileIndex[type].offset;
 }
 int stest(void) {
     // 初始化硬件（SPI、GPIO、ST7789 等）
@@ -58,26 +63,27 @@ int stest(void) {
 //    font_register(binU.fileIndex[IMAG_INDEX].offset, 48, &han32_font);
 
    
-    font_index_t idx;
-if (font_find_char(&ascii16_font, 0x41, &idx) == 0) {
-    draw_char(10, 10, &ascii16_font, &idx, 0x0000,0xFFFF);
-}
-	uint32_t unicode = 0x4E16;	 // '世'
-
-	if (font_find_char(&han16_font, unicode, &idx) == 0) {
-		draw_char(50, 50, &han16_font, &idx, 0x0000,0xFFFF);
-	}
-
-    // 显示混合字符串（自动选择字号，背景黑色）
-    draw_string(10, 10, "Hello 世界!",0,0xFFFF);
-    
-    // 指定使用 32x32 字号显示
-    draw_string_ex(10, 50, 0x07E0, 16, "32px大字", 0xffff);
-    draw_string_ex(10, 50, 0x07E0, 24, "32px大字", 0xffff);
-	  draw_string_ex(10, 50, 0x07E0, 32, "32px大字", 0xffff);
-    // 显示图片
-    //draw_image(IMAGE_BASE, 10, 100, 100, 100);
-    
-    show_image("image_data.bin", 100, 100,binU.fileIndex[IMAG_INDEX].offset,0);
-    while (1);
+//    font_index_t idx;
+//if (font_find_char(&ascii16_font, 0x41, &idx) == 0) {
+//    draw_char(10, 10, &ascii16_font, &idx, 0x0000,0xFFFF);
+//}
+//	uint32_t unicode = 0x4E16;	 // '世'
+//
+//	if (font_find_char(&han16_font, unicode, &idx) == 0) {
+//		draw_char(50, 50, &han16_font, &idx, 0x0000,0xFFFF);
+//	}
+//
+//    // 显示混合字符串（自动选择字号，背景黑色）
+//    draw_string(10, 10, "Hello 世界!",0,0xFFFF);
+//    
+//    // 指定使用 32x32 字号显示
+//    draw_string_ex(10, 50, 0x07E0, 16, "32px大字", 0xffff);
+//    draw_string_ex(10, 50, 0x07E0, 24, "32px大字", 0xffff);
+//	  draw_string_ex(10, 50, 0x07E0, 32, "32px大字", 0xffff);
+//    // 显示图片
+//    //draw_image(IMAGE_BASE, 10, 100, 100, 100);
+//    valvedischarge_1
+//    show_image("airdischarge_1", 100, 100);
+//		show_image("valvedischarge_1", 100, 100);
+//    while (1);
 }

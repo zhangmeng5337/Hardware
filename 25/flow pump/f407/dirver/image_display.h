@@ -20,14 +20,20 @@ typedef struct {
     uint32_t index_offset;   // 索引表在合并文件中的偏移
     uint32_t index_size;     // 索引表大小（字节）
 } image_footer_t;
-
+typedef struct
+{
+	uint32_t baseAddr;
+	uint32_t offset;
+	uint32_t iconsCount;
+}image_index_t;
 
 // 显示一张 RGB565 图片（数据已连续存储在 SPI Flash 中）
 // flash_addr: 图片数据在 Flash 中的绝对地址
 // x, y: 显示位置
 // w, h: 图片宽度、高度（像素）
 void draw_image(uint32_t flash_addr, uint16_t x, uint16_t y, uint16_t w, uint16_t h);
-void show_image(const char *name, uint16_t x, uint16_t y,uint32_t baseAddr,uint32_t index);
+void show_image(char *name, uint16_t x, uint16_t y);
+void resourceInit(uint32_t baseAddr,uint32_t offset,uint32_t count);
 
 #endif
 
