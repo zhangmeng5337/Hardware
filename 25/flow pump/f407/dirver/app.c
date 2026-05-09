@@ -9,6 +9,9 @@
 #include "stmflash.h"
 #include "sys.h"
 #include "controller.h"
+#include "fm25w32.h"
+#include "spiFileProc.h"
+
 config_stru config_u;
 extern nvmem_struct nvmem;
 void loadPrams(void)
@@ -65,6 +68,8 @@ void init(void)
     Encoder_Init();
     menu_init();
     RegisterTick();
+	spiFlashTest();
+	stest();
 	initComplete = 1;
     // TFT_init();	//ST7789
 }
@@ -84,7 +89,7 @@ void app(void)
     {
         reset_registerTick(LCD_TICK_NO);
         registerTick(LCD_TICK_NO, config_u.lcdRefreshTime);
-        menu_manage();
+       // menu_manage();
     }
     if (GetTickResult(FLASH_TICK_NO) == 1)
     {

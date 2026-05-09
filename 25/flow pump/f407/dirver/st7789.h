@@ -306,6 +306,11 @@ void ST7789_TearEffect(uint8_t tear);
 void ST7789_Test(void);
 void ST7789_DrawImage_8(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_t *data);
 
+void ST7789_SetAddressWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
+void ST7789_WriteData(uint8_t buff, size_t buff_size);
+void LCD_ShowChinese(uint16_t x, uint16_t y, uint8_t fontSize,
+                     uint8_t *fontData, uint16_t fgColor,
+                     uint16_t bgColor, uint8_t transparent);
 
 void test(void);
 void TFT_init(void);	//ST7789

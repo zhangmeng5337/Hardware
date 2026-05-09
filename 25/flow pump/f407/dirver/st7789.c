@@ -33,7 +33,7 @@ static void ST7789_WriteCommand(uint8_t cmd)
  * @param buff_size -> size of the data buffer
  * @return none
  */
-static void ST7789_WriteData(uint8_t buff, size_t buff_size)
+void ST7789_WriteData(uint8_t buff, size_t buff_size)
 {
     ST7789_DC_Set();
     ST7789_Select();
@@ -62,12 +62,12 @@ static void ST7789_WriteData(uint8_t buff, size_t buff_size)
 
     ST7789_UnSelect();
 
-//	    TFT_DC_1;
-//    TFT_CS_0;
-//
-//    HAL_SPI_Transmit(&ST7789_SPI_PORT, &buff, 1, 100);
-//    //SPI_SendByte(o_data);
-//    TFT_CS_1;
+    //	    TFT_DC_1;
+    //    TFT_CS_0;
+    //
+    //    HAL_SPI_Transmit(&ST7789_SPI_PORT, &buff, 1, 100);
+    //    //SPI_SendByte(o_data);
+    //    TFT_CS_1;
 }
 /**
  * @brief Write data to ST7789 controller, simplify for 8bit data.
@@ -114,7 +114,7 @@ void ST7789_SetRotation(uint8_t m)
  * @param xi&yi -> coordinates of window
  * @return none
  */
-static void ST7789_SetAddressWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
+void ST7789_SetAddressWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
 {
     //ST7789_Select();
     uint16_t x_start = x0 + X_SHIFT, x_end = x1 + X_SHIFT;
@@ -144,38 +144,87 @@ static void ST7789_SetAddressWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint1
     ST7789_WriteCommand(ST7789_RAMWR);
     //ST7789_UnSelect();
 }
-void LCD_ShowChinese(uint16_t x, uint16_t y,  unsigned char fontSize,unsigned char *font, uint16_t color) 
+//void LCD_ShowChinese(uint16_t x, uint16_t y,  unsigned char fontSize,unsigned char *font, uint16_t color)
+//{
+//    uint8_t temp;
+//    for (uint8_t row = 0; row < fontSize; row++) {          // 行
+//        temp = font[row * 2];                         // 左半字节
+//        for (uint8_t col = 0; col < 8; col++) {
+//            if (temp & (0x80 >> col))
+//                ST7789_DrawPixel(x + col, y + row, color);
+//        }
+//        temp = font[row * 2 + 1];                     // 右半字节
+//        for (uint8_t col = 0; col < 8; col++) {
+//            if (temp & (0x80 >> col))
+//                ST7789_DrawPixel(x + 8 + col, y + row, color);
+//        }
+//    }
+//}
+/**
+ * @brief       显示一个汉字（支持设置字号、前景色、背景色、透明模式）
+ * @param       x, y        : 左上角坐标
+ * @param       fontSize    : 字号（如 16、24、32，必须与字模数据匹配）
+ * @param       fontData    : 该汉字的点阵数据（逐行、高位在前）
+ * @param       fgColor     : 字体颜色（RGB565）
+ * @param       bgColor     : 背景颜色（RGB565，透明模式下此参数无效）
+ * @param       transparent : 1-透明背景（只绘制字体，不绘制背景）；0-非透明（绘制背景色）
+ * @retval      无
+ */
+void LCD_ShowChinese(uint16_t x, uint16_t y, uint8_t fontSize,
+                     uint8_t *fontData, uint16_t fgColor,
+                     uint16_t bgColor, uint8_t transparent)
 {
-    uint8_t temp;
-    for (uint8_t row = 0; row < fontSize; row++) {          // 行
-        temp = font[row * 2];                         // 左半字节
-        for (uint8_t col = 0; col < 8; col++) {
-            if (temp & (0x80 >> col))
-                ST7789_DrawPixel(x + col, y + row, color);
-        }
-        temp = font[row * 2 + 1];                     // 右半字节
-        for (uint8_t col = 0; col < 8; col++) {
-            if (temp & (0x80 >> col))
-                ST7789_DrawPixel(x + 8 + col, y + row, color);
+    uint8_t bytesPerRow = fontSize / 8;          // 每行字节数
+    uint16_t totalBytes = bytesPerRow * fontSize; // 总字节数
+
+    // 遍历每一行
+    for (uint16_t row = 0; row < fontSize; row++)
+    {
+        // 遍历当前行的每个字节
+        for (uint8_t byteIdx = 0; byteIdx < bytesPerRow; byteIdx++)
+        {
+            uint8_t data = fontData[row * bytesPerRow + byteIdx];
+            // 遍历字节中的每个位
+            for (uint8_t bit = 0; bit < 8; bit++)
+            {
+                if (data & (0x80 >> bit))
+                {
+                    // 该位为1，绘制前景色
+                    uint16_t px = x + byteIdx * 8 + bit;
+                    uint16_t py = y + row;
+                    ST7789_DrawPixel(px, py, fgColor);
+                }
+                else if (!transparent)
+                {
+                    // 该位为0 且 非透明模式，绘制背景色
+                    uint16_t px = x + byteIdx * 8 + bit;
+                    uint16_t py = y + row;
+                    ST7789_DrawPixel(px, py, bgColor);
+                }
+                // 透明模式下，为0的位置什么都不画
+            }
         }
     }
 }
 
-void LCD_ShowString(uint16_t x, uint16_t y, const char *str, uint16_t color) {
-    uint16_t offset;
-    while (*str) {
-        if (*str < 0x80) { // ASCII 字符（可选）
-            // 显示 ASCII 字符...
-        } else { // 汉字（GB2312 双字节）
-            offset = ((*str - 0xA1) * 94 + (*(str+1) - 0xA1)) * 32; // 16x16点阵占32字节
-            LCD_ShowChinese(x, y, &font_lib[offset], color);
-            x += 16;   // 汉字宽度
-            str += 2;
-        }
-    }
-}
-uint8_t chinese_font[] = {0x08,0x80,0x08,0x80,0x08,0x80,0x11,0xFE,0x11,0x02,0x32,0x04,0x34,0x20,0x50,0x20,
-0x91,0x28,0x11,0x24,0x12,0x24,0x12,0x22,0x14,0x22,0x10,0x20,0x10,0xA0,0x10,0x40};/*"你",0*/
+//void LCD_ShowString(uint16_t x, uint16_t y, const char *str, uint16_t color) {
+//    uint16_t offset;
+//    while (*str) {
+//        if (*str < 0x80) { // ASCII 字符（可选）
+//            // 显示 ASCII 字符...
+//        } else { // 汉字（GB2312 双字节）
+//            offset = ((*str - 0xA1) * 94 + (*(str+1) - 0xA1)) * 32; // 16x16点阵占32字节
+//            LCD_ShowChinese(x, y, &font_lib[offset], color);
+//            x += 16;   // 汉字宽度
+//            str += 2;
+//        }
+//    }
+//}
+uint8_t chinese_font[] =
+{
+    0x08, 0x80, 0x08, 0x80, 0x08, 0x80, 0x11, 0xFE, 0x11, 0x02, 0x32, 0x04, 0x34, 0x20, 0x50, 0x20,
+    0x91, 0x28, 0x11, 0x24, 0x12, 0x24, 0x12, 0x22, 0x14, 0x22, 0x10, 0x20, 0x10, 0xA0, 0x10, 0x40
+};/*"你",0*/
 
 /**
  * @brief Initialize ST7789 controller
@@ -247,11 +296,12 @@ void ST7789_Init(void)
     ST7789_WriteCommand(ST7789_DISPON);	//	Main screen turned on
 
     HAL_Delay(50);
-	ST7789_Fill_Color(WHITE);
-	HAL_Delay(100);
-	LCD_ShowChinese(0, 0, &chinese_font[0], RED);
+    ST7789_Fill_Color(WHITE);
+    HAL_Delay(100);
+    LCD_ShowChinese(80, 80, 16, &chinese_font[0], RED,BLACK,0);
+//    ST7789_WriteString(10, 10, "Filled Rect.", Font_11x18, YELLOW, BLACK);
 
-//    ST7789_Fill_Color(BLACK);				//	Fill with Black.
+    //    ST7789_Fill_Color(BLACK);				//	Fill with Black.
 }
 
 /**
@@ -263,7 +313,7 @@ void ST7789_Fill_Color(uint16_t color)
 {
     uint16_t i;
     ST7789_SetAddressWindow(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
-   // ST7789_Select();
+    // ST7789_Select();
 
 #ifdef USE_DMA
     for (i = 0; i < ST7789_HEIGHT / HOR_LEN; i++)
@@ -491,7 +541,7 @@ void ST7789_DrawCircle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color)
  */
 void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data)
 {
-   uint32_t img_size;
+    uint32_t img_size;
     if ((x >= ST7789_WIDTH) || (y >= ST7789_HEIGHT))
         return;
     if ((x + w - 1) >= ST7789_WIDTH)
@@ -501,12 +551,12 @@ void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint
 
     ST7789_Select();
     ST7789_SetAddressWindow(x, y, x + w - 1, y + h - 1);
-	img_size =  w * h;
+    img_size =  w * h;
     for (uint32_t i = 0; i < img_size ; i++)
     {
-         ST7789_WriteData(data[i]>>8, 1);   
-         ST7789_WriteData(data[i]&0xff, 1);  
-	}
+        ST7789_WriteData(data[i] >> 8, 1);
+        ST7789_WriteData(data[i] & 0xff, 1);
+    }
 
     ST7789_UnSelect();
 }
@@ -527,7 +577,7 @@ void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint
 //		{
 //			ST7789_WriteData(*data++, 1);
 //		}
-//	}   
+//	}
 //    ST7789_UnSelect();
 //}
 
@@ -852,7 +902,7 @@ void ST7789_Test(void)
     ST7789_Fill_Color(RED);
     ST7789_WriteString(10, 10, "Rect./Line.", Font_11x18, YELLOW, BLACK);
     ST7789_DrawRectangle(30, 30, 100, 100, WHITE);
-	
+
     HAL_Delay(1000);
 
     ST7789_Fill_Color(RED);
@@ -884,7 +934,7 @@ void ST7789_Test(void)
     ST7789_Fill_Color(WHITE);
     ST7789_DrawImage(0, 0, 128, 128, (uint16_t *)saber);
     HAL_Delay(3000);
-	
+
 }
 
 
