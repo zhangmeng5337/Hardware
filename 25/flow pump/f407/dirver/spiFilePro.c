@@ -2,6 +2,7 @@
 #include "image_display.h"
 #include "spiFileProc.h"
 #include "fm25w32.h"
+#include "ui.h"
 
 //
 //文件索引表
@@ -62,7 +63,7 @@ int stest(void) {
     font_register(binU.fileIndex[FONT32_INDEX].offset, 32, &han32_font);
 //    font_register(binU.fileIndex[IMAG_INDEX].offset, 48, &han32_font);
 
-   
+    testUi();
 //    font_index_t idx;
 //if (font_find_char(&ascii16_font, 0x41, &idx) == 0) {
 //    draw_char(10, 10, &ascii16_font, &idx, 0x0000,0xFFFF);

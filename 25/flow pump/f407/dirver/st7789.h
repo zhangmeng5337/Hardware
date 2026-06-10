@@ -298,6 +298,7 @@ void ST7789_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uin
 void ST7789_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3,
                                uint16_t color);
 void ST7789_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+void ST7789_Fill_Color_Var(uint16_t color);
 
 /* Command functions */
 void ST7789_TearEffect(uint8_t tear);

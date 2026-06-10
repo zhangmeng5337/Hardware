@@ -334,6 +334,31 @@ void ST7789_Fill_Color(uint16_t color)
 #endif
     ST7789_UnSelect();
 }
+void ST7789_Fill_Color_Var(uint16_t color)
+{
+    uint16_t i;
+//    ST7789_SetAddressWindow(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
+    // ST7789_Select();
+
+#ifdef USE_DMA
+    for (i = 0; i < ST7789_HEIGHT / HOR_LEN; i++)
+    {
+        memset(disp_buf, color, sizeof(disp_buf));
+        ST7789_WriteData(disp_buf, sizeof(disp_buf));
+    }
+#else
+    uint16_t j;
+    for (i = 0; i < ST7789_HEIGHT; i++)
+        for (j = 0; j < ST7789_WIDTH; j++)
+        {
+            //uint8_t data[] = {color >> 8, color & 0xFF};
+            ST7789_WriteData((unsigned char)(color >> 8), 1);
+            ST7789_WriteData((unsigned char)(color & 0xFF), 1);
+
+        }
+#endif
+    ST7789_UnSelect();
+}
 
 /**
  * @brief Draw a Pixel
