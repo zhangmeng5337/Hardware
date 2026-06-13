@@ -1,7 +1,7 @@
 #include "fm25w32.h"
-#include "spi.h"        // 包含你的 SPI 句柄声明
+//#include "spi.h"        // 包含你的 SPI 句柄声明
 
-//extern SPI_HandleTypeDef hspi1;   // 在 main.c 中已定义
+extern SPI_HandleTypeDef hspi1;   // 在 main.c 中已定义
 
 // ---------------------------- 底层 SPI 读写 ---------------------------------
 static uint8_t SPI_ReadWriteByte(uint8_t TxData)
@@ -138,4 +138,11 @@ void FM25_WriteBuffer(uint8_t* pBuffer, uint32_t WriteAddr, uint32_t NumByteToWr
         WriteAddr += write_bytes;
         pBuffer += write_bytes;
     }
+}
+void spiFlashTest(void)
+{
+uint32_t id;
+unsigned char buf[256];
+ id = FM25_ReadID();
+  FM25_Read(buf, 0xfd5d8, 256);
 }

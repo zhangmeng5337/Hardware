@@ -29,7 +29,7 @@ struct FlashDevice const FlashDevice  =  {
    FLASH_DRV_VERS,             // Driver Version, do not modify!
    "STM32F407_FM25W32",   // Device Name 
    EXTSPI,                     // Device Type
-   0xC0000000,                 // Device Start Address
+   0x90000000,                 // Device Start Address
    0x00400000,                 // Device Size in Bytes (256kB)
    256,                       // Programming Page Size
    0,                          // Reserved, must be 0

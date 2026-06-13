@@ -57,6 +57,12 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define FLASH_nCS1_Pin GPIO_PIN_0
+#define FLASH_nCS1_GPIO_Port GPIOB
+#define FLASH_nW_Pin GPIO_PIN_1
+#define FLASH_nW_GPIO_Port GPIOB
+#define EXTPROC_SPI2_ADC_CS3_Pin GPIO_PIN_15
+#define EXTPROC_SPI2_ADC_CS3_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 void SystemClock_Config(void);

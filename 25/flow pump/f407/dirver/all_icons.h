@@ -17703,7 +17703,7 @@ typedef struct {
     uint16_t width;          // 图片宽度
     uint16_t height;         // 图片高度
     const uint16_t *data;    // 指向RGB565像素数组的指针
-} image_info_t;
+} image_info2_t;
 
 /**
  *   所有图片的信息数组，按以下顺序排列：
@@ -17769,7 +17769,7 @@ typedef struct {
  *   [59] 闪光符号.bmp (shan_guang_fu_hao)
  */
 
-const image_info_t images[] = {
+const image_info2_t images[] = {
     { .width = CIU_WIDTH, .height = CIU_HEIGHT, .data = ciu },
     { .width = OOVERT_WIDTH, .height = OOVERT_HEIGHT, .data = oovert },
     { .width = AIRDISCHARGE_WIDTH, .height = AIRDISCHARGE_HEIGHT, .data = airdischarge },
