@@ -28,6 +28,7 @@ typedef struct
     float p21;
     float p1;
     float F;
+	float F_ori;
     float T;
     float cali_flow;
     unsigned int cail_nozzle_num;
@@ -80,6 +81,7 @@ float device_leak_rate;
 float sys_leak_rate;
 float leak_target_p;
 float high_press;
+float ratioMatchMKS;
 //  float alpha;
 
 } calibration_stru;
@@ -129,6 +131,7 @@ unsigned char perror_proc(void);
 void flow_proc(void);
 unsigned char p20error_proc(void);
 cali_slope_stru *get_calib_slop(void);
+unsigned char searchMKSRatio(void);
 
 
 

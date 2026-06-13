@@ -24,6 +24,8 @@
 #define PRE_END_ADDR            0x0807ffffU
 #define PRE_ADDR                0x08059000U
 
+#define GAS_MKS_END_ADDR            0x0807ffffU
+#define GAS_MKS_ADDR                0x08059000U
 
 
 //#define Application_2_Addr		0x080E0000U				// 应用程序2的首地址�? sectors

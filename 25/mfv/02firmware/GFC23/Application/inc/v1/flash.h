@@ -7,6 +7,8 @@
 #define GAS_SET     0
 #define NOZZLE_SET  1
 #define PERROR_SET  2
+#define GAS_MKS_SET  3
+
 
 #define GAS_PKT_SIZE  40
 #define NOZZ_PKT_SIZE 32
@@ -17,6 +19,11 @@
 #define NOPARAMS   0
 #define SUCESS    1
 #define INVALID_ID    2
+
+#define GAS_PKT_MATCHMKS_SIZE  	84
+#define GAS_MATCH_MKS_BUF_SIZE  	10
+
+#define GAS_MAX_MKS_ADDR PAGESIZE
 
 typedef struct
 {
@@ -32,10 +39,12 @@ typedef struct
 	uint32_t total_pressure_len;
 	
 	uint32_t addr_gas;//gas params
+	uint32_t addr_gas_mks;
 	uint32_t addr_pressure;//p20
 	uint32_t addr_noz;//noz 
 
      uint32_t total_gas_count;
+	 uint32_t total_gas_MKScount;
 	 uint32_t nozzle_status;
 	uint32_t v_status;
 	uint32_t bp_status;

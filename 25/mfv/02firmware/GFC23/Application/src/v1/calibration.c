@@ -498,7 +498,9 @@ void flow_proc()
                          get_calib()->compen_time;
     calibration.F = tmp / (calibration.detalt);
     calibration.F = calibration.F / 1000000;
-
+	calibration.F_ori = calibration.F;
+	if(calibration.ratioMatchMKS !=0 && fabs(calibration.ratioMatchMKS) <= 3)
+    calibration.F = calibration.F*calibration.ratioMatchMKS;
 
     if (get_verifier()->cali_count == 0)
     {
@@ -611,6 +613,38 @@ calibration_stru *get_calib(void)
 cali_slope_stru *get_calib_slop(void)
 {
     return &cali_slope;
+}
+unsigned char searchMKSRatio()
+{
+    unsigned char i,result;
+	i = 0;
+	result = 0;
+	get_calib()->ratioMatchMKS = 1;
+	if(get_gas_MKS()->id == get_gas()->id)
+	{  
+		while(i<GAS_MATCH_MKS_BUF_SIZE)
+		{
+			if( get_calib()->cali_flow == get_gas_MKS()->setpointBuf[i])
+			{
+					get_calib()->ratioMatchMKS =  get_gas_MKS()->calibrationRatioBuf[i];
+                    result = 1;
+					break;
+			}
+			else 
+			{
+			i = i + 1;
+            result = 0;
+			}
+
+		}
+	}
+	else
+	{
+	   get_calib()->ratioMatchMKS =  1;
+	   result = 0;
+		
+	}
+	return result;
 }
 
 void cali_proc()

@@ -1286,6 +1286,8 @@ UINT8 Write0xFB10(UINT16 index, UINT8 subindex, UINT32 dataSize,
                     get_calib()->state = 2;
                 get_config()->update = 1;
                 flash_proc(READ, GAS_SET);
+                flash_proc(READ, GAS_MKS_SET);
+				searchMKSRatio();
                 get_test()->gas_type = FlowVerifyRequest0xFB10.GSN;
 
                 get_calib()->cali_flow = FlowVerifyRequest0xFB10.Flow;

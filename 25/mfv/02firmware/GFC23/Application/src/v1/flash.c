@@ -45,6 +45,10 @@ void flash_init()
     flash_usr.addr_pressure = PRE_ADDR;
 	flash_usr.total_gas_count = 0;
 	flash_usr.status = NOPARAMS;
+	 
+	flash_usr.addr_gas_mks = GAS_MKS_ADDR;
+	flash_usr.total_gas_MKScount = 0;
+
 
 	}
         
@@ -399,6 +403,12 @@ unsigned char boot_params_proc(unsigned char oper)
         i = i + 4;
         memcpy(buf + i, &flash_usr.perror_status, 4);
         i = i + 4;
+        memcpy(buf + i, &flash_usr.addr_gas_mks, 4);
+        i = i + 4;
+		memcpy(buf + i, &flash_usr.total_gas_MKScount, 4);
+        i = i + 4;
+
+		
         WriteFlash(FACTORY_ADDR, buf, i);
 	__enable_irq();
 
@@ -431,8 +441,12 @@ unsigned char boot_params_proc(unsigned char oper)
              i = i + 4;	
             memcpy(&flash_usr.perror_status, buf + i, 4);
              i = i + 4;	
+            memcpy(&flash_usr.addr_gas_mks, buf + i, 4);
+             i = i + 4;	
+            memcpy(&flash_usr.total_gas_MKScount, buf + i, 4);
+             i = i + 4;
 
-            flash_usr.status = SUCESS;
+           flash_usr.status = SUCESS;
         }
         else
             flash_usr.status = NOPARAMS;
@@ -441,6 +455,123 @@ unsigned char boot_params_proc(unsigned char oper)
 
 
 }
+
+#define GAS_MKS_END_ADDR            0x0807ffffU
+#define GAS_MKS_ADDR                0x08059000U
+
+unsigned char gas_setMKS_proc(unsigned char oper)
+{
+    unsigned char buf[2048];
+    uint32_t addr;
+    uint32_t gas_addr, page_addr, page_num, i;
+    unsigned int result;
+    if (oper == WRITE)
+    {
+        __disable_irq();
+        i = GAS_MKS_ADDR;
+        while (i < (GAS_MKS_END_ADDR - GAS_PKT_MATCHMKS_SIZE))
+        {
+
+            ReadFlash(i, buf, 2);
+            result = buf[1] << 8;
+            result = result + buf[0];
+            if (get_gas()->id == result)
+            {
+                gas_addr = i;
+                break;
+            }
+            else
+                i = i + GAS_PKT_MATCHMKS_SIZE;
+        }
+        if (i < (GAS_MKS_END_ADDR - GAS_PKT_MATCHMKS_SIZE)) //dat was record
+        {
+            page_num = GetPages(gas_addr);
+            page_addr = FLASH_BASE_ADDR + 0x800 * (page_num);
+            memset(buf, 0, 2048);
+            ReadFlash(page_addr, buf, GAS_MAX_MKS_ADDR);//read original data
+            Erase_page(page_addr, 1);
+            addr = gas_addr - page_addr;
+            //WriteFlash(page_addr, buf, addr);
+            //memset(buf, 0, 2048);
+
+            i = addr;
+
+						
+            memcpy(buf + i, get_gas_MKS(), GAS_PKT_MATCHMKS_SIZE);
+            i = i + GAS_PKT_MATCHMKS_SIZE;
+            i = i + flash_usr.addr_gas_mks - page_addr;
+            WriteFlash(page_addr, buf, i);
+
+        } //dend ata was record
+        else  //data was not record
+        {
+            if (flash_usr.addr_gas_mks < GAS_MKS_END_ADDR)
+            {
+                page_num = GetPages(flash_usr.addr_gas_mks);
+                page_addr = FLASH_BASE_ADDR + 0x800 * (page_num);
+                if (flash_usr.addr_gas_mks <= (page_addr + GAS_MAX_MKS_ADDR))
+                {
+
+                    addr = flash_usr.addr_gas - page_addr;
+                    memset(buf, 0, 2048);
+                    ReadFlash(page_addr, buf, GAS_MAX_MKS_ADDR);//read original data
+                    Erase_page(page_addr, 1);
+                    //WriteFlash(page_addr, buf, addr);
+                    // memset(buf, 0, 2048);
+                }
+                else
+                {
+                    page_num = GetPages(flash_usr.addr_gas);
+                    page_addr = FLASH_BASE_ADDR + 0x800 * (page_num);
+                    Erase_page(page_addr, 1);
+                }
+
+                i = addr;
+
+				memcpy(buf + i, get_gas_MKS(), GAS_PKT_MATCHMKS_SIZE);
+           		 i = i + GAS_PKT_MATCHMKS_SIZE;
+                WriteFlash(page_addr, buf, i);
+
+                flash_usr.addr_gas_mks = flash_usr.addr_gas_mks + GAS_PKT_MATCHMKS_SIZE;
+				flash_usr.total_gas_MKScount = flash_usr.total_gas_MKScount + 1;
+            }
+        }//dend ata was not record
+     __enable_irq();
+    }
+    else
+    {
+        i = GAS_MKS_ADDR;
+        while (i < (flash_usr.addr_gas_mks + 1 - GAS_PKT_MATCHMKS_SIZE))
+        {
+
+            ReadFlash(i, buf, 2);
+            result = buf[1];
+					result = result <<8;
+            result = result + buf[0];
+            if (get_calib()->gas_type == result)
+            {
+                gas_addr = i;
+                break;
+            }
+            else
+                i = i + GAS_PKT_MATCHMKS_SIZE;
+        }
+        if (i < (flash_usr.addr_gas + 1 - GAS_PKT_MATCHMKS_SIZE)) //dat was record
+        {
+            i = 0;
+            memset(buf, 0, 2048);
+           // ReadFlash(gas_addr, buf, GAS_PKT_MATCHMKS_SIZE);
+			 memcpy(get_gas_MKS(), (uint8_t*)gas_addr, GAS_PKT_MATCHMKS_SIZE);
+             flash_usr.status = SUCESS;
+        }
+        else
+            flash_usr.status = NOPARAMS;
+
+    }
+
+
+}
+
 void flash_proc(unsigned char wr, unsigned char mode)
 {
 
@@ -462,6 +593,10 @@ void flash_proc(unsigned char wr, unsigned char mode)
         {
             boot_params_proc(WRITE);
         }//end flash set
+        else  if (mode == GAS_MKS_SET)//flash set start
+        {
+            gas_setMKS_proc(WRITE);
+        }//end flash set        
     }
     else if (wr == READ)//start read************************************************
     {
@@ -478,6 +613,10 @@ void flash_proc(unsigned char wr, unsigned char mode)
         {
             nozzle_set_proc(READ);
         }
+	else  if (mode == GAS_MKS_SET)//flash set start
+	{
+		gas_setMKS_proc(READ);
+	}//end flash set  
 
     }
 }

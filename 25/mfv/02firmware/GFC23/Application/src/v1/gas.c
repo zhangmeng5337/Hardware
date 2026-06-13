@@ -1,6 +1,8 @@
 #include "gas.h"
 #include "string.h"
 gas_datbase_stru gas_datbase;
+gas_datbase_matchMks_stru gas_datbaseMKS;
+
 void gas_init(void)
 {
 //    unsigned char pb[256];
@@ -28,6 +30,11 @@ void gas_init(void)
 gas_datbase_stru *get_gas(void)
 {
     return &gas_datbase;
+}
+
+gas_datbase_matchMks_stru *get_gas_MKS(void)
+{
+    return &gas_datbaseMKS;
 }
 
 

@@ -182,7 +182,7 @@ unsigned char config_proc()
 //                pb = pb + 64;
 //            }
 
-              AES128_CBC_decrypt_buffer(&decBuffer[0], ecBuffer, 256, key, iv);
+            AES128_CBC_decrypt_buffer(&decBuffer[0], ecBuffer, 256, key, iv);
 
         }
 //       AES128_CBC_encrypt_buffer(ecBuffer,
@@ -199,7 +199,7 @@ unsigned char config_proc()
         pb = analy_string("mfv_reset", "\r\n");
         if (pb != NULL) //start operation
         {
-           
+
             HAL_NVIC_SystemReset();
         }
         pb = analy_string("cmd=encr", "\r\n");
@@ -322,7 +322,7 @@ unsigned char config_proc()
         pb = analy_string("log_out?", "\r\n");
         if (pb != NULL) //start operation
         {
-            printf("%.3f  %u  %u  %.1f  %.3f  %.3f  %.3f  %.3f  %.3f  %.3f %u  %u  %u\r\n",
+            printf("%.3f  %u  %u  %.1f  %.3f  %.3f  %.3f  %.3f  %.3f  %.3f %u  %u  %u %.3f\r\n",
                    get_calib()->cali_flow,
                    get_calib()->gas_type,
                    get_verifier()->state,
@@ -335,7 +335,8 @@ unsigned char config_proc()
                    get_calib()->F,
                    get_calib()->cail_nozzle_num,
                    get_calib()->valve,
-                   get_calib()->fault);
+                   get_calib()->fault,
+                   get_calib()->F_ori);
             goto end;
         }
         pb = analy_string("total_count?", "\r\n");
@@ -349,21 +350,21 @@ unsigned char config_proc()
         if (pb != NULL) //start operation
         {
 
-            printf("progress=%.3f\r\n",get_calib()->progress);
+            printf("progress=%.3f\r\n", get_calib()->progress);
             goto end;
         }
         pb = analy_string("timer_tick?", "\r\n");
         if (pb != NULL) //start operation
         {
 
-            printf("timer_tick=%d\r\n",get_verifier()->timer_tick);
+            printf("timer_tick=%d\r\n", get_verifier()->timer_tick);
             goto end;
         }
         pb = analy_string("purge_tick?", "\r\n");
         if (pb != NULL) //start operation
         {
 
-            printf("purge_tick=%.3f\r\n",get_verifier()->purge_tick);
+            printf("purge_tick=%.3f\r\n", get_verifier()->purge_tick);
             goto end;
         }
         pb = analy_string("pro_now_time?", "\r\n");
@@ -381,7 +382,7 @@ unsigned char config_proc()
             goto end;
         }
 
-		
+
 
         pb = analy_string("gas_count?", "\r\n");
         if (pb != NULL) //start operation
@@ -516,7 +517,8 @@ unsigned char config_proc()
         pb = analy_string("version?", "\r\n");
         if (pb != NULL) //start operation
         {
-            printf("Version %d.%d.%d\r\n", FW_REVISION_MAJOR, FW_REVISION_MINOR,FW_REVISION_PATCH);
+            printf("Version %d.%d.%d\r\n", FW_REVISION_MAJOR, FW_REVISION_MINOR,
+                   FW_REVISION_PATCH);
             goto end;///*****************************************version
 
         }
@@ -582,6 +584,25 @@ unsigned char config_proc()
             goto end;
 
         }
+ pb = analy_string("gas_baseMKS?", "\r\n");
+        if (pb != NULL) //start operation
+        {
+
+            printf("id=%u\r\n", get_gas_MKS()->id);
+            HAL_Delay(10);
+			for(unsigned char i = 0;i<(GAS_MATCH_MKS_BUF_SIZE-1))
+            printf("sx=%.3f ", get_gas_MKS()->setpointBuf[i]);
+			printf("%.3f\r\n", get_gas_MKS()->setpointBuf[i]);
+            HAL_Delay(10);
+			
+			for(unsigned char i = 0;i<(GAS_MATCH_MKS_BUF_SIZE-1))
+            printf("calx=%.3f ", get_gas_MKS()->calibrationRatioBuf[i]);
+			printf("%.3f\r\n", get_gas_MKS()->calibrationRatioBuf[i]);			
+            HAL_Delay(10);
+
+            goto end;
+
+        }		
         pb = analy_string("hval_status?", "\r\n");
         if (pb != NULL) //start operation
         {
@@ -722,7 +743,7 @@ unsigned char config_proc()
             get_calib()->pro_total_time = get_calib()->pro_total_time * 1000;
             get_nozzle()->state = get_nozzle()->state | 0x8000;
 
-           // goto end;
+            // goto end;
         }
 
         pb = analy_string("purge_start", "\r\n");
@@ -918,6 +939,11 @@ unsigned char config_proc()
             config_dat.update = 1;
             flash_proc(READ, GAS_SET);
             test_dat.gas_type = tmp_i;
+			flash_proc(READ, GAS_MKS_SET);
+			searchMKSRatio();
+
+
+			
         }
         if (get_calib()->state == 3)
         {
@@ -1045,6 +1071,50 @@ unsigned char config_proc()
 
 
             }
+
+            //*********************set gas mks start*************************
+            pb = analy_string("set_gas_MKS=", "\r\n");
+            if (pb != NULL) //start operation
+            {
+                get_gas_MKS()->update_state = 0;
+                tmp_i = atoi(pb);
+                get_gas_MKS()->id = tmp_i;
+                get_gas_MKS()->update_state = get_gas_MKS()->update_state++;
+                for (unsigned int i = 0; i < GAS_MATCH_MKS_BUF_SIZE; i++)
+                {
+                    unsigned char buf[11];
+                    memset(buf, 11, 0);
+                    sprintf(buf, "set_s%u", i);
+                    pb = analy_string(buf, "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+                        // get_nozzle()->state=0;
+                        tmp_f = atof(pb);
+                        get_gas_MKS()->setpointBuf[i] = tmp_f;
+
+                        get_gas_MKS()->update_state = get_gas_MKS()->update_state++;
+                    }
+                    else
+                        goto end;
+                    memset(buf, 11, 0);
+                    sprintf(buf, "set_cal%u", i);
+                    pb = analy_string(buf, "\r\n");
+                    if (pb != NULL) //start operation
+                    {
+                        // get_nozzle()->state=0;
+                        tmp_f = atof(pb);
+                        get_gas_MKS()->calibrationRatioBuf[i] = tmp_f;
+
+                        get_gas_MKS()->update_state = get_gas_MKS()->update_state++;
+                    }
+                    else
+                        goto end;
+
+                }
+
+            }
+
+            //*********************end set gas mks ***************************
 //          else
 //               goto end;
 
@@ -1335,6 +1405,13 @@ unsigned char config_proc()
                 if (config_dat.cmd_mode == 1)
                     printf("complete\r\n");
             }
+            if (get_gas_MKS()->update_state == GAS_PKT_MATCHMKS_SIZE/2)
+            {
+                flash_proc(WRITE, GAS_MKS_SET);
+                get_gas_MKS()->update_state = 0;
+                if (config_dat.cmd_mode == 1)
+                    printf("complete\r\n");
+            }			
 //            if (get_gas()->update_state & 0x80 == 0x80)
 //            {
 //                flash_proc(WRITE, PERROR_SET);
@@ -1379,8 +1456,8 @@ unsigned char config_proc()
             config_dat.update = 0;
         }
     end:
-       // memset(p->uartRecBuff, 0, UART_REC_SIZE);
-		memset(decBuffer, 255, 256);
+        // memset(p->uartRecBuff, 0, UART_REC_SIZE);
+        memset(decBuffer, 255, 256);
         p->uartRecFlag = 0;
     }
 }
