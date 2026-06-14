@@ -1408,6 +1408,7 @@ unsigned char config_proc()
             if (get_gas_MKS()->update_state == GAS_PKT_MATCHMKS_SIZE/2)
             {
                 flash_proc(WRITE, GAS_MKS_SET);
+				flash_proc(WRITE, PERROR_SET);
                 get_gas_MKS()->update_state = 0;
                 if (config_dat.cmd_mode == 1)
                     printf("complete\r\n");

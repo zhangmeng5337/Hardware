@@ -407,7 +407,7 @@ unsigned char boot_params_proc(unsigned char oper)
         i = i + 4;
 		memcpy(buf + i, &flash_usr.total_gas_MKScount, 4);
         i = i + 4;
-
+        
 		
         WriteFlash(FACTORY_ADDR, buf, i);
 	__enable_irq();
@@ -445,7 +445,8 @@ unsigned char boot_params_proc(unsigned char oper)
              i = i + 4;	
             memcpy(&flash_usr.total_gas_MKScount, buf + i, 4);
              i = i + 4;
-
+            if(flash_usr.addr_gas_mks < GAS_MKS_ADDR || flash_usr.addr_gas_mks > GAS_MKS_END_ADDR)
+				flash_usr.addr_gas_mks = GAS_MKS_ADDR;
            flash_usr.status = SUCESS;
         }
         else
@@ -512,7 +513,7 @@ unsigned char gas_setMKS_proc(unsigned char oper)
                 if (flash_usr.addr_gas_mks <= (page_addr + GAS_MAX_MKS_ADDR))
                 {
 
-                    addr = flash_usr.addr_gas - page_addr;
+                    addr = flash_usr.addr_gas_mks - page_addr;
                     memset(buf, 0, 2048);
                     ReadFlash(page_addr, buf, GAS_MAX_MKS_ADDR);//read original data
                     Erase_page(page_addr, 1);
@@ -521,7 +522,7 @@ unsigned char gas_setMKS_proc(unsigned char oper)
                 }
                 else
                 {
-                    page_num = GetPages(flash_usr.addr_gas);
+                    page_num = GetPages(flash_usr.addr_gas_mks);
                     page_addr = FLASH_BASE_ADDR + 0x800 * (page_num);
                     Erase_page(page_addr, 1);
                 }
