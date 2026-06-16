@@ -1,0 +1,7 @@
+header  set_nozzle=0
+set_gerr2=-0.451961027953396
+set_gerr1=4.25806463862962
+set_gerr0=-2.20532408396668
+set_s1=-0.052
+set_s2=1.1028
+set_tr=300

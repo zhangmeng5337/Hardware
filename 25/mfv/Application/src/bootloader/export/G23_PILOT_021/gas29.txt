@@ -1,0 +1,10 @@
+header set_gas=29
+set_shr=1.3
+set_mw=17
+set_c1=0.57
+set_c2=0.161834891
+set_c3=0.545727734
+set_a=1
+set_b=0
+set_c=0
+set_d=0

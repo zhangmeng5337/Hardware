@@ -1,0 +1,113 @@
+#ifndef STEP_MOTOR_H
+#define STEP_MOTOR_H
+#include "main.h"
+
+#define HOMMING_CTRL   1
+#define POSTION_CTRL   2
+#define PRESSURE_CTRL  5
+
+
+#define HOME_NORMAL   0
+#define HOME_INIT     1
+
+#define STEPPER_MOTOR_HOMMING  	0x0001
+#define STEPPER_MOTOR_POS_CTRL  0x0002
+#define STEPPER_MOTOR_PRE_CTRL  0x0010
+#define STEPPER_MOTOR_CLOSE  	0x0004
+#define STEPPER_MOTOR_OPEN  	0x0008
+
+
+
+#define SET_FREQ      2000
+//#define SET_FREQ      1200
+
+
+
+#define MAX_STEPS  50
+#define MOTOR_SENSOR    1//1:encoder sensor 
+#define MOTOR_NO_SENSOR 0//0: no sensor
+
+
+
+#define STATE_HOME 	0
+#define STATE_MOVE	1
+#define STATE_FOPEN	2
+#define STATE_WAIT_COMPLETE 3
+
+#define STATE_IDLE  4
+
+#define MOVE_UP   1
+#define MOVE_DOWN 2
+#define MOVE_STOP 3
+#define MOVE_MAX_UP 4
+
+typedef struct
+{  
+  float max_position;//0-12.7 maybe changed
+  float real_max_postion;
+  float set_position;//0-1
+  float offset_pos_mm;
+  float real_pos_mm;
+  float requset_pos_mm;
+  float real_pos_percent;
+  float requ_encoder_pulse;
+  unsigned char dir;
+  float pos_error_resolution;
+  float error;
+  float encoder_slope;
+  float encoder_b;
+  float stepper_home_pos_mm;
+  float stepper_home_encoder_count;
+  float pres_err;
+  float pres_last;
+  float pres_rate;
+  
+  float freq;
+  unsigned int status;
+  uint32_t arr;
+  unsigned char  fault_status; //0:no fault
+  unsigned char op_complete;//1:stepmotor operated complete in position mode
+  unsigned char ustep;
+  float step_angle;
+  float us_one_step_mm;
+  float us_one_step;
+  float distance_one_cycle;
+ unsigned char ctrl_type;
+  unsigned char init_flag;
+  unsigned char inc_dir;//0 up 1 down
+  unsigned char stop_flag;
+
+
+} StepMotor_stru;
+typedef struct 
+{
+    int speed;         // 目标速度
+    int acceleration;   // 加速度
+    int deceleration;   // 减速度
+    int set_acceleration;   // 加速度
+    int set_deceleration;   // 减速度
+    int set_speed;         // 目标速度	
+    int direction;
+    int index;// 运动方向，默认为正向
+     float currentSpeed;
+    float stepCounter;	
+  float set_currentSpeed;
+  unsigned char sCurve_en;
+  unsigned char sCurev_typ;//0:scurev 1:linear curev
+}curve_s_stru;
+void StepMotorInit(void);
+unsigned char StepMotorFault(void);
+StepMotor_stru *getStepMotor(void);
+
+void StepMotorStatusProc(void);
+void StepMotorTeset(void);
+StepMotor_stru *get_stepMotor_status(void);
+float get_pos(void);
+unsigned char StepMotorCtrl(float set_pos);
+unsigned int set_stepper_motor_status(unsigned int status);
+unsigned int reset_stepper_motor_status(unsigned int status);
+unsigned int get_stepper_motor_status(void);
+unsigned char StepMotorHomming(unsigned char mode);
+#endif
+
+

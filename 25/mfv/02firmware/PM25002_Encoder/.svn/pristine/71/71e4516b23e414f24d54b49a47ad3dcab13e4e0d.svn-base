@@ -1,0 +1,56 @@
+#include <stdint.h>
+#include <string.h>
+#include "protocol.h"
+#include "controller.h"
+#include "utilities.h"
+
+binary temp;
+
+/**
+    @brief lock device for release
+*/
+static uint8_t cmd12r(uint8_t *cmdInfo) {
+
+  temp._float = get_stepMotor_status()->real_pos_percent;
+  
+  return _CONTINUE; 
+}
+
+// 5
+const command_struct cmdController[] = 
+{
+
+  {1,  _FLOAT32,     4,      &ctrl.Pgain ,         0x00,       0x00,      0x00   },
+  {2,  _FLOAT32,     4,      &ctrl.Igain ,         0x00,       0x00,      0x00   }, 
+  {3,  _FLOAT32,     4,      &ctrl.Dgain ,         0x00,       0x00,      0x00   },  
+  {4,  _FLOAT32,     4,      &ctrl.error ,         0x00,       0x00,      0x00   },
+  {5,  _FLOAT32,     4,      &ctrl.pterm ,         0x00,       0x00,      0x00   },
+  {6,  _FLOAT32,     4,      &ctrl.iterm ,         0x00,       0x00,      0x00   },  
+  {7,  _FLOAT32,     4,      &ctrl.setpoint,       0x00,       0x00,      0x00   },
+  {8,  _FLOAT32,     4,      &ctrl.ctrlv ,         0x00,       0x00,      0x00   },
+  {9,  _FLOAT32,     4,      &ctrl.icrack ,        0x00,       0x00,      0x00   },
+  {10, _FLOAT32,     4,      &ctrl.icrack2,        0x00,       0x00,      0x00   },
+  {11,   _UINT8,     1,      &ctrl.override ,      0x00,       0x00,      0x00   },
+
+  {12, _FLOAT32,     4,      &temp._float,      		&cmd12r,       0x00,      _READ_ONLY   },
+  {13,  _FLOAT32,    4,      &ctrl.pPgain ,         	    0x00,       0x00,      0x00   },
+  {14,  _FLOAT32,    4,      &ctrl.pIgain ,         	    0x00,       0x00,      0x00   },
+  {15,  _FLOAT32,    4,      &ctrl.range10TorrC1 ,          0x00,       0x00,      0x00   },
+  {16,  _FLOAT32,    4,      &ctrl.range30TorrC1 ,          0x00,       0x00,      0x00   },
+  {17,  _FLOAT32,    4,      &ctrl.range100TorrC1 ,         0x00,       0x00,      0x00   },
+  {18,  _FLOAT32,    4,      &ctrl.range1Sp ,         	    0x00,       0x00,      0x00   },
+  {19,  _FLOAT32,    4,      &ctrl.range2Sp ,         	    0x00,       0x00,      0x00   },
+  {20,  _FLOAT32,    4,      &ctrl.range3Sp ,        	    0x00,       0x00,      0x00   },
+  {21,  _FLOAT32,    4,      &ctrl.internalSpCtrlPoint ,    0x00,       0x00,      0x00   },
+  {22,  _FLOAT32,    4,      &ctrl.internalCtrlRatio ,      0x00,       0x00,      0x00   }, 
+  {23,  _FLOAT32,    4,      &ctrl.internalCtrlSpInterval , 0x00,       0x00,      0x00   },
+  {24,  _FLOAT32,    4,      &ctrl.slopeCtrlVal ,           0x00,       0x00,      0x00   },
+  {25,  _FLOAT32,    4,      &ctrl.slopeStableTime ,        0x00,       0x00,      0x00   },
+  {26,  _FLOAT32,    4,      &ctrl.slopeMinPerr1 ,          0x00,       0x00,      0x00   }, 
+  {27,  _FLOAT32,    4,      &ctrl.slopeMinPerr2 ,          0x00,       0x00,      0x00   }, 
+  {28,  _FLOAT32,    4,      &ctrl.pidPgianCof ,          0x00,       0x00,      0x00   }, 
+  {29,  _FLOAT32,    4,      &ctrl.pidIgainCof ,          0x00,       0x00,      0x00   },  
+  // 200-300 for DeviceNet live attirbute reads
+  
+  {0x0000,   0x00,    0x00,   0x00,   0x00,   0x00}
+};

@@ -1,0 +1,231 @@
+Option Explicit
+
+' ========== 一键处理主入口 ==========
+Sub 一键处理_最终版()
+    ' 1. 刷新外部数据连接
+    ThisWorkbook.RefreshAll
+    Application.CalculateUntilAsyncQueriesDone
+
+    ' 2. 生成 cmd 汇总（块间留空行）
+    GenerateCmdSummary
+
+    ' 3. 填充源表公式
+    FillSourceSheetsFormulas
+
+    ' 4. 最终计算
+    Application.Calculate
+
+    MsgBox "处理完成！cmd 汇总已更新，源表公式已填充。"
+End Sub
+
+
+' ========== 生成 cmd 汇总（块间各留一空行） ==========
+Private Sub GenerateCmdSummary()
+    Dim wsCmd As Worksheet
+    Dim wsGas As Worksheet, wsMks As Worksheet, wsNoz As Worksheet
+    Dim gasData As Variant, mksData As Variant, nozData As Variant
+    Dim curRow As Long
+    Dim rngTarget As Range
+
+    Set wsCmd = ThisWorkbook.Worksheets("cmd")
+    Set wsGas = ThisWorkbook.Worksheets("气体参数")
+    Set wsMks = ThisWorkbook.Worksheets("mks offset")
+    Set wsNoz = ThisWorkbook.Worksheets("喷嘴参数")
+
+    Application.ScreenUpdating = False
+
+    wsCmd.Cells.Clear
+    curRow = 1
+
+    ' ---- 1. 气体参数：N列非空值，紧凑排列 ----
+    gasData = GetNonEmptyColumnData(wsGas, "N", 2)
+    If Not IsEmpty(gasData) Then
+        Set rngTarget = wsCmd.Range("A" & curRow).Resize(UBound(gasData, 1), 1)
+        rngTarget.Value = gasData
+        rngTarget.WrapText = False
+        curRow = curRow + UBound(gasData, 1) + 1   ' 数据 + 1 空行
+    End If
+
+    ' ---- 2. mks offset：X列非空值，紧凑排列 ----
+    mksData = GetNonEmptyColumnData(wsMks, "X", 2)
+    If Not IsEmpty(mksData) Then
+        Set rngTarget = wsCmd.Range("A" & curRow).Resize(UBound(mksData, 1), 1)
+        rngTarget.Value = mksData
+        rngTarget.WrapText = False
+        curRow = curRow + UBound(mksData, 1) + 1   ' 数据 + 1 空行
+    End If
+
+    ' ---- 3. 喷嘴参数：T~W列，仅保留有公式的行，紧凑排列 ----
+    nozData = GetNonEmptyFormulaRowsData(wsNoz, "T", "W", 2)
+    If Not IsEmpty(nozData) Then
+        Set rngTarget = wsCmd.Range("A" & curRow).Resize(UBound(nozData, 1), UBound(nozData, 2))
+        rngTarget.Value = nozData
+        rngTarget.WrapText = False
+        ' 最后一块无需再留空行
+    End If
+
+    Application.ScreenUpdating = True
+End Sub
+
+
+' ========== 填充源表公式 ==========
+Private Sub FillSourceSheetsFormulas()
+    Dim ws As Worksheet
+    Dim formulaCols As Variant
+    Dim rngDataCol As Range, cell As Range, tbl As Range
+    Dim startRow As Long, lastDataRow As Long
+    Dim colNum As Long, i As Long
+    Dim rngCol As Range, firstFormulaCell As Range, fillRange As Range
+    Dim dict As Object
+
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+
+    For Each ws In ThisWorkbook.Worksheets
+        Select Case ws.Name
+            Case "气体参数"
+                formulaCols = Array(14)                ' N列
+            Case "喷嘴参数"
+                formulaCols = Array(20, 21, 22, 23)    ' T,U,V,W列
+            Case "mks offset"
+                formulaCols = Array(24)                ' X列
+            Case Else
+                GoTo NextSheet
+        End Select
+
+        On Error Resume Next
+        Set rngDataCol = ws.Range("A1:A" & ws.Cells(ws.Rows.Count, 1).End(xlUp).Row).SpecialCells(xlCellTypeConstants)
+        On Error GoTo 0
+        If rngDataCol Is Nothing Then GoTo NextSheet
+
+        Set dict = CreateObject("Scripting.Dictionary")
+        For Each cell In rngDataCol
+            Set tbl = cell.CurrentRegion
+            If tbl Is Nothing Then GoTo SkipCell
+            If dict.Exists(tbl.Address) Then GoTo SkipCell
+            dict.Add tbl.Address, True
+
+            startRow = tbl.Row
+            lastDataRow = tbl.Columns(1).Find(What:="*", After:=tbl.Columns(1).Cells(1), _
+                            LookIn:=xlFormulas, SearchDirection:=xlPrevious).Row
+            If lastDataRow <= startRow Then GoTo SkipCell
+
+            For i = LBound(formulaCols) To UBound(formulaCols)
+                colNum = formulaCols(i)
+                Set rngCol = ws.Range(ws.Cells(startRow, colNum), ws.Cells(lastDataRow, colNum))
+                Set firstFormulaCell = Nothing
+                On Error Resume Next
+                Set firstFormulaCell = rngCol.SpecialCells(xlCellTypeFormulas).Cells(1, 1)
+                On Error GoTo 0
+
+                If Not firstFormulaCell Is Nothing Then
+                    If firstFormulaCell.Row < lastDataRow Then
+                        Set fillRange = ws.Range(firstFormulaCell, ws.Cells(lastDataRow, colNum))
+                        fillRange.FillDown
+                    End If
+                End If
+            Next i
+SkipCell:
+        Next cell
+NextSheet:
+    Next ws
+
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+End Sub
+
+
+' ========== 辅助函数：获取某一列非空数据（一维数组，紧凑） ==========
+Private Function GetNonEmptyColumnData(ws As Worksheet, colLetter As String, startRow As Long) As Variant
+    Dim lastRow As Long, cell As Range
+    Dim arr() As Variant
+    Dim cnt As Long, i As Long
+
+    lastRow = ws.Cells(ws.Rows.Count, colLetter).End(xlUp).Row
+    If lastRow < startRow Then
+        GetNonEmptyColumnData = Empty
+        Exit Function
+    End If
+
+    cnt = 0
+    For Each cell In ws.Range(colLetter & startRow & ":" & colLetter & lastRow)
+        If Not IsEmpty(cell.Value) Then cnt = cnt + 1
+    Next cell
+
+    If cnt = 0 Then
+        GetNonEmptyColumnData = Empty
+        Exit Function
+    End If
+
+    ReDim arr(1 To cnt, 1 To 1)
+    i = 1
+    For Each cell In ws.Range(colLetter & startRow & ":" & colLetter & lastRow)
+        If Not IsEmpty(cell.Value) Then
+            arr(i, 1) = cell.Value
+            i = i + 1
+        End If
+    Next cell
+
+    GetNonEmptyColumnData = arr
+End Function
+
+
+' ========== 辅助函数：获取有公式的行（紧密排列，至少一个公式才保留） ==========
+Private Function GetNonEmptyFormulaRowsData(ws As Worksheet, colStart As String, colEnd As String, startRow As Long) As Variant
+    Dim lastRow As Long, r As Long, c As Long, colCount As Long
+    Dim rng As Range
+    Dim validRows() As Boolean
+    Dim rowHasFormula As Boolean
+    Dim cntValid As Long
+    Dim outData() As Variant
+    Dim i As Long, j As Long
+
+    lastRow = ws.Cells(ws.Rows.Count, colStart).End(xlUp).Row
+    If lastRow < startRow Then
+        GetNonEmptyFormulaRowsData = Empty
+        Exit Function
+    End If
+
+    Set rng = ws.Range(colStart & startRow & ":" & colEnd & lastRow)
+    colCount = rng.Columns.Count
+
+    ReDim validRows(1 To rng.Rows.Count)
+    For r = 1 To rng.Rows.Count
+        rowHasFormula = False
+        For c = 1 To colCount
+            If rng.Cells(r, c).HasFormula Then
+                rowHasFormula = True
+                Exit For
+            End If
+        Next c
+        validRows(r) = rowHasFormula
+    Next r
+
+    cntValid = 0
+    For r = 1 To rng.Rows.Count
+        If validRows(r) Then cntValid = cntValid + 1
+    Next r
+
+    If cntValid = 0 Then
+        GetNonEmptyFormulaRowsData = Empty
+        Exit Function
+    End If
+
+    ReDim outData(1 To cntValid, 1 To colCount)
+    i = 1
+    For r = 1 To rng.Rows.Count
+        If validRows(r) Then
+            For c = 1 To colCount
+                If rng.Cells(r, c).HasFormula Then
+                    outData(i, c) = rng.Cells(r, c).Value
+                Else
+                    outData(i, c) = Empty
+                End If
+            Next c
+            i = i + 1
+        End If
+    Next r
+
+    GetNonEmptyFormulaRowsData = outData
+End Function
+

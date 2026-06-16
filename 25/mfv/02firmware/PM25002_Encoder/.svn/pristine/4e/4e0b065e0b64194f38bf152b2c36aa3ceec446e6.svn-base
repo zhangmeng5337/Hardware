@@ -1,0 +1,276 @@
+#ifndef __CONTROLLER_H_
+#define __CONTROLLER_H_
+
+#include <stdbool.h>
+#include <stdint.h>
+#include "utilities.h"
+#include "nvmem.h"
+#include "StepMotor.h"
+
+#define CONTROLMODE_DIGITAL   0
+#define CONTROLMODE_ANALOG    1
+
+#define SAFETY_NORMAL         0
+#define SAFETY_OVERRIDE       1
+
+#define SIGPROC_PERIOD_MS     2
+#define CTRL_PERIOD_MS        30
+#define CTRL_PERIOD_S         0.03f
+
+#define PURGE_GASPAGE         6
+
+#define FFDPSPAN  5
+
+#define NC_VALVE              0
+#define NO_VALVE              1
+
+typedef enum
+{
+    OVERRIDE_NORMAL = 0,
+    OVERRIDE_OFF,
+    OVERRIDE_ON,
+    OVERRIDE_HOLD,
+    OVERRIDE_SAFESTATE,
+    OVERRIDE_MANUAL_DRIVE = 50,
+    OVERRIDE_SYSTEM_IDENT = 99
+} override_mode;
+
+typedef struct
+{
+    uint8_t override;
+    uint8_t status;
+} dns_saa_struct;
+
+typedef struct
+{
+    float pvariable;
+    uint8_t status;
+} dns_ssc_struct;
+
+typedef struct
+{
+    float   pzfValue;
+    float   pzfPoleGain;
+    float   pzfZeroGain;
+} PzfRecord;
+
+typedef struct
+{
+    float       piIntegral;     // previous integrator output
+    float       piIGain;
+    float       piPGain;
+    PzfRecord   pidDFilter;
+    float       llDTerm;        // result of D-term calculation
+    float       ffValue;
+    float       fcGllOutput;
+    float       pTerm;
+} PiRecord, *PiPtr;
+
+typedef struct
+{
+    uint8_t idx;
+    float fny[FFDPSPAN];
+    float m;
+} mffdp_struct;
+
+typedef struct
+{
+    uint8_t type;           // controller type 1: new; default: old
+    float *feedback;
+    float Pgain;
+    float Igain;
+    float Dgain;  // pole
+    float D2gain; // zero
+    float error;
+    float pterm;
+    float iterm;
+    float dterm;
+    bool saturated;
+    bool signequal;
+    float isath;
+    float isatl;
+    float prevError;        /* Requred for integarator */
+    float prevMeasurement;  /* Regquired for differentiator */
+    float tau;              /* Derivative low-pass filter time constant */
+    float T;                /* Smaple time (seconds) */
+    float setpoint;
+    float setpointunits;
+    float ctrlv;
+    uint8_t invertdrive;
+    float normalizeddrive;  // normlaized drive signal going to DAC. inverion of ctrlv is placed here
+    float icrack;
+    float icrack2;
+    float *currentpressure;
+    float *currentmW;
+    float scaledKp;
+    float scaledKi;
+    float scaledKiGas;
+    float scaledcrack;
+    float asetpoint;
+    float shutoffthreshold;
+    uint8_t override;
+    bool rampinprogress;
+    int8_t   rampdir;
+    int32_t  ramprate;
+    int32_t  ramptime;
+    uint8_t  rampmode;
+    int32_t  minramprate;
+    float ramp_rate;
+    float currentsp;
+    float targetsp;
+    bool downdir;
+    bool updir;
+    int32_t delayctr;
+    int32_t turnondelay;
+    int32_t turnoffdelay;
+    lincurve_element dynPtable[MAX_DYNAMIC_GAIN_TABLE];
+    lincurve_element dynItable[MAX_DYNAMIC_GAIN_TABLE];
+    float lGainCorr[2];
+    dns_saa_struct dnet_saa;
+    dns_ssc_struct dnet_scc;
+    system_identification_struct sysIdent;
+
+    PiRecord    fcGll;                  //!< Flow controller GLL
+    float fcGllGain;
+
+    mffdp_struct mffdp;
+    float ffGain;
+
+    uint8_t ctrlmode;
+    uint8_t currSMState;  // current motor state
+    uint8_t transSMState; // transition state request
+    float direction;
+
+    unsigned char overShot_ctrl;//0:no ctrl
+    float last_setpoint;
+    StepMotor_stru *sm;
+
+    float perror; //ctrl for pressure slope
+    float pPgain;
+    float pIgain;
+    float pout;
+    float ppterm;
+    float piterm;
+    float range10TorrC1;//below 10torr,error coff
+    float range30TorrC1;//below 30torr,error coff
+    float range100TorrC1;//below 100torr,error coff
+    float range1Sp; //pressure ctrl range 10orr
+    float range2Sp;//pressure ctrl range 30orr
+    float range3Sp;//pressure ctrl range 100orr
+    float slope_time;//time for slope cal
+    float slope_pre;//pressure slope
+    float slope_flag;//for slope state change
+    float slope_total_time;//to SP needed time
+    float internalSpStartPre;//start slope ctrl pressure
+    float internalSpStartPerc;//start slope ctral pressure percent
+    float set_point_last;
+    float slopePoint1;//for slope cal pressure 1
+    float internalSpCtrlPoint;//for slope ctrl time
+    float internal_sp;//internal sp for slope
+    float interal_sp_ratio;//internal sp for ratio
+    unsigned char internal_state;
+    float internalCtrlRatio;//internal sp changed when interal sp reached
+    float internalCtrlSpInterval;//internal sp inc
+    float slopeCtrlVal;//slope ctral value
+    float slopeStableTime;//wait for pressure stable for cal slope
+    float slopeMinPerr1;//wait for pressure stable for cal slope
+    float slopeMinPerr2;//pressure error for slope cal
+    unsigned char pressure_dir;//0:up,1:down
+   // float pidPgianCofUP;
+//	float pidIgainCofUP;
+	float pidPgainStableCofUP;
+	float pidIgainStableCofUP;
+   	float pidIgainStableCofUP2;
+    float pidPgianCofDW;
+	float pidIgainCofDW;
+	float pidIgainCof;//ratio <0.3,ratio>1.2
+	float pidPgainCof;//ratio <0.3,ratio>1.2	
+//	float pidIgainStableCof; 
+	
+	float slopeMinval;
+	float slopeCtrlPreTh;
+	float slopeCtrlPreTh2;	
+    float out;
+	unsigned char slopeCtrlEn;//1/2:slope ctrl 0:no slope
+	float slopeCrack;
+	float slopeCtrlVal2;
+	float itermT;
+	float slopeMin1;
+	float slopeMin2;
+	float slopeMin3;
+	float slopeMin4;	
+	float slopeMinTh1;
+	float slopeMinTh2;
+    float slopeCtrlMode;//0:normal  1:small pressure error
+    float pressureChangeSlope;
+	float slopeCtrlVal3;
+    float stableTimeout;
+    float slope_k;
+	float slope_b;
+	float set_slope;
+	
+    float pprevError;
+    float iterm_sat;
+} ctrl_struct;
+typedef struct
+{
+    float setpoint;                 // 定义设定值
+    float pv;              // 定义实际值
+    float error;                    // 定义偏差值
+    float err_k_1;              // 定义偏差值(k-1)
+    float err_k_2;              // 定义偏差值(k-2)
+    float err;
+    float Kp, Ki, Kd;               // 定义比例、积分、微分系数
+    float umax;
+    float umin;
+    float crack2;   //积分分离阈值
+    float crack1;//积分项
+    float cv;
+    float increment;
+    float interal;
+    unsigned char controller_type;//0:increment 1:position
+    unsigned char inter_enable;
+} pid_stru;
+
+
+
+typedef enum
+{
+    CTRL_OFF = 0,
+    CTRL_CRACK,
+    CTRL_RAMP_SETUP,
+    CTRL_NORMAL
+} ctrl_state;
+
+typedef struct
+{
+    // inputs
+    PiPtr       pi;     // LL structure (WR8)
+    float       cmd;    // Command value (DR0) fcCompositeSetpoint
+    float       flow;   // current measured flow fmNormalizedFlow
+    // intermediate values
+    float       gterm;  // Gain term (WR10)
+    float       dterm;
+    float       fbk;    // Feedback value (DR4)
+    float       error;
+    //  float       pterm;
+    //  float       iterm;
+    // outputs
+    float       ctrlv;  // LL controller output (DR0)
+    uint16_t      flags;  // PID overflow flags (R10)
+
+    float		u;
+    float		v;
+    float		br;
+
+} GllRecord, *GllPtr;
+extern ctrl_struct ctrl2;
+extern ctrl_struct ctrl;
+extern ctrl_struct dpctrl;
+extern ctrl_state getControllerState(void);
+extern void load_controller_parameters(float *flow, float *custom, float *pa);
+extern void controller(float pv, float sp, float *cv);
+extern void contronller_pid(float pv, float setpoint, float *cv);
+extern void actuatorControl(uint8_t stateRequest);
+extern uint8_t checkSafety(float dpvalue, float maxlimit, float *ctrlv);
+#endif

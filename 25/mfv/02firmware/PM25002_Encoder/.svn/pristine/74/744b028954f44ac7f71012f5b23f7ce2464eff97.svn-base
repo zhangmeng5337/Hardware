@@ -1,0 +1,85 @@
+#ifndef STEP_MOTOR_H
+#define STEP_MOTOR_H
+#include "main.h"
+#define DOWN_STEP_TIMEOUT 1500//-----3600
+#define UP_STEP_TIMEOUT 100//100---1000scc--300torr 100--10L--300torr
+#define POSITION_CAL_CYCLE 1
+#define MAIN_FREQ  SystemCoreClock
+
+#define PWM_MODE   0//0:normal  1:dma
+#define FORWARD    0
+#define BACKWARD   1
+
+#define POS_CTRL   0
+#define TIM_CTRL   1
+
+
+#define MSTOP	1
+#define MSTART	2
+
+#define STATE_HOME 	0
+#define STATE_MOVE	1
+#define STATE_FOPEN	2
+#define STATE_WAIT_COMPLETE 3
+
+#define STATE_IDLE  4
+
+#define MOVE_UP   1
+#define MOVE_DOWN 2
+#define MOVE_STOP 3
+#define MOVE_MAX_UP 4
+
+typedef struct
+{  
+  float freq;
+  uint32_t timeout_count;
+  float position;//current position estimated by time
+  float max_position;//0-12.7 maybe changed
+  float min_position;//0
+  float set_position;//0-1
+  float open_percent;//0-1
+  uint32_t up_time;//open valve time ms  100---1000scc--300torr 100--10L--300torr
+  uint32_t down_time; //close valvetime ms
+  //uint32_t arr_target;
+  uint32_t arr;
+  unsigned char  fault_status; //0:no fault
+
+  unsigned char op_complete;//1:stepmotor operated complete in position mode
+  unsigned char dir;
+ // unsigned char timeout_flag;//1:timeout,motor should be stopped
+  //unsigned char mode;//POS_CTRL   TIM_CTRL
+  unsigned char status;//1:start 0:stop
+  unsigned char step_motor_status;
+  unsigned char time_start_flag;//0:stop 1:start
+  unsigned char ustep;
+  float step_angle;
+  float distance_one_step;
+  float distance_one_cycle;
+  unsigned char  home_count;
+  unsigned char Fopen_count;
+  unsigned char retry_times;
+  uint32_t pwm_total_pulse_count;
+  uint32_t pwm_laod_pulse_count;
+  uint32_t pwm_inst_pulse_count;
+  uint32_t pwm_inst_last_pulse_count;
+  uint32_t dma_buf[2000];
+  unsigned char state;
+	uint32_t tick_tmp;
+
+} StepMotor_stru;
+
+void StepMotorInit(void);
+
+unsigned char StepMotorFault(void);
+StepMotor_stru *getStepMotor(void);
+void StepMotorTimeCal(void);
+unsigned char StepMotorHoming(void);
+unsigned char StepMotorStatusProc(void);
+void StepMotorTeset(void);
+
+extern unsigned char StepMotorStateProc(unsigned char state);
+unsigned char StepMotorCtrl(unsigned char command);
+
+#endif
+
+

@@ -1,0 +1,60 @@
+#include <stdint.h>
+#include <string.h>
+#include <math.h>
+#include "protocol.h"
+#include "nvmem.h"
+#include "utilities.h"
+#include "meter.h"
+#include "controller.h"
+#ifndef BOOTLOADER
+#include "awe.h"
+#endif
+
+binary nullAttr = {0};
+
+
+// 2
+const command_struct cmdConfiguration[] = 
+{
+    {   1,    _UINT32,     4,       &nvmem.app.network.defaultbaudrate,         0x00,       0x00,     _FLASH        },
+    {   2,  _OCTETSTR,    32,       &nvmem.app.manufacturing.electronicsrev,    0x00,       0x00,     _FLASH        },      
+    {   3,  _OCTETSTR,    32,       &nvmem.app.manufacturing.senserialnumber,   0x00,       0x00,     _FLASH        },
+    {   4,  _OCTETSTR,    12,       &nvmem.app.manufacturing.devserialnumber,   0x00,       0x00,     _FLASH        },
+    
+    {  54,    _UINT8,      1,       &nvmem.app.network.address,                 0x00,       0x00,     _FLASH        }, 
+    {  57,    _UINT8,      1,       &nvmem.app.network.length,                  0x00,       0x00,     _FLASH        },
+    {  58,    _UINT8,      1,       &nvmem.app.network.parity,                  0x00,       0x00,     _FLASH        },
+    {  59,    _UINT8,      1,       &nvmem.app.network.stopbits,                0x00,       0x00,     _FLASH        },  
+    
+    {  60,  _FLOAT32,      4,       &nvmem.app.controllerObj.pgain,             0x00,       0x00,     _FLASH        },
+    {  61,  _FLOAT32,      4,       &nvmem.app.controllerObj.igain,             0x00,       0x00,     _FLASH        },
+    {  62,  _FLOAT32,      4,       &nvmem.app.controllerObj.dgain,             0x00,       0x00,     _FLASH        },     
+    {  63,  _FLOAT32,      4,       &nvmem.app.controllerObj.icrack,            0x00,       0x00,     _FLASH        },
+    {  64,  _FLOAT32,      4,       &nvmem.app.controllerObj.icrack2,           0x00,       0x00,     _FLASH        }, 
+    {  65,  _FLOAT32,      4,       &nvmem.app.controllerObj.spboot,            0x00,       0x00,     _FLASH        },
+    {  66,  _FLOAT32,      4,       &nvmem.app.controllerObj.isatl,             0x00,       0x00,     _FLASH        },
+    {  67,  _FLOAT32,      4,       &nvmem.app.controllerObj.isath,             0x00,       0x00,     _FLASH        },
+    {  68,   _UINT16,      2,       &nvmem.app.controllerObj.turnondelay,       0x00,       0x00,     _FLASH        },
+    {  69,  _FLOAT32,      4,       &nvmem.app.controllerObj.shutoffthreshold,  0x00,       0x00,     _FLASH        },
+    {  70,   _UINT32,      4,       &nvmem.app.controllerObj.minramptime,       0x00,       0x00,     _FLASH        },
+    {  71,   _UINT32,      4,       &nvmem.app.controllerObj.ramprate,          0x00,       0x00,     _FLASH        },
+    {  72,    _UINT8,      1,       &nvmem.app.controllerObj.fbsel,             0x00,       0x00,     _FLASH        },
+    {  73,    _UINT8,      1,       &nvmem.app.controllerObj.type,              0x00,       0x00,     _FLASH        },
+    
+    {  80,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[0].fullscale,    0x00,       0x00,     _FLASH        },
+    {  81,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[1].fullscale,    0x00,       0x00,     _FLASH        },
+    {  82,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[0].adp0poly[0],  0x00,       0x00,     _FLASH        },
+    {  83,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[1].adp0poly[0],  0x00,       0x00,     _FLASH        },
+    {  84,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[0].adp0poly[1],  0x00,       0x00,     _FLASH        },
+    {  85,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[1].adp0poly[1],  0x00,       0x00,     _FLASH        },
+    {  86,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[0].Q,            0x00,       0x00,     _FLASH        }, 
+    {  87,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[0].R,            0x00,       0x00,     _FLASH        },
+    {  88,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[1].Q,            0x00,       0x00,     _FLASH        }, 
+    {  89,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[1].R,            0x00,       0x00,     _FLASH        },    
+    
+    
+    
+    // 300-500 for DeviceNet   
+
+    {0x0000,   0x00,    0x00,   0x00,   0x00,   0x00}
+};

@@ -1,0 +1,4 @@
+gcc -c main.c -o main.o
+gcc -c ../../Application/src/crypto/aes.c -o aes.o
+gcc -o encrypt.exe main.o aes.o
+rm *.o

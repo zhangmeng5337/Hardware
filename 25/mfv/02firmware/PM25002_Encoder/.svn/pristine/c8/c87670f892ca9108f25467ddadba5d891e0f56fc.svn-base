@@ -1,0 +1,180 @@
+#include <string.h>
+#include "cmsis_os2.h"                          // CMSIS RTOS header file
+#include "main.h"
+#include "nvmem.h"
+#include "protocol.h"
+#include "streaming.h"
+#include "semtasksigproc.h"
+#include "ads1256.h"
+#include "analogio.h"
+#include "digitalio.h"
+#include "controller.h"
+#include "meter.h"
+#include "awe.h"
+#include "StepMotor.h"
+#include "bsp_stepper_ctrl.h"
+/*----------------------------------------------------------------------------
+ *      Semaphore creation & usage
+ *---------------------------------------------------------------------------*/
+
+osSemaphoreId_t sid_Semaphore_sigproc;                  // semaphore id
+
+osThreadId_t tid_Thread_Semaphore_sigproc;              // thread id
+static uint64_t thread_stk_sigproc[512];
+
+const osThreadAttr_t thread_sigproc_attr =
+{
+    .stack_mem = &thread_stk_sigproc[0],
+    .stack_size = sizeof(thread_stk_sigproc),
+    //.priority = osPriorityRealtime
+};
+
+void Thread_Semaphore_sigproc(void *argument);          // thread function
+
+int Init_Semaphore_sigproc(void)
+{
+
+    sid_Semaphore_sigproc = osSemaphoreNew(1U, 0U, NULL);
+    if (sid_Semaphore_sigproc == NULL)
+    {
+        ; // Semaphore object not created, handle failure
+    }
+
+    tid_Thread_Semaphore_sigproc = osThreadNew(Thread_Semaphore_sigproc, NULL, &thread_sigproc_attr);
+    if (tid_Thread_Semaphore_sigproc == NULL)
+    {
+        return (-1);
+    }
+
+    return (0);
+}
+
+void Resume_thread_sigproc(void)
+{
+    osSemaphoreRelease(sid_Semaphore_sigproc);              // return a token back to a semaphore
+}
+float set_pos = 0, last_detal;
+unsigned int period=50;
+unsigned char dir;
+void Thread_Semaphore_sigproc(void *argument)
+{
+    int32_t val;
+    uint8_t divider = period;
+    dir = 0;
+    val = osSemaphoreAcquire(sid_Semaphore_sigproc, osWaitForever);       // sync block
+
+    initADS1256struct(&Resume_thread_sigproc,
+                      &meter.raw[0],
+                      &meter.raw[1],
+                      &meter.raw[2],
+                      &meter.raw[3],
+                      &meter.cdg[0].cdgraw,
+                      &meter.cdg[1].cdgraw,
+                      &meter.raw[4],
+                      &meter.raw[5]);
+    initADS1256();
+
+    StepMotorInit();
+
+    loadMeterParameters();
+    ctrl.sm = getStepMotor(); // assign pointer to Stepper Motor, access via the controller object
+    load_controller_parameters(&meter.normalizedcdgp,
+                               &meter.kfltnormalizedcdgp,
+                               &meter.kfltnormalizedcdgp); // setup control system
+
+    startSigproc();
+
+    while (1)
+    {
+        ; // Insert thread code here...
+        val = osSemaphoreAcquire(sid_Semaphore_sigproc, osWaitForever);       // wait for post
+        switch (val)
+        {
+            case osOK:
+                ; // Use protected code here... This code runtime is TBD uS
+                //SP_SET
+                calcPressure(&meter.cdg[0]);
+                calcPressure(&meter.cdg[1]);
+                calcMeter();
+
+                if (--divider == 0)
+                {
+                    //slope = (meter.cdg[0].cdgpmvalue -last)*1000/30;
+                    // last = meter.cdg[0].cdgpmvalue;
+
+
+                    /**
+                      ctrl.normalizeddrive is the drive request to the actuator with range from 0.0 to 1.0, meaning 0 would be the valve close position
+                      and 1.0 being the full open position. This should go and update the steper motor normalized position setpoint
+                    */
+                    //actuatorControl(set_pos);
+                    if (getStepMotor()->ctrl_type == PRESSURE_CTRL)
+                    {
+
+                        controller(*ctrl.feedback, ctrl.setpoint, &ctrl.ctrlv);
+                        float detal;
+                        if (ctrl.ctrlv < 0)
+                            ctrl.ctrlv = 0;
+                        //detal = 1 - ctrl.ctrlv;
+                        StepMotorCtrl(ctrl.ctrlv);
+                        last_detal = detal;
+                    }
+                    else  if (getStepMotor()->ctrl_type == POSTION_CTRL)
+                    {
+                        StepMotorCtrl(ctrl.setpoint);
+
+//                        if (dir == 1)
+//                        {
+
+//                            ctrl.setpoint = ctrl.setpoint - 0.1;
+//                            if (ctrl.setpoint < 0)
+//                            {
+//                                ctrl.setpoint = 0;
+//                                dir = 0;
+//                            }
+
+//                        }
+//                        else
+//                        {
+//                            if (ctrl.setpoint < 1)
+//                                ctrl.setpoint = ctrl.setpoint + 0.1;
+//                            else
+//                            {
+//                                dir = 1;
+//                            }
+//                        }
+
+                    }
+
+                    unsigned int tmp, tmp2;
+                    tmp = get_stepper_motor_status();
+                    tmp2 = tmp;
+                    tmp = tmp & STEPPER_MOTOR_CLOSE;
+                    tmp2 = tmp2 & STEPPER_MOTOR_HOMMING;
+
+                    if (set_pos == 100)
+                    {
+                        if (tmp == 0 && (tmp2) == 0)
+                        {
+                            ctrl.setpoint = 0;
+                            //SetHomming();
+                        }
+                    }
+                    divider = 15;
+                }
+                // OPM protocol streaming
+                streamsig(&usbd_api);
+                //StepMotorTeset();
+                //SP_RESET
+                break;
+            case osErrorResource:
+                break;
+            case osErrorParameter:
+                break;
+            default:
+                break;
+        }
+
+        osThreadYield();                                    // suspend thread
+    }
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="firmwareupdate">
+</Property><Property Name="Solution File" Value="D:\Development\Firmware\FFHA\Firmware\mainblower\application\src\bootloader\firmwareupdate\firmwareupdate.sln">
+</Property><Property Name="Date" Value="Wednesday, May 08, 2019">
+</Property><Property Name="Time" Value="9:19 AM">
+</Property></Properties><Event ErrorLevel="0" Project="firmwareupdate" Source="firmwareupdate\firmwareupdate.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="firmwareupdate" Source="firmwareupdate\firmwareupdate.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="firmwareupdate.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="firmwareupdate.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="firmwareupdate" Source="firmwareupdate\firmwareupdate.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

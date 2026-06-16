@@ -18,8 +18,10 @@ static int g_font_count = 0;
  * @param font       指向未初始化的 font_instance_t 结构体的指针（由调用者分配内存）
  * @return 0 成功，-1 失败（字库无效或注册表满）
  */
-int font_register(uint32_t base_addr, uint8_t font_size, font_instance_t *font) {
-    if (g_font_count >= MAX_FONTS) return -1;
+int font_register(uint32_t base_addr, uint8_t font_size, font_instance_t *font)
+{
+    if (g_font_count >= MAX_FONTS)
+        return -1;
 
     // 1. 记录基本信息
     font->base_addr = base_addr;
@@ -27,9 +29,10 @@ int font_register(uint32_t base_addr, uint8_t font_size, font_instance_t *font) 
 
     // 2. 读取文件头
     font_header_t header;
-//    spi_flash_read(base_addr, (uint8_t*)&header, sizeof(header));
-	  FM25_Read((uint8_t*)&header, base_addr, sizeof(header));
-    if (memcmp(header.magic, "MONO", 4) != 0) return -1;
+    //    spi_flash_read(base_addr, (uint8_t*)&header, sizeof(header));
+    FM25_Read((uint8_t *)&header, base_addr, sizeof(header));
+    if (memcmp(header.magic, "MONO", 4) != 0)
+        return -1;
 
     font->char_count = header.char_count;
     font->is_fixed = (header.flags & 0x01) == 0;   // 固定尺寸模式
@@ -40,14 +43,17 @@ int font_register(uint32_t base_addr, uint8_t font_size, font_instance_t *font) 
     font->pixel_start = base_addr + sizeof(font_header_t) + index_size;
 
     // 4. 如果是固定尺寸，读取第一个索引条目获得固定宽高
-    if (font->is_fixed) {
+    if (font->is_fixed)
+    {
         font_index_t first_idx;
         //spi_flash_read(font->index_start, (uint8_t*)&first_idx, sizeof(font_index_t));
-			FM25_Read((uint8_t*)&first_idx, font->index_start, sizeof(font_index_t));
+        FM25_Read((uint8_t *)&first_idx, font->index_start, sizeof(font_index_t));
         font->fixed_width  = first_idx.width;
         font->fixed_height = first_idx.height;
         font->fixed_pitch  = first_idx.pitch;
-    } else {
+    }
+    else
+    {
         // 实际尺寸模式暂不支持自动范围，可以留空或后续动态获取
         font->fixed_width = font->fixed_height = font->fixed_pitch = 0;
     }
@@ -55,12 +61,12 @@ int font_register(uint32_t base_addr, uint8_t font_size, font_instance_t *font) 
     // 5. 获取该字库支持的 Unicode 范围（通过读取第一个和最后一个索引条目）
     font_index_t first_idx, last_idx;
     //spi_flash_read(font->index_start, (uint8_t*)&first_idx, sizeof(font_index_t));
-		FM25_Read((uint8_t*)&first_idx, font->index_start, sizeof(font_index_t));
+    FM25_Read((uint8_t *)&first_idx, font->index_start, sizeof(font_index_t));
     font->unicode_min = first_idx.unicode;
 
     uint32_t last_entry_addr = font->index_start + (font->char_count - 1) * sizeof(font_index_t);
     //spi_flash_read(last_entry_addr, (uint8_t*)&last_idx, sizeof(font_index_t));
-		FM25_Read((uint8_t*)&last_idx, last_entry_addr, sizeof(font_index_t));
+    FM25_Read((uint8_t *)&last_idx, last_entry_addr, sizeof(font_index_t));
     font->unicode_max = last_idx.unicode;
 
     // 6. 存入全局列表
@@ -75,27 +81,34 @@ int font_register(uint32_t base_addr, uint8_t font_size, font_instance_t *font) 
  * @param desired_size  期望的字号（0 表示自动选择）
  * @return              匹配的字库实例指针，若未找到返回 NULL
  */
-font_instance_t* font_select(uint32_t unicode, uint8_t desired_size) {
+font_instance_t *font_select(uint32_t unicode, uint8_t desired_size)
+{
     font_instance_t *fallback = NULL;
 
     // 第一轮：优先匹配 desired_size
-    if (desired_size != 0) {
-        for (int i = 0; i < g_font_count; i++) {
+    if (desired_size != 0)
+    {
+        for (int i = 0; i < g_font_count; i++)
+        {
             font_instance_t *f = g_fonts[i];
-            if (f->font_size == desired_size && unicode >= f->unicode_min && unicode <= f->unicode_max) {
+            if (f->font_size == desired_size && unicode >= f->unicode_min && unicode <= f->unicode_max)
+            {
                 return f;
             }
         }
     }
 
     // 第二轮：不限制字号，根据 Unicode 范围选择第一个匹配的字库
-    for (int i = 0; i < g_font_count; i++) {
+    for (int i = 0; i < g_font_count; i++)
+    {
         font_instance_t *f = g_fonts[i];
-        if (unicode >= f->unicode_min && unicode <= f->unicode_max) {
+        if (unicode >= f->unicode_min && unicode <= f->unicode_max)
+        {
             return f;
         }
         // 记录第一个字库作为最终回退
-        if (fallback == NULL) fallback = f;
+        if (fallback == NULL)
+            fallback = f;
     }
 
     // 第三轮：没有找到匹配范围，返回第一个字库（或 NULL）
@@ -111,10 +124,10 @@ int font_find_char(font_instance_t *font, uint32_t unicode, font_index_t *idx_bu
     {
         int32_t mid = (left + right) / 2;
         uint32_t entry_addr = font->index_start + mid * sizeof(font_index_t);
-//        spi_flash_read(entry_addr, (uint8_t *)idx_buf, sizeof(font_index_t));
-		FM25_Read((uint8_t *)idx_buf, entry_addr, sizeof(font_index_t));
+        //        spi_flash_read(entry_addr, (uint8_t *)idx_buf, sizeof(font_index_t));
+        FM25_Read((uint8_t *)idx_buf, entry_addr, sizeof(font_index_t));
 
-		if (idx_buf->unicode == unicode)
+        if (idx_buf->unicode == unicode)
         {
             return 0;
         }
@@ -170,8 +183,8 @@ void draw_char(uint16_t x, uint16_t y, font_instance_t *font,
         {
             uint8_t byte = row_buffer[col / 8];
             uint8_t bit = (byte >> (7 - (col % 8))) & 1;
-			uint16_t color = bit ? fg_color : bg_color;    // 选择颜色
-//            pixel_row[col] = fg_color;//bit ? fg_color : bg_color;  
+            uint16_t color = bit ? fg_color : bg_color;    // 选择颜色
+            //            pixel_row[col] = fg_color;//bit ? fg_color : bg_color;
             ST7789_Select();
             ST7789_WriteData((unsigned char)(color >> 8), 1);
             ST7789_WriteData((unsigned char)(color & 0xFF), 1);
@@ -199,10 +212,35 @@ void draw_string_ex(uint16_t x, uint16_t y, uint16_t color,
             continue;
         }
         font_index_t idx;
+        static uint16_t lastx, lasty;
+//        if (highLight == 1)
+//        {
+//            if (cursor_x != lastx || y != lasty)
+//            {
+//                ST7789_DrawFilledRectangle(cursor_x, y, idx.height, font_size, hig_color);
+//                lastx = cursor_x;
+//                lasty = y;
+//            }
+//
+//        }
+//        else
+//        {
+//            if (cursor_x != lastx || y != lasty)
+//            {
+//                ST7789_DrawFilledRectangle(cursor_x, y, idx.height, font_size, bg_color);
+//                lastx = cursor_x;
+//                lasty = y;
+//            }
+//        }
+
         if (font_find_char(font, unicode, &idx) == 0)
         {
+
+
             draw_char(cursor_x, y, font, &idx, color, bg_color);
+
             cursor_x += idx.width + 1;   // 字间距 1 像素
+
         }
         else
         {

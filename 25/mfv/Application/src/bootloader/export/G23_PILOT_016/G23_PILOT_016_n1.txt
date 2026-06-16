@@ -1,0 +1,6 @@
+header  set_bp0=-205.3736612
+set_bp1=399.523491
+set_bp2=-255.685246
+set_bp3=68.16133
+set_bp4=-5.555839181
+purge_time=120

@@ -1,0 +1,66 @@
+#include <stdint.h>
+#include <stdbool.h>
+#include <math.h>
+#include "main.h"
+#include "meter.h"
+
+meter_struct meter = {
+  .molweight = 28.8f,
+
+};
+
+/**
+  @brief Initialize Pressure Meter Parameters
+*/
+void loadMeterParameters(void) {
+  
+  for (uint8_t i=0; i<MAX_CDG_SENSORS; i++) {
+    meter.cdg[i].cdgfs = nvmem.app.pressureObj.cdg[i].fullscale;  // 1000 TORR
+    meter.cdg[i].cdggain = nvmem.app.pressureObj.cdg[i].adp0poly[1];  // gain to convert raw to fractional ADC
+    meter.cdg[i].cdgoffset = nvmem.app.pressureObj.cdg[i].adp0poly[0];  // offset to convert raw fractional ADC
+    FastKalmanFilter(&meter.fkfcdgctrl[i], 1.0f, 1.0f, 0.002, 0.04, 0.04, 0);
+    FastKalmanFilter(&meter.fkfcdg[i], nvmem.app.meterObj.fltcdg[i].Q, nvmem.app.meterObj.fltcdg[i].R, 0.002, 0.04, 0.04, 0);
+  }
+  
+}
+
+/**
+  @brief Calculate pressure values
+*/
+void calcPressure(pressure_struct *cdg) {
+  // convert counts (cdgraw) to fraction of FS. Range is 0.0 to 1.0
+  cdg->cdgfrac = (cdg->cdgraw * 2.384185791015625e-7f) * cdg->cdggain + cdg->cdgoffset;
+  // convert fractional pressure reading to Native UNITS pressure reading (TORR)
+  cdg->cdgpmvalue = cdg->cdgfrac * cdg->cdgfs;
+
+}
+
+/**
+  @brief Meter Calcautions
+*/
+void calcMeter(void) {
+  
+  for (uint8_t i=0; i<MAX_CDG_SENSORS; i++) {
+    GetEstimation(&meter.fkfcdgctrl[i], meter.cdg[i].cdgfrac, 0.0, &meter.kfltnormalizedcdg[i]);  // run a Kalman Filter on raw normalized CDG pressure value for control system
+    meter.kfltnormalizedcdgunits[i] = meter.kfltnormalizedcdg[i] * meter.cdg[i].cdgfs;  // calculate each CDG pressure values in FS UNITS
+    GetEstimation(&meter.fkfcdg[i], meter.kfltnormalizedcdg[i], 0.0f, &meter.normalizedcdg[i]); // Kalamn filter for customer output
+    meter.normalizedcdgunits[i] = meter.normalizedcdg[i] * meter.cdg[i].cdgfs;
+  }
+
+  // How to use CDG1 and CDG2? do we use some merging algotithm? how is the tool going to set this up?
+  // for now, lets use CDG1 all the time
+  if( meter.normalizedcdgunits[1] > 10)
+  {
+      meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[0];  
+      meter.normalizedcdgp = meter.normalizedcdg[0];
+      meter.normalizedcdgpunits = meter.normalizedcdgunits[0]; 
+  }
+  else
+  {
+     meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[1];  
+     meter.normalizedcdgp = meter.normalizedcdg[1];
+     meter.normalizedcdgpunits = meter.normalizedcdgunits[1]; 
+  }
+
+
+}

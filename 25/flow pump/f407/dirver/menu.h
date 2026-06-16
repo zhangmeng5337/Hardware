@@ -2,6 +2,8 @@
 #define MENU_H_
 #include "main.h"
 #include "devinfo.h"
+
+
 typedef enum
 {
 	StandByPage = 0,
@@ -88,7 +90,7 @@ typedef enum
 typedef enum
 {
 	MaxRunicon = 4,
-	MaxInfoIcon = 11,
+	MaxInfoIcon = 11+SetIcon+1,
 	MaxWarnIcon = 10,
 	MaxSetIcon = 14,
 	MaxCounterIcon = 6,
@@ -129,8 +131,9 @@ typedef struct
 {
 uint16_t index;
 unsigned char fontBuf[32];
-unsigned char len;
 uint32_t arrib;//0:
+unsigned char pollIndex;
+unsigned char nextMenu;
 
 }font_stru;
 
@@ -148,7 +151,19 @@ typedef struct
     
 } Menu_table_t;
 
+typedef struct
+{
+	unsigned char infocCount;
+	unsigned char infoNowNum;
+	unsigned char maxInfoCount;
+	unsigned char maxCountScreen;
+	unsigned char buf[20];
+	
+}pageStru;
 
+
+
+pageStru *getPageInfo(void);
 
 #endif
 
