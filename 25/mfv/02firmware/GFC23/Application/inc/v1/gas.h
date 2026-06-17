@@ -23,8 +23,10 @@ typedef struct
 typedef struct
 {
   unsigned int id;
-  float setpointBuf[GAS_MATCH_MKS_BUF_SIZE];
+  float fullRange;
   float calibrationRatioBuf[GAS_MATCH_MKS_BUF_SIZE];
+  float setpointBuf[GAS_MATCH_MKS_BUF_SIZE];
+  
   unsigned int update_state;
 }gas_datbase_matchMks_stru;
 

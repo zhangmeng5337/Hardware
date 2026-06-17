@@ -1,9 +1,9 @@
-#ifndef VERIFIER_H¡¢
+#ifndef VERIFIER_H
 #define VERIFIER_H
 
 #include "main.h"
 
-#define PRESS_ERROR	3  //3
+#define PRESS_ERROR	3//3  //3
 
 #define KT    273.15
 

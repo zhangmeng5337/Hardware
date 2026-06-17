@@ -112,6 +112,7 @@ V4.00 ECAT 1: The handling of the Sync Manager Parameter was included according 
 
 
 #include "ecatslv.h"
+#include "main.h"
 
 #define _COEAPPL_    1
 #include "coeappl.h"
@@ -220,7 +221,8 @@ OBJCONST UCHAR OBJMEM aName0x1009[] = "Manufacturer Hardware Version";
 /**
  * \brief 0x100A (Software version) variable to handle the object data
  */
-CHAR acSoftwareversion[] = DEVICE_SW_VERSION;
+
+CHAR acSoftwareversion[9] = "XX.YY.ZZ";
 
 /**
  * \brief 0x1009 (Hardware version) entry description
@@ -553,6 +555,9 @@ void COE_UpdateSyncErrorStatus(void)
 void COE_ObjInit(void)
 {
     /* initialize the Sync Manager Output parameter object 0x1C32 */
+    //CHAR acSoftwareversion[] = DEVICE_SW_VERSION;
+	//sprintf(acSoftwareversion, "%d.%d.%d", FW_REVISION_MAJOR, FW_REVISION_MINOR, FW_REVISION_PATCH);
+	sprintf(acSoftwareversion, "%d.%d", FW_REVISION_MAJOR,FW_REVISION_MINOR);
 
     sSyncManOutPar.subindex0         = 32;
     /*

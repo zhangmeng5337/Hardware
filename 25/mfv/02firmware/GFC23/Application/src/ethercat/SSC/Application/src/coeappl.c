@@ -220,7 +220,7 @@ OBJCONST UCHAR OBJMEM aName0x1009[] = "Manufacturer Hardware Version";
 /**
  * \brief 0x100A (Software version) variable to handle the object data
  */
-CHAR acSoftwareversion[] = DEVICE_SW_VERSION;
+CHAR acSoftwareversion[9] = DEVICE_SW_VERSION;
 
 /**
  * \brief 0x1009 (Hardware version) entry description

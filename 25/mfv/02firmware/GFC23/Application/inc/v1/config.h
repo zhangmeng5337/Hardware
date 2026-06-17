@@ -3,30 +3,30 @@
 #include "main.h"
 
 //#define VER_485_ECAT  0
-#define VAVLE_DELAY_ENABLE	0
-#define ECAT_DEBUG 0
-#define VER_485_ECAT  1  //0:only support 485;  1 :485 and ecat
-#define NOZZLE_SW_TIME 1200 //change valve when time too short
-#define MAX_PRESSURE_WARN 350 //
+#define VAVLE_DELAY_ENABLE		0
+#define ECAT_DEBUG 				0
+#define VER_485_ECAT  			1  //0:only support 485;  1 :485 and ecat
+#define NOZZLE_SW_TIME 			1200 //change valve when time too short
+#define MAX_PRESSURE_WARN 		350 //
 
-#define MIN_P21_FLOW_THR	0.8
-#define MIN_P21_FLOW 	    15
+#define MIN_P21_FLOW_THR		0.8
+#define MIN_P21_FLOW 	    	15
 
-#define FLOW_THRE   30
-#define FLOW_SREADY_THRE   20
-#define FLOW_WAIT_TIME  20000  //below 15sccm
+#define FLOW_THRE   			30
+#define FLOW_SREADY_THRE   		20
+#define FLOW_WAIT_TIME  		20000  //below 15sccm
 
-#define FLOW_STEADY_TIME2  55000  //below 15sccm
-#define FLOW_STEADY_TIME  35000  //flow pressure steady thres  time  15000
-#define STEADY_TIME2  15000 //pressure steady thres time  20000
-#define SLOPE_THRE  0.002  //flow pressure steady thres1  high flow  0.006 0.004 0.002
-#define SLOPE_THRE3 0.003//flow<30,flow pressure steady thres2 low flow   0.004 0.007 0.003
-#define SLOPE_THRE2  0.0008//pressure steady thres1
+#define FLOW_STEADY_TIME2  		55000  //below 15sccm
+#define FLOW_STEADY_TIME  		35000  //flow pressure steady thres  time  15000
+#define STEADY_TIME2  			15000 //pressure steady thres time  20000
+#define SLOPE_THRE  			0.002  //flow pressure steady thres1  high flow  0.006 0.004 0.002
+#define SLOPE_THRE3 			0.003//flow<30,flow pressure steady thres2 low flow   0.004 0.007 0.003
+#define SLOPE_THRE2  			0.0008//pressure steady thres1
 
-#define CALI_TIME_THRE  3000
-#define CALI_FLOW_THRE  5
+#define CALI_TIME_THRE  		3000
+#define CALI_FLOW_THRE  		5
 
-#define LEAK_MAX_PRE	0.7
+#define LEAK_MAX_PRE			0.7
 #define LEAK_VAVLE_OPEN_TIME   5000
 //#define SLOPE_THRE4  0.00001//pressure steady thres2
 

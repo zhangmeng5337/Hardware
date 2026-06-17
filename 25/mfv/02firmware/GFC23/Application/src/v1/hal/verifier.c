@@ -861,7 +861,6 @@ void pressure_state_proc(void)
 
         case FLOW_SET_POINT_START:
             pressure_steday_proc(FLOW_STEADY);
-
             {
                 verifer_dat.state = FLOW_SET_POINT_SHOCK;
                 verifer_dat.update = 0;
@@ -870,7 +869,6 @@ void pressure_state_proc(void)
                 get_verifier()->pre_steady_result = 1;
 
             }
-
             set_led(500);
             break;
         case FLOW_SET_POINT_STEADY2:
@@ -935,8 +933,6 @@ void pressure_state_proc(void)
 						#endif
                         get_verifier()->tick_total = 0;
 					    get_verifier()->tick_start = get_verifier()->timer_tick;
-					
-
                     }
                     else
                     {
@@ -956,7 +952,6 @@ void pressure_state_proc(void)
                     verifer_dat.state  = NORMAL_OPERATION2;
                     get_calib()->state = 7;
                     verifer_dat.sw_flag = 0;
-
                 }
 
             }

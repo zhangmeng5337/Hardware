@@ -9,7 +9,6 @@
 #define PERROR_SET  2
 #define GAS_MKS_SET  3
 
-
 #define GAS_PKT_SIZE  40
 #define NOZZ_PKT_SIZE 32
 
@@ -19,8 +18,8 @@
 #define NOPARAMS   0
 #define SUCESS    1
 #define INVALID_ID    2
-
-#define GAS_PKT_MATCHMKS_SIZE  	84
+#define NOPARAMSMKS   3
+#define GAS_PKT_MATCHMKS_SIZE  	48
 #define GAS_MATCH_MKS_BUF_SIZE  	10
 
 #define GAS_MAX_MKS_ADDR PAGESIZE

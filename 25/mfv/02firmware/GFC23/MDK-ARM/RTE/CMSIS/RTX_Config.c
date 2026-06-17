@@ -40,7 +40,7 @@ __WEAK uint32_t osRtxErrorNotify (uint32_t code, void *object_id) {
   (void)object_id;
 
   switch (code) {
-    case osRtxErrorStackOverflow:
+    case osRtxErrorStackUnderflow:
       // Stack overflow detected for thread (thread_id=object_id)
       break;
     case osRtxErrorISRQueueOverflow:

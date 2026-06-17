@@ -781,6 +781,7 @@ void APPL_Application(void)
     SensorTemperatureFloating0x6002.TemperatureReadingREAL      =
         get_temperature()->average_P1_T; //ConvertUnits( UnitsConvTemperature, meter.tmkelvins, DATAUNIT_KELVIN, ecat_Var.temperatureunits );
 
+	FlowVerifier0x8007.HighPressureServiceConstant = get_calib()->high_press ;
 
     FlowVerifier0x8007.ServiceTimeConstant                      =
         get_verifier()->purge_time;
@@ -1516,7 +1517,9 @@ UINT8 Read0xFB12(UINT16 index, UINT8 subindex, UINT32 dataSize,
             MEMCPY(pData, &DeviceLeakCheck0xFB12.Command, dataSize);
             break;
         case 2:
+			DeviceLeakCheck0xFB12.Status =get_calib()->progress;
             MEMCPY(pData, &DeviceLeakCheck0xFB12.Status, dataSize);
+			
             break;
         default:
             return ABORTIDX_UNSUPPORTED_ACCESS;
@@ -1654,6 +1657,7 @@ UINT8 Read0xFB13(UINT16 index, UINT8 subindex, UINT32 dataSize,
             MEMCPY(pData, &SystemLeakCheck0xFB13.Command, dataSize);
             break;
         case 2:
+			SystemLeakCheck0xFB13.Status =get_calib()->progress;
             MEMCPY(pData, &SystemLeakCheck0xFB13.Status, dataSize);
             break;
         default:
@@ -1795,7 +1799,7 @@ UINT8 Read0xFB14(UINT16 index, UINT8 subindex, UINT32 dataSize,
 				FlowVerifyResetService0xFB14.Status = 0;
 			else
 				FlowVerifyResetService0xFB14.Status = 1;	
-          //  MEMCPY(pData, &FlowVerifyResetService0xFB14.Status, dataSize);
+            MEMCPY(pData, &FlowVerifyResetService0xFB14.Status, dataSize);
             break;
         default:
             return ABORTIDX_UNSUPPORTED_ACCESS;
@@ -1862,6 +1866,11 @@ UINT8 Write0xFB14(UINT16 index, UINT8 subindex, UINT32 dataSize,
 #if ECAT_DEBUG
 				printf("ecat = 12\r\n");
 #endif
+			calibration_init();
+			adc_init();
+			flash_init();
+			
+			verifier_init();
 
 			 
             }

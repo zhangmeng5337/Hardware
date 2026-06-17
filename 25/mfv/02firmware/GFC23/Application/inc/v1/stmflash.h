@@ -1,4 +1,4 @@
-﻿#ifndef _STMFLASH_H_
+#ifndef _STMFLASH_H_
 #define _STMFLASH_H_
 #include "main.h"
 #include "stdio.h"
@@ -24,9 +24,8 @@
 #define PRE_END_ADDR            0x0807ffffU
 #define PRE_ADDR                0x08059000U
 
-#define GAS_MKS_END_ADDR            0x0807ffffU
+#define GAS_MKS_END_ADDR            0x0805afffU
 #define GAS_MKS_ADDR                0x08059000U
-
 
 //#define Application_2_Addr		0x080E0000U				// 应用程序2的首地址�? sectors
 
