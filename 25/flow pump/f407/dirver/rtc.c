@@ -68,17 +68,17 @@ void set_rtc_time()
         RTC_TimeTypeDef sTime = {0};
         RTC_DateTypeDef sDate = {0};
 
-//        sTime.Hours = urtc_bcd.Hours;
-//        sTime.Minutes = urtc_bcd.Minutes;
-//        sTime.Seconds = urtc_bcd.Seconds;
-//        sTime.SubSeconds = 0;
-//        sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-//        sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-//
-//        sDate.WeekDay = urtc_bcd.WeekDay;
-//        sDate.Month = urtc_bcd.Month;
-//        sDate.Date = urtc_bcd.Date;
-//        sDate.Year = urtc_bcd.Year;
+        sTime.Hours = rtc_usr.Hours;
+        sTime.Minutes = rtc_usr.Minutes;
+        sTime.Seconds = rtc_usr.Seconds;
+        sTime.SubSeconds = 0;
+        sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+        sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+
+        sDate.WeekDay = rtc_usr.WeekDay;
+        sDate.Month = rtc_usr.Month;
+        sDate.Date = rtc_usr.Date;
+        sDate.Year = rtc_usr.Year;
         // if(HAL_RTCEx_BKUPRead(&hrtc,RTC_BKP_DR0)!=0x5A5A)			 /* ?¨¬2¨¦¨º?¡¤?D¡ä¨¨?1y¨°?¡ä?RTC¡ê?¡À¡ê?¡è¦Ì?¦Ì?2??a¨º¡ìRTC¨º¡À?¨® */
         {
             /* USER CODE END Check_RTC_BKUP */
@@ -97,7 +97,7 @@ void set_rtc_time()
             }
 
             /* USER CODE BEGIN RTC_Init 2 */
-            HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x5A5A);  //?a¨¤??¨ª¨º????a????¡ä??¡Â¦Ì?¡À¨º??¨¦¨¨?a??2?¦Ì??????¦Ì¡ê???¡ä?¦Ì?¦Ì?o¨®?¨ª2??¨¢??¨¨?¦Ì??a¨¤?¨¤¡ä
+            HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x5Aa5);  //?a¨¤??¨ª¨º????a????¡ä??¡Â¦Ì?¡À¨º??¨¦¨¨?a??2?¦Ì??????¦Ì¡ê???¡ä?¦Ì?¦Ì?o¨®?¨ª2??¨¢??¨¨?¦Ì??a¨¤?¨¤¡ä
         }
 //        else
 //        {

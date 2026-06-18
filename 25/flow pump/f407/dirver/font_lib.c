@@ -196,7 +196,7 @@ void draw_char(uint16_t x, uint16_t y, font_instance_t *font,
 }
 
 // 绘制字符串（自动选择字库）
-void draw_string_ex(uint16_t x, uint16_t y, uint16_t color,
+unsigned int draw_string_ex(uint16_t x, uint16_t y, uint16_t color,
                     uint8_t font_size, const char *str, uint16_t bg_color)
 {
     uint16_t cursor_x = x;
@@ -247,6 +247,7 @@ void draw_string_ex(uint16_t x, uint16_t y, uint16_t color,
             cursor_x += 8;   // 未找到字符，占位
         }
     }
+	return cursor_x;
 }
 
 
