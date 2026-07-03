@@ -137,10 +137,13 @@ typedef struct
 }bmpMap_stru;
 typedef struct
 {
-unsigned int cmdSpecific;
-uint16_t dataType;
+unsigned int cmdSpecif;
+unsigned int page;
+unsigned char *pstr;
+unsigned int arrib;
+unsigned int pollIndex;
+unsigned int dattyp;//0:  1:unsigned char 2:uint32
 unsigned char dataSize;
-void*memptr;
 }menudatMap;
 typedef struct
 {
@@ -148,7 +151,7 @@ uint16_t index;
 unsigned char fontBuf[32];
 uint32_t arrib;//0:
 unsigned char pollIndex;
-menudatMap datMap;
+menudatMap *datMap;
 }font_stru;
 
 typedef struct

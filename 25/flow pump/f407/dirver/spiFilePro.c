@@ -75,7 +75,7 @@ int stest(void) {
 //	}
 //
 //    // 显示混合字符串（自动选择字号，背景黑色）
-//    draw_string(10, 10, "Hello 世界!",0,0xFFFF);
+//    draw_string(10, 10, "1.",0,0xFFFF);
 //    
 //    // 指定使用 32x32 字号显示
 //    draw_string_ex(10, 50, 0x07E0, 16, "32px大字", 0xffff);

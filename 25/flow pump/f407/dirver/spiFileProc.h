@@ -1,7 +1,7 @@
 #ifndef SPIFILEPRO1_H
 #define SPIFILEPRO1_H
 #include "main.h"
-#define BIN_SIZE  1044460
+#define BIN_SIZE  1048300
 #define FILE_NAME_SIZE  32
 #define MAX_FILE_COUNT 6
 

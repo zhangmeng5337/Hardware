@@ -31,13 +31,13 @@ RTC_DateTypeDef Now_Date_BIN;//?¡§¨°?¨¨??¨²?¨¢11¨¬?
 uint8_t Data[5];
 //extern sgp30_data_t sgp30_data;
 RTC_AlarmTypeDef sAlarm = {0};
-
+rtcTimeStru rtcTimeU;
 /* USER CODE END 0 */
 
 extern RTC_HandleTypeDef hrtc;
-RTC_TimeTypeDef *getRtcTime(void)
+rtcTimeStru *getRtcTime(void)
 {
-    return &Now_Time_BIN;
+    return &rtcTimeU;
 }
 RTC_DateTypeDef *getRtcDate(void)
 {
@@ -143,7 +143,13 @@ void GET_Time(void)//??¨¨?¦Ì¡À?¡ã¨º¡À??
     Now_Date_BIN.Year = Now_Date.Year/16*10;
     Now_Date_BIN.Year = Now_Date_BIN.Year + Now_Date.Year%16;
 
-
+   rtcTimeU.year = Now_Date_BIN.Year;
+   rtcTimeU.month = Now_Date_BIN.Month;
+   rtcTimeU.date = Now_Date_BIN.Date;
+   rtcTimeU.hour = Now_Time_BIN.Hours;
+   rtcTimeU.minute = Now_Time_BIN.Minutes;
+   rtcTimeU.seconds = Now_Time_BIN.Seconds;
+   sprintf(rtcTimeU.strBuf,"        %u.%u.20%u  %u:%u",rtcTimeU.date,rtcTimeU.month,rtcTimeU.year,rtcTimeU.hour,rtcTimeU.minute);
 }
 
 

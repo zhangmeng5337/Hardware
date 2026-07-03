@@ -8,6 +8,9 @@
 #include "font_lib.h"
 #include "image_display.h"
 #include "spiFileProc.h"
+#include "rtc.h"
+
+extern rtcTimeStru rtcTimeU;
 
 //python .\pic_py.py  .\icons\  .\lib\ -b -w 32 -H 32
 //python pic_py.py icons/ lib/all_icons.h -b -c -w 32 -H 32
@@ -30,6 +33,39 @@ extern image_info_t imageInfo;
 extern controller_stru controllerCustom;
 pageStru pageusr;
 
+unsigned char *dataTostr(unsigned char *p, unsigned int datTyp, unsigned int datsize)
+{
+    static unsigned char stbuf[128];
+    unsigned char datbuf[64];
+	uint32_t *tmp;
+    memset(datbuf, 0, 64);
+    memset(stbuf, 0, 128);
+    switch (datTyp)
+    {
+        case 1://str//
+            sprintf(stbuf, "%u", *p);
+            break;
+        case 2:
+ 			tmp = (uint32_t *)p;
+            sprintf(stbuf, "%lu",*tmp);
+            break;
+    }
+
+    return stbuf;
+}
+menudatMap infoFont[] =
+{
+    //  index 	 fontBuf[32] 	arrib 	pollIndex;
+    {1, InfoPage, rtcTimeU.strBuf, 												2, 0},
+    {1, InfoPage, "-", 															2, 2},
+    {1, InfoPage, serviceP, 													2, 3},
+    {1, InfoPage, SoftVer, 														2, 5},
+    {1, InfoPage, MotorCtrl, 													2, 6},
+    {1, InfoPage, HardwareVer, 													2, 7,0,0},
+    {1, InfoPage, (unsigned char *)(&controllerCustom.settingU.serNum), 		2, 8, 2, 4},
+    {1, InfoPage, PROSER, 														2, 9,0,0},
+    {1, InfoPage, TYPENO, 														2, 10,0,0},
+};
 font_stru fontTable[] =
 {
     //index  			font        len  arri
@@ -50,7 +86,7 @@ font_stru fontTable[] =
     {SetPage, 		{"设置"}, 			 		1, 255}, //pulse
     {CounterPage, 	{"计数器"}, 			 		1, 255}, //pulse
 
-    {InfoPage, 		{"时间"}, 			 							2, 0}, //info attri
+    {InfoPage, 		{"时间"}, 			 							2, 0, &infoFont[0]}, //info attri
     {InfoPage, 		{"计数器                   >"}, 			 		2, 1, {0}}, //info attri
     {InfoPage, 		{"维护"}, 			 							2, 2}, //info attri
     {InfoPage, 		{"服务包"}, 			 							2, 3}, //info attri
@@ -61,12 +97,12 @@ font_stru fontTable[] =
     {InfoPage, 		{"序列号"}, 			 							2, 8}, //info attri
     {InfoPage, 		{"产品号"}, 			 							2, 9}, //info attri
     {InfoPage, 		{"型号"}, 			 							2, 10}, //info attri
-	{CounterPage, 	{"累计容积"}, 			 							2, 0}, //info attri
-	{CounterPage, 	{"重置累计容积"}, 			 						2, 1}, //info attri
-	{CounterPage, 	{"运行时间"}, 			 							2, 2}, //info attri
-	{CounterPage, 	{"马达工时"}, 			 							2, 3}, //info attri	
-	{CounterPage, 	{"完成冲程"}, 			 							2, 4}, //info attri
-	{CounterPage, 	{"电源开/关"}, 			 							2, 5}, //info attri
+    {CounterPage, 	{"累计容积"}, 			 							2, 0}, //info attri
+    {CounterPage, 	{"重置累计容积"}, 			 						2, 1}, //info attri
+    {CounterPage, 	{"运行时间"}, 			 							2, 2}, //info attri
+    {CounterPage, 	{"马达工时"}, 			 							2, 3}, //info attri
+    {CounterPage, 	{"完成冲程"}, 			 							2, 4}, //info attri
+    {CounterPage, 	{"电源开/关"}, 			 							2, 5}, //info attri
 
 };
 bmpMap_stru bmpMap[] =
@@ -234,7 +270,7 @@ Menu_table_t menuTable[] =
     {RunPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l1RunPageMenu, 		RunPage, 0, 14}, //3
     {RunPage,     SetIcon,    		SetPage,			MaxRunicon,   	    l1RunPageMenu, 		RunPage, 0, 15}, //4
 
-	
+
     //L2
     {InfoPage,    date,      		InfoPage,			MaxInfoIcon,		l2InfoMenu, 		InfoPage, 0, 5}, //5
     {InfoPage,    counter,   		CounterPage,		MaxInfoIcon,		l2InfoMenu, 	    InfoPage, 0, 43}, //6
@@ -284,11 +320,11 @@ Menu_table_t menuTable[] =
     //    {setAnalogPage,	, 		  ,	    7,				l4SetRelay2Menu, 	0,43},//34
     {CounterPage,    accVolume,   		CounterPage,		MaxCounterIcon,		l3InfoCounterMenu, 		InfoPage, 0, 43}, //43
 
-	{RunPage,     	ReturnIcon,    	RunPage,			MaxRunicon,   	    l1RunPageMenu, 		RunPage, 0, 1}, //4
-	{InfoPage,    	ReturnIcon,    	RunPage,			MaxRunicon,   	    l2InfoMenu, 		InfoPage, 0, 1}, //4
-	{CounterPage,   ReturnIcon,    	InfoPage,			MaxRunicon,   	    l2InfoMenu, 	    InfoPage, 0, 6}, //4
+    {RunPage,     	ReturnIcon,    	RunPage,			MaxRunicon,   	    l1RunPageMenu, 		RunPage, 0, 1}, //4
+    {InfoPage,    	ReturnIcon,    	RunPage,			MaxRunicon,   	    l2InfoMenu, 		InfoPage, 0, 1}, //4
+    {CounterPage,   ReturnIcon,    	InfoPage,			MaxRunicon,   	    l2InfoMenu, 	    InfoPage, 0, 6}, //4
 
-	
+
     {InfoPage,     RunICon,    		RunPage,			MaxRunicon,			l1RunPageMenu, 		0, 1}, //1
     {InfoPage,     InfoIcon,   		InfoPage,			MaxRunicon,			l2InfoMenu, 		0, 5}, //2
     {InfoPage,     WarnIcon,   		WarnPage,			MaxRunicon,			l2WarnMenu, 		0, 14}, //3
@@ -436,12 +472,16 @@ uint32_t searchBmpTable(unsigned char currentPage,  unsigned char currentIconNum
 //    else
 //        return 0;
 //}
+unsigned char buf1[128];
 unsigned char *searchFont2Table(unsigned char index, uint16_t arrib, unsigned char pollindex)
 {
 
     uint32_t i;
     unsigned int j = 0, offsetTmp = 0;
     bold_font_char_info_t *info;
+
+    unsigned char strlen1;
+    memset(buf1, 0, 128);
     for (i = 0; i < 0xfff; i++)
     {
 
@@ -452,6 +492,13 @@ unsigned char *searchFont2Table(unsigned char index, uint16_t arrib, unsigned ch
                 if (pollindex == 255)
                 {
                     offsetTmp = 0;
+                    //					strlen1 = strlen(fontTable[i].fontBuf);
+                    //					memcpy(buf1,fontTable[i].fontBuf,strlen1);
+                    //					if(fontTable[i].datMap.cmdSpecific != 0)
+                    //					{
+                    //						memcpy(buf1+strlen1,fontTable[i].datMap.memptr,strlen(fontTable[i].datMap.memptr));
+                    //					}
+                    //					return buf1;
                     return fontTable[i].fontBuf;
                     break;
 
@@ -461,6 +508,13 @@ unsigned char *searchFont2Table(unsigned char index, uint16_t arrib, unsigned ch
                     if (fontTable[i].pollIndex == pollindex)
                     {
                         offsetTmp = 0;
+
+                        //					memcpy(buf1,fontTable[i].fontBuf,strlen1);
+                        //					if(fontTable[i].datMap.cmdSpecific != 0)
+                        //					{
+                        //						memcpy(buf1+strlen1,fontTable[i].datMap.memptr,strlen(fontTable[i].datMap.memptr));
+                        //					}
+                        //					    return buf1;
                         return fontTable[i].fontBuf;
                         break;
 
@@ -476,13 +530,71 @@ unsigned char *searchFont2Table(unsigned char index, uint16_t arrib, unsigned ch
     return NULL;
 
 }
+unsigned char *searchInfoFontTable(unsigned char index, uint16_t arrib, unsigned char pollindex)
+{
+
+    uint32_t i;
+    unsigned int j = 0, offsetTmp = 0;
+    for (i = 0; i < 0xfff; i++)
+    {
+        if (infoFont[i].cmdSpecif != 0)
+        {
+            if (arrib == infoFont[i].arrib)
+            {
+                if (index == infoFont[i].page)
+                {
+                    if (pollindex == 255)
+                    {
+                        offsetTmp = 0;
+                        if (infoFont[i].dattyp == 0)
+                            return infoFont[i].pstr;
+                        else
+                            return dataTostr(infoFont[i].pstr, infoFont[i].dattyp, infoFont[i].dataSize);
+                        break;
+
+                    }
+                    else
+                    {
+                        if (infoFont[i].pollIndex == pollindex)
+                        {
+                            offsetTmp = 0;
+
+                            if (infoFont[i].dattyp == 0)
+                                return infoFont[i].pstr;
+                            else
+                                return dataTostr(infoFont[i].pstr, infoFont[i].dattyp,infoFont[i].dataSize);
+                            break;
+
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+
+
+    }
+    return NULL;
+
+}
 void displayFont(unsigned char index, unsigned char pollindex, unsigned char arib, unsigned int x, unsigned int y,
                  unsigned char fontSize,
                  unsigned int backColor, unsigned int fontColor)
 {
     unsigned char *p = searchFont2Table(index, arib, pollindex);
+    unsigned int addx;
     if (p != NULL)
-        draw_string_ex(x, y, fontColor, fontSize, p, backColor);
+        addx = draw_string_ex(x, y, fontColor, fontSize, p, backColor);
+    switch (index)
+    {
+        case InfoPage:
+            p = searchInfoFontTable(index, arib, pollindex);
+            if (p != NULL)
+                draw_string_ex(addx + 8, y + 8, fontColor, 24, p, backColor);
+            break;
+    }
 
 
 }
@@ -494,7 +606,7 @@ void menuStatusBar()
     image_info2_t *images_point;
     offset = 0;
 
-    if (menuTableU.currentMenuNum < (ReturnIcon+1))
+    if (menuTableU.currentMenuNum < (ReturnIcon + 1))
     {
         for (j = 1; j < menuTableU.currentMenuNum; j++)
         {
@@ -522,7 +634,7 @@ void menuStatusBar()
 
 
         unsigned char *p = searchFont2Table(menuTableU.currentMenuNum, 1, 0xff);
-				unsigned int addx;
+        unsigned int addx;
         if (menuTableU.currentIconNum == (j - 1))
             addx = draw_string_ex(offset, 10, BLACK, 32, p, WHITE);
         else
@@ -530,8 +642,8 @@ void menuStatusBar()
 
         j = j + 1;
         offset = offset + addx ;//+ 48;
-        offset = 320 - (ReturnIcon+2 - j) * 48;
-        for (; j <= ReturnIcon+1 ; j++)
+        offset = 320 - (ReturnIcon + 2 - j) * 48;
+        for (; j <= ReturnIcon + 1 ; j++)
         {
             //            images_point = searchTable(mainRandomPage,
             //                                       RandomIcon,
@@ -562,7 +674,7 @@ void menuStatusBar()
         for (j = 1; j < menuTableU.rootMenuNum; j++)
         {
 
-            if (menuTableU.currentIconNum <= (ReturnIcon+1))
+            if (menuTableU.currentIconNum <= (ReturnIcon + 1))
             {
                 if (menuTableU.currentIconNum == (j - 1))
                     bmpIndex = searchBmpTable(mainRandomPage,
@@ -602,14 +714,14 @@ void menuStatusBar()
 
         j = j + 1;
         offset = offset + 48;//64
-        offset = 320 - (ReturnIcon+2 - j) * 48;
-        for (; j <= ReturnIcon+1 ; j++)
+        offset = 320 - (ReturnIcon + 2 - j) * 48;
+        for (; j <= ReturnIcon + 1 ; j++)
         {
             //            images_point = searchTable(mainRandomPage,
             //                                       RandomIcon,
             //                                       j - 1,
             //                                       4, 0);
-            if (menuTableU.currentIconNum <= (ReturnIcon+1))
+            if (menuTableU.currentIconNum <= (ReturnIcon + 1))
             {
                 if (menuTableU.currentIconNum == (j - 1))
                     bmpIndex = searchBmpTable(mainRandomPage,
@@ -682,7 +794,7 @@ void l1StandbyMenu(void)
     else
         sprintf(buf, "%.1fgal/h", controllerCustom.dispFlow);
 
-    draw_string_ex(140, 144, BLACK, 24, buf, WHITE);
+    draw_string_ex(100, 144, BLACK, 24, buf, WHITE);
     bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
                               menuTableU.currentIconNum,
                               controllerCustom.settingU.ctrlMode,
@@ -781,7 +893,7 @@ void l1RunPageMenu(void)
     //ST7789_DrawImage(240,     120, images_point->width, images_point->height, (uint16_t *)images_point->data);//36
 
 
-    draw_string_ex(140, 144, BLACK, 24, buf, WHITE);
+    draw_string_ex(100, 144, BLACK, 24, buf, WHITE);
     bmpIndex = searchBmpTable(menuTableU.currentMenuNum,
                               menuTableU.currentIconNum,
                               controllerCustom.settingU.ctrlMode,
@@ -816,10 +928,10 @@ void l1RunPageMenu(void)
 
 
 }
-void menulistProc(unsigned int x,unsigned int y,unsigned char currentPage,unsigned char fontSize,unsigned char arib )
+void menulistProc(unsigned int x, unsigned int y, unsigned char currentPage, unsigned char fontSize, unsigned char arib)
 {
     static unsigned int addrx, addry;
-   // unsigned char fontsize;
+    // unsigned char fontsize;
     unsigned char i, j;
     //fontsize = 32;
 
@@ -1031,8 +1143,8 @@ void menulistProc(unsigned int x,unsigned int y,unsigned char currentPage,unsign
 void l2InfoMenu(void)
 {
     menuStatusBar();
-    menulistProc(0,48,InfoPage,32,2);
-	
+    menulistProc(0, 48, InfoPage, 32, 2);
+
 }
 
 void l2WarnMenu(void)
@@ -1047,7 +1159,7 @@ void l2SetMenu(void)
 void l3InfoCounterMenu(void)
 {
     menuStatusBar();
-	 menulistProc(0,48,CounterPage,32,2);
+    menulistProc(0, 48, CounterPage, 32, 2);
 }
 void l3SetMenu(void)
 {
