@@ -149,7 +149,7 @@ void GET_Time(void)//??¨¨?¦Ì¡À?¡ã¨º¡À??
    rtcTimeU.hour = Now_Time_BIN.Hours;
    rtcTimeU.minute = Now_Time_BIN.Minutes;
    rtcTimeU.seconds = Now_Time_BIN.Seconds;
-   sprintf(rtcTimeU.strBuf,"        %u.%u.20%u  %u:%u",rtcTimeU.date,rtcTimeU.month,rtcTimeU.year,rtcTimeU.hour,rtcTimeU.minute);
+   sprintf(rtcTimeU.strBuf,"        %u.%u.20%u  %u:%02u",rtcTimeU.date,rtcTimeU.month,rtcTimeU.year,rtcTimeU.hour,rtcTimeU.minute);
 }
 
 
