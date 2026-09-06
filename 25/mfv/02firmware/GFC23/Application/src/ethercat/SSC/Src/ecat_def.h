@@ -921,7 +921,7 @@ DEVICE_NAME_LEN: Length of 'DEVICE_NAME' without '\0' */
 /** 
 DEVICE_HW_VERSION: Hardware version of the slave device (Object 0x1009) */
 #ifndef DEVICE_HW_VERSION
-#define DEVICE_HW_VERSION                         "1.0"
+#define DEVICE_HW_VERSION                         "5.0"
 #endif
 
 /** 

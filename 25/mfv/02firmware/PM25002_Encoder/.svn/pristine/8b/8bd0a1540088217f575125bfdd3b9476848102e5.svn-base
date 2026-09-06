@@ -1,0 +1,987 @@
+#include <string.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include "main.h"
+#include "math.h"
+#include "arm_math.h"
+#include "utilities.h"
+#include "nvmem.h"
+#include "controller.h"
+#include "awe.h"
+#include "libSearch.h"
+
+#include "StepMotor.h"
+#include "meter.h"
+ctrl_struct ctrl2 =
+{
+    .ctrlmode = 0,
+    .currSMState = STATE_IDLE,
+    .transSMState = STATE_IDLE,
+    .Pgain = 0.01f,
+    .Igain = 0.005f,
+    .Dgain = 0.0f,
+    .D2gain = 0.0f,
+    .error = 0.0f,
+    .pterm = 0.0f,
+    .iterm = 0.0f,
+    .setpoint = 0.0f,
+    .setpointunits = 0.0f,
+    .ctrlv = 0.0f,
+    .icrack = 0.6f,
+    .icrack2 = 0.0f,
+    .saturated = false,
+    .signequal = true,
+    .isath = 0.99f,
+    .isatl = 0.0f,
+    .shutoffthreshold = 0.001f,  // 0.1%
+    .override = OVERRIDE_NORMAL,
+    .rampdir = 1,
+    .rampinprogress = false,
+    .turnondelay = 0,
+    .turnoffdelay = 0,
+    .type = 0,
+    .minramprate = 200,
+    .fcGllGain = 1.0f,
+    .ffGain = 0.0f,
+    .invertdrive = 1,
+};
+ctrl_struct ctrl =
+{
+    .ctrlmode = 0,
+    .currSMState = STATE_IDLE,
+    .transSMState = STATE_IDLE,
+    .Pgain = 0.01f,
+    .Igain = 0.005f,
+    .Dgain = 0.0f,
+    .D2gain = 0.0f,
+    .error = 0.0f,
+    .pterm = 0.0f,
+    .iterm = 0.0f,
+    .setpoint = 0.0f,
+    .setpointunits = 0.0f,
+    .ctrlv = 0.0f,
+    .icrack = 0.6f,
+    .icrack2 = 0.0f,
+    .saturated = false,
+    .signequal = true,
+    .isath = 0.99f,
+    .isatl = 0.0f,
+    .shutoffthreshold = 0.001f,  // 0.1%
+    .override = OVERRIDE_NORMAL,
+    .rampdir = 1,
+    .rampinprogress = false,
+    .turnondelay = 0,
+    .turnoffdelay = 0,
+    .type = 0,
+    .minramprate = 200,
+    .fcGllGain = 1.0f,
+    .ffGain = 0.0f,
+    .invertdrive = 1,
+};
+
+ctrl_state ctrlsm = CTRL_OFF;
+
+arm_pid_instance_f32 PID;
+arm_pid_instance_f32 PID2;
+ctrl_struct dpctrl =
+{
+    .Pgain = 0.001f,
+    .Igain = 0.001f,
+    .Dgain = 0.0f,
+    .D2gain = 0.0f,
+    .error = 0.0f,
+    .pterm = 0.0f,
+    .iterm = 0.0f,
+    .setpoint = 0.0f,
+    .setpointunits = 0.0f,
+    .ctrlv = 0.0f,
+    .icrack = 0.6f,
+    .saturated = false,
+    .signequal = true,
+    .isath = 0.99f,
+    .isatl = 0.0f,
+    .shutoffthreshold = 0.001f,  // 0.1%
+    .override = OVERRIDE_NORMAL,
+    .rampdir = 1,
+    .rampinprogress = false,
+};
+
+arm_pid_instance_f32 dpPID;
+
+/**
+  @brief Initialization function for Discrete PID implementation with derivative filter of 10ms
+*/
+void PIDController_Init(ctrl_struct *ctrl_lcl)
+{
+
+    /* Clear controller variables */
+    ctrl_lcl->pterm = 0.0f;
+
+    ctrl_lcl->iterm = 0.0f;
+    ctrl_lcl->prevError = 0.0f;
+
+    ctrl_lcl->dterm = 0.0f;
+    ctrl_lcl->prevMeasurement = 0.0f;
+
+    ctrl_lcl->T = 0.002f;
+    ctrl_lcl->tau = 0.01f;
+}
+
+/**
+  @brief Discrete PID implementation with derivative filter of 10ms
+*/
+float PIDController_Update(ctrl_struct *ctrl_lcl, float setpoint, float measurement)
+{
+
+    /* Error signal */
+    ctrl_lcl->error = setpoint - measurement;
+
+    /* Proportional */
+    ctrl_lcl->pterm = ctrl_lcl->scaledKp * ctrl_lcl->error;
+
+    /* Intgral */
+    ctrl_lcl->iterm = ctrl_lcl->iterm + 0.5f * ctrl_lcl->scaledKiGas * 1000.0f * ctrl_lcl->T *
+                      (ctrl_lcl->error + ctrl_lcl->prevError);
+
+    /* Anit-windup via dynamic integraotr clamping */
+    float limMinInt, limMaxInt;
+
+    if (ctrl_lcl->isath > ctrl_lcl->pterm)
+    {
+        limMaxInt = ctrl_lcl->isath - ctrl_lcl->pterm;
+    }
+    else
+    {
+        limMaxInt = 0.0f;
+    }
+
+    if (ctrl_lcl->isatl < ctrl_lcl->pterm)
+    {
+        limMinInt = ctrl_lcl->isatl - ctrl_lcl->pterm;
+    }
+    else
+    {
+        limMinInt = 0.0f;
+    }
+
+    /* Clamp Integrator */
+    if (ctrl_lcl->iterm > limMaxInt)
+    {
+        ctrl_lcl->iterm = limMaxInt;
+    }
+    else if (ctrl_lcl->iterm < limMinInt)
+    {
+        ctrl_lcl->iterm = limMinInt;
+    }
+
+    /* Derivative (band-limited differentiator) */
+    ctrl_lcl->dterm = (2.0f * ctrl_lcl->Dgain * (measurement - ctrl_lcl->prevMeasurement)
+                       + (2.0f * ctrl_lcl->tau - ctrl_lcl->T) * ctrl_lcl->dterm)
+                      / (2.0f * ctrl_lcl->tau + ctrl_lcl->T);
+
+    /* Compute output and apply limits */
+    float out = ctrl_lcl->pterm + ctrl_lcl->iterm + ctrl_lcl->dterm;
+
+    if (out > ctrl_lcl->isath)
+    {
+        out = ctrl_lcl->isath;
+        ctrl_lcl->saturated = true;
+    }
+    else if (out < ctrl_lcl->isatl)
+    {
+        out = ctrl_lcl->isatl;
+        ctrl_lcl->saturated = true;
+    }
+    else
+    {
+        ctrl_lcl->saturated = false;
+    }
+
+    /* Store error and measurement for later use */
+    ctrl_lcl->prevError = ctrl_lcl->error;
+    ctrl_lcl->prevMeasurement = measurement;
+
+    /* return PID output */
+    return out;
+
+}
+
+/**
+*/
+bool ffDPslope(float dp, mffdp_struct *mffdp)
+{
+    if (mffdp->idx < FFDPSPAN)
+    {
+        mffdp->fny[mffdp->idx++] = dp;
+        mffdp->m = 0.0f;
+        return false;
+    }
+    else
+    {
+        //mffdp->m = mcalc(mffdp->fny, mffdp->idx);
+        for (int i = 0; i < FFDPSPAN - 1; i++)
+        {
+            mffdp->fny[i] = mffdp->fny[i + 1];
+        }
+        mffdp->fny[FFDPSPAN - 1] = dp;
+    }
+
+}
+
+/**
+  @brief Initialization function for GLL controller implementation
+*/
+void GLLController_Init(ctrl_struct *ctrl_lcl)
+{
+
+    /* Clear controller variables */
+    ctrl_lcl->fcGll.piIntegral = 0.0f;
+    ctrl_lcl->fcGll.pidDFilter.pzfValue = 0.0F;
+    ctrl_lcl->fcGll.ffValue = 0.0F;
+    //  ctrl->fcGllGain = 1.0f;
+    //  ctrl->fcValveGain = 0.0F;
+    //  ctrl->fcPlantGain = 0.0F;
+    //  ctrl->fcActuatorGain = 0.0F;
+}
+
+/**
+  @brief GLL controller
+*/
+static void gpiStep(GllPtr gll)   /*@modifies gll @*/
+{
+    float ctrl_error;
+    float dummy;
+
+    //D=ad*D-bd*(y-yold) % update derivative part
+    ctrl_error = gll->gterm * (gll->cmd - gll->fbk);
+    gll->error = ctrl_error;
+
+    // P=kp*(b*r-y) % compute proportional part
+    gll->pi->pTerm = ctrl_error * gll->pi->piPGain;
+
+    // calculate FF value
+    //	if (!( flowcontroller[0].fcFreeze & ((uint16_t)BIT00 << fcsFreezeFFvalue) ))
+    //    ffDPslope(meter.psid, &ctrl.mffdp);
+    //		gll->pi->ffValue = 0; //ctrl.mffdp.m * ctrl.ffGain;
+
+    //	if (!( valvedriver[0].vdFreeze & ((uint16_t)BIT00 << vdsFreezeGllOutput) )) // if not frozen, update glloutput
+    gll->pi->fcGllOutput = gll->pi->piIntegral + gll->pi->pTerm;
+
+    // v=P+I+D % compute temporary output
+    gll->v =  gll->pi->fcGllOutput;// + gll->pi->ffValue;
+
+    // check saturation u
+    gll->u = gll->v > ctrl.isatl ? (gll->v < ctrl.isath ? gll->v : ctrl.isath) : ctrl.isatl;
+    //gll->u = gll->v > ctrl.icrack ? (gll->v < ctrl.isath ? gll->v : ctrl.isath) : ctrl.icrack;
+
+
+    // update controller output
+    gll->ctrlv = gll->u;
+
+    // I=I+bi*(r-y)+br*(u-v) % update integral
+    gll->br = 2 * gll->pi->piIGain;
+    gll->pi->piIntegral += gll->pi->piIGain * ctrl_error + gll->br * (gll->u - gll->v);
+    //	gll->iterm = gll->pi->piIntegral;
+
+}
+
+static float DStep(float x, PzfRecord *pzf) /*@modifies pzf->pzfValue@*/
+{
+    float   scaledDelta;
+    scaledDelta = (x - pzf->pzfValue) * pzf->pzfPoleGain;
+    pzf->pzfValue += scaledDelta;
+    return scaledDelta * pzf->pzfZeroGain;
+}
+
+static void __llCore(GllPtr gll)
+{
+    gll->dterm = DStep(gll->flow, &gll->pi->pidDFilter);
+    gll->fbk = gll->flow + gll->dterm;
+    gll->pi->llDTerm = gll->fbk;
+}
+
+void gllStep(GllPtr gll)
+{
+    static float lastCtrlv = 0;
+    gll->flags = 0;
+    __llCore(gll);
+    gpiStep(gll);
+    lastCtrlv = gll->ctrlv;
+}
+
+/**
+*/
+float PC_controller(ctrl_struct *ctrl, float setpoint, float measurement)
+{
+
+    // Hybrid mode
+    if ((setpoint / measurement - 1.0f) > 0.01)
+    {
+        return 0.5f;
+    }
+    else
+    {
+        return PIDController_Update(ctrl, setpoint, measurement);
+    }
+
+}
+
+/**
+  @breif retrun controller state
+*/
+ctrl_state getControllerState(void)
+{
+    return ctrlsm;
+}
+
+/**
+	@breif Configures all live controller parameters with default values from non-volatile memory.
+*/
+void load_controller_parameters(float *sig1, float *sig2, float *pa)
+{
+    ctrl.Pgain = nvmem.app.controllerObj.pgain;
+    ctrl.Igain = nvmem.app.controllerObj.igain;
+    ctrl.Dgain = nvmem.app.controllerObj.dgain;
+    ctrl.D2gain = 1.0f;
+    ctrl.icrack = nvmem.app.controllerObj.icrack;
+    ctrl.icrack2 = nvmem.app.controllerObj.icrack2;
+    ctrl.turnondelay = nvmem.app.controllerObj.turnondelay;
+    math_check(nvmem.app.controllerObj.isath, &ctrl.isath, 0.99f);
+    ctrl.isath = nvmem.app.controllerObj.isath;
+    math_check(nvmem.app.controllerObj.isatl, &ctrl.isatl, 0.0f);
+    ctrl.isatl = nvmem.app.controllerObj.isatl;
+    ctrl.invertdrive = nvmem.app.manufacturing.invertdrive;
+    // limit shutoff threshold between 0.0f..2.0f. if beyond limits, revert to 0.2% ass cutoff
+    float flt = nvmem.app.controllerObj.shutoffthreshold;
+    math_check(nvmem.app.controllerObj.shutoffthreshold, &flt, 0.002f);
+    nvmem.app.controllerObj.shutoffthreshold = flt;
+    ctrl.shutoffthreshold = nvmem.app.controllerObj.shutoffthreshold < 0.0f ? 0.002f :
+                            nvmem.app.controllerObj.shutoffthreshold > 2.0f ? 0.002f : nvmem.app.controllerObj.shutoffthreshold;
+    ctrl.ramprate = (int32_t)nvmem.app.controllerObj.ramprate;
+    ctrl.minramprate = nvmem.app.controllerObj.minramptime;
+    switch (nvmem.app.controllerObj.fbsel)
+    {
+        case 2:
+            ctrl.feedback = sig2;
+            break;
+        case 0:
+        case 1:
+        default:
+            ctrl.feedback = sig1;
+            break;
+    }
+
+    ctrl.type = nvmem.app.controllerObj.type; // controller implementation types
+
+    PID.Kp = ctrl.Pgain;
+    PID.Ki = ctrl.Igain;
+    PID.Kd = ctrl.Dgain;
+    /* Initialize PID system, float32_t format */
+    arm_pid_init_f32(&PID, 1);
+
+    // new controller setup
+    ctrl.currentpressure = pa;
+    PIDController_Init(&ctrl);
+
+    // dynamic gain polynomial
+    for (uint8_t idx = 0; idx < MAX_DYNAMIC_GAIN_TABLE; idx++)
+    {
+        ctrl.dynPtable[idx].x = 1.0f; //nvmem.app.meterObj.dynSP.fxn[idx];
+        ctrl.dynItable[idx].x = 1.0f; //nvmem.app.meterObj.dynSP.fxn[idx];
+        ctrl.dynPtable[idx].y = 1.0f; //nvmem.app.dynGain.P.fxn[idx];
+        ctrl.dynItable[idx].y = 1.0f; //nvmem.app.dynGain.I.fxn[idx];
+    }
+
+}
+
+/**
+  @brief ARM TYPE Contorller Algorithm
+         Stock ARM baed PID using matrices
+*/
+float typearm(ctrl_struct *pctrl, float tpsidiff, float pv)
+{
+    float cv;
+    float output;
+    math_check(tpsidiff * nvmem.app.controllerObj.KppPsi + pctrl->Pgain, &pctrl->scaledKp, pctrl->Pgain);
+    math_check(tpsidiff * nvmem.app.controllerObj.KipPsi + pctrl->Igain, &pctrl->scaledKi, pctrl->Igain);
+    math_check(pctrl->scaledKi * powf((*pctrl->currentmW / nvmem.app.controllerObj.tMw), 0.5f), &pctrl->scaledKiGas,
+               pctrl->scaledKi);
+    PID.Kp = pctrl->scaledKp;
+    PID.Ki = pctrl->scaledKi;
+    PID.Kd = pctrl->Dgain;
+    /* Initialize PID system, float32_t format */
+    arm_pid_init_f32(&PID, 0);
+
+    /* Calculate error */
+    pctrl->error = pctrl->currentsp - pv;
+
+
+    /* Calculate PID here, argument is error */
+    output = arm_pid_f32(&PID, pctrl->error);
+
+    // check if we are going to saturate the actuator
+    if (PID.state[2] > pctrl->isath)
+    {
+        PID.state[0] = 0;
+        PID.state[1] = 0;
+        PID.state[2] = pctrl->isath;
+        cv = pctrl->isath;
+        pctrl->saturated = true;
+    }
+    else if (PID.state[2] < pctrl->isatl)
+    {
+        PID.state[0] = 0;
+        PID.state[1] = 0;
+        PID.state[2] = pctrl->isatl;
+        cv = pctrl->isatl;
+        pctrl->saturated = true;
+    }
+    else
+    {
+        pctrl->saturated = false;
+        cv = output;
+    }
+
+    return cv;
+}
+float typearm2(ctrl_struct *pctrl, float tpsidiff, float pv)
+{
+    float cv;
+    float output;
+    //  math_check(tpsidiff * nvmem.app.controllerObj.KppPsi + pctrl->Pgain, &pctrl->scaledKp, pctrl->Pgain);
+    //  math_check(tpsidiff * nvmem.app.controllerObj.KipPsi + pctrl->Igain, &pctrl->scaledKi, pctrl->Igain);
+    //  math_check(pctrl->scaledKi * powf((*pctrl->currentmW / nvmem.app.controllerObj.tMw), 0.5f), &pctrl->scaledKiGas, pctrl->scaledKi);
+    PID2.Kp =6;
+    PID2.Ki = 0.2;
+    PID2.Kd = 0;
+    /* Initialize PID system, float32_t format */
+    arm_pid_init_f32(&PID2, 0);
+
+    /* Calculate error */
+    pctrl->error = pctrl->currentsp - pv;
+
+
+    /* Calculate PID here, argument is error */
+    output = arm_pid_f32(&PID2, pctrl->error);
+
+    // check if we are going to saturate the actuator
+    if (PID2.state[2] > pctrl->isath)
+    {
+        PID2.state[0] = 0;
+        PID2.state[1] = 0;
+        PID2.state[2] = pctrl->isath;
+        cv = pctrl->isath;
+        pctrl->saturated = true;
+    }
+    else if (PID2.state[2] < pctrl->isatl)
+    {
+        PID2.state[0] = 0;
+        PID2.state[1] = 0;
+        PID2.state[2] = pctrl->isatl;
+        cv = pctrl->isatl;
+        pctrl->saturated = true;
+    }
+    else
+    {
+        pctrl->saturated = false;
+        cv = output;
+    }
+
+    return cv;
+}
+/**
+  @brief TYPE 1 Controller Algorithm
+         Discrete PID implementation
+*/
+float type1(ctrl_struct *pctrl, float tpsidiff, float pv)
+{
+    math_check(tpsidiff * nvmem.app.controllerObj.KppPsi + pctrl->Pgain, &pctrl->scaledKp, pctrl->Pgain);
+    math_check(tpsidiff * nvmem.app.controllerObj.KipPsi + pctrl->Igain, &pctrl->scaledKi, pctrl->Igain);
+    math_check(pctrl->scaledKi * powf((*pctrl->currentmW / nvmem.app.controllerObj.tMw), 0.5f), &pctrl->scaledKiGas,
+               pctrl->scaledKi);
+    return PIDController_Update(&ctrl, pctrl->currentsp, pv);
+}
+
+/**
+  @brief TYPE 2 Controller Algorithm
+         Standard GLL controller implementation
+*/
+float type2(ctrl_struct *pctrl, float tpsidiff, float pv)
+{
+    GllRecord gll;
+    math_check(bin_search(pctrl->setpoint, pctrl->dynPtable, MAX_DYNAMIC_GAIN_TABLE, X_DIRECTION_INC, 1.0f, 1),
+               &pctrl->lGainCorr[0], 1.0f);
+    math_check(bin_search(pctrl->setpoint, pctrl->dynItable, MAX_DYNAMIC_GAIN_TABLE, X_DIRECTION_INC, 1.0f, 1),
+               &pctrl->lGainCorr[1], 1.0f);
+    math_check(tpsidiff * nvmem.app.controllerObj.KppPsi + pctrl->Pgain * pctrl->lGainCorr[0], &pctrl->scaledKp,
+               pctrl->Pgain);
+    math_check(tpsidiff * nvmem.app.controllerObj.KipPsi + pctrl->Igain * pctrl->lGainCorr[1], &pctrl->scaledKi,
+               pctrl->Igain);
+    math_check(pctrl->scaledKi * powf((*pctrl->currentmW / nvmem.app.controllerObj.tMw), 0.5f), &pctrl->scaledKiGas,
+               pctrl->scaledKi);
+    pctrl->fcGll.piPGain = pctrl->scaledKp;
+    pctrl->fcGll.piIGain = pctrl->scaledKiGas;
+    pctrl->fcGll.pidDFilter.pzfPoleGain = pctrl->Dgain;
+    pctrl->fcGll.pidDFilter.pzfZeroGain = pctrl->D2gain;
+    gll.pi = &pctrl->fcGll;
+    gll.cmd = pctrl->currentsp;
+    gll.gterm = pctrl->fcGllGain;
+    gll.flow = pv;
+    gllStep(&gll);
+    pctrl->pterm = gll.pi->pTerm;
+    pctrl->iterm = gll.pi->piIntegral;
+    pctrl->dterm = gll.dterm;
+    return gll.ctrlv;
+}
+
+/**
+  @brief TYPE 3 Controller Algorithm
+         Fuzzy logic with crack2 recover drive. This is mainly used with Pressure Controllers (PC)
+*/
+float type3(ctrl_struct *pctrl, float tpsidiff, float pv)
+{
+    float cv;
+    GllRecord gll;
+    float ratio = fabsf(pctrl->targetsp / pv);
+    if ((ratio < 0.95f) && pctrl->downdir)    // we need to discharge rapidly
+    {
+        pctrl->fcGll.piIntegral = pctrl->icrack2;
+        pctrl->fcGll.pidDFilter.pzfValue = pv;
+        cv = 0.0f;
+    }
+    else      // Hybrid-GLL mode
+    {
+        pctrl->downdir = false;
+        pctrl->updir = false;
+        math_check(bin_search(pv, pctrl->dynPtable, MAX_DYNAMIC_GAIN_TABLE, X_DIRECTION_INC, 1.0f, 1), &pctrl->lGainCorr[0],
+                   1.0f);
+        math_check(bin_search(pv, pctrl->dynItable, MAX_DYNAMIC_GAIN_TABLE, X_DIRECTION_INC, 1.0f, 1), &pctrl->lGainCorr[1],
+                   1.0f);
+        math_check(tpsidiff * nvmem.app.controllerObj.KppPsi + pctrl->Pgain * pctrl->lGainCorr[0], &pctrl->scaledKp,
+                   pctrl->Pgain);
+        math_check(tpsidiff * nvmem.app.controllerObj.KipPsi + pctrl->Igain * pctrl->lGainCorr[1], &pctrl->scaledKi,
+                   pctrl->Igain);
+        math_check(pctrl->scaledKi * powf((*pctrl->currentmW / nvmem.app.controllerObj.tMw), 0.5f), &pctrl->scaledKiGas,
+                   pctrl->scaledKi);
+        // Run GLL controller
+        pctrl->fcGll.piPGain = pctrl->scaledKp;
+        pctrl->fcGll.piIGain = pctrl->scaledKiGas;
+        pctrl->fcGll.pidDFilter.pzfPoleGain = pctrl->Dgain;
+        pctrl->fcGll.pidDFilter.pzfZeroGain = pctrl->D2gain;
+        gll.pi = &pctrl->fcGll;
+        gll.cmd = pctrl->currentsp;
+        gll.gterm = pctrl->fcGllGain;
+        gll.flow = pv;
+        gllStep(&gll);
+        pctrl->pterm = gll.pi->pTerm;
+        pctrl->iterm = gll.pi->piIntegral;
+        pctrl->dterm = gll.dterm;
+        cv = gll.ctrlv;
+    }
+    return cv;
+}
+
+/**
+  @brief TYPE 5 Controller Algorithm
+         Fuzzy logic for PM25
+*/
+float type5(ctrl_struct *pctrl, float tpsidiff, float pv)
+{
+
+    //  GllRecord gll;
+    //  pctrl->fcGll.piPGain = pctrl->Pgain;
+    //  pctrl->fcGll.piIGain = pctrl->Igain;
+    //  pctrl->fcGll.pidDFilter.pzfPoleGain = pctrl->Dgain;
+    //  pctrl->fcGll.pidDFilter.pzfZeroGain = pctrl->D2gain;
+    //  gll.pi = &pctrl->fcGll;
+    //  gll.cmd = pctrl->setpoint;
+    //  gll.gterm = pctrl->fcGllGain;
+    //  gll.flow = pv;
+    //  gllStep(&gll);
+    //  pctrl->pterm = gll.pi->pTerm;
+    //  pctrl->iterm = gll.pi->piIntegral;
+    //  pctrl->dterm = gll.dterm;
+    //  if (gll.error > 0.0f) {
+    //    pctrl->transSMState = MOVE_DOWN;
+    //  } else if (gll.error < 0.0f) {
+    //    pctrl->transSMState = MOVE_UP;
+    //  } else {
+    //    pctrl->transSMState = MOVE_STOP;
+    //  }
+    //
+    //  pctrl->sm->freq = fabsf(9000.0f * gll.ctrlv);
+    //  return gll.ctrlv;
+
+
+    //  float cv = 0.0f;
+    //  pctrl->scaledKp = pctrl->Pgain;
+    //  pctrl->scaledKiGas = pctrl->Igain;
+    //  cv = PIDController_Update(&ctrl, pctrl->currentsp, pv);
+    //  if (ctrl.error > 0.0f) {
+    //    pctrl->transSMState = MOVE_DOWN;
+    //  } else if (ctrl.error < 0.0f) {
+    //    pctrl->transSMState = MOVE_UP;
+    //  } else {
+    //    pctrl->transSMState = MOVE_STOP;
+    //  }
+    //
+    //  pctrl->sm->freq = fabsf(9000.0f * cv);
+    //  return cv;
+
+    pctrl->error = pv / pctrl->currentsp - 1.0f;
+    if (pctrl->error < -0.0001f)  //00039f
+    {
+
+        pctrl->transSMState = MOVE_DOWN;
+    }
+    else if (pctrl->error > 0.0002f)
+    {
+
+
+        pctrl->transSMState = MOVE_UP;
+    }
+    else
+    {
+        pctrl->transSMState = MOVE_STOP;
+    }
+
+    //pctrl->sm->error = pctrl->error;
+    //  pctrl->transSMState = timer_freq_pre(pctrl->transSMState);
+    //pctrl->sm->freq = max(3000.0f, min(6000.0f, 9000.0f * (fabsf(pctrl->error) * pctrl->Pgain)));
+    return 0;
+
+}
+void contronller_pid(float pv, float setpoint, float *cv)
+{
+    float tpsidiff = 0.0f;
+    *cv = typearm2(&ctrl2, tpsidiff, pv);
+    ctrl2.normalizeddrive = ctrl.invertdrive == 1 ? 1.0f - *cv : *cv;
+    //ctrl2.normalizeddrive = ctrl2.invertdrive == *cv;
+    *cv = ctrl2.normalizeddrive;
+}
+/**
+	@brief Simple controller implementstion
+*/
+void controller(float pv, float setpoint, float *cv)
+{
+    float output = 0.0f;
+    float tpsidiff = 0.0f;
+    static uint8_t enerPreLoad = 0;
+    GllRecord gll;
+
+    switch (ctrl.override)
+    {
+        case OVERRIDE_OFF:
+            *cv = 0.0f;
+            ctrl.normalizeddrive = 0.0f;
+            ctrl.currentsp = 0.0f;
+            ctrl.transSMState = STATE_HOME;
+            ctrlsm = CTRL_OFF;
+            break;
+        case OVERRIDE_ON:
+            // apply controller inversion here
+            ctrl.normalizeddrive = 1.0f;
+            ctrl.transSMState = STATE_FOPEN;
+            break;
+        case OVERRIDE_HOLD:
+            break;
+        case OVERRIDE_SAFESTATE:
+            break;
+        case OVERRIDE_SYSTEM_IDENT:
+            if (ctrl.sysIdent.SourceEnabledFlag == 0)
+            {
+                SystemIdent_Init(&ctrl.sysIdent);
+                ctrl.sysIdent.SourceEnabledFlag = 1;
+            }
+            SystemIdent_Cycle(&ctrl.sysIdent);
+            *cv = ctrl.sysIdent.SourceOut;
+            ctrl.normalizeddrive = *cv;
+            ctrl.transSMState = STATE_MOVE;
+            break;
+        case OVERRIDE_MANUAL_DRIVE:
+            // ctrl is updated from a different source
+            if (getStepMotor()->op_complete == 0)
+            {
+                ctrl.normalizeddrive = *cv;
+                getStepMotor()->set_position = ctrl.normalizeddrive;
+                ctrl.transSMState = STATE_MOVE;
+            }
+            break;
+        case OVERRIDE_NORMAL:
+        default:
+            ctrl.sysIdent.SourceEnabledFlag = 0;
+            tpsidiff = (*ctrl.currentpressure - nvmem.app.controllerObj.tPsi);
+            switch (ctrlsm)
+            {
+                case CTRL_OFF:
+                    *cv = 0.0f;
+                    if (setpoint > ctrl.shutoffthreshold)
+                    {
+                        if (ctrl.delayctr > CTRL_PERIOD_MS)   // implement a controller turn ON delay
+                        {
+                            ctrl.delayctr -= CTRL_PERIOD_MS;
+                        }
+                        else
+                        {
+                            enerPreLoad = 5;  // stay at crack for 5 cycles. This is to energize the valve so the plunger will start moving
+                            ctrlsm = CTRL_CRACK;
+                            if (ctrl.type == 5)
+                            {
+                                ctrl.currentsp = setpoint;
+                                ctrl.targetsp = setpoint;
+                                ctrl.rampinprogress = false;
+                                ctrlsm = CTRL_NORMAL;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        PIDController_Init(&ctrl);
+                        ctrl.fcGll.piIntegral = 0.0f;
+                        ctrl.fcGll.pidDFilter.pzfValue = 0.0F;
+                        ctrl.fcGll.ffValue = 0.0F;
+                        ctrl.delayctr = ctrl.turnondelay;
+                        if (ctrl.type == 5)
+                        {
+                            ctrl.transSMState = MOVE_DOWN;
+                        }
+                    }
+                    // get the idle drive state
+                    ctrl.normalizeddrive = nvmem.app.manufacturing.idledrive == 1 ? 1.0f : 0.0f;
+                    ctrl.transSMState = STATE_HOME;
+                    break;
+                case CTRL_CRACK:
+                    if (ctrl.type == 1)
+                    {
+                        math_check(tpsidiff * nvmem.app.controllerObj.cpPsi + ctrl.icrack, &ctrl.scaledcrack, ctrl.icrack);
+                        ctrl.iterm = ctrl.scaledcrack;
+                        *cv = ctrl.icrack;
+                        if (enerPreLoad-- == 0)
+                        {
+                            ctrlsm = CTRL_RAMP_SETUP;
+                        }
+                    }
+                    else if (ctrl.type == 2)      // GLL controller
+                    {
+                        math_check(tpsidiff * nvmem.app.controllerObj.cpPsi + ctrl.icrack, &ctrl.scaledcrack, ctrl.icrack);
+                        ctrl.fcGll.piIntegral = ctrl.scaledcrack;
+                        ctrl.fcGll.pidDFilter.pzfValue = pv;
+                        *cv = ctrl.scaledcrack;
+                        if (enerPreLoad-- == 0)
+                        {
+                            ctrlsm = CTRL_RAMP_SETUP;
+                        }
+                    }
+                    else if (ctrl.type == 3)      // Fuzzy logic controller
+                    {
+                        // initialize logic controller here
+                        ctrl.fcGll.piIntegral = ctrl.icrack;
+                        ctrl.fcGll.pidDFilter.pzfValue = pv;
+                        *cv = ctrl.icrack;
+                        if (enerPreLoad-- == 0)
+                        {
+                            ctrlsm = CTRL_RAMP_SETUP;
+                        }
+                        ctrl.downdir = false;
+                        ctrl.updir = true;
+                    }
+                    else
+                    {
+                        PID.Kp = ctrl.Pgain;
+                        PID.Ki = ctrl.Igain;
+                        PID.Kd = ctrl.Dgain;
+                        /* Initialize PID system, float32_t format */
+                        arm_pid_init_f32(&PID, 1);
+                        PID.state[2] = ctrl.icrack;
+                        *cv = ctrl.icrack;
+                        ctrlsm = CTRL_RAMP_SETUP;
+                    }
+                    // apply controller inversion here
+                    ctrl.normalizeddrive = ctrl.invertdrive == 1 ? 1.0f - *cv : *cv;
+                    ctrl.transSMState = STATE_MOVE;
+                    break;
+                case CTRL_RAMP_SETUP:
+                    // setup ramps
+                    ctrl.rampdir = ((setpoint - ctrl.currentsp) < 0.0f ? -1 : 1);
+                    switch (ctrl.rampmode) {
+                      case 2:
+                        ctrl.rampinprogress = true;
+                        ctrl.ramp_rate = ctrl.rampdir * (ctrl.ramprate / 1000.f) / 1000.0f * CTRL_PERIOD_MS;                        
+                        break;
+                      case 1:                        
+                        ctrl.rampinprogress = true;
+                        ctrl.ramp_rate = (setpoint - ctrl.currentsp) / ((ctrl.ramptime/10.0f)/ CTRL_PERIOD_S);                        
+                        break;
+                      case 0:
+                      default:
+                        ctrl.rampinprogress = false;
+                        ctrl.ramp_rate = setpoint;
+                        ctrl.currentsp = setpoint;
+                        break;
+                    }
+                    ctrl.targetsp = setpoint;
+                    ctrl.delayctr = ctrl.turnondelay; // be ready for the next delay request
+                    ctrlsm = CTRL_NORMAL;
+                    break;
+                case CTRL_NORMAL:
+                    // if we want to turn off even if ramp is in progress
+                    if (setpoint <= ctrl.shutoffthreshold)   // turn OFF if setpoint is <0.5%FS but make sure ramp is not in progress
+                    {
+                        if (ctrl.turnoffdelay > CTRL_PERIOD_MS)    // implement a controller turn OFF delay
+                        {
+                            ctrl.turnoffdelay -= CTRL_PERIOD_MS;
+                        }
+                        else
+                        {
+                            ctrl.currentsp = 0.0f;
+                            ctrlsm = CTRL_OFF;
+                            return;
+                        }
+                    }
+                    // handle ramps
+                    if (ctrl.rampinprogress)
+                    {
+                        ctrl.currentsp += ctrl.ramp_rate;  // ramp internal setpoint                        
+                        if (((ctrl.currentsp >= ctrl.targetsp) && (ctrl.rampdir == 1)) || ((ctrl.currentsp <= ctrl.targetsp) && (ctrl.rampdir == -1))) 
+                        {
+                            ctrl.currentsp = setpoint;
+                            ctrl.targetsp = setpoint;
+                            ctrl.rampinprogress = false;
+                        }
+                        if (ctrl.targetsp != setpoint)    // is there a new setpoint request while we are still ramping?
+                        {
+                            ctrlsm = CTRL_RAMP_SETUP;
+                            if (setpoint < ctrl.currentsp)
+                            {
+                                ctrl.downdir = true;
+                                ctrl.updir = false;
+                                ctrl.currentsp = setpoint;
+                                ctrl.targetsp = setpoint;
+                                ctrl.rampinprogress = false;
+                            }
+                            else
+                            {
+                                ctrl.downdir = false;
+                                ctrl.updir = true;
+                            }
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (ctrl.currentsp != setpoint)   // did the setpoint change? add some epsilon
+                        {
+                            if (ctrl.delayctr > CTRL_PERIOD_MS)   // implement a controller turn ON delay
+                            {
+                                ctrl.delayctr -= CTRL_PERIOD_MS;
+                            }
+                            else
+                            {
+                                ctrlsm = CTRL_RAMP_SETUP;
+                                if (setpoint < ctrl.currentsp)
+                                {
+                                    ctrl.downdir = true;
+                                    ctrl.updir = false;
+                                }
+                                else
+                                {
+                                    ctrl.downdir = false;
+                                    ctrl.updir = true;
+                                }
+                                return;
+                            }
+                        }
+                    }
+
+                    // controller implementation
+                    if (ctrl.type == 1)
+                    {
+                        *cv = type1(&ctrl, tpsidiff, pv);
+                    }
+                    else if (ctrl.type == 2)
+                    {
+                        *cv = type2(&ctrl, tpsidiff, pv);
+                    }
+                    else if (ctrl.type == 3)
+                    {
+                        *cv = type3(&ctrl, tpsidiff, pv);
+                    }
+                    else if (ctrl.type == 5)
+                    {
+                        *cv = type5(&ctrl, tpsidiff, pv);
+                        break;
+                    }
+                    else
+                    {
+                        *cv = typearm(&ctrl, tpsidiff, pv);
+
+                        ctrl.normalizeddrive = ctrl.invertdrive == 1 ? 1.0f - *cv : *cv;
+                        *cv = ctrl.normalizeddrive;
+                    }
+
+                    //if (!ctrl.saturated)
+                    {
+                        // apply controller inversion here
+                        //            ctrl.normalizeddrive = ctrl.invertdrive == 1 ? 1.0f - *cv : *cv;
+                        //            getStepMotor()->set_position = ctrl.normalizeddrive;
+                        //ctrl.transSMState = STATE_MOVE;
+                        ctrl.currSMState = 99;
+                    }
+                    break;
+            }
+            break;
+    }
+}
+
+/**
+*/
+void actuatorControl(uint8_t stateRequest)
+{
+
+
+    ctrl.direction = 1.0f * stateRequest;
+    StepMotorCtrl(stateRequest); // set direction of shaft movement 1 up; 2 down; 3 stop
+
+    return;
+
+
+    /**
+      This is the normal position request loop. Use this for PID, GLL Fuzzy
+    */
+
+    if (ctrl.currSMState == stateRequest)
+    {
+        return; // bail out. no need to command stepper motor
+    }
+
+    switch (stateRequest)
+    {
+        case STATE_HOME:
+            StepMotorHomming(HOME_INIT);
+            ctrl.currSMState = stateRequest;
+
+            break;
+        case STATE_FOPEN:
+            getStepMotor()->set_position = ctrl.normalizeddrive;
+            StepMotorCtrl(getStepMotor()->set_position);
+            ctrl.currSMState = stateRequest;
+
+            break;
+        case STATE_MOVE:
+            //if (!getStepMotor()->op_complete)
+        {
+            //getStepMotor()->set_position = ctrl.normalizeddrive;
+            if (StepMotorStateProc(STATE_MOVE) == 1)
+            {
+                getStepMotor()->op_complete = 0;
+                ctrl.currSMState = STATE_IDLE;
+            }
+        }
+        break;
+        case STATE_IDLE:
+            // do nothing
+            break;
+    }
+
+}

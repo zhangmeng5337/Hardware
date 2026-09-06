@@ -148,15 +148,15 @@ unsigned char config_proc()
     unsigned int tmp_i;
     unsigned int i;
 
-//    for (i = 0; i < 1; i++)
-//    {
-//        ecBuffer[i] = 1;
-//    }
-//    AES128_CBC_encrypt_buffer(buf,
-//                              ecBuffer, 128, key, iv);
+    //    for (i = 0; i < 1; i++)
+    //    {
+    //        ecBuffer[i] = 1;
+    //    }
+    //    AES128_CBC_encrypt_buffer(buf,
+    //                              ecBuffer, 128, key, iv);
 
-//    AES128_CBC_decrypt_buffer(&decBuffer[0],
-//                              buf, 256, key, iv);
+    //    AES128_CBC_decrypt_buffer(&decBuffer[0],
+    //                              buf, 256, key, iv);
 
 
     if (COM_TYPE == RS_232)
@@ -173,22 +173,22 @@ unsigned char config_proc()
             memset(ecBuffer, 0xff, 256);
             memset(decBuffer, 0xff, 256);
             memcpy(ecBuffer, get_uart_recv_stru(UART_485)->uartRecBuff, 256);
-//            unsigned char i;
-//            pb = &ecBuffer[0];
-//            for (i = 0; i < 4; i++)
-//            {
-//
-//                AES128_CBC_decrypt_buffer(&decBuffer[i * 64], pb, 64, key, iv);
-//                pb = pb + 64;
-//            }
+            //            unsigned char i;
+            //            pb = &ecBuffer[0];
+            //            for (i = 0; i < 4; i++)
+            //            {
+            //
+            //                AES128_CBC_decrypt_buffer(&decBuffer[i * 64], pb, 64, key, iv);
+            //                pb = pb + 64;
+            //            }
 
             AES128_CBC_decrypt_buffer(&decBuffer[0], ecBuffer, 256, key, iv);
 
         }
-//       AES128_CBC_encrypt_buffer(ecBuffer,
-//                                p->uartRecBuff, 256, key, iv);
-//      AES128_CBC_decrypt_buffer(&decBuffer[0],ecBuffer, 256, key, iv);
-//tool.hi0fd.com/aes-encrypt-online
+        //       AES128_CBC_encrypt_buffer(ecBuffer,
+        //                                p->uartRecBuff, 256, key, iv);
+        //      AES128_CBC_decrypt_buffer(&decBuffer[0],ecBuffer, 256, key, iv);
+        //tool.hi0fd.com/aes-encrypt-online
         p->uartRecFlag = 0;
         pb = analy_string("cmd=gh2022", "\r\n");
         if (pb != NULL) //start operation
@@ -318,14 +318,15 @@ unsigned char config_proc()
             goto end;
         }
 
-//***********************************query**********************************************
+        //***********************************query**********************************************
         pb = analy_string("log_out?", "\r\n");
         if (pb != NULL) //start operation
         {
-            printf("%.3f  %u  %u  %.1f  %.3f  %.3f  %.3f  %.3f  %.3f  %.3f %u  %u  %u %.3f\r\n",
+            printf("cali_flow=%.3f  id=%u  %u  %.1f   T=%.3f    %.3f  %.3f  %.3f  %.3f  %.3f  flow=%.3f %u  %u  fault=%u %.3f %.3f\r\n",
                    get_calib()->cali_flow,
                    get_calib()->gas_type,
                    get_verifier()->state,
+                   get_calib()->targe_p,
                    get_temperature()->average_T,
                    get_cdg_status()->pressure_filter_torr,
                    get_verifier()->pressure_steady_tTime / 1000.0,
@@ -336,7 +337,8 @@ unsigned char config_proc()
                    get_calib()->cail_nozzle_num,
                    get_calib()->valve,
                    get_calib()->fault,
-                   get_calib()->F_ori);
+                   get_calib()->F_ori,
+                   get_calib()->ratioMatchMKS);
             goto end;
         }
         pb = analy_string("total_count?", "\r\n");
@@ -440,11 +442,11 @@ unsigned char config_proc()
         {
 
 
-//          if(get_verifier()->state>=LINE_PURGED_START&&get_verifier()->state<PRESSURE_STEADY_SHOCK)
-//            printf("pre=%.3f\r\n", get_verifier()->pressure_flow_steady);
-//          else if(get_verifier()->state>=PRESSURE_STEADY_SHOCK)
-//            printf("pre=%.3f\r\n", get_verifier()->pressure_steady);
-//          else
+            //          if(get_verifier()->state>=LINE_PURGED_START&&get_verifier()->state<PRESSURE_STEADY_SHOCK)
+            //            printf("pre=%.3f\r\n", get_verifier()->pressure_flow_steady);
+            //          else if(get_verifier()->state>=PRESSURE_STEADY_SHOCK)
+            //            printf("pre=%.3f\r\n", get_verifier()->pressure_steady);
+            //          else
             printf("pre=%.3f\r\n", get_cdg_status()->pressure_filter_torr);
             goto end;
 
@@ -452,20 +454,20 @@ unsigned char config_proc()
         pb = analy_string("temp?", "\r\n"); //T
         if (pb != NULL) //start operation
         {
-//            if (get_verifier()->state == PRESSURE_RISE_START)
-//            {
-//                // if(get_verifier()->flag == 0)
-//                {
-//                    //get_verifier()->flag =1;
-//                    printf("temp=%.3f\r\n", get_verifier()->pressure_flow_steady);
-//
-//                }
-//            }
-//            else if (get_verifier()->state > PRESSURE_RISE_START &&
-//                     get_verifier()->state != VAVLE_SCTRL&&
-//                     get_verifier()->state != FLOW_SET_POINT_SHOCK)
-//                printf("temp=%.3f\r\n", get_verifier()->pressure_steady);
-//            else
+            //            if (get_verifier()->state == PRESSURE_RISE_START)
+            //            {
+            //                // if(get_verifier()->flag == 0)
+            //                {
+            //                    //get_verifier()->flag =1;
+            //                    printf("temp=%.3f\r\n", get_verifier()->pressure_flow_steady);
+            //
+            //                }
+            //            }
+            //            else if (get_verifier()->state > PRESSURE_RISE_START &&
+            //                     get_verifier()->state != VAVLE_SCTRL&&
+            //                     get_verifier()->state != FLOW_SET_POINT_SHOCK)
+            //                printf("temp=%.3f\r\n", get_verifier()->pressure_steady);
+            //            else
             //printf("temp=%.4f\r\n", get_calib_slop()->slope);
 
             printf("temp=%.1f\r\n", get_temperature()->average_T);
@@ -517,17 +519,16 @@ unsigned char config_proc()
         pb = analy_string("version?", "\r\n");
         if (pb != NULL) //start operation
         {
-            printf("Version %d.%d.%d\r\n", FW_REVISION_MAJOR, FW_REVISION_MINOR,
-                   FW_REVISION_PATCH);
+            printf("Version %d.%d.%d\r\n", FW_REVISION_MAJOR, FW_REVISION_MINOR, FW_REVISION_PATCH);
             goto end;///*****************************************version
 
         }
-//        pb=analy_string("valve_status?", "\r\n");
-//        if (pb != NULL) //start operation
-//        {
-//            printf("valve_status=%u\r\n", get_calib()->valve);
-//
-//        }
+        //        pb=analy_string("valve_status?", "\r\n");
+        //        if (pb != NULL) //start operation
+        //        {
+        //            printf("valve_status=%u\r\n", get_calib()->valve);
+        //
+        //        }
         pb = analy_string("nozzle?", "\r\n");
         if (pb != NULL) //start operation
         {
@@ -584,25 +585,24 @@ unsigned char config_proc()
             goto end;
 
         }
- pb = analy_string("gas_baseMKS?", "\r\n");
+        pb = analy_string("gas_baseMKS?", "\r\n");
         if (pb != NULL) //start operation
         {
 
             printf("id=%u\r\n", get_gas_MKS()->id);
             HAL_Delay(10);
-			for(unsigned char i = 0;i<(GAS_MATCH_MKS_BUF_SIZE-1))
-            printf("sx=%.3f ", get_gas_MKS()->setpointBuf[i]);
-			printf("%.3f\r\n", get_gas_MKS()->setpointBuf[i]);
+            printf(" full=%.3f\r\n", i, get_gas_MKS()->fullRange);
             HAL_Delay(10);
-			
-			for(unsigned char i = 0;i<(GAS_MATCH_MKS_BUF_SIZE-1))
-            printf("calx=%.3f ", get_gas_MKS()->calibrationRatioBuf[i]);
-			printf("%.3f\r\n", get_gas_MKS()->calibrationRatioBuf[i]);			
+
+            printf("calx=");
+            for (unsigned char i = 0; i < (GAS_MATCH_MKS_BUF_SIZE); i++)
+                printf("%.3f ", get_gas_MKS()->calibrationRatioBuf[i]);
+            printf("\r\n");
             HAL_Delay(10);
 
             goto end;
 
-        }		
+        }
         pb = analy_string("hval_status?", "\r\n");
         if (pb != NULL) //start operation
         {
@@ -879,7 +879,7 @@ unsigned char config_proc()
 
         /********************************end leak check*********************************/
 
-//***********************************enf ctrl**********************************************
+        //***********************************enf ctrl**********************************************
         pb = analy_string("cal_ratio=", "\r\n");
         if (pb != NULL) //start operation
         {
@@ -939,11 +939,11 @@ unsigned char config_proc()
             config_dat.update = 1;
             flash_proc(READ, GAS_SET);
             test_dat.gas_type = tmp_i;
-			flash_proc(READ, GAS_MKS_SET);
-			searchMKSRatio();
+            flash_proc(READ, GAS_MKS_SET);
+            searchMKSRatio();
 
 
-			
+
         }
         if (get_calib()->state == 3)
         {
@@ -953,7 +953,7 @@ unsigned char config_proc()
             // flash_proc(WRITE, PERROR_SET);
         }
 
-//******************************************** set gas******************
+        //******************************************** set gas******************
         if (config_dat.debug == 1)
         {
 
@@ -1079,25 +1079,27 @@ unsigned char config_proc()
                 get_gas_MKS()->update_state = 0;
                 tmp_i = atoi(pb);
                 get_gas_MKS()->id = tmp_i;
-                get_gas_MKS()->update_state = get_gas_MKS()->update_state++;
+                get_gas_MKS()->update_state = get_gas_MKS()->update_state + 1;
+
+                unsigned char buf[11];
+                memset(buf, 11, 0);
+                sprintf(buf, "set_s0=");
+                pb = analy_string(buf, "\r\n");
+                if (pb != NULL) //start operation
+                {
+                    // get_nozzle()->state=0;
+                    tmp_f = atof(pb);
+                    get_gas_MKS()->fullRange = tmp_f;
+
+                    get_gas_MKS()->update_state = get_gas_MKS()->update_state + 1;
+                }
+                else
+                    goto end;
+
                 for (unsigned int i = 0; i < GAS_MATCH_MKS_BUF_SIZE; i++)
                 {
-                    unsigned char buf[11];
                     memset(buf, 11, 0);
-                    sprintf(buf, "set_s%u", i);
-                    pb = analy_string(buf, "\r\n");
-                    if (pb != NULL) //start operation
-                    {
-                        // get_nozzle()->state=0;
-                        tmp_f = atof(pb);
-                        get_gas_MKS()->setpointBuf[i] = tmp_f;
-
-                        get_gas_MKS()->update_state = get_gas_MKS()->update_state++;
-                    }
-                    else
-                        goto end;
-                    memset(buf, 11, 0);
-                    sprintf(buf, "set_cal%u", i);
+                    sprintf(buf, "set_c%u=", i);
                     pb = analy_string(buf, "\r\n");
                     if (pb != NULL) //start operation
                     {
@@ -1105,7 +1107,7 @@ unsigned char config_proc()
                         tmp_f = atof(pb);
                         get_gas_MKS()->calibrationRatioBuf[i] = tmp_f;
 
-                        get_gas_MKS()->update_state = get_gas_MKS()->update_state++;
+                        get_gas_MKS()->update_state = get_gas_MKS()->update_state + 1;
                     }
                     else
                         goto end;
@@ -1115,8 +1117,8 @@ unsigned char config_proc()
             }
 
             //*********************end set gas mks ***************************
-//          else
-//               goto end;
+            //          else
+            //               goto end;
 
 
 
@@ -1131,8 +1133,8 @@ unsigned char config_proc()
 
                 //get_gas()->update_state=get_gas()->update_state | 0x02;
             }
-//                else
-//                    goto end;
+            //                else
+            //                    goto end;
 
             //******************************************** end set gas******************
 
@@ -1251,8 +1253,8 @@ unsigned char config_proc()
                 }
 
             }
-//          else
-//               goto end;
+            //          else
+            //               goto end;
 
 
             pb = analy_string("set_bp0=", "\r\n");
@@ -1316,8 +1318,8 @@ unsigned char config_proc()
                     goto end;
 
             }
-//          else
-//               goto end;
+            //          else
+            //               goto end;
 
 
 
@@ -1352,8 +1354,8 @@ unsigned char config_proc()
                     goto end;
 
             }
-//          else
-//               goto end;
+            //          else
+            //               goto end;
 
 
 
@@ -1373,14 +1375,14 @@ unsigned char config_proc()
                 get_temperature()->v2_ratio = tmp_f;
 
             }
-//            pb=analy_string("set_alpha=", "\r\n");
-//            if (pb != NULL) //start operation
-//            {
-//                tmp_f=atof(&pb[0]);
-//                get_calib()->alpha=tmp_f;
-//                get_nozzle()->state=get_nozzle()->state | 0x4000;
-//
-//            }
+            //            pb=analy_string("set_alpha=", "\r\n");
+            //            if (pb != NULL) //start operation
+            //            {
+            //                tmp_f=atof(&pb[0]);
+            //                get_calib()->alpha=tmp_f;
+            //                get_nozzle()->state=get_nozzle()->state | 0x4000;
+            //
+            //            }
 
             if ((get_nozzle()->state & 0xffff) >= 0x7ff)//400
             {
@@ -1405,19 +1407,19 @@ unsigned char config_proc()
                 if (config_dat.cmd_mode == 1)
                     printf("complete\r\n");
             }
-            if (get_gas_MKS()->update_state == GAS_PKT_MATCHMKS_SIZE/2)
+            if (get_gas_MKS()->update_state == (GAS_PKT_MATCHMKS_SIZE / 4))
             {
                 flash_proc(WRITE, GAS_MKS_SET);
-				flash_proc(WRITE, PERROR_SET);
+                flash_proc(WRITE, PERROR_SET);
                 get_gas_MKS()->update_state = 0;
                 if (config_dat.cmd_mode == 1)
                     printf("complete\r\n");
-            }			
-//            if (get_gas()->update_state & 0x80 == 0x80)
-//            {
-//                flash_proc(WRITE, PERROR_SET);
-//                //get_gas()->update_state=0;
-//            }
+            }
+            //            if (get_gas()->update_state & 0x80 == 0x80)
+            //            {
+            //                flash_proc(WRITE, PERROR_SET);
+            //                //get_gas()->update_state=0;
+            //            }
 
         }
 
@@ -1456,7 +1458,7 @@ unsigned char config_proc()
             get_cdg_config()->update = 1;
             config_dat.update = 0;
         }
-    end:
+end:
         // memset(p->uartRecBuff, 0, UART_REC_SIZE);
         memset(decBuffer, 255, 256);
         p->uartRecFlag = 0;

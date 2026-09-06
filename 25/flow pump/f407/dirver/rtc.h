@@ -26,13 +26,21 @@ typedef struct
                          This parameter must be a number between Min_Data = 0 and Max_Data = 99 */
 } rtc_stru;
 
-
+typedef struct
+{
+	uint8_t year;
+	uint8_t month;
+	uint8_t date;
+	uint8_t hour;
+	uint8_t minute;
+	uint8_t seconds;
+	uint8_t strBuf[32];
+}rtcTimeStru;
 
 void urtc_proc(void);
 RTC_DateTypeDef *getRtcDate(void);
-RTC_TimeTypeDef *getRtcTime(void);
 rtc_stru *rtc_value_set(void);
 void utcTortc(uint64_t utc);
-
+rtcTimeStru *getRtcTime(void);
 #endif
 

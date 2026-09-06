@@ -69,7 +69,7 @@ void draw_char(uint16_t x, uint16_t y, font_instance_t *font,
 // font_size: 0 自动选择，否则优先使用此字号
 // str: UTF-8 字符串
 // bg_color: 背景色
-void draw_string_ex(uint16_t x, uint16_t y, uint16_t color,
+unsigned int draw_string_ex(uint16_t x, uint16_t y, uint16_t color,
                     uint8_t font_size, const char *str, uint16_t bg_color);
 
 // 简化版（背景黑色，字号自动）

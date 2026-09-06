@@ -63,7 +63,7 @@ int stest(void) {
     font_register(binU.fileIndex[FONT32_INDEX].offset, 32, &han32_font);
 //    font_register(binU.fileIndex[IMAG_INDEX].offset, 48, &han32_font);
 
-    testUi();
+//    testUi();
 //    font_index_t idx;
 //if (font_find_char(&ascii16_font, 0x41, &idx) == 0) {
 //    draw_char(10, 10, &ascii16_font, &idx, 0x0000,0xFFFF);
@@ -75,7 +75,7 @@ int stest(void) {
 //	}
 //
 //    // 显示混合字符串（自动选择字号，背景黑色）
-//    draw_string(10, 10, "Hello 世界!",0,0xFFFF);
+//    draw_string(10, 10, "1.",0,0xFFFF);
 //    
 //    // 指定使用 32x32 字号显示
 //    draw_string_ex(10, 50, 0x07E0, 16, "32px大字", 0xffff);

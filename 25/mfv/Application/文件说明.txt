@@ -1,0 +1,2 @@
+GFC_Fimware_3.0：待升级固件，升级方法参照“MFV固件升级操作说明.pdf”
+DatabaseMatchMKS: 待升级数据库，匹配mks流量验证，升级方法参照“GFC数据库修正升级操作说明.pdf”

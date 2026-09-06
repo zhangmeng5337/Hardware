@@ -4,9 +4,10 @@
 
 #define SoftVer   "V1.0.1"
 #define MotorCtrl "V01"
-#define HardwareVer "V1"
-#define TypeNo  gd
-
+#define HardwareVer "V1.1"
+#define serviceP  "921520"
+#define PROSER    "V0"
+#define TYPENO    "GH"
 typedef struct
 {
     float totalFlow;
@@ -157,6 +158,7 @@ typedef struct
     unsigned char 		baseSet;//0:no effort 1:recovery manufacture set 2:backup custom 3:recovery custom
     unsigned char       status;//0：Stop 1run 2：standby 4:discharge 5:valve out 6:valve in
     unsigned int 		fault; //bit:0---ext stop bit1:empty bit2:lowlevel bit3:line short
+    uint32_t            serNum;
     //4:manufacture setting 5:custom setting
 } setting_stru;
 

@@ -4,6 +4,7 @@
 #include "calibration.h"
 #include "config.h"
 #include "verifier.h"
+#include <math.h>
 flash_stru flash_usr;
 unsigned char get_flash_status()
 {
@@ -32,26 +33,26 @@ void flash_init()
             flash_usr.status = NOPARAMS;
     }
     else
-    	{
-    flash_usr.total_gas_len = GAS_END_ADDR - GAS_ADDR + 1;
-    flash_usr.total_noz_len = NOZZLE_END_ADDR - NOZZLE_ADDR + 1;
-    flash_usr.total_pressure_len = PRE_END_ADDR - PRE_ADDR + 1;
+    {
+        flash_usr.total_gas_len = GAS_END_ADDR - GAS_ADDR + 1;
+        flash_usr.total_noz_len = NOZZLE_END_ADDR - NOZZLE_ADDR + 1;
+        flash_usr.total_pressure_len = PRE_END_ADDR - PRE_ADDR + 1;
 
-    flash_usr.available_gas_len = flash_usr.total_gas_len;
-    flash_usr.available_pressure_len = flash_usr.total_pressure_len;
-    flash_usr.available_noz_len = flash_usr.total_noz_len;
-    flash_usr.addr_gas = GAS_ADDR;
-    flash_usr.addr_noz = NOZZLE_ADDR;
-    flash_usr.addr_pressure = PRE_ADDR;
-	flash_usr.total_gas_count = 0;
-	flash_usr.status = NOPARAMS;
-	 
-	flash_usr.addr_gas_mks = GAS_MKS_ADDR;
-	flash_usr.total_gas_MKScount = 0;
+        flash_usr.available_gas_len = flash_usr.total_gas_len;
+        flash_usr.available_pressure_len = flash_usr.total_pressure_len;
+        flash_usr.available_noz_len = flash_usr.total_noz_len;
+        flash_usr.addr_gas = GAS_ADDR;
+        flash_usr.addr_noz = NOZZLE_ADDR;
+        flash_usr.addr_pressure = PRE_ADDR;
+        flash_usr.total_gas_count = 0;
+        flash_usr.status = NOPARAMS;
+
+        flash_usr.addr_gas_mks = GAS_MKS_ADDR;
+        flash_usr.total_gas_MKScount = 0;
 
 
-	}
-        
+    }
+
 }
 unsigned char gas_set_proc(unsigned char oper)
 {
@@ -162,10 +163,10 @@ unsigned char gas_set_proc(unsigned char oper)
                 WriteFlash(page_addr, buf, i);
 
                 flash_usr.addr_gas = flash_usr.addr_gas + GAS_PKT_SIZE;
-				flash_usr.total_gas_count = flash_usr.total_gas_count + 1;
+                flash_usr.total_gas_count = flash_usr.total_gas_count + 1;
             }
         }//dend ata was not record
-     __enable_irq();
+        __enable_irq();
     }
     else
     {
@@ -175,7 +176,7 @@ unsigned char gas_set_proc(unsigned char oper)
 
             ReadFlash(i, buf, 2);
             result = buf[1];
-					result = result <<8;
+            result = result << 8;
             result = result + buf[0];
             if (get_calib()->gas_type == result)
             {
@@ -225,7 +226,8 @@ unsigned char nozzle_set_proc(unsigned char oper)
 
 
     if (oper == WRITE)
-    {__disable_irq(); 
+    {
+        __disable_irq();
         i = 0;
         page_num = GetPages(NOZZLE_ADDR);
         page_addr = FLASH_BASE_ADDR + 0x800 * (page_num);
@@ -289,7 +291,7 @@ unsigned char nozzle_set_proc(unsigned char oper)
         i = i + 4;
 
         WriteFlash(page_addr, buf, i);
-	__enable_irq();
+        __enable_irq();
 
     }
     else
@@ -335,28 +337,28 @@ unsigned char nozzle_set_proc(unsigned char oper)
             i = i + 4;
             get_calib()->perror = uint32Tofloat(buf + i);
             i = i + 4;
-			get_calib()->bp0 = uint32Tofloat(buf + i);
-			i = i + 4;
-			get_calib()->bp1 = uint32Tofloat(buf + i);
-			i = i + 4;
-			get_calib()->bp2 = uint32Tofloat(buf + i);
-			i = i + 4;
-			get_calib()->bp3 = uint32Tofloat(buf + i);
-			i = i + 4;
-			get_calib()->bp4 = uint32Tofloat(buf + i);
-			i = i + 4;
-			get_calib()->v1 = uint32Tofloat(buf + i);
-			i = i + 4;
-			get_calib()->v2 = uint32Tofloat(buf + i);
- 			i = i + 4;
-			get_config()->tC = uint32Tofloat(buf + i); 	
- 			i = i + 4;
-			get_calib()->compen_time = uint32Tofloat(buf + i);
-			i = i+ 4;
-			get_verifier()->purge_time = uint8Touint32(buf + i);
-			i = i + 4;
-			get_verifier()->purge_cycle = uint8Touint32(buf + i);
-			i = i + 4;
+            get_calib()->bp0 = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_calib()->bp1 = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_calib()->bp2 = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_calib()->bp3 = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_calib()->bp4 = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_calib()->v1 = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_calib()->v2 = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_config()->tC = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_calib()->compen_time = uint32Tofloat(buf + i);
+            i = i + 4;
+            get_verifier()->purge_time = uint8Touint32(buf + i);
+            i = i + 4;
+            get_verifier()->purge_cycle = uint8Touint32(buf + i);
+            i = i + 4;
 
             flash_usr.status = SUCESS;
 
@@ -375,7 +377,8 @@ unsigned char boot_params_proc(unsigned char oper)
     uint32_t  i;
 
     if (oper == WRITE)
-    {__disable_irq(); 
+    {
+        __disable_irq();
         memset(buf, 0, 2048);
         // ReadFlash(FACTORY_ADDR, buf, 2048);//read original data
         Erase_page(FACTORY_ADDR, 1);
@@ -385,15 +388,15 @@ unsigned char boot_params_proc(unsigned char oper)
         i = i + 4;
         floatTouint32(get_calib()->perror, buf + i);
         i = i + 4;
-//        memcpy(buf + i, &get_calib()->gas_type, 2);
-//        i = i + 4;
+        //        memcpy(buf + i, &get_calib()->gas_type, 2);
+        //        i = i + 4;
         memcpy(buf + i, &flash_usr.addr_gas, 4);
         i = i + 4;
         memcpy(buf + i, &flash_usr.addr_noz, 4);
         i = i + 4;
         memcpy(buf + i, &flash_usr.addr_pressure, 4);
         i = i + 4;
-		memcpy(buf + i, &flash_usr.total_gas_count, 4);
+        memcpy(buf + i, &flash_usr.total_gas_count, 4);
         i = i + 4;
         memcpy(buf + i, &flash_usr.nozzle_status, 4);
         i = i + 4;
@@ -405,12 +408,12 @@ unsigned char boot_params_proc(unsigned char oper)
         i = i + 4;
         memcpy(buf + i, &flash_usr.addr_gas_mks, 4);
         i = i + 4;
-		memcpy(buf + i, &flash_usr.total_gas_MKScount, 4);
+        memcpy(buf + i, &flash_usr.total_gas_MKScount, 4);
         i = i + 4;
-        
-		
+
+
         WriteFlash(FACTORY_ADDR, buf, i);
-	__enable_irq();
+        __enable_irq();
 
     }
     else
@@ -421,33 +424,37 @@ unsigned char boot_params_proc(unsigned char oper)
         if (buf[3]  == 0x5a)
         {
 
-//            get_calib()->perror = uint32Tofloat(buf + i); //
-//            i = i + 4;
-//            memcpy(&get_calib()->gas_type, buf + i, 4);
+            //            get_calib()->perror = uint32Tofloat(buf + i); //
+            //            i = i + 4;
+            //            memcpy(&get_calib()->gas_type, buf + i, 4);
             i = i + 4;
             memcpy(&flash_usr.addr_gas, buf + i, 4);
             i = i + 4;
             memcpy(&flash_usr.addr_noz, buf + i, 4);
             i = i + 4;
             memcpy(&flash_usr.addr_pressure, buf + i, 4);
-             i = i + 4;
-             memcpy(&flash_usr.total_gas_count, buf + i, 4);
+            i = i + 4;
+            memcpy(&flash_usr.total_gas_count, buf + i, 4);
             i = i + 4;
             memcpy(&flash_usr.nozzle_status, buf + i, 4);
-             i = i + 4;	
+            i = i + 4;
             memcpy(&flash_usr.v_status, buf + i, 4);
-             i = i + 4;	
+            i = i + 4;
             memcpy(&flash_usr.bp_status, buf + i, 4);
-             i = i + 4;	
+            i = i + 4;
             memcpy(&flash_usr.perror_status, buf + i, 4);
-             i = i + 4;	
+            i = i + 4;
             memcpy(&flash_usr.addr_gas_mks, buf + i, 4);
-             i = i + 4;	
+            i = i + 4;
             memcpy(&flash_usr.total_gas_MKScount, buf + i, 4);
-             i = i + 4;
-            if(flash_usr.addr_gas_mks < GAS_MKS_ADDR || flash_usr.addr_gas_mks > GAS_MKS_END_ADDR)
-				flash_usr.addr_gas_mks = GAS_MKS_ADDR;
-           flash_usr.status = SUCESS;
+            i = i + 4;
+            if (flash_usr.addr_gas_mks < GAS_MKS_ADDR || flash_usr.addr_gas_mks > GAS_MKS_END_ADDR)
+            {
+                flash_usr.addr_gas_mks = GAS_MKS_ADDR;
+                flash_usr.total_gas_MKScount = 0;
+            }
+
+            flash_usr.status = SUCESS;
         }
         else
             flash_usr.status = NOPARAMS;
@@ -466,6 +473,7 @@ unsigned char gas_setMKS_proc(unsigned char oper)
     uint32_t addr;
     uint32_t gas_addr, page_addr, page_num, i;
     unsigned int result;
+    gas_datbase_matchMks_stru gas_datbaseMKSTmp;
     if (oper == WRITE)
     {
         __disable_irq();
@@ -479,32 +487,45 @@ unsigned char gas_setMKS_proc(unsigned char oper)
             if (get_gas()->id == result)
             {
                 gas_addr = i;
-                break;
+                memset(buf, 0, 2048);
+                // ReadFlash(gas_addr, buf, GAS_PKT_MATCHMKS_SIZE);
+                memcpy(&gas_datbaseMKSTmp, (uint8_t *)gas_addr, GAS_PKT_MATCHMKS_SIZE);
+
+                float ratioMKSTmp;
+                ratioMKSTmp = gas_datbaseMKSTmp.fullRange / get_gas_MKS()->fullRange;
+                if (ratioMKSTmp >= 0.99 && ratioMKSTmp <= 1.01)
+                {
+                    flash_usr.status = SUCESS;
+
+                    if (i < (GAS_MKS_END_ADDR - GAS_PKT_MATCHMKS_SIZE)) //dat was record
+                    {
+                        page_num = GetPages(gas_addr);
+                        page_addr = FLASH_BASE_ADDR + 0x800 * (page_num);
+                        memset(buf, 0, 2048);
+                        ReadFlash(page_addr, buf, GAS_MAX_MKS_ADDR);//read original data
+                        Erase_page(page_addr, 1);
+                        addr = gas_addr - page_addr;
+                        //WriteFlash(page_addr, buf, addr);
+                        //memset(buf, 0, 2048);
+
+                        i = addr;
+
+
+                        memcpy(buf + i, get_gas_MKS(), GAS_PKT_MATCHMKS_SIZE);
+                        i = i + GAS_PKT_MATCHMKS_SIZE;
+                        i = i + flash_usr.addr_gas_mks - page_addr;
+                        WriteFlash(page_addr, buf, i);
+
+                    } //dend ata was record
+                    break;
+                }
+                else
+                    i = i + GAS_PKT_MATCHMKS_SIZE;
             }
             else
                 i = i + GAS_PKT_MATCHMKS_SIZE;
         }
-        if (i < (GAS_MKS_END_ADDR - GAS_PKT_MATCHMKS_SIZE)) //dat was record
-        {
-            page_num = GetPages(gas_addr);
-            page_addr = FLASH_BASE_ADDR + 0x800 * (page_num);
-            memset(buf, 0, 2048);
-            ReadFlash(page_addr, buf, GAS_MAX_MKS_ADDR);//read original data
-            Erase_page(page_addr, 1);
-            addr = gas_addr - page_addr;
-            //WriteFlash(page_addr, buf, addr);
-            //memset(buf, 0, 2048);
-
-            i = addr;
-
-						
-            memcpy(buf + i, get_gas_MKS(), GAS_PKT_MATCHMKS_SIZE);
-            i = i + GAS_PKT_MATCHMKS_SIZE;
-            i = i + flash_usr.addr_gas_mks - page_addr;
-            WriteFlash(page_addr, buf, i);
-
-        } //dend ata was record
-        else  //data was not record
+        if (i >= (GAS_MKS_END_ADDR - GAS_PKT_MATCHMKS_SIZE))   //data was not record
         {
             if (flash_usr.addr_gas_mks < GAS_MKS_END_ADDR)
             {
@@ -529,15 +550,15 @@ unsigned char gas_setMKS_proc(unsigned char oper)
 
                 i = addr;
 
-				memcpy(buf + i, get_gas_MKS(), GAS_PKT_MATCHMKS_SIZE);
-           		 i = i + GAS_PKT_MATCHMKS_SIZE;
+                memcpy(buf + i, get_gas_MKS(), GAS_PKT_MATCHMKS_SIZE);
+                i = i + GAS_PKT_MATCHMKS_SIZE;
                 WriteFlash(page_addr, buf, i);
 
                 flash_usr.addr_gas_mks = flash_usr.addr_gas_mks + GAS_PKT_MATCHMKS_SIZE;
-				flash_usr.total_gas_MKScount = flash_usr.total_gas_MKScount + 1;
+                flash_usr.total_gas_MKScount = flash_usr.total_gas_MKScount + 1;
             }
         }//dend ata was not record
-     __enable_irq();
+        __enable_irq();
     }
     else
     {
@@ -547,32 +568,57 @@ unsigned char gas_setMKS_proc(unsigned char oper)
 
             ReadFlash(i, buf, 2);
             result = buf[1];
-					result = result <<8;
+            result = result << 8;
             result = result + buf[0];
+            float ratioTmp;
+
             if (get_calib()->gas_type == result)
             {
-                gas_addr = i;
-                break;
+
+                if (i < (flash_usr.addr_gas_mks + 1 - GAS_PKT_MATCHMKS_SIZE)) //dat was record
+                {
+                    gas_addr = i;
+                    // i = 0;
+                    memset(buf, 0, 2048);
+                    // ReadFlash(gas_addr, buf, GAS_PKT_MATCHMKS_SIZE);
+                    memcpy(get_gas_MKS(), (uint8_t *)gas_addr, GAS_PKT_MATCHMKS_SIZE);
+                    ratioTmp = get_calib()->cali_flow/get_gas_MKS()->fullRange;
+                    float calRatio = 2,res=1;
+                    unsigned char index;
+
+
+                    for (index = 0; index < GAS_MATCH_MKS_BUF_SIZE; index++)
+                    {
+
+                        calRatio = index;
+                        calRatio = calRatio * 0.1 + 0.1;
+                        calRatio = calRatio - ratioTmp;
+											  res = fabsf(calRatio);
+                        if (res <= 0.01)
+                            calRatio = 1;
+                        else
+                            calRatio = 2;
+                        if (calRatio == 1)
+                        {
+                            flash_usr.status = SUCESS;
+                            break;
+                        }
+                    }
+                    if (calRatio == 1)
+                        break;
+                    else
+                        i = i + GAS_PKT_MATCHMKS_SIZE;
+                }
+                else
+                    flash_usr.status = NOPARAMSMKS;
+
             }
             else
                 i = i + GAS_PKT_MATCHMKS_SIZE;
         }
-        if (i < (flash_usr.addr_gas + 1 - GAS_PKT_MATCHMKS_SIZE)) //dat was record
-        {
-            i = 0;
-            memset(buf, 0, 2048);
-           // ReadFlash(gas_addr, buf, GAS_PKT_MATCHMKS_SIZE);
-			 memcpy(get_gas_MKS(), (uint8_t*)gas_addr, GAS_PKT_MATCHMKS_SIZE);
-             flash_usr.status = SUCESS;
-        }
-        else
-            flash_usr.status = NOPARAMS;
-
     }
 
-
 }
-
 void flash_proc(unsigned char wr, unsigned char mode)
 {
 
@@ -594,10 +640,14 @@ void flash_proc(unsigned char wr, unsigned char mode)
         {
             boot_params_proc(WRITE);
         }//end flash set
+#ifdef FW_MKS
         else  if (mode == GAS_MKS_SET)//flash set start
         {
+
             gas_setMKS_proc(WRITE);
-        }//end flash set        
+
+        }//end flash set
+#endif
     }
     else if (wr == READ)//start read************************************************
     {
@@ -614,10 +664,13 @@ void flash_proc(unsigned char wr, unsigned char mode)
         {
             nozzle_set_proc(READ);
         }
-	else  if (mode == GAS_MKS_SET)//flash set start
-	{
-		gas_setMKS_proc(READ);
-	}//end flash set  
+#ifdef FW_MKS
+        else  if (mode == GAS_MKS_SET)//flash set start
+        {
+
+            gas_setMKS_proc(READ);
+        }//end flash set
+#endif
 
     }
 }

@@ -67,7 +67,7 @@ void uart_init()
     //rs232 uart init for cdg
    
     HAL_UART_Receive_IT(&huart1, &push_data, 1);
- __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+    __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
 
 
     //rs232 uart init for debug

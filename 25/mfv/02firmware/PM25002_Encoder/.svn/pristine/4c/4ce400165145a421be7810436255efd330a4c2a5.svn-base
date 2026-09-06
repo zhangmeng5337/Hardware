@@ -1,0 +1,192 @@
+#include <stdint.h>
+#include <string.h>
+#include <math.h>
+#include "protocol.h"
+#include "nvmem.h"
+#include "utilities.h"
+#include "meter.h"
+#include "controller.h"
+#ifndef BOOTLOADER
+#include "awe.h"
+#endif
+
+binary nullAttr = {0};
+
+/**
+  @brief For Pgain flash writes, automatically load information to RAM for controller object
+*/
+static uint8_t cmdPtw(uint8_t *cmdInfo) {
+#ifndef BOOTLOADER  
+  command_info *cmdInfo_lcl = (command_info *)cmdInfo; 
+  uint8_t cmd;
+  binary value;  
+  cmd = cmdInfo_lcl->cmdSpecific;
+  memcpy(&value._uint32, cmdInfo_lcl->data_array, sizeof(float));
+  ctrl.dynPtable[cmd - 120].y = value._float;
+  return _CONTINUE;
+#else
+  return _FAIL; 
+#endif    
+}
+
+/**
+  @brief For Igain flash writes, automatically load information to RAM for controller object
+*/
+static uint8_t cmdItw(uint8_t *cmdInfo) {
+#ifndef BOOTLOADER  
+  command_info *cmdInfo_lcl = (command_info *)cmdInfo; 
+  uint8_t cmd;
+  binary value;  
+  cmd = cmdInfo_lcl->cmdSpecific;
+  memcpy(&value._uint32, cmdInfo_lcl->data_array, sizeof(float));
+  ctrl.dynItable[cmd - 126].y = value._float;
+  return _CONTINUE;  
+#else
+  return _FAIL;  
+#endif 
+}
+
+/**
+  @brief For Setpoint flash writes, automatically load information to RAM for controller object
+*/
+static uint8_t cmdSPtw(uint8_t *cmdInfo) {
+#ifndef BOOTLOADER  
+  command_info *cmdInfo_lcl = (command_info *)cmdInfo; 
+  uint8_t cmd;
+  binary value;  
+  cmd = cmdInfo_lcl->cmdSpecific;
+  memcpy(&value._uint32, cmdInfo_lcl->data_array, sizeof(float));
+  ctrl.dynPtable[cmd - 132].x = value._float;
+  ctrl.dynItable[cmd - 132].x = value._float;
+  return _CONTINUE;
+#else
+  return _FAIL;
+#endif 
+}
+
+// 2
+const command_struct cmdConfiguration[] = 
+{
+    {   1,    _UINT32,     4,       &nvmem.app.network.defaultbaudrate,         0x00,       0x00,     _FLASH        },
+    {   2,  _OCTETSTR,    32,       &nvmem.app.manufacturing.electronicsrev,    0x00,       0x00,     _FLASH        },      
+    {   3,  _OCTETSTR,    32,       &nvmem.app.manufacturing.senserialnumber,   0x00,       0x00,     _FLASH        },
+    {   4,  _OCTETSTR,    12,       &nvmem.app.manufacturing.devserialnumber,   0x00,       0x00,     _FLASH        },
+    
+    {  54,    _UINT8,      1,       &nvmem.app.network.address,                 0x00,       0x00,     _FLASH        }, 
+    {  57,    _UINT8,      1,       &nvmem.app.network.length,                  0x00,       0x00,     _FLASH        },
+    {  58,    _UINT8,      1,       &nvmem.app.network.parity,                  0x00,       0x00,     _FLASH        },
+    {  59,    _UINT8,      1,       &nvmem.app.network.stopbits,                0x00,       0x00,     _FLASH        },  
+    
+    {  60,  _FLOAT32,      4,       &nvmem.app.controllerObj.pgain,             0x00,       0x00,     _FLASH        },
+    {  61,  _FLOAT32,      4,       &nvmem.app.controllerObj.igain,             0x00,       0x00,     _FLASH        },
+    {  62,  _FLOAT32,      4,       &nvmem.app.controllerObj.dgain,             0x00,       0x00,     _FLASH        },     
+    {  63,  _FLOAT32,      4,       &nvmem.app.controllerObj.icrack,            0x00,       0x00,     _FLASH        },
+    {  64,  _FLOAT32,      4,       &nvmem.app.controllerObj.icrack2,           0x00,       0x00,     _FLASH        }, 
+    {  65,  _FLOAT32,      4,       &nvmem.app.controllerObj.spboot,            0x00,       0x00,     _FLASH        },
+    {  66,  _FLOAT32,      4,       &nvmem.app.controllerObj.isatl,             0x00,       0x00,     _FLASH        },
+    {  67,  _FLOAT32,      4,       &nvmem.app.controllerObj.isath,             0x00,       0x00,     _FLASH        },
+    {  68,   _UINT16,      2,       &nvmem.app.controllerObj.turnondelay,       0x00,       0x00,     _FLASH        },
+    {  69,  _FLOAT32,      4,       &nvmem.app.controllerObj.shutoffthreshold,  0x00,       0x00,     _FLASH        },
+    {  70,   _UINT32,      4,       &nvmem.app.controllerObj.minramptime,       0x00,       0x00,     _FLASH        },
+    {  71,   _UINT32,      4,       &nvmem.app.controllerObj.ramprate,          0x00,       0x00,     _FLASH        },
+    {  72,    _UINT8,      1,       &nvmem.app.controllerObj.fbsel,             0x00,       0x00,     _FLASH        },
+    {  73,    _UINT8,      1,       &nvmem.app.controllerObj.type,              0x00,       0x00,     _FLASH        },
+    
+    {  80,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[0].fullscale,    0x00,       0x00,     _FLASH        },
+    {  81,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[1].fullscale,    0x00,       0x00,     _FLASH        },
+    {  82,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[0].adp0poly[0],  0x00,       0x00,     _FLASH        },
+    {  83,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[1].adp0poly[0],  0x00,       0x00,     _FLASH        },
+    {  84,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[0].adp0poly[1],  0x00,       0x00,     _FLASH        },
+    {  85,  _FLOAT32,      4,       &nvmem.app.pressureObj.cdg[1].adp0poly[1],  0x00,       0x00,     _FLASH        },
+    {  86,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[0].Q,            0x00,       0x00,     _FLASH        }, 
+    {  87,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[0].R,            0x00,       0x00,     _FLASH        },
+    {  88,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[1].Q,            0x00,       0x00,     _FLASH        }, 
+    {  89,  _FLOAT32,      4,       &nvmem.app.meterObj.fltcdg[1].R,            0x00,       0x00,     _FLASH        },    
+    
+    {  120, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.P.fxn[0],          0x00,       &cmdPtw,     _FLASH        }, 
+    {  121, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.P.fxn[1],          0x00,       &cmdPtw,     _FLASH        }, 
+    {  122, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.P.fxn[2],          0x00,       &cmdPtw,     _FLASH        }, 
+    {  123, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.P.fxn[3],          0x00,       &cmdPtw,     _FLASH        }, 
+    {  124, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.P.fxn[4],          0x00,       &cmdPtw,     _FLASH        }, 
+    {  125, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.P.fxn[5],          0x00,       &cmdPtw,     _FLASH        }, 
+    
+    {  126, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.I.fxn[0],          0x00,       &cmdItw,     _FLASH        }, 
+    {  127, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.I.fxn[1],          0x00,       &cmdItw,     _FLASH        }, 
+    {  128, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.I.fxn[2],          0x00,       &cmdItw,     _FLASH        }, 
+    {  129, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.I.fxn[3],          0x00,       &cmdItw,     _FLASH        }, 
+    {  130, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.I.fxn[4],          0x00,       &cmdItw,     _FLASH        }, 
+    {  131, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.I.fxn[5],          0x00,       &cmdItw,     _FLASH        }, 
+
+    {  132, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.SP.fxn[0],          0x00,       &cmdSPtw,     _FLASH        }, 
+    {  133, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.SP.fxn[1],          0x00,       &cmdSPtw,     _FLASH        }, 
+    {  134, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.SP.fxn[2],          0x00,       &cmdSPtw,     _FLASH        }, 
+    {  135, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.SP.fxn[3],          0x00,       &cmdSPtw,     _FLASH        }, 
+    {  136, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.SP.fxn[4],          0x00,       &cmdSPtw,     _FLASH        }, 
+    {  137, _FLOAT32,      4,       &nvmem.app.controllerObj.dynGain.SP.fxn[5],          0x00,       &cmdSPtw,     _FLASH        }, 
+    {  138, _FLOAT32,      4,       &nvmem.app.controllerObj.nPPgain,          			     0x00,       0x00,     _FLASH        }, 
+    {  139, _FLOAT32,      4,       &nvmem.app.controllerObj.nPigain,          			     0x00,       0x00,     _FLASH        }, 
+    {  140, _FLOAT32,      4,       &nvmem.app.controllerObj.nRange10TorrC1,          	 0x00,       0x00,     _FLASH        }, 
+    {  141, _FLOAT32,      4,       &nvmem.app.controllerObj.nRange30TorrC1,          	 0x00,       0x00,     _FLASH        }, 
+    {  142, _FLOAT32,      4,       &nvmem.app.controllerObj.nRange100TorrC1,          	 0x00,       0x00,     _FLASH        }, 
+    {  143, _FLOAT32,      4,       &nvmem.app.controllerObj.nRange1Sp,          		     0x00,       0x00,     _FLASH        }, 
+    {  144, _FLOAT32,      4,       &nvmem.app.controllerObj.nRange2Sp,          		     0x00,       0x00,     _FLASH        }, 
+    {  145, _FLOAT32,      4,       &nvmem.app.controllerObj.nRange3Sp,          		     0x00,       0x00,     _FLASH        }, 
+    {  146, _FLOAT32,      4,       &nvmem.app.controllerObj.nInternalSpCtrlPoint,       0x00,       0x00,     _FLASH        }, 
+    //{  147, _FLOAT32,      4,       &nvmem.app.controllerObj.nInternalCtrlRatio,         0x00,       0x00,     _FLASH        }, 
+   // {  148, _FLOAT32,      4,       &nvmem.app.controllerObj.nInternalCtrlSpInterval,    0x00,       0x00,     _FLASH        }, 
+    {  149, _FLOAT32,      4,       &nvmem.app.controllerObj.nSlopeCtrlVal,              0x00,       0x00,     _FLASH        }, 
+    {  150, _FLOAT32,      4,       &nvmem.app.controllerObj.nSlopeStableTime,           0x00,       0x00,     _FLASH        }, 
+    {  151, _FLOAT32,      4,       &nvmem.app.controllerObj.nSlopeMinPerr1,             0x00,       0x00,     _FLASH        }, 
+    {  152, _FLOAT32,      4,       &nvmem.app.controllerObj.nSlopeMinPerr2,             0x00,       0x00,     _FLASH        }, 
+
+	{  153, _FLOAT32,      4,       &nvmem.app.controllerObj.npidIgainCof,               0x00,       0x00,     _FLASH        }, 
+    {  154, _FLOAT32,      4,       &nvmem.app.controllerObj.npidPgianCofDW,             0x00,       0x00,     _FLASH        }, 
+    {  155, _FLOAT32,      4,       &nvmem.app.controllerObj.npidIgainCofDW,             0x00,       0x00,     _FLASH        }, 
+   // {  156, _FLOAT32,      4,       &nvmem.app.controllerObj.npidIgainStableCofUP,       0x00,       0x00,     _FLASH        }, 
+	{  157, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCtrlPreTh,            0x00,       0x00,     _FLASH        }, 
+	{  158, _FLOAT32,      4,       &nvmem.app.controllerObj.npidPgainCof,               0x00,       0x00,     _FLASH        }, 
+	//{  159, _FLOAT32,      4,       &nvmem.app.controllerObj.npidPgainStableCofUP,       0x00,       0x00,     _FLASH        }, 
+	//{  160, _FLOAT32,      4,       &nvmem.app.controllerObj.npidIgainStableCofUP2,      0x00,       0x00,     _FLASH        }, 
+	{  161, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCrack,                 0x00,       0x00,     _FLASH        }, 
+	{  162, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeMin1,                  0x00,       0x00,     _FLASH        }, 
+	{  163, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeMin2,                  0x00,       0x00,     _FLASH        }, 
+	{  164, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeMin3,                  0x00,       0x00,     _FLASH        }, 
+	{  165, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeMinTh1,                0x00,       0x00,     _FLASH        }, 
+	{  166, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeMinTh2,                0x00,       0x00,     _FLASH        }, 
+	{  167, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCtrlVal3,              0x00,       0x00,     _FLASH        }, 
+	{  168, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeMinTh3,                0x00,       0x00,     _FLASH        }, 
+	{  169, _FLOAT32,      4,       &nvmem.app.controllerObj.nstableTimeTh,               0x00,       0x00,     _FLASH        }, 
+	{  170, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCtrlK,                 0x00,       0x00,     _FLASH        }, 
+	{  171, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCtrlB,                 0x00,       0x00,     _FLASH        }, 
+	{  172, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCtrlMinCof,            0x00,       0x00,     _FLASH        }, 
+	{  173, _FLOAT32,      4,       &nvmem.app.controllerObj.ncofErr,                     0x00,       0x00,     _FLASH        }, 
+	{  174, _FLOAT32,      4,       &nvmem.app.controllerObj.nerrCofTh,                   0x00,       0x00,     _FLASH        }, 
+	{  175, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCtrlL,                 0x00,       0x00,     _FLASH        }, 
+	{  176, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeCtrlC,                 0x00,       0x00,     _FLASH        }, 
+	{  177, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeErrCof1,               0x00,       0x00,     _FLASH        }, 
+	{  178, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeErrCof2,               0x00,       0x00,     _FLASH        }, 
+	{  179, _FLOAT32,      4,       &nvmem.app.controllerObj.nslopeErrCofDiv,             0x00,       0x00,     _FLASH        }, 		
+	{  180, _FLOAT32,      4,       &nvmem.app.controllerObj.nratioCtrlTh,                0x00,       0x00,     _FLASH        }, 		
+//	{  181, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].Q,                	  0x00,       0x00,     _FLASH        },
+//	{  182, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].Q_min,                  0x00,       0x00,     _FLASH        },
+//	{  183, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].Q_max,                  0x00,       0x00,     _FLASH        },
+//	{  184, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].Q_rate_max,             0x00,       0x00,     _FLASH        },
+//	{  185, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].R,                	  0x00,       0x00,     _FLASH        },
+//	{  186, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].std_min,                0x00,       0x00,     _FLASH        },
+//	{  187, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].std_max,                0x00,       0x00,     _FLASH        },
+//	{  188, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[0].var_alpha,              0x00,       0x00,     _FLASH        },
+//	{  189, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].Q,                	  0x00,       0x00,     _FLASH        },
+//	{  190, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].Q_min,                  0x00,       0x00,     _FLASH        },
+//	{  191, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].Q_max,                  0x00,       0x00,     _FLASH        },
+//	{  192, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].Q_rate_max,             0x00,       0x00,     _FLASH        },
+//	{  193, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].R,                	  0x00,       0x00,     _FLASH        },
+//	{  194, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].std_min,                0x00,       0x00,     _FLASH        },
+//	{  195, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].std_max,                0x00,       0x00,     _FLASH        },
+//	{  196, _FLOAT32,      4,       &nvmem.app.meterObj.adaKfP[1].var_alpha,              0x00,       0x00,     _FLASH        },
+
+
+
+	// 300-500 for DeviceNet   
+
+    {0x0000,   0x00,    0x00,   0x00,   0x00,   0x00}
+};

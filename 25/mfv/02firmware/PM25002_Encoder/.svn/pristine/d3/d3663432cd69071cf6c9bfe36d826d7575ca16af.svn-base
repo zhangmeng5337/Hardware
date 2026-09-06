@@ -1,0 +1,634 @@
+#include "StepMotor.h"
+#include "math.h"
+
+extern TIM_HandleTypeDef htim15;
+StepMotor_stru step_motor_usr;
+unsigned char StepMotorPositionCal(void);
+//update pwm freq
+void Timer_update_Cal(float freq)
+{
+    float tmp, tmp1;
+    uint32_t result;
+    static uint32_t tick;
+
+    tmp = MAIN_FREQ / freq;
+    result = tmp;
+    step_motor_usr.arr =  result;
+
+__HAL_TIM_SET_COUNTER(&htim15, 0);
+
+    __HAL_TIM_SET_AUTORELOAD(&htim15, step_motor_usr.arr);
+    __HAL_TIM_SET_COMPARE(&htim15, TIM_CHANNEL_1, step_motor_usr.arr / 2);
+
+}
+//estimate step motor speed by freq
+
+void StepMotorInit(void)
+{
+    step_motor_usr.max_position = 10;
+    step_motor_usr.min_position = -0.048;
+    step_motor_usr.ustep = 4;
+    step_motor_usr.step_angle = 1.8;
+    step_motor_usr.distance_one_step = 0.0122;
+    step_motor_usr.distance_one_cycle =
+        step_motor_usr.distance_one_step * 360;
+    step_motor_usr.distance_one_cycle =
+        step_motor_usr.distance_one_cycle / step_motor_usr.step_angle;
+    step_motor_usr.step_motor_status = 0;
+    step_motor_usr.time_start_flag = 0;
+	step_motor_usr.down_time = DOWN_STEP_TIMEOUT;
+  step_motor_usr.up_time = UP_STEP_TIMEOUT;
+    step_motor_usr.arr = 0;
+    step_motor_usr.dir = FORWARD;
+    step_motor_usr.freq = 3600;//40000;//12000
+    //step_motor_usr.timeout_flag = 0;
+    //    step_motor_usr.mode = POS_CTRL;
+    step_motor_usr.home_count = 0;
+    step_motor_usr.Fopen_count = 0;
+    step_motor_usr.retry_times = 2;
+    //speed_cal();
+
+    step_motor_usr.op_complete = 0;
+    getStepMotor()->set_position = 10;
+    step_motor_usr.state = STATE_HOME;
+
+    Timer_update_Cal(step_motor_usr.freq);
+
+    for (unsigned int i = 0; i < 256; i++)
+        step_motor_usr.dma_buf[i] = step_motor_usr.arr / 2;
+    HAL_GPIO_WritePin(MOTOR_Rst_GPIO_Port, MOTOR_Rst_Pin, GPIO_PIN_RESET);
+    __HAL_TIM_SET_AUTORELOAD(&htim15, step_motor_usr.arr);
+    __HAL_TIM_SET_COMPARE(&htim15, TIM_CHANNEL_1, step_motor_usr.arr / 2);
+    HAL_GPIO_WritePin(MOTOR_Rst_GPIO_Port, MOTOR_Rst_Pin, GPIO_PIN_RESET);
+
+
+
+}
+
+void StepMotorReset(void)
+{
+    HAL_GPIO_WritePin(MOTOR_Rst_GPIO_Port, MOTOR_Rst_Pin, GPIO_PIN_RESET);
+
+}
+void StepMotorSet(void)
+{
+    HAL_GPIO_WritePin(MOTOR_Rst_GPIO_Port, MOTOR_Rst_Pin, GPIO_PIN_SET);
+}
+StepMotor_stru *getStepMotor()
+{
+    return &step_motor_usr;
+}
+
+
+
+void StepMotorDirection(unsigned char dir)
+{
+    step_motor_usr.dir = dir;
+    if (dir == FORWARD)
+    {
+
+        HAL_GPIO_WritePin(MOTOR_Dir_GPIO_Port, MOTOR_Dir_Pin, GPIO_PIN_SET);
+    }
+    else
+    {
+        HAL_GPIO_WritePin(MOTOR_Dir_GPIO_Port, MOTOR_Dir_Pin, GPIO_PIN_RESET);
+    }
+}
+/**
+return :
+0:no fault
+1:driver fault
+**/
+unsigned char StepMotorFault()
+{
+    if (HAL_GPIO_ReadPin(MOTOR_Fault_GPIO_Port, MOTOR_Fault_Pin) == 0)
+    {
+        step_motor_usr.fault_status = 1;
+    }
+    else
+    {
+        if (step_motor_usr.fault_status == 1)
+            step_motor_usr.fault_status = 0;
+    }
+    return step_motor_usr.fault_status ;
+
+}
+
+void StepMotorModeCtrl(unsigned char status)
+{
+    step_motor_usr.status = status;
+    switch (status)
+    {
+        case MSTART:
+            StepMotorSet();
+            if (PWM_MODE == 0)
+                HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1); //?? PWM ??
+            else
+            {
+                step_motor_usr.pwm_laod_pulse_count = step_motor_usr.pwm_total_pulse_count;
+                if (step_motor_usr.pwm_total_pulse_count <= 256)
+
+                    HAL_TIM_PWM_Start_DMA(&htim15, TIM_CHANNEL_1, (uint32_t *)step_motor_usr.dma_buf, step_motor_usr.pwm_total_pulse_count);
+                else
+                {
+                    HAL_TIM_PWM_Start_DMA(&htim15, TIM_CHANNEL_1, (uint32_t *)step_motor_usr.dma_buf, 256);
+                }
+
+            }
+
+
+            break;
+        case MSTOP:
+
+            HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1); //?? PWM ??
+            StepMotorReset();
+            break;
+
+        default:
+            StepMotorReset();
+            HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1);
+            break;
+    }
+
+}
+
+//void StepMotorModeCtrl(unsigned char status)
+//{
+//    step_motor_usr.status = status;
+//    switch (status)
+//    {
+//        case MSTART:
+//            if (step_motor_usr.timeout_flag == 0)
+//            {
+//                StepMotorSet();
+//                HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1); //?? PWM ??
+//
+//            }
+//            else
+//            {
+//                step_motor_usr.status = MSTOP;
+//                HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1); //?? PWM ??
+//                StepMotorReset();
+//
+//            }
+//
+//            break;
+//        case MSTOP:
+//
+//            HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1); //?? PWM ??
+//            StepMotorReset();
+//            step_motor_usr.tick_tmp = HAL_GetTick();
+//
+//            break;
+//
+//        default:
+//            StepMotorReset();
+//            HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1);
+//            break;
+//    }
+//
+//}
+void open_ration_cal()
+{
+    if (step_motor_usr.max_position == 0)
+    {
+        step_motor_usr.fault_status = 2;
+        return ;
+
+    }
+
+    step_motor_usr.open_percent = (step_motor_usr.position) / step_motor_usr.max_position;
+    if (step_motor_usr.open_percent <= 0.0096)
+        step_motor_usr.open_percent = 0;
+
+}
+unsigned char StepMotorHoming()
+{
+    if (step_motor_usr.fault_status == 0)
+    {
+        // step_motor_usr.mode = POS_CTRL;
+        step_motor_usr.pwm_total_pulse_count = step_motor_usr.max_position / step_motor_usr.distance_one_step *
+                                               step_motor_usr.ustep;
+        //step_motor_usr.pwm_total_pulse_count = 10;
+
+
+        Timer_update_Cal(step_motor_usr.freq);
+        StepMotorDirection(FORWARD);
+        StepMotorModeCtrl(MSTART);
+    }
+    else
+        return 0;
+
+
+}
+unsigned char StepMotorStatusProc()
+{
+    StepMotorFault();
+    if (step_motor_usr.time_start_flag == 1)
+    {
+        if (step_motor_usr.timeout_count < step_motor_usr.down_time)
+            step_motor_usr.timeout_count ++;
+    }
+}
+
+
+// step motor position control
+
+void StepMotorCtrlByPosition(float pos)
+{
+    float set_pos;
+
+    set_pos = pos * step_motor_usr.max_position;
+    if (set_pos > step_motor_usr.max_position)
+    {
+        // step_motor_usr.state = STATE_WAIT_COMPLETE;
+        // step_motor_usr.op_complete = 1;
+        step_motor_usr.fault_status = 3;
+        set_pos = step_motor_usr.max_position;
+        //return ;
+
+    }
+    //  if (step_motor_usr.position <= pos)
+    {
+
+        //step_motor_usr.mode = POS_CTRL;
+        float tmp;
+        if (pos <= 0)
+        {
+            step_motor_usr.Fopen_count = 0;
+            if (step_motor_usr.home_count < step_motor_usr.retry_times)
+            {
+                step_motor_usr.home_count++;
+                tmp = step_motor_usr.position + 1; //step_motor_usr.ustep;
+                step_motor_usr.dir = FORWARD;
+            }
+            else
+            {
+                step_motor_usr.state = STATE_WAIT_COMPLETE;
+                step_motor_usr.op_complete = 1;
+                StepMotorModeCtrl(MSTOP);
+                tmp = 0;
+                step_motor_usr.position  = 0;
+            }
+        }
+        else
+        {
+            step_motor_usr.home_count = 0;
+            if (pos >= 1)
+            {
+                if (step_motor_usr.Fopen_count < step_motor_usr.retry_times)
+                {
+                    step_motor_usr.Fopen_count++;
+                    //                    if (step_motor_usr.position >= 0.9 * step_motor_usr.max_position)
+                    //                        tmp = step_motor_usr.position + 2 ; //step_motor_usr.ustep;
+                    //                    else
+                    tmp = step_motor_usr.max_position - step_motor_usr.position ; //step_motor_usr.ustep;
+
+                    step_motor_usr.dir = BACKWARD;
+                }
+                else
+                {
+                    step_motor_usr.state = STATE_WAIT_COMPLETE;
+                    step_motor_usr.op_complete = 1;
+                    StepMotorModeCtrl(MSTOP);
+                    tmp = 0;
+                    step_motor_usr.position  =  step_motor_usr.max_position;
+                }
+            }
+            else
+            {
+                if (set_pos < step_motor_usr.position)
+                {
+                    tmp = step_motor_usr.position - set_pos;
+                    step_motor_usr.dir = FORWARD;
+
+                }
+
+                else
+                {
+                    tmp = set_pos - step_motor_usr.position;
+                    step_motor_usr.dir = BACKWARD;
+                }
+                if (step_motor_usr.position >= (step_motor_usr.max_position + 1))
+                {
+                    tmp = 0;
+                }
+                step_motor_usr.Fopen_count = 0;
+
+            }
+        }
+        tmp = tmp * step_motor_usr.ustep / step_motor_usr.distance_one_step ;
+        tmp = round(tmp);
+        step_motor_usr.pwm_total_pulse_count = tmp;
+        if (step_motor_usr.pwm_total_pulse_count < step_motor_usr.ustep)
+        {
+            if (step_motor_usr.pwm_total_pulse_count > 0)
+                step_motor_usr.pwm_total_pulse_count = step_motor_usr.ustep;
+        }
+        step_motor_usr.dma_buf[0] = step_motor_usr.arr / 2;
+
+        //if (step_motor_usr.fault_status == 0&&step_motor_usr.pwm_total_pulse_count>5)
+        if (step_motor_usr.pwm_total_pulse_count > step_motor_usr.ustep)
+        {
+            Timer_update_Cal(step_motor_usr.freq);
+            StepMotorDirection(step_motor_usr.dir);
+            StepMotorModeCtrl(MSTART);
+
+
+        }
+        else
+        {
+            step_motor_usr.state = STATE_WAIT_COMPLETE;
+            step_motor_usr.op_complete = 1;
+            StepMotorModeCtrl(MSTOP);
+
+        }
+    }
+
+}
+
+
+unsigned char StepMotorStateProc(unsigned char state)
+{
+    // position control
+
+    unsigned char result;
+    result = 0;
+    if (step_motor_usr.state != STATE_WAIT_COMPLETE)
+        step_motor_usr.state = state;
+    switch (step_motor_usr.state)
+    {
+        case STATE_HOME:
+            StepMotorHoming();
+            step_motor_usr.state = STATE_WAIT_COMPLETE;
+            break;
+
+        case STATE_MOVE:
+            StepMotorCtrlByPosition(getStepMotor()->set_position);
+            step_motor_usr.state = STATE_WAIT_COMPLETE;
+            break;
+
+        case STATE_FOPEN:
+            getStepMotor()->set_position = 1;
+            //getStepMotor()->position = getStepMotor()->max_position;
+            StepMotorCtrlByPosition(getStepMotor()->set_position);
+            step_motor_usr.state = STATE_WAIT_COMPLETE;
+            break;
+        case STATE_WAIT_COMPLETE:
+            if (getStepMotor()->op_complete == 1)
+            {
+                step_motor_usr.state = STATE_IDLE;
+                result = 1;
+            }
+
+            break;
+        default:
+        case STATE_IDLE:
+            StepMotorModeCtrl(MSTOP);
+            result = 1;
+            break;
+
+    }
+    return result;
+}
+unsigned char command;
+
+void StepMotorTeset(void)
+{
+    //    static unsigned char state = 0;
+    //
+    //    switch (state)
+    //    {
+    //        case 0:
+    //
+    //            if (StepMotorStateProc(STATE_HOME) == 1)
+    //            {
+    //                getStepMotor()->op_complete = 0;
+    //                getStepMotor()->position = 0;
+    //                getStepMotor()->set_position = 0.5;
+    //                state ++;
+    //            }
+    //            break;
+    //
+    //        case 1:
+    //
+    //
+    //            if (StepMotorStateProc(STATE_MOVE) == 1)
+    //            {
+    //                getStepMotor()->op_complete = 0;
+    //
+    //                state ++;
+    //                getStepMotor()->set_position = 0.8;
+    //
+    //            }
+    //            break;
+    //        case 2:
+    //            getStepMotor()->set_position = 1;
+    //
+    //            if (StepMotorStateProc(STATE_MOVE) == 1)
+    //            {
+    //                getStepMotor()->op_complete = 0;
+    //                state ++;
+    //            }
+    //            break;
+    //        case 3:
+    //            getStepMotor()->set_position = 0.9;
+    //
+    //            if (StepMotorStateProc(STATE_MOVE) == 1)
+    //            {
+    //                getStepMotor()->op_complete = 0;
+    //                state ++;
+    //            }
+    //            break;
+    //        case 4:
+    //
+    //            getStepMotor()->set_position = 0;
+    //            if (StepMotorStateProc(STATE_MOVE) == 1)
+    //            {
+    //                getStepMotor()->op_complete = 0;
+    //
+    //                state++;
+    //            }
+    //            break;
+    //        case 5:
+    //            HAL_Delay(2000);
+    //            state = 0;
+    //
+    //            break;
+    //
+    //
+    //    }
+
+    if(StepMotorCtrl(command)== 1)
+    {
+		command = command ++;
+		if(command >=MOVE_STOP)
+			command = 1;
+	}
+
+}
+
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+
+    uint32_t tmp;
+    uint32_t pulse_count;
+    if (htim == &htim15)
+    {
+        if (step_motor_usr.pwm_laod_pulse_count <= 256)
+        {
+            pulse_count = step_motor_usr.pwm_laod_pulse_count;
+        }
+        else
+        {
+            if (step_motor_usr.pwm_inst_pulse_count < step_motor_usr.pwm_laod_pulse_count)
+            {
+                step_motor_usr.pwm_inst_pulse_count = step_motor_usr.pwm_inst_pulse_count + 256;
+                if (step_motor_usr.pwm_laod_pulse_count > step_motor_usr.pwm_inst_pulse_count)
+                {
+                    tmp = step_motor_usr.pwm_laod_pulse_count - step_motor_usr.pwm_inst_pulse_count;
+                    pulse_count = step_motor_usr.pwm_inst_pulse_count -
+                                  step_motor_usr.pwm_inst_last_pulse_count;//detal pusle
+                    step_motor_usr.pwm_inst_last_pulse_count = step_motor_usr.pwm_inst_pulse_count;
+
+                }
+
+                else
+                {
+                    pulse_count = step_motor_usr.pwm_inst_pulse_count -
+                                  step_motor_usr.pwm_inst_last_pulse_count;//detal pusle
+                    pulse_count = pulse_count + step_motor_usr.pwm_laod_pulse_count -
+                                  step_motor_usr.pwm_inst_pulse_count ;
+                    tmp  = 0;
+                }
+
+                if (tmp <= 256)
+                {
+                    if (tmp > 0)
+                        HAL_TIM_PWM_Start_DMA(&htim15, TIM_CHANNEL_1, (uint32_t *)step_motor_usr.dma_buf, tmp);
+                    else
+                    {
+                        step_motor_usr.pwm_inst_pulse_count = 0;
+
+                    }
+                }
+                else
+                {
+                    HAL_TIM_PWM_Start_DMA(&htim15, TIM_CHANNEL_1, (uint32_t *)step_motor_usr.dma_buf, 256);
+
+                }
+            }
+
+        }
+
+        if (step_motor_usr.dir == FORWARD)
+            step_motor_usr.position = step_motor_usr.position -  pulse_count / step_motor_usr.ustep *
+                                      step_motor_usr.distance_one_step;
+        else
+            step_motor_usr.position = step_motor_usr.position +  pulse_count / step_motor_usr.ustep *
+                                      step_motor_usr.distance_one_step;
+
+        if (step_motor_usr.position < step_motor_usr.min_position)
+            step_motor_usr.position = 0;
+        if (step_motor_usr.position > step_motor_usr.max_position)
+            step_motor_usr.position = step_motor_usr.max_position;
+        if (step_motor_usr.pwm_laod_pulse_count <= 256 || tmp == 0)
+        {
+            getStepMotor()->op_complete = 1;
+            HAL_TIM_PWM_Stop_DMA(&htim15, TIM_CHANNEL_1);
+            StepMotorModeCtrl(MSTOP);
+            step_motor_usr.pwm_inst_pulse_count = 0;
+            step_motor_usr.pwm_inst_last_pulse_count = 0;
+            step_motor_usr.pwm_laod_pulse_count = 0;
+            getStepMotor()->op_complete = 1;
+            pulse_count = 0;
+        }
+        open_ration_cal();
+
+
+    }
+
+}
+
+/***************************************************************************************/
+/*****************************************************************************
+command:
+	 MOVE_UP   
+	 MOVE_DOWN 
+	 MOVE_STOP 
+return 
+	0:nomal
+	1:step motor hit
+***************************************************************************/
+
+unsigned char StepMotorCtrl(unsigned char command)
+{
+    unsigned char result;
+    unsigned char state;
+    state = command;
+    result = 0;
+    if (step_motor_usr.step_motor_status != state)
+    {
+      step_motor_usr.time_start_flag = 1;
+        step_motor_usr.timeout_count = 0;
+        step_motor_usr.step_motor_status = state;
+
+    }
+    else
+    {
+      if (step_motor_usr.timeout_count >= step_motor_usr.up_time &&
+         step_motor_usr.step_motor_status == MOVE_UP)
+      {
+        result = 1;
+        state = MOVE_STOP;
+
+      }    
+    }
+    if (step_motor_usr.timeout_count >= step_motor_usr.down_time)
+    {
+        result = 1;
+        state = MOVE_STOP;
+
+    }
+
+    switch (state)
+    {
+        case MOVE_UP:
+           // step_motor_usr.up_time = UP_STEP_TIMEOUT;
+            step_motor_usr.dir = BACKWARD;
+            step_motor_usr.time_start_flag = 1;
+            Timer_update_Cal(step_motor_usr.freq);
+            StepMotorDirection(step_motor_usr.dir);
+            StepMotorModeCtrl(MSTART);
+
+            break;
+        case MOVE_MAX_UP:
+            step_motor_usr.up_time = DOWN_STEP_TIMEOUT;
+            step_motor_usr.dir = BACKWARD;
+            step_motor_usr.time_start_flag = 1;
+            Timer_update_Cal(step_motor_usr.freq);
+            StepMotorDirection(step_motor_usr.dir);
+            StepMotorModeCtrl(MSTART);
+
+            break;        
+        case MOVE_DOWN:
+            step_motor_usr.dir = FORWARD;
+            step_motor_usr.time_start_flag = 1;
+            Timer_update_Cal(step_motor_usr.freq);
+            StepMotorDirection(step_motor_usr.dir);
+            StepMotorModeCtrl(MSTART);
+
+            break;
+        
+        default:
+        case MOVE_STOP:
+            step_motor_usr.time_start_flag = 0;
+            //step_motor_usr.step_motor_status = 0;
+            StepMotorModeCtrl(MSTOP);
+            //Timer_update_Cal(step_motor_usr.freq);
+            break;
+
+    }
+   return result;
+}
+

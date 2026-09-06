@@ -23,7 +23,7 @@ void led_ctrl(uint32_t delay_ms)
        if (delay_ms == 0xffffff0)
         {
             HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(ERR_GPIO_Port, ERR_Pin, GPIO_PIN_SET);
+			      HAL_GPIO_WritePin(ERR_GPIO_Port, ERR_Pin, GPIO_PIN_SET);
 			 
         }
 	   else 

@@ -2,6 +2,8 @@
 #define MENU_H_
 #include "main.h"
 #include "devinfo.h"
+
+
 typedef enum
 {
 	StandByPage = 0,
@@ -34,6 +36,7 @@ typedef enum
 	InfoIcon,
 	WarnIcon,
 	SetIcon,
+	ReturnIcon,
 	RandomIcon = 255
 }Iconenum;
 	
@@ -41,7 +44,7 @@ typedef enum
 	
 typedef enum
 {
-	date=SetIcon + 1,
+	date=ReturnIcon + 1,
 	counter,
 	maintance,
 	servicePack,
@@ -52,10 +55,18 @@ typedef enum
 	serNo,
 	
 }Infoenum;
-	
 typedef enum
 {
- lang = SetIcon + 1,
+	accVolume=ReturnIcon + 1,
+	resetAccVolume,
+	totalRunTime,
+	motorWorkHour,
+	completeStroke,
+	PowerSw,
+}Counterenum;	
+typedef enum
+{
+ lang = ReturnIcon + 1,
  ctrl,
  analog,
  analogOut,
@@ -87,11 +98,11 @@ typedef enum
 
 typedef enum
 {
-	MaxRunicon = 4,
-	MaxInfoIcon = 11,
+	MaxRunicon = 5,
+	MaxInfoIcon = 11+ReturnIcon + 1,
 	MaxWarnIcon = 10,
 	MaxSetIcon = 14,
-	MaxCounterIcon = 6,
+	MaxCounterIcon = 6+ReturnIcon + 1,
 	MaxLang = 2,
 	MaxCtrl = 7,
 	MaxAnalog = 4,
@@ -124,14 +135,23 @@ typedef struct
 	 char name[32];
 	//unsigned int index;
 }bmpMap_stru;
-
+typedef struct
+{
+unsigned int cmdSpecif;
+unsigned int page;
+unsigned char *pstr;
+unsigned int arrib;
+unsigned int pollIndex;
+unsigned int dattyp;//0:  1:unsigned char 2:uint32
+unsigned char dataSize;
+}menudatMap;
 typedef struct
 {
 uint16_t index;
 unsigned char fontBuf[32];
-unsigned char len;
 uint32_t arrib;//0:
-
+unsigned char pollIndex;
+menudatMap *datMap;
 }font_stru;
 
 typedef struct
@@ -143,12 +163,26 @@ typedef struct
     unsigned char nextMenuNum;
     unsigned char currMaxIconNum;
     void (*Current_Operation)(void);//当前操作(函数指针)
+    unsigned char rootMenuNum;	
     unsigned char changeMenuSig; //1需要跳转
-    unsigned char index;
+	unsigned char index;
+	
     
 } Menu_table_t;
 
+typedef struct
+{
+	unsigned char infocCount;
+	unsigned char infoNowNum;
+	unsigned char maxInfoCount;
+	unsigned char maxCountScreen;
+	unsigned char buf[20];
+	
+}pageStru;
 
+
+
+pageStru *getPageInfo(void);
 
 #endif
 

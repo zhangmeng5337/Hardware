@@ -47,6 +47,8 @@ typedef struct
    uint32_t flashRefreshTime;
    float outh;
    float outL;
+	unsigned char ninfocCount;
+	unsigned char nmaxInfoCount;
 } app_data;
 
 typedef struct

@@ -1,0 +1,280 @@
+#include <stdint.h>
+#include <stdbool.h>
+#include <math.h>
+#include "main.h"
+#include "meter.h"
+
+meter_struct meter =
+{
+    .molweight = 28.8f,
+
+};
+//void FastKalmanFilter(FastKalmanFilter_struct *fkf, double Qparam, double Rparam, double samplingPeriod, double PNStd, double MNstd, double initialValue)
+//{
+//  fkf->Fparam = 1;//kg
+//  fkf->Hparam = 1;
+//  fkf->Y = 0.0;  /// Last_P
+//  fkf->Bparam = samplingPeriod;
+//  fkf->Qparam = Qparam * PNStd * PNStd;//Q
+//  fkf->Rparam = Rparam * MNstd * MNstd;//R
+//  // system dynamic parameters
+//  fkf->XHatPresent = initialValue;//out
+//  fkf->SPresent = MNstd * MNstd;//Now_P
+//}
+/**
+  @brief Initialize Pressure Meter Parameters
+*/
+void loadMeterParameters(void)
+{
+
+    for (uint8_t i = 0; i < MAX_CDG_SENSORS; i++)
+    {
+        meter.cdg[i].cdgfs = nvmem.app.pressureObj.cdg[i].fullscale;  // 1000 TORR
+        meter.cdg[i].cdggain = nvmem.app.pressureObj.cdg[i].adp0poly[1];  // gain to convert raw to fractional ADC
+        meter.cdg[i].cdgoffset = nvmem.app.pressureObj.cdg[i].adp0poly[0];  // offset to convert raw fractional ADC
+        //        FastKalmanFilter(&meter.fkfcdgctrl[i], 0.1f, 10.0f, 0.002, 0.04, 0.04, 0);
+        //        FastKalmanFilter(&meter.fkfcdg[i], nvmem.app.meterObj.fltcdg[i].Q, nvmem.app.meterObj.fltcdg[i].R, 0.002, 0.04, 0.04,
+        //                         0);
+        FastKalmanFilter(&meter.fkfcdgctrl[i], 0.05f, 15.0f, 1, 1, 1, 0);
+        FastKalmanFilter(&meter.fkfcdg[i], nvmem.app.meterObj.fltcdg[i].Q, nvmem.app.meterObj.fltcdg[i].R, 1, 1, 1,
+                         0);
+		FastKalmanFilter(&meter.kfltpressure, 0.05f, 5.0f, 1, 1, 1, 0);
+    }
+
+}
+
+/**
+  @brief Calculate pressure values
+*/
+void calcPressure(pressure_struct *cdg)
+{
+    // convert counts (cdgraw) to fraction of FS. Range is 0.0 to 1.0
+    cdg->cdgfrac = (cdg->cdgraw * 2.384185791015625e-7f) * cdg->cdggain + cdg->cdgoffset;
+    // convert fractional pressure reading to Native UNITS pressure reading (TORR)
+    cdg->cdgpmvalue = cdg->cdgfrac * cdg->cdgfs;
+
+}
+float last_cdgfrac[MAX_CDG_SENSORS];
+float pre_rate[MAX_CDG_SENSORS];
+unsigned int debounce = 0;
+float max_prate, max_prate2;
+float p_rate[MAX_CDG_SENSORS];
+float last_p[MAX_CDG_SENSORS];
+float p_now, p_last;
+float div_time = 50,pressure_last;
+/**cdgpmvalue
+  @brief Meter Calcautions
+*/
+void calcMeter(void)
+{
+    static unsigned char index = 0;
+    float *p;
+    static unsigned char div = 50;
+
+    //	if(div -- == 0)
+    //	{
+    //		if (meter.cdg[1].cdgpmvalue <10&&meter.cdg[1].cdgpmvalue >=-0.01)
+    //		{
+    //		   float cdg1_pmvalue;
+    //		   cdg1_pmvalue = (meter.cdg[1].cdgpmvalue - meter.cdg[0].cdgpmvalue)/1000.0 +  meter.cdg[0].cdgoffset;
+    //		    meter.cdg[0].cdgoffset = cdg1_pmvalue;
+    //
+    //		}
+    //		div = 250;
+    //	}
+
+    if (div -- == 0)
+    {
+        for (uint8_t i = 0; i < MAX_CDG_SENSORS; i++)
+        {
+            p_rate[i] = (meter.cdg[i].cdgpmvalue - last_p[i]) / 0.5;
+            last_p[i] = meter.cdg[i].cdgpmvalue;
+        }
+
+        div = 50;
+    }
+    for (uint8_t i = 0; i < MAX_CDG_SENSORS; i++)
+    {
+        //    GetEstimation(&meter.fkfcdgctrl[i], meter.cdg[i].cdgfrac, 0.0, &meter.kfltnormalizedcdg[i]);  // run a Kalman Filter on raw normalized CDG pressure value for control system
+        //    meter.kfltnormalizedcdgunits[i] = meter.kfltnormalizedcdg[i] * meter.cdg[i].cdgfs;  // calculate each CDG pressure values in FS UNITS
+        //    GetEstimation(&meter.fkfcdg[i], meter.kfltnormalizedcdg[i], 0.0f, &meter.normalizedcdg[i]); // Kalamn filter for customer output
+        //    meter.normalizedcdgunits[i] = meter.normalizedcdg[i] * meter.cdg[i].cdgfs;
+
+        pre_rate[i] = fabs(last_cdgfrac[i] - meter.cdg[i].cdgfrac * meter.cdg[i].cdgfs);
+        if (pre_rate[0] > max_prate)
+            max_prate = pre_rate[i];
+        if (pre_rate[1] > max_prate2)
+            max_prate2 = pre_rate[i];
+        last_cdgfrac[i] = meter.cdg[i].cdgfrac * meter.cdg[i].cdgfs;
+
+        if (last_cdgfrac[i] != 0 && pre_rate[i] < 0.03)
+            meter.mvnormalizedcdg_buf[i][index++] = meter.cdg[i].cdgfrac;
+        else
+        {
+            if (index > 0)
+                meter.mvnormalizedcdg_buf[i][index++] = meter.mvnormalizedcdg_buf[i][index - 1] * 0.9 +
+                                                        meter.cdg[i].cdgfrac * 0.1;
+        }
+
+    }
+    if (index < AVERAGE_SIZE)
+    {
+        ;// index++; ;
+
+    }
+    else
+    {
+
+        for (unsigned char j = 0; j < MAX_CDG_SENSORS; j++)
+        {
+            p = meter.mvnormalizedcdg_buf[j];
+            MedianFilter(p, index, &meter.mvnormalizedcdg[j]);
+        }
+        index = 0;
+        for (unsigned char j = 0; j < MAX_CDG_SENSORS; j++)
+        {
+            kalman_filter(&meter.fkfcdgctrl[j], meter.mvnormalizedcdg[j],
+                          &meter.kfltnormalizedcdg[j]);
+            kalman_filter(&meter.fkfcdg[j], meter.kfltnormalizedcdg[j],
+                          &meter.normalizedcdg[j]);
+
+
+            //            meter.kfltnormalizedcdg[j] = kalman_filter(&kalman_usr[j],  meter.mvnormalizedcdg[j]);
+            meter.kfltnormalizedcdgunits[j] = meter.kfltnormalizedcdg[j] *
+                                              meter.cdg[j].cdgfs;  // calculate each CDG pressure values in FS UNITS
+
+            //            meter.normalizedcdg[j] = kalman_filter(&kalman_usr[j+2],  meter.kfltnormalizedcdg[j]);
+            meter.normalizedcdgunits[j] = meter.normalizedcdg[j] * meter.cdg[j].cdgfs;
+
+
+        }
+    }
+
+
+    // How to use CDG1 and CDG2? do we use some merging algotithm? how is the tool going to set this up?
+    // for now, lets use CDG1 all the time
+
+    //       p_now = meter.cdg[1].cdgpmvalue;
+    //	   if((p_now-p_last) >= 0.0002 &&p_last!=0)
+    //	   	{
+    //			if(meter.cdg[1].cdgpmvalue > 9.0&& meter.cdg[0].cdgpmvalue > meter.cdg[1].cdgpmvalue)
+    //			{
+    //	            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[0];
+    //                meter.normalizedcdgp = meter.normalizedcdg[0];
+    //                meter.normalizedcdgpunits =  meter.normalizedcdgunits[0];
+    //			}
+    //			else
+    //			{
+    //	            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[1] / 100;
+    //                meter.normalizedcdgp = meter.normalizedcdg[1] / 100;
+    //                meter.normalizedcdgpunits =  meter.normalizedcdgunits[1];
+    //			}
+    //	   }
+    //	   else  if((p_last-p_now) >= 0.0002 &&p_last!=0)
+    //	   	{
+    //			if(meter.cdg[1].cdgpmvalue <=8.8)
+    //			{
+    //	            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[1] / 100;
+    //                meter.normalizedcdgp = meter.normalizedcdg[1] / 100;
+    //                meter.normalizedcdgpunits =  meter.normalizedcdgunits[1];
+    //			}
+    //			else
+    //			{
+    //	            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[0];
+    //                meter.normalizedcdgp = meter.normalizedcdg[0];
+    //                meter.normalizedcdgpunits =  meter.normalizedcdgunits[0];
+    //			}
+    //	   }
+    //	   else
+    //	   	{
+    //			if(meter.cdg[1].cdgpmvalue < 9.0)
+    //			{
+    //	            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[1] / 100;
+    //                meter.normalizedcdgp = meter.normalizedcdg[1] / 100;
+    //                meter.normalizedcdgpunits =  meter.normalizedcdgunits[1];
+    //			}
+    //			else if(meter.cdg[1].cdgpmvalue < meter.cdg[1].cdgpmvalue)
+    //			{
+    //	            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[0];
+    //                meter.normalizedcdgp = meter.normalizedcdg[0];
+    //                meter.normalizedcdgpunits =  meter.normalizedcdgunits[0];
+    //			}
+    //	   }
+    //	   p_last = meter.cdg[1].cdgpmvalue;
+
+
+    if (meter.cdg[1].cdgpmvalue < 9)
+    {
+        meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[1] / 100;
+        meter.normalizedcdgp = meter.normalizedcdg[1] / 100;
+        meter.normalizedcdgpunits =  meter.normalizedcdgunits[1];
+    }
+    else if (meter.cdg[1].cdgpmvalue < 10)
+    {
+        meter.kfltnormalizedcdgp = (meter.kfltnormalizedcdg[1] / 100 +
+                                    meter.kfltnormalizedcdg[0]) / 2;
+        meter.normalizedcdgp = (meter.normalizedcdg[1] / 100 +
+                                meter.normalizedcdg[0]) / 2;
+        meter.normalizedcdgpunits = (meter.normalizedcdgunits[1] +
+                                     meter.normalizedcdgunits[0]) / 2;
+    }
+    else
+    {
+        meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[0];
+        meter.normalizedcdgp = meter.normalizedcdg[0];
+        meter.normalizedcdgpunits =  meter.normalizedcdgunits[0];
+    }
+
+    if(div_time-- == 0)
+    {
+		float pressure_rate = (meter.kfltnormalizedcdgp -pressure_last)*1000;
+		pressure_last = meter.kfltnormalizedcdgp;
+		kalman_filter(&meter.kfltpressure, pressure_rate,
+                          &meter.pressure_slope);
+		div_time = 50;
+		
+	}
+
+    //    if (meter.cdg[1].cdgpmvalue > 9.0 && meter.cdg[0].cdgpmvalue > meter.cdg[1].cdgpmvalue)
+    //    {
+    //
+    //        if (meter.cdg[0].cdgpmvalue - meter.cdg[1].cdgpmvalue > 0.02)
+    //        {
+    //            //	        if (debounce >= 50)
+    //            //	        {
+    //            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[0];
+    //            meter.normalizedcdgp = meter.normalizedcdg[0];
+    //            meter.normalizedcdgpunits =  meter.normalizedcdgunits[0];
+    //        }
+    //        else
+    //        {
+    //
+    //            debounce = 0;
+    //            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[1] / 100;
+    //            meter.normalizedcdgp = meter.normalizedcdg[1] / 100;
+    //            meter.normalizedcdgpunits =  meter.normalizedcdgunits[1];
+    //        }
+    //
+    //    }
+    //    else
+    //    {
+    //        if ((meter.cdg[0].cdgpmvalue - meter.cdg[1].cdgpmvalue) < 0.2 && meter.cdg[1].cdgpmvalue > 8.8&&
+    //			meter.cdg[0].cdgpmvalue >8.6)
+    //        {
+    //            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[0];
+    //            meter.normalizedcdgp = meter.normalizedcdg[0];
+    //            meter.normalizedcdgpunits = meter.normalizedcdgunits[0];
+    //
+    //        }
+    //        else
+    //        {
+    //            debounce = 0;
+    //            meter.kfltnormalizedcdgp = meter.kfltnormalizedcdg[1] / 100;
+    //            meter.normalizedcdgp = meter.normalizedcdg[1] / 100;
+    //            meter.normalizedcdgpunits = meter.normalizedcdgunits[1];
+    //        }
+    //
+    //    }
+
+
+}

@@ -1,0 +1,18 @@
+#include <stdint.h>
+#include "protocol.h"
+#include "meter.h"
+
+// 3  &meter.cdg[1].cdgpmvalue,
+const command_struct cmdSensor[] = 
+{    
+  {1,    _FLOAT32,     4,      &meter.cdg[0].cdgfrac,             0x00,       0x00,      _READ_ONLY   },
+  {2,    _FLOAT32,     4,      &meter.cdg[1].cdgfrac,             0x00,       0x00,      _READ_ONLY   },
+  {3,    _FLOAT32,     4,      &meter.cdg[0].cdgpmvalue,          0x00,       0x00,      _READ_ONLY   },
+  {4,    _FLOAT32,     4,      &meter.cdg[1].cdgpmvalue,          0x00,       0x00,      _READ_ONLY   },
+  {5,    _FLOAT32,     4,      &meter.normalizedcdgpunits,         0x00,       0x00,      _READ_ONLY   },
+
+  
+  // 200-300 for DeviceNet live attirbute reads
+  
+  {0x0000,   0x00,    0x00,   0x00,   0x00,   0x00}
+};

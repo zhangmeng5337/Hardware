@@ -122,7 +122,6 @@ float average_filter(float bArray, unsigned char num)
 
             flag = 1;
             count = 0;
-
         }
         sum = 0;
         if (flag == 1)

@@ -1,0 +1,146 @@
+#include "StepMotor.h"
+#include "math.h"
+#include "bsp_stepper_ctrl.h"
+#include "bsp_stepper_init.h"
+#include "bsp_encoder.h"
+extern TIM_HandleTypeDef htim15;
+StepMotor_stru step_motor_usr;
+void set_target_pos(float temp_val);
+//update pwm freq
+void Timer_update_Cal(float freq)
+{
+    float tmp, tmp1;
+    uint32_t result;
+    static uint32_t tick;
+
+    tmp = MAIN_FREQ / freq;
+    result = tmp;
+    step_motor_usr.arr =  result;
+
+    __HAL_TIM_SET_COUNTER(&htim15, 0);
+
+    __HAL_TIM_SET_AUTORELOAD(&htim15, step_motor_usr.arr);
+    __HAL_TIM_SET_COMPARE(&htim15, TIM_CHANNEL_1, step_motor_usr.arr / 2);
+
+}
+//estimate step motor speed by freq
+
+void StepMotorInit(void)
+{
+    step_motor_usr.max_position = 10;
+    step_motor_usr.min_position = 0;
+    step_motor_usr.real_pos_mm = step_motor_usr.max_position;
+    step_motor_usr.ustep = 8;
+    step_motor_usr.step_angle = 1.8 / step_motor_usr.ustep;
+    step_motor_usr.us_one_step = 0.0122 / step_motor_usr.ustep;
+    step_motor_usr.distance_one_cycle = 0.0122 * 200;
+    step_motor_usr.encoder_error_resolution = step_motor_usr.ustep / PULSE_RATIO;
+    step_motor_usr.pos_error_resolution = step_motor_usr.us_one_step;
+    step_motor_usr.freq = 9000;
+    get_sys_sataus()->timeout = 5000;
+    Encoder_Init();
+    // HAL_TIM_Base_Start(&htim15);
+    Timer_update_Cal(step_motor_usr.freq);
+    /* 启动比较输出并使能中断 */
+    //HAL_TIM_OC_Start(&htim15, MOTOR_PUL_CHANNEL_x);
+    set_target_pos(0);
+    while (get_encoder()->hit_flag == 0)
+        ;
+    get_encoder()->hit_flag = 0;
+
+}
+void detal_pos_cal(float set_pos)
+{
+    float detal_pos;
+    step_motor_usr.set_position = set_pos;
+    step_motor_usr.requset_pos_mm = step_motor_usr.set_position * step_motor_usr.max_position;
+
+    if (set_pos < 0)
+        return ;
+    detal_pos = step_motor_usr.requset_pos_mm - step_motor_usr.real_pos_mm;
+    if (fabs(detal_pos) > step_motor_usr.pos_error_resolution)
+    {
+        if (detal_pos > 0)
+        {
+            step_motor_usr.dir = BACKWARD;
+            StepMotorDirection(BACKWARD);
+        }
+        else
+        {
+            step_motor_usr.dir = FORWARD;
+            StepMotorDirection(FORWARD);
+        }
+
+        step_motor_usr.requ_encoder_pulse = step_motor_usr.requset_pos_mm / step_motor_usr.distance_one_cycle * SPR /
+                                            PULSE_RATIO;//encoder pulse count
+        Set_Stepper_Start();
+    }
+    else
+    {
+        step_motor_usr.requ_encoder_pulse = get_encoder()->capture_count;
+        Set_Stepper_Stop();
+    }
+}
+void set_target_pos(float temp_val)
+{
+    detal_pos_cal(temp_val);
+}
+
+/**
+  * @brief  获取目标值   4000   2.4
+  * @param  无
+	*	@note 	无
+  * @retval 目标值
+  */
+float get_pos(void)
+{
+    step_motor_usr.real_pos_percent = step_motor_usr.real_pos_mm /
+                                      (step_motor_usr.max_position - step_motor_usr.min_position);
+    return  step_motor_usr.real_pos_percent;    // 设置当前的目标值
+}
+void cal_real_pos(void)
+{
+    if (get_encoder()->hit_flag == 1 &&  step_motor_usr.dir == FORWARD)
+    {
+        step_motor_usr.real_pos_mm = 0;
+        step_motor_usr.min_position = 0;
+        clear_encoder();
+    }
+    step_motor_usr.real_pos_mm = get_encoder()->capture_count * PULSE_RATIO / SPR *
+                                 step_motor_usr.distance_one_cycle;
+}
+unsigned char StepMotorFault()
+{
+    if (HAL_GPIO_ReadPin(MOTOR_Fault_GPIO_Port, MOTOR_Fault_Pin) == 0)
+    {
+        step_motor_usr.fault_status = 1;
+    }
+    else
+    {
+        if (step_motor_usr.fault_status == 1)
+            step_motor_usr.fault_status = 0;
+    }
+    return step_motor_usr.fault_status ;
+
+}
+void StepMotorStatusProc(void)
+{
+    float tmp;
+    StepMotorFault();
+    Stepper_Ctrl();
+    get_encoder()->error = step_motor_usr.requ_encoder_pulse - get_encoder()->capture_count;
+
+    if (fabs(get_encoder()->error) <= step_motor_usr.encoder_error_resolution &&
+            get_encoder()->capture_count != 0)
+    {
+        Set_Stepper_Stop();
+    }
+    cal_real_pos();
+}
+unsigned char StepMotorCtrl(float set_pos)
+{
+    set_target_pos(set_pos);
+
+}
+StepMotor_stru *getStepMotor(void)
+{}

@@ -1,0 +1,60 @@
+#ifndef __METER_H_
+#define __METER_H_
+
+#include <stdint.h>
+#include <stdbool.h>
+#include "nvmem.h"  // for MAX_LINCURVE_CAL
+#include "algorithms.h" // for single_exp_struct
+#include "utilities.h"
+#include "adaptive_kalman.h"
+
+#define MAX_CDG_SENSORS 2
+#define AVERAGE_SIZE   5
+typedef struct {
+  uint32_t cdgraw;
+  float cdggain;
+  float cdgoffset;
+  float cdgoffsetNew;
+  float cdgfrac;
+  float cdgfs;
+  float cdgpmvalue;  
+  float cdgoffsetTmp;
+  float cdgvalueNow;  
+} pressure_struct;
+
+typedef struct {
+  uint32_t raw[6];
+  pressure_struct cdg[MAX_CDG_SENSORS];
+  
+  FastKalmanFilter_struct fkfcdgctrl[MAX_CDG_SENSORS];  // Kalamn filter to control system
+  FastKalmanFilter_struct fkfcdg[MAX_CDG_SENSORS];      // Kalamn filtelr to customer signal
+  float kfltnormalizedcdg[MAX_CDG_SENSORS];
+  float kfltnormalizedcdgunits[MAX_CDG_SENSORS];  
+  float kfltnormalizedcdgp;  
+  
+  // Another filter?
+  float mvnormalizedcdg_buf[MAX_CDG_SENSORS][AVERAGE_SIZE];   
+  float mvnormalizedcdg[MAX_CDG_SENSORS]; 
+  float normalizedcdg[MAX_CDG_SENSORS];
+  float normalizedcdgunits[MAX_CDG_SENSORS];
+  float adativeklft[MAX_CDG_SENSORS];
+  float adativeklftcdgunits[MAX_CDG_SENSORS];
+  float normalizedcdgp;
+  float normalizedcdgpunits;
+  float pressure_slope;
+  FastKalmanFilter_struct kfltpressure;
+  float molweight; // Placeholder to satisfy control system requirement. Use N2 for now 28.8
+  float cdg_sw;
+  unsigned char adjustMode;
+  unsigned char sensorMode;
+  uint32_t slopeCalPeriod;
+} meter_struct;
+
+extern meter_struct meter;
+extern AdaptiveKalman adaKfP[MAX_CDG_SENSORS];
+
+extern void loadMeterParameters(void);
+extern void calcPressure(pressure_struct *cdg);
+extern void calcMeter(void);
+
+#endif

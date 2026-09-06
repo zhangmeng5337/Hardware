@@ -52,10 +52,17 @@ typedef union {
 
 /* Exported constants -------------1------------------------------------------*/
 /* USER CODE BEGIN EC */
+//#define FW_NORMAL		1 //0:normal 1:mks
+#define FW_MKS          1
+#ifdef  FW_MKS
+#define FW_REVISION_MAJOR   3
+#define FW_REVISION_MINOR   0
+#define FW_REVISION_PATCH   0
+#else
 #define FW_REVISION_MAJOR   2
-#define FW_REVISION_MINOR   12
-#define FW_REVISION_PATCH   11
-
+#define FW_REVISION_MINOR   14
+#define FW_REVISION_PATCH   0
+#endif
 #define FW_BL_REVISION_MAJOR   0
 #define FW_BL_REVISION_MINOR   0
 #define FW_BL_REVISION_PATCH   1

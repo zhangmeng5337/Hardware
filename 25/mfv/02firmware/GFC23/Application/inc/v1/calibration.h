@@ -10,7 +10,7 @@
 #define FULL_SCALE      	97//torr
 #define FULL_SCALE_RATIO      0.93//torr
 
-#define CALI_TIME_OUT   300000
+#define CALI_TIME_OUT   600000//300s
 #define TORR_TO_PA      133.32237
 #define HE_ALPHA        0.487092169
 typedef struct

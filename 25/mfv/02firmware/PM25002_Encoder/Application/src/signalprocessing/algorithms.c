@@ -1,0 +1,626 @@
+/**
+    @filename   algorithms.c
+    @brief      general purpose algorithms function should be placed in this file.
+*/
+#include <math.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include "arm_math.h"
+#include "algorithms.h"
+
+// Conditional operation for calculating Min & Max values.
+#define max(x1, x2) ( (x1) > (x2) ? (x1) : (x2) )
+#define min(x1, x2) ( (x1) < (x2) ? (x1) : (x2) )
+
+/**
+    @brief generate Blackman-Harris window
+           w = A(1) - A(2)*cos(x) + A(3)*cos(2.0*x) - A(4)*cos(3.0*x);
+*/
+void generate_blackmanharris_window(float *win, uint32_t len) {
+    float x;
+    float a[4] = {0.35875f, 0.48829f, 0.14128f, 0.01168f};
+    for (uint32_t i=0; i< len; i++) {
+        x = i*2.0f*PI/(len-1);
+        win[i] = a[0] - a[1]*cos(x) + a[2]*cos(2.0f*x) - a[3]*cos(3.0f*x);
+    }
+    
+}
+
+/**
+    @brief  %QINT - quadratic interpolation of three adjacent samples
+            %
+            % [p,y,a] = qint(ym1,y0,yp1) 
+            %
+            % returns the extremum location p, height y, and half-curvature a
+            % of a parabolic fit through three points. 
+            % Parabola is given by y(x) = a*(x-p)^2+b, 
+            % where y(-1)=ym1, y(0)=y0, y(1)=yp1. 
+*/
+void parabolic_interpolation(float ym1, float y0, float yp1, float *p, float *y, float *a) {
+
+    *p = (yp1 - ym1)/(2.0f*(2.0f*y0 - yp1 - ym1)); 
+    *y = y0 - 0.25f*(ym1-yp1)*(*p);
+    *a = 0.5f*(ym1 - 2*y0 + yp1);
+}
+
+/**
+  @brief Single Exponential Smoothing
+*/
+void single_exp(single_exp_struct *flt, float alpha, float data, float *filtered) {
+
+  if (isnan(data))
+      return;
+  
+  switch (flt->state) {
+    case 0:
+      flt->sums += data;
+      flt->sctr++;
+      if (flt->sctr == 4) {
+        flt->pSt = flt->sums/flt->sctr;  // initial smoothed value from 4 data points 
+        flt->pyt = data;       // previous y. pty is Yt-1
+        *filtered = flt->pSt;
+        flt->state = 1;
+      }
+      break;
+    case 1:
+      *filtered = alpha * flt->pyt + (1.0f - alpha) * flt->pSt;
+      flt->pyt = data;       // save for next cycle
+      flt->pSt = *filtered;  // save for next cycle
+      break;
+  }
+    
+
+}
+
+/**
+    @brief flow filter moving average version for display
+*/
+void filter_mave(mave_struct *sig, float data, float *filtered) {
+
+    if (isnan(data))
+        return;
+    
+    if (sig->movave_samples ==0) {
+        sig->sums = 0.0f;
+        *filtered = 0.0f;
+    }
+    
+    if (sig->movave_samples < sig->movave) {
+        sig->sig[sig->movave_samples++] = data;
+        sig->sums += data;
+        *filtered = sig->sums/sig->movave_samples;
+    } else {    
+        sig->sums = sig->sums - sig->sig[sig->oIndex] + data;
+        sig->sig[sig->oIndex++] = data;
+        *filtered = sig->sums/sig->movave_samples;
+        sig->oIndex %= sig->movave;
+    }
+}
+
+/**
+  @brief Initalize kalman filter parameters
+*/
+void init_kalman(kalman_struct *kconf, float iVal, float Q, float R) {
+  kconf->x_est_last = iVal;
+  kconf->P_last = 0;
+  kconf->Q = Q;
+  kconf->R = R;
+  kconf->K = 0;
+  kconf->P = 0;
+  kconf->P_temp = 0;
+  kconf->x_temp_est = 0;
+  kconf->x_est = 0;
+  kconf->z_measured = 0;
+  
+}
+
+/**
+  @brief A simple kalman filter implementaiton
+*/
+void kalman(kalman_struct *kconf, float Q, float R, float in, float *out) {
+  
+  if (kconf->wasinit != 0x5a) {
+    if ((in >= 0.0f) && (in <= 120.0f)) {
+      init_kalman(kconf, in, Q, R);
+      kconf->wasinit = 0x5a;    
+    }
+    return;
+  }
+  
+  //do a prediction
+  kconf->x_temp_est = kconf->x_est_last;
+  kconf->P_temp = kconf->P_last + kconf->Q;
+  //calculate the Kalman gain
+  kconf->K = kconf->P_temp * (1.0f/(kconf->P_temp + kconf->R));
+  //measure
+  kconf->z_measured = in; //the real measurement
+  //correct
+  kconf->x_est = kconf->x_temp_est + kconf->K * (kconf->z_measured - kconf->x_temp_est); 
+  kconf->P = (1- kconf->K) * kconf->P_temp;
+  //we have our new system
+  *out = kconf->x_est;
+  //update our last's
+  kconf->P_last = kconf->P;
+  kconf->x_est_last = kconf->x_est;
+  
+}
+
+/**
+*/
+void init_kalamn_v2(kalman2_struct *kms) {
+
+  arm_mat_init_f32(&kms->x.mp, 2, 1, (float32_t *)kms->x.md_f32);  
+  arm_mat_init_f32(&kms->P.mp, 2, 2, (float32_t *)kms->P.md_f32);
+  arm_mat_init_f32(&kms->F.mp, 2, 2, (float32_t *)kms->F.md_f32);
+  arm_mat_init_f32(&kms->H.mp, 1, 2, (float32_t *)kms->H.md_f32);
+  arm_mat_init_f32(&kms->R.mp, 1, 1, (float32_t *)kms->R.md_f32);
+  arm_mat_init_f32(&kms->I.mp, 2, 2, (float32_t *)kms->I.md_f32);
+
+}
+
+/**
+*/
+void predict(kalman2_struct *kms, float dt) {  
+  arm_mat_struct Fx;
+  arm_mat_struct FT;
+  arm_mat_struct FP;
+  arm_mat_struct FPFT;
+  arm_status status;
+
+  arm_mat_init_f32(&Fx.mp, 2, 1, (float32_t *)Fx.md_f32);
+  arm_mat_init_f32(&FT.mp, 2, 2, (float32_t *)FT.md_f32); 
+  arm_mat_init_f32(&FP.mp, 2, 2, (float32_t *)FP.md_f32); 
+  arm_mat_init_f32(&FPFT.mp, 2, 2, (float32_t *)FPFT.md_f32);   
+  
+  // Put dt into state transition matrix
+  kms->F.mp.pData[0*kms->F.mp.numCols + 1] = dt;
+  // x = F * x
+  status = arm_mat_mult_f32(&kms->F.mp, &kms->x.mp, &Fx.mp);
+  memcpy(&kms->x.md_f32, &Fx.md_f32, sizeof(kms->x.md_f32));
+  // P = F * P * FT
+  status = arm_mat_trans_f32(&kms->F.mp, &FT.mp);
+  status = arm_mat_mult_f32(&kms->F.mp, &kms->P.mp, &FP.mp);
+  status = arm_mat_mult_f32(&FP.mp, &FT.mp, &FPFT.mp);
+  memcpy(&kms->P.md_f32, &FPFT.md_f32, sizeof(kms->P.md_f32));
+}
+
+/**
+*/
+float measure_and_update(kalman2_struct *kms, float measurement, float dt) {
+  arm_status status;
+  
+  arm_mat_struct Z;
+  arm_mat_struct ZT;
+  arm_mat_struct Hx;
+  arm_mat_struct y;
+  arm_mat_struct HP;
+  arm_mat_struct HT;
+  arm_mat_struct HPHT;
+  arm_mat_struct S;
+  arm_mat_struct Sinv;
+  arm_mat_struct PHT;
+  arm_mat_struct K;
+  arm_mat_struct Ky;
+  arm_mat_struct xKy;
+  arm_mat_struct KH;
+  arm_mat_struct IKH;
+  arm_mat_struct IKHP;
+  
+  // Put dt into state transition matrix
+  kms->F.mp.pData[0*kms->F.mp.numCols + 1] = dt;
+  
+  arm_mat_init_f32(&Z.mp, 1, 1, (float32_t *)Z.md_f32);
+  Z.md_f32[0*Z.mp.numCols + 0] = measurement;
+  
+  arm_mat_init_f32(&ZT.mp, 1, 1, (float32_t *)ZT.md_f32);
+  status = arm_mat_trans_f32(&Z.mp, &ZT.mp);
+  arm_mat_init_f32(&Hx.mp, 1, 1, (float32_t *)Hx.md_f32);
+  status = arm_mat_mult_f32(&kms->H.mp, &kms->x.mp, &Hx.mp);
+  arm_mat_init_f32(&y.mp, 1, 1, (float32_t *)y.md_f32);
+  status = arm_mat_sub_f32(&ZT.mp, &Hx.mp, &y.mp);
+  
+  arm_mat_init_f32(&HP.mp, 1, 2, (float32_t *)HP.md_f32);
+  status = arm_mat_mult_f32(&kms->H.mp, &kms->P.mp, &HP.mp);
+  arm_mat_init_f32(&HT.mp, 2, 1, (float32_t *)HT.md_f32);
+  status = arm_mat_trans_f32(&kms->H.mp, &HT.mp);
+  arm_mat_init_f32(&HPHT.mp, 1, 1, (float32_t *)HPHT.md_f32);
+  status = arm_mat_mult_f32(&HP.mp, &HT.mp, &HPHT.mp);
+  arm_mat_init_f32(&S.mp, 1, 1, (float32_t *)S.md_f32);
+  status = arm_mat_add_f32(&HPHT.mp, &kms->R.mp, &S.mp);
+  
+  arm_mat_init_f32(&Sinv.mp, 1, 1, (float32_t *)Sinv.md_f32);
+  status = arm_mat_inverse_f32(&S.mp, &Sinv.mp);
+  arm_mat_init_f32(&PHT.mp, 2, 1, (float32_t *)PHT.md_f32);
+  status = arm_mat_mult_f32(&kms->P.mp, &HT.mp, &PHT.mp);  
+  arm_mat_init_f32(&K.mp, 2, 1, (float32_t *)K.md_f32);
+  status = arm_mat_mult_f32(&PHT.mp, &Sinv.mp, &K.mp);
+  arm_mat_init_f32(&Ky.mp, 2, 1, (float32_t *)Ky.md_f32);
+  status = arm_mat_mult_f32(&K.mp, &y.mp, &Ky.mp);
+  arm_mat_init_f32(&xKy.mp, 2, 1, (float32_t *)xKy.md_f32);
+  status = arm_mat_add_f32(&kms->x.mp, &Ky.mp, &xKy.mp);
+  memcpy(&kms->x.md_f32, xKy.md_f32, sizeof(kms->x.md_f32));
+  
+  arm_mat_init_f32(&KH.mp, 2, 2, (float32_t *)KH.md_f32);
+  status = arm_mat_mult_f32(&K.mp, &kms->H.mp, &KH.mp);
+  arm_mat_init_f32(&IKH.mp, 2, 2, (float32_t *)IKH.md_f32);
+  status = arm_mat_sub_f32(&kms->I.mp, &KH.mp, &IKH.mp);
+  arm_mat_init_f32(&IKHP.mp, 2, 2, (float32_t *)IKHP.md_f32);
+  status = arm_mat_mult_f32(&IKH.mp, &kms->P.mp, &IKHP.mp);
+  memcpy(&kms->P.md_f32, IKHP.md_f32, sizeof(kms->P.md_f32));
+  
+  kms->P.md_f32[0*kms->P.mp.numCols + 0] += kms->dynamic_P;
+  kms->P.md_f32[1*kms->P.mp.numCols + 1] += kms->dynamic_P;
+  
+  return kms->x.md_f32[0*kms->x.mp.numCols + 0];
+}
+
+/**
+*/
+void kalman_v2(kalman2_struct *kms, float t, float in, float *out) {
+  
+  if (!kms->wasinit) {
+    init_kalamn_v2(kms);
+    kms->wasinit = true;
+  }
+  predict(kms, t);
+  *out = measure_and_update(kms, in, t);
+}
+
+
+/**
+  @brief initializae butterworth
+*/
+void init_butterworth(butterworth_struct *bwf, double s, double cutoff, double load) {
+  
+  static double prevcutoff = 0;
+  
+  if (prevcutoff != cutoff) {  
+    uint8_t n = bwf->order >> 1;
+    double f = cutoff;
+    double a = tan(PI*f/s);
+    double a2 = a*a;
+    double r;    
+    for(uint8_t i=0; i<n; ++i) {
+      r = sin(PI*(2.0*i+1.0)/(4.0*n));
+      s = a2 + 2.0*a*r + 1.0;
+      bwf->A[i] = a2/s;
+      bwf->d1[i] = 2.0*(1-a2)/s;
+      bwf->d2[i] = -(a2 - 2.0*a*r + 1.0)/s;
+			bwf->w0[i] = load;
+			bwf->w1[i] = load;
+			bwf->w2[i] = load;
+    }
+    prevcutoff = cutoff;
+  }
+    
+}
+
+/**
+*/
+float mcalc(float *dy, uint8_t size) {
+
+  float Sx = 0.0f;
+  float Sy = 0.0f;
+  float Sxx = 0.0f;
+  float Syy = 0.0f;
+  float Sxy = 0.0f;
+  float dt = 0.0f;
+	float m = 0.0f;
+  
+  for (uint8_t i=0; i<size; i++) {
+    Sx+= dt; 
+    Sy+= dy[i];
+    Sxx+=(dt*dt);
+    Syy+=(dy[i]*dy[i]);
+    Sxy+=(dt*dy[i]);
+    dt += 0.002f;
+  }
+	m = ((size*Sxy - Sx*Sy)/(size*Sxx - Sx*Sx));
+	if (isnan(m) || isinf(m)) {
+		return 0.0f;
+	}
+		
+  return m;
+}
+
+/**
+*/
+void dynFilter(dynamicflt_struct *dyn, float flow, uint8_t *active, float critera) {
+
+  if (dyn->idx < DYNAMICFLTSPAN) {
+    dyn->fny[dyn->idx++] = flow;
+		dyn->hyst = HYSTERESISSPAN;
+    *active = 0;
+  } else {   
+    dyn->m = fabsf(mcalc(dyn->fny, dyn->idx));
+    for (int i=0; i<DYNAMICFLTSPAN-1; i++) {
+      dyn->fny[i] = dyn->fny[i+1];
+    }
+    dyn->fny[DYNAMICFLTSPAN-1] = flow;
+    if (dyn->m > critera) {
+      *active = 0;
+      dyn->hyst = HYSTERESISSPAN;
+    } else {
+      if (dyn->hyst == 0) {
+        *active = 1;
+      } else {
+        dyn->hyst--;
+        *active = 0;
+      }
+    }
+  }
+}
+
+/**
+*/
+void butterworth2(butterworth_struct *bwf, float in, float *out, uint8_t reset) {
+  double x = in;
+  
+  for(int i=0; i<(bwf->order >> 1); ++i) {
+		bwf->w0[i] = bwf->d1[i]*bwf->w1[i] + bwf->d2[i]*bwf->w2[i] + x;
+		x = bwf->A[i]*(bwf->w0[i] + 2.0*bwf->w1[i] + bwf->w2[i]);
+		bwf->w2[i] = bwf->w1[i];
+		bwf->w1[i] = bwf->w0[i];
+	}
+	
+	if (reset == 0) {
+		*out = in;
+	} else {
+		*out = (float)x;	
+	}
+		
+
+}
+
+/**
+	@brief 4th order; cutoff at -3db 20Hz, 2ms
+*/
+void butterworth(butterworth_struct *bwf, float in, float *out, uint8_t reset) {
+
+  float y = 0.0f;
+  
+  if (reset == 0) {
+    if (bwf->idx >= 4) {
+      bwf->wasinit = 1;
+    } else {
+			bwf->xn[bwf->idx++] = in;		
+		}
+    *out = in;
+  } else {
+    y = ((1.0 * (double)in + 4.0 * bwf->xn[3] + 6.0 * bwf->xn[2] + 4.0 * bwf->xn[1] + 1.0 * bwf->xn[0]) +
+    bwf->coeff[3] * bwf->yn[3] + 
+    bwf->coeff[2] * bwf->yn[2] + 
+    bwf->coeff[1] * bwf->yn[1] + 
+    bwf->coeff[0] * bwf->yn[0]) / bwf->gain;
+    
+    bwf->xn[0] = bwf->xn[1];
+    bwf->xn[1] = bwf->xn[2];
+    bwf->xn[2] = bwf->xn[3];
+    bwf->xn[3] = in;
+    
+    bwf->yn[0] = bwf->yn[1];
+    bwf->yn[1] = bwf->yn[2];
+    bwf->yn[2] = bwf->yn[3];
+    bwf->yn[3] = y;
+    
+		*out = y;
+  }  
+}
+
+/**
+*/
+void FastKalmanFilter(FastKalmanFilter_struct *fkf, double Qparam, double Rparam, double samplingPeriod, double PNStd, double MNstd, double initialValue)
+{
+  fkf->Fparam = 1;
+  fkf->Hparam = 1;
+  fkf->Y = 1.0;
+  fkf->Bparam = samplingPeriod;
+  fkf->Qparam = Qparam * PNStd * PNStd;
+  fkf->Rparam = Rparam * MNstd * MNstd;
+  // system dynamic parameters
+  fkf->XHatPresent = initialValue;
+  fkf->SPresent = MNstd * MNstd;
+}
+
+/**
+*/
+void GetEstimation(FastKalmanFilter_struct *fkf, double measuredData, double FinputValue, float *out)
+{
+  // state
+  fkf->XHatForward = fkf->Fparam * fkf->XHatPresent + fkf->Bparam * FinputValue;
+
+  // state uncertainty
+  fkf->PForward = fkf->Fparam * fkf->PPresent * fkf->Fparam + fkf->Qparam;
+
+  // update
+  fkf->Y = measuredData - fkf->Hparam * fkf->XHatForward;
+
+  // innovation
+  fkf->SForward = fkf->Hparam * fkf->PForward * fkf->Hparam + fkf->Rparam;
+
+  // coefficient
+  fkf->Kparam = fkf->PForward * fkf->Hparam * 1.0 / fkf->SForward;
+  fkf->XHatForward = fkf->XHatForward + fkf->Kparam * fkf->Y;
+  fkf->PForward = (1.0 - fkf->Kparam * fkf->Hparam) * fkf->PForward;
+
+  // update previous values
+  fkf->PPresent = fkf->PForward;
+  fkf->XHatPresent = fkf->XHatForward;
+  fkf->SPresent = fkf->SForward;
+
+  *out = (float)fkf->XHatForward;
+}
+
+/**
+*/
+void spbiased_nf(nf_struct *nf, float current_flow, float *out)
+{
+  float rate1, rate2;
+  float delta1, delta2;
+  float boost_pos, boost_neg;
+  float J0;
+  float clamped;
+  static uint8_t dband=0;
+  static uint8_t c0 = 0; // flag to clamp current_flow to 0
+
+  // figure out which state we're in. We'll pick the filter time constant based on that.
+  if ( ( *nf->nfBias > 0.0F ) || ( ( nf->rate_select == NF_RATE_ON ) && ( nf->J1 > nf->nfThreshold ) ) ) {
+    nf->rate_select = NF_RATE_ON;
+    if (fabsf(current_flow / nf->J1 - 1.0f) > nf->nfOnGain0Limit) {
+      rate1 = nf->nfOnGain0;
+    } else {
+      rate1 = nf->nfOnGain1;				
+    }
+    rate2 = nf->nfOnGain2;
+    dband=0;
+    c0=0;
+  } else {
+    nf->rate_select = NF_RATE_OFF; 
+    rate1 = nf->nfOffGain1;
+    rate2 = nf->nfOffGain2;
+    current_flow = c0==1 ? 0.0f : current_flow;
+  }
+
+  if ( *nf->nfBias > 0.0F ) {
+    nf->clamp = 0.0F;
+  } else {
+    nf->clamp = min ( 1.0F, nf->clamp + nf->nfClampRate );
+  }
+
+  // Updated filter to take care of non zero setpoint
+  if ( ( *nf->nfBias > 0.0F ) || ( ( current_flow >= 0.0F ) && ( nf->rate_select == NF_RATE_ON ) ) ) {
+    clamped = current_flow;
+  } else {
+    clamped = current_flow * nf->clamp;
+  }
+
+  J0 = nf->J1 + rate1 * ( clamped - nf->J1 );
+  delta1 = *nf->nfBias - J0;
+  delta2 = clamped - J0;
+
+  if ( ( delta1 > 0.0F ) && ( delta2 > 0.0F ) ) {
+    boost_pos = min ( delta1, delta2 * rate2 );
+  } else {
+    boost_pos = 0.0F;
+  }
+
+  if ( ( delta1 < 0.0F ) && ( delta2 < 0.0F ) ) {
+    boost_neg = max ( delta1, delta2 * rate2 );
+  } else {
+    boost_neg = 0.0F;
+  }
+
+  nf->J1 = J0 + boost_pos + boost_neg;	
+  
+  if ((nf->dpdt > nf->nfOffGain0Limit) && (nf->rate_select == NF_RATE_OFF) && (*nf->override == 0)) {
+    *out = 0.0f;
+    c0=1;
+    dband = 10; // 10 processing cycles
+  } else {
+    if (dband == 0) {
+      c0=0;      
+      *out = nf->J1;
+    } else {
+      dband--;
+      *out = 0.0f;
+    }
+  }        
+}
+
+//void moving_average_filter(const double* input, double* output, int data_size, int window_size)
+//{
+//    double sum = 0.0;
+//    
+//    // 处理每个数据点
+//    for (int i = 0; i < data_size; i++) {
+//        sum = 0.0;
+//        
+//        // 计算当前窗口内数据的平均值
+//        int count = 0;
+//        for (int j = i; j >= 0 && j > i - window_size; j--) {
+//            sum += input[j];
+//            count++;
+//        }
+// 
+//        // 存储滤波结果
+//        output[i] = sum / count;
+//    }
+//}
+
+/**
+*  中位值平均滤波
+*  pData:没有滤波的数据 
+*  nSize:数据大小 
+* average：滤波数据的平均值 （通过形参写入，需提前声明一个变量，存储average）
+*/
+int MedianFilter(float* pData,int nSize,float *average)
+{
+    float max,min;
+    float sum=0;
+    if(nSize>2)
+    {
+        max = pData[0];
+        min = max;
+        for(int i=0;i<nSize;i++)
+        {
+            sum += pData[i];            
+            if(pData[i]>max)
+            {
+                max = pData[i];   //一个循环之后max就是最大的值
+            }
+
+            if(pData[i]<min)
+            {
+                min = pData[i];   //一个循环之后min就是最小的值
+            }
+        }
+    	sum = sum-max-min;       //去掉最大的值和最小的值
+    	(*average)=sum/(nSize-2); //对N-2个数求平均值,保留两位小数  
+    	return 1;        
+    }
+    return 0;
+}
+
+
+
+
+
+//void FastKalmanFilter(FastKalmanFilter_struct *fkf, double Qparam, double Rparam, double samplingPeriod, double PNStd, double MNstd, double initialValue)
+//{
+//  fkf->Fparam = 1;//kg
+//  fkf->Hparam = 1;
+//  fkf->Y = 0.0;  /// Last_P
+//  fkf->Bparam = samplingPeriod;
+//  fkf->Qparam = Qparam * PNStd * PNStd;//Q
+//  fkf->Rparam = Rparam * MNstd * MNstd;//R
+//  // system dynamic parameters
+//  fkf->XHatPresent = initialValue;//out
+//  fkf->SPresent = MNstd * MNstd;//Now_P
+//}
+void kalman_filter(FastKalmanFilter_struct *kfp, float input,float *out) 
+{
+//    // 预测协方差方程：k时刻系统估算协方�?= k-1时刻的系统协方差 + 过程噪声协方�?
+//    kfp->Now_P = kfp->Last_P + kfp->Q;
+//    // 卡尔曼增益方程：卡尔曼增�?= k时刻系统估算协方�?/ （k时刻系统估算协方�?+ 观测噪声协方差）
+//    kfp->Kg = kfp->Now_P / (kfp->Now_P + kfp->R);
+//    // 更新最优值方程：k时刻状态变量的最优�?= 状态变量的预测�?+ 卡尔曼增�?* （测量�?- 状态变量的预测值）
+//    kfp->out = kfp->out + kfp->Kg * (input -
+//                                     kfp->out); //1?    // 更新协方差方�? 本次的系统协方差付给 kfp->LastP 威下一次运算准备�?
+//    kfp->Last_P = (1 - kfp->Kg) * kfp->Now_P;
+
+
+
+    // 预测协方差方程：k时刻系统估算协方�?= k-1时刻的系统协方差 + 过程噪声协方�?
+    kfp->SPresent = kfp->Y + kfp->Qparam;
+    // 卡尔曼增益方程：卡尔曼增�?= k时刻系统估算协方�?/ （k时刻系统估算协方�?+ 观测噪声协方差）
+    kfp->Fparam = kfp->SPresent / (kfp->SPresent + kfp->Rparam);
+    // 更新最优值方程：k时刻状态变量的最优�?= 状态变量的预测�?+ 卡尔曼增�?* （测量�?- 状态变量的预测值）
+    kfp->XHatPresent = kfp->XHatPresent + kfp->Fparam * (input -
+                                     kfp->XHatPresent); //1?    // 更新协方差方�? 本次的系统协方差付给 kfp->LastP 威下一次运算准备�?
+    kfp->Y = (1 - kfp->Fparam) * kfp->SPresent;
+    *out =  kfp->XHatPresent;
+	
+
+}
+
+

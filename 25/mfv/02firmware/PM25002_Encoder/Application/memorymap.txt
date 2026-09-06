@@ -1,0 +1,11 @@
+/***************************
+	MEMORY MAPPING
+****************************/
+			Address		Size
+BOOTLOADER:		0x8000000		0xF000
+APPLICATION:	0x8010000		0x30000
+
+DATAFLASH:		0x0807b000		0x2000		// 4x 0x800 pages
+REDUNDANT:		0x0807d000		0x2000		// 4x 0x800 pages
+RTB1:			0x0807f000		0x0800
+RTB2:			0x0807f800		0x0800

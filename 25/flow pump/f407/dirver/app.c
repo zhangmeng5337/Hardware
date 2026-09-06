@@ -11,7 +11,7 @@
 #include "controller.h"
 #include "fm25w32.h"
 #include "spiFileProc.h"
-
+#include "menu.h"
 config_stru config_u;
 extern nvmem_struct nvmem;
 void loadPrams(void)
@@ -24,6 +24,9 @@ void loadPrams(void)
         config_u.flashRefreshTime = nvmem.app.flashRefreshTime;
 		getPid()->outh = nvmem.app.outh;
 		getPid()->outL = nvmem.app.outL;
+		//getPageInfo()->infocCount = nvmem.app.ninfocCount;
+		//getPageInfo()->maxInfoCount = nvmem.app.nmaxInfoCount;		
+		
     }
     else
     {
@@ -33,11 +36,19 @@ void loadPrams(void)
 		nvmem.app.outh = 60000;
 		nvmem.app.outL = 0;	
 		
+		nvmem.app.ninfocCount = 0;
+		nvmem.app.nmaxInfoCount = 255;		
+		
 		getPid()->outh = nvmem.app.outh;
 		getPid()->outL = nvmem.app.outL;
         config_u.lcdRefreshTime = nvmem.app.lcdRefreshTime;
         config_u.adcRefreshTime = nvmem.app.adcRefreshTime;
         config_u.flashRefreshTime = nvmem.app.flashRefreshTime;
+
+		//getPageInfo()->infocCount = nvmem.app.ninfocCount;
+		//getPageInfo()->maxInfoCount = nvmem.app.nmaxInfoCount;			
+
+		
         nvmem.magic_number = FLASH_HEADER;
         write_to_flash(50 );
     }

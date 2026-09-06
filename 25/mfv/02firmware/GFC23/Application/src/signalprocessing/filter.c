@@ -232,4 +232,37 @@ float average_filter_pressure(float bArray)
     return result;
 }
 
+/**
+*  中位值平均滤波
+*  pData:没有滤波的数据 
+*  nSize:数据大小 
+* average：滤波数据的平均值 （通过形参写入，需提前声明一个变量，存储average）
+*/
+int MedianFilter(float* pData,int nSize,float *average)
+{
+    int max,min;
+    float sum=0;
+    if(nSize>2)
+    {
+        max = pData[0];
+        min = max;
+        for(int i=0;i<nSize;i++)
+        {
+            sum += pData[i];            
+            if(pData[i]>max)
+            {
+                max = pData[i];   //一个循环之后max就是最大的值
+            }
+
+            if(pData[i]<min)
+            {
+                min = pData[i];   //一个循环之后min就是最小的值
+            }
+        }
+    	sum = sum-max-min;       //去掉最大的值和最小的值
+    	(*average)=sum/(nSize-2); //对N-2个数求平均值,保留两位小数  
+    	return 1;        
+    }
+    return 0;
+}
 

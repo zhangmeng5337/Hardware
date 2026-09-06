@@ -1,0 +1,165 @@
+#ifndef __ALGORITHMS_H_
+#define __ALGORITHMS_H_
+
+#include <stdint.h>
+#include "arm_math.h"
+
+#define MAXWAVEFORMAVERAGE 50
+#define MAXBWORDER  8
+#define HYSTERESISSPAN	10
+#define DYNAMICFLTSPAN	25
+#define DEADVOLUMESPAN  10
+#define AZPSIDSPAN      100
+
+#define NF_RATE_ON         1
+#define NF_RATE_OFF        0
+
+typedef struct {
+    float sig[MAXWAVEFORMAVERAGE];
+    uint16_t movave;
+    uint16_t movave_samples;
+    uint16_t oIndex;
+    float sums;
+} mave_struct;
+
+typedef struct {
+  uint8_t wasinit; // initialization check
+  //initial values for the kalman filter
+  float x_est_last;
+  float P_last;
+  //the noise in the system
+  float Q;
+  // volatile parameters
+  float R;
+  float K;
+  float P;
+  float P_temp;
+  float x_temp_est;
+  float x_est;
+  float z_measured; //the 'noisy' value we measured
+} kalman_struct;
+
+typedef struct {  
+  arm_matrix_instance_f32 mp;
+  float32_t md_f32[16]; // can handle up to 4x4
+} arm_mat_struct;
+
+typedef struct {
+  uint8_t wasinit; // initialization check
+  arm_mat_struct x;      /* Matrix x Instance */
+  arm_mat_struct P;      /* Matrix P Instance */
+  arm_mat_struct F;      /* Matrix F Instance */
+  arm_mat_struct H;      /* Matrix H Instance */
+  arm_mat_struct R;      /* Matrix R Instance */
+  arm_mat_struct I;      /* Matrix I Instance */
+  
+  float prev_x;
+  float dynamic_P;
+
+} kalman2_struct;
+
+typedef struct {
+  float pSt;
+  float pyt;
+  float sums;
+  uint8_t state;
+  uint8_t sctr;
+} single_exp_struct;
+
+typedef struct {
+  uint8_t wasinit;
+  uint8_t idx;
+  uint8_t order;
+  double cutoff;  
+  double A[MAXBWORDER];
+  double d1[MAXBWORDER];
+  double d2[MAXBWORDER];
+  double w0[MAXBWORDER];
+  double w1[MAXBWORDER];
+  double w2[MAXBWORDER];  
+  
+  double gain;
+  double coeff[4];
+  double xn[4];
+  double yn[4];
+} butterworth_struct;
+
+typedef struct {
+	uint8_t hyst;
+  uint8_t currstate;
+  uint8_t prevstate;
+	uint8_t idx;
+  float critera;
+  float fny[DYNAMICFLTSPAN];
+	float m;
+  float active;
+} dynamicflt_struct;
+
+typedef struct {
+  uint8_t idx;
+  float fny[DEADVOLUMESPAN];
+	float m;
+} m_struct;
+
+typedef struct {
+  uint8_t idx;
+  float fny[AZPSIDSPAN];
+	float m;
+  single_exp_struct expm;  
+} mdp_struct;
+
+typedef struct {
+	// system parameters
+	double Bparam;
+	double Fparam;
+	double Qparam;
+	double Hparam;
+	double Rparam;
+	double Kparam;
+	// system dynamic parameters
+	double XHatPresent;
+	double XHatForward;
+	double SPresent;
+	double SForward;
+	double PPresent;
+	double PForward;
+	double Y;
+} FastKalmanFilter_struct;
+
+typedef struct {
+  // new noise filter
+  float       nfThreshold;  //0.002;
+  float       nfOnGain0;    //0.05;	
+  float       nfOnGain0Limit; // 0.05;  
+  float       nfOnGain1;    //0.001;
+  float       nfOnGain2;    //0.05;
+  float       nfOffGain0Limit;
+  float       nfOffGain1;   //0.005;
+  float       nfOffGain2;   //0.05;
+  float       nfClampRate;  //1.0;
+  float       *nfBias;      // set to setpoint
+  int16_t     rate_select;
+  float       clamp;
+  float       J1;  
+  float       dpdt;         // dp derivative;
+  float       dpnm1;        // previous dp
+  uint8_t     *override;    // pointer to override mode  
+} nf_struct;
+
+extern void generate_blackmanharris_window(float *win, uint32_t len);
+extern void generate_rectangular_window(float *win, uint32_t start, uint32_t stop, uint32_t len);
+extern void parabolic_interpolation(float ym1, float y0, float yp1, float *p, float *y, float *a);
+extern void single_exp(single_exp_struct *flt, float alpha, float data, float *filtered);
+extern void filter_mave(mave_struct *sig, float data, float *filtered);
+extern void kalman(kalman_struct *kconf, float Q, float R, float in, float *out);
+extern void kalman_v2(kalman2_struct *kms, float t, float in, float *out);
+extern void init_butterworth(butterworth_struct *bwf, double s, double cutoff, double load);
+extern void butterworth(butterworth_struct *bwf, float in, float *out, uint8_t reset);
+extern void butterworth2(butterworth_struct *bwf, float in, float *out, uint8_t reset);
+extern float mcalc(float *dy, uint8_t size);
+extern void dynFilter(dynamicflt_struct *dyn, float flow, uint8_t *active, float critera);
+extern void FastKalmanFilter(FastKalmanFilter_struct *fkf, double Qparam, double Rparam, double samplingPeriod, double PNStd, double MNstd, double initialValue);
+extern void GetEstimation(FastKalmanFilter_struct *fkf, double measuredData, double FinputValue, float *out);
+extern void spbiased_nf(nf_struct *nf, float current_flow, float *out);
+
+#endif

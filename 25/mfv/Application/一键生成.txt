@@ -1,0 +1,368 @@
+Option Explicit
+
+' ================== 一键处理主入口 ==================
+Sub 一键处理_最终版()
+    On Error GoTo MainError
+    Application.ScreenUpdating = False
+    Debug.Print "===== 开始一键处理 =====" & vbCrLf & "时间: " & Now
+
+    ThisWorkbook.RefreshAll
+    Application.CalculateUntilAsyncQueriesDone
+
+    GenerateCmdSummary
+    FillSourceSheetsFormulas
+    Application.Calculate
+
+    Daochu
+    RunBatchIfConfigured
+
+    Application.ScreenUpdating = True
+    MsgBox "全部完成！cmd 汇总已更新，公式已填充，数据已导出，批处理已执行。"
+    Exit Sub
+
+MainError:
+    Application.ScreenUpdating = True
+    MsgBox "处理出错：" & Err.description, vbCritical
+End Sub
+
+
+' ================== 生成 cmd 汇总（每个块的第一行标红，无空行） ==================
+Private Sub GenerateCmdSummary()
+    Dim wsCmd As Worksheet, wsGas As Worksheet, wsMks As Worksheet, wsNoz As Worksheet
+    Dim lastRow As Long, r As Long, c As Long, curRow As Long
+    Dim colLetters As Variant
+    Dim hasFormula As Boolean
+    Dim firstRow As Boolean
+    Dim rngFormat As Range
+
+    On Error GoTo ErrHandler
+    If Not SheetExists("cmd") Then Err.Raise 1001, , "缺少“cmd”工作表"
+    If Not SheetExists("气体参数") Then Err.Raise 1001, , "缺少“气体参数”工作表"
+    If Not SheetExists("mks offset") Then Err.Raise 1001, , "缺少“mks offset”工作表"
+    If Not SheetExists("喷嘴参数") Then Err.Raise 1001, , "缺少“喷嘴参数”工作表"
+
+    Set wsCmd = ThisWorkbook.Worksheets("cmd")
+    Set wsGas = ThisWorkbook.Worksheets("气体参数")
+    Set wsMks = ThisWorkbook.Worksheets("mks offset")
+    Set wsNoz = ThisWorkbook.Worksheets("喷嘴参数")
+
+    Application.Calculation = xlCalculationManual
+
+    ' 清除第 10 行及之后的内容（保留前 9 行配置）
+    wsCmd.Rows("10:" & wsCmd.Rows.Count).Clear
+    curRow = 10
+
+    ' ---- 1. 气体参数 N 列，第一行标红 ----
+    firstRow = True
+    lastRow = wsGas.Cells(wsGas.Rows.Count, "N").End(xlUp).Row
+    For r = 2 To lastRow
+        If Not IsEmpty(wsGas.Cells(r, "N").Value) Then
+            wsCmd.Cells(curRow, "A").Formula = "='气体参数'!N" & r
+            If firstRow Then
+                wsCmd.Range("A" & curRow).EntireRow.Font.Color = vbRed
+                firstRow = False
+            End If
+            curRow = curRow + 1
+        End If
+    Next r
+
+    ' ---- 2. mks offset X 列，第一行标红 ----
+    firstRow = True
+    lastRow = wsMks.Cells(wsMks.Rows.Count, "X").End(xlUp).Row
+    For r = 2 To lastRow
+        If Not IsEmpty(wsMks.Cells(r, "X").Value) Then
+            wsCmd.Cells(curRow, "A").Formula = "='mks offset'!X" & r
+            If firstRow Then
+                wsCmd.Range("A" & curRow).EntireRow.Font.Color = vbRed
+                firstRow = False
+            End If
+            curRow = curRow + 1
+        End If
+    Next r
+
+    ' ---- 3. 喷嘴参数 T~W 列，第一行标红 ----
+    firstRow = True
+    colLetters = Array("T", "U", "V", "W")
+    lastRow = wsNoz.Cells(wsNoz.Rows.Count, "T").End(xlUp).Row
+    For r = 2 To lastRow
+        hasFormula = False
+        For c = 0 To 3
+            If wsNoz.Cells(r, colLetters(c)).hasFormula Then
+                hasFormula = True
+                Exit For
+            End If
+        Next c
+        If hasFormula Then
+            For c = 0 To 3
+                If wsNoz.Cells(r, colLetters(c)).hasFormula Then
+                    wsCmd.Cells(curRow, c + 1).Formula = "='喷嘴参数'!" & colLetters(c) & r
+                Else
+                    wsCmd.Cells(curRow, c + 1).Value = ""
+                End If
+            Next c
+            If firstRow Then
+                wsCmd.Range("A" & curRow & ":D" & curRow).Font.Color = vbRed
+                firstRow = False
+            End If
+            curRow = curRow + 1
+        End If
+    Next r
+
+    ' 统一格式：关闭换行，清除残留换行符（从第 10 行开始）
+    If curRow > 10 Then
+        Set rngFormat = wsCmd.Range("A10:A" & curRow - 1).Resize(, 4)
+        rngFormat.WrapText = False
+        On Error Resume Next
+        rngFormat.Replace What:=Chr(10), Replacement:="", LookAt:=xlPart
+        On Error GoTo ErrHandler
+    End If
+
+    Application.Calculation = xlCalculationAutomatic
+    Exit Sub
+
+ErrHandler:
+    Application.Calculation = xlCalculationAutomatic
+    MsgBox "生成汇总出错：" & Err.description, vbCritical
+End Sub
+
+
+' ================== 填充源表公式 ==================
+Private Sub FillSourceSheetsFormulas()
+    Dim ws As Worksheet, formulaCols As Variant
+    Dim rngDataCol As Range, cell As Range, tbl As Range
+    Dim startRow As Long, lastDataRow As Long, colNum As Long, i As Long
+    Dim rngCol As Range, firstFormulaCell As Range, fillRange As Range
+    Dim dict As Object
+
+    On Error GoTo ErrHandler
+    Application.Calculation = xlCalculationManual
+
+    For Each ws In ThisWorkbook.Worksheets
+        Select Case ws.Name
+            Case "气体参数": formulaCols = Array(14)
+            Case "喷嘴参数": formulaCols = Array(20, 21, 22, 23)
+            Case "mks offset": formulaCols = Array(24)
+            Case Else: GoTo NextSheet
+        End Select
+
+        On Error Resume Next
+        Set rngDataCol = ws.Range("A1:A" & ws.Cells(ws.Rows.Count, 1).End(xlUp).Row).SpecialCells(xlCellTypeConstants)
+        On Error GoTo 0
+        If rngDataCol Is Nothing Then GoTo NextSheet
+
+        Set dict = CreateObject("Scripting.Dictionary")
+        For Each cell In rngDataCol
+            Set tbl = cell.CurrentRegion
+            If tbl Is Nothing Then GoTo SkipCell
+            If dict.Exists(tbl.Address) Then GoTo SkipCell
+            dict.Add tbl.Address, True
+
+            startRow = tbl.Row
+            lastDataRow = tbl.Columns(1).Find(What:="*", After:=tbl.Columns(1).Cells(1), _
+                            LookIn:=xlFormulas, SearchDirection:=xlPrevious).Row
+            If lastDataRow <= startRow Then GoTo SkipCell
+
+            For i = LBound(formulaCols) To UBound(formulaCols)
+                colNum = formulaCols(i)
+                Set rngCol = ws.Range(ws.Cells(startRow, colNum), ws.Cells(lastDataRow, colNum))
+                Set firstFormulaCell = Nothing
+                On Error Resume Next
+                Set firstFormulaCell = rngCol.SpecialCells(xlCellTypeFormulas).Cells(1, 1)
+                On Error GoTo 0
+                If Not firstFormulaCell Is Nothing Then
+                    If firstFormulaCell.Row < lastDataRow Then
+                        Set fillRange = ws.Range(firstFormulaCell, ws.Cells(lastDataRow, colNum))
+                        fillRange.FillDown
+                    End If
+                End If
+            Next i
+SkipCell:
+        Next cell
+NextSheet:
+    Next ws
+
+    Application.Calculation = xlCalculationAutomatic
+    Exit Sub
+
+ErrHandler:
+    Application.Calculation = xlCalculationAutomatic
+    MsgBox "填充公式出错：" & Err.description, vbCritical
+End Sub
+
+
+' ================== 数据导出（跳过空行，允许跳号） ==================
+Sub Daochu()
+    Dim i As Long, K As Long
+    Dim gas_start_row As Long, gas_end_row As Long
+    Dim dev_start_row As Long, dev_end_row As Long
+    Dim name_offset As Long
+    Dim basePath As String, exportPath As String
+    Dim wsCmd As Worksheet
+    Dim maxRowCmd As Long
+
+    On Error GoTo ErrHandler
+    If Not SheetExists("cmd") Then Err.Raise 1001, , "缺少“cmd”工作表"
+    Set wsCmd = ThisWorkbook.Worksheets("cmd")
+
+    gas_start_row = GetValidRow(wsCmd.Range("B1"), "气体起始行 B1")
+    gas_end_row = GetValidRow(wsCmd.Range("B2"), "气体结束行 B2")
+    dev_start_row = GetValidRow(wsCmd.Range("B3"), "设备起始行 B3")
+    dev_end_row = GetValidRow(wsCmd.Range("B4"), "设备结束行 B4")
+
+    Dim configuredOffset As Long
+    configuredOffset = val(Trim(wsCmd.Range("B5").Value))
+    If configuredOffset > 0 Then
+        name_offset = configuredOffset
+    Else
+        name_offset = gas_start_row - 1
+    End If
+
+    basePath = Trim(wsCmd.Range("B7").Value)
+    If basePath = "" Then basePath = "D:\GH0050\Application\src\bootloader"
+    If Right(basePath, 1) <> "\" Then basePath = basePath & "\"
+
+    exportPath = Trim(wsCmd.Range("B8").Value)
+    If exportPath = "" Then exportPath = basePath & "export\"
+    If Right(exportPath, 1) <> "\" Then exportPath = exportPath & "\"
+
+    maxRowCmd = wsCmd.Cells(wsCmd.Rows.Count, 1).End(xlUp).Row
+    If gas_start_row < 1 Then gas_start_row = 1
+    If gas_end_row > maxRowCmd Then gas_end_row = maxRowCmd
+    If dev_start_row < 1 Then dev_start_row = 1
+    If dev_end_row > maxRowCmd Then dev_end_row = maxRowCmd
+    If gas_start_row > gas_end_row Then
+        Dim tmp As Long: tmp = gas_start_row: gas_start_row = gas_end_row: gas_end_row = tmp
+    End If
+    If dev_start_row > dev_end_row Then
+        Dim tmp2 As Long: tmp2 = dev_start_row: dev_start_row = dev_end_row: dev_end_row = tmp2
+    End If
+
+    ' ---- 创建设备文件夹并复制 Find 文件 ----
+    Dim devName As String
+    For i = dev_start_row To dev_end_row
+        devName = CStr(wsCmd.Range("A" & i).Value)
+        If Len(devName) > 0 Then
+            If Dir(exportPath & devName, vbDirectory) = "" Then
+                MkDir exportPath & devName
+                On Error Resume Next
+                FileCopy exportPath & "Find.txt", exportPath & devName & "\Find.txt"
+                FileCopy exportPath & "Find.bat", exportPath & devName & "\Find.bat"
+                On Error GoTo ErrHandler
+            End If
+        End If
+    Next i
+
+    ' ---- 生成气体文件（跳过空行） ----
+    For K = dev_start_row To dev_end_row
+        devName = CStr(wsCmd.Range("A" & K).Value)
+        If Len(devName) > 0 Then
+            For i = gas_start_row To gas_end_row
+                If Not IsEmpty(wsCmd.Range("A" & i).Value) Then
+                    Dim filePathGas As String
+                    filePathGas = exportPath & devName & "\gas" & (i - name_offset) & ".txt"
+                    Open filePathGas For Output As 1
+                    Print #1, wsCmd.Range("A" & i).Value
+                    Close 1
+                End If
+            Next i
+        End If
+    Next K
+
+    ' ---- 生成 n0, n1, n2 文件 ----
+    For i = dev_start_row To dev_end_row
+        devName = CStr(wsCmd.Range("A" & i).Value)
+        If Len(devName) > 0 Then
+            If Not IsEmpty(wsCmd.Range("B" & i).Value) Then
+                Open exportPath & devName & "\" & devName & "_n0.txt" For Output As 1
+                Print #1, wsCmd.Range("B" & i).Value
+                Close 1
+            End If
+        End If
+    Next i
+    For i = dev_start_row To dev_end_row
+        devName = CStr(wsCmd.Range("A" & i).Value)
+        If Len(devName) > 0 Then
+            If Not IsEmpty(wsCmd.Range("C" & i).Value) Then
+                Open exportPath & devName & "\" & devName & "_n1.txt" For Output As 1
+                Print #1, wsCmd.Range("C" & i).Value
+                Close 1
+            End If
+        End If
+    Next i
+    For i = dev_start_row To dev_end_row
+        devName = CStr(wsCmd.Range("A" & i).Value)
+        If Len(devName) > 0 Then
+            If Not IsEmpty(wsCmd.Range("D" & i).Value) Then
+                Open exportPath & devName & "\" & devName & "_n2.txt" For Output As 1
+                Print #1, wsCmd.Range("D" & i).Value
+                Close 1
+            End If
+        End If
+    Next i
+
+    MsgBox "数据导出完毕（已自动跳过空行）"
+    Exit Sub
+
+ErrHandler:
+    MsgBox "导出出错（当前行号：" & i & "）" & vbCrLf & _
+           "错误：" & Err.description, vbCritical
+End Sub
+
+
+' ================== 辅助：从单元格获取有效行号 ==================
+Private Function GetValidRow(cell As Range, description As String) As Long
+    Dim v As Long
+    v = val(Trim(cell.Value))
+    If v <= 0 Then
+        MsgBox "配置项 [" & description & "] 不是有效数字（当前值：" & cell.Value & "），已自动修正为 1。", vbExclamation
+        GetValidRow = 1
+    Else
+        GetValidRow = v
+    End If
+End Function
+
+
+' ================== 执行批处理 ==================
+Private Sub RunBatchIfConfigured()
+    Dim wsCmd As Worksheet
+    Dim batPath As String, basePath As String
+
+    On Error Resume Next
+    Set wsCmd = ThisWorkbook.Worksheets("cmd")
+    On Error GoTo 0
+    If wsCmd Is Nothing Then Exit Sub
+
+    basePath = Trim(wsCmd.Range("B7").Value)
+    If basePath = "" Then basePath = "D:\GH0050\Application\src\bootloader"
+    If Right(basePath, 1) <> "\" Then basePath = basePath & "\"
+
+    batPath = Trim(wsCmd.Range("B6").Value)
+    If batPath = "" Then
+        batPath = basePath & "encryptGfcDat.bat"
+    Else
+        If Dir(batPath, vbDirectory) <> "" And Dir(batPath) = "" Then
+            batPath = batPath & IIf(Right(batPath, 1) <> "\", "\", "") & "encryptGfcDat.bat"
+        End If
+    End If
+
+    If Dir(batPath) = "" Then
+        MsgBox "批处理文件未找到：" & batPath, vbExclamation
+        Exit Sub
+    End If
+
+    Dim wsh As Object
+    Set wsh = CreateObject("WScript.Shell")
+    wsh.CurrentDirectory = basePath
+    wsh.Run """" & batPath & """", 1, True
+End Sub
+
+
+' ================== 工作表存在性检查 ==================
+Private Function SheetExists(sheetName As String) As Boolean
+    Dim ws As Worksheet
+    On Error Resume Next
+    Set ws = ThisWorkbook.Worksheets(sheetName)
+    On Error GoTo 0
+    SheetExists = Not ws Is Nothing
+End Function
+
