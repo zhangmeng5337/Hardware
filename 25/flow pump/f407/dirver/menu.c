@@ -37,7 +37,7 @@ unsigned char *dataTostr(unsigned char *p, unsigned int datTyp, unsigned int dat
 {
     static unsigned char stbuf[128];
     unsigned char datbuf[64];
-	uint32_t *tmp;
+    uint32_t *tmp;
     memset(datbuf, 0, 64);
     memset(stbuf, 0, 128);
     switch (datTyp)
@@ -46,13 +46,42 @@ unsigned char *dataTostr(unsigned char *p, unsigned int datTyp, unsigned int dat
             sprintf(stbuf, "%u", *p);
             break;
         case 2:
- 			tmp = (uint32_t *)p;
-            sprintf(stbuf, "%lu",*tmp);
+            tmp = (uint32_t *)p;
+            sprintf(stbuf, "%lu", *tmp);
             break;
     }
 
     return stbuf;
 }
+warnDes_stru warnDes[WARN_DES_SIZE] =
+{
+    {0, 8, 0, {"空桶"}},
+    {1, 10, 0, {"低液位"}},
+    {2, 10, 0, {"背压过高"}},
+    {3, 10, 0, {"背压过低"}},
+    {4, 10, 1, {"气穴"}},
+    {5, 10, 1, {"气蚀"}},
+    {6, 10, 1, {"吸入阀泄漏"}},
+    {7, 10, 1, {"流量偏离"}},
+    {8, 10, 1, {"排出阀泄漏"}},
+    {9, 18, 0, {"过载"}},
+    {10, 24, 1, {"压力传感器"}},
+    {11, 60, 0, {"马达过载"}},
+    {12, 42, 0, {"总线错误"}},
+    {13, 0, 0, {"CIU"}},
+    {14, 25, 0, {"无控制讯号"}},
+    {15, 28, 0, {"隔膜泄漏"}},
+    {16, 18, 0, {"排出阀泄漏"}},
+    {17, 1, 0, {"过热"}},
+    {18, 46, 1, {"维护逾期"}},
+    {19, 15, 1, {"空桶"}},   
+};
+warn_stru warnRecord[] =
+{
+{0,{"2026012"},0},
+};
+warnRecord_stru warnToalRecord;
+
 menudatMap infoFont[] =
 {
     //  index 	 fontBuf[32] 	arrib 	pollIndex;
@@ -61,10 +90,10 @@ menudatMap infoFont[] =
     {1, InfoPage, serviceP, 													2, 3},
     {1, InfoPage, SoftVer, 														2, 5},
     {1, InfoPage, MotorCtrl, 													2, 6},
-    {1, InfoPage, HardwareVer, 													2, 7,0,0},
+    {1, InfoPage, HardwareVer, 													2, 7, 0, 0},
     {1, InfoPage, (unsigned char *)(&controllerCustom.settingU.serNum), 		2, 8, 2, 4},
-    {1, InfoPage, PROSER, 														2, 9,0,0},
-    {1, InfoPage, TYPENO, 														2, 10,0,0},
+    {1, InfoPage, PROSER, 														2, 9, 0, 0},
+    {1, InfoPage, TYPENO, 														2, 10, 0, 0},
 };
 font_stru fontTable[] =
 {
@@ -103,6 +132,7 @@ font_stru fontTable[] =
     {CounterPage, 	{"马达工时"}, 			 							2, 3}, //info attri
     {CounterPage, 	{"完成冲程"}, 			 							2, 4}, //info attri
     {CounterPage, 	{"电源开/关"}, 			 							2, 5}, //info attri
+    //{WarnPage,  	, 			 							3, 0}, //info attri
 
 };
 bmpMap_stru bmpMap[] =
@@ -259,6 +289,10 @@ void l3SetInoutMenu(void);
 void l4SetRelay1Menu(void);
 void l4SetRelay2Menu(void);
 void l3SetBasicMenu(void);
+void displayWarnFont(unsigned char index,  unsigned int x, unsigned int y,
+                 unsigned char fontSize,
+                 unsigned int backColor, unsigned int fontColor);
+
 unsigned int menuTaskIndex;
 Menu_table_t menuTableU;
 Menu_table_t menuTable[] =
@@ -342,6 +376,219 @@ Menu_table_t menuTable[] =
 };
 
 
+void warnProc(unsigned int x, unsigned int y,unsigned char fontSize)
+{
+	static unsigned int addrx, addry;
+	 // unsigned char fontsize;
+	 unsigned char i, j;
+	 //fontsize = 32;
+	
+	 unsigned int iconOffset;
+	 unsigned int totalIconOffset;
+	 unsigned int NowIconOffset;
+	 unsigned int remainCount;
+	 unsigned char firstListNum;
+	 static unsigned char lastListNumwarn;
+	 static uint16_t lastxwarn, lastywarn;
+	 iconOffset = ReturnIcon + 1;
+	 if (menuTableU.currentIconNum >= (iconOffset))
+	 {
+	
+		 totalIconOffset = menuTableU.currMaxIconNum - iconOffset;
+		 NowIconOffset = menuTableU.currentIconNum - iconOffset;
+		 remainCount = totalIconOffset - NowIconOffset;
+	
+		 firstListNum = (NowIconOffset / pageusr.maxCountScreen) * pageusr.maxCountScreen;
+		 if (lastListNumwarn != firstListNum && menuTableU.currentIconNum > iconOffset)
+		 {
+			 ST7789_DrawFilledRectangle(addrx, addry, 320, 240 - addry, WHITE);
+		 }
+		 lastListNumwarn = firstListNum;
+	
+	 }
+	 else
+	 {
+		 NowIconOffset = 255;
+	 }
+	
+	
+	 if (menuTableU.currentIconNum >= (iconOffset))
+	 {
+		 addrx = x;//0
+		 addry = y;//48
+		 if (remainCount >= pageusr.maxCountScreen)
+		 {
+	
+			 if (remainCount >= pageusr.maxCountScreen)//change page
+			 {
+				 //if(menuTableU.currentIconNum >= pageusr.maxCountScreen)
+	
+				 j = firstListNum;
+				 for (i = 0; i < pageusr.maxCountScreen; i++)
+				 {
+	
+					 if (NowIconOffset == j)
+					 {
+	
+						 //ST7789_DrawFilledRectangle(addrx, addry, 320, 24, BLUE);
+						 if (lastxwarn != addrx || lastywarn != addry)
+						 {
+							 ST7789_DrawFilledRectangle(lastxwarn, lastywarn, 320, fontSize, WHITE);//fontSize=32
+							 ST7789_DrawFilledRectangle(addrx, addry, 320, fontSize, BLUE);
+	
+						 }
+						 //displayFont(InfoPage, j, 2, addrx, addry, fontsize, BLUE, WHITE);
+						 lastxwarn = addrx;
+						 lastywarn = addry;
+						 displayWarnFont( j,addrx, addry, fontSize, BLUE, BLACK);
+					 }
+	
+					 else if (j < totalIconOffset)
+					 {
+						 displayWarnFont( j, addrx, addry, fontSize, WHITE, BLACK);//arib=2
+					 }
+	
+	
+	
+					 addry = addry + fontSize;
+					 j = j + 1;
+	
+				 }
+	
+			 }
+			 else
+			 {
+				 j = firstListNum;
+				 for (i = 0; i < remainCount; i++)
+				 {
+	
+					 if (NowIconOffset == j)
+					 {
+	
+						 //ST7789_DrawFilledRectangle(addrx, addry, 320, 24, BLUE);
+						 if (lastxwarn != addrx || lastywarn != addry)
+						 {
+							 ST7789_DrawFilledRectangle(lastxwarn, lastywarn, 320, fontSize, WHITE);
+							 ST7789_DrawFilledRectangle(addrx, addry, 320, fontSize, BLUE);
+	
+						 }
+						 //displayFont(InfoPage, j, 2, addrx, addry, fontsize, BLUE, WHITE);
+						 lastxwarn = addrx;
+						 lastywarn = addry;
+						 displayWarnFont(j, addrx, addry, fontSize, BLUE, BLACK);
+					 }
+					 else if (j < totalIconOffset)
+						 displayWarnFont(j, addrx, addry, fontSize, WHITE, BLACK);
+	
+					 addry = addry + fontSize;
+					 j = j + 1;
+	
+				 }
+	
+			 }
+	
+		 }
+		 else
+		 {
+			 j = firstListNum;
+			 if (totalIconOffset == 0 || firstListNum == 0)
+			 {
+				 for (i = 0; i < pageusr.maxCountScreen; i++)
+				 {
+	
+					 if (NowIconOffset == j)
+					 {
+						 //ST7789_DrawFilledRectangle(addrx, addry, 320, 24, BLUE);
+						 if (lastxwarn != addrx || lastywarn != addry)
+						 {
+							 ST7789_DrawFilledRectangle(lastxwarn, lastywarn, 320, fontSize, WHITE);
+							 ST7789_DrawFilledRectangle(addrx, addry, 320, fontSize, BLUE);
+	
+						 }
+						 //displayFont(InfoPage, j, 2, addrx, addry, fontsize, BLUE, WHITE);
+						 lastxwarn = addrx;
+						 lastywarn = addry;
+						 displayWarnFont(j, addrx, addry, fontSize, BLUE, BLACK);
+					 }
+					 else if (j <= totalIconOffset)
+					 {
+	
+						 if (lastxwarn == addrx || lastywarn == addry)
+						 {
+							 ST7789_DrawFilledRectangle(lastxwarn, lastywarn, 320, fontSize, WHITE);
+							 // 						   ST7789_DrawFilledRectangle(addrx, addry, 320, 32, BLUE);
+							 displayWarnFont(j, addrx, addry, fontSize, WHITE, BLACK);
+							 lastxwarn = addrx;
+							 lastywarn = addry;
+							 addry = 0;
+						 }
+	
+					 }
+	
+					 addry = addry + fontSize;
+					 j = j + 1;
+				 }
+			 }
+			 else
+			 {
+				 for (i = 0; i < (totalIconOffset - firstListNum); i++)
+				 {
+	
+					 if (NowIconOffset == j)
+					 {
+	
+						 //ST7789_DrawFilledRectangle(addrx, addry, 320, 24, BLUE);
+						 if (lastxwarn != addrx || lastywarn != addry)
+						 {
+	
+							 ST7789_DrawFilledRectangle(lastxwarn, lastywarn, 320, fontSize, WHITE);
+							 ST7789_DrawFilledRectangle(addrx, addry, 320, fontSize, BLUE);
+	
+						 }
+						 //displayFont(InfoPage, j, 2, addrx, addry, fontsize, BLUE, WHITE);
+						 lastxwarn = addrx;
+						 lastywarn = addry;
+						 displayWarnFont(j, addrx, addry, fontSize, BLUE, BLACK);
+					 }
+					 else if (j < totalIconOffset)
+					 {
+						 if (menuTableU.currentIconNum < menuTableU.currMaxIconNum)
+						 {
+							 displayWarnFont(j, addrx, addry, fontSize, WHITE, BLACK);
+						 }
+	
+					 }
+	
+					 addry = addry + fontSize;
+					 j = j + 1;
+				 }
+				 // ST7789_DrawFilledRectangle(addrx, addry, 320, 240 - addry, WHITE);
+			 }
+	
+	
+		 }
+	
+	 }
+	 else
+	 {
+	
+	
+		 //ST7789_DrawFilledRectangle(addrx, addry, 320, 24, BLUE);
+		 if (lastxwarn != 0 || lastywarn != 0)
+		 {
+			 addry = y;
+			 addrx = x;
+			 ST7789_DrawFilledRectangle(lastxwarn, lastywarn, 320, fontSize, WHITE);
+			 lastxwarn = 0;
+			 lastywarn = 0;
+			 displayWarnFont( 0, addrx, addry, fontSize, WHITE, BLACK);
+	
+		 }
+		 //displayFont(InfoPage, j, 2, addrx, addry, fontsize, BLUE, WHITE);
+	
+	 }
+
+}
 
 image_info2_t *searchTable(unsigned char currentPage,  unsigned char currentIconNum, unsigned char iconIndex,
                            unsigned char arrib, unsigned char arrib2)
@@ -472,7 +719,41 @@ uint32_t searchBmpTable(unsigned char currentPage,  unsigned char currentIconNum
 //    else
 //        return 0;
 //}
-unsigned char buf1[128];
+
+unsigned char *searchFont3Table(unsigned char index,unsigned char returnSeq)
+{
+
+    unsigned char i;
+    unsigned int j = 0, offsetTmp = 0;
+    bold_font_char_info_t *info;
+    uint8_t *p;
+    unsigned char strlen1;
+
+	//warnRecord[warnToalRecord[warnToalRecord.currentNum]].strBuf;//time
+	for(i = 0;i< WARN_DES_SIZE; i++)
+	{
+		if(warnRecord[index].index == warnDes[i].index)//index:warn seq
+		{
+		switch(returnSeq)
+		{
+			case 0:
+				p = &warnRecord[i].strBuf[0];//time
+				break;
+			case 1:
+				p = &warnDes[i].iconIndex;//icon
+				break;
+			case 2:
+				p = &warnDes[i].fontBuf[0];//message
+				break;				
+		}
+		return p;
+
+		}
+	}
+
+    return NULL;
+
+}
 unsigned char *searchFont2Table(unsigned char index, uint16_t arrib, unsigned char pollindex)
 {
 
@@ -481,49 +762,48 @@ unsigned char *searchFont2Table(unsigned char index, uint16_t arrib, unsigned ch
     bold_font_char_info_t *info;
 
     unsigned char strlen1;
-    memset(buf1, 0, 128);
+
     for (i = 0; i < 0xfff; i++)
     {
-
-        if (arrib == fontTable[i].arrib)
-        {
-            if (index == fontTable[i].index)
+            if (arrib == fontTable[i].arrib)
             {
-                if (pollindex == 255)
+                if (index == fontTable[i].index)
                 {
-                    offsetTmp = 0;
-                    //					strlen1 = strlen(fontTable[i].fontBuf);
-                    //					memcpy(buf1,fontTable[i].fontBuf,strlen1);
-                    //					if(fontTable[i].datMap.cmdSpecific != 0)
-                    //					{
-                    //						memcpy(buf1+strlen1,fontTable[i].datMap.memptr,strlen(fontTable[i].datMap.memptr));
-                    //					}
-                    //					return buf1;
-                    return fontTable[i].fontBuf;
-                    break;
-
-                }
-                else
-                {
-                    if (fontTable[i].pollIndex == pollindex)
+                    if (pollindex == 255)
                     {
                         offsetTmp = 0;
-
-                        //					memcpy(buf1,fontTable[i].fontBuf,strlen1);
-                        //					if(fontTable[i].datMap.cmdSpecific != 0)
-                        //					{
-                        //						memcpy(buf1+strlen1,fontTable[i].datMap.memptr,strlen(fontTable[i].datMap.memptr));
-                        //					}
-                        //					    return buf1;
+                        //				   strlen1 = strlen(fontTable[i].fontBuf);
+                        //				   memcpy(buf1,fontTable[i].fontBuf,strlen1);
+                        //				   if(fontTable[i].datMap.cmdSpecific != 0)
+                        //				   {
+                        //					   memcpy(buf1+strlen1,fontTable[i].datMap.memptr,strlen(fontTable[i].datMap.memptr));
+                        //				   }
+                        //				   return buf1;
                         return fontTable[i].fontBuf;
                         break;
 
                     }
+                    else
+                    {
+                        if (fontTable[i].pollIndex == pollindex)
+                        {
+                            offsetTmp = 0;
+
+                            //				   memcpy(buf1,fontTable[i].fontBuf,strlen1);
+                            //				   if(fontTable[i].datMap.cmdSpecific != 0)
+                            //				   {
+                            //					   memcpy(buf1+strlen1,fontTable[i].datMap.memptr,strlen(fontTable[i].datMap.memptr));
+                            //				   }
+                            //					   return buf1;
+                            return fontTable[i].fontBuf;
+                            break;
+
+                        }
+
+                    }
 
                 }
-
             }
-        }
 
 
     }
@@ -562,7 +842,7 @@ unsigned char *searchInfoFontTable(unsigned char index, uint16_t arrib, unsigned
                             if (infoFont[i].dattyp == 0)
                                 return infoFont[i].pstr;
                             else
-                                return dataTostr(infoFont[i].pstr, infoFont[i].dattyp,infoFont[i].dataSize);
+                                return dataTostr(infoFont[i].pstr, infoFont[i].dattyp, infoFont[i].dataSize);
                             break;
 
                         }
@@ -579,6 +859,26 @@ unsigned char *searchInfoFontTable(unsigned char index, uint16_t arrib, unsigned
     return NULL;
 
 }
+void displayWarnFont(unsigned char index,  unsigned int x, unsigned int y,
+                 unsigned char fontSize,
+                 unsigned int backColor, unsigned int fontColor)
+{
+       unsigned int addx; 
+	unsigned char *p = searchFont3Table(index,1);
+    if (p != NULL)
+		show_image(bmpMap[*p].name, x, y);//run stop 0 60 34   TJ
+		
+			p = searchFont3Table(index,0);
+    if (p != NULL)
+        addx = draw_string_ex(addx + 8, y + 8, fontColor, fontSize, p, backColor);
+	
+		p = searchFont3Table(index,2);
+    if (p != NULL)
+        addx = draw_string_ex(addx + 8, y + 8, fontColor, fontSize, p, backColor);
+
+
+}
+
 void displayFont(unsigned char index, unsigned char pollindex, unsigned char arib, unsigned int x, unsigned int y,
                  unsigned char fontSize,
                  unsigned int backColor, unsigned int fontColor)
@@ -1150,6 +1450,8 @@ void l2InfoMenu(void)
 void l2WarnMenu(void)
 {
     menuStatusBar();
+	
+	 warnProc(0, 48, 24);
 }
 
 void l2SetMenu(void)

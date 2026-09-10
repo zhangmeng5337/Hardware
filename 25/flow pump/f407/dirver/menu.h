@@ -2,7 +2,7 @@
 #define MENU_H_
 #include "main.h"
 #include "devinfo.h"
-
+#define WARN_DES_SIZE 20
 
 typedef enum
 {
@@ -100,7 +100,7 @@ typedef enum
 {
 	MaxRunicon = 5,
 	MaxInfoIcon = 11+ReturnIcon + 1,
-	MaxWarnIcon = 10,
+	MaxWarnIcon = 10+ReturnIcon + 1,
 	MaxSetIcon = 14,
 	MaxCounterIcon = 6+ReturnIcon + 1,
 	MaxLang = 2,
@@ -153,6 +153,29 @@ uint32_t arrib;//0:
 unsigned char pollIndex;
 menudatMap *datMap;
 }font_stru;
+typedef struct
+{
+uint16_t index;
+uint8_t strBuf[32];
+unsigned char warnDesIndex;
+
+}warn_stru;
+
+typedef struct
+{
+unsigned char totalWarns;
+unsigned char delteNum;
+unsigned char currentNum;
+}warnRecord_stru;
+
+
+typedef struct
+{
+uint16_t index;
+uint8_t iconIndex;
+unsigned char warnType; //1:warn 0:报警
+unsigned char fontBuf[32];
+}warnDes_stru;
 
 typedef struct
 {
