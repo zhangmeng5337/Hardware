@@ -1,0 +1,23 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Unplaced Symbol Availability Check                               )
+(                                                                     )
+(    Drawing          : DC-M588-V03-260625.brd                        )
+(    Software Version : 17.4P001                                      )
+(    Date/Time        : Sat Sep 12 20:27:41 2026                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Current PSMPATH consists of:
+	E:/projects/gitt/Hardware/26/ruidao/footprint/LIB
+
+
+All Symbols Found
+
+Total symbols placed:      381 out of 390
+
+
+Symbol Found:  R4330	- E:/projects/gitt/Hardware/26/ruidao/footprint/LIB/r0402.psm
+Symbol Found:  U4305	- E:/projects/gitt/Hardware/26/ruidao/footprint/LIB/usb-a-th_af-ss-jb17_6.psm
+Symbol Found:  U4306	- E:/projects/gitt/Hardware/26/ruidao/footprint/LIB/dp-smd_car06-201en5f.psm
