@@ -14,6 +14,7 @@
 #include "menu.h"
 config_stru config_u;
 extern nvmem_struct nvmem;
+extern warn_stru warnRecord;
 void loadPrams(void)
 {
     load_data_from_flash();
@@ -24,6 +25,7 @@ void loadPrams(void)
         config_u.flashRefreshTime = nvmem.app.flashRefreshTime;
 		getPid()->outh = nvmem.app.outh;
 		getPid()->outL = nvmem.app.outL;
+     memcpy(&warnRecord, &nvmem.app.nmwarnRecord, sizeof(warnRecord));
 		//getPageInfo()->infocCount = nvmem.app.ninfocCount;
 		//getPageInfo()->maxInfoCount = nvmem.app.nmaxInfoCount;		
 		

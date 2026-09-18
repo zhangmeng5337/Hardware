@@ -3,6 +3,7 @@
 
 #include "main.h"
 #include "stdio.h"
+#include "menu.h"
 
 #define WRITE       0
 #define READ        1
@@ -49,6 +50,7 @@ typedef struct
    float outL;
 	unsigned char ninfocCount;
 	unsigned char nmaxInfoCount;
+    warn_stru nmwarnRecord;	
 } app_data;
 
 typedef struct

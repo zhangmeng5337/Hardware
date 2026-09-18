@@ -25,8 +25,11 @@ typedef enum
 	inOutPage,
 	relay1Page,
 	relay2Page,
+	extStopPage,
+	emptyTankPage,
+	liquidLowPage,
 	restorePage,
-	langPage,
+	basicSetPage,
 	mainRandomPage = 128
 }L1enum;
 	
@@ -40,6 +43,13 @@ typedef enum
 	RandomIcon = 255
 }Iconenum;
 	
+	
+typedef enum
+{
+	warnFirst=ReturnIcon + 1,
+
+	
+}warnum;
 
 	
 typedef enum
@@ -63,7 +73,12 @@ typedef enum
 	motorWorkHour,
 	completeStroke,
 	PowerSw,
-}Counterenum;	
+}Counterenum;
+	typedef enum
+{
+	chinese = ReturnIcon + 1,
+	englsih
+}languageMode;	
 typedef enum
 {
  lang = ReturnIcon + 1,
@@ -101,9 +116,9 @@ typedef enum
 	MaxRunicon = 5,
 	MaxInfoIcon = 11+ReturnIcon + 1,
 	MaxWarnIcon = 10+ReturnIcon + 1,
-	MaxSetIcon = 14,
+	MaxSetIcon = 14+ReturnIcon + 1,
 	MaxCounterIcon = 6+ReturnIcon + 1,
-	MaxLang = 2,
+	MaxLang = 2+ReturnIcon + 1,
 	MaxCtrl = 7,
 	MaxAnalog = 4,
 	MaxAnalogout = 3,
@@ -148,7 +163,7 @@ unsigned char dataSize;
 typedef struct
 {
 uint16_t index;
-unsigned char fontBuf[32];
+unsigned char fontBuf[64];
 uint32_t arrib;//0:
 unsigned char pollIndex;
 menudatMap *datMap;

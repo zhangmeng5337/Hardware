@@ -122,11 +122,7 @@ typedef enum
     
 }statusEnum;
 
-typedef enum
-{
-	chinese = 0,
-	englsih
-}languageMode;	
+
 typedef enum
 {
 	extStop = 1,
