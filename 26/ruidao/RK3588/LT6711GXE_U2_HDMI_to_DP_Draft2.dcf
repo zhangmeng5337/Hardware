@@ -1,0 +1,1114 @@
+( ConstraintFile "LT6711GXE_U2_HDMI_to_DP_Draft2"
+    ( constraintHeader
+        ( objectKey
+            ( physical )
+        )
+        ( version
+            ( 16.3 )
+        )
+        ( revisionNumber
+            ( logicalViewRevNum 0 )
+            ( physicalViewRevNum 0 )
+            ( otherViewRevNum 0 )
+        )
+        ( contents
+            ( worksheetCustomizations )
+            ( crossSection )
+            ( electricalConstraints )
+            ( physicalConstraints )
+            ( spacingConstraints )
+            ( sameNetSpacingConstraints )
+            ( netClasses )
+        )
+        ( precision
+            ( units mil )
+            ( numberOfDecimalPlaces 2 )
+        )
+    )
+    ( crossSection
+        ( layer "SURFACE_INDEX_0"
+            ( attribute "CDS_LAYER_TYPE" "SURFACE"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "TOP"
+            ( attribute "CDS_LAYER_IS_NAMED" "1"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_TYPE" "CONDUCTOR"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "DIELECTRIC_BELOW_TOP"
+            ( attribute "CDS_LAYER_TYPE" "DIELECTRIC"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "GND"
+            ( attribute "CDS_LAYER_IS_NAMED" "1"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_TYPE" "CONDUCTOR"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "DIELECTRIC_BELOW_GND"
+            ( attribute "CDS_LAYER_TYPE" "DIELECTRIC"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "POWER"
+            ( attribute "CDS_LAYER_IS_NAMED" "1"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_TYPE" "CONDUCTOR"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "DIELECTRIC_BELOW_POWER"
+            ( attribute "CDS_LAYER_TYPE" "DIELECTRIC"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "BOTTOM"
+            ( attribute "CDS_LAYER_IS_NAMED" "1"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_TYPE" "CONDUCTOR"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+        ( layer "SURFACE_BELOW_BOTTOM"
+            ( attribute "CDS_LAYER_TYPE" "SURFACE"
+                ( Origin gBackEnd )
+            )
+            ( attribute "CDS_LAYER_NEGATIVE_ARTWORK" "FALSE"
+                ( Origin gBackEnd )
+            )
+        )
+    )
+    ( designConstraints
+        ( ruleChanges
+            ( allRules )
+            ( design "LT6711GXE_U2_HDMI_to_DP_Draft2"
+                ( physicalCSetRef "DEFAULT" )
+                ( spacingCSetRef "DEFAULT" )
+                ( sameNetSpacingCSetRef "DEFAULT" )
+            )
+            ( electricalCSet "D10_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D11_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D12_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D13_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D14_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D15_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D16_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D17_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D1_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D2_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D3_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D4_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D5_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D6_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D7_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D8_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "D9_CSET"
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( electricalCSet "DEFAULT"
+                ( attribute "STUB_LENGTH" "0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MAX" "448000.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "TOTAL_ETCH_LENGTH_MIN" "0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_PARALLEL" "0.00,0.00,0.00,0.00,0.00,0.00,1000.00,200.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_VIA_COUNT" "-1"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "IMPEDANCE_RULE" "100.00 ohm"
+                    ( Units "uResistance" "ohm" 1.000000)
+                    ( Origin gBackEnd )
+                )
+                ( attribute "IMPEDANCE_RULE_TOL" "50.00 ohm"
+                    ( Units "uResistanceTolerance" "ohm" 1.000000)
+                    ( Origin gBackEnd )
+                )
+                ( attribute "PROPAGATION_DELAY_MAX" "10.00 ns"
+                    ( Units "uMaxMinProp" "ns" 1.000000)
+                    ( Origin gBackEnd )
+                )
+                ( attribute "PROPAGATION_DELAY_MIN" "0.00 ns"
+                    ( Units "uMaxMinProp" "ns" 1.000000)
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "2"
+                ( attribute "DIFFP_PRIMARY_GAP" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "12.00,12.00,12.00,12.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D10_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D11_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D12_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D13_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D14_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D15_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D16_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D17_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D1_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D2_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D3_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D4_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D5_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D6_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D7_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D8_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "D9_CSET"
+                ( attribute "DIFFP_PRIMARY_GAP" "9.00,9.00,9.00,9.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" ""
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( physicalCSet "DEFAULT"
+                ( attribute "DIFFP_PRIMARY_GAP" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MIN_LINE_WIDTH" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MAX_LINE_WIDTH" "50.00,50.00,50.00,50.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "VIA_LIST" "16-8"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "ALLOW_ON_ETCH_SUBCLASS" "true,true,true,true"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( spacingCSet "2"
+                ( attribute "LINE_TO_LINE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_THRUPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_LINE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_LINE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_SHAPE_SPACING" "18.00,18.00,18.00,18.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_THRUPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SMDPIN_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_THRUPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_THRUPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SMDPIN_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_SHAPE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUVIA_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_BBV_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_BBV_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_MVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_LINE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_VIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_PIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_SHAPE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_HOLE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_SHAPE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_SHAPE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_SHAPE_SPACING" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( spacingCSet "DEFAULT"
+                ( attribute "LINE_TO_LINE_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_THRUPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_SMDPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_LINE_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_LINE_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "LINE_TO_SHAPE_SPACING" "10.00,10.00,10.00,10.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_THRUPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_SMDPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SMDPIN_TO_SMDPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_THRUPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_THRUPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SMDPIN_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_SMDPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_SMDPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUPIN_TO_SHAPE_SPACING" "10.00,10.00,10.00,10.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_SMDPIN_SPACING" "10.00,10.00,10.00,10.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "THRUVIA_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_BBV_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_BBV_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_MVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_LINE_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_VIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_PIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_SHAPE_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "HOLE_TO_HOLE_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_THRUVIA_SPACING" "10.00,10.00,10.00,10.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "BBV_TO_SHAPE_SPACING" "10.00,10.00,10.00,10.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "MVIA_TO_SHAPE_SPACING" "10.00,10.00,10.00,10.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SHAPE_TO_SHAPE_SPACING" "0.00,0.00,0.00,0.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( sameNetSpacingCSet "2"
+                ( attribute "SN_SMDPIN_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_SMDPIN_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_THRUVIA_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_THRUVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_BBV_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_BBV_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_MVIA_SPACING" "6.00,6.00,6.00,6.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( sameNetSpacingCSet "DEFAULT"
+                ( attribute "SN_SMDPIN_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_SMDPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_SMDPIN_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_THRUVIA_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_THRUVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_BBV_TO_BBV_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_BBV_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+                ( attribute "SN_MVIA_TO_MVIA_SPACING" "5.00,5.00,5.00,5.00"
+                    ( Origin gBackEnd )
+                )
+            )
+            ( matchGroup "DEFAULT"
+                ( memberType ( signal ) )
+                ( attribute "RELATIVE_PROPAGATION_DELAY" "0 mil,10.00 mil"
+                    ( Parent
+                        ( matchGroupRef "DEFAULT" )
+                    )
+                    ( Units "uMatchProp" "mil" 1.000000)
+                    ( Origin gBackEnd )
+                )
+            )
+            ( signal "DP_D0+"
+            )
+            ( signal "DP_D0-"
+            )
+            ( signal "DP_D1+"
+            )
+            ( signal "DP_D1-"
+            )
+            ( signal "DP_D2+"
+            )
+            ( signal "DP_D2-"
+            )
+            ( signal "DP_D3+"
+            )
+            ( signal "DP_D3-"
+            )
+            ( signal "N12122880"
+            )
+            ( signal "N12122956"
+            )
+            ( signal "N12122960"
+            )
+            ( signal "N12122976"
+            )
+            ( signal "N12122980"
+            )
+            ( signal "N12122984"
+            )
+            ( signal "N12122994"
+            )
+            ( signal "N12123010"
+            )
+            ( signal "TMDS_CLK+"
+            )
+            ( signal "TMDS_CLK-"
+            )
+            ( signal "TMDS_D0+"
+            )
+            ( signal "TMDS_D0-"
+            )
+            ( signal "TMDS_D1+"
+            )
+            ( signal "TMDS_D1-"
+            )
+            ( signal "TMDS_D2+"
+            )
+            ( signal "TMDS_D2-"
+            )
+            ( differentialPair "D1"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D1_CSET" )
+                ( physicalCSetRef "D1_CSET" )
+                ( member ( signalRef "HS_TSTN") )
+                ( member ( signalRef "HS_TSTP") )
+            )
+            ( differentialPair "D10"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D10_CSET" )
+                ( physicalCSetRef "D10_CSET" )
+                ( member ( signalRef "N12122956") )
+                ( member ( signalRef "N12122880") )
+            )
+            ( differentialPair "D11"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D11_CSET" )
+                ( physicalCSetRef "D11_CSET" )
+                ( member ( signalRef "DP_D3+") )
+                ( member ( signalRef "DP_D3-") )
+            )
+            ( differentialPair "D12"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D12_CSET" )
+                ( physicalCSetRef "D12_CSET" )
+                ( member ( signalRef "DP_D2-") )
+                ( member ( signalRef "DP_D2+") )
+            )
+            ( differentialPair "D13"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D13_CSET" )
+                ( physicalCSetRef "D13_CSET" )
+                ( member ( signalRef "DP_D1+") )
+                ( member ( signalRef "DP_D1-") )
+            )
+            ( differentialPair "D14"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D14_CSET" )
+                ( physicalCSetRef "D14_CSET" )
+                ( member ( signalRef "DP_D0+") )
+                ( member ( signalRef "DP_D0-") )
+            )
+            ( differentialPair "D15"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D15_CSET" )
+                ( physicalCSetRef "D15_CSET" )
+                ( member ( signalRef "DP_AUX-") )
+                ( member ( signalRef "DP_AUX+") )
+            )
+            ( differentialPair "D16"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D16_CSET" )
+                ( physicalCSetRef "D16_CSET" )
+                ( member ( signalRef "TX_AUXN") )
+                ( member ( signalRef "TX_AUXP") )
+            )
+            ( differentialPair "D17"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D17_CSET" )
+                ( physicalCSetRef "D17_CSET" )
+                ( member ( signalRef "BB_DM") )
+                ( member ( signalRef "BB_DP") )
+            )
+            ( differentialPair "D2"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D2_CSET" )
+                ( physicalCSetRef "D2_CSET" )
+                ( member ( signalRef "ARCP") )
+                ( member ( signalRef "ARCN") )
+            )
+            ( differentialPair "D3"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D3_CSET" )
+                ( physicalCSetRef "D3_CSET" )
+                ( member ( signalRef "TMDS_D0-") )
+                ( member ( signalRef "TMDS_D0+") )
+            )
+            ( differentialPair "D4"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D4_CSET" )
+                ( physicalCSetRef "D4_CSET" )
+                ( member ( signalRef "TMDS_D2-") )
+                ( member ( signalRef "TMDS_D2+") )
+            )
+            ( differentialPair "D5"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D5_CSET" )
+                ( physicalCSetRef "D5_CSET" )
+                ( member ( signalRef "TMDS_D1-") )
+                ( member ( signalRef "TMDS_D1+") )
+            )
+            ( differentialPair "D6"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D6_CSET" )
+                ( physicalCSetRef "D6_CSET" )
+                ( member ( signalRef "TMDS_CLK-") )
+                ( member ( signalRef "TMDS_CLK+") )
+            )
+            ( differentialPair "D7"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D7_CSET" )
+                ( physicalCSetRef "D7_CSET" )
+                ( member ( signalRef "N12123010") )
+                ( member ( signalRef "N12122994") )
+            )
+            ( differentialPair "D8"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D8_CSET" )
+                ( physicalCSetRef "D8_CSET" )
+                ( member ( signalRef "N12122984") )
+                ( member ( signalRef "N12122980") )
+            )
+            ( differentialPair "D9"
+                ( memberType ( signal ) )
+                ( electricalCSetRef "D9_CSET" )
+                ( physicalCSetRef "D9_CSET" )
+                ( member ( signalRef "N12122976") )
+                ( member ( signalRef "N12122960") )
+            )
+            ( netClass "DIFF"
+                ( memberType ( signal ) )
+                ( physicalCSetRef "2" )
+                ( spacingCSetRef "2" )
+                ( sameNetSpacingCSetRef "2" )
+                ( objectFlag fObjectPhysical )
+                ( objectFlag fObjectSpacing )
+                ( objectFlag fObjectSameNetSpacing )
+                ( member ( signalRef "TMDS_D0-") )
+                ( member ( signalRef "TMDS_D0+") )
+                ( member ( signalRef "TMDS_CLK-") )
+                ( member ( signalRef "TMDS_CLK+") )
+                ( member ( signalRef "TMDS_D2-") )
+                ( member ( signalRef "TMDS_D2+") )
+                ( member ( signalRef "TMDS_D1-") )
+                ( member ( signalRef "TMDS_D1+") )
+                ( member ( signalRef "N12123010") )
+                ( member ( signalRef "N12122994") )
+                ( member ( signalRef "N12122984") )
+                ( member ( signalRef "N12122980") )
+                ( member ( signalRef "N12122976") )
+                ( member ( signalRef "N12122960") )
+                ( member ( signalRef "N12122956") )
+                ( member ( signalRef "N12122880") )
+                ( member ( signalRef "DP_D3+") )
+                ( member ( signalRef "DP_D3-") )
+                ( member ( signalRef "DP_D2-") )
+                ( member ( signalRef "DP_D2+") )
+                ( member ( signalRef "DP_D1+") )
+                ( member ( signalRef "DP_D1-") )
+                ( member ( signalRef "DP_D0+") )
+                ( member ( signalRef "DP_D0-") )
+            )
+            ( netClass "DIFF_E"
+                ( memberType ( signal ) )
+                ( objectFlag fObjectElectrical )
+                ( member ( signalRef "TMDS_D0-") )
+                ( member ( signalRef "TMDS_D0+") )
+                ( member ( signalRef "TMDS_CLK-") )
+                ( member ( signalRef "TMDS_CLK+") )
+                ( member ( signalRef "TMDS_D2-") )
+                ( member ( signalRef "TMDS_D2+") )
+                ( member ( signalRef "TMDS_D1-") )
+                ( member ( signalRef "TMDS_D1+") )
+                ( member ( signalRef "N12123010") )
+                ( member ( signalRef "N12122994") )
+                ( member ( signalRef "N12122984") )
+                ( member ( signalRef "N12122980") )
+                ( member ( signalRef "N12122976") )
+                ( member ( signalRef "N12122960") )
+                ( member ( signalRef "N12122956") )
+                ( member ( signalRef "N12122880") )
+                ( member ( signalRef "DP_D3+") )
+                ( member ( signalRef "DP_D3-") )
+                ( member ( signalRef "DP_D2-") )
+                ( member ( signalRef "DP_D2+") )
+                ( member ( signalRef "DP_D1+") )
+                ( member ( signalRef "DP_D1-") )
+                ( member ( signalRef "DP_D0+") )
+                ( member ( signalRef "DP_D0-") )
+            )
+        )
+    )
+)
