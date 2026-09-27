@@ -3,9 +3,228 @@
 |                                                                    Page   1  |
 |------------------------------------------------------------------------------|
 |  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
-|                                                    Sun Sep 20 21:40:14 2026  |
+|                                                    Sun Sep 27 18:14:35 2026  |
 |------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  HDMI0_TX0N_PORT pins ADDED TO this new net
+                                 C243.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX0N_PORT/EDP0_TX_D0N pins MOVED FROM this net (to net name listed on right)
+                                 CN1.9           2787.69 5182.00
+                                                                HDMI0_TX0N_PORT
+                                 R395.1          7984.57 -2289.4
+                                                                HDMI0_TX0N_PORT
+                                 U4310.7         1228.15 4538.87
+                                                                HDMI0_TX0N_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C243.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX0P_PORT pins ADDED TO this new net
+                                 C242.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX0P_PORT/EDP0_TX_D0P pins MOVED FROM this net (to net name listed on right)
+                                 CN1.7           2827.06 5182.00
+                                                                HDMI0_TX0P_PORT
+                                 R396.1          7961.17 -2289.4
+                                                                HDMI0_TX0P_PORT
+                                 U4310.8         1228.15 4523.12
+                                                                HDMI0_TX0P_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C242.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX1N_PORT pins ADDED TO this new net
+                                 C241.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX1N_PORT/EDP0_TX_D1N pins MOVED FROM this net (to net name listed on right)
+                                 CN1.6           2846.74 5182.00
+                                                                HDMI0_TX1N_PORT
+                                 R393.1          7918.57 -2394.4
+                                                                HDMI0_TX1N_PORT
+                                 U4310.10        1228.15 4491.62
+                                                                HDMI0_TX1N_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C241.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX1P_PORT pins ADDED TO this new net
+                                 C240.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   2  |
 |------------------------------------------------------------------------------|
+|  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
+|                                                    Sun Sep 27 18:14:35 2026  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  HDMI0_TX1P_PORT/EDP0_TX_D1P pins MOVED FROM this net (to net name listed on right)
+                                 CN1.4           2886.11 5182.00
+                                                                HDMI0_TX1P_PORT
+                                 R394.1          7895.17 -2394.4
+                                                                HDMI0_TX1P_PORT
+                                 U4310.11        1228.15 4475.87
+                                                                HDMI0_TX1P_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C240.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX2N_PORT pins ADDED TO this new net
+                                 C239.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX2N_PORT/EDP0_TX_D2N pins MOVED FROM this net (to net name listed on right)
+                                 CN1.3           2905.80 5182.00
+                                                                HDMI0_TX2N_PORT
+                                 R390.1          7849.57 -2288.4
+                                                                HDMI0_TX2N_PORT
+                                 U4310.13        1228.15 4444.38
+                                                                HDMI0_TX2N_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C239.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX2P_PORT pins ADDED TO this new net
+                                 C167.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX2P_PORT/EDP0_TX_D2P pins MOVED FROM this net (to net name listed on right)
+                                 CN1.1           2945.17 5182.00
+                                                                HDMI0_TX2P_PORT
+                                 R392.1          7826.17 -2288.4
+                                                                HDMI0_TX2P_PORT
+                                 U4310.14        1228.15 4428.63
+                                                                HDMI0_TX2P_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C167.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX3N_PORT pins ADDED TO this new net
+                                 C245.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX3N_PORT/EDP0_TX_D3N pins MOVED FROM this net (to net name listed on right)
+                                 CN1.12          2728.63 5182.00
+                                                                HDMI0_TX3N_PORT
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
+|------------------------------------------------------------------------------|
+|  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
+|                                                    Sun Sep 27 18:14:35 2026  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+                                 R388.1          8062.57 -2393.4
+                                                                HDMI0_TX3N_PORT
+                                 U4310.4         1228.15 4586.11
+                                                                HDMI0_TX3N_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C245.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX3P_PORT pins ADDED TO this new net
+                                 C244.2                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX3P_PORT/EDP0_TX_D3P pins MOVED FROM this net (to net name listed on right)
+                                 CN1.10          2768.00 5182.00
+                                                                HDMI0_TX3P_PORT
+                                 R389.1          8039.17 -2393.4
+                                                                HDMI0_TX3P_PORT
+                                 U4310.5         1228.15 4570.36
+                                                                HDMI0_TX3P_PORT
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+               pins ADDED TO this existing net (pins not previously on any net)
+                                 C244.1                         
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  HDMI0_TX_CEC_PORT pins MOVED FROM this net (to net name listed on right)
+                                 CN1.13          2708.94 5182.00
+                                                                         RX_CEC
+                                 R1.2            5760.72 3348.00
+                                                                         RX_CEC
+                                 U4310.79        1401.38 4664.85
+                                                                         RX_CEC
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N183053711   net RENAMED (to net name listed on right)           N18335417    
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  RX_5V        pins MOVED FROM this net (to net name listed on right)
+                                 D20.2           8098.93 -3046.3
+                                                                 VCC5V_HDMI_TX0
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   4  |
+|------------------------------------------------------------------------------|
+|  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
+|                                                    Sun Sep 27 18:14:35 2026  |
+|------------------------------------------------------------------------------|
+| COMPONENTS DELETED from design                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type      |   x   |   y                        |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ D22                 DIODE_SOD_323_NC/B5819WS 7728.93 -3387.2
+ ED63                DIODE BI_DIR TRIG_ESD0402_ESD5341N 2105.00 1999.00
+ ED64                DIODE BI_DIR TRIG_ESD0402_ESD5341N 1960.00 3001.00
+ ED65                DIODE BI_DIR TRIG_ESD0402_ESD5341N 1641.00 2839.00
+ Q23                 MOSFET N_SOT_323_2SK3018 7698.93 -3287.2
+ R397                RESISTOR_R0402_27K    7627.93 -3362.2
+ R398                RESISTOR_R0402_NC/27K 7838.93 -3387.2
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   5  |
+|------------------------------------------------------------------------------|
+|  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
+|                                                    Sun Sep 27 18:14:35 2026  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C167                CAP NP_C0201_220NF    
+ C239                CAP NP_C0201_220NF    
+ C240                CAP NP_C0201_220NF    
+ C241                CAP NP_C0201_220NF    
+ C242                CAP NP_C0201_220NF    
+ C243                CAP NP_C0201_220NF    
+ C244                CAP NP_C0201_220NF    
+ C245                CAP NP_C0201_220NF    
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   6  |
+|------------------------------------------------------------------------------|
+|  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
+|                                                    Sun Sep 27 18:14:35 2026  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C167.2                         PRIM_FILE      .\pstchip.dat
+ C167.2                         SECTION        
+ C239.2                         PRIM_FILE      .\pstchip.dat
+ C239.2                         SECTION        
+ C240.2                         PRIM_FILE      .\pstchip.dat
+ C240.2                         SECTION        
+ C241.2                         PRIM_FILE      .\pstchip.dat
+ C241.2                         SECTION        
+ C242.2                         PRIM_FILE      .\pstchip.dat
+ C242.2                         SECTION        
+ C243.2                         PRIM_FILE      .\pstchip.dat
+ C243.2                         SECTION        
+ C244.2                         PRIM_FILE      .\pstchip.dat
+ C244.2                         SECTION        
+ C245.2                         PRIM_FILE      .\pstchip.dat
+ C245.2                         SECTION        
+|------------------------------------------------------------------------------|
+|       Nets changed          :      45                                        |
+|       Components added      :       8                                        |
+|       Components deleted    :       7                                        |
+|       Slot property added   :      16                                        |
 |                                                                              |
-|   Total ECO changes reported:       0                                        |
+|   Total ECO changes reported:      76                                        |
 |------------------------------------------------------------------------------|
