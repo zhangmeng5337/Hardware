@@ -3,51 +3,86 @@
 |                                                                    Page   1  |
 |------------------------------------------------------------------------------|
 |  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
-|                                                    Tue Sep 29 21:09:07 2026  |
+|                                                    Mon Oct  5 18:51:09 2026  |
 |------------------------------------------------------------------------------|
 | NET CHANGES                                                                  |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
 |   net  name |  type of change |    pin_id     |   x   |   y   |   to  net    |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
-  FEHUB1_DM    pins MOVED FROM this net (to net name listed on right)
-                                 L6.2            2300.39 -1116.1
-                                                                      FEHUB3_DM
-                                 R92.2           1648.00 -699.28
-                                                                      FEHUB3_DM
+  GND          pins ADDED TO this existing net (pins not previously on any net)
+                                 C9407.2                        
+                                 J5.2                           
+                                 R4344.2                        
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-  FEHUB1_DP    pins MOVED FROM this net (to net name listed on right)
-                                 L6.4            2300.39 -1137.8
-                                                                      FEHUB3_DP
-                                 R91.2           1481.00 -688.28
-                                                                      FEHUB3_DP
+  I2C_ADR      pins ADDED TO this existing net (pins not previously on any net)
+                                 R4343.2                        
+                                 R4344.1                        
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-  FEHUB3_DM    pins MOVED FROM this net (to net name listed on right)
-                                 L7.2            2294.39 -984.17
-                                                                      FEHUB1_DM
-                                 R133.2          1985.74 -708.81
-                                                                      FEHUB1_DM
+  RST_N        pins ADDED TO this existing net (pins not previously on any net)
+                                 C9407.1                        
+                                 R4342.2                        
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-  FEHUB3_DP    pins MOVED FROM this net (to net name listed on right)
-                                 L7.4            2294.39 -1005.8
-                                                                      FEHUB1_DP
-                                 R132.2          1896.00 -720.28
-                                                                      FEHUB1_DP
+  UART_TX      pins ADDED TO this existing net (pins not previously on any net)
+                                 J5.1                           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VCCIO33      pins ADDED TO this existing net (pins not previously on any net)
+                                 R4342.1                        
+                                 R4343.1                        
 |------------------------------------------------------------------------------|
 |                                 ECO   REPORT                                 |
 |                                                                    Page   2  |
 |------------------------------------------------------------------------------|
 |  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
-|                                                    Tue Sep 29 21:09:07 2026  |
+|                                                    Mon Oct  5 18:51:09 2026  |
 |------------------------------------------------------------------------------|
-| COMPONENTS DELETED from design                                               |
+| COMPONENT DEFINITION added to design                                         |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
-|    ref des        |    device type      |   x   |   y                        |
+|    device type                                                               |
 |- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
- J8                  CON4_0_CON4-2D0_CN4M_2R00_V_P_DIP -489.00 1452.00
- J55                 CON4_1_CON2-2D0_CN2M_2R00_V_P_DIP -667.00 1014.00
+ CAP_NP0603_C0402_1UF
+ CON2_CON2X1X254MM_CON2X1X254MM
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
 |------------------------------------------------------------------------------|
-|       Nets changed          :       8                                        |
-|       Components deleted    :       2                                        |
+|  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
+|                                                    Mon Oct  5 18:51:09 2026  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C9407               CAP_NP0603_C0402_1UF  
+ J5                  CON2_CON2X1X254MM_CON2X1X254MM 
+ R4342               RES0603_R0402_47K     
+ R4343               RES0603_R0402_1K/NC   
+ R4344               RES0603_R0402_1K      
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   4  |
+|------------------------------------------------------------------------------|
+|  E:/projects/gitt/Hardware/26/ruidao/RK3588/DC-M588-V03-260625.brd           |
+|                                                    Mon Oct  5 18:51:09 2026  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C9407.2                        PRIM_FILE      .\pstchip.dat
+ C9407.2                        SECTION        
+ J5.2                           PRIM_FILE      .\pstchip.dat
+ J5.2                           SECTION        
+ R4342.2                        PRIM_FILE      .\pstchip.dat
+ R4342.2                        SECTION        
+ R4343.2                        PRIM_FILE      .\pstchip.dat
+ R4343.2                        SECTION        
+ R4344.2                        PRIM_FILE      .\pstchip.dat
+ R4344.2                        SECTION        
+|------------------------------------------------------------------------------|
+|       Nets changed          :      10                                        |
+|       Comp definitions added:       2                                        |
+|       Components added      :       5                                        |
+|       Slot property added   :      10                                        |
 |                                                                              |
-|   Total ECO changes reported:      10                                        |
+|   Total ECO changes reported:      27                                        |
 |------------------------------------------------------------------------------|

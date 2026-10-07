@@ -74,3 +74,7 @@
 2026-09-29T21:09:08 ===> "E:/projects/gitt/Hardware/26/ruidao/RK3588/allegro/pstxnet.dat"
 2026-09-29T21:09:08 ===> "E:/projects/gitt/Hardware/26/ruidao/RK3588/allegro/pstxprt.dat"
 2026-09-29T21:09:08 ===> "E:/projects/gitt/Hardware/26/ruidao/RK3588/allegro/pstdmlmodels.dat"
+2026-10-05T18:51:09 ===> "E:/projects/gitt/Hardware/26/ruidao/RK3588/allegro/pstchip.dat"
+2026-10-05T18:51:09 ===> "E:/projects/gitt/Hardware/26/ruidao/RK3588/allegro/pstxnet.dat"
+2026-10-05T18:51:09 ===> "E:/projects/gitt/Hardware/26/ruidao/RK3588/allegro/pstxprt.dat"
+2026-10-05T18:51:09 ===> "E:/projects/gitt/Hardware/26/ruidao/RK3588/allegro/pstdmlmodels.dat"
