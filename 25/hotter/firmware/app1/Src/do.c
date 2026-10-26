@@ -255,7 +255,7 @@ void do_num_sel(int num)
     {
         if (tmp & nor_num)
         {
-            if (do_usr.do_out & nor_num)
+            if (do_usr.do_out & nor_num)//do_usr.do_out include all do bit set or reset
                 do_ctrl_proc(do_index[k], OFF);
             else
                 do_ctrl_proc(do_index[k], ON);

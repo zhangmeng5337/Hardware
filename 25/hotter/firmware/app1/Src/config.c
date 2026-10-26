@@ -3,6 +3,7 @@
 #include "ai_proc.h"
 #include "modbus.h"
 #include "FuzzyPID.h"
+#include "do.h"
 
 
 
@@ -129,6 +130,11 @@ void config_save()
 	   len = 4;
 	   index = index + len;
 
+       len = 2;
+	   memcpy(buf + index, set_do_out()->do_out, len);
+	   index = index + len;
+
+
        WriteFlashBytes((CONFIG_Addr), (uint8_t *)(buf), 512);
         config_usr.update_setting = 0;
 
@@ -138,6 +144,7 @@ void config_init()
 {
 
     unsigned char head;
+	unsigned int readTmp;
     unsigned int index;
     unsigned char buf[4];
     index = 0;
@@ -202,6 +209,15 @@ void config_init()
 		index = index + 4;
 		get_config()->set_up_period = uint32Tofloat(buf);
 
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)&readTmp, 2);
+		index = index + 2;
+		
+        set_do_out()->do_out = readTmp;
+        set_do_out()->do_num = 15;
+		set_do_out()->do_update = 1;
+
+
+
 
 		//ReadFlash(CONFIG_Addr + index, buf, 4);
         //uint32Tofloat(unsigned char *buf)
@@ -235,13 +251,22 @@ void config_init()
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", VERSION);
 
-        if (OTA_UPDATE_TO == UAPP2)
-            sprintf(get_config()->http_ip, "%s",
-                    "http://39.106.43.157/api/ota/b/");
+//        if (OTA_UPDATE_TO == UAPP2)
+//            sprintf(get_config()->http_ip, "%s",
+//                    "http://39.106.43.157/api/ota/b/");
 
-        else
-            sprintf(get_config()->http_ip, "%s",
-                    "http://39.106.43.157/api/ota/a/");
+//        else
+//            sprintf(get_config()->http_ip, "%s",
+//                    "http://39.106.43.157/api/ota/a/");
+
+if (OTA_UPDATE_TO == UAPP2)
+	sprintf(get_config()->http_ip, "%s",
+			"http://39.106.131.169/api/ota/b/");
+
+else
+	sprintf(get_config()->http_ip, "%s",
+			"http://39.106.131.169/api/ota/a/");
+
         sprintf(get_config()->http_port, "%s", "666");		
         get_config()->machine = 1;
         get_config()->update_firm = 0;
@@ -259,6 +284,12 @@ void config_init()
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;
         get_config()->timeout = 0;
+        set_do_out()->do_out = 0;
+        set_do_out()->do_num = 15;
+		set_do_out()->do_update = 1;
+
+
+		
         config_save();
 
 
@@ -269,13 +300,20 @@ sprintf(get_config()->mqtt_ip, "%s", "39.106.43.157");
 sprintf(get_config()->mqtt_port, "%s", "1883");
 sprintf(get_config()->version, "%s", VERSION);
 
+//if (OTA_UPDATE_TO == UAPP2)
+	//sprintf(get_config()->http_ip, "%s",
+	//		"http://39.106.43.157/api/ota/b/");
+
+//else
+//	sprintf(get_config()->http_ip, "%s",
+		//	"http://39.106.43.157/api/ota/a/");
 if (OTA_UPDATE_TO == UAPP2)
 	sprintf(get_config()->http_ip, "%s",
-			"http://39.106.43.157/api/ota/b/");
+			"http://39.106.131.169/api/ota/b/");
 
 else
 	sprintf(get_config()->http_ip, "%s",
-			"http://39.106.43.157/api/ota/a/");
+			"http://39.106.131.169/api/ota/a/");
 
 //    sprintf(get_config()->user, "%s", "usr");
 //    sprintf(get_config()->password, "%s", "7895621");
