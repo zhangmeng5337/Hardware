@@ -31,7 +31,7 @@ void hardware_init()
   do_off();
    Update_To_Sel();
    data_ai_init();
-  ads1158_init();
+   ads1158_init();
 	ads1158_config(1);
 	ads1158_config(2);
 	config_init();
@@ -42,7 +42,7 @@ void hardware_init()
    
 	 fuzzy_init();
 	 modbus_init();
- mqtt_init();
+    mqtt_init();
 	energy_init();
 	 init_hotter();
 

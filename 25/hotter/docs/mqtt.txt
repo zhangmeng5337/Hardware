@@ -6,6 +6,10 @@ dev_sub_ctrl_864536074094523
 864536074086925
 dev_pub_869020065433573
 dev_sub_ctrl_
+{
+    "do_num": 65535,
+    "do_set": 65530
+}
 dev_sub_ctrl_all
 {
 

@@ -6,6 +6,7 @@
 #include "equipment_ctrl.h"
 #include "crc.h"
 #include "hotter.h"
+#include "do.h"
 #include "pid.h"
 #include "schedule.h"
 #include "lte_hal.h"

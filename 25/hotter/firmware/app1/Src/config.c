@@ -131,7 +131,8 @@ void config_save()
 	   index = index + len;
 
        len = 2;
-	   memcpy(buf + index, set_do_out()->do_out, len);
+	   buf[index] = get_do_status() >> 8;
+	   buf[index + 1] = get_do_status();	   
 	   index = index + len;
 
 
@@ -209,12 +210,17 @@ void config_init()
 		index = index + 4;
 		get_config()->set_up_period = uint32Tofloat(buf);
 
-        ReadFlash(CONFIG_Addr + index, (uint8_t *)&readTmp, 2);
+        ReadFlash(CONFIG_Addr + index, (uint8_t *)&buf, 2);
 		index = index + 2;
 		
-        set_do_out()->do_out = readTmp;
-        set_do_out()->do_num = 15;
+        set_do_out()->do_out = buf[0];
+		set_do_out()->do_out = set_do_out()->do_out<<8;
+		set_do_out()->do_out = set_do_out()->do_out + buf[1];
+         set_do_out()->do_out = ~(set_do_out()->do_out);
+		
+        set_do_out()->do_num = 65535;
 		set_do_out()->do_update = 1;
+		//set_do_out()->do_status = 0;
 
 
 
@@ -247,7 +253,7 @@ void config_init()
 
         sprintf(get_config()->user, "%s", "usr");
         sprintf(get_config()->password, "%s", "7895621");
-        sprintf(get_config()->mqtt_ip, "%s", "39.106.43.157");
+        sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
         sprintf(get_config()->mqtt_port, "%s", "1883");
         sprintf(get_config()->version, "%s", VERSION);
 
@@ -274,8 +280,8 @@ else
         get_config()->set_tindoor = 25;
         get_config()->reboot = 0;
         get_config()->set_up_period =5;
-		get_pid_params()->out_max = 50;
-		get_pid_params()->out_min = 20;
+				get_pid_params()->out_max = 50;
+				get_pid_params()->out_min = 20;
         get_config()->mode = OFF_MODE;
 		get_config()->instru_num = DELI;
         get_config()->dev_size = DEV_SIZE;
@@ -284,11 +290,11 @@ else
         get_config()->fault_mask = 0xffffffff;
         get_config()->update_setting = 1;
         get_config()->timeout = 0;
-        set_do_out()->do_out = 0;
-        set_do_out()->do_num = 15;
+        set_do_out()->do_out = 65535;
+        set_do_out()->do_num = 65535;
 		set_do_out()->do_update = 1;
-
-
+       set_do_out()->do_status = 0;
+  
 		
         config_save();
 
@@ -296,7 +302,7 @@ else
     }
 sprintf(get_config()->user, "%s", "usr");
 sprintf(get_config()->password, "%s", "7895621");
-sprintf(get_config()->mqtt_ip, "%s", "39.106.43.157");
+sprintf(get_config()->mqtt_ip, "%s", "39.106.131.169");
 sprintf(get_config()->mqtt_port, "%s", "1883");
 sprintf(get_config()->version, "%s", VERSION);
 

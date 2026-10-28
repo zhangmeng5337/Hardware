@@ -2,7 +2,7 @@
 stru_do_stru do_usr;
 stru_do_stru *do_p;
 unsigned char do_index[16];
-
+//0-14   1-15
 void do_init()
 {
     unsigned int i,k;
@@ -13,6 +13,7 @@ void do_init()
     do_index[i] = k;
 	k--;
 	}
+	do_index[15] = 16;
 
 
     do_off();
@@ -111,6 +112,9 @@ void do_status_cal(unsigned int do_NO_sel, unsigned char bit_set)
         case dq15:
             val = 0x4000;
             break;
+        case dq16:
+            val = 0x8000;
+            break;		
         default:
             val = 0x00;
             break;
@@ -270,7 +274,7 @@ void do_proc()
     {
         do_usr.do_update = 0;
         do_num_sel(do_usr.do_num);
-
+        
     }
 }
 

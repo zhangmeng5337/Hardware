@@ -1479,6 +1479,10 @@ void anlysis_mqtt_recv()
         tmp_i = atoi(&dev_id[0]);
         set_do_out()->do_out = tmp_i;
         set_do_out()->do_update = 1;
+		
+		 get_config()->update_setting = 1;
+		 do_proc();
+	    config_save();//位置不能变
 
     }
 

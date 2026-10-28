@@ -28,6 +28,25 @@ void XL74HC595_MultiWrite(uint8_t *data, uint8_t Length);//»ìºÏÐ´Êý¾Ý;
 
 typedef enum
 {
+	dq1 = 15,
+	dq2 = 14,
+	dq3 = 13,
+	dq4 = 12,
+	dq5 = 11,
+	dq6 = 10,
+	dq7 = 9,
+	dq8 = 8,
+	dq9 = 7,
+	dq10 = 5,
+	dq11 = 6,
+	dq12 = 4,
+	dq13 = 3,
+	dq14 = 2,
+	dq15 = 1,
+	dq16 = 16	
+}do_table;
+/*typedef enum
+{
 	dq1 = 14,
 	dq2 = 13,
 	dq3 = 12,
@@ -42,8 +61,9 @@ typedef enum
 	dq12 = 3,
 	dq13 = 2,
 	dq14 = 1,
-	dq15 = 0
-}do_table;
+	dq15 = 0,
+	dq16 = 15	
+}do_table;*/
 
 typedef struct
 {
